@@ -19,11 +19,8 @@ public class GraphGremlinBase {
     protected Graph graph;
     protected GraphTraversalSource g;
     protected boolean supportingTransactions;
-    protected boolean isRemote;
     protected Map<String,Object> properties;
 
-
-    public GraphGremlinBase(){}
 
     /**
      * Constructs a graph using the given properties.
@@ -92,6 +89,9 @@ public class GraphGremlinBase {
      */
     public void updateElements() {}
 
+    /**
+     * Returns transaction support property of the specific graph instance.
+     */
     public boolean isSupportingTransactions() {
         return supportingTransactions;
     }

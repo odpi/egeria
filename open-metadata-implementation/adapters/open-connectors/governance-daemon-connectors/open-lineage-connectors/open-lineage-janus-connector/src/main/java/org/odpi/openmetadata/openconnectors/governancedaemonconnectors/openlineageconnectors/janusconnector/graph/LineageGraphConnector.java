@@ -8,7 +8,6 @@ import org.apache.tinkerpop.gremlin.structure.Column;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
-import org.janusgraph.core.JanusGraph;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageRelationship;
@@ -19,6 +18,7 @@ import org.odpi.openmetadata.governanceservers.openlineage.graph.LineageGraphCon
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVerticesAndEdges;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse;
+import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.factory.GraphGremlinBase;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.factory.JanusGraphEmbedded;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.factory.JanusGraphRemote;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.JanusConnectorErrorCode;
@@ -41,32 +41,30 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 public class LineageGraphConnector extends LineageGraphConnectorBase {
 
     private static final Logger log = LoggerFactory.getLogger(LineageGraphConnector.class);
-    private JanusGraph lineageGraph;
+    private GraphGremlinBase lineageGraph;
     private LineageGraphConnectorHelper helper;
     private GraphTraversalSource g;
-    private boolean supportingTransactions;
     /**
      * Instantiates the graph based on the configuration passed.
      */
     public void initializeGraphDB() throws OpenLineageException {
 
         try {
-            String graphType = connectionProperties.getConfigurationProperties().get("graphType").toString();
-            connectionProperties.getConfigurationProperties().remove("graphType");
 
-            if ("embeddedJanus".equals(graphType)) {
-                JanusGraphEmbedded janusGraphEmbedded = new JanusGraphEmbedded(connectionProperties);
-                g = janusGraphEmbedded.openGraph();
-                this.lineageGraph = janusGraphEmbedded.getJanusGraph();
-                this.supportingTransactions = janusGraphEmbedded.isSupportingTransactions();
+            if (connectionProperties.getConnectorType().getConnectorProviderClassName().equals(LineageGraphConnectorProvider.class.getName())) {
+                lineageGraph = new JanusGraphEmbedded(connectionProperties);
             }
 
-            if ("remoteJanus".equals(graphType)){
-                JanusGraphRemote janusGraphRemote = new JanusGraphRemote(connectionProperties);
-                g = janusGraphRemote.openGraph();
-                System.out.println(g.V().count().next());
+            if (connectionProperties.getConnectorType().getConnectorProviderClassName().equals(LineageGraphRemoteConnectorProvider.class.getName())) {
+                lineageGraph = new JanusGraphRemote(connectionProperties);
             }
-        }catch (Exception e){
+
+            this.g = lineageGraph.openGraph();
+            this.helper = new LineageGraphConnectorHelper(g);
+
+            System.out.println(g.V().count().next());
+
+        } catch (Exception e){
             log.debug("exception ",e);
 
         }
@@ -81,7 +79,19 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
 //                    error.getReportedUserAction()
 //            );
 //        }
-        this.helper = new LineageGraphConnectorHelper(lineageGraph);
+
+    }
+
+    @Override
+    public void disconnect() throws ConnectorCheckedException {
+        try {
+            lineageGraph.closeGraph();
+            super.disconnect();
+        } catch (Exception e) {
+            log.error("Exception while closing lineage graph: ",e);
+            //TODO: throw ConnectorCheckedException
+        }
+
     }
 
     @Override
@@ -95,12 +105,12 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
                                                                    .get(PROPERTY_KEY_ENTITY_GUID).toString()).collect(Collectors.toList());
 
             guidList.forEach(process -> findInputColumns(g,process));
-            if(supportingTransactions) {
+            if(lineageGraph.isSupportingTransactions()) {
                 g.tx().commit();
             }
         }catch (Exception e){
             log.error("Something went wrong when trying to map a process. The error is: ",e);
-            if(supportingTransactions) {
+            if(lineageGraph.isSupportingTransactions()) {
                 g.tx().rollback();
             }
         }
@@ -218,7 +228,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
             addTableToProcessEdge(g,columnIn, process);
             addTableToProcessEdge(g,columnOut, process);
 
-            if(supportingTransactions) {
+            if(lineageGraph.isSupportingTransactions()) {
                 g.tx().commit();
             }
         }
@@ -263,7 +273,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
                 log.debug("graphContext.size: "+graphContext.size());
             } catch (Exception e) {
                 log.error("An exception happened when trying to create vertices and relationships in LineageGraph. The error is", e);
-                if(supportingTransactions) {
+                if(lineageGraph.isSupportingTransactions()) {
                     g.tx().rollback();
                 }
             }
@@ -302,7 +312,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
         addOrUpdatePropertiesVertex(from,fromEntity);
         addOrUpdatePropertiesVertex(to,toEntity);
         //TODO add relationship properties -> meaning add relationship properties on AssetLineage omas event
-        if(supportingTransactions){
+        if(lineageGraph.isSupportingTransactions()){
             g.tx().commit();
         }
     }
@@ -349,7 +359,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
         Iterator<Vertex> vertex = g.V().has(PROPERTY_KEY_ENTITY_GUID,lineageEntity.getGuid());
         if(!vertex.hasNext()){
             log.debug("when trying to update, vertex with guid {} was not found  ", lineageEntity.getGuid());
-            if(supportingTransactions) {
+            if(lineageGraph.isSupportingTransactions()) {
                 g.tx().rollback();
             }
             return;
@@ -357,12 +367,12 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
 
         try {
             addOrUpdatePropertiesVertex(vertex.next(), lineageEntity);
-            if(supportingTransactions) {
+            if(lineageGraph.isSupportingTransactions()) {
                 g.tx().commit();
             }
         }catch (Exception e){
             log.error("An exception happened during update of the properties with exception: ",e);
-            if(supportingTransactions) {
+            if(lineageGraph.isSupportingTransactions()) {
                 g.tx().rollback();
             }
         }
@@ -395,7 +405,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
         Iterator<Edge> edge = g.E().has(PROPERTY_KEY_RELATIONSHIP_GUID,lineageRelationship.getGuid());
         if(!edge.hasNext()){
             log.debug("when trying to update, edge with guid {} was not found", lineageRelationship.getGuid());
-            if(supportingTransactions) {
+            if(lineageGraph.isSupportingTransactions()) {
                 g.tx().rollback();
             }
             return;
@@ -420,7 +430,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
             Iterator<Vertex> vertexIterator = g.V().has(PROPERTY_KEY_ENTITY_GUID, classificationGuid);
             if (!vertexIterator.hasNext()) {
                 log.debug("Classification with guid {} not found", classificationGuid);
-                if(supportingTransactions) {
+                if(lineageGraph.isSupportingTransactions()) {
                     g.tx().rollback();
                 }
                 continue;
@@ -467,7 +477,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
             if(!classificationExists){
                 g.V().has(PROPERTY_KEY_ENTITY_GUID,storedClassificationGuid).drop();
                 g.E(edge.id()).drop();
-                if(supportingTransactions) {
+                if(lineageGraph.isSupportingTransactions()) {
                     g.tx().commit();
                 }
                 break;
@@ -480,7 +490,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
         Iterator<Vertex> vertex = checkIfVertexExist(guid,version);
         //TODO add check when we will have classifications to delete classifications first
         if(!vertex.hasNext()){
-            if(supportingTransactions) {
+            if(lineageGraph.isSupportingTransactions()) {
                 g.tx().rollback();
             }
             log.debug("Vertex with guid did not delete {}",guid);
@@ -488,7 +498,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
         }
 
         g.V().has(PROPERTY_KEY_ENTITY_GUID,guid).drop();
-        if(supportingTransactions) {
+        if(lineageGraph.isSupportingTransactions()) {
             g.tx().commit();
         }
         log.debug("Vertex with guid {} deleted",guid);
@@ -498,7 +508,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
     public void deleteRelationship(String guid){
         Iterator<Edge> edge = g.E().has(PROPERTY_KEY_RELATIONSHIP_GUID,guid);
         if(!edge.hasNext()){
-            if(supportingTransactions) {
+            if(lineageGraph.isSupportingTransactions()) {
                 g.tx().rollback();
             }
             log.debug("Edge with guid did not delete {}",guid);
@@ -506,7 +516,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
         }
 
         g.E(edge.next().id()).drop();
-        if(supportingTransactions) {
+        if(lineageGraph.isSupportingTransactions()) {
             g.tx().commit();
         }
         log.debug("Edge with guid {} deleted",guid);
@@ -545,13 +555,13 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
                             .as("kv")
                             .select("edge")
                             .property(__.select("kv").by(Column.keys), __.select("kv").by(Column.values))).iterate();
-            if(supportingTransactions) {
+            if(lineageGraph.isSupportingTransactions()) {
                 g.tx().commit();
             }
         }
         catch (Exception e){
             log.debug("An exception happened during update of the properties with error:",e);
-            if(supportingTransactions) {
+            if(lineageGraph.isSupportingTransactions()) {
                 g.tx().rollback();
             }
         }
@@ -615,19 +625,11 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
                 errorCode.getUserAction());
     }
 
-    @Override
-    public void disconnect() throws ConnectorCheckedException {
-        this.lineageGraph.close();
-        super.disconnect();
-    }
-
     /**
      * {@inheritDoc}
      */
     public LineageResponse lineage(Scope scope, String guid, String displayNameMustContain, boolean includeProcesses) throws OpenLineageException {
         String methodName = "lineage";
-
-        GraphTraversalSource g = lineageGraph.traversal();
         try {
             g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).next();
         } catch (NoSuchElementException e) {

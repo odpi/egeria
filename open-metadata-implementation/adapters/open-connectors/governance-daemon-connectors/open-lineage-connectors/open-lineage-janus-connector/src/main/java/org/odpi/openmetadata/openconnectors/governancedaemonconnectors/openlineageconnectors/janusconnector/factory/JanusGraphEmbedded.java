@@ -23,28 +23,15 @@ public class JanusGraphEmbedded extends GraphGremlinBase {
 
     private static final Logger log = LoggerFactory.getLogger(JanusGraphEmbedded.class);
 
-    protected static final String BERKELEYJE = "berkeleyje";
-    protected static final String CASSANDRA = "cassandra";
-    protected static final String CQL = "cql";
-    protected static final String HBASE = "hbase";
-    protected static final String INMEMORY = "inmemory";
-
-    protected static final String LUCENE = "lucene";
-    protected static final String ELASTICSEARCH = "elasticsearch";
-    protected static final String SOLR = "solr";
-
-    protected boolean useMixedIndex;
-    protected String mixedIndexConfigName;
     private JanusGraph janusGraph;
 
     public JanusGraphEmbedded(ConnectionProperties connectionProperties){
         super(connectionProperties);
         this.supportingTransactions = true;
-
     }
 
     @Override
-    public GraphTraversalSource openGraph(){
+    public GraphTraversalSource openGraph() {
         super.openGraph();
         janusGraph = getJanusGraph();
         createSchema();
@@ -52,7 +39,7 @@ public class JanusGraphEmbedded extends GraphGremlinBase {
     }
 
     @Override
-    protected void createSchema(){
+    protected void createSchema() {
 
         final String methodName = "initializeGraph";
         log.info("Updating graph schema, if necessary");
