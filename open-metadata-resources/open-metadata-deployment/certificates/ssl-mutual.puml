@@ -1,0 +1,57 @@
+@startuml
+
+skinparam noteBackgroundColor LightSkyBlue
+skinparam participant {
+    backgroundColor Lavender
+}
+
+title TLS exchange showing client/server access to truststores and keystores (1 way SSL)
+
+participant ClientKeyStore
+participant ClientTrustStore
+participant Client
+participant Server
+participant ServerTrustStore
+participant ServerKeyStore
+
+group TCP handshake
+
+    Client -> Server: SYN
+    Server --> Client: SYN, ACK
+    Client -> Server: ACK
+end
+
+group TLS handshake
+
+    Client -> Server: Client Hello (client-random, TLS version, ciphers, compression,extensions)
+    Server -> ServerKeyStore: get my certificate (private key)
+    note right of ServerKeyStore: Looks for first matching server key
+    ServerKeyStore -> Server: Certificate
+    Server -> Client: Server Hello
+    Server -> Client: Server Certificate (certificate chain)
+    Server -> Client: Hello Done
+    Client -> Server: ACK
+    Client -> ClientKeyStore: retrieve certs to trust
+    ClientKeyStore -> Client: certificate list
+    note left of Client: validates certificate against it's configured truststore
+    note left of Client: generates a pre-master secret
+    Client -> Server: Client Key Exchange
+    note right of Server: descrypts pre-master key using private key
+    note right of Server: creates Master secret using pre-master secret & randoms exchanged
+    ... <size:16><&lock-locked> **only if we're going to do mutual ssl** ...
+    group mutual SSL
+    Client -> ClientKeyStore: get my certificate (private key)
+    Client -> ClientKeyStore: retrieve certs to trust
+    note left of ClientKeyStore: Looks for first matching client key
+    ClientKeyStore -> Client: Certificate
+
+    Client -> Server: Client certificate (public key)
+        Server -> ServerKeyStore: retrieve certs to trust
+        ServerKeyStore -> Server: certificate list
+        note left of Server: validates certificate against it's configured truststore
+    end
+
+
+end
+
+@enduml
