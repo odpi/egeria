@@ -1,0 +1,33 @@
+[req]
+prompt = no
+distinguished_name = req-distinguished-name
+default_bits = 4096
+req_extensions = v3_req
+x509_extensions = v3_ca
+default_days = 824
+
+[req-distinguished-name]
+C = US
+L = San Francisco
+ST = CA
+O = ODPi
+OU = Egeria
+CN = RootCertificateAuthority
+
+[v3_ca]
+subjectKeyIdentifier    = hash
+authorityKeyIdentifier  = keyid:always, issuer:always
+basicConstraints = critical, CA:true
+keyUsage = critical, digitalSignature, keyCertSign, cRLSign
+
+[v3_req]
+basicConstraints = critical, CA:false
+subjectKeyIdentifier    = hash
+keyUsage                = critical, nonRepudiation, digitalSignature, keyEncipherment, keyAgreement
+
+[v3_server]
+extendedKeyUsage        = critical, serverAuth
+
+[v3_client]
+extendedKeyUsage        = critical, clientAuth
+
