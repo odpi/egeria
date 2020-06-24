@@ -179,7 +179,7 @@
         <classgraph.version>4.8.86</classgraph.version>
         <swagger.version>2.1.2</swagger.version>
         <groovy.version>3.0.4</groovy.version>
-        <micrometer-registry-prometheus.version>1.5.1</micrometer-registry-prometheus.version>
+        <micrometer-registry-prometheus.version>1.5.2</micrometer-registry-prometheus.version>
         <jcl-over-slf4j.version>1.7.30</jcl-over-slf4j.version>
 
         <!-- Versions of plugins -->
