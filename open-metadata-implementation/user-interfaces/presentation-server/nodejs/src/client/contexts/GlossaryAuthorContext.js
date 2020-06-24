@@ -11,10 +11,10 @@ const GlossaryAuthorContextProvider = (props) => {
     GlossaryAuthorContextProvider
   );
   // get the nodeTypes here as the getNodeType accesses a context, which must be accessed at the top level of functional React component
-  const [termNodeType] = useState(getNodeType("term"));
-  const [categoryNodeType] = useState(getNodeType("category"));
-  const [glossaryNodeType] = useState(getNodeType("glossary"));
-  const [projectNodeType] = useState(getNodeType("project"));
+  const termNodeType = getNodeType("term");
+  const categoryNodeType = getNodeType("category");
+  const glossaryNodeType = getNodeType("glossary");
+  const projectNodeType = getNodeType("project");
 
   const [currentNodeType, setCurrentNodeType] = useState();
   const [selectedNode, setSelectedNode] = useState();
@@ -22,34 +22,60 @@ const GlossaryAuthorContextProvider = (props) => {
   const [myGlossary, setMyGlossary] = useState();
   const [myProjectLabel, setMyProjectLabel] = useState("Set my project");
   const [myGlossaryLabel, setMyGlossaryLabel] = useState("Set my glossary");
-  // 0 = unset 1 = setting glossary 2 = setting project 3 = glossary set project not, 4 = project set glossary not, 5 = node authoring
-  const [authoringState, setAuthoringState] = useState(0);
 
+   // The myState refers to the default Glossary and Project that need to be set in order to create terms and categories.
+  // 0 = unset 1 = setting my glossary 2 = setting my project 3 = glossary set project not, 4 = project set glossary not, 5 authoring
+  const [myState, setMyState] = useState(0);
   const settingMyGlossaryState = () => {
     console.log("settingMyGlossaryState");
-    setAuthoringState(1);
+    setMyState(1);
+    setAuthoringActionState(1);
     setCurrentNodeType(glossaryNodeType);
   };
   const settingMyProjectState = () => {
     console.log("settingMyProjectState");
-    setAuthoringState(2);
+    setMyState(2);
+    setAuthoringActionState(1);
     setCurrentNodeType(projectNodeType);
   };
   const setMyGlossaryState = () => {
     console.log("setMyGlossaryState");
     if (myProject) {
-      setAuthoringState(5);
+      setMyState(5);
     } else {
-      setAuthoringState(3);
+      setMyState(3);
+      setCurrentNodeType(glossaryNodeType);
     }
   };
   const setMyProjectState = () => {
     console.log("setMyProjectState");
     if (myGlossary) {
-      setAuthoringState(5);
+      setMyState(5);
+      setCurrentNodeType(termNodeType);
     } else {
-      setAuthoringState(4);
+      setMyState(4);
+      setCurrentNodeType(projectNodeType);
     }
+  };
+
+  // 0 = unset 1 = creating 2 = created 3 = searching 4 searched.
+  const [authoringActionState, setAuthoringActionState] = useState(0);
+
+  const setCreatingActionState = () => {
+    console.log("setCreatingActionState");
+    setAuthoringActionState(1);
+  };
+  const setCreatedActionState = () => {
+    console.log("setCreatedActionState");
+    setAuthoringActionState(2);
+  };
+  const setSearchingActionState = () => {
+    console.log("setSearchingActionState");
+    setAuthoringActionState(3);
+  };
+  const setSearchedActionState = () => {
+    console.log("setActionSearched");
+    setAuthoringActionState(4);
   };
 
   const setNodeTypeFromKey = (key) => {
@@ -63,22 +89,24 @@ const GlossaryAuthorContextProvider = (props) => {
       setCurrentNodeType(projectNodeType);
     }
   };
-  const isAuthoringState = (state) => {
-    return state == authoringState;
+  const isMyState = (state) => {
+    return state == myState;
   };
   return (
     <GlossaryAuthorContext.Provider
       value={{
         currentNodeType,
         setCurrentNodeType,
+        setNodeTypeFromKey,
         selectedNode,
         setSelectedNode,
         myProject,
         setMyProject,
         myGlossary,
         setMyGlossary,
-        authoringState,
-        setAuthoringState,
+        myState,
+        setMyState,
+        isMyState,
         myProjectLabel,
         setMyProjectLabel,
         myGlossaryLabel,
@@ -87,8 +115,12 @@ const GlossaryAuthorContextProvider = (props) => {
         settingMyProjectState,
         setMyGlossaryState,
         setMyProjectState,
-        setNodeTypeFromKey,
-        isAuthoringState,
+        authoringActionState,
+        setCreatingActionState,
+        setCreatedActionState,
+        setSearchingActionState,
+        setSearchedActionState,
+      
       }}
     >
       {props.children}
