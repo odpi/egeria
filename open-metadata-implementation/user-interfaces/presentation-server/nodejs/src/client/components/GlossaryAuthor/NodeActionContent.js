@@ -7,12 +7,14 @@ import { GlossaryAuthorContext } from "../../contexts/GlossaryAuthorContext";
 
 const NodeActionContent = props => {
   const glossaryAuthorContext = useContext(GlossaryAuthorContext);
-  console.log("NodeActionContent", props.showCreate);
- 
-    if (props.showCreate) {
-      return <NodeCreate />;
+  console.log("NodeActionContent", props.showCreate + ",propskey = " + props.key);
+    
+    if (glossaryAuthorContext.authoringActionState == 1 || glossaryAuthorContext.authoringActionState == 2) {
+      return <NodeCreate/>;
+    } else  if (glossaryAuthorContext.authoringActionState == 3 || glossaryAuthorContext.authoringActionState == 4) {
+      return <NodeSearch/>;
     } else {
-      return <NodeSearch />;
+      return <NodeCreate/>;
     }
 };
 
