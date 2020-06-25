@@ -17,7 +17,7 @@ export default function GlossaryAuthor() {
   const [exceptionErrorMessage, setExceptionErrorMessage] = useState();
   const [systemAction, setSystemAction] = useState();
   const [fullResponse, setFullResponse] = useState();
-  
+
   const nodeType = getNodeType("glossary");
   // Try to connect to the server. The [] means it only runs on mount (rather than every render)
   useEffect(() => {
@@ -28,11 +28,11 @@ export default function GlossaryAuthor() {
     document.getElementById("connectionChecker").classList.remove("shaker");
   };
   const issueConnect = () => {
-    // it could be that we have lost the connection due to a refresh in that case the we will not have a userid. 
-   
+    // it could be that we have lost the connection due to a refresh in that case the we will not have a userid.
+
     if (nodeType.url.includes("users//")) {
       const serverName = window.location.pathname.split("/")[1];
-   
+
       const loginUrl =
         window.location.protocol +
         "//" +
@@ -43,66 +43,72 @@ export default function GlossaryAuthor() {
         serverName +
         "/login";
       if (history.pushState) {
-        alert("We have lost the session possibly due to a refresh of the web page. Please re-enter your credentials");
+        alert(
+          "We have lost the session possibly due to a refresh of the web page. Please re-enter your credentials"
+        );
         history.pushState({}, null, loginUrl);
         history.go();
       } else {
-        alert("The Browser does not support history. Please re-login here: " + loginUrl);
-      }  
+        alert(
+          "The Browser does not support history. Please re-login here: " +
+            loginUrl
+        );
+      }
     } else {
-  
-  
-  
-    console.log("URL to be submitted is " + nodeType.url);
-    setErrorMsg(undefined);
-    setExceptionUserAction(undefined);
-    setResponseCategory(undefined);
-    setExceptionErrorMessage(undefined);
-    setSystemAction(undefined);
-    setFullResponse(undefined);
+      // get one page of glossaries
+      const fetchUrl = nodeType.url + "?offset=0&pageSize=1&searchCriteria=.*";
+      console.log("URL to be submitted is " + fetchUrl);
+      setErrorMsg(undefined);
+      setExceptionUserAction(undefined);
+      setResponseCategory(undefined);
+      setExceptionErrorMessage(undefined);
+      setSystemAction(undefined);
+      setFullResponse(undefined);
 
-    fetch(nodeType.url, {
-      method: "get",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        console.log("get glossaries worked " + JSON.stringify(res));
+      fetch(fetchUrl, {
+        method: "get",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      })
+        .then((res) => res.json())
+        .then((res) => {
+          console.log("get glossaries worked " + JSON.stringify(res));
 
-        const nodeResponse = res[nodeType.plural];
-        // if there is a node response then we have successfully created a node
-        if (nodeResponse) {
-          setConnected(true);
-        } else {
-          setFullResponse(JSON.stringify(res));
-          if (res.responseCategory) {
-            setErrorMsg(res.exceptionUserAction);
-            setExceptionUserAction(res.exceptionUserAction);
-            setResponseCategory(res.responseCategory);
-            setExceptionErrorMessage(res.exceptionErrorMessage);
-            setSystemAction(res.systemAction);
-          } else if (res.errno) {
-            if (res.errno == "ECONNREFUSED") {
-              setErrorMsg(
-                "Retry the request when the View Server is available"
-              );
+          const nodeResponse = res[nodeType.plural];
+          // if there is a node response then we have successfully created a node
+          if (nodeResponse) {
+            setConnected(true);
+          } else {
+            setFullResponse(JSON.stringify(res));
+            if (res.responseCategory) {
+              setErrorMsg(res.exceptionUserAction);
+              setExceptionUserAction(res.exceptionUserAction);
+              setResponseCategory(res.responseCategory);
+              setExceptionErrorMessage(res.exceptionErrorMessage);
+              setSystemAction(res.systemAction);
+            } else if (res.errno) {
+              if (res.errno == "ECONNREFUSED") {
+                setErrorMsg(
+                  "Retry the request when the View Server is available"
+                );
+              } else {
+                setErrorMsg("Error occurred");
+              }
             } else {
               setErrorMsg("Error occurred");
             }
-          } else {
-            setErrorMsg("Error occurred");
+            document
+              .getElementById("connectionChecker")
+              .classList.add("shaker");
+            setConnected(false);
           }
-          document.getElementById("connectionChecker").classList.add("shaker");
+        })
+        .catch((res) => {
           setConnected(false);
-        }
-      })
-      .catch((res) => {
-        setConnected(false);
-        setErrorMsg("Full Response is " + JSON.stringify(res));
-      });
+          setErrorMsg("Full Response is " + JSON.stringify(res));
+        });
     }
   };
 
@@ -125,7 +131,10 @@ export default function GlossaryAuthor() {
       )}
       {!connected && (
         <div>
-          <div>Unable to use the UI as we are not Connected to the server - press button to retry.</div>
+          <div>
+            Unable to use the UI as we are not Connected to the server - press
+            button to retry.
+          </div>
           <div class="bx--form-item">
             <button
               id="connectionChecker"
@@ -137,9 +146,7 @@ export default function GlossaryAuthor() {
               Connect
             </button>
           </div>
-          <div style={{ color: "red" }}>
-            {errorMsg}
-          </div>
+          <div style={{ color: "red" }}>{errorMsg}</div>
           <Accordion>
             <AccordionItem title="Details">
               <div>{errorMsg}</div>
