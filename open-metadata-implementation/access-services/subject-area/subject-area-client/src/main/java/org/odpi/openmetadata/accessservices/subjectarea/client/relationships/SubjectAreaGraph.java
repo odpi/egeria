@@ -32,8 +32,10 @@ public interface SubjectAreaGraph {
      * @param level        the number of the Lines (relationships) out from the starting node that the query will traverse to
      *                     gather results. If not specified then it defaults to 3.
      * @return A graph of nodes.
-     * <p>
-     * Exceptions returned by the server
+     *
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException one of the parameters is null or invalid
      */
    default Graph getGraph(String userId,
                           String guid,
@@ -54,6 +56,21 @@ public interface SubjectAreaGraph {
        return getGraph(userId, guid, request);
    }
 
+    /**
+     * Get the graph of nodes and Lines radiating out from a node.
+     * <p>
+     * The results are scoped by types of Lines, types of nodes and classifications as well as level.
+     *
+     * @param userId       userId under which the request is performed
+     * @param guid         the starting point of the query.
+     * @param request      {@link NeighborhoodHistoricalFindRequest}
+     *
+     * @return A graph of nodes.
+     *
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     */
     Graph getGraph(String userId, String guid, NeighborhoodHistoricalFindRequest request) throws InvalidParameterException,
                                                                                                  PropertyServerException,
                                                                                                  UserNotAuthorizedException;

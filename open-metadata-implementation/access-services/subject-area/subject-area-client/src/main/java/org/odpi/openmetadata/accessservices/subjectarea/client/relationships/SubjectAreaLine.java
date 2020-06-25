@@ -10,12 +10,14 @@ import org.reflections.Reflections;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
+/**
+ * The OMAS client library implementation of the Subject Area OMAS.
+ * This interface provides relationship {@link Line} authoring interface for subject area experts.
+ * A standard set of customers is described in {@link SubjectAreaRelationship}
+ */
 public class SubjectAreaLine implements SubjectAreaRelationship {
-
     private static final String HASA = "has-as";
     private static final String RELATED_TERM = "related-terms";
     private static final String SYNONYM = "synonyms";
@@ -35,10 +37,18 @@ public class SubjectAreaLine implements SubjectAreaRelationship {
     private static final String PROJECT_SCOPE = "project-scopes";
 
     private Map<Class<?>, SubjectAreaRelationshipClient<?>> cache = new HashMap<>();
+    private static final String DEFAULT_SCAN_PACKAGE = SubjectAreaLine.class.getPackage().getName();
 
+    /**
+     * @param packagesToScan - search packages for finding classes placed by annotation {@link SubjectAreaLineClient}
+     * @param subjectAreaRestClient - rest client for Subject Area OMAS REST APIs
+     * */
     @SuppressWarnings("rawtypes")
-    public SubjectAreaLine(String packageToScan, SubjectAreaRestClient subjectAreaRestClient) {
-        Reflections reflections = new Reflections(packageToScan);
+    public SubjectAreaLine(SubjectAreaRestClient subjectAreaRestClient, String... packagesToScan) {
+        Set<String> packages = new HashSet<>(Arrays.asList(packagesToScan));
+        packages.add(DEFAULT_SCAN_PACKAGE);
+
+        Reflections reflections = new Reflections(packages);
         Set<Class<?>> clientClasses = reflections.getTypesAnnotatedWith(SubjectAreaLineClient.class);
         for (Class<?> declaredClass : clientClasses) {
             try {
@@ -57,8 +67,15 @@ public class SubjectAreaLine implements SubjectAreaRelationship {
             }
         }
     }
+
+    /**
+     *  The constructor uses the current package to scan "org.odpi.openmetadata.accessservices.subjectarea.client.relationships"
+     *  to search for classes placed by annotation {@link SubjectAreaLineClient}.
+     *
+     * @param subjectAreaRestClient - rest client for Subject Area OMAS REST APIs
+     */
     public SubjectAreaLine(SubjectAreaRestClient subjectAreaRestClient) {
-        this(SubjectAreaLine.class.getPackage().getName(), subjectAreaRestClient);
+        this(subjectAreaRestClient, DEFAULT_SCAN_PACKAGE);
     }
 
     @Override
@@ -333,8 +350,14 @@ public class SubjectAreaLine implements SubjectAreaRelationship {
         }
     }
 
+    /**
+     * @param <T> - {@link Line} type of object
+     * @param clazz - the class for which you want to get the client from cache
+     *
+     * @return SubjectAreaRelationshipClient or null if this client is not present
+     * */
     @SuppressWarnings("unchecked")
-    private <T extends Line> SubjectAreaRelationshipClient<T> getClient(Class<T> clazz) {
+    public <T extends Line> SubjectAreaRelationshipClient<T> getClient(Class<T> clazz) {
         return (SubjectAreaRelationshipClient<T>) cache.get(clazz);
     }
 }

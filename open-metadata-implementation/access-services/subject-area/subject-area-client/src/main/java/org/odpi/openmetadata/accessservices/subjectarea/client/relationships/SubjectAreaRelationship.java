@@ -2,42 +2,114 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.client.relationships;
 
+import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaClient;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaRelationshipClient;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.*;
 
+/**
+ * The SubjectAreaDefinition Open Metadata Access Service (OMAS) API for relationships.
+ */
 public interface SubjectAreaRelationship {
 
-   SubjectAreaRelationshipClient<Hasa> hasa();
+    /**
+     * @return {@link SubjectAreaRelationshipClient} for client calls(described in {@link SubjectAreaClient})
+     * when working with Hasa objects
+     */
+    SubjectAreaRelationshipClient<Hasa> hasa();
 
-   SubjectAreaRelationshipClient<RelatedTerm> relatedTerm();
+    /**
+     * @return {@link SubjectAreaRelationshipClient} for client calls(described in {@link SubjectAreaClient})
+     * when working with RelatedTerm objects
+     */
+    SubjectAreaRelationshipClient<RelatedTerm> relatedTerm();
 
-   SubjectAreaRelationshipClient<TermAnchor> termAnchor();
+    /**
+     * @return {@link SubjectAreaRelationshipClient} for client calls(described in {@link SubjectAreaClient})
+     * when working with TermAnchor objects
+     */
+    SubjectAreaRelationshipClient<TermAnchor> termAnchor();
 
-   SubjectAreaRelationshipClient<ProjectScope> projectScope();
+    /**
+     * @return {@link SubjectAreaRelationshipClient} for client calls(described in {@link SubjectAreaClient})
+     * when working with ProjectScope objects
+     */
+    SubjectAreaRelationshipClient<ProjectScope> projectScope();
 
-   SubjectAreaRelationshipClient<Synonym> synonym();
+    /**
+     * @return {@link SubjectAreaRelationshipClient} for client calls(described in {@link SubjectAreaClient})
+     * when working with Synonym objects
+     */
+    SubjectAreaRelationshipClient<Synonym> synonym();
 
-   SubjectAreaRelationshipClient<Antonym> antonym();
+    /**
+     * @return {@link SubjectAreaRelationshipClient} for client calls(described in {@link SubjectAreaClient})
+     * when working with Antonym objects
+     */
+    SubjectAreaRelationshipClient<Antonym> antonym();
 
-   SubjectAreaRelationshipClient<Translation> translation();
+    /**
+     * @return {@link SubjectAreaRelationshipClient} for client calls(described in {@link SubjectAreaClient})
+     * when working with Translation objects
+     */
+    SubjectAreaRelationshipClient<Translation> translation();
 
-   SubjectAreaRelationshipClient<UsedInContext> usedInContext();
+    /**
+     * @return {@link SubjectAreaRelationshipClient} for client calls(described in {@link SubjectAreaClient})
+     * when working with UsedInContext objects
+     */
+    SubjectAreaRelationshipClient<UsedInContext> usedInContext();
 
-   SubjectAreaRelationshipClient<PreferredTerm> preferredTerm();
+    /**
+     * @return {@link SubjectAreaRelationshipClient} for client calls(described in {@link SubjectAreaClient})
+     * when working with PreferredTerm objects
+     */
+    SubjectAreaRelationshipClient<PreferredTerm> preferredTerm();
 
-   SubjectAreaRelationshipClient<ValidValue> validValue();
+    /**
+     * @return {@link SubjectAreaRelationshipClient} for client calls(described in {@link SubjectAreaClient})
+     * when working with ValidValue objects
+     */
+    SubjectAreaRelationshipClient<ValidValue> validValue();
 
-   SubjectAreaRelationshipClient<ReplacementTerm> replacementTerm();
+    /**
+     * @return {@link SubjectAreaRelationshipClient} for client calls(described in {@link SubjectAreaClient})
+     * when working with ReplacementTerm objects
+     */
+    SubjectAreaRelationshipClient<ReplacementTerm> replacementTerm();
 
-   SubjectAreaRelationshipClient<TypedBy> typedBy();
+    /**
+     * @return {@link SubjectAreaRelationshipClient} for client calls(described in {@link SubjectAreaClient})
+     * when working with TypedBy objects
+     */
+    SubjectAreaRelationshipClient<TypedBy> typedBy();
 
-   SubjectAreaRelationshipClient<Isa> isa();
+    /**
+     * @return {@link SubjectAreaRelationshipClient} for client calls(described in {@link SubjectAreaClient})
+     * when working with Isa objects
+     */
+    SubjectAreaRelationshipClient<Isa> isa();
 
-   SubjectAreaRelationshipClient<IsaTypeOf> isaTypeOf();
+    /**
+     * @return {@link SubjectAreaRelationshipClient} for client calls(described in {@link SubjectAreaClient})
+     * when working with IsaTypeOf objects
+     */
+    SubjectAreaRelationshipClient<IsaTypeOf> isaTypeOf();
 
-   SubjectAreaRelationshipClient<Categorization> termCategorization();
+    /**
+     * @return {@link SubjectAreaRelationshipClient} for client calls(described in {@link SubjectAreaClient})
+     * when working with Categorization objects
+     */
+    SubjectAreaRelationshipClient<Categorization> termCategorization();
 
-   SubjectAreaRelationshipClient<SemanticAssignment> semanticAssignment();
+    /**
+     * @return {@link SubjectAreaRelationshipClient} for client calls(described in {@link SubjectAreaClient})
+     * when working with SemanticAssignment objects
+     */
+    SubjectAreaRelationshipClient<SemanticAssignment> semanticAssignment();
 
-   SubjectAreaRelationshipClient<CategoryAnchor> categoryAnchor();
+    /**
+     * @return {@link SubjectAreaRelationshipClient} for client calls(described in {@link SubjectAreaClient})
+     * when working with CategoryAnchor objects
+     */
+    SubjectAreaRelationshipClient<CategoryAnchor> categoryAnchor();
 }

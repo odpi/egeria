@@ -63,7 +63,7 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
      * @param urnTemplate  template of the URN for the REST API call with place-holders for the parameters.
      * @param requestBody request body for the request.
      *
-     * @return SubjectAreaOMASAPIResponse with <T> result
+     * @return SubjectAreaOMASAPIResponse with T result
      * @throws PropertyServerException something went wrong with the REST call stack.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
@@ -101,7 +101,7 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
      * @param urnTemplate  template of the URN for the REST API call with place-holders for the parameters.
      * @param requestBody request body for the request.
      *
-     * @return SubjectAreaOMASAPIResponse with <T> result
+     * @return SubjectAreaOMASAPIResponse with T result
      * @throws PropertyServerException something went wrong with the REST call stack.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
@@ -139,7 +139,7 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
      *             An example can be seen here {@link Parametrization#getType()}
      * @param urnTemplate  template of the URN for the REST API call with place-holders for the parameters.
 
-     * @return SubjectAreaOMASAPIResponse with <T> result
+     * @return SubjectAreaOMASAPIResponse with T result
      * @throws PropertyServerException something went wrong with the REST call stack.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
@@ -176,7 +176,7 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
      *             An example can be seen here {@link Parametrization#getType()}
      * @param findRequest {@link FindRequest}
      *
-     * @return SubjectAreaOMASAPIResponse with <T> results
+     * @return SubjectAreaOMASAPIResponse with T results
      * @throws PropertyServerException something went wrong with the REST call stack.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
@@ -215,7 +215,7 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
      *             An example can be seen here {@link Parametrization#getType()}
      * @param findRequest {@link FindRequest}
      *
-     * @return SubjectAreaOMASAPIResponse with <T> results
+     * @return SubjectAreaOMASAPIResponse with T results
      * @throws PropertyServerException something went wrong with the REST call stack.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
@@ -244,7 +244,7 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
      *             An example can be seen here {@link Parametrization#getType()}
      * @param urnTemplate  template of the URN for the REST API call with place-holders for the parameters.
      *
-     * @return SubjectAreaOMASAPIResponse with <T> result
+     * @return SubjectAreaOMASAPIResponse with T result
      * @throws PropertyServerException something went wrong with the REST call stack.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
@@ -281,7 +281,7 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
      *             An example can be seen here {@link Parametrization#getType()}
      * @param urnTemplate  template of the URN for the REST API call with place-holders for the parameters.
      *
-     * @return SubjectAreaOMASAPIResponse with <T> result
+     * @return SubjectAreaOMASAPIResponse with T result
      * @throws PropertyServerException something went wrong with the REST call stack.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid
@@ -313,6 +313,7 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
      * @param findRequest {@link FindRequest}
      *
      * @return query
+     * @throws InvalidParameterException one of the parameters is null or invalid
      * */
     public QueryBuilder createFindQuery(String methodName, FindRequest findRequest) throws InvalidParameterException {
         String searchCriteria = findRequest.getSearchCriteria();
