@@ -67,15 +67,19 @@ public class DatabaseContextHandler {
 
 	/**
 	 * Get list of databases on the server.
+	 * 
+     * @param startFrom	starting element (used in paging through large result sets)
+     * @param pageSize	maximum number of results to return
 	 * @return list of database descriptors.
 	 * @throws AnalyticsModelingCheckedException in case of an repository operation failure.
 	 */
-	public List<ResponseContainerDatabase> getDatabases() throws AnalyticsModelingCheckedException {
+	public List<ResponseContainerDatabase> getDatabases(Integer startFrom, Integer pageSize) 
+			throws AnalyticsModelingCheckedException {
 		
 		setContext("getDatabases");
 
 		InstanceProperties instanceProperties = omEntityDao.buildMatchingInstanceProperties(Collections.emptyMap(), true);
-		List<EntityDetail> entities = omEntityDao.findEntities(instanceProperties, Constants.DATABASE, 0, 0);
+		List<EntityDetail> entities = omEntityDao.findEntities(instanceProperties, Constants.DATABASE, startFrom, pageSize);
 		List<ResponseContainerDatabase> ret = Optional.ofNullable(entities).map(Collection::stream).orElseGet(Stream::empty)
 				.parallel()
 				.map(this::buildDatabase)

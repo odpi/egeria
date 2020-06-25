@@ -37,6 +37,8 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 	private static final String SERVER_TYPE_MS_SQL = "MS SQL";
 	private static final String VENDOR_TYPE_INT32 = "INT32";
 	private static final String VENDOR_TYPE_STRING = "STRING";
+	private static final Integer FROM_INDEX = 0;
+	private static final Integer PAGE_SIZE = 20;
 
 	private DatabaseContextHandler databaseContextHandler;
 
@@ -54,7 +56,7 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 		createDatabaseEntity(DATABASE_ADWENTURE_WORKS, SERVER_TYPE_MS_SQL, "2.0");
 
 		// test
-		List<ResponseContainerDatabase> databases = databaseContextHandler.getDatabases();
+		List<ResponseContainerDatabase> databases = databaseContextHandler.getDatabases(FROM_INDEX, PAGE_SIZE);
 		assertNotNull(databases);
 		assertTrue(databases.size() == 2, "Failed retrieve databases.");
 
@@ -67,7 +69,7 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 
 	@Test
 	public void getDatabasesEmptyRepository() throws AnalyticsModelingCheckedException {
-		List<ResponseContainerDatabase> databases = databaseContextHandler.getDatabases();
+		List<ResponseContainerDatabase> databases = databaseContextHandler.getDatabases(FROM_INDEX, PAGE_SIZE);
 		assertTrue(databases.size() == 0, "Database list expected to be empty.");
 	}
 
