@@ -2,7 +2,7 @@
 # Copyright Contributors to the Egeria project.
 
 FROM openjdk:8-jre-alpine
-ARG version=2.0-SNAPSHOT
+ARG version=2.1-SNAPSHOT
 ARG VCS_REF=unknown
 ARG VCS_ORIGIN=unknown
 ARG BUILD_TIME=unknown

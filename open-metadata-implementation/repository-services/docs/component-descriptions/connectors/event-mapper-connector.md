@@ -20,7 +20,7 @@ technology, core Egeria does not supply any implementations of
 this connector.  There are, however, the following
 implementations available:
 
-* **[Event Mapper for Apache Atlas](https://github.com/odpi/egeria-connector-apache-atlas)**
+* **[Event Mapper for Apache Atlas](https://github.com/odpi/egeria-connector-hadoop-ecosystem)**
 * **[Event Mapper for IBM Information Governance Catalog](https://github.com/odpi/egeria-connector-ibm-information-server)**
 
 
