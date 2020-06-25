@@ -4,18 +4,13 @@ package org.odpi.openmetadata.accessservices.subjectarea.server.services;
 
 import org.odpi.openmetadata.accessservices.subjectarea.handlers.SubjectAreaGlossaryHandler;
 import org.odpi.openmetadata.accessservices.subjectarea.handlers.SubjectAreaTermHandler;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.*;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.ExceptionMapper;
-import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Arrays;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * The SubjectAreaTermRESTServices provides the server-side implementation of the SubjectArea Open Metadata
@@ -25,38 +20,13 @@ import java.util.Set;
 public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
 {
     private static final Logger log = LoggerFactory.getLogger(SubjectAreaTermRESTServices.class);
-
-    private static final String className = SubjectAreaTermRESTServices.class.getName();
-    static private SubjectAreaInstanceHandler instanceHandler = new SubjectAreaInstanceHandler();
-
-
-    public static final Set<String> SUBJECT_AREA_TERM_CLASSIFICATIONS= new HashSet(Arrays.asList(
-            // spine objects
-            SpineObject.class.getSimpleName(),
-            SpineAttribute.class.getSimpleName(),
-            ObjectIdentifier.class.getSimpleName(),
-            //governance actions
-            Confidentiality.class.getSimpleName(),
-            Confidence.class.getSimpleName(),
-            Criticality.class.getSimpleName(),
-            Retention.class.getSimpleName(),
-            // dictionary
-            AbstractConcept.class.getSimpleName(),
-            ActivityDescription.class.getSimpleName(),
-            DataValue.class.getSimpleName(),
-            // context
-            ContextDefinition.class.getSimpleName()));
+    private static final SubjectAreaInstanceHandler instanceHandler = new SubjectAreaInstanceHandler();
 
     /**
      * Default constructor
      */
-    public SubjectAreaTermRESTServices()
-    {
+    public SubjectAreaTermRESTServices() {
         //SubjectAreaRESTServicesInstance registers this omas.
-    }
-    public SubjectAreaTermRESTServices(OMRSAPIHelper oMRSAPIHelper)
-    {
-        this.oMRSAPIHelper =oMRSAPIHelper;
     }
 
     /**
@@ -119,7 +89,6 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-
     public SubjectAreaOMASAPIResponse getTermByGuid(String serverName, String userId, String guid)
     {
         final String methodName = "getTermByGuid";
@@ -139,6 +108,7 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
         }
         return response;
     }
+
     /**
      * Get Term relationships
      *
@@ -162,7 +132,6 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-
     public  SubjectAreaOMASAPIResponse getTermRelationships(String serverName,
                                                             String userId,
                                                             String guid,
@@ -192,12 +161,9 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
         }
-
         return response;
-
-
-
     }
+
     /**
      * Find Term
      *

@@ -252,15 +252,6 @@ class NetworkDiagram extends PolymerElement {
                 value : []
             },
 
-            /*
-             * Property that cam be used for temporary staging of image data
-             * Not currently used:
-             *  svgDataForImage : {
-             *      type : Object
-             *  }
-             */
-
-
         };
     }
 
@@ -504,7 +495,6 @@ class NetworkDiagram extends PolymerElement {
         var relationshipDigests = rexTraversal.relationships;
         if (relationshipDigests != null) {
             for (var r in relationshipDigests) {
-                //var linkToRemove = this.allNodes[r];
                 var linkFound = false;
                 for (var idx=0; idx<this.linkArray.length; idx++) {
                     if (this.linkArray[idx].id === r) {

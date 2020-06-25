@@ -43,14 +43,11 @@ public class AssetCatalogOMASService {
      */
     public AssetDescription getAssetDetails(String user, String assetId, String assetType) throws PropertyServerException, org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException {
         try {
-            if (assetCatalog.getAssetDetails(user, assetId, assetType) != null) {
-                return assetCatalog.getAssetDetails(user, assetId, assetType).getAssetDescription();
-            }
+            return assetCatalog.getAssetDetails(user, assetId, assetType).getAssetDescription();
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException | PropertyServerException e) {
             LOG.error(String.format("Error retrieving asset details for %s", assetId));
             throw e;
         }
-        return null;
     }
 
     /**
@@ -130,6 +127,15 @@ public class AssetCatalogOMASService {
         }
     }
 
+    /**
+     * Fetch asset's context
+     *
+     * @param userId userId of the user triggering the request
+     * @param assetId the id of the asset  (usually String representation of a GUID )
+     * @return the asset context
+     * @throws PropertyServerException   there is a problem retrieving information from the property server
+     * @throws InvalidParameterException there is a problem with the parameters
+     */
     public AssetElements getAssetContext(String userId, String assetId, String assetType)
             throws PropertyServerException, org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException {
         try {
@@ -140,7 +146,14 @@ public class AssetCatalogOMASService {
         }
     }
 
-
+    /**
+     * Asset catalog supported types - a list of the types that are returned by the catalog
+     *
+     * @param userId userId of the user triggering the request
+     * @return the list of supported types
+     * @throws PropertyServerException   there is a problem retrieving information from the property server
+     * @throws InvalidParameterException there is a problem with the parameters
+     */
     public List<Type> getSupportedTypes(String userId) throws PropertyServerException,
             org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException {
         try {

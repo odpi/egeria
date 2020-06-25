@@ -53,14 +53,15 @@ public class OpenLineageService {
      * @return map of nodes and edges describing the ultimate sources for the asset
      */
     public Map<String, List> getUltimateSource(String userId, String guid, boolean includeProcesses) {
-        LineageVerticesAndEdges response = null;
         try {
-            response = openLineageClient.lineage(userId, Scope.ULTIMATE_SOURCE, guid, "", includeProcesses);
+            LineageVerticesAndEdges response = openLineageClient.lineage(userId, Scope.ULTIMATE_SOURCE, guid, "", includeProcesses);
+            return processResponse(response);
         } catch (InvalidParameterException | PropertyServerException | OpenLineageException e) {
-            LOG.error(e.getErrorMessage(), e);
+            LOG.error("Cannot get ultimate source lineage for guid {}", guid);
+            throw new RuntimeException("ultimate source lineage error", e);
         }
-        return processResponse(response);
     }
+
 
     /**
      * @param userId           id of the user triggering the request
@@ -69,13 +70,13 @@ public class OpenLineageService {
      * @return map of nodes and edges describing the end to end flow
      */
     public Map<String, List> getEndToEndLineage(String userId, String guid, boolean includeProcesses) {
-        LineageVerticesAndEdges response = null;
         try {
-            response = openLineageClient.lineage(userId, Scope.END_TO_END, guid, "", includeProcesses);
+            LineageVerticesAndEdges response =  openLineageClient.lineage(userId, Scope.END_TO_END, guid, "", includeProcesses);
+            return processResponse(response);
         } catch (InvalidParameterException | PropertyServerException | OpenLineageException e) {
-            LOG.error(e.getErrorMessage(), e);
+            LOG.error("Cannot get end to end lineage for guid {}", guid);
+            throw new RuntimeException("end2end lineage error", e);
         }
-        return processResponse(response);
     }
 
     /**
@@ -85,15 +86,15 @@ public class OpenLineageService {
      * @return map of nodes and edges describing the ultimate destinations of the asset
      */
     public Map<String, List> getUltimateDestination(String userId, String guid, boolean includeProcesses) {
-        LineageVerticesAndEdges response = null;
         try {
-            response = openLineageClient.lineage(userId, Scope.ULTIMATE_DESTINATION, guid, "",
+            LineageVerticesAndEdges response = openLineageClient.lineage(userId, Scope.ULTIMATE_DESTINATION, guid, "",
                     includeProcesses);
+            return processResponse(response);
         } catch (InvalidParameterException | PropertyServerException | OpenLineageException e) {
-            LOG.error(e.getErrorMessage(), e);
+            LOG.error("Cannot get ultimate destination lineage for guid {}", guid);
+            throw new RuntimeException("ultimate destination lineage error", e);
         }
 
-        return processResponse(response);
     }
 
     /**
@@ -103,14 +104,14 @@ public class OpenLineageService {
      * @return map of nodes and edges describing the glossary terms linked to the asset
      */
     public Map<String, List> getGlossaryLineage(String userId, String guid, boolean includeProcesses) {
-        LineageVerticesAndEdges response = null;
         try {
-            response = openLineageClient.lineage(userId, Scope.GLOSSARY, guid, "", includeProcesses);
+            LineageVerticesAndEdges response =  openLineageClient.lineage(userId, Scope.GLOSSARY, guid, "", includeProcesses);
+            return processResponse(response);
         } catch (InvalidParameterException | PropertyServerException | OpenLineageException e) {
-            LOG.error(e.getErrorMessage(), e);
+            LOG.error("Cannot get glossary lineage for guid {}", guid);
+            throw new RuntimeException("glossary lineage error", e);
         }
 
-        return processResponse(response);
     }
 
     /**
@@ -120,15 +121,15 @@ public class OpenLineageService {
      * @return map of nodes and edges describing the ultimate sources and destinations of the asset
      */
     public Map<String, List> getSourceAndDestination(String userId, String guid, boolean includeProcesses) {
-        LineageVerticesAndEdges response = null;
         try {
-            response = openLineageClient.lineage(userId, Scope.SOURCE_AND_DESTINATION, guid, "",
+            LineageVerticesAndEdges response = openLineageClient.lineage(userId, Scope.SOURCE_AND_DESTINATION, guid, "",
                     includeProcesses);
+            return processResponse(response);
         } catch (InvalidParameterException | PropertyServerException | OpenLineageException e) {
-            LOG.error(e.getErrorMessage(), e);
+            LOG.error("Cannot get source and destination lineage for guid {}", guid);
+            throw new RuntimeException("source and destination lineage error ", e);
         }
 
-        return processResponse(response);
     }
 
     /**
