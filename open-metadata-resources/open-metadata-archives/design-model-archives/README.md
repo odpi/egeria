@@ -9,7 +9,7 @@ Currently Egeria has two examples:
 
 * [The Cloud Information Model](https://cloudinformationmodel.org) that provides an open source data model and glossary
 related to commerce activities.
-* [The Owl Canonical Glossary model](docs/owlcanonicalglossarymodel/README.md) that The Owl Canonical Glossary model that provides the ability to 
+* [The Owl Canonical Glossary model](glossary-canonical-model/docs/owlcanonicalglossarymodel/README.md) that The Owl Canonical Glossary model that provides the ability to
 create an Egeria Archive from a Canonical Glossary defined using open standards like [Owl](https://www.w3.org/OWL/). 
 
 Each model has a `writer` class that generates an [Open Metadata Archive](..)

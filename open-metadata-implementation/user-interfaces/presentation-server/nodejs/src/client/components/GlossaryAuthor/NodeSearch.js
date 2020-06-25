@@ -3,10 +3,11 @@
 import React, { useState, useContext } from "react";
 import { GlossaryAuthorContext } from "../../contexts/GlossaryAuthorContext";
 import {
-  Button,
+  Accordion,
+  AccordionItem,
   DataTable,
-  Select,
-  SelectItem,
+  MultiSelect,
+  Pagination,
   TableContainer,
   Table,
   TableHead,
@@ -15,52 +16,123 @@ import {
   TableSelectRow,
   TableCell,
   TableHeader,
-  TableBody
+  TableBody,
 } from "carbon-components-react";
 
-const NodeSearch = props => {
+const NodeSearch = (props) => {
   console.log("NodeSearch");
   const glossaryAuthorContext = useContext(GlossaryAuthorContext);
 
   const [results, setResults] = useState([]);
+  const [total, setTotal] = useState(0);
+  const [currentPage, setCurrentPage] = useState([]);
+  const [pageNumber, setPageNumber] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
   const [errorMsg, setErrorMsg] = useState();
- 
-//  // headers for the search results
-//   const [headerData] = useState([
-//     {
-//       header: "Name",
-//       key: "name"
-//     },
-//     {
-//       header: "Qualified Name",
-//       key: "qualifiedName"
-//     },
-//     {
-//       header: "Description",
-//       key: "description"
-//     }
-//   ]);
-  const headerData = calculateHeaderData();
+  const mainProperties = [
+    {
+      key: "name",
+      text: "Name",
+    },
+    {
+      key: "description",
+      text: "Description",
+    },
+    {
+      key: "qualifiedName",
+      text: "Qualified Name",
+    },
+  ];
+
+  const paginationProps = () => ({
+    disabled: false,
+    page: pageNumber,
+    pagesUnknown: true,
+    pageInputDisabled: false,
+    backwardText: "Previous page",
+    forwardText: "Next page",
+    totalItems: total,
+    pageSize: pageSize,
+    pageSizes: [10, 50, 100],
+    itemsPerPageText: "Items per page:",
+    onChange: onPaginationChange,
+  });
+  const onPaginationChange = (paginationOptions) => {
+    console.log("onPaginationChange");
+    console.log(paginationOptions);
+    if (results && results.length > 0) {
+      const pageSize = paginationOptions.pageSize;
+      // if page = 1 and pageSize 10, currentPageStart = 1
+      // if page = 2 and pageSize 10, currentPageStart = 11
+      // if page = 2 and pageSize 10 and results.length = 15, currentPageStart = 11 , currentPageSize = 5
+
+      const currentPageStart =
+        1 + (paginationOptions.page - 1) * paginationOptions.pageSize;
+      let currentPageSize = pageSize;
+      // if the last page is not complete ensure that we only specify up the end of the what is actually there in the results.
+      if (currentPageStart + currentPageSize - 1 > results.length) {
+        currentPageSize = results.length - currentPageStart;
+      }
+      const resultsToshow = results.slice(
+        currentPageStart,
+        currentPageStart + currentPageSize
+      );
+      console.log("resultsToshow");
+      console.log(resultsToshow);
+      setCurrentPage(resultsToshow);
+    } else {
+      setCurrentPage([]);
+    }
+  };
+  const [headerData, setHeaderData] = useState(mainProperties);
+  const additionalProperties = calculateAdditionalProperties();
+  let selectedAdditionalProperties = [];
 
   function calculateHeaderData() {
-    let headerData= [];
-    // must have a currentNodeType to get here.
-    glossaryAuthorContext.currentNodeType.attributes.map(function(attribute, index ) {
-      let header = {};
-      header.key=attribute.key;
-      header.header = attribute.label;
-      headerData.push(header);
-    });
-    glossaryAuthorContext.currentNodeType.summaryResponseAttributes.map(function(attribute, index ) {
-      let header = {};
-      header.key=attribute.key;
-      header.header = attribute.label;
-      headerData.push(header);
-    });
-    return headerData;
+    let allProperties = mainProperties;
+    if (
+      selectedAdditionalProperties !== undefined &&
+      selectedAdditionalProperties &&
+      selectedAdditionalProperties.length > 0
+    ) {
+      console.log("selectedAdditionalProperties.selectedItems 1");
+      console.log(selectedAdditionalProperties);
+      allProperties = mainProperties.concat(selectedAdditionalProperties);
+    }
+    console.log("allProperties 1");
+    console.log(allProperties);
+    setHeaderData(allProperties);
   }
-
-
+  const onAdditionalAttributesChanged = (items) => {
+    console.log("onAdditionalAttributesChanged");
+    console.log(items.selectedItems);
+    selectedAdditionalProperties = [];
+    const selectedItems = items.selectedItems;
+    for (let i = 0; i < selectedItems.length; i++) {
+      let item = {};
+      item.key = selectedItems[i].id;
+      item.text = selectedItems[i].text;
+      selectedAdditionalProperties.push(item);
+    }
+    // render the table by recalculating the header state based on the new values
+    calculateHeaderData();
+  };
+  function calculateAdditionalProperties() {
+    let items = [];
+    glossaryAuthorContext.currentNodeType.attributes.map(function (attribute) {
+      if (
+        attribute.key != "name" &&
+        attribute.key != "qualifiedName" &&
+        attribute.key != "description"
+      ) {
+        let item = {};
+        item.id = attribute.key;
+        item.text = attribute.label;
+        items.push(item);
+      }
+    });
+    return items;
+  }
   const isSelectedNode = () => {
     let isSelected = false;
     if (glossaryAuthorContext.selectedNode) {
@@ -68,26 +140,29 @@ const NodeSearch = props => {
     }
     return isSelected;
   };
-
-  const handleOnChange = e => {
+  const handleOnChange = (e) => {
     e.preventDefault();
     if (e.target.value && e.target.value.length > 0) {
-      const fetchUrl = glossaryAuthorContext.currentNodeType.url + "?searchCriteria=" + e.target.value;
+      setPageNumber(1);
+      setTotal(0);
+      const fetchUrl =
+        glossaryAuthorContext.currentNodeType.url +
+        "?offset=0&pageSize=1000&searchCriteria=" +
+        e.target.value;
       fetch(fetchUrl, {
         method: "get",
         headers: {
           Accept: "application/json",
-          "Content-Type": "application/json"
-        }
+          "Content-Type": "application/json",
+        },
       })
-        .then(res => res.json())
-        .then(res => {
+        .then((res) => res.json())
+        .then((res) => {
           const nodesArray = res[glossaryAuthorContext.currentNodeType.plural];
           // if there is a node response then we have successfully created a node
           if (nodesArray) {
             if (nodesArray.length > 0) {
-             
-              let nodeRows = nodesArray.map(function(node, index ) {
+              let nodeRows = nodesArray.map(function (node, index) {
                 let row = {};
                 row.id = index;
                 // row.name = node.name;
@@ -96,19 +171,21 @@ const NodeSearch = props => {
                 // row.qualifiedName = node.qualifiedName;
                 for (const property in node) {
                   console.log("result property is ", property);
-                  if (property == 'glossary') {
-                      const glossary = node[property];
-                      row.glossaryName = glossary.name;
-                      row.glossaryGuid = glossary.guid;
-                  } else if (property == 'systemAttributes' ) {
-                      row.guid = node[property].guid;
-                  }  else {
-                      row[property] = node[property];
+                  if (property == "glossary") {
+                    const glossary = node[property];
+                    row.glossaryName = glossary.name;
+                    row.glossaryGuid = glossary.guid;
+                  } else if (property == "systemAttributes") {
+                    row.guid = node[property].guid;
+                  } else {
+                    row[property] = node[property];
                   }
                 }
                 return row;
               });
               setResults(nodeRows);
+              setCurrentPage(nodeRows.slice(1, pageSize));
+              setTotal(nodeRows.length);
             } else {
               // no results
               setResults([]);
@@ -117,14 +194,29 @@ const NodeSearch = props => {
             setErrorMsg("Create Failed with code " + res.errno);
           }
         })
-        .catch(res => {
+        .catch((res) => {
           setErrorMsg("Create Failed");
         });
     }
   };
   return (
     <div>
-      {/* <NodeCreateModal show={showCreate} onHide={handleCloseCreate} nodeType={nodeType}></NodeCreateModal> */}
+      {glossaryAuthorContext.currentNodeType &&
+        glossaryAuthorContext.currentNodeType.attributes.length > 3 && (
+          <Accordion>
+            <AccordionItem title="Show additional properties">
+              <div class="bx--form-item">
+                <div style={{ width: 150 }}>
+                  <MultiSelect
+                    onChange={onAdditionalAttributesChanged}
+                    items={additionalProperties}
+                    itemToString={(item) => (item ? item.text : "")}
+                  />
+                </div>
+              </div>
+            </AccordionItem>
+          </Accordion>
+        )}
       <div data-search role="search" class="bx--search bx--search--l">
         <label
           id="search-input-label-1"
@@ -174,32 +266,34 @@ const NodeSearch = props => {
       </div>
       <DataTable
         isSortable
-        rows={results}
+        rows={currentPage}
         headers={headerData}
         render={({
           rows,
           headers,
           getHeaderProps,
           getSelectionProps,
-          getRowProps
+          getRowProps,
         }) => (
-          <TableContainer title={glossaryAuthorContext.currentNodeType.typeName}>
+          <TableContainer
+            title={glossaryAuthorContext.currentNodeType.typeName}
+          >
             <Table>
               <TableHead>
                 <TableRow>
                   <TableSelectAll {...getSelectionProps()} />
-                  {headers.map(header => (
+                  {headers.map((header) => (
                     <TableHeader {...getHeaderProps({ header })}>
-                      {header.header}
+                      {header.text}
                     </TableHeader>
                   ))}
                 </TableRow>
               </TableHead>
               <TableBody>
-                {rows.map(row => (
+                {rows.map((row) => (
                   <TableRow {...getRowProps({ row })}>
                     <TableSelectRow {...getSelectionProps({ row })} />
-                    {row.cells.map(cell => (
+                    {row.cells.map((cell) => (
                       <TableCell key={cell.id}>{cell.value}</TableCell>
                     ))}
                   </TableRow>
@@ -209,6 +303,7 @@ const NodeSearch = props => {
           </TableContainer>
         )}
       />
+      <Pagination {...paginationProps()} />
     </div>
   );
 };
