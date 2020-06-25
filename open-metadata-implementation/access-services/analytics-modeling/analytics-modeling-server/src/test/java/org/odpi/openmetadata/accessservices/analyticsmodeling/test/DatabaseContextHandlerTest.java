@@ -68,6 +68,22 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 	}
 
 	@Test
+	public void getDatabasesPage() throws AnalyticsModelingCheckedException {
+		// setup repository with four databases sorted: AdwentureWorks, DB_3, DB_4, GOSALES
+		createDatabaseEntity(DATABASE_GOSALES, SERVER_TYPE_MS_SQL, "1.0");
+		createDatabaseEntity(DATABASE_ADWENTURE_WORKS, SERVER_TYPE_MS_SQL, "2.0");
+		createDatabaseEntity("DB_3", SERVER_TYPE_MS_SQL, "1.0");
+		createDatabaseEntity("DB_4", SERVER_TYPE_MS_SQL, "2.0");
+
+		List<ResponseContainerDatabase> databases = databaseContextHandler.getDatabases(1, 2);
+		assertNotNull(databases);
+		assertTrue(databases.size() == 2, "Failed retrieve databases.");
+		assertEquals(databases.get(0).getDbName(), "DB_3");
+		assertEquals(databases.get(1).getDbName(), "DB_4");
+		
+	}
+
+	@Test
 	public void getDatabasesEmptyRepository() throws AnalyticsModelingCheckedException {
 		List<ResponseContainerDatabase> databases = databaseContextHandler.getDatabases(FROM_INDEX, PAGE_SIZE);
 		assertTrue(databases.size() == 0, "Database list expected to be empty.");
@@ -79,7 +95,8 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 		EntityDetail entityDB = createDatabaseEntity(DATABASE_GOSALES, SERVER_TYPE_MS_SQL, "1.0");
 		String guidDataSource = entityDB.getGUID();
 		// test
-		List<ResponseContainerDatabaseSchema> schemas = databaseContextHandler.getDatabaseSchemas(guidDataSource);
+		List<ResponseContainerDatabaseSchema> schemas = databaseContextHandler
+				.getDatabaseSchemas(guidDataSource, FROM_INDEX, PAGE_SIZE);
 		assertTrue(schemas.isEmpty(), "Schemas list expected to be empty.");
 
 	}
@@ -92,7 +109,8 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 		createDatabaseSchemaEntity(guidDataSource, SCHEMA_DBO);
 		createDatabaseSchemaEntity(guidDataSource, "sys");
 
-		List<ResponseContainerDatabaseSchema> schemas = databaseContextHandler.getDatabaseSchemas(guidDataSource);
+		List<ResponseContainerDatabaseSchema> schemas = databaseContextHandler
+				.getDatabaseSchemas(guidDataSource,FROM_INDEX, PAGE_SIZE);
 		assertNotNull(schemas);
 		assertTrue(schemas.size() == 2, "Failed to retrieve database schemas.");
 
@@ -102,7 +120,30 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 		assertEquals(DATABASE_GOSALES, schema.getCatalog());
 		assertEquals("user", schema.getSchemaType());
 	}
+	
+	@Test
+	public void getDatabaseSchemasPage() throws AnalyticsModelingCheckedException {
+		// setup repository with four schemas sorted: dbo, s1, s2, sys
+		EntityDetail entityDB = createDatabaseEntity(DATABASE_GOSALES, SERVER_TYPE_MS_SQL, "1.0");
+		String guidDataSource = entityDB.getGUID();
+		createDatabaseSchemaEntity(guidDataSource, SCHEMA_DBO);
+		createDatabaseSchemaEntity(guidDataSource, "s1");
+		createDatabaseSchemaEntity(guidDataSource, "s2");
+		createDatabaseSchemaEntity(guidDataSource, "sys");
 
+		List<ResponseContainerDatabaseSchema> schemas = databaseContextHandler
+				.getDatabaseSchemas(guidDataSource, 1, 2);
+		assertNotNull(schemas);
+		assertTrue(schemas.size() == 2, "Failed to retrieve database schemas.");
+
+		assertEquals(schemas.get(0).getSchema(), "s1");
+		assertEquals(schemas.get(1).getSchema(), "s2");
+		
+		// test paging boundaries
+		assertTrue(databaseContextHandler.getDatabaseSchemas(guidDataSource, 1, 0).size() == 3, "Return all elemnts starting from.");
+		assertTrue(databaseContextHandler.getDatabaseSchemas(guidDataSource, 1, 5).size() == 3, "Adjust upper boundary.");
+	}
+	
 	@Test
 	public void getDatabaseSchemasSameNameForTwoCatalogs() throws AnalyticsModelingCheckedException {
 		// setup repository
@@ -111,7 +152,8 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 		entityDB = createDatabaseEntity("AdventureWorks", SERVER_TYPE_MS_SQL, "1.0");
 		createDatabaseSchemaEntity(entityDB.getGUID(), SCHEMA_DBO);
 
-		List<ResponseContainerDatabaseSchema> schemas = databaseContextHandler.getDatabaseSchemas(entityDB.getGUID());
+		List<ResponseContainerDatabaseSchema> schemas = databaseContextHandler
+				.getDatabaseSchemas(entityDB.getGUID(),FROM_INDEX, PAGE_SIZE);
 		assertNotNull(schemas);
 		assertTrue(schemas.size() == 1, "Failed to retrieve database schema.");
 		assertEquals("AdventureWorks", schemas.get(0).getCatalog());

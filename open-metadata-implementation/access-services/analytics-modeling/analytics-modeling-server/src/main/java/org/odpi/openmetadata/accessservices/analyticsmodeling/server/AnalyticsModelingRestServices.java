@@ -81,11 +81,10 @@ public class AnalyticsModelingRestServices {
 		try {
 			SchemasResponse response = new SchemasResponse();
 			List<ResponseContainerDatabaseSchema> databasesSchemas = instanceHandler
-					.getDatabaseContextHandler(serverName, userId, methodName).getDatabaseSchemas(dataSourceGuid);
+					.getDatabaseContextHandler(serverName, userId, methodName)
+					.getDatabaseSchemas(dataSourceGuid, startFrom, pageSize);
 			
-			int toElement = startFrom + pageSize > databasesSchemas.size() ? databasesSchemas.size() : startFrom + pageSize;
-
-			response.setSchemaList(databasesSchemas.subList(startFrom,  toElement));
+			response.setSchemaList(databasesSchemas);
 			ret = response;
 		} catch (AnalyticsModelingCheckedException e) {
 			ret = handleErrorResponse(e, methodName);

@@ -79,14 +79,26 @@ public class DatabaseContextHandler {
 		setContext("getDatabases");
 
 		InstanceProperties instanceProperties = omEntityDao.buildMatchingInstanceProperties(Collections.emptyMap(), true);
-		List<EntityDetail> entities = omEntityDao.findEntities(instanceProperties, Constants.DATABASE, startFrom, pageSize);
+		List<EntityDetail> entities = omEntityDao.findEntities(instanceProperties, Constants.DATABASE, 0, 0);
 		List<ResponseContainerDatabase> ret = Optional.ofNullable(entities).map(Collection::stream).orElseGet(Stream::empty)
 				.parallel()
 				.map(this::buildDatabase)
 				.filter(Objects::nonNull).collect(Collectors.toList());
 		
 		ret.sort(Comparator.comparing(rdb->rdb.getDbName().toUpperCase()));
-		return ret;
+		
+		return getPage(startFrom, pageSize, ret);
+	}
+
+	private <T> List<T> getPage(Integer startFrom, Integer pageSize, List<T> list) {
+
+		int toElement = pageSize == 0 ? list.size() : (startFrom + pageSize);
+		
+		if (toElement > list.size()) {
+			toElement = list.size();
+		}
+
+		return list.subList(startFrom,  toElement);
 	}
 	
 	private ResponseContainerDatabase buildDatabase(EntityDetail e) {
@@ -104,10 +116,13 @@ public class DatabaseContextHandler {
 	 * Retrieve schemas for given database from repository.
 	 * 
 	 * @param guidDataSource defines database
+     * @param startFrom	starting element (used in paging through large result sets)
+     * @param pageSize	maximum number of results to return
 	 * @return list of schemas attributes.
 	 * @throws AnalyticsModelingCheckedException in case of an repository operation failure.
 	 */
-	public List<ResponseContainerDatabaseSchema> getDatabaseSchemas(String guidDataSource) throws AnalyticsModelingCheckedException {
+	public List<ResponseContainerDatabaseSchema> getDatabaseSchemas(String guidDataSource, Integer startFrom, Integer pageSize) 
+			throws AnalyticsModelingCheckedException {
 
 		setContext("getDatabaseSchemas");
 
@@ -128,7 +143,7 @@ public class DatabaseContextHandler {
 		
 		ret.sort(Comparator.comparing(e->e.getSchema()));
 
-		return ret;
+		return getPage(startFrom, pageSize, ret);
 	}
 
 	/**
