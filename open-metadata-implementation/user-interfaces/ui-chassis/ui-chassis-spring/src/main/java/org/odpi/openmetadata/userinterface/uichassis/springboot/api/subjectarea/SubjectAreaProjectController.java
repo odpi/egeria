@@ -4,16 +4,16 @@ package org.odpi.openmetadata.userinterface.uichassis.springboot.api.subjectarea
 
 
 import org.odpi.openmetadata.accessservices.subjectarea.SubjectArea;
-import org.odpi.openmetadata.accessservices.subjectarea.SubjectAreaProject;
-import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectAreaCheckedException;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder;
+import org.odpi.openmetadata.accessservices.subjectarea.client.entities.projects.SubjectAreaProject;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.project.Project;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.*;
-import org.odpi.openmetadata.accessservices.subjectarea.utils.DetectUtils;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.api.SecureController;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,11 +26,8 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/api/subject-area/projects")
-public class SubjectAreaProjectController extends SecureController
-{
-    private final SubjectArea subjectArea;
+public class SubjectAreaProjectController extends SecureController {
     private static String className = SubjectAreaProjectController.class.getName();
-    private static final Logger LOG = LoggerFactory.getLogger(className);
     private final SubjectAreaProject subjectAreaProject;
 
     /**
@@ -38,8 +35,6 @@ public class SubjectAreaProjectController extends SecureController
      * @param subjectArea main client object for the Subject Area OMAS
      */
     public SubjectAreaProjectController(SubjectArea subjectArea) {
-
-        this.subjectArea = subjectArea;
         this.subjectAreaProject = subjectArea.getSubjectAreaProject();
     }
 
@@ -57,24 +52,19 @@ public class SubjectAreaProjectController extends SecureController
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
-     * <li> InvalidParameterException            one of the parameters is null or invalid.
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised.</li>
-     * <li> ClassificationException              Error processing a classification.</li>
-     * <li> StatusNotSupportedException          A status value is not supported.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @PostMapping()
-    public SubjectAreaOMASAPIResponse createProject(@RequestBody Project suppliedProject, HttpServletRequest request) {
+    public SubjectAreaOMASAPIResponse<Project> createProject(@RequestBody Project suppliedProject, HttpServletRequest request) {
         String userId = getUser(request);
-        SubjectAreaOMASAPIResponse response=null;
+        SubjectAreaOMASAPIResponse<Project> response = new SubjectAreaOMASAPIResponse<>();
         try {
-            Project project = this.subjectAreaProject.createProject(userId, suppliedProject);
-            ProjectResponse projectResponse = new ProjectResponse();
-            projectResponse.setProject(project);
-            response = projectResponse;
-        } catch (SubjectAreaCheckedException e) {
-            response = DetectUtils.getResponseFromException(e);
+            Project project = this.subjectAreaProject.project().create(userId, suppliedProject);
+            response.addResult(project);
+        } catch (UserNotAuthorizedException | InvalidParameterException | PropertyServerException e) {
+            response.setExceptionInfo(e, className);
         }
         return  response;
     }
@@ -86,25 +76,20 @@ public class SubjectAreaProjectController extends SecureController
      * @return response which when successful contains the project with the requested guid
      *  when not successful the following Exception responses can occur
      * <ul>
-     * <li> UserNotAuthorizedException the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException  not able to communicate with a Metadata respository service.</li>
-     * <li> InvalidParameterException one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException the supplied guid was not recognised</li>
-     * <li> UnrecognizedGUIDException the supplied guid was not recognised</li>
-     * <li> FunctionNotSupportedException   Function not supported</li>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @GetMapping( path = "/{guid}")
-    public  SubjectAreaOMASAPIResponse getProject(@PathVariable String guid,HttpServletRequest request) {
+    public  SubjectAreaOMASAPIResponse<Project> getProject(@PathVariable String guid,HttpServletRequest request) {
         String userId = getUser(request);
-        SubjectAreaOMASAPIResponse response=null;
+        SubjectAreaOMASAPIResponse<Project> response = new SubjectAreaOMASAPIResponse<>();
         try {
-            Project project = this.subjectAreaProject.getProjectByGuid(userId,guid);
-            ProjectResponse projectResponse = new ProjectResponse();
-            projectResponse.setProject(project);
-            response = projectResponse;
-        } catch (SubjectAreaCheckedException e) {
-            response = DetectUtils.getResponseFromException(e);
+            Project project = this.subjectAreaProject.project().getByGUID(userId,guid);
+            response.addResult(project);
+        } catch (UserNotAuthorizedException | InvalidParameterException | PropertyServerException e) {
+            response.setExceptionInfo(e, className);
         }
         return  response;
     }
@@ -124,41 +109,39 @@ public class SubjectAreaProjectController extends SecureController
      *
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @GetMapping()
-    public  SubjectAreaOMASAPIResponse findProject(
+    public  SubjectAreaOMASAPIResponse<Project> findProject(
                                                 @RequestParam(value = "searchCriteria", required=false) String searchCriteria,
                                                 @RequestParam(value = "asOfTime", required=false) Date asOfTime,
-                                                @RequestParam(value = "offset", required=false) Integer offset,
-                                                @RequestParam(value = "pageSize", required=false) Integer pageSize,
+                                                @RequestParam(value = "offset", required = false, defaultValue = PAGE_OFFSET_DEFAULT_VALUE) Integer offset,
+                                                @RequestParam(value = "pageSize", required = false, defaultValue = PAGE_SIZE_DEFAULT_VALUE) Integer pageSize,
                                                 @RequestParam(value = "sequencingOrder", required=false) SequencingOrder sequencingOrder,
                                                 @RequestParam(value = "SequencingProperty", required=false) String sequencingProperty,
                                                 HttpServletRequest request
     )  {
         String userId = getUser(request);
-        SubjectAreaOMASAPIResponse response;
+        SubjectAreaOMASAPIResponse<Project> response = new SubjectAreaOMASAPIResponse<>();
         try {
+            FindRequest findRequest = new FindRequest();
+            findRequest.setSearchCriteria(searchCriteria);
+            findRequest.setAsOfTime(asOfTime);
+            findRequest.setOffset(offset);
+            findRequest.setPageSize(pageSize);
+            findRequest.setSequencingOrder(sequencingOrder);
+            findRequest.setSequencingProperty(sequencingProperty);
 
-            if (offset == null) {
-                offset = new Integer(0);
-            }
-            if (pageSize == null) {
-               pageSize = new Integer(0);
-            }
-            List<Project> projects = this.subjectAreaProject.findProject(userId, searchCriteria, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
-            ProjectsResponse projectsResponse = new ProjectsResponse();
-            projectsResponse.setProjects(projects);
-            response = projectsResponse;
-        } catch (SubjectAreaCheckedException e) {
-            response = DetectUtils.getResponseFromException(e);
+            List<Project> projects = this.subjectAreaProject.project().find(userId, findRequest);
+            response.addAllResults(projects);
+        } catch (UserNotAuthorizedException | InvalidParameterException | PropertyServerException e) {
+            response.setExceptionInfo(e, className);
         }
         return  response;
     }
-    /*
+    /**
      * Get Project relationships
      *
      * @param guid   guid of the project to get
@@ -173,32 +156,36 @@ public class SubjectAreaProjectController extends SecureController
      * @return a response which when successful contains the project relationships
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @GetMapping( path = "/{guid}/relationships")
-    public  SubjectAreaOMASAPIResponse getProjectRelationships(
+    public  SubjectAreaOMASAPIResponse<Line> getProjectRelationships(
                                                             @PathVariable String guid,
                                                             @RequestParam(value = "asOfTime", required=false) Date asOfTime,
-                                                            @RequestParam(value = "offset", required=false) Integer offset,
-                                                            @RequestParam(value = "pageSize", required=false) Integer pageSize,
+                                                            @RequestParam(value = "offset", required = false, defaultValue = PAGE_OFFSET_DEFAULT_VALUE) Integer offset,
+                                                            @RequestParam(value = "pageSize", required = false, defaultValue = PAGE_SIZE_DEFAULT_VALUE) Integer pageSize,
                                                             @RequestParam(value = "sequencingOrder", required=false) SequencingOrder sequencingOrder,
                                                             @RequestParam(value = "SequencingProperty", required=false) String sequencingProperty,
                                                             HttpServletRequest request
     
     ) {
         String userId = getUser(request);
-        SubjectAreaOMASAPIResponse response;
+        SubjectAreaOMASAPIResponse<Line> response = new SubjectAreaOMASAPIResponse<>();
         try {
-            List<Line> lines = this.subjectAreaProject.getProjectRelationships(userId,guid,asOfTime,offset,pageSize,sequencingOrder,sequencingProperty);
-            LinesResponse linesResponse = new LinesResponse();
-            linesResponse.setLines(lines);
-            response = linesResponse;
-        } catch (SubjectAreaCheckedException e) {
-            response = DetectUtils.getResponseFromException(e);
+            FindRequest findRequest = new FindRequest();
+            findRequest.setAsOfTime(asOfTime);
+            findRequest.setOffset(offset);
+            findRequest.setPageSize(pageSize);
+            findRequest.setSequencingOrder(sequencingOrder);
+            findRequest.setSequencingProperty(sequencingProperty);
+
+            List<Line> lines = this.subjectAreaProject.project().getRelationships(userId, guid, findRequest);
+            response.addAllResults(lines);
+        } catch (UserNotAuthorizedException | InvalidParameterException | PropertyServerException e) {
+            response.setExceptionInfo(e, className);
         }
         return  response;
 
@@ -220,36 +207,29 @@ public class SubjectAreaProjectController extends SecureController
      * @return a response which when successful contains the updated project
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @PutMapping( path = "/{guid}")
-    public  SubjectAreaOMASAPIResponse updateProject(
+    public  SubjectAreaOMASAPIResponse<Project> updateProject(
                                                       @PathVariable String guid,
                                                       @RequestBody Project project,
-                                                      @RequestParam(value = "isReplace", required=false) Boolean isReplace,
+                                                      @RequestParam(value = "isReplace", required=false, defaultValue = "false") Boolean isReplace,
                                                       HttpServletRequest request) {
         String userId = getUser(request);
-        SubjectAreaOMASAPIResponse response=null;
+        SubjectAreaOMASAPIResponse<Project> response = new SubjectAreaOMASAPIResponse<>();
         try {
             Project updatedProject;
-            if (isReplace == null){
-                isReplace = false;
-            }
             if (isReplace) {
-                updatedProject = this.subjectAreaProject.replaceProject(userId, guid, project);
+                updatedProject = this.subjectAreaProject.project().replace(userId, guid, project);
             } else {
-                updatedProject = this.subjectAreaProject.updateProject(userId, guid, project);
+                updatedProject = this.subjectAreaProject.project().update(userId, guid, project);
             }
-            ProjectResponse projectResponse = new ProjectResponse();
-            projectResponse.setProject(updatedProject);
-            response = projectResponse;
-        } catch (SubjectAreaCheckedException e) {
-            response = DetectUtils.getResponseFromException(e);
+            response.addResult(updatedProject);
+        } catch (UserNotAuthorizedException | InvalidParameterException | PropertyServerException e) {
+            response.setExceptionInfo(e, className);
         }
         return  response;
     }
@@ -271,36 +251,26 @@ public class SubjectAreaProjectController extends SecureController
      * @return a void response
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
-     * <li> EntityNotDeletedException            a soft delete was issued but the project was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the project was not purged</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @DeleteMapping( path = "/{guid}")
-    public  SubjectAreaOMASAPIResponse deleteProject(@PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge, HttpServletRequest request)  {
-        if (isPurge == null) {
-            // default to soft delete if isPurge is not specified.
-            isPurge = false;
-        }
+    public  SubjectAreaOMASAPIResponse<Project> deleteProject(@PathVariable String guid,
+                                                     @RequestParam(value = "isPurge", required=false, defaultValue = "false") Boolean isPurge,
+                                                     HttpServletRequest request)  {
         String userId = getUser(request);
-        SubjectAreaOMASAPIResponse response=null;
+        SubjectAreaOMASAPIResponse<Project> response = new SubjectAreaOMASAPIResponse<>();
         try {
             if (isPurge) {
-                this.subjectAreaProject.purgeProject(userId,guid);
-                response = new VoidResponse();
+                this.subjectAreaProject.project().purge(userId,guid);
             } else {
-                Project project = this.subjectAreaProject.deleteProject(userId,guid);
-                ProjectResponse projectResponse = new ProjectResponse();
-                projectResponse.setProject(project);
-                response = projectResponse;
+                this.subjectAreaProject.project().delete(userId,guid);
             }
 
-        } catch (SubjectAreaCheckedException e) {
-            response = DetectUtils.getResponseFromException(e);
+        } catch (UserNotAuthorizedException | InvalidParameterException | PropertyServerException e) {
+            response.setExceptionInfo(e, className);
         }
         return  response;
     }
@@ -313,25 +283,21 @@ public class SubjectAreaProjectController extends SecureController
      * @return response which when successful contains the restored project
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @PostMapping( path = "/{guid}")
-    public SubjectAreaOMASAPIResponse restoreProject(@PathVariable String guid, HttpServletRequest request)
+    public SubjectAreaOMASAPIResponse<Project> restoreProject(@PathVariable String guid, HttpServletRequest request)
     {
         String userId = getUser(request);
-        SubjectAreaOMASAPIResponse response=null;
+        SubjectAreaOMASAPIResponse<Project> response = new SubjectAreaOMASAPIResponse<>();
         try {
-            Project project = this.subjectAreaProject.restoreProject(userId,guid);
-            ProjectResponse projectResponse = new ProjectResponse();
-            projectResponse.setProject(project);
-            response = projectResponse;
-        } catch (SubjectAreaCheckedException e) {
-            response = DetectUtils.getResponseFromException(e);
+            Project project = this.subjectAreaProject.project().restore(userId,guid);
+            response.addResult(project);
+        } catch (UserNotAuthorizedException | InvalidParameterException | PropertyServerException e) {
+            response.setExceptionInfo(e, className);
         }
         return  response;
     }

@@ -3,25 +3,22 @@
 package org.odpi.openmetadata.accessservices.subjectarea.utils;
 
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
-import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 public class QueryUtils {
-    public static void encodeQueryParam(String queryParamName, String queryParamValue, StringBuffer queryStringSB) throws InvalidParameterException, UnsupportedEncodingException {
-            String encodedString = URLEncoder.encode(queryParamValue, "UTF-8");
-            addCharacterToQuery(queryStringSB);
-            queryStringSB.append(queryParamName+"="+encodedString);
-    }
-
-    public static void addCharacterToQuery(StringBuffer queryStringSB) {
-        String prependCharacter ="&";
-        if (queryStringSB.length() ==0) {
-            prependCharacter ="?";
+    public static String encodeParams(String methodName, String paramName, String param) throws InvalidParameterException {
+        try {
+            param = URLEncoder.encode(param, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.ERROR_ENCODING_QUERY_PARAMETER.getMessageDefinition();
+            messageDefinition.setMessageParameters(paramName, param);
+            throw new InvalidParameterException(messageDefinition, "", methodName, paramName);
         }
-        queryStringSB.append(prependCharacter);
+
+        return param;
     }
-
-
 }

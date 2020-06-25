@@ -55,6 +55,20 @@
             <artifactId>audit-log-framework</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>repository-services-apis</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.reflections</groupId>
+            <artifactId>reflections</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
