@@ -9,8 +9,6 @@ import org.apache.tinkerpop.gremlin.driver.ResultSet;
 import org.apache.tinkerpop.gremlin.driver.remote.DriverRemoteConnection;
 import org.apache.tinkerpop.gremlin.driver.ser.GryoMessageSerializerV3d0;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
-import org.apache.tinkerpop.gremlin.structure.Edge;
-import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.apache.tinkerpop.gremlin.structure.io.gryo.GryoMapper;
 import org.janusgraph.graphdb.tinkerpop.JanusGraphIoRegistry;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
@@ -21,8 +19,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.apache.tinkerpop.gremlin.process.traversal.AnonymousTraversalSource.traversal;
@@ -54,9 +50,9 @@ public class JanusGraphRemote extends GraphGremlinBase {
     public GraphTraversalSource openGraph() {
         cluster = createCluster();
         client = cluster.connect();
+        GraphTraversalSource g = traversal().withRemote(DriverRemoteConnection.using(cluster, this.properties.get(LineageGraphRemoteConnectorProvider.SOURCE_NAME).toString()));
         createSchema();
-
-        return traversal().withRemote(DriverRemoteConnection.using(cluster, this.properties.get(LineageGraphRemoteConnectorProvider.SOURCE_NAME).toString()));
+        return g;
     }
 
     private Cluster createCluster() {
@@ -101,49 +97,23 @@ public class JanusGraphRemote extends GraphGremlinBase {
 
     @Override
     public void createSchema() {
-        String createLabels = createLabels();
-        ResultSet operationResult = client.submit(createLabels);
-        Stream<Result> results = operationResult.stream();
-        results.map(Result::toString).forEach(log::debug);
 
-        StringBuilder indexCommand = new StringBuilder();
+        String createLabels = createLabels();
+        client.submit(createLabels);
+
         String indexCommandGuid = createIndex("vertexIndexCompositevertex--guid", PROPERTY_KEY_ENTITY_GUID, true, VERTEX);
         String indexCommandLabel = createIndex("vertexIndexCompositevertex--label", PROPERTY_KEY_LABEL, false, VERTEX);
         String indexCommandVersion = createIndex("vertexIndexCompositevertex--version", PROPERTY_KEY_ENTITY_VERSION, false, VERTEX);
         String indexCommandMetadataCollectionId = createIndex("vertexIndexCompositevertex--metadataCollectionId", PROPERTY_KEY_METADATA_ID, false, VERTEX);
         String indexCommandEdgeGuid = createIndex("edgeIndexCompositeedge--guid", PROPERTY_KEY_RELATIONSHIP_GUID, false, EDGE);
         String indexCommandEdgeLabel = createIndex("edgeIndexCompositeedge--label", PROPERTY_KEY_RELATIONSHIP_LABEL, false, EDGE);
-        indexCommand.append(indexCommandGuid)
-                .append(indexCommandLabel)
-                .append(indexCommandVersion)
-                .append(indexCommandMetadataCollectionId)
-                .append(indexCommandEdgeGuid)
-                .append(indexCommandEdgeLabel);
 
-
-        ResultSet resultSet = client.submit(indexCommand.toString());
-        Stream<Result> futureList = resultSet.stream();
-        futureList.map(Result::toString).forEach(log::debug);
-    }
-
-    private String sendRemoteRequest() {
-
-
-        final StringBuilder s = new StringBuilder();
-
-        log.info("creating schema");
-        s.append("JanusGraphManagement management = graph.openManagement();");
-
-//        // composite indexes
-//        s.append(compositeIndex(s,"vertexIndexCompositevertex--guid",PROPERTY_KEY_ENTITY_GUID,true,Vertex.class));
-
-        s.append("management.commit(); ");
-
-
-//                "created = true; }");
-
-        log.debug(s.toString());
-        return s.toString();
+        client.submit(indexCommandGuid);
+        client.submit(indexCommandLabel);
+        client.submit(indexCommandVersion);
+        client.submit(indexCommandMetadataCollectionId);
+        client.submit(indexCommandEdgeGuid);
+        client.submit(indexCommandEdgeLabel);
 
     }
 
@@ -163,9 +133,6 @@ public class JanusGraphRemote extends GraphGremlinBase {
 
     private static String createIndex(String indexName, String propertyName, boolean hasPropertyUniqueAndConsistency, String className) {
         StringBuilder indexCommand = new StringBuilder();
-        if (hasPropertyUniqueAndConsistency) {
-            indexCommand.append("def defaultWaitTimeoutSeconds = 15;\n");
-        }
         indexCommand.append("management = graph.openManagement();\n");
         indexCommand.append("vertexIndex = management.getGraphIndex(\"").append(indexName).append("\");\n");
         indexCommand.append("if (vertexIndex != null ){   management.rollback(); }\n");
@@ -181,76 +148,11 @@ public class JanusGraphRemote extends GraphGremlinBase {
         }
         indexCommand.append("management.commit();\n");
         indexCommand.append("management = graph.openManagement();\n");
-        indexCommand.append("ManagementSystem.awaitGraphIndexStatus(graph,\"").append(indexName).append("\").timeout(defaultWaitTimeoutSeconds, ChronoUnit.SECONDS).call();\n");
+        indexCommand.append("ManagementSystem.awaitGraphIndexStatus(graph,\"").append(indexName).append("\").timeout(15, ChronoUnit.SECONDS).call();\n");
         indexCommand.append("management.updateIndex(management.getGraphIndex(\"").append(indexName).append("\"), SchemaAction.REINDEX).get();\n");
         indexCommand.append("management.commit();\n");
         indexCommand.append("}\n");
-
         return indexCommand.toString();
-    }
-
-    private static String compositeIndex(String indexName, String propertyKeyName, boolean unique, Class classType) {
-        final StringBuilder s = new StringBuilder();
-
-        s.append("JanusGraphManagement management = graph.openManagement();");
-
-        s.append("existingIndex = management.getGraphIndex(\"" + indexName + "\");");
-        s.append("if (existingIndex != null ){   management.rollback(); } else { ");
-        s.append("existingPropertyKey = management.getPropertyKey(\"" + propertyKeyName + "\");");
-        s.append("if (existingPropertyKey != null){").append("propertyKey = existingPropertyKey;")
-                .append("oldKey = true;")
-                .append("} else {")
-                //TODO make dyanmic the class of the proeprty
-                .append("propertyKey")
-                .append(" = management.makePropertyKey(\"" + propertyKeyName + "\").dataType(String.class).make();")
-                .append("oldKey = false;};");
-
-        if (Vertex.class.equals(classType)) {
-            s.append("indexBuilder = management.buildIndex(\"" + indexName + "\",Vertex.class).addKey(propertyKey);");
-
-            if (unique) {
-                s.append("indexBuilder.unique();");
-            }
-
-            s.append("index = indexBuilder.buildCompositeIndex();");
-            if (unique) {
-                s.append("management.setConsistency(indexBuilder,ConsistencyModifier.LOCK);");
-            }
-        } else if (Edge.class.equals(classType)) {
-
-            s.append("indexBuilder = management.buildIndex(").append(indexName).append(",Edge.class).addKey(propertyKey);");
-            s.append("index = indexBuilder.buildCompositeIndex();");
-        }
-
-        s.append("if (oldKey){")
-                .append(" ManagementSystem.awaitGraphIndexStatus(graph,\"" + indexName + "\").status(SchemaStatus.REGISTERED).call();");
-        s.append("management.getGraphIndex(\"" + indexName + "\");");
-        s.append("management.updateIndex(\"" + indexName + "\",SchemaAction.REINDEX);");
-        s.append("};");
-
-        s.append("ManagementSystem.awaitGraphIndexStatus(graph,\"" + indexName + "\").status(SchemaStatus.ENABLED).timeout(10,ChronoUnit.SECONDS).call();");
-
-        s.append("};");
-        s.append("management.commit(); ");
-        log.debug(s.toString());
-
-        return s.toString();
-    }
-
-    private <T extends Enum<T>> Set<String> schemaBasedOnGraphType(Class<T> aEnum) {
-        return Stream.of(aEnum.getEnumConstants())
-                .map(Enum::name)
-                .collect(Collectors.toSet());
-    }
-
-    private StringBuilder addLabel(StringBuilder s, Set<String> labels) {
-        labels.forEach(label -> s.append("management.makeVertexLabel(\"" + label + "\").make(); "));
-        return s;
-    }
-
-    private StringBuilder addEdge(StringBuilder s, Set<String> edges) {
-        edges.forEach(edge -> s.append("management.makeVertexLabel(\"" + edge + "\").make(); "));
-        return s;
     }
 
     @Override
