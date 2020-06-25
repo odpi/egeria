@@ -16,12 +16,12 @@ public interface SubjectAreaEntityClient<E extends Node> extends SubjectAreaClie
     List<Line> getRelationships(String userId,
                                 String guid,
                                 FindRequest findRequest) throws InvalidParameterException,
-            PropertyServerException,
-            UserNotAuthorizedException;
+                                                                PropertyServerException,
+                                                                UserNotAuthorizedException;
 
     default List<Line> getAllRelationships(String userId, String guid) throws InvalidParameterException,
-            PropertyServerException,
-            UserNotAuthorizedException
+                                                                              PropertyServerException,
+                                                                              UserNotAuthorizedException
     {
         return getRelationships(userId, guid, new FindRequest());
     }
