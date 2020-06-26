@@ -37,7 +37,7 @@ public class SubjectAreaProjectClient extends AbstractSubjectAreaEntity<Project>
         ParameterizedTypeReference<SubjectAreaOMASAPIResponse<Term>> type =
                 new ParameterizedTypeReference<SubjectAreaOMASAPIResponse<Term>>() {};
 
-        SubjectAreaOMASAPIResponse<Term> response = client.findRESTCall(userId, methodInfo, urlTemplate, type, EMPTY_FIND_REQUEST);
+        SubjectAreaOMASAPIResponse<Term> response = client.findRESTCall(userId, guid, methodInfo, urlTemplate, type, EMPTY_FIND_REQUEST);
         return response.getResult();
     }
 }

@@ -143,8 +143,8 @@ public class ProjectFVT
         }
         Project projectForGraph = createProject(DEFAULT_TEST_PROJECT_NAME4);
         List<Term> terms = getProjectTerms(projectForGraph.getSystemAttributes().getGUID());
-        if (terms != null ) {
-            throw new SubjectAreaFVTCheckedException("ERROR: Expected null got " +terms.size());
+        if (terms != null && terms.size() > 0) {
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected null or empty got " +terms.size());
         }
     }
 

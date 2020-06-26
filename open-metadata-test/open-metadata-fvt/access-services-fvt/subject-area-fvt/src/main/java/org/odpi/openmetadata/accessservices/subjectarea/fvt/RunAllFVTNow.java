@@ -31,6 +31,7 @@ public class RunAllFVTNow
             CategoryFVT.runIt(url,serverName,userId);
             CategoryHierarchyFVT.runIt(url,serverName,userId);
             RelationshipsFVT.runIt(url,serverName,userId);
+            ProjectFVT.runIt(url, serverName, userId);
             SubjectAreaDefinitionCategoryFVT.runIt(url,serverName,userId);
             GraphFVT.runIt(url,serverName,userId);
             System.out.println("FVT ran successfully");
