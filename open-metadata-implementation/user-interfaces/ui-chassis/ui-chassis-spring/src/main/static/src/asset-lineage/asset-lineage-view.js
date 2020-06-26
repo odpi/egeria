@@ -124,7 +124,6 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
             graphInteraction: {
                 type: Object,
                 value: {
-                    tooltipDelay: 200,
                     hideEdgesOnDrag: true
                 }
             },
@@ -134,7 +133,7 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
                     hierarchical: {
                         enabled: true,
                         levelSeparation: 300,
-                        direction: 'LR'
+                        direction: 'RL'
                     }
                 }
             },
@@ -142,25 +141,26 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
                 type: Object,
                 value: {
                     GlossaryTerm: {
-                        color: '#f0e442',
-                        shape: 'circle'
+                        color: '#f0e442'
+
                     },
                     Column: {
                         color: '#009e73'
                     },
                     RelationalColumn: {
-                        color: '#0072b2'
+                        color: '#73c0ee'
                     },
                     TabularColumn: {
                         color: '#cc79a7'
                     },
                     RelationalTable: {
-                        shape: 'box',
-                        color: '#007836'
+                        color: '#50c67a'
                     },
                     Process: {
-                        shape: 'parallelogram',
-                        color: '#b276b2'
+                        color: '#ffff00'
+                    },
+                    subProcess: {
+                        color: '#ffff00'
                     },
                     condensedNode: {
                         color: '#faa43a'
@@ -192,6 +192,8 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
         }
     }
 
+
+
     _graphDataChanged(data, newData) {
         console.debug("oldData" + JSON.stringify(data));
         console.debug("newData" + JSON.stringify(newData));
@@ -207,23 +209,26 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
         }
         for (var i = 0; i < data.nodes.length; i++) {
             const egeriaColor = getComputedStyle(this).getPropertyValue('--egeria-primary-color');
-            data.nodes[i].title = JSON.stringify(data.nodes[i].properties, "", '<br>');
-            if (data.nodes[i].properties == null) {
-                continue;
-            }
+            data.nodes[i].displayName = data.nodes[i].label;
+            data.nodes[i].type = data.nodes[i].group;
+            data.nodes[i].label = '<b>'+data.nodes[i].label+'</b>';
+            data.nodes[i].label += ' \n\n Type : ' + this._camelCaseToSentence(data.nodes[i].group);
+
             let displayName;
-            if (data.nodes[i].id === this.routeData.guid){
-                data.nodes[i].group='';
-                data.nodes[i].color=egeriaColor;
-                data.nodes[i].font= {color:'white'};
-            }
             if (data.nodes[i].properties['tableDisplayName'] != null) {
                 displayName = data.nodes[i].properties['tableDisplayName']
             } else if (data.nodes[i].properties['vertex--tableDisplayName'] != null) {
                 displayName = data.nodes[i].properties['vertex--tableDisplayName']
             }
             if (displayName != null) {
-                data.nodes[i].label += ' \n Table : ' + displayName;
+
+                data.nodes[i].label += ' \n\n From : ' + displayName;
+            }
+            if (data.nodes[i].id === this.routeData.guid){
+                data.nodes[i].group='';
+                data.nodes[i].color=egeriaColor;
+                data.nodes[i].font= {color:'white'};
+                data.nodes[i].shape= 'circle';
             }
         }
         if (!this._hideIncludeGlossaryTerms(this.routeData.usecase) && this.$.glossaryTermMenu.value === "false" ) {
