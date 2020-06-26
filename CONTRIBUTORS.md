@@ -14,6 +14,7 @@ This file recognizes the people who have make an important contribution to Egeri
 | Moya Brannan |  moyabrannan@uk.ibm.com |
 | Chris Nott |  chris_nott@uk.ibm.com |
 | Billy Bittles |  wbittles@uk.ibm.com |
+| Ilya Ksenofontov |  fonto.trg@gmail.com |
 
 
 
