@@ -210,6 +210,7 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
         for (var i = 0; i < data.nodes.length; i++) {
             const egeriaColor = getComputedStyle(this).getPropertyValue('--egeria-primary-color');
             data.nodes[i].displayName = data.nodes[i].label;
+            data.nodes[i].type = data.nodes[i].group;
             data.nodes[i].label = '<b>'+data.nodes[i].label+'</b>'
             data.nodes[i].label += ' \n\n Type : ' + this._camelCaseToSentence(data.nodes[i].group);
 
