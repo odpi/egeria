@@ -45,13 +45,18 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 public class GraphFactory extends IndexingFactory {
 
     private static final Logger log = LoggerFactory.getLogger(GraphFactory.class);
-
-    protected Graph graph;
-    protected GraphTraversalSource g;
-    protected boolean supportingTransactions;
-    protected Map<String,Object> properties;
+    private Graph graph;
+    private GraphTraversalSource g;
+    private boolean supportingTransactions;
+    private Map<String,Object> properties;
     private Cluster cluster;
     private Client client;
+    private static final String ADD_VERTEX_LABEL_IF_MISSING_FORMAT =
+            "if (management.getVertexLabel(\"%s\") == null ) { management.makeVertexLabel(\"%s\").make(); }\n";
+    private static final String ADD_EDGE_LABEL_IF_MISSING_FORMAT =
+            "if (management.getEdgeLabel(\"%s\") == null ) { management.makeEdgeLabel(\"%s\").make(); }\n";
+    private static final String VERTEX = "Vertex";
+    private static final String EDGE = "Edge";
 
     /**
      * Set the config for Janus Graph.
@@ -116,13 +121,15 @@ public class GraphFactory extends IndexingFactory {
      */
     private GraphTraversalSource openRemoteGraph(Map<String,Object> properties) throws JanusConnectorException{
         String methodName = "openRemoteGraph";
-        this.supportingTransactions = true;
+        this.supportingTransactions = false;
         this.properties = properties;
 
         try {
             cluster = createCluster();
             client = cluster.connect();
-
+            if (properties.get(LineageGraphRemoteConnectorProvider.SCHEMA_MANAGEMENT_ENABLE)!=null && properties.get(LineageGraphRemoteConnectorProvider.SCHEMA_MANAGEMENT_ENABLE).toString().equalsIgnoreCase("true")) {
+                initializeRemoteGraph(client);
+            }
             return traversal().withRemote(DriverRemoteConnection.using(cluster, this.properties.get(LineageGraphRemoteConnectorProvider.SOURCE_NAME).toString()));
         } catch (Exception e) {
             log.error("A connection with the graph database could not be established with the provided configuration", e);
@@ -146,7 +153,7 @@ public class GraphFactory extends IndexingFactory {
     private void initializeGraph(JanusGraph janusGraph) throws JanusConnectorException {
 
         final String methodName = "initializeGraph";
-        log.info("Updating graph schema, if necessary");
+        log.info("Initializing graph. Updating schema, if necessary.");
         try {
             JanusGraphManagement management = janusGraph.openManagement();
 
@@ -171,7 +178,56 @@ public class GraphFactory extends IndexingFactory {
         }
     }
 
+    /**
+     * Set up the schema for the Janus Graph instance
+     *
+     * @param client - instance of the client for remote cluster
+     *
+     * @throws JanusConnectorException if initialization fails
+     */
+    private void initializeRemoteGraph(Client client) throws JanusConnectorException {
+        final String methodName = "initializeRemoteGraph";
+        log.info("Initializing graph remotely. Updating schema, if necessary.");
 
+        try {
+
+            String createLabels = createLabelsCommand();
+            log.info("Checking labels...");
+            client.submit(createLabels);
+
+            String indexCommandGuid = createIndexCommand("vertexIndexCompositevertex--guid", PROPERTY_KEY_ENTITY_GUID, true, VERTEX);
+            String indexCommandLabel = createIndexCommand("vertexIndexCompositevertex--label", PROPERTY_KEY_LABEL, false, VERTEX);
+            String indexCommandVersion = createIndexCommand("vertexIndexCompositevertex--version", PROPERTY_KEY_ENTITY_VERSION, false, VERTEX);
+            String indexCommandMetadataCollectionId = createIndexCommand("vertexIndexCompositevertex--metadataCollectionId", PROPERTY_KEY_METADATA_ID, false, VERTEX);
+            String indexCommandEdgeGuid = createIndexCommand("edgeIndexCompositeedge--guid", PROPERTY_KEY_RELATIONSHIP_GUID, false, EDGE);
+            String indexCommandEdgeLabel = createIndexCommand("edgeIndexCompositeedge--label", PROPERTY_KEY_RELATIONSHIP_LABEL, false, EDGE);
+
+            log.info("Checking indices...");
+            client.submit(indexCommandGuid);
+            client.submit(indexCommandLabel);
+            client.submit(indexCommandVersion);
+            client.submit(indexCommandMetadataCollectionId);
+            client.submit(indexCommandEdgeGuid);
+            client.submit(indexCommandEdgeLabel);
+
+        } catch (Exception e) {
+            log.error("{} failed  during graph initialize operation with error: ", e);
+            JanusConnectorErrorCode errorCode = JanusConnectorErrorCode.GRAPH_INITIALIZATION_ERROR;
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(e.getMessage(), methodName, GraphFactory.class.getName());
+            throw new JanusConnectorException(GraphFactory.class.getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        }
+    }
+
+    /**
+     *
+     * @param aEnum Enum with label names
+     * @param <T> Vertex or Edge gremlin type
+     * @return Set of gremlin label names for enumerated label types
+     */
     private <T extends Enum<T>> Set<String> schemaBasedOnGraphType(Class<T> aEnum) {
         return Stream.of(aEnum.getEnumConstants())
                 .map(Enum::name)
@@ -273,6 +329,56 @@ public class GraphFactory extends IndexingFactory {
                                               errorCode.getSystemAction(),
                                               errorCode.getUserAction());
         }
+    }
+
+    /**
+     *
+     * @return String representation of gremlin command to create vertex and edge labels using janus graph management API.
+     */
+    private String createLabelsCommand() {
+        StringBuilder managementCommand = new StringBuilder();
+        managementCommand.append("JanusGraphManagement management = graph.openManagement();\n");
+        for (VertexLabelsLineageGraph vertexLabel : VertexLabelsLineageGraph.values()) {
+            managementCommand.append(String.format(ADD_VERTEX_LABEL_IF_MISSING_FORMAT, vertexLabel, vertexLabel));
+        }
+
+        for (EdgeLabelsLineageGraph edgeLabel : EdgeLabelsLineageGraph.values()) {
+            managementCommand.append(String.format(ADD_EDGE_LABEL_IF_MISSING_FORMAT, edgeLabel, edgeLabel));
+        }
+        managementCommand.append("management.commit();");
+        return managementCommand.toString();
+    }
+
+    /**
+     *
+     * @param indexName - name of the index
+     * @param propertyName - name of the property being indexed
+     * @param hasPropertyUniqueAndConsistency - is the unique constraint index
+     * @param className - the type of the index class to be used Vertex or Edge
+     * @return String representation of gremlin command to create index for property name using janus graph management API.
+     */
+    private static String createIndexCommand(String indexName, String propertyName, boolean hasPropertyUniqueAndConsistency, String className) {
+        StringBuilder indexCommand = new StringBuilder();
+        indexCommand.append("management = graph.openManagement();\n");
+        indexCommand.append("vertexIndex = management.getGraphIndex(\"").append(indexName).append("\");\n");
+        indexCommand.append("if (vertexIndex != null ){   management.rollback(); }\n");
+        indexCommand.append(" else { ");
+        indexCommand.append("propertyKeyGuid = management.makePropertyKey(\"").append(propertyName).append("\").dataType(String.class).make();\n");
+        indexCommand.append("indexBuilderGuidVertex = management.buildIndex(\"").append(indexName).append("\", ").append(className).append(".class).addKey(propertyKeyGuid);\n");
+        if (hasPropertyUniqueAndConsistency) {
+            indexCommand.append("indexBuilderGuidVertex.unique();\n");
+        }
+        indexCommand.append("indexGuidVertex = indexBuilderGuidVertex.buildCompositeIndex();\n");
+        if (hasPropertyUniqueAndConsistency) {
+            indexCommand.append("management.setConsistency(indexGuidVertex, ConsistencyModifier.LOCK);\n");
+        }
+        indexCommand.append("management.commit();\n");
+        indexCommand.append("management = graph.openManagement();\n");
+        indexCommand.append("ManagementSystem.awaitGraphIndexStatus(graph,\"").append(indexName).append("\").timeout(15, ChronoUnit.SECONDS).call();\n");
+        indexCommand.append("management.updateIndex(management.getGraphIndex(\"").append(indexName).append("\"), SchemaAction.REINDEX).get();\n");
+        indexCommand.append("management.commit();\n");
+        indexCommand.append("}\n");
+        return indexCommand.toString();
     }
 
 

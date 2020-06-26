@@ -31,6 +31,7 @@ public class LineageGraphRemoteConnectorProvider extends LineageGraphProviderBas
     public static final String CLUSTER_KEYSTORE_PASSWORD ="gremlin.remote.driver.cluster.keyStorePassword";
     public static final String CLUSTER_TRUST_STORE ="gremlin.remote.driver.cluster.trustStore";
     public static final String CLUSTER_TRUST_STORE_PASSWORD ="gremlin.remote.driver.cluster.trustStorePassword";
+    public static final String SCHEMA_MANAGEMENT_ENABLE ="remote.schemaManagement.enable";
 
     /**
      * Constructor used to initialize the ConnectorProviderBase with the Java class name of the specific
@@ -66,6 +67,7 @@ public class LineageGraphRemoteConnectorProvider extends LineageGraphProviderBas
         recognizedPropertyNames.add(CLUSTER_KEYSTORE_TYPE);
         recognizedPropertyNames.add(CLUSTER_TRUST_STORE);
         recognizedPropertyNames.add(CLUSTER_TRUST_STORE_PASSWORD);
+        recognizedPropertyNames.add(SCHEMA_MANAGEMENT_ENABLE);
 
 
         connectorType.setRecognizedConfigurationProperties(recognizedPropertyNames);
