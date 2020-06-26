@@ -35,11 +35,13 @@ public class AnalyticsModelingRestServices {
 	/**
 	 * Get databases available on the server for the user.
 	 * 
-	 * @param serverName of the server.
-	 * @param userId     of the user.
+	 * @param serverName	of the server.
+	 * @param userId		of the user.
+     * @param startFrom		starting element (used in paging through large result sets)
+     * @param pageSize		maximum number of results to return
 	 * @return list of databases for the requested server/user.
 	 */
-	public AnalyticsModelingOMASAPIResponse getDatabases(String serverName, String userId) {
+	public AnalyticsModelingOMASAPIResponse getDatabases(String serverName, String userId, Integer startFrom, Integer pageSize) {
 
 		String methodName = "getDatabases";
 		AnalyticsModelingOMASAPIResponse ret;
@@ -48,7 +50,7 @@ public class AnalyticsModelingRestServices {
 		try {
 			DatabasesResponse response = new DatabasesResponse();
 			List<ResponseContainerDatabase> databases = instanceHandler
-					.getDatabaseContextHandler(serverName, userId, methodName).getDatabases();
+					.getDatabaseContextHandler(serverName, userId, methodName).getDatabases(startFrom, pageSize);
 			response.setDatabasesList(databases);
 			ret = response;
 		} catch (AnalyticsModelingCheckedException e) {
@@ -65,9 +67,12 @@ public class AnalyticsModelingRestServices {
 	 * @param serverName     of the request.
 	 * @param userId         of the request.
 	 * @param dataSourceGuid of the requested database.
+     * @param startFrom		 starting element (used in paging through large result sets)
+     * @param pageSize		 maximum number of results to return
 	 * @return list of schemas for the requested database.
 	 */
-	public AnalyticsModelingOMASAPIResponse getSchemas(String serverName, String userId, String dataSourceGuid) {
+	public AnalyticsModelingOMASAPIResponse getSchemas(String serverName, String userId, String dataSourceGuid,
+			Integer startFrom, Integer pageSize) {
 
 		String methodName = "getSchemas";
 		AnalyticsModelingOMASAPIResponse ret;
@@ -76,7 +81,9 @@ public class AnalyticsModelingRestServices {
 		try {
 			SchemasResponse response = new SchemasResponse();
 			List<ResponseContainerDatabaseSchema> databasesSchemas = instanceHandler
-					.getDatabaseContextHandler(serverName, userId, methodName).getDatabaseSchemas(dataSourceGuid);
+					.getDatabaseContextHandler(serverName, userId, methodName)
+					.getDatabaseSchemas(dataSourceGuid, startFrom, pageSize);
+			
 			response.setSchemaList(databasesSchemas);
 			ret = response;
 		} catch (AnalyticsModelingCheckedException e) {
