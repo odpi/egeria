@@ -39,11 +39,6 @@ class VisGraph  extends mixinBehaviors([ItemViewBehavior], PolymerElement) {
              flex-grow: 1;
           }
           
-          .flex-center-align {
-            /*@apply(--layout-horizontal);*/
-            /*@apply(--layout-center-center);*/
-          }
-          
           .vis-tooltip {
             position: absolute;
             visibility: hidden;
@@ -76,11 +71,11 @@ class VisGraph  extends mixinBehaviors([ItemViewBehavior], PolymerElement) {
           
         </div>
         <paper-dialog id="visDialog" class="vis-dialog">
-          <asset-tools guid="[[node.id]]"></asset-tools>
-          <props-table items="[[_attributes(node.properties)]]"  title="[[node.label]]" with-row-stripes ></props-table>
           <div>
+            <asset-tools guid="[[node.id]]" style="display: inline-flex"></asset-tools>
             <paper-button dialog-confirm style="float: right">Close</paper-button>
           </div>
+          <props-table items="[[_attributes(node.properties)]]"  title="[[node.type]]: [[node.displayName]]" with-row-stripes ></props-table>
         </paper-dialog>
      
     `;
