@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.assetlineage.handlers;
 import org.odpi.openmetadata.accessservices.assetlineage.ffdc.exception.AssetLineageException;
 import org.odpi.openmetadata.accessservices.assetlineage.model.AssetContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
+import org.odpi.openmetadata.accessservices.assetlineage.util.SuperTypesRetriever;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
@@ -31,6 +32,7 @@ public class ProcessContextHandler {
     private final InvalidParameterHandler invalidParameterHandler;
     private final List<String> supportedZones;
     private final HandlerHelper handlerHelper;
+    private  SuperTypesRetriever superTypesRetriever;
 
     private AssetContext graph;
 
@@ -54,6 +56,7 @@ public class ProcessContextHandler {
         this.handlerHelper = new HandlerHelper(invalidParameterHandler, repositoryHelper, repositoryHandler, lineageClassificationTypes);
         this.assetContextHandler = assetContextHandler;
         this.supportedZones = supportedZones;
+        this.superTypesRetriever = new SuperTypesRetriever(repositoryHelper);
     }
 
     /**
@@ -132,12 +135,12 @@ public class ProcessContextHandler {
         List<Relationship> relationships = handlerHelper.getRelationshipsByType(userId, startEntity.getGUID(), relationshipType, startEntityType);
         List<EntityDetail> entityDetails = new ArrayList<>();
         for (Relationship relationship : relationships) {
-            EntityDetail endEntity = handlerHelper.buildGraphEdgeByRelationship(userId, startEntity, relationship, graph, false);
+            EntityDetail endEntity = handlerHelper.buildGraphEdgeByRelationship(userId, startEntity, relationship, graph);
             if (endEntity == null) return Collections.emptyList();
 
-            if (endEntity.getType().getTypeDefName().equals(RELATIONAL_COLUMN)) {
+            Set<String> superTypes = superTypesRetriever.getSuperTypes(endEntity.getType().getTypeDefName());
+            if(superTypes.contains(TABULAR_COLUMN)){
                 AssetContext assetContext = assetContextHandler.getAssetContext(userId, endEntity);
-                Map<String, Set<GraphContext>> neighbors = assetContext.getNeighbors();
                 graph.getGraphContexts().addAll(assetContext.getGraphContexts());
                 graph.getNeighbors().putAll(assetContext.getNeighbors());
             }

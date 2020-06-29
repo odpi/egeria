@@ -47,10 +47,9 @@
             <artifactId>swagger-annotations</artifactId>
         </dependency>
 
-
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>asset-lineage-api</artifactId>
+            <artifactId>ffdc-services</artifactId>
         </dependency>
 
     </dependencies>

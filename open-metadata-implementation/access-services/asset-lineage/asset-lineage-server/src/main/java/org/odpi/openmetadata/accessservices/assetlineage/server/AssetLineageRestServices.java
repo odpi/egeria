@@ -21,6 +21,9 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.GLOSSARY_TERM;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PROCESS;
+
 /**
  * The AssetLineageRESTServices provides the server-side implementation of the Asset Lineage Open Metadata
  * Assess Service (OMAS).  This interface provides connections to assets and APIs for adding feedback
@@ -44,48 +47,53 @@ public class AssetLineageRestServices {
      * Scan the cohort for Glossary Terms available
      * Publish the context for each Glossary Term on OMAS out Topic
      *
-     * @param serverName  name of server instance to call
-     * @param userId      the name of the calling user
+     * @param serverName name of server instance to call
+     * @param userId     the name of the calling user
      * @return a list of unique identifiers (guids) of the available Glossary Terms as a response
      */
-    public GUIDListResponse scanGlossaryTerms(String serverName, String userId) {
+    public GUIDListResponse initialLoadByEntityType(String serverName, String userId, String entityType) {
         GUIDListResponse response = new GUIDListResponse();
 
-        String methodName = "getProcessContext";
+        String methodName = "initialLoadByRelationshipType";
         try {
             GlossaryHandler glossaryHandler = instanceHandler.getGlossaryHandler(userId, serverName, methodName);
-            List<EntityDetail> glossaryTerms = glossaryHandler.getGlossaryTerms(userId);
-            if (CollectionUtils.isEmpty(glossaryTerms)) {
+            List<EntityDetail> entitiesByTypeName = glossaryHandler.getEntitiesByTypeName(userId, entityType);
+            if (CollectionUtils.isEmpty(entitiesByTypeName)) {
                 return response;
             }
 
             AssetLineagePublisher publisher = instanceHandler.getAssetLineagePublisher(userId, serverName, methodName);
-
             if (publisher == null) {
                 log.debug("Asset Lineage Publisher is not available. " +
                         "The context event for Glossary Terms could not be published on the Asset Lineage OMAS Out Topic.");
                 return response;
             }
+            publishEntitiesContext(entityType, entitiesByTypeName, publisher);
 
-            publishGlossaryTerms(glossaryTerms, publisher);
-            response.setGUIDs(glossaryTerms.stream().map(InstanceHeader::getGUID).collect(Collectors.toList()));
+            response.setGUIDs(entitiesByTypeName.stream().map(InstanceHeader::getGUID).collect(Collectors.toList()));
         } catch (InvalidParameterException e) {
             restExceptionHandler.captureInvalidParameterException(response, e);
         } catch (UserNotAuthorizedException e) {
             restExceptionHandler.captureUserNotAuthorizedException(response, e);
         } catch (PropertyServerException e) {
-           restExceptionHandler.capturePropertyServerException(response, e);
+            restExceptionHandler.capturePropertyServerException(response, e);
         }
 
         return response;
     }
 
-    private void publishGlossaryTerms(List<EntityDetail> glossaryTerms, AssetLineagePublisher publisher) {
-        glossaryTerms.parallelStream().forEach(glossaryTerm -> {
+    private void publishEntitiesContext(String typeName, List<EntityDetail> entitiesByType, AssetLineagePublisher publisher) {
+        entitiesByType.forEach(entityDetail -> {
             try {
-                publisher.publishAssetContext(glossaryTerm);
+                if(GLOSSARY_TERM.equals(typeName)){
+                    publisher.publishGlossaryContext(entityDetail);
+                } else if (PROCESS.equals(typeName)){
+                    publisher.publishProcessContext(entityDetail);
+                } else {
+                    publisher.publishAssetContext(entityDetail);
+                }
             } catch (OCFCheckedExceptionBase | JsonProcessingException ocfCheckedExceptionBase) {
-               log.error("The context for Glossary Term with guid = {} can not be published.", glossaryTerm.getGUID());
+                log.error("The context for Glossary Term with guid = {} can not be published.", entityDetail.getGUID());
             }
         });
     }

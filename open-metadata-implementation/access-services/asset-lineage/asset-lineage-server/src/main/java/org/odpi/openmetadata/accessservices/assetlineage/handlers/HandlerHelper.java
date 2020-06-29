@@ -174,7 +174,7 @@ public class HandlerHelper {
      * @throws UserNotAuthorizedException the user not authorized exception
      */
     EntityDetail buildGraphEdgeByRelationship(String userId, EntityDetail startEntity,
-                                              Relationship relationship, AssetContext graph, boolean changeDirection) throws OCFCheckedExceptionBase {
+                                              Relationship relationship, AssetContext graph) throws OCFCheckedExceptionBase {
 
         Converter converter = new Converter(repositoryHelper);
         EntityDetail endEntity = getEntityAtTheEnd(userId, startEntity.getGUID(), relationship);
@@ -183,7 +183,8 @@ public class HandlerHelper {
 
         LineageEntity startVertex;
         LineageEntity endVertex;
-        if (changeDirection) {
+
+        if(startEntity.getGUID().equals(relationship.getEntityTwoProxy().getGUID())){
             startVertex = converter.createLineageEntity(endEntity);
             endVertex = converter.createLineageEntity(startEntity);
         } else {
@@ -194,7 +195,8 @@ public class HandlerHelper {
 
         GraphContext graphContext = new GraphContext(relationship.getType().getTypeDefName(), relationship.getGUID(), startVertex, endVertex);
 
-        if (graph.getGraphContexts().stream().noneMatch(e -> e.getRelationshipGuid().equals(graphContext.getRelationshipGuid()))) {
+        if (graph.getGraphContexts().stream().noneMatch(e -> e.getRelationshipGuid().equals(graphContext.getRelationshipGuid()))
+                || !graph.getNeighbors().containsKey(graphContext.getRelationshipGuid())) {
             graph.addVertex(startVertex);
             graph.addVertex(endVertex);
             graph.addGraphContext(graphContext);

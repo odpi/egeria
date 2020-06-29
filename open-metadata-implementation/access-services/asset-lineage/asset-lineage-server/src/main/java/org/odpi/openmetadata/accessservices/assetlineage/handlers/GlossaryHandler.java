@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetlineage.handlers;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.odpi.openmetadata.accessservices.assetlineage.model.AssetContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
@@ -49,18 +50,17 @@ public class GlossaryHandler {
     }
 
     /**
-     *
      * @param userId the user id
      * @return the existing list of glossary terms available in the repository
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException something went wrong with the REST call stack.
+     * @throws PropertyServerException    something went wrong with the REST call stack.
      */
-    public List<EntityDetail> getGlossaryTerms(String userId) throws UserNotAuthorizedException, PropertyServerException {
+    public List<EntityDetail> getEntitiesByTypeName(String userId, String entityType) throws UserNotAuthorizedException, PropertyServerException {
         final String methodName = "getGlossaryTerms";
 
-        String glossaryTermTypeGuid = handlerHelper.getTypeByName(userId, GLOSSARY_TERM);
+        String typeDefGUID = handlerHelper.getTypeByName(userId, entityType);
 
-        return repositoryHandler.getEntitiesByType(userId, glossaryTermTypeGuid, 0, 0, methodName);
+        return repositoryHandler.getEntitiesByType(userId, typeDefGUID, 0, 0, methodName);
     }
 
     /**
@@ -91,46 +91,64 @@ public class GlossaryHandler {
             getGlossary(userId, vertex.getGuid(), vertex.getTypeDefName());
 
         return graph.getNeighbors();
+    }
 
+    public Map<String, Set<GraphContext>> buildGlossaryTermContext(String userId, EntityDetail glossaryTerm) throws OCFCheckedExceptionBase {
+        String methodName = "buildGlossaryTermContext";
+        invalidParameterHandler.validateGUID(glossaryTerm.getGUID(), GUID_PARAMETER, methodName);
+
+        AssetContext glossaryContext = new AssetContext();
+
+        List<Relationship> semanticAssignments = getSemanticAssignments(userId, glossaryTerm.getGUID(), glossaryTerm.getType().getTypeDefName(), methodName);
+        if (CollectionUtils.isEmpty(semanticAssignments)) {
+           return null;
+        }
+
+        addSemanticAssignmentToContext(userId, glossaryTerm, glossaryContext, semanticAssignments.toArray(new Relationship[0]));
+        handlerHelper.addLineageClassificationToContext(glossaryTerm, glossaryContext);
+
+        return glossaryContext.getNeighbors();
     }
 
     /**
-     * Retrieves semantic assignments for an asset
+     * Retrieves semantic assignments for a Glossary Term
      *
-     * @param userId      userId
-     * @param assetGuid   guid of the asset that has been created.
-     * @param typeDefName the typeName of the asset.
+     * @param userId           userId
+     * @param glossaryTermGUID guid of the glossary term
+     * @param typeDefName      the typeName of the asset.
      */
-    private void getGlossary(String userId, String assetGuid, String typeDefName) throws OCFCheckedExceptionBase {
+    private void getGlossary(String userId, String glossaryTermGUID, String typeDefName) throws OCFCheckedExceptionBase {
         final String methodName = "getGlossary";
 
+        EntityDetail glossaryTerm = repositoryHandler.getEntityByGUID(userId, glossaryTermGUID, "guid", typeDefName, methodName);
+        handlerHelper.addLineageClassificationToContext(glossaryTerm, graph);
+
+        List<Relationship> semanticAssignments = getSemanticAssignments(userId, glossaryTermGUID, typeDefName, methodName);
+        if (semanticAssignments == null) return;
+
+        addSemanticAssignmentToContext(userId, glossaryTerm,graph , semanticAssignments.toArray(new Relationship[0]));
+    }
+
+    public List<Relationship> getSemanticAssignments(String userId, String glossaryTermGUID, String typeDefName, String methodName) throws UserNotAuthorizedException, PropertyServerException {
         String typeGuid = handlerHelper.getTypeByName(userId, SEMANTIC_ASSIGNMENT);
-        List<Relationship> semanticAssignments = repositoryHandler.getRelationshipsByType(userId,
-                assetGuid,
+
+        return repositoryHandler.getRelationshipsByType(userId,
+                glossaryTermGUID,
                 typeDefName,
                 typeGuid,
                 SEMANTIC_ASSIGNMENT,
                 methodName);
-
-        if (semanticAssignments == null)
-            return;
-
-        EntityDetail glossaryTerm = repositoryHandler.getEntityByGUID(userId, assetGuid, "guid", typeDefName, methodName);
-        handlerHelper.addLineageClassificationToContext(glossaryTerm, graph);
-        addSemanticAssignmentToContext(userId, glossaryTerm, semanticAssignments.toArray(new Relationship[0]));
     }
 
     /**
      * Add semantic assignments for an asset to the Context structure
-     *
-     * @param userId              userId
+     *  @param userId              userId
+     * @param assetContext
      * @param semanticAssignments array of the semantic assignments
      */
-    private void addSemanticAssignmentToContext(String userId, EntityDetail glossaryTerm, Relationship... semanticAssignments) throws OCFCheckedExceptionBase {
+    private void addSemanticAssignmentToContext(String userId, EntityDetail glossaryTerm, AssetContext assetContext, Relationship... semanticAssignments) throws OCFCheckedExceptionBase {
         for (Relationship relationship : semanticAssignments) {
-            handlerHelper.buildGraphEdgeByRelationship(userId, glossaryTerm, relationship, graph, false);
+            handlerHelper.buildGraphEdgeByRelationship(userId, glossaryTerm, relationship, assetContext);
         }
     }
-
 }
-

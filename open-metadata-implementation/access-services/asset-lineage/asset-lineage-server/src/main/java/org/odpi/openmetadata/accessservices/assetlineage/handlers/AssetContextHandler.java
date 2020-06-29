@@ -90,10 +90,15 @@ public class AssetContextHandler {
             addContextForSchemaAttributeType(userId, entityDetail, typeDefName);
         }
 
-        List<EntityDetail> tableTypeEntities = buildGraphByRelationshipType(userId, entityDetail, ATTRIBUTE_FOR_SCHEMA, typeDefName, false);
+        List<Relationship> relationships = handlerHelper.getRelationshipsByType(userId, entityDetail.getGUID(), LINEAGE_MAPPING, typeDefName);
+        for (Relationship relationship : relationships) {
+            handlerHelper.buildGraphEdgeByRelationship(userId, entityDetail, relationship, graph);
+        }
+
+        List<EntityDetail> tableTypeEntities = buildGraphByRelationshipType(userId, entityDetail, ATTRIBUTE_FOR_SCHEMA, typeDefName);
 
         if (tableTypeEntities.isEmpty()) {
-            tableTypeEntities = buildGraphByRelationshipType(userId, entityDetail, NESTED_SCHEMA_ATTRIBUTE, typeDefName, false);
+            tableTypeEntities = buildGraphByRelationshipType(userId, entityDetail, NESTED_SCHEMA_ATTRIBUTE, typeDefName);
         }
         for (EntityDetail schemaTypeEntity : tableTypeEntities) {
             if (isComplexSchemaType(userId, schemaTypeEntity.getType().getTypeDefName())) {
@@ -108,7 +113,7 @@ public class AssetContextHandler {
     }
 
     private List<EntityDetail> buildGraphByRelationshipType(String userId, EntityDetail startEntity,
-                                                            String relationshipType, String typeDefName, boolean changeDirection) throws OCFCheckedExceptionBase {
+                                                            String relationshipType, String typeDefName) throws OCFCheckedExceptionBase {
         handlerHelper.addLineageClassificationToContext(startEntity, graph);
 
         List<Relationship> relationships = handlerHelper.getRelationshipsByType(userId, startEntity.getGUID(), relationshipType, typeDefName);
@@ -121,7 +126,7 @@ public class AssetContextHandler {
         List<EntityDetail> entityDetails = new ArrayList<>();
         for (Relationship relationship : relationships) {
 
-            EntityDetail endEntity = handlerHelper.buildGraphEdgeByRelationship(userId, startEntity, relationship, graph, changeDirection);
+            EntityDetail endEntity = handlerHelper.buildGraphEdgeByRelationship(userId, startEntity, relationship, graph);
             if (endEntity == null) return Collections.emptyList();
 
             entityDetails.add(endEntity);
@@ -130,7 +135,7 @@ public class AssetContextHandler {
     }
 
     private void setAssetDetails(String userId, EntityDetail startEntity) throws OCFCheckedExceptionBase {
-        List<EntityDetail> assetEntity = buildGraphByRelationshipType(userId, startEntity, ASSET_SCHEMA_TYPE, startEntity.getType().getTypeDefName(), false);
+        List<EntityDetail> assetEntity = buildGraphByRelationshipType(userId, startEntity, ASSET_SCHEMA_TYPE, startEntity.getType().getTypeDefName());
         Optional<EntityDetail> first = assetEntity.stream().findFirst();
         if (first.isPresent()) {
             buildAsset(userId, first.get());
@@ -142,9 +147,9 @@ public class AssetContextHandler {
         final String typeDefName = dataSet.getType().getTypeDefName();
         List<EntityDetail> entityDetails;
         if (typeDefName.equals(DATA_FILE)) {
-            entityDetails = buildGraphByRelationshipType(userId, dataSet, NESTED_FILE, typeDefName, false);
+            entityDetails = buildGraphByRelationshipType(userId, dataSet, NESTED_FILE, typeDefName);
         } else {
-            entityDetails = buildGraphByRelationshipType(userId, dataSet, DATA_CONTENT_FOR_DATA_SET, typeDefName, false);
+            entityDetails = buildGraphByRelationshipType(userId, dataSet, DATA_CONTENT_FOR_DATA_SET, typeDefName);
         }
 
         if (CollectionUtils.isEmpty(entityDetails)) {
@@ -168,11 +173,11 @@ public class AssetContextHandler {
 
     private void addContextForConnections(String userId, EntityDetail entityDetail) throws OCFCheckedExceptionBase {
 
-        List<EntityDetail> connections = buildGraphByRelationshipType(userId, entityDetail, CONNECTION_TO_ASSET, DATABASE, false);
+        List<EntityDetail> connections = buildGraphByRelationshipType(userId, entityDetail, CONNECTION_TO_ASSET, DATABASE);
 
         if (!connections.isEmpty()) {
             for (EntityDetail entity : connections) {
-                buildGraphByRelationshipType(userId, entity, CONNECTION_ENDPOINT, CONNECTION, false);
+                buildGraphByRelationshipType(userId, entity, CONNECTION_ENDPOINT, CONNECTION);
             }
         }
     }
@@ -180,14 +185,14 @@ public class AssetContextHandler {
     private void addContextFolderHierarchy(String userId, EntityDetail entityDetail) throws OCFCheckedExceptionBase {
 
         List<EntityDetail> connections = buildGraphByRelationshipType(userId, entityDetail,
-                CONNECTION_TO_ASSET, entityDetail.getType().getTypeDefName(), false);
+                CONNECTION_TO_ASSET, entityDetail.getType().getTypeDefName());
 
         Optional<EntityDetail> connection = connections.stream().findFirst();
         if (connection.isPresent()) {
-            buildGraphByRelationshipType(userId, entityDetail, CONNECTION_ENDPOINT, CONNECTION, false);
+            buildGraphByRelationshipType(userId, entityDetail, CONNECTION_ENDPOINT, CONNECTION);
         }
 
-        Optional<EntityDetail> nestedFolder = buildGraphByRelationshipType(userId, entityDetail, FOLDER_HIERARCHY, FILE_FOLDER, false)
+        Optional<EntityDetail> nestedFolder = buildGraphByRelationshipType(userId, entityDetail, FOLDER_HIERARCHY, FILE_FOLDER)
                 .stream()
                 .findFirst();
 
@@ -197,7 +202,7 @@ public class AssetContextHandler {
     }
 
     private void addContextForSchemaAttributeType(String userId, EntityDetail entityDetail, String typeDefName) throws OCFCheckedExceptionBase {
-        List<EntityDetail> schemaAttributeTypes = buildGraphByRelationshipType(userId, entityDetail, ASSET_SCHEMA_TYPE, typeDefName, true);
+        List<EntityDetail> schemaAttributeTypes = buildGraphByRelationshipType(userId, entityDetail, ASSET_SCHEMA_TYPE, typeDefName);
 
         if (schemaAttributeTypes.isEmpty()) {
             addColumns(userId, NESTED_SCHEMA_ATTRIBUTE, typeDefName, entityDetail);
@@ -208,7 +213,7 @@ public class AssetContextHandler {
 
     private void addColumns(String userId, String relationshipType, String typeDefName, EntityDetail... entities) throws OCFCheckedExceptionBase {
         for (EntityDetail entityDetail : entities) {
-            buildGraphByRelationshipType(userId, entityDetail, relationshipType, typeDefName, true);
+            buildGraphByRelationshipType(userId, entityDetail, relationshipType, typeDefName);
         }
     }
 
