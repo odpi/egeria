@@ -10,6 +10,10 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 public class QueryUtils {
+    /**
+     * Convert param value to URL UTF-8 encode
+     * @return encoded param value
+     * */
     public static String encodeParams(String methodName, String paramName, String param) throws InvalidParameterException {
         try {
             param = URLEncoder.encode(param, "UTF-8");
