@@ -38,7 +38,7 @@ public class SubjectAreaGraphClient implements SubjectAreaGraph, Parametrization
         final String methodName = "getGraph";;
 
         String urlTemplate = BASE_URL + "/%s" + createGraphQuery(request).toString();
-        SubjectAreaOMASAPIResponse<Graph> response = client.getByIdRESTCall(userId, guid, methodName, getType(), urlTemplate);
+        SubjectAreaOMASAPIResponse<Graph> response = client.getByIdRESTCall(userId, guid, methodName, getParametrizedType(), urlTemplate);
         return response.getHead();
     }
 

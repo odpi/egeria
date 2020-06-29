@@ -27,7 +27,7 @@ public abstract class AbstractSubjectArea<T> implements SubjectAreaClient<T>, Pa
                                                           UserNotAuthorizedException
     {
         final String urlTemplate = BASE_URL + "/%s";
-        SubjectAreaOMASAPIResponse<T> response = client.getByIdRESTCall(userId, guid, getMethodInfo("getByGUID"),getType(), urlTemplate);
+        SubjectAreaOMASAPIResponse<T> response = client.getByIdRESTCall(userId, guid, getMethodInfo("getByGUID"), getParametrizedType(), urlTemplate);
         return response.getHead();
     }
 
@@ -36,7 +36,7 @@ public abstract class AbstractSubjectArea<T> implements SubjectAreaClient<T>, Pa
                                                       PropertyServerException,
                                                       UserNotAuthorizedException
     {
-        SubjectAreaOMASAPIResponse<T> response = client.postRESTCall(userId, getMethodInfo("create"), BASE_URL, getType(), supplied);
+        SubjectAreaOMASAPIResponse<T> response = client.postRESTCall(userId, getMethodInfo("create"), BASE_URL, getParametrizedType(), supplied);
         return response.getHead();
     }
 
@@ -45,7 +45,7 @@ public abstract class AbstractSubjectArea<T> implements SubjectAreaClient<T>, Pa
                                                                        PropertyServerException,
                                                                        UserNotAuthorizedException
     {
-        SubjectAreaOMASAPIResponse<T> response = client.findRESTCall(userId, getMethodInfo("find"), BASE_URL, getType(), findRequest);
+        SubjectAreaOMASAPIResponse<T> response = client.findRESTCall(userId, getMethodInfo("find"), BASE_URL, getParametrizedType(), findRequest);
         return response.getResult();
     }
 
@@ -56,7 +56,7 @@ public abstract class AbstractSubjectArea<T> implements SubjectAreaClient<T>, Pa
     {
         final String urlTemplate = BASE_URL + "/%s?isReplace=" + Boolean.toString(isReplace);
         String methodInfo = getMethodInfo("update(isReplace=" + isReplace + ")");
-        SubjectAreaOMASAPIResponse<T> response = client.putRESTCall(userId, guid, methodInfo, urlTemplate, getType(), supplied);
+        SubjectAreaOMASAPIResponse<T> response = client.putRESTCall(userId, guid, methodInfo, urlTemplate, getParametrizedType(), supplied);
         return response.getHead();
     }
 
@@ -66,7 +66,7 @@ public abstract class AbstractSubjectArea<T> implements SubjectAreaClient<T>, Pa
                                                                            UserNotAuthorizedException
     {
         final String urlTemplate = BASE_URL + "/%s?isPurge=" + Boolean.toString(isPurge);
-        client.deleteRESTCall(userId, guid, getMethodInfo("delete(isPurge=" + isPurge + ")"), getType(), urlTemplate);
+        client.deleteRESTCall(userId, guid, getMethodInfo("delete(isPurge=" + isPurge + ")"), getParametrizedType(), urlTemplate);
     }
 
     @Override
@@ -75,7 +75,7 @@ public abstract class AbstractSubjectArea<T> implements SubjectAreaClient<T>, Pa
                                                         UserNotAuthorizedException
     {
         final String urlTemplate = BASE_URL + "/%s";
-        SubjectAreaOMASAPIResponse<T> response = client.restoreRESTCall(userId, guid, getMethodInfo("restore"), getType(), urlTemplate);
+        SubjectAreaOMASAPIResponse<T> response = client.restoreRESTCall(userId, guid, getMethodInfo("restore"), getParametrizedType(), urlTemplate);
         return response.getHead();
     }
 
