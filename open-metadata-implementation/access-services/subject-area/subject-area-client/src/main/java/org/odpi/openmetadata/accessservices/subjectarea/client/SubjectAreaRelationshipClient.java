@@ -7,8 +7,14 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph
 
 import java.util.List;
 
+/**
+ * Client class for subject area relationships {@link Line}
+ * */
 public interface SubjectAreaRelationshipClient<L extends Line>  extends SubjectAreaClient<L> {
 
+    /**
+     * @throws UnsupportedOperationException - this method is until not supported
+     **/
     @Override
     List<L> find(String userId, FindRequest findRequest) throws UnsupportedOperationException;
 }
