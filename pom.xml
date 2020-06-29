@@ -210,6 +210,8 @@
         <nexus-staging-maven-plugin>1.6.8</nexus-staging-maven-plugin>
         <license-plugin.version>2.0.0</license-plugin.version>
         <springdoc-plugin.version>1.0</springdoc-plugin.version>
+        <failsafe-plugin.version>3.0.0-M5</failsafe-plugin.version>
+        <git-commit-plugin.version>4.0.0</git-commit-plugin.version>
 
         <!-- Configuration of sonar code scanning-->
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
@@ -2610,7 +2612,7 @@
                 <plugin>
                     <groupId>pl.project13.maven</groupId>
                     <artifactId>git-commit-id-plugin</artifactId>
-                    <version>4.0.0</version>
+                    <version>${git-commit-plugin.version}</version>
                 </plugin>
 
                 <plugin>
@@ -2622,7 +2624,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-failsafe-plugin</artifactId>
-                    <version>3.0.0-M5</version>
+                    <version>${failsafe-plugin.version}</version>
                 </plugin>
 
             </plugins>
