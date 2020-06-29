@@ -142,13 +142,21 @@ public class ProcessContextHandler {
             if(superTypes.contains(TABULAR_COLUMN)){
                 AssetContext assetContext = assetContextHandler.getAssetContext(userId, endEntity);
                 graph.getGraphContexts().addAll(assetContext.getGraphContexts());
-                graph.getNeighbors().putAll(assetContext.getNeighbors());
+                assetContext.getNeighbors().forEach((k, v) -> mergeGraphNeighbors(k, v));
             }
 
             entityDetails.add(endEntity);
         }
 
         return entityDetails;
+    }
+
+    private void mergeGraphNeighbors(String k, Set<GraphContext> v) {
+        if(graph.getNeighbors().containsKey(k)) {
+            graph.getNeighbors().get(k).addAll(v);
+        } else {
+            graph.getNeighbors().put(k, v);
+        }
     }
 
     /**
