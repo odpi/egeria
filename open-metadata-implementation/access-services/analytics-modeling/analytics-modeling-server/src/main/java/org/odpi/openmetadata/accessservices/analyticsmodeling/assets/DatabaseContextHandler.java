@@ -22,6 +22,8 @@ import org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.exceptions.An
 import org.odpi.openmetadata.accessservices.analyticsmodeling.model.*;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.model.module.*;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.utils.Constants;
+import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -49,10 +51,13 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 public class DatabaseContextHandler {
 
 
+	public static final String DATA_SOURCE_GUID = "dataSourceGUID";
 	private OMEntityDao omEntityDao;
+	private InvalidParameterHandler invalidParameterHandler;
 
-	public DatabaseContextHandler(OMEntityDao omEntityDao) {
+	public DatabaseContextHandler(OMEntityDao omEntityDao, InvalidParameterHandler invalidParameterHandler) {
 		this.omEntityDao = omEntityDao;
+		this.invalidParameterHandler = invalidParameterHandler;
 	}
 	
 	/**
@@ -120,11 +125,15 @@ public class DatabaseContextHandler {
      * @param pageSize	maximum number of results to return
 	 * @return list of schemas attributes.
 	 * @throws AnalyticsModelingCheckedException in case of an repository operation failure.
+	 * @throws InvalidParameterException if passed GUID is invalid.
 	 */
 	public List<ResponseContainerDatabaseSchema> getDatabaseSchemas(String guidDataSource, Integer startFrom, Integer pageSize) 
-			throws AnalyticsModelingCheckedException {
+			throws AnalyticsModelingCheckedException, InvalidParameterException {
 
-		setContext("getDatabaseSchemas");
+		String context = "getDatabaseSchemas";
+		setContext(context);
+		
+		invalidParameterHandler.validateGUID(guidDataSource, DATA_SOURCE_GUID, context);
 
 		EntityDetail db = omEntityDao.getEntityByGuid(guidDataSource);
 		String catalogName = getEntityStringProperty(db, Constants.ATTRIBUTE_NAME);
@@ -177,10 +186,14 @@ public class DatabaseContextHandler {
 	 * @param schema         name.
 	 * @return list of table names.
 	 * @throws AnalyticsModelingCheckedException if failed
+	 * @throws InvalidParameterException if passed GUID is invalid.
 	 */
-	public ResponseContainerSchemaTables getSchemaTables(String guidDataSource, String schema) throws AnalyticsModelingCheckedException {
+	public ResponseContainerSchemaTables getSchemaTables(String guidDataSource, String schema) throws AnalyticsModelingCheckedException, InvalidParameterException {
 
-		setContext("getSchemaTables");
+		String context = "getSchemaTables";
+		setContext(context);
+
+		invalidParameterHandler.validateGUID(guidDataSource, DATA_SOURCE_GUID, context);
 
 		ResponseContainerSchemaTables ret = new ResponseContainerSchemaTables();
 
@@ -233,10 +246,14 @@ public class DatabaseContextHandler {
 	 * @param schema of the module
 	 * @return module built for defined schema
 	 * @throws AnalyticsModelingCheckedException in case of an repository operation failure.
+	 * @throws InvalidParameterException if passed GUID is invalid.
 	 */
-	public ResponseContainerModule getModule(String databaseGuid, String catalog, String schema) throws AnalyticsModelingCheckedException {
+	public ResponseContainerModule getModule(String databaseGuid, String catalog, String schema) 
+			throws AnalyticsModelingCheckedException, InvalidParameterException {
 
-		setContext("getModule");
+		String context = "getModule";
+		invalidParameterHandler.validateGUID(databaseGuid, DATA_SOURCE_GUID, context);
+		setContext(context);
 
 		ResponseContainerModule ret = new ResponseContainerModule();
 		ret.setId(catalog + "_" + schema);
