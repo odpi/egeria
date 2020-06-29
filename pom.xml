@@ -193,7 +193,6 @@
         <maven-pmd.version>3.13.0</maven-pmd.version>
         <owasp.version>5.3.2</owasp.version>
         <spotbugs-maven.version>4.0.4</spotbugs-maven.version>
-        <spotbugs.version>4.0.6</spotbugs.version>
         <maven-download.version>1.6.0</maven-download.version>
         <maven-antrun.version>3.0.0</maven-antrun.version>
         <spotify-docker-plugin.version>1.4.13</spotify-docker-plugin.version>
@@ -2423,6 +2422,7 @@
             <plugins>
 
                 <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>${maven-compiler.version}</version>
                 </plugin>
@@ -2619,6 +2619,12 @@
                     <version>${springdoc-plugin.version}</version>
                 </plugin>
 
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-failsafe-plugin</artifactId>
+                    <version>3.0.0-M5</version>
+                </plugin>
+
             </plugins>
 
         </pluginManagement>
@@ -2640,6 +2646,7 @@
         <!-- Default compiler options - enable additional lint checks -->
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
                     <compilerArgument>-Xlint:all</compilerArgument>
@@ -2959,7 +2966,7 @@
                             <dependency>
                                 <groupId>com.github.spotbugs</groupId>
                                 <artifactId>spotbugs</artifactId>
-                                <version>${spotbugs.version}</version>
+                                <version>${spotbugs-maven.version}</version>
                             </dependency>
                         </dependencies>
                         <configuration>
