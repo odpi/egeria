@@ -63,7 +63,10 @@ public class SubjectAreaLine implements SubjectAreaRelationship {
                     | IllegalAccessException
                     | InstantiationException
                     | InvocationTargetException e) {
-                e.printStackTrace();
+                throw new ExceptionInInitializerError(
+                        "During initialization SubjectAreaLine an error has occurred - "
+                                + e.getMessage()
+                );
             }
         }
     }
@@ -358,6 +361,9 @@ public class SubjectAreaLine implements SubjectAreaRelationship {
      * */
     @SuppressWarnings("unchecked")
     public <T extends Line> SubjectAreaRelationshipClient<T> getClient(Class<T> clazz) {
-        return (SubjectAreaRelationshipClient<T>) cache.get(clazz);
+        if (cache.containsKey(clazz)) {
+            return (SubjectAreaRelationshipClient<T>) cache.get(clazz);
+        }
+        return null;
     }
 }

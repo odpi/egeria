@@ -55,7 +55,10 @@ public class SubjectAreaNode implements SubjectAreaCategory, SubjectAreaTerm, Su
                     | IllegalAccessException
                     | InstantiationException
                     | InvocationTargetException e) {
-                e.printStackTrace();
+                throw new ExceptionInInitializerError(
+                        "During initialization SubjectAreaNode an error has occurred - "
+                                + e.getMessage()
+                );
             }
         }
     }
@@ -103,6 +106,9 @@ public class SubjectAreaNode implements SubjectAreaCategory, SubjectAreaTerm, Su
      * */
     @SuppressWarnings("unchecked")
     public <T extends Node> SubjectAreaEntityClient<T> getClient(Class<T> clazz) {
-        return (SubjectAreaEntityClient<T>) cache.get(clazz);
+        if (cache.containsKey(clazz)) {
+            return (SubjectAreaEntityClient<T>) cache.get(clazz);
+        }
+        return null;
     }
 }
