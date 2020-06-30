@@ -184,7 +184,7 @@ const NodeSearch = (props) => {
                 return row;
               });
               setResults(nodeRows);
-              setCurrentPage(nodeRows.slice(1, pageSize));
+              setCurrentPage(nodeRows.slice(0, pageSize));
               setTotal(nodeRows.length);
             } else {
               // no results
