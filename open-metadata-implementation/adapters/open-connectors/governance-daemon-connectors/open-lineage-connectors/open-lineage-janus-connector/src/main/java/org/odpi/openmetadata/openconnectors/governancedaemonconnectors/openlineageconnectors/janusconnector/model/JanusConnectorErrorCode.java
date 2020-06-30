@@ -64,10 +64,14 @@ public enum JanusConnectorErrorCode {
             "The attempt to map an edge and a relationship failed because the properties could not be mapped for relationship with GUID {0} in {1} method of class {2} to open metadata repository {3}",
             "The system was unable to perform the relationship mapping request.",
             "Correct the caller's code and retry the request."),
-    BUFFER_GRAPH_NOT_STARTED( "OPEN-LINEAGE-SERVICES-014 ",
-            "The attempt to run the job to retrieve entities from the buffer Graph failed",
-            "The system was unable to retrieve the entities for copying to the main graph.",
-            "Correct the caller's code and retry the request.");
+    GRAPH_TRAVERSAL_EMPTY( "OPEN-LINEAGE-SERVICES-014 ",
+            "The attempt to start querying the graph failed.",
+            "The system was unable to retrieve opening of the transactions needed to perform actions to the graph.",
+            "Check your configuration properties for the graph"),
+    GRAPH_CLUSTER_INIT_FAILED( "OPEN-LINEAGE-SERVICES-015 ",
+            "The attempt to start a cluster for connecting to a remote gremlin server failed",
+            "The system was unable to open the connection to server.",
+            "Check your configuration properties for initializing the graph connection or check your gremlin server connectivity.");
 
     private static final Logger log = LoggerFactory.getLogger(JanusConnectorErrorCode.class);
     private String errorMessageId;

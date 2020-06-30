@@ -5,6 +5,9 @@ package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openline
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.governanceservers.openlineage.graph.LineageGraphProviderBase;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class LineageGraphConnectorProvider extends LineageGraphProviderBase {
 
     static final String CONNECTOR_TYPE_GUID = "e2f657d6-e5bd-11e9-81b4-2a2ae2dbcce4";

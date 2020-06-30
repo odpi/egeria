@@ -18,5 +18,6 @@ public enum VertexLabelsLineageGraph {
     TABULAR_SCHEMA_TYPE,
     TABULAR_COLUMN,
     TABULAR_COLUMN_TYPE,
-    FILE_FOLDER;
+    FILE_FOLDER,
+    NODE_LABEL_SUB_PROCESS
 }
