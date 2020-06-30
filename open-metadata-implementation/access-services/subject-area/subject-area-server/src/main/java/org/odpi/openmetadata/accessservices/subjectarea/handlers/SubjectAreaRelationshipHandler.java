@@ -43,6 +43,7 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
      * Create a Line (relationship), which is a link between two Nodes.
      * <p>
      *
+     * @param <L> {@link Line} type of object for response
      * @param restAPIName rest API name
      * @param userId      userId under which the request is performed
      * @param clazz       mapper Class
@@ -82,6 +83,7 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
     /**
      * Get a Line (relationship)
      *
+     * @param <L> {@link Line} type of object for response
      * @param restAPIName rest API name
      * @param userId      unique identifier for requesting user, under which the request is performed
      * @param clazz       mapper Class
@@ -117,7 +119,7 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
      /**
      * Update a relationship.
      * <p>
-     *
+     * @param <L> {@link Line} type of object for response
      * @param restAPIName rest API name
      * @param userId      userId under which the request is performed
      * @param lineGuid        unique identifier of the Line
@@ -199,6 +201,7 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
     /**
      * Delete a Line (relationship)
      *
+     * @param <L> {@link Line} type of object for response
      * @param restAPIName rest API name
      * @param userId      unique identifier for requesting user, under which the request is performed
      * @param clazz       mapper Class
@@ -242,6 +245,7 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
      * <p>
      * Restore allows the deleted relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
      *
+     * @param <L> {@link Line} type of object for response
      * @param restAPIName rest API name
      * @param userId      unique identifier for requesting user, under which the request is performed
      * @param clazz       mapper Class

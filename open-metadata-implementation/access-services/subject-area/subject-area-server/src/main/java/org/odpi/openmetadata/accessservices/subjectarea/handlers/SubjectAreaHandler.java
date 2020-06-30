@@ -121,6 +121,7 @@ public abstract class SubjectAreaHandler {
     /**
      * Get All relationships for entity
      *
+     * @param methodName         name of the method being called.
      * @param userId             unique identifier for requesting user, under which the request is performed
      * @param guid               guid
      * @param findRequest        {@link FindRequest}
@@ -148,6 +149,10 @@ public abstract class SubjectAreaHandler {
      * @param entityGuid              globally unique identifier
      * @param findRequest             {@link FindRequest}
      * @return {@code List<Line>}
+     *
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws SubjectAreaCheckedException standard exception Subject Area OMAS services
      */
     public List<Line> getAllLineForEntity(String restAPIName,
                                            String userId,
@@ -203,6 +208,11 @@ public abstract class SubjectAreaHandler {
      * @param methodName       method making the call
      * @param suppliedGlossary glossary to validate against.
      * @return SubjectAreaOMASAPIResponse this response is of type ResponseCategory.Category.Glossary if successful, otherwise there is an error response.
+     *
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws SubjectAreaCheckedException standard exception Subject Area OMAS services
      */
     protected String validateGlossarySummaryDuringCreation(String userId,
                                                            String methodName,

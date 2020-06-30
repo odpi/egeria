@@ -102,7 +102,7 @@ public class SubjectAreaUtils {
      * Convert a Category to a CategorySummary
      *
      * @param category to convert
-     * @param line
+     * @param line {@link Line}
      * @return CategorySummary
      */
     public static CategorySummary extractCategorySummaryFromCategory(Category category, Line line) {

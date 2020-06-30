@@ -868,10 +868,16 @@ public class OMRSAPIHelper {
     }
 
     /**
+     * @param relationshipTypeNames relationships type names for search
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param entityGuid   guid of the glossary to be deleted.
      * @param entityTypeName starting entity's type name
+     * @param methodName  name of the method being called.
      * @return empty content or not
+     *
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws SubjectAreaCheckedException standard exception Subject Area OMAS services
      */
     public boolean isEmptyContent(List<String> relationshipTypeNames,
                                   String userId,

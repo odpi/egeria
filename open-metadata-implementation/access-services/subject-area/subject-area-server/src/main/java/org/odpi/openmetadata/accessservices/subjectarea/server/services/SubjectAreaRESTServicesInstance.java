@@ -37,6 +37,7 @@ public class SubjectAreaRESTServicesInstance {
      * Create a Line (relationship), which is a link between two Nodes.
      * <p>
      *
+     * @param <L> {@link Line} type of object for response
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param restAPIName name of the rest API
      * @param userId     userId under which the request is performed
@@ -81,6 +82,7 @@ public class SubjectAreaRESTServicesInstance {
     /**
      * Get a Line (relationship)
      *
+     * @param <L> {@link Line} type of object for response
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param restAPIName name of the rest API
      * @param userId     unique identifier for requesting user, under which the request is performed
@@ -123,6 +125,7 @@ public class SubjectAreaRESTServicesInstance {
      * Update a relationship.
      * <p>
      *
+     * @param <L> {@link Line} type of object for response
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param restAPIName rest api name
      * @param userId     userId under which the request is performed
@@ -170,6 +173,7 @@ public class SubjectAreaRESTServicesInstance {
     /**
      * Delete a Line (relationship)
      *
+     * @param <L> {@link Line} type of object for response
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param restAPIName rest API name
      * @param userId     unique identifier for requesting user, under which the request is performed
@@ -218,6 +222,7 @@ public class SubjectAreaRESTServicesInstance {
      * <p>
      * Restore allows the deleted relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
      *
+     * @param <L> {@link Line} type of object for response
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param restAPIName name of the rest API
      * @param userId     unique identifier for requesting user, under which the request is performed
