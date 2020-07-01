@@ -16,6 +16,10 @@ import org.springframework.core.ParameterizedTypeReference;
 
 import java.util.List;
 
+/**
+ * @param <E> inherited from {@link Node} object type
+ * Abstract class for Subject Area client entity operations
+ */
 public abstract class AbstractSubjectAreaEntity<E extends Node> extends AbstractSubjectArea<E> implements SubjectAreaEntityClient<E> {
     protected AbstractSubjectAreaEntity(SubjectAreaRestClient client, String baseUrl) {
         super(client, baseUrl);
