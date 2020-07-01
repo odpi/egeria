@@ -9,18 +9,54 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 
 import java.util.List;
 
+/**
+ * @param <T> object type for supplied and return.
+ * Interface describing common methods to client working with Subject area resources.
+ */
 public interface SubjectAreaClient<T> {
 
     FindRequest EMPTY_FIND_REQUEST = new FindRequest();
 
+    /**
+     * Get object by guid
+     *
+     * @param userId unique identifier for requesting user, under which the request is performed.
+     * @param guid   unique identifier of the object to which the found objects should relate.
+     * @return found objects of the T type.
+     *
+     * @throws PropertyServerException    something went wrong with the REST call stack.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     */
     T getByGUID(String userId, String guid) throws InvalidParameterException,
                                                    PropertyServerException,
                                                    UserNotAuthorizedException;
 
+    /**
+     * Create a object. To create, you must pass the created object and specify a unique user identifier.
+     *
+     * @param userId   unique identifier for requesting user, under which the request is performed.
+     * @param supplied object to create.
+     * @return created object.
+     *
+     * @throws PropertyServerException    something went wrong with the REST call stack.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     */
     T create(String userId, T supplied) throws InvalidParameterException,
                                                PropertyServerException,
                                                UserNotAuthorizedException;
 
+    /**
+     * Request to search all objects of the current type T.
+     *
+     * @param userId unique identifier for requesting user, under which the request is performed.
+     * @return list all objects of the T type.
+     *
+     * @throws PropertyServerException    something went wrong with the REST call stack.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     */
     default List<T> findAll(String userId) throws InvalidParameterException,
                                                   PropertyServerException,
                                                   UserNotAuthorizedException
@@ -28,14 +64,50 @@ public interface SubjectAreaClient<T> {
        return find(userId, EMPTY_FIND_REQUEST);
     }
 
+    /**
+     * Request to search entities of the current type T.
+     *
+     * @param userId      unique identifier for requesting user, under which the request is performed.
+     * @param findRequest information object for find calls.
+     * @return list objects of the T type relevant in the findRequest information.
+     *
+     * @throws PropertyServerException    something went wrong with the REST call stack.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     */
    List<T> find(String userId, FindRequest findRequest) throws InvalidParameterException,
                                                                PropertyServerException,
                                                                UserNotAuthorizedException;
 
+    /**
+     * Update or replace a object.
+     *
+     * @param guid      unique identifier of the object to which the found objects should relate.
+     * @param userId    unique identifier for requesting user, under which the request is performed.
+     * @param supplied  object to be updated or replaced.
+     * @param isReplace flag to indicate that this update is a replace.
+     * @return updated object.
+     *
+     * @throws PropertyServerException    something went wrong with the REST call stack.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     */
     T update(String userId, String guid, T supplied, boolean isReplace) throws InvalidParameterException,
                                                                                PropertyServerException,
                                                                                UserNotAuthorizedException;
 
+    /**
+     * Replace a object. This means to override all the existing attributes with the supplied attributes.
+     *
+     * @param guid     unique identifier of the object to which the found objects should relate.
+     * @param userId   unique identifier for requesting user, under which the request is performed.
+     * @param supplied object to be replaced.
+     * @return replaced object.
+     *
+     * @throws PropertyServerException    something went wrong with the REST call stack.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     */
     default T replace(String userId, String guid, T supplied) throws InvalidParameterException,
                                                                      PropertyServerException,
                                                                      UserNotAuthorizedException
@@ -43,6 +115,18 @@ public interface SubjectAreaClient<T> {
         return update(userId, guid, supplied, true);
     }
 
+    /**
+     * Update a object. This means to update the object with any non-null attributes from the supplied object.
+     *
+     * @param guid     unique identifier of the object to which the found objects should relate.
+     * @param userId   unique identifier for requesting user, under which the request is performed.
+     * @param supplied object to be updated.
+     * @return updated object.
+     *
+     * @throws PropertyServerException    something went wrong with the REST call stack.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     */
     default T update(String userId, String guid, T supplied) throws InvalidParameterException,
                                                                     PropertyServerException,
                                                                     UserNotAuthorizedException
@@ -50,10 +134,31 @@ public interface SubjectAreaClient<T> {
         return update(userId, guid, supplied, false);
     }
 
-    void delete (String userId, String guid, boolean isPurge) throws InvalidParameterException,
+    /**
+     * Delete a object.
+     *
+     * @param guid    unique identifier of the object to which the found objects should relate.
+     * @param userId  unique identifier for requesting user, under which the request is performed.
+     * @param isPurge true indicates a hard delete, false is a soft delete.
+     *
+     * @throws PropertyServerException    something went wrong with the REST call stack.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     */
+    void delete(String userId, String guid, boolean isPurge) throws InvalidParameterException,
                                                                      PropertyServerException,
                                                                      UserNotAuthorizedException;
 
+    /**
+     * Purge a object.
+     *
+     * @param guid    unique identifier of the object to which the found objects should relate.
+     * @param userId  unique identifier for requesting user, under which the request is performed.
+     *
+     * @throws PropertyServerException    something went wrong with the REST call stack.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     */
     default void purge(String userId, String guid) throws InvalidParameterException,
                                                           PropertyServerException,
                                                           UserNotAuthorizedException
@@ -61,6 +166,16 @@ public interface SubjectAreaClient<T> {
         delete(userId, guid, true);
     }
 
+    /**
+     * Soft delete a object.
+     *
+     * @param guid    unique identifier of the object to which the found objects should relate.
+     * @param userId  unique identifier for requesting user, under which the request is performed.
+     *
+     * @throws PropertyServerException    something went wrong with the REST call stack.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     */
     default void delete(String userId, String guid) throws InvalidParameterException,
                                                            PropertyServerException,
                                                            UserNotAuthorizedException
@@ -68,6 +183,16 @@ public interface SubjectAreaClient<T> {
         delete(userId, guid, false);
     }
 
+    /**
+     * Restore is soft deleted object.
+     *
+     * @param guid    unique identifier of the object to which the found objects should relate.
+     * @param userId  unique identifier for requesting user, under which the request is performed.
+     *
+     * @throws PropertyServerException    something went wrong with the REST call stack.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     */
     T restore(String userId, String guid) throws InvalidParameterException,
                                                  PropertyServerException,
                                                  UserNotAuthorizedException;
