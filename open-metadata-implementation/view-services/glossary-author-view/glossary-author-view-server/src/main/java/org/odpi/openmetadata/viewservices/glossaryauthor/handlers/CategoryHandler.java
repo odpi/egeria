@@ -2,15 +2,14 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.viewservices.glossaryauthor.handlers;
 
-import org.odpi.openmetadata.accessservices.subjectarea.SubjectAreaCategory;
-import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.*;
+import org.odpi.openmetadata.accessservices.subjectarea.client.entities.categories.SubjectAreaCategory;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -18,8 +17,6 @@ import java.util.List;
  * The handler exposes methods for category functionality for the glossary author view
  */
 public class CategoryHandler {
-    private static final Logger log = LoggerFactory.getLogger(CategoryHandler.class);
-
     private SubjectAreaCategory subjectAreaCategory;
 
     /**
@@ -42,17 +39,10 @@ public class CategoryHandler {
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws ClassificationException              Error processing a classification
-     * @throws FunctionNotSupportedException        Function not supported
-     * @throws UnrecognizedGUIDException            Unrecognised GUID
      * @throws PropertyServerException              property server exception
-     *                                              <p>
-     *                                              Client library Exceptions
-     * @throws MetadataServerUncontactableException Unable to contact the server
-     * @throws UnexpectedResponseException          an unexpected response was returned from the server
      */
-    public Category createCategory(String userId, Category suppliedCategory) throws MetadataServerUncontactableException, ClassificationException, FunctionNotSupportedException, UnexpectedResponseException, InvalidParameterException, UserNotAuthorizedException, UnrecognizedGUIDException, PropertyServerException {
-        return subjectAreaCategory.createCategory(userId, suppliedCategory);
+    public Category createCategory(String userId, Category suppliedCategory) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        return subjectAreaCategory.category().create(userId, suppliedCategory);
     }
 
     /**
@@ -65,44 +55,26 @@ public class CategoryHandler {
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws FunctionNotSupportedException        Function not supported
-     * @throws UnrecognizedGUIDException            unrecognised GUID
      * @throws PropertyServerException              property server exception
-     *                                              <p>
-     *                                              Client library Exceptions
-     * @throws MetadataServerUncontactableException Unable to contact the server
-     * @throws UnexpectedResponseException          an unexpected response was returned from the server
      */
-    public Category getCategoryByGuid(String userId, String guid) throws MetadataServerUncontactableException, FunctionNotSupportedException, UnexpectedResponseException, InvalidParameterException, UserNotAuthorizedException, UnrecognizedGUIDException, PropertyServerException {
-        return subjectAreaCategory.getCategoryByGuid(userId, guid);
+    public Category getCategoryByGuid(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+        return subjectAreaCategory.category().getByGUID(userId, guid);
     }
 
     /**
      * Find Category
      *
      * @param userId             unique identifier for requesting user, under which the request is performed
-     * @param searchCriteria     String expression matching Category property values (this does not include the CategorySummary content).
-     * @param asOfTime           the relationships returned as they were at this time. null indicates at the current time.
-     * @param offset             the starting element number for this set of results.  This is used when retrieving elements
-     *                           beyond the first page of results. Zero means the results start from the first element.
-     * @param pageSize           the maximum number of elements that can be returned on this request.
-     *                           0 means there is no limit to the page size
-     * @param sequencingOrder    the sequencing order for the results.
-     * @param sequencingProperty the name of the property that should be used to sequence the results.
+     * @param findRequest        {@link FindRequest}
      * @return A list of Categorys meeting the search Criteria
      * <p>
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws FunctionNotSupportedException        Function not supported
      * @throws PropertyServerException              property server exception
-     *                                              <p>
-     *                                              Client library Exceptions
-     * @throws MetadataServerUncontactableException Unable to contact the server
-     * @throws UnexpectedResponseException          an unexpected response was returned from the server
      */
-    public List<Category> findCategory(String userId, String searchCriteria, Date asOfTime, int offset, int pageSize, SequencingOrder sequencingOrder, String sequencingProperty) throws MetadataServerUncontactableException, FunctionNotSupportedException, UnexpectedResponseException, InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
-        return subjectAreaCategory.findCategory(userId, searchCriteria, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
+    public List<Category> findCategory(String userId, FindRequest findRequest) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+        return subjectAreaCategory.category().find(userId, findRequest);
     }
 
     /**
@@ -116,21 +88,13 @@ public class CategoryHandler {
      * @param suppliedCategory category to be updated
      * @return replaced category
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws FunctionNotSupportedException        Function not supported
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws PropertyServerException              property server exception
-     *                                              <p>
-     *                                              Client library Exceptions
-     * @throws MetadataServerUncontactableException Unable to contact the server
-     * @throws UnexpectedResponseException          an unexpected response was returned from the server
      */
-    public Category replaceCategory(String userId, String guid, Category suppliedCategory) throws UnexpectedResponseException,
-                                                                                                  FunctionNotSupportedException,
-                                                                                                  MetadataServerUncontactableException,
-                                                                                                  InvalidParameterException,
+    public Category replaceCategory(String userId, String guid, Category suppliedCategory) throws InvalidParameterException,
                                                                                                   UserNotAuthorizedException,
                                                                                                   PropertyServerException {
-        return subjectAreaCategory.replaceCategory(userId, guid, suppliedCategory);
+        return subjectAreaCategory.category().replace(userId, guid, suppliedCategory);
     }
 
     /**
@@ -145,20 +109,13 @@ public class CategoryHandler {
      * @return a response which when successful contains the updated category
      * when not successful the following Exceptions can occur
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws FunctionNotSupportedException        Function not supported
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws PropertyServerException              property server exception
-     *                                              Client library Exceptions
-     * @throws MetadataServerUncontactableException Unable to contact the server
-     * @throws UnexpectedResponseException          an unexpected response was returned from the server
      */
-    public Category updateCategory(String userId, String guid, Category suppliedCategory) throws UnexpectedResponseException,
-                                                                                                 FunctionNotSupportedException,
-                                                                                                 MetadataServerUncontactableException,
-                                                                                                 InvalidParameterException,
+    public Category updateCategory(String userId, String guid, Category suppliedCategory) throws InvalidParameterException,
                                                                                                  UserNotAuthorizedException,
                                                                                                  PropertyServerException {
-        return subjectAreaCategory.updateCategory(userId, guid, suppliedCategory);
+        return subjectAreaCategory.category().update(userId, guid, suppliedCategory);
     }
 
     /**
@@ -169,29 +126,15 @@ public class CategoryHandler {
      *
      * @param userId userId under which the request is performed
      * @param guid   guid of the category to be deleted.
-     * @return the deleted category
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
-     * @throws EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.
-     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * @throws PropertyServerException              property server exception
-     *                                              <p>
-     *                                              Client library Exceptions
-     * @throws MetadataServerUncontactableException Unable to contact the server
-     * @throws UnexpectedResponseException          an unexpected response was returned from the server
      */
-    public Category deleteCategory(String userId, String guid) throws MetadataServerUncontactableException,
-                                                                      UnrecognizedGUIDException,
-                                                                      FunctionNotSupportedException,
-                                                                      UnexpectedResponseException,
-                                                                      EntityNotDeletedException,
-                                                                      InvalidParameterException,
+    public void deleteCategory(String userId, String guid) throws InvalidParameterException,
                                                                       UserNotAuthorizedException,
                                                                       PropertyServerException {
-        return subjectAreaCategory.deleteCategory(userId, guid);
+        subjectAreaCategory.category().delete(userId, guid);
     }
 
     /**
@@ -203,24 +146,12 @@ public class CategoryHandler {
      * @param guid   guid of the category to be deleted.
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws EntityNotPurgedException             a hard delete was issued but the category was not purged
-     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
-     * @throws FunctionNotSupportedException        Function not supported
      * @throws PropertyServerException              property server exception
-     *                                              <p>
-     *                                              Client library Exceptions
-     * @throws MetadataServerUncontactableException Unable to contact the server
-     * @throws UnexpectedResponseException          an unexpected response was returned from the server
      */
-    public void purgeCategory(String userId, String guid) throws MetadataServerUncontactableException,
-                                                                 UnrecognizedGUIDException,
-                                                                 EntityNotPurgedException,
-                                                                 UnexpectedResponseException,
-                                                                 FunctionNotSupportedException,
-                                                                 InvalidParameterException,
+    public void purgeCategory(String userId, String guid) throws InvalidParameterException,
                                                                  UserNotAuthorizedException,
                                                                  PropertyServerException {
-        subjectAreaCategory.purgeCategory(userId, guid);
+        subjectAreaCategory.category().purge(userId, guid);
     }
 
     /**
@@ -231,24 +162,14 @@ public class CategoryHandler {
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the category to restore
      * @return the restored category
-     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.
      * @throws PropertyServerException              property server exception
-     *                                              <p>
-     *                                              Client library Exceptions
-     * @throws MetadataServerUncontactableException Unable to contact the server
-     * @throws UnexpectedResponseException          an unexpected response was returned from the server
      */
-    public Category restoreCategory(String userId, String guid) throws MetadataServerUncontactableException,
-                                                                       UnrecognizedGUIDException,
-                                                                       FunctionNotSupportedException,
-                                                                       UnexpectedResponseException,
-                                                                       InvalidParameterException,
+    public Category restoreCategory(String userId, String guid) throws InvalidParameterException,
                                                                        UserNotAuthorizedException,
                                                                        PropertyServerException {
-        return subjectAreaCategory.restoreCategory(userId, guid);
+        return subjectAreaCategory.category().restore(userId, guid);
     }
 
     /**
@@ -256,40 +177,16 @@ public class CategoryHandler {
      *
      * @param userId             unique identifier for requesting user, under which the request is performed
      * @param guid               guid of the category to get
-     * @param asOfTime           the relationships returned as they were at this time. null indicates at the current time.
-     * @param offset             the starting element number for this set of results.  This is used when retrieving elements
-     *                           beyond the first page of results. Zero means the results start from the first element.
-     * @param pageSize           the maximum number of elements that can be returned on this request.
-     *                           0 means there is not limit to the page size
-     * @param sequencingOrder    the sequencing order for the results.
-     * @param sequencingProperty the name of the property that should be used to sequence the results.
+     * @param findRequest        {@link FindRequest}
      * @return the relationships associated with the requested Category guid
      * <p>
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws FunctionNotSupportedException        Function not supported
      * @throws PropertyServerException              property server exception
-     *                                              <p>
-     *                                              Client library Exceptions
-     * @throws MetadataServerUncontactableException Unable to contact the server
-     * @throws UnexpectedResponseException          an unexpected response was returned from the server
      */
-    public List<Line> getCategoryRelationships(String userId,
-                                               String guid,
-                                               Date asOfTime,
-                                               int offset,
-                                               int pageSize,
-                                               SequencingOrder sequencingOrder,
-                                               String sequencingProperty) throws
-                                                                          MetadataServerUncontactableException,
-                                                                          UserNotAuthorizedException,
-                                                                          InvalidParameterException,
-                                                                          FunctionNotSupportedException,
-                                                                          UnexpectedResponseException,
-                                                                          PropertyServerException {
-        return subjectAreaCategory.getCategoryRelationships(userId, guid, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
+    public List<Line> getCategoryRelationships(String userId, String guid, FindRequest findRequest) throws UserNotAuthorizedException, InvalidParameterException, PropertyServerException {
+        return subjectAreaCategory.category().getRelationships(userId, guid, findRequest);
 
     }
-
 }

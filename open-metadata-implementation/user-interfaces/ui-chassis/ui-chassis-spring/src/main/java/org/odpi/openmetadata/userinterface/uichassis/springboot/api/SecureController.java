@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServletRequest;
  * can be obtained and then used on omas calls.
  */
 public class SecureController {
+    public static final String PAGE_OFFSET_DEFAULT_VALUE = "0";
+    public static final String PAGE_SIZE_DEFAULT_VALUE = "0";
 
     @Autowired
     private AuthService authService;

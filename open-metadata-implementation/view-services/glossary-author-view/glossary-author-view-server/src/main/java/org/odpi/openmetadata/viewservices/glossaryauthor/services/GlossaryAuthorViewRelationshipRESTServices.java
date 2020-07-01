@@ -19,8 +19,6 @@ import org.slf4j.LoggerFactory;
 
 public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuthorView {
     private static String className = GlossaryAuthorViewRelationshipRESTServices.class.getName();
-    private static final Logger LOG = LoggerFactory.getLogger(className);
-
     /**
      * Default constructor
      */
@@ -41,19 +39,15 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
-     * <li> ClassificationException              Error processing a classification.</li>
-     * <li> StatusNotSupportedException          A status value is not supported.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse createTermHASARelationship(String serverName, String userId, Hasa termHASARelationship)
+    public SubjectAreaOMASAPIResponse<Hasa> createTermHASARelationship(String serverName, String userId, Hasa termHASARelationship)
     {
         String                     restAPIName = "createTermHASARelationship";
         RESTCallToken              token       = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse response    = null;
+        SubjectAreaOMASAPIResponse<Hasa> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog                   auditLog    = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -61,7 +55,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
             Hasa createdTermHASARelationship = handler.createTermHASARelationship(userId, termHASARelationship);
-            response = new TermHASARelationshipResponse(createdTermHASARelationship);
+            response.addResult(createdTermHASARelationship);
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
         }
@@ -76,23 +70,22 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       guid of the HAS A relationship to get
+     * @param guid       guid of the HASA relationship to get
      * @return response which when successful contains the term has a relationship with the requested guid
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
 
-    public SubjectAreaOMASAPIResponse getTermHASARelationship(String serverName, String userId, String guid)
+    public SubjectAreaOMASAPIResponse<Hasa> getTermHASARelationship(String serverName, String userId, String guid)
      {
 
         String restAPIName = "getTermHASARelationship";
          RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-         SubjectAreaOMASAPIResponse response = null;
+         SubjectAreaOMASAPIResponse<Hasa> response = new SubjectAreaOMASAPIResponse<>();
          AuditLog auditLog = null;
 
          // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -100,7 +93,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
              auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
              RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
              Hasa updatedTermHASARelationship = handler.getTermHASARelationship(userId, guid);
-             response = new TermHASARelationshipResponse(updatedTermHASARelationship);
+             response.addResult(updatedTermHASARelationship);
          }  catch (Throwable error) {
              response = getResponseForError(error, auditLog, className, restAPIName);
          }
@@ -114,25 +107,22 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      *
      * @param serverName           serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId               userId under which the request is performed
+     * @param guid       guid of the HASA relationship
      * @param termHASARelationship the HASA relationship
      * @param isReplace            flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the updated Hasa
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
-     * <li> ClassificationException              Error processing a classification.</li>
-     * <li> StatusNotSupportedException          A status value is not supported.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse updateTermHASARelationship(String serverName, String userId, Hasa termHASARelationship, boolean isReplace)
+    public SubjectAreaOMASAPIResponse<Hasa> updateTermHASARelationship(String serverName, String userId, String guid, Hasa termHASARelationship, boolean isReplace)
      {
         String restAPIName = "updateTermHASARelationship";
          RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-         SubjectAreaOMASAPIResponse response = null;
+         SubjectAreaOMASAPIResponse<Hasa> response = new SubjectAreaOMASAPIResponse<>();
          AuditLog auditLog = null;
 
          // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -140,11 +130,11 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
              auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
              RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
              if (isReplace) {
-                 Hasa updatedTermHASARelationship = handler.replaceTermHASARelationship(userId, termHASARelationship);
-                 response = new TermHASARelationshipResponse(updatedTermHASARelationship);
+                 Hasa updatedTermHASARelationship = handler.replaceTermHASARelationship(userId, guid, termHASARelationship);
+                 response.addResult(updatedTermHASARelationship);
              } else {
-                 Hasa updatedTermHASARelationship = handler.updateTermHASARelationship(userId, termHASARelationship);
-                 response = new TermHASARelationshipResponse(updatedTermHASARelationship);
+                 Hasa updatedTermHASARelationship = handler.updateTermHASARelationship(userId, guid, termHASARelationship);
+                 response.addResult(updatedTermHASARelationship);
              }
 
          }  catch (Throwable error) {
@@ -164,21 +154,17 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * @return response which when successful contains the term has a relationship with the requested guid
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
-     * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse deleteTermHASARelationship(String serverName, String userId, String guid, Boolean isPurge)
+    public SubjectAreaOMASAPIResponse<Hasa> deleteTermHASARelationship(String serverName, String userId, String guid, boolean isPurge)
      {
         String restAPIName = "deleteTermHASARelationship";
 
          RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-         SubjectAreaOMASAPIResponse response = null;
+         SubjectAreaOMASAPIResponse<Hasa> response = new SubjectAreaOMASAPIResponse<>();
          AuditLog auditLog = null;
 
          // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -187,10 +173,8 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
              RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
              if (isPurge) {
                  handler.purgeTermHASARelationship(userId, guid);
-                 response = new VoidResponse();
              } else {
-                 Hasa deletedTermHASARelationship = handler.deleteTermHASARelationship(userId, guid);
-                 response = new TermHASARelationshipResponse(deletedTermHASARelationship);
+                 handler.deleteTermHASARelationship(userId, guid);
              }
          }  catch (Throwable error) {
              response = getResponseForError(error, auditLog, className, restAPIName);
@@ -218,11 +202,11 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse restoreTermHASARelationship(String serverName, String userId, String guid)
+    public SubjectAreaOMASAPIResponse<Hasa> restoreTermHASARelationship(String serverName, String userId, String guid)
      {
         String restAPIName = "restoreTermHASARelationship";
          RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-         SubjectAreaOMASAPIResponse response = null;
+         SubjectAreaOMASAPIResponse<Hasa> response = new SubjectAreaOMASAPIResponse<>();
          AuditLog auditLog = null;
 
          // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -230,7 +214,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
              auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
              RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
              Hasa restoredTermHASARelationship = handler.restoreTermHASARelationship(userId, guid);
-             response = new TermHASARelationshipResponse(restoredTermHASARelationship);
+             response.addResult(restoredTermHASARelationship);
          }  catch (Throwable error) {
              response = getResponseForError(error, auditLog, className, restAPIName);
          }
@@ -248,19 +232,15 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
-     * <li> ClassificationException              Error processing a classification.</li>
-     * <li> StatusNotSupportedException          A status value is not supported.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse createRelatedTerm(String serverName, String userId, RelatedTerm relatedTerm)
+    public SubjectAreaOMASAPIResponse<RelatedTerm> createRelatedTerm(String serverName, String userId, RelatedTerm relatedTerm)
     {
         String restAPIName = "createRelatedTerm";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<RelatedTerm> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -268,7 +248,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
             RelatedTerm createdRelatedTerm = handler.createRelatedTerm(userId, relatedTerm);
-            response = new RelatedTermResponse(createdRelatedTerm);
+            response.addResult(createdRelatedTerm);
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
         }
@@ -288,18 +268,17 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
 
-    public SubjectAreaOMASAPIResponse getRelatedTerm(String serverName, String userId, String guid)
+    public SubjectAreaOMASAPIResponse<RelatedTerm> getRelatedTerm(String serverName, String userId, String guid)
     {
 
         String restAPIName = "getRelatedTerm";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<RelatedTerm> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -307,7 +286,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
             RelatedTerm updatedRelatedTerm = handler.getRelatedTerm(userId, guid);
-            response = new RelatedTermResponse(updatedRelatedTerm);
+            response.addResult(updatedRelatedTerm);
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
         }
@@ -321,25 +300,22 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      *
      * @param serverName           serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId               userId under which the request is performed
+     * @param guid       guid of the related term relationship
      * @param relatedTerm the HASA relationship
      * @param isReplace            flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the updated RelatedTerm
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
-     * <li> ClassificationException              Error processing a classification.</li>
-     * <li> StatusNotSupportedException          A status value is not supported.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse updateRelatedTerm(String serverName, String userId, RelatedTerm relatedTerm, boolean isReplace)
+    public SubjectAreaOMASAPIResponse<RelatedTerm> updateRelatedTerm(String serverName, String userId, String guid, RelatedTerm relatedTerm, boolean isReplace)
     {
         String restAPIName = "updateRelatedTerm";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<RelatedTerm> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -347,11 +323,11 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
             if (isReplace) {
-                RelatedTerm updatedRelatedTerm = handler.replaceRelatedTerm(userId,relatedTerm);
-                response = new RelatedTermResponse(updatedRelatedTerm);
+                RelatedTerm updatedRelatedTerm = handler.replaceRelatedTerm(userId, guid, relatedTerm);
+                response.addResult(updatedRelatedTerm);
             } else {
-                RelatedTerm updatedRelatedTerm = handler.updateRelatedTerm(userId,relatedTerm);
-                response = new RelatedTermResponse(updatedRelatedTerm);
+                RelatedTerm updatedRelatedTerm = handler.updateRelatedTerm(userId, guid, relatedTerm);
+                response.addResult(updatedRelatedTerm);
             }
 
         }  catch (Throwable error) {
@@ -371,21 +347,17 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * @return response which when successful contains the term has a relationship with the requested guid
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
-     * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse deleteRelatedTerm(String serverName, String userId, String guid, Boolean isPurge)
+    public SubjectAreaOMASAPIResponse<RelatedTerm> deleteRelatedTerm(String serverName, String userId, String guid, Boolean isPurge)
     {
         String restAPIName = "deleteRelatedTerm";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<RelatedTerm> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -394,10 +366,8 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
             if (isPurge) {
                 handler.purgeRelatedTerm(userId, guid);
-                response = new VoidResponse();
             } else {
-                RelatedTerm deletedRelatedTerm = handler.deleteRelatedTerm(userId, guid);
-                response = new RelatedTermResponse(deletedRelatedTerm);
+                handler.deleteRelatedTerm(userId, guid);
             }
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
@@ -416,20 +386,16 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * @return response which when successful contains the restored relationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
-     * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse restoreRelatedTerm(String serverName, String userId, String guid)
+    public SubjectAreaOMASAPIResponse<RelatedTerm> restoreRelatedTerm(String serverName, String userId, String guid)
     {
         String restAPIName = "restoreRelatedTerm";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<RelatedTerm> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -437,7 +403,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
             RelatedTerm restoredRelatedTerm = handler.restoreRelatedTerm(userId, guid);
-            response = new RelatedTermResponse(restoredRelatedTerm);
+            response.addResult(restoredRelatedTerm);
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
         }
@@ -456,19 +422,15 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
-     * <li> ClassificationException              Error processing a classification.</li>
-     * <li> StatusNotSupportedException          A status value is not supported.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse createSynonym(String serverName, String userId, Synonym synonym)
+    public SubjectAreaOMASAPIResponse<Synonym> createSynonym(String serverName, String userId, Synonym synonym)
     {
         String restAPIName = "createSynonym";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Synonym> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -476,7 +438,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
             Synonym createdSynonym = handler.createSynonymRelationship(userId, synonym);
-            response = new SynonymRelationshipResponse(createdSynonym);
+            response.addResult(createdSynonym);
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
         }
@@ -496,18 +458,17 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
 
-    public SubjectAreaOMASAPIResponse getSynonym(String serverName, String userId, String guid)
+    public SubjectAreaOMASAPIResponse<Synonym> getSynonym(String serverName, String userId, String guid)
     {
 
         String restAPIName = "getSynonym";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Synonym> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -515,7 +476,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
             Synonym updatedSynonym = handler.getSynonymRelationship(userId, guid);
-            response = new SynonymRelationshipResponse(updatedSynonym);
+            response.addResult(updatedSynonym);
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
         }
@@ -529,25 +490,22 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      *
      * @param serverName           serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId               userId under which the request is performed
+     * @param guid       guid of the Synonym relationship
      * @param synonym the synonym relationship
      * @param isReplace            flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the updated synonym
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
-     * <li> ClassificationException              Error processing a classification.</li>
-     * <li> StatusNotSupportedException          A status value is not supported.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse updateSynonym(String serverName, String userId, Synonym synonym, boolean isReplace)
+    public SubjectAreaOMASAPIResponse<Synonym> updateSynonym(String serverName, String userId, String guid, Synonym synonym, boolean isReplace)
     {
         String restAPIName = "updateSynonym";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Synonym> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -555,11 +513,11 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
             if (isReplace) {
-                Synonym updatedSynonym = handler.replaceSynonymRelationship(userId,synonym);
-                response = new SynonymRelationshipResponse(updatedSynonym);
+                Synonym updatedSynonym = handler.replaceSynonymRelationship(userId, guid, synonym);
+                response.addResult(updatedSynonym);
             } else {
-                Synonym updatedSynonym = handler.updateSynonymRelationship(userId,synonym);
-                response = new SynonymRelationshipResponse(updatedSynonym);
+                Synonym updatedSynonym = handler.updateSynonymRelationship(userId, guid, synonym);
+                response.addResult(updatedSynonym);
             }
 
         }  catch (Throwable error) {
@@ -579,21 +537,17 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * @return response which when successful contains the term has a relationship with the requested guid
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
-     * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse deleteSynonym(String serverName, String userId, String guid, Boolean isPurge)
+    public SubjectAreaOMASAPIResponse<Synonym> deleteSynonym(String serverName, String userId, String guid, Boolean isPurge)
     {
         String restAPIName = "deleteSynonym";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Synonym> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -602,10 +556,8 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
             if (isPurge) {
                 handler.purgeSynonymRelationship(userId, guid);
-                response = new VoidResponse();
             } else {
-                Synonym deletedSynonym = handler.deleteSynonymRelationship(userId, guid);
-                response = new SynonymRelationshipResponse(deletedSynonym);
+                handler.deleteSynonymRelationship(userId, guid);
             }
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
@@ -624,20 +576,16 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * @return response which when successful contains the restored relationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
-     * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse restoreSynonym(String serverName, String userId, String guid)
+    public SubjectAreaOMASAPIResponse<Synonym> restoreSynonym(String serverName, String userId, String guid)
     {
         String restAPIName = "restoreSynonym";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Synonym> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -645,7 +593,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
             Synonym restoredSynonym = handler.restoreSynonymRelationship(userId, guid);
-            response = new SynonymRelationshipResponse(restoredSynonym);
+            response.addResult(restoredSynonym);
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
         }
@@ -664,19 +612,15 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
-     * <li> ClassificationException              Error processing a classification.</li>
-     * <li> StatusNotSupportedException          A status value is not supported.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse createAntonym(String serverName, String userId, Antonym antonym)
+    public SubjectAreaOMASAPIResponse<Antonym> createAntonym(String serverName, String userId, Antonym antonym)
     {
         String restAPIName = "createAntonym";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Antonym> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -684,7 +628,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
             Antonym createdAntonym = handler.createAntonymRelationship(userId, antonym);
-            response = new AntonymRelationshipResponse(createdAntonym);
+            response.addResult(createdAntonym);
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
         }
@@ -704,18 +648,17 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
 
-    public SubjectAreaOMASAPIResponse getAntonym(String serverName, String userId, String guid)
+    public SubjectAreaOMASAPIResponse<Antonym> getAntonym(String serverName, String userId, String guid)
     {
 
         String restAPIName = "getAntonym";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Antonym> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -723,7 +666,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
             Antonym updatedAntonym = handler.getAntonymRelationship(userId, guid);
-            response = new AntonymRelationshipResponse(updatedAntonym);
+            response.addResult(updatedAntonym);
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
         }
@@ -737,25 +680,22 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      *
      * @param serverName           serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId               userId under which the request is performed
+     * @param guid       guid of the Antonym relationship
      * @param antonym the antonym relationship
      * @param isReplace            flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the updated antonym
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
-     * <li> ClassificationException              Error processing a classification.</li>
-     * <li> StatusNotSupportedException          A status value is not supported.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse updateAntonym(String serverName, String userId, Antonym antonym, boolean isReplace)
+    public SubjectAreaOMASAPIResponse<Antonym> updateAntonym(String serverName, String userId, String guid, Antonym antonym, boolean isReplace)
     {
         String restAPIName = "updateAntonym";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Antonym> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -763,11 +703,11 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
             if (isReplace) {
-                Antonym updatedAntonym = handler.replaceAntonymRelationship(userId,antonym);
-                response = new AntonymRelationshipResponse(updatedAntonym);
+                Antonym updatedAntonym = handler.replaceAntonymRelationship(userId, guid, antonym);
+                response.addResult(updatedAntonym);
             } else {
-                Antonym updatedAntonym = handler.updateAntonymRelationship(userId,antonym);
-                response = new AntonymRelationshipResponse(updatedAntonym);
+                Antonym updatedAntonym = handler.updateAntonymRelationship(userId, guid, antonym);
+                response.addResult(updatedAntonym);
             }
 
         }  catch (Throwable error) {
@@ -787,21 +727,17 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * @return response which when successful contains the term has a relationship with the requested guid
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
-     * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse deleteAntonym(String serverName, String userId, String guid, Boolean isPurge)
+    public SubjectAreaOMASAPIResponse<Antonym> deleteAntonym(String serverName, String userId, String guid, Boolean isPurge)
     {
         String restAPIName = "deleteAntonym";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Antonym> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -810,10 +746,8 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
             if (isPurge) {
                 handler.purgeAntonymRelationship(userId, guid);
-                response = new VoidResponse();
             } else {
-                Antonym deletedAntonym = handler.deleteAntonymRelationship(userId, guid);
-                response = new AntonymRelationshipResponse(deletedAntonym);
+                handler.deleteAntonymRelationship(userId, guid);
             }
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
@@ -832,20 +766,16 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * @return response which when successful contains the restored relationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
-     * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse restoreAntonym(String serverName, String userId, String guid)
+    public SubjectAreaOMASAPIResponse<Antonym> restoreAntonym(String serverName, String userId, String guid)
     {
         String restAPIName = "restoreAntonym";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Antonym> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -853,7 +783,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
             Antonym restoredAntonym = handler.restoreAntonymRelationship(userId, guid);
-            response = new AntonymRelationshipResponse(restoredAntonym);
+            response.addResult(restoredAntonym);
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
         }
@@ -872,19 +802,15 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
-     * <li> ClassificationException              Error processing a classification.</li>
-     * <li> StatusNotSupportedException          A status value is not supported.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse createTranslation(String serverName, String userId, Translation categoryAnchor)
+    public SubjectAreaOMASAPIResponse<Translation> createTranslation(String serverName, String userId, Translation categoryAnchor)
     {
         String restAPIName = "createTranslation";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Translation> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -892,7 +818,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
             Translation createdTranslation = handler.createTranslationRelationship(userId, categoryAnchor);
-            response = new TranslationRelationshipResponse(createdTranslation);
+            response.addResult(createdTranslation);
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
         }
@@ -912,18 +838,17 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
 
-    public SubjectAreaOMASAPIResponse getTranslation(String serverName, String userId, String guid)
+    public SubjectAreaOMASAPIResponse<Translation> getTranslation(String serverName, String userId, String guid)
     {
 
         String restAPIName = "getTranslation";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Translation> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -931,7 +856,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
             Translation updatedTranslation = handler.getTranslationRelationship(userId, guid);
-            response = new TranslationRelationshipResponse(updatedTranslation);
+            response.addResult(updatedTranslation);
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
         }
@@ -945,25 +870,22 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      *
      * @param serverName           serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId               userId under which the request is performed
+     * @param guid       guid of the Translation relationship
      * @param categoryAnchor the categoryAnchor relationship
      * @param isReplace            flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the updated categoryAnchor
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
-     * <li> ClassificationException              Error processing a classification.</li>
-     * <li> StatusNotSupportedException          A status value is not supported.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse updateTranslation(String serverName, String userId, Translation categoryAnchor, boolean isReplace)
+    public SubjectAreaOMASAPIResponse<Translation> updateTranslation(String serverName, String userId, String guid, Translation categoryAnchor, boolean isReplace)
     {
         String restAPIName = "updateTranslation";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Translation> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -971,11 +893,11 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
             if (isReplace) {
-                Translation updatedTranslation = handler.replaceTranslationRelationship(userId,categoryAnchor);
-                response = new TranslationRelationshipResponse(updatedTranslation);
+                Translation updatedTranslation = handler.replaceTranslationRelationship(userId, guid, categoryAnchor);
+                response.addResult(updatedTranslation);
             } else {
-                Translation updatedTranslation = handler.updateTranslationRelationship(userId,categoryAnchor);
-                response = new TranslationRelationshipResponse(updatedTranslation);
+                Translation updatedTranslation = handler.updateTranslationRelationship(userId, guid, categoryAnchor);
+                response.addResult(updatedTranslation);
             }
 
         }  catch (Throwable error) {
@@ -995,21 +917,17 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * @return response which when successful contains the term has a relationship with the requested guid
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
-     * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse deleteTranslation(String serverName, String userId, String guid, Boolean isPurge)
+    public SubjectAreaOMASAPIResponse<Translation> deleteTranslation(String serverName, String userId, String guid, Boolean isPurge)
     {
         String restAPIName = "deleteTranslation";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Translation> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -1018,10 +936,8 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
             if (isPurge) {
                 handler.purgeTranslationRelationship(userId, guid);
-                response = new VoidResponse();
             } else {
-                Translation deletedTranslation = handler.deleteTranslationRelationship(userId, guid);
-                response = new TranslationRelationshipResponse(deletedTranslation);
+                handler.deleteTranslationRelationship(userId, guid);
             }
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
@@ -1040,20 +956,16 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * @return response which when successful contains the restored relationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
-     * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse restoreTranslation(String serverName, String userId, String guid)
+    public SubjectAreaOMASAPIResponse<Translation> restoreTranslation(String serverName, String userId, String guid)
     {
         String restAPIName = "restoreTranslation";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Translation> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -1061,7 +973,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
             Translation restoredTranslation = handler.restoreTranslationRelationship(userId, guid);
-            response = new TranslationRelationshipResponse(restoredTranslation);
+            response.addResult(restoredTranslation);
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
         }
@@ -1080,19 +992,15 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
-     * <li> ClassificationException              Error processing a classification.</li>
-     * <li> StatusNotSupportedException          A status value is not supported.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse createUsedInContext(String serverName, String userId, UsedInContext usedInContext)
+    public SubjectAreaOMASAPIResponse<UsedInContext> createUsedInContext(String serverName, String userId, UsedInContext usedInContext)
     {
         String restAPIName = "createUsedInContext";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<UsedInContext> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -1100,7 +1008,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
             UsedInContext createdUsedInContext = handler.createUsedInContextRelationship(userId, usedInContext);
-            response = new UsedInContextRelationshipResponse(createdUsedInContext);
+            response.addResult(createdUsedInContext);
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
         }
@@ -1120,18 +1028,17 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
 
-    public SubjectAreaOMASAPIResponse getUsedInContext(String serverName, String userId, String guid)
+    public SubjectAreaOMASAPIResponse<UsedInContext> getUsedInContext(String serverName, String userId, String guid)
     {
 
         String restAPIName = "getUsedInContext";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<UsedInContext> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -1139,7 +1046,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
             UsedInContext updatedUsedInContext = handler.getUsedInContextRelationship(userId, guid);
-            response = new UsedInContextRelationshipResponse(updatedUsedInContext);
+            response.addResult(updatedUsedInContext);
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
         }
@@ -1153,25 +1060,22 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      *
      * @param serverName           serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId               userId under which the request is performed
+     * @param guid       guid of the UsedInContext relationship
      * @param usedInContext the usedInContext relationship
      * @param isReplace            flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the updated usedInContext
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
-     * <li> ClassificationException              Error processing a classification.</li>
-     * <li> StatusNotSupportedException          A status value is not supported.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse updateUsedInContext(String serverName, String userId, UsedInContext usedInContext, boolean isReplace)
+    public SubjectAreaOMASAPIResponse<UsedInContext> updateUsedInContext(String serverName, String userId, String guid, UsedInContext usedInContext, boolean isReplace)
     {
         String restAPIName = "updateUsedInContext";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<UsedInContext> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -1179,11 +1083,11 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
             if (isReplace) {
-                UsedInContext updatedUsedInContext = handler.replaceUsedInContextRelationship(userId,usedInContext);
-                response = new UsedInContextRelationshipResponse(updatedUsedInContext);
+                UsedInContext updatedUsedInContext = handler.replaceUsedInContextRelationship(userId, guid, usedInContext);
+                response.addResult(updatedUsedInContext);
             } else {
-                UsedInContext updatedUsedInContext = handler.updateUsedInContextRelationship(userId,usedInContext);
-                response = new UsedInContextRelationshipResponse(updatedUsedInContext);
+                UsedInContext updatedUsedInContext = handler.updateUsedInContextRelationship(userId, guid, usedInContext);
+                response.addResult(updatedUsedInContext);
             }
 
         }  catch (Throwable error) {
@@ -1203,21 +1107,17 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * @return response which when successful contains the term has a relationship with the requested guid
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
-     * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse deleteUsedInContext(String serverName, String userId, String guid, Boolean isPurge)
+    public SubjectAreaOMASAPIResponse<UsedInContext> deleteUsedInContext(String serverName, String userId, String guid, Boolean isPurge)
     {
         String restAPIName = "deleteUsedInContext";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<UsedInContext> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -1226,10 +1126,8 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
             if (isPurge) {
                 handler.purgeUsedInContextRelationship(userId, guid);
-                response = new VoidResponse();
             } else {
-                UsedInContext deletedUsedInContext = handler.deleteUsedInContextRelationship(userId, guid);
-                response = new UsedInContextRelationshipResponse(deletedUsedInContext);
+                 handler.deleteUsedInContextRelationship(userId, guid);
             }
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
@@ -1248,20 +1146,16 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * @return response which when successful contains the restored relationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
-     * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse restoreUsedInContext(String serverName, String userId, String guid)
+    public SubjectAreaOMASAPIResponse<UsedInContext> restoreUsedInContext(String serverName, String userId, String guid)
     {
         String restAPIName = "restoreUsedInContext";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<UsedInContext> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -1269,7 +1163,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
             UsedInContext restoredUsedInContext = handler.restoreUsedInContextRelationship(userId, guid);
-            response = new UsedInContextRelationshipResponse(restoredUsedInContext);
+            response.addResult(restoredUsedInContext);
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
         }
@@ -1288,19 +1182,15 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
-     * <li> ClassificationException              Error processing a classification.</li>
-     * <li> StatusNotSupportedException          A status value is not supported.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse createPreferredTerm(String serverName, String userId, PreferredTerm preferredTerm)
+    public SubjectAreaOMASAPIResponse<PreferredTerm> createPreferredTerm(String serverName, String userId, PreferredTerm preferredTerm)
     {
         String restAPIName = "createPreferredTerm";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<PreferredTerm> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -1308,7 +1198,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
             PreferredTerm createdPreferredTerm = handler.createPreferredTermRelationship(userId, preferredTerm);
-            response = new PreferredTermRelationshipResponse(createdPreferredTerm);
+            response.addResult(createdPreferredTerm);
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
         }
@@ -1328,18 +1218,17 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
 
-    public SubjectAreaOMASAPIResponse getPreferredTerm(String serverName, String userId, String guid)
+    public SubjectAreaOMASAPIResponse<PreferredTerm> getPreferredTerm(String serverName, String userId, String guid)
     {
 
         String restAPIName = "getPreferredTerm";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<PreferredTerm> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -1347,7 +1236,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
             PreferredTerm updatedPreferredTerm = handler.getPreferredTermRelationship(userId, guid);
-            response = new PreferredTermRelationshipResponse(updatedPreferredTerm);
+            response.addResult(updatedPreferredTerm);
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
         }
@@ -1361,25 +1250,22 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      *
      * @param serverName           serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId               userId under which the request is performed
+     * @param guid       guid of the PreferredTerm relationship
      * @param preferredTerm the preferredTerm relationship
      * @param isReplace            flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the updated preferredTerm
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
-     * <li> ClassificationException              Error processing a classification.</li>
-     * <li> StatusNotSupportedException          A status value is not supported.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse updatePreferredTerm(String serverName, String userId, PreferredTerm preferredTerm, boolean isReplace)
+    public SubjectAreaOMASAPIResponse<PreferredTerm> updatePreferredTerm(String serverName, String userId, String guid, PreferredTerm preferredTerm, boolean isReplace)
     {
         String restAPIName = "updatePreferredTerm";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<PreferredTerm> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -1387,11 +1273,11 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
             if (isReplace) {
-                PreferredTerm updatedPreferredTerm = handler.replacePreferredTermRelationship(userId,preferredTerm);
-                response = new PreferredTermRelationshipResponse(updatedPreferredTerm);
+                PreferredTerm updatedPreferredTerm = handler.replacePreferredTermRelationship(userId, guid, preferredTerm);
+                response.addResult(updatedPreferredTerm);
             } else {
-                PreferredTerm updatedPreferredTerm = handler.updatePreferredTermRelationship(userId,preferredTerm);
-                response = new PreferredTermRelationshipResponse(updatedPreferredTerm);
+                PreferredTerm updatedPreferredTerm = handler.updatePreferredTermRelationship(userId, guid, preferredTerm);
+                response.addResult(updatedPreferredTerm);
             }
 
         }  catch (Throwable error) {
@@ -1411,21 +1297,17 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * @return response which when successful contains the term has a relationship with the requested guid
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
-     * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse deletePreferredTerm(String serverName, String userId, String guid, Boolean isPurge)
+    public SubjectAreaOMASAPIResponse<PreferredTerm> deletePreferredTerm(String serverName, String userId, String guid, Boolean isPurge)
     {
         String restAPIName = "deletePreferredTerm";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<PreferredTerm> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -1434,10 +1316,8 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
             if (isPurge) {
                 handler.purgePreferredTermRelationship(userId, guid);
-                response = new VoidResponse();
             } else {
-                PreferredTerm deletedPreferredTerm = handler.deletePreferredTermRelationship(userId, guid);
-                response = new PreferredTermRelationshipResponse(deletedPreferredTerm);
+                handler.deletePreferredTermRelationship(userId, guid);
             }
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
@@ -1456,20 +1336,16 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * @return response which when successful contains the restored relationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
-     * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse restorePreferredTerm(String serverName, String userId, String guid)
+    public SubjectAreaOMASAPIResponse<PreferredTerm> restorePreferredTerm(String serverName, String userId, String guid)
     {
         String restAPIName = "restorePreferredTerm";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<PreferredTerm> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -1477,7 +1353,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
             PreferredTerm restoredPreferredTerm = handler.restorePreferredTermRelationship(userId, guid);
-            response = new PreferredTermRelationshipResponse(restoredPreferredTerm);
+            response.addResult(restoredPreferredTerm);
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
         }
@@ -1496,19 +1372,15 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
-     * <li> ClassificationException              Error processing a classification.</li>
-     * <li> StatusNotSupportedException          A status value is not supported.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse createValidValue(String serverName, String userId, ValidValue validValue)
+    public SubjectAreaOMASAPIResponse<ValidValue> createValidValue(String serverName, String userId, ValidValue validValue)
     {
         String restAPIName = "createValidValue";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<ValidValue> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -1516,7 +1388,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
             ValidValue createdValidValue = handler.createValidValueRelationship(userId, validValue);
-            response = new ValidValueRelationshipResponse(createdValidValue);
+            response.addResult(createdValidValue);
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
         }
@@ -1536,18 +1408,17 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
 
-    public SubjectAreaOMASAPIResponse getValidValue(String serverName, String userId, String guid)
+    public SubjectAreaOMASAPIResponse<ValidValue> getValidValue(String serverName, String userId, String guid)
     {
 
         String restAPIName = "getValidValue";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<ValidValue> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -1555,7 +1426,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
             ValidValue updatedValidValue = handler.getValidValueRelationship(userId, guid);
-            response = new ValidValueRelationshipResponse(updatedValidValue);
+            response.addResult(updatedValidValue);
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
         }
@@ -1569,25 +1440,22 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      *
      * @param serverName           serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId               userId under which the request is performed
+     * @param guid       guid of the ValidValue relationship
      * @param validValue the validValue relationship
      * @param isReplace            flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the updated validValue
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
-     * <li> ClassificationException              Error processing a classification.</li>
-     * <li> StatusNotSupportedException          A status value is not supported.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse updateValidValue(String serverName, String userId, ValidValue validValue, boolean isReplace)
+    public SubjectAreaOMASAPIResponse<ValidValue> updateValidValue(String serverName, String userId, String guid, ValidValue validValue, boolean isReplace)
     {
         String restAPIName = "updateValidValue";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<ValidValue> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -1595,11 +1463,11 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
             if (isReplace) {
-                ValidValue updatedValidValue = handler.replaceValidValueRelationship(userId,validValue);
-                response = new ValidValueRelationshipResponse(updatedValidValue);
+                ValidValue updatedValidValue = handler.replaceValidValueRelationship(userId, guid, validValue);
+                response.addResult(updatedValidValue);
             } else {
-                ValidValue updatedValidValue = handler.updateValidValueRelationship(userId,validValue);
-                response = new ValidValueRelationshipResponse(updatedValidValue);
+                ValidValue updatedValidValue = handler.updateValidValueRelationship(userId, guid, validValue);
+                response.addResult(updatedValidValue);
             }
 
         }  catch (Throwable error) {
@@ -1619,21 +1487,17 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * @return response which when successful contains the term has a relationship with the requested guid
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
-     * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse deleteValidValue(String serverName, String userId, String guid, Boolean isPurge)
+    public SubjectAreaOMASAPIResponse<ValidValue> deleteValidValue(String serverName, String userId, String guid, Boolean isPurge)
     {
         String restAPIName = "deleteValidValue";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<ValidValue> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -1642,10 +1506,8 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
             if (isPurge) {
                 handler.purgeValidValueRelationship(userId, guid);
-                response = new VoidResponse();
             } else {
-                ValidValue deletedValidValue = handler.deleteValidValueRelationship(userId, guid);
-                response = new ValidValueRelationshipResponse(deletedValidValue);
+                handler.deleteValidValueRelationship(userId, guid);
             }
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
@@ -1664,20 +1526,16 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * @return response which when successful contains the restored relationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
-     * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse restoreValidValue(String serverName, String userId, String guid)
+    public SubjectAreaOMASAPIResponse<ValidValue> restoreValidValue(String serverName, String userId, String guid)
     {
         String restAPIName = "restoreValidValue";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<ValidValue> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -1685,7 +1543,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
             ValidValue restoredValidValue = handler.restoreValidValueRelationship(userId, guid);
-            response = new ValidValueRelationshipResponse(restoredValidValue);
+            response.addResult(restoredValidValue);
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
         }
@@ -1704,19 +1562,15 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
-     * <li> ClassificationException              Error processing a classification.</li>
-     * <li> StatusNotSupportedException          A status value is not supported.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse createReplacementTerm(String serverName, String userId, ReplacementTerm replacementTerm)
+    public SubjectAreaOMASAPIResponse<ReplacementTerm> createReplacementTerm(String serverName, String userId, ReplacementTerm replacementTerm)
     {
         String restAPIName = "createReplacementTerm";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<ReplacementTerm> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -1724,7 +1578,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
             ReplacementTerm createdReplacementTerm = handler.createReplacementTermRelationship(userId, replacementTerm);
-            response = new ReplacementRelationshipResponse(createdReplacementTerm);
+            response.addResult(createdReplacementTerm);
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
         }
@@ -1744,18 +1598,17 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
 
-    public SubjectAreaOMASAPIResponse getReplacementTerm(String serverName, String userId, String guid)
+    public SubjectAreaOMASAPIResponse<ReplacementTerm> getReplacementTerm(String serverName, String userId, String guid)
     {
 
         String restAPIName = "getReplacementTerm";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<ReplacementTerm> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -1763,7 +1616,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
             ReplacementTerm updatedReplacementTerm = handler.getReplacementTermRelationship(userId, guid);
-            response = new ReplacementRelationshipResponse(updatedReplacementTerm);
+            response.addResult(updatedReplacementTerm);
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
         }
@@ -1777,25 +1630,22 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      *
      * @param serverName           serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId               userId under which the request is performed
+     * @param guid                 guid of the ReplacementTerm relationship
      * @param replacementTerm the replacementTerm relationship
      * @param isReplace            flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the updated replacementTerm
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
-     * <li> ClassificationException              Error processing a classification.</li>
-     * <li> StatusNotSupportedException          A status value is not supported.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse updateReplacementTerm(String serverName, String userId, ReplacementTerm replacementTerm, boolean isReplace)
+    public SubjectAreaOMASAPIResponse<ReplacementTerm> updateReplacementTerm(String serverName, String userId, String guid, ReplacementTerm replacementTerm, boolean isReplace)
     {
         String restAPIName = "updateReplacementTerm";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<ReplacementTerm> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -1803,11 +1653,11 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
             if (isReplace) {
-                ReplacementTerm updatedReplacementTerm = handler.replaceReplacementTermRelationship(userId,replacementTerm);
-                response = new ReplacementRelationshipResponse(updatedReplacementTerm);
+                ReplacementTerm updatedReplacementTerm = handler.replaceReplacementTermRelationship(userId, guid, replacementTerm);
+                response.addResult(updatedReplacementTerm);
             } else {
-                ReplacementTerm updatedReplacementTerm = handler.updateReplacementTermRelationship(userId,replacementTerm);
-                response = new ReplacementRelationshipResponse(updatedReplacementTerm);
+                ReplacementTerm updatedReplacementTerm = handler.updateReplacementTermRelationship(userId, guid, replacementTerm);
+                response.addResult(updatedReplacementTerm);
             }
 
         }  catch (Throwable error) {
@@ -1827,21 +1677,17 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * @return response which when successful contains the term has a relationship with the requested guid
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
-     * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse deleteReplacementTerm(String serverName, String userId, String guid, Boolean isPurge)
+    public SubjectAreaOMASAPIResponse<ReplacementTerm> deleteReplacementTerm(String serverName, String userId, String guid, Boolean isPurge)
     {
         String restAPIName = "deleteReplacementTerm";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<ReplacementTerm> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -1850,10 +1696,8 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
             if (isPurge) {
                 handler.purgeReplacementTermRelationship(userId, guid);
-                response = new VoidResponse();
             } else {
-                ReplacementTerm deletedReplacementTerm = handler.deleteReplacementTermRelationship(userId, guid);
-                response = new ReplacementRelationshipResponse(deletedReplacementTerm);
+                handler.deleteReplacementTermRelationship(userId, guid);
             }
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
@@ -1872,20 +1716,16 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * @return response which when successful contains the restored relationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
-     * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse restoreReplacementTerm(String serverName, String userId, String guid)
+    public SubjectAreaOMASAPIResponse<ReplacementTerm> restoreReplacementTerm(String serverName, String userId, String guid)
     {
         String restAPIName = "restoreReplacementTerm";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<ReplacementTerm> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -1893,7 +1733,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
             ReplacementTerm restoredReplacementTerm = handler.restoreReplacementTermRelationship(userId, guid);
-            response = new ReplacementRelationshipResponse(restoredReplacementTerm);
+            response.addResult(restoredReplacementTerm);
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
         }
@@ -1912,19 +1752,15 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
-     * <li> ClassificationException              Error processing a classification.</li>
-     * <li> StatusNotSupportedException          A status value is not supported.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse createTermTYPEDBYRelationship(String serverName, String userId, TypedBy termTYPEDBYRelationship)
+    public SubjectAreaOMASAPIResponse<TypedBy> createTermTYPEDBYRelationship(String serverName, String userId, TypedBy termTYPEDBYRelationship)
     {
         String restAPIName = "createTermTYPEDBYRelationship";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<TypedBy> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -1932,7 +1768,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
             TypedBy createdTermTYPEDBYRelationship = handler.createTermTYPEDBYRelationship(userId, termTYPEDBYRelationship);
-            response = new TermTYPEDBYRelationshipResponse(createdTermTYPEDBYRelationship);
+            response.addResult(createdTermTYPEDBYRelationship);
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
         }
@@ -1952,18 +1788,17 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
 
-    public SubjectAreaOMASAPIResponse getTermTYPEDBYRelationship(String serverName, String userId, String guid)
+    public SubjectAreaOMASAPIResponse<TypedBy> getTermTYPEDBYRelationship(String serverName, String userId, String guid)
     {
 
         String restAPIName = "getTermTYPEDBYRelationship";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<TypedBy> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -1971,7 +1806,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
             TypedBy updatedTermTYPEDBYRelationship = handler.getTermTYPEDBYRelationship(userId, guid);
-            response = new TermTYPEDBYRelationshipResponse(updatedTermTYPEDBYRelationship);
+            response.addResult(updatedTermTYPEDBYRelationship);
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
         }
@@ -1985,39 +1820,36 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      *
      * @param serverName           serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId               userId under which the request is performed
+     * @param guid       guid of the TypedBy relationship
      * @param termTYPEDBYRelationship the termTYPEDBYRelationship relationship
      * @param isReplace            flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the updated termTYPEDBYRelationship
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
-     * <li> ClassificationException              Error processing a classification.</li>
-     * <li> StatusNotSupportedException          A status value is not supported.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse updateTermTYPEDBYRelationship(String serverName, String userId, TypedBy termTYPEDBYRelationship, boolean isReplace)
+    public SubjectAreaOMASAPIResponse<TypedBy> updateTermTYPEDBYRelationship(String serverName, String userId, String guid, TypedBy termTYPEDBYRelationship, boolean isReplace)
     {
         String restAPIName = "updateTermTYPEDBYRelationship";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<TypedBy> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
+            TypedBy updatedTermTYPEDBYRelationship;
             if (isReplace) {
-                TypedBy updatedTermTYPEDBYRelationship = handler.replaceTermTYPEDBYRelationship(userId, termTYPEDBYRelationship);
-                response = new TermTYPEDBYRelationshipResponse(updatedTermTYPEDBYRelationship);
+                updatedTermTYPEDBYRelationship = handler.replaceTermTYPEDBYRelationship(userId, guid, termTYPEDBYRelationship);
             } else {
-                TypedBy updatedTermTYPEDBYRelationship = handler.updateTermTYPEDBYRelationship(userId, termTYPEDBYRelationship);
-                response = new TermTYPEDBYRelationshipResponse(updatedTermTYPEDBYRelationship);
+                updatedTermTYPEDBYRelationship = handler.updateTermTYPEDBYRelationship(userId, guid, termTYPEDBYRelationship);
             }
 
+            response.addResult(updatedTermTYPEDBYRelationship);
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
         }
@@ -2035,21 +1867,17 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * @return response which when successful contains the term has a relationship with the requested guid
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
-     * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse deleteTermTYPEDBYRelationship(String serverName, String userId, String guid, Boolean isPurge)
+    public SubjectAreaOMASAPIResponse<TypedBy> deleteTermTYPEDBYRelationship(String serverName, String userId, String guid, Boolean isPurge)
     {
         String restAPIName = "deleteTermTYPEDBYRelationship";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<TypedBy> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -2058,10 +1886,8 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
             if (isPurge) {
                 handler.purgeTermTYPEDBYRelationship(userId, guid);
-                response = new VoidResponse();
             } else {
-                TypedBy deletedTermTYPEDBYRelationship = handler.deleteTermTYPEDBYRelationship(userId, guid);
-                response = new TermTYPEDBYRelationshipResponse(deletedTermTYPEDBYRelationship);
+                handler.deleteTermTYPEDBYRelationship(userId, guid);
             }
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
@@ -2080,20 +1906,16 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * @return response which when successful contains the restored relationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
-     * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse restoreTermTYPEDBYRelationship(String serverName, String userId, String guid)
+    public SubjectAreaOMASAPIResponse<TypedBy> restoreTermTYPEDBYRelationship(String serverName, String userId, String guid)
     {
         String restAPIName = "restoreTermTYPEDBYRelationship";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<TypedBy> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -2101,7 +1923,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
             TypedBy restoredTermTYPEDBYRelationship = handler.restoreTypedByRelationship(userId, guid);
-            response = new TermTYPEDBYRelationshipResponse(restoredTermTYPEDBYRelationship);
+            response.addResult(restoredTermTYPEDBYRelationship);
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
         }
@@ -2120,19 +1942,15 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
-     * <li> ClassificationException              Error processing a classification.</li>
-     * <li> StatusNotSupportedException          A status value is not supported.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse createIsaRelationship(String serverName, String userId, Isa ISARelationship)
+    public SubjectAreaOMASAPIResponse<Isa> createIsaRelationship(String serverName, String userId, Isa ISARelationship)
     {
         String restAPIName = "createIsaRelationship";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Isa> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -2140,7 +1958,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
             Isa createdISARelationship = handler.createIsaRelationship(userId, ISARelationship);
-            response = new TermISARelationshipResponse(createdISARelationship);
+            response.addResult(createdISARelationship);
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
         }
@@ -2160,18 +1978,17 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
 
-    public SubjectAreaOMASAPIResponse getISARelationship(String serverName, String userId, String guid)
+    public SubjectAreaOMASAPIResponse<Isa> getISARelationship(String serverName, String userId, String guid)
     {
 
         String restAPIName = "getISARelationship";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Isa> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -2179,7 +1996,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
             Isa updatedISARelationship = handler.getIsaRelationship(userId, guid);
-            response = new TermISARelationshipResponse(updatedISARelationship);
+            response.addResult(updatedISARelationship);
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
         }
@@ -2193,39 +2010,35 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      *
      * @param serverName           serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId               userId under which the request is performed
+     * @param guid       guid of the ISA Relationship
      * @param ISARelationship the ISA Relationship
      * @param isReplace            flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the updated Isa
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
-     * <li> ClassificationException              Error processing a classification.</li>
-     * <li> StatusNotSupportedException          A status value is not supported.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse updateISARelationship(String serverName, String userId, Isa ISARelationship, boolean isReplace)
+    public SubjectAreaOMASAPIResponse<Isa> updateISARelationship(String serverName, String userId, String guid, Isa ISARelationship, boolean isReplace)
     {
         String restAPIName = "updateISARelationship";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Isa> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
+            Isa updatedISARelationship;
             if (isReplace) {
-                Isa updatedISARelationship = handler.replaceIsaRelationship(userId, ISARelationship);
-                response = new TermISARelationshipResponse(updatedISARelationship);
+                updatedISARelationship = handler.replaceIsaRelationship(userId, guid, ISARelationship);
             } else {
-                Isa updatedISARelationship = handler.updateIsaRelationship(userId, ISARelationship);
-                response = new TermISARelationshipResponse(updatedISARelationship);
+                updatedISARelationship = handler.updateIsaRelationship(userId, guid, ISARelationship);
             }
-
+            response.addResult(updatedISARelationship);
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
         }
@@ -2243,21 +2056,17 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * @return response which when successful contains the term has a relationship with the requested guid
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
-     * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse deleteISARelationship(String serverName, String userId, String guid, Boolean isPurge)
+    public SubjectAreaOMASAPIResponse<Isa> deleteISARelationship(String serverName, String userId, String guid, Boolean isPurge)
     {
         String restAPIName = "deleteISARelationship";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Isa> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -2266,10 +2075,8 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
             if (isPurge) {
                 handler.purgeIsaRelationship(userId, guid);
-                response = new VoidResponse();
             } else {
-                Isa deletedISARelationship = handler.deleteIsaRelationship(userId, guid);
-                response = new TermISARelationshipResponse(deletedISARelationship);
+                handler.deleteIsaRelationship(userId, guid);
             }
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
@@ -2288,20 +2095,16 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * @return response which when successful contains the restored relationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
-     * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse restoreISARelationship(String serverName, String userId, String guid)
+    public SubjectAreaOMASAPIResponse<Isa> restoreISARelationship(String serverName, String userId, String guid)
     {
         String restAPIName = "restoreISARelationship";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Isa> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -2309,7 +2112,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
             Isa restoredISARelationship = handler.restoreIsaRelationship(userId, guid);
-            response = new TermISARelationshipResponse(restoredISARelationship);
+            response.addResult(restoredISARelationship);
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
         }
@@ -2328,19 +2131,15 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
-     * <li> ClassificationException              Error processing a classification.</li>
-     * <li> StatusNotSupportedException          A status value is not supported.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse createTermISATypeOFRelationship(String serverName, String userId, IsaTypeOf termISATypeOFRelationship)
+    public SubjectAreaOMASAPIResponse<IsaTypeOf> createTermISATypeOFRelationship(String serverName, String userId, IsaTypeOf termISATypeOFRelationship)
     {
         String restAPIName = "createTermISATypeOFRelationship";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<IsaTypeOf> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -2348,7 +2147,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
             IsaTypeOf createdTermISATypeOFRelationship = handler.createTermISATypeOFRelationship(userId, termISATypeOFRelationship);
-            response = new TermISATYPEOFRelationshipResponse(createdTermISATypeOFRelationship);
+            response.addResult(createdTermISATypeOFRelationship);
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
         }
@@ -2368,18 +2167,17 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
 
-    public SubjectAreaOMASAPIResponse getTermISATypeOFRelationship(String serverName, String userId, String guid)
+    public SubjectAreaOMASAPIResponse<IsaTypeOf> getTermISATypeOFRelationship(String serverName, String userId, String guid)
     {
 
         String restAPIName = "getTermISATypeOFRelationship";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<IsaTypeOf> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -2387,7 +2185,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
             IsaTypeOf updatedTermISATypeOFRelationship = handler.getTermISATypeOFRelationship(userId, guid);
-            response = new TermISATYPEOFRelationshipResponse(updatedTermISATypeOFRelationship);
+            response.addResult(updatedTermISATypeOFRelationship);
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
         }
@@ -2401,39 +2199,36 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      *
      * @param serverName           serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId               userId under which the request is performed
+     * @param guid       guid of the IsaTypeOf relationship
      * @param termISATypeOFRelationship the termISATypeOFRelationship relationship
      * @param isReplace            flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the updated termISATypeOFRelationship
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
-     * <li> ClassificationException              Error processing a classification.</li>
-     * <li> StatusNotSupportedException          A status value is not supported.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse updateTermISATypeOFRelationship(String serverName, String userId, IsaTypeOf termISATypeOFRelationship, boolean isReplace)
+    public SubjectAreaOMASAPIResponse<IsaTypeOf> updateTermISATypeOFRelationship(String serverName, String userId, String guid, IsaTypeOf termISATypeOFRelationship, boolean isReplace)
     {
         String restAPIName = "updateTermISATypeOFRelationship";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<IsaTypeOf> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
+            IsaTypeOf updatedTermISATypeOFRelationship;
             if (isReplace) {
-                IsaTypeOf updatedTermISATypeOFRelationship = handler.replaceTermISATypeOFRelationship(userId, termISATypeOFRelationship);
-                response = new TermISATYPEOFRelationshipResponse(updatedTermISATypeOFRelationship);
+                updatedTermISATypeOFRelationship = handler.replaceTermISATypeOFRelationship(userId, guid, termISATypeOFRelationship);
             } else {
-                IsaTypeOf updatedTermISATypeOFRelationship = handler.updateTermISATypeOFRelationship(userId, termISATypeOFRelationship);
-                response = new TermISATYPEOFRelationshipResponse(updatedTermISATypeOFRelationship);
+                updatedTermISATypeOFRelationship = handler.updateTermISATypeOFRelationship(userId, guid, termISATypeOFRelationship);
             }
 
+            response.addResult(updatedTermISATypeOFRelationship);
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
         }
@@ -2451,21 +2246,17 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * @return response which when successful contains the term has a relationship with the requested guid
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
-     * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse deleteTermISATypeOFRelationship(String serverName, String userId, String guid, Boolean isPurge)
+    public SubjectAreaOMASAPIResponse<IsaTypeOf> deleteTermISATypeOFRelationship(String serverName, String userId, String guid, Boolean isPurge)
     {
         String restAPIName = "deleteTermISATypeOFRelationship";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<IsaTypeOf> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -2474,10 +2265,8 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
             if (isPurge) {
                 handler.purgeTermISATypeOFRelationship(userId, guid);
-                response = new VoidResponse();
             } else {
-                IsaTypeOf deletedTermISATypeOFRelationship = handler.deleteTermISATypeOFRelationship(userId, guid);
-                response = new TermISATYPEOFRelationshipResponse(deletedTermISATypeOFRelationship);
+                handler.deleteTermISATypeOFRelationship(userId, guid);
             }
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
@@ -2496,20 +2285,16 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * @return response which when successful contains the restored relationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
-     * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse restoreTermISATypeOFRelationship(String serverName, String userId, String guid)
+    public SubjectAreaOMASAPIResponse<IsaTypeOf> restoreTermISATypeOFRelationship(String serverName, String userId, String guid)
     {
         String restAPIName = "restoreTermISATypeOFRelationship";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<IsaTypeOf> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -2517,7 +2302,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
             IsaTypeOf restoredTermISATypeOFRelationship = handler.restoreIsaTypeOfRelationship(userId, guid);
-            response = new TermISATYPEOFRelationshipResponse(restoredTermISATypeOFRelationship);
+            response.addResult(restoredTermISATypeOFRelationship);
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
         }
@@ -2536,19 +2321,15 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
-     * <li> ClassificationException              Error processing a classification.</li>
-     * <li> StatusNotSupportedException          A status value is not supported.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse createTermCategorization(String serverName, String userId, Categorization termCategorization)
+    public SubjectAreaOMASAPIResponse<Categorization> createTermCategorization(String serverName, String userId, Categorization termCategorization)
     {
         String restAPIName = "createTermCategorization";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Categorization> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -2556,7 +2337,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
             Categorization createdTermCategorization = handler.createTermCategorizationRelationship(userId, termCategorization);
-            response = new TermCategorizationRelationshipResponse(createdTermCategorization);
+            response.addResult(createdTermCategorization);
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
         }
@@ -2576,18 +2357,17 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
 
-    public SubjectAreaOMASAPIResponse getTermCategorization(String serverName, String userId, String guid)
+    public SubjectAreaOMASAPIResponse<Categorization> getTermCategorization(String serverName, String userId, String guid)
     {
 
         String restAPIName = "getTermCategorization";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Categorization> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -2595,7 +2375,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
             Categorization updatedTermCategorization = handler.getTermCategorizationRelationship(userId, guid);
-            response = new TermCategorizationRelationshipResponse(updatedTermCategorization);
+            response.addResult(updatedTermCategorization);
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
         }
@@ -2609,39 +2389,36 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      *
      * @param serverName           serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId               userId under which the request is performed
+     * @param guid       guid of the TermCategorization relationship
      * @param termCategorization the termCategorization relationship
      * @param isReplace            flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the updated termCategorization
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
-     * <li> ClassificationException              Error processing a classification.</li>
-     * <li> StatusNotSupportedException          A status value is not supported.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse updateTermCategorization(String serverName, String userId, Categorization termCategorization, boolean isReplace)
+    public SubjectAreaOMASAPIResponse<Categorization> updateTermCategorization(String serverName, String userId, String guid, Categorization termCategorization, boolean isReplace)
     {
         String restAPIName = "updateTermCategorization";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Categorization> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
+            Categorization updatedTermCategorization;
             if (isReplace) {
-                Categorization updatedTermCategorization = handler.replaceTermCategorizationRelationship(userId, termCategorization);
-                response = new TermCategorizationRelationshipResponse(updatedTermCategorization);
+                updatedTermCategorization = handler.replaceTermCategorizationRelationship(userId, guid, termCategorization);
             } else {
-                Categorization updatedTermCategorization = handler.updateTermCategorizationRelationship(userId, termCategorization);
-                response = new TermCategorizationRelationshipResponse(updatedTermCategorization);
+                updatedTermCategorization = handler.updateTermCategorizationRelationship(userId, guid, termCategorization);
             }
 
+            response.addResult(updatedTermCategorization);
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
         }
@@ -2659,21 +2436,17 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * @return response which when successful contains the term has a relationship with the requested guid
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
-     * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse deleteTermCategorization(String serverName, String userId, String guid, Boolean isPurge)
+    public SubjectAreaOMASAPIResponse<Categorization> deleteTermCategorization(String serverName, String userId, String guid, Boolean isPurge)
     {
         String restAPIName = "deleteTermCategorization";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Categorization> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -2682,10 +2455,8 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
             if (isPurge) {
                 handler.purgeTermCategorizationRelationship(userId, guid);
-                response = new VoidResponse();
             } else {
-                Categorization deletedTermCategorization = handler.deleteTermCategorizationRelationship(userId, guid);
-                response = new TermCategorizationRelationshipResponse(deletedTermCategorization);
+                handler.deleteTermCategorizationRelationship(userId, guid);
             }
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
@@ -2704,20 +2475,16 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * @return response which when successful contains the restored relationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
-     * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse restoreTermCategorization(String serverName, String userId, String guid)
+    public SubjectAreaOMASAPIResponse<Categorization> restoreTermCategorization(String serverName, String userId, String guid)
     {
         String restAPIName = "restoreTermCategorization";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Categorization> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -2725,7 +2492,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
             Categorization restoredTermCategorization = handler.restoreTermCategorizationRelationship(userId, guid);
-            response = new TermCategorizationRelationshipResponse(restoredTermCategorization);
+            response.addResult(restoredTermCategorization);
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
         }
@@ -2748,19 +2515,15 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
-     * <li> ClassificationException              Error processing a classification.</li>
-     * <li> StatusNotSupportedException          A status value is not supported.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse createTermAnchor(String serverName, String userId, TermAnchor termAnchor)
+    public SubjectAreaOMASAPIResponse<TermAnchor> createTermAnchor(String serverName, String userId, TermAnchor termAnchor)
     {
         String restAPIName = "createTermAnchor";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<TermAnchor> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -2768,7 +2531,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
             TermAnchor createdTermAnchor = handler.createTermAnchorRelationship(userId, termAnchor);
-            response = new TermAnchorRelationshipResponse(createdTermAnchor);
+            response.addResult(createdTermAnchor);
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
         }
@@ -2788,18 +2551,17 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
 
-    public SubjectAreaOMASAPIResponse getTermAnchor(String serverName, String userId, String guid)
+    public SubjectAreaOMASAPIResponse<TermAnchor> getTermAnchor(String serverName, String userId, String guid)
     {
 
         String restAPIName = "getTermAnchor";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<TermAnchor> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -2807,7 +2569,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
             TermAnchor updatedTermAnchor = handler.getTermAnchorRelationship(userId, guid);
-            response = new TermAnchorRelationshipResponse(updatedTermAnchor);
+            response.addResult(updatedTermAnchor);
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
         }
@@ -2820,39 +2582,36 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      *
      * @param serverName           serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId               userId under which the request is performed
+     * @param guid       guid of the TermAnchor relationship
      * @param termAnchor the termAnchor relationship
      * @param isReplace            flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the updated termAnchor
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
-     * <li> ClassificationException              Error processing a classification.</li>
-     * <li> StatusNotSupportedException          A status value is not supported.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse updateTermAnchor(String serverName, String userId, TermAnchor termAnchor, boolean isReplace)
+    public SubjectAreaOMASAPIResponse<TermAnchor> updateTermAnchor(String serverName, String userId, String guid, TermAnchor termAnchor, boolean isReplace)
     {
         String restAPIName = "updateTermAnchor";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<TermAnchor> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
+            TermAnchor updatedTermAnchor;
             if (isReplace) {
-                TermAnchor updatedTermAnchor = handler.replaceTermAnchorRelationship(userId, termAnchor);
-                response = new TermAnchorRelationshipResponse(updatedTermAnchor);
+                updatedTermAnchor = handler.replaceTermAnchorRelationship(userId, guid, termAnchor);
             } else {
-                TermAnchor updatedTermAnchor = handler.updateTermAnchorRelationship(userId, termAnchor);
-                response = new TermAnchorRelationshipResponse(updatedTermAnchor);
+                updatedTermAnchor = handler.updateTermAnchorRelationship(userId, guid, termAnchor);
             }
 
+            response.addResult(updatedTermAnchor);
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
         }
@@ -2870,21 +2629,17 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * @return response which when successful contains the term has a relationship with the requested guid
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
-     * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse deleteTermAnchor(String serverName, String userId, String guid, Boolean isPurge)
+    public SubjectAreaOMASAPIResponse<TermAnchor> deleteTermAnchor(String serverName, String userId, String guid, Boolean isPurge)
     {
         String restAPIName = "deleteTermAnchor";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<TermAnchor> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -2893,10 +2648,8 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
             if (isPurge) {
                 handler.purgeTermAnchorRelationship(userId, guid);
-                response = new VoidResponse();
             } else {
-                TermAnchor deletedTermAnchor = handler.deleteTermAnchorRelationship(userId, guid);
-                response = new TermAnchorRelationshipResponse(deletedTermAnchor);
+                handler.deleteTermAnchorRelationship(userId, guid);
             }
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
@@ -2915,20 +2668,16 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * @return response which when successful contains the restored relationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
-     * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse restoreTermAnchor(String serverName, String userId, String guid)
+    public SubjectAreaOMASAPIResponse<TermAnchor> restoreTermAnchor(String serverName, String userId, String guid)
     {
         String restAPIName = "restoreTermAnchor";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<TermAnchor> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -2936,7 +2685,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
             TermAnchor restoredTermAnchor = handler.restoreTermAnchorRelationship(userId, guid);
-            response = new TermAnchorRelationshipResponse(restoredTermAnchor);
+            response.addResult(restoredTermAnchor);
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
         }
@@ -2959,19 +2708,15 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
-     * <li> ClassificationException              Error processing a classification.</li>
-     * <li> StatusNotSupportedException          A status value is not supported.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse createCategoryAnchor(String serverName, String userId, CategoryAnchor categoryAnchor)
+    public SubjectAreaOMASAPIResponse<CategoryAnchor> createCategoryAnchor(String serverName, String userId, CategoryAnchor categoryAnchor)
     {
         String restAPIName = "createCategoryAnchor";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<CategoryAnchor> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -2979,7 +2724,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
             CategoryAnchor createdCategoryAnchor = handler.createCategoryAnchorRelationship(userId, categoryAnchor);
-            response = new CategoryAnchorRelationshipResponse(createdCategoryAnchor);
+            response.addResult(createdCategoryAnchor);
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
         }
@@ -2999,18 +2744,17 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
 
-    public SubjectAreaOMASAPIResponse getCategoryAnchor(String serverName, String userId, String guid)
+    public SubjectAreaOMASAPIResponse<CategoryAnchor> getCategoryAnchor(String serverName, String userId, String guid)
     {
 
         String restAPIName = "getCategoryAnchor";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<CategoryAnchor> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -3018,7 +2762,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
             CategoryAnchor updatedCategoryAnchor = handler.getCategoryAnchorRelationship(userId, guid);
-            response = new CategoryAnchorRelationshipResponse(updatedCategoryAnchor);
+            response.addResult(updatedCategoryAnchor);
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
         }
@@ -3032,39 +2776,36 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      *
      * @param serverName           serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId               userId under which the request is performed
+     * @param guid       guid of the CategoryAnchor relationship
      * @param categoryAnchor the categoryAnchor relationship
      * @param isReplace            flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the updated categoryAnchor
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
-     * <li> ClassificationException              Error processing a classification.</li>
-     * <li> StatusNotSupportedException          A status value is not supported.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse updateCategoryAnchor(String serverName, String userId, CategoryAnchor categoryAnchor, boolean isReplace)
+    public SubjectAreaOMASAPIResponse<CategoryAnchor> updateCategoryAnchor(String serverName, String userId, String guid, CategoryAnchor categoryAnchor, boolean isReplace)
     {
         String restAPIName = "updateCategoryAnchor";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<CategoryAnchor> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
+            CategoryAnchor updatedCategoryAnchor;
             if (isReplace) {
-                CategoryAnchor updatedCategoryAnchor = handler.replaceCategoryAnchorRelationship(userId, categoryAnchor);
-                response = new CategoryAnchorRelationshipResponse(updatedCategoryAnchor);
+                updatedCategoryAnchor = handler.replaceCategoryAnchorRelationship(userId, guid, categoryAnchor);
             } else {
-                CategoryAnchor updatedCategoryAnchor = handler.updateCategoryAnchorRelationship(userId, categoryAnchor);
-                response = new CategoryAnchorRelationshipResponse(updatedCategoryAnchor);
+                updatedCategoryAnchor = handler.updateCategoryAnchorRelationship(userId, guid, categoryAnchor);
             }
 
+            response.addResult(updatedCategoryAnchor);
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
         }
@@ -3082,21 +2823,17 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * @return response which when successful contains the term has a relationship with the requested guid
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
-     * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse deleteCategoryAnchor(String serverName, String userId, String guid, Boolean isPurge)
+    public SubjectAreaOMASAPIResponse<CategoryAnchor> deleteCategoryAnchor(String serverName, String userId, String guid, Boolean isPurge)
     {
         String restAPIName = "deleteCategoryAnchor";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<CategoryAnchor> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -3105,10 +2842,8 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
             if (isPurge) {
                 handler.purgeCategoryAnchorRelationship(userId, guid);
-                response = new VoidResponse();
             } else {
-                CategoryAnchor deletedCategoryAnchor = handler.deleteCategoryAnchorRelationship(userId, guid);
-                response = new CategoryAnchorRelationshipResponse(deletedCategoryAnchor);
+                handler.deleteCategoryAnchorRelationship(userId, guid);
             }
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
@@ -3127,20 +2862,16 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * @return response which when successful contains the restored relationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
-     * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse restoreCategoryAnchor(String serverName, String userId, String guid)
+    public SubjectAreaOMASAPIResponse<CategoryAnchor> restoreCategoryAnchor(String serverName, String userId, String guid)
     {
         String restAPIName = "restoreCategoryAnchor";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<CategoryAnchor> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -3148,7 +2879,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
             CategoryAnchor restoredCategoryAnchor = handler.restoreCategoryAnchorRelationship(userId, guid);
-            response = new CategoryAnchorRelationshipResponse(restoredCategoryAnchor);
+            response.addResult(restoredCategoryAnchor);
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
         }
@@ -3166,19 +2897,15 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
-     * <li> ClassificationException              Error processing a classification.</li>
-     * <li> StatusNotSupportedException          A status value is not supported.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse createProjectScope(String serverName, String userId, ProjectScope projectScope)
+    public SubjectAreaOMASAPIResponse<ProjectScope> createProjectScope(String serverName, String userId, ProjectScope projectScope)
     {
         String restAPIName = "createProjectScope";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<ProjectScope> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -3186,7 +2913,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
             ProjectScope createdProjectScope = handler.createProjectScopeRelationship(userId, projectScope);
-            response = new ProjectScopeRelationshipResponse(createdProjectScope);
+            response.addResult(createdProjectScope);
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
         }
@@ -3206,18 +2933,17 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
 
-    public SubjectAreaOMASAPIResponse getProjectScope(String serverName, String userId, String guid)
+    public SubjectAreaOMASAPIResponse<ProjectScope> getProjectScope(String serverName, String userId, String guid)
     {
 
         String restAPIName = "getProjectScope";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<ProjectScope> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -3225,7 +2951,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
             ProjectScope updatedProjectScope = handler.getProjectScopeRelationship(userId, guid);
-            response = new ProjectScopeRelationshipResponse(updatedProjectScope);
+            response.addResult(updatedProjectScope);
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
         }
@@ -3239,39 +2965,36 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      *
      * @param serverName           serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId               userId under which the request is performed
+     * @param guid       guid of the ProjectScope relationship
      * @param projectScope the projectScope relationship
      * @param isReplace            flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the updated projectScope
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
-     * <li> ClassificationException              Error processing a classification.</li>
-     * <li> StatusNotSupportedException          A status value is not supported.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse updateProjectScope(String serverName, String userId, ProjectScope projectScope, boolean isReplace)
+    public SubjectAreaOMASAPIResponse<ProjectScope> updateProjectScope(String serverName, String userId, String guid, ProjectScope projectScope, boolean isReplace)
     {
         String restAPIName = "updateProjectScope";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<ProjectScope> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
+            ProjectScope updatedProjectScope;
             if (isReplace) {
-                ProjectScope updatedProjectScope = handler.replaceProjectScopeRelationship(userId, projectScope);
-                response = new ProjectScopeRelationshipResponse(updatedProjectScope);
+                updatedProjectScope = handler.replaceProjectScopeRelationship(userId, guid, projectScope);
             } else {
-                ProjectScope updatedProjectScope = handler.updateProjectScopeRelationship(userId, projectScope);
-                response = new ProjectScopeRelationshipResponse(updatedProjectScope);
+                updatedProjectScope = handler.updateProjectScopeRelationship(userId, guid, projectScope);
             }
 
+            response.addResult(updatedProjectScope);
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
         }
@@ -3289,21 +3012,17 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * @return response which when successful contains the term has a relationship with the requested guid
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
-     * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse deleteProjectScope(String serverName, String userId, String guid, Boolean isPurge)
+    public SubjectAreaOMASAPIResponse<ProjectScope> deleteProjectScope(String serverName, String userId, String guid, Boolean isPurge)
     {
         String restAPIName = "deleteProjectScope";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<ProjectScope> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -3312,10 +3031,8 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
             if (isPurge) {
                 handler.purgeProjectScopeRelationship(userId, guid);
-                response = new VoidResponse();
             } else {
-                ProjectScope deletedProjectScope = handler.deleteProjectScopeRelationship(userId, guid);
-                response = new ProjectScopeRelationshipResponse(deletedProjectScope);
+                handler.deleteProjectScopeRelationship(userId, guid);
             }
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
@@ -3334,20 +3051,16 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * @return response which when successful contains the restored relationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
-     * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse restoreProjectScope(String serverName, String userId, String guid)
+    public SubjectAreaOMASAPIResponse<ProjectScope> restoreProjectScope(String serverName, String userId, String guid)
     {
         String restAPIName = "restoreProjectScope";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<ProjectScope> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -3355,7 +3068,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
             ProjectScope restoredProjectScope = handler.restoreProjectScopeRelationship(userId, guid);
-            response = new ProjectScopeRelationshipResponse(restoredProjectScope);
+            response.addResult(restoredProjectScope);
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
         }
@@ -3372,17 +3085,16 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
 
-    public SubjectAreaOMASAPIResponse getSemanticAssignmentRelationship(String serverName, String userId, String guid)
+    public SubjectAreaOMASAPIResponse<SemanticAssignment> getSemanticAssignmentRelationship(String serverName, String userId, String guid)
      {
          String restAPIName = "getSemanticAssignmentRelationship";
          RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-         SubjectAreaOMASAPIResponse response = null;
+         SubjectAreaOMASAPIResponse<SemanticAssignment> response = new SubjectAreaOMASAPIResponse<>();
          AuditLog auditLog = null;
 
          // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -3390,7 +3102,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
              auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
              RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
              SemanticAssignment updatedSemanticAssignment = handler.getSemanticAssignmentRelationship(userId, guid);
-             response = new SemanticAssignementRelationshipResponse(updatedSemanticAssignment);
+             response.addResult(updatedSemanticAssignment);
          }  catch (Throwable error) {
              response = getResponseForError(error, auditLog, className, restAPIName);
          }
