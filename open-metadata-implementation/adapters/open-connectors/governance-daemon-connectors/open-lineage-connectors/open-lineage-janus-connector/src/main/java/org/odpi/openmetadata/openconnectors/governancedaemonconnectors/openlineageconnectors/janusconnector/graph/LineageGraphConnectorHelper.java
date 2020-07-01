@@ -556,26 +556,26 @@ public class LineageGraphConnectorHelper {
         }
 
         Iterator<Vertex> relationalDBSchemaType =
-                g.V(vertexId).emit().repeat(bothE().inV().simplePath()).times(2).or(hasLabel(RELATIONAL_DB_SCHEMA_TYPE));
+                g.V(vertexId).emit().repeat(bothE().outV().simplePath()).times(2).or(hasLabel(RELATIONAL_DB_SCHEMA_TYPE));
         if (relationalDBSchemaType.hasNext()) {
             properties.put(PROPERTY_KEY_SCHEMA_TYPE_DISPLAY_NAME,
                     relationalDBSchemaType.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString());
         }
 
         Iterator<Vertex> deployedDatabaseSchema =
-                g.V(vertexId).emit().repeat(bothE().inV().simplePath()).times(3).or(hasLabel(DEPLOYED_DB_SCHEMA_TYPE));
+                g.V(vertexId).emit().repeat(bothE().outV().simplePath()).times(3).or(hasLabel(DEPLOYED_DB_SCHEMA_TYPE));
         if (deployedDatabaseSchema.hasNext()) {
             properties.put(PROPERTY_KEY_SCHEMA_DISPLAY_NAME,
                     deployedDatabaseSchema.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString());
         }
 
-        Iterator<Vertex> database = g.V(vertexId).emit().repeat(bothE().inV().simplePath()).times(4).or(hasLabel(DATABASE));
+        Iterator<Vertex> database = g.V(vertexId).emit().repeat(bothE().outV().simplePath()).times(4).or(hasLabel(DATABASE));
         if (database.hasNext()) {
             properties.put(PROPERTY_KEY_DATABASE_DISPLAY_NAME,
                     database.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString());
         }
 
-        Iterator<Vertex> connection = g.V(vertexId).emit().repeat(bothE().inV().simplePath()).times(5).hasLabel(CONNECTION);
+        Iterator<Vertex> connection = g.V(vertexId).emit().repeat(bothE().outV().simplePath()).times(5).hasLabel(CONNECTION);
         if (connection.hasNext()) {
             properties.put(PROPERTY_KEY_CONNECTION_NAME, connection.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString());
         }
@@ -586,7 +586,7 @@ public class LineageGraphConnectorHelper {
     private Map<String, String> getDataFileProperties(GraphTraversalSource g, Object vertexId) {
         Map<String, String> properties = new HashMap<>();
 
-        Iterator<Vertex> tabularSchemaType = g.V(vertexId).emit().repeat(bothE().inV().simplePath()).times(1).or(hasLabel(TABULAR_SCHEMA_TYPE));
+        Iterator<Vertex> tabularSchemaType = g.V(vertexId).emit().repeat(bothE().outV().simplePath()).times(1).or(hasLabel(TABULAR_SCHEMA_TYPE));
         if (tabularSchemaType.hasNext()) {
             properties.put(PROPERTY_KEY_SCHEMA_TYPE_DISPLAY_NAME,
                     tabularSchemaType.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString());
@@ -622,7 +622,7 @@ public class LineageGraphConnectorHelper {
 
     private List<Vertex> getFolderVertices(GraphTraversalSource g, Vertex dataFileAsset) {
         GraphTraversal<Vertex, Vertex> fileFolders =
-                g.V(dataFileAsset.id()).emit().repeat(bothE().otherV().simplePath()).until(outE(FOLDER_HIERARCHY).count().is(0)).or(hasLabel(FILE_FOLDER));
+                g.V(dataFileAsset.id()).emit().repeat(bothE().otherV().simplePath()).until(inE(FOLDER_HIERARCHY).count().is(0)).or(hasLabel(FILE_FOLDER));
         List<Vertex> folderVertices = new ArrayList<>();
         while (fileFolders.hasNext()) {
             folderVertices.add(fileFolders.next());
