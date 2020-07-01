@@ -36,7 +36,7 @@ public class SubjectAreaRelationshipRESTResource {
      *
      * @param serverName           serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId               userId under which the request is performed
-     * @param termHASARelationship the HASA relationship
+     * @param termHasARelationship the HASA relationship
      * @return response, when successful contains the created TermHASARelationship
      * when not successful the following Exception responses can occur
      * <ul>
@@ -46,11 +46,11 @@ public class SubjectAreaRelationshipRESTResource {
      * </ul>
      */
     @PostMapping(path = "/users/{userId}/relationships/has-as")
-    public SubjectAreaOMASAPIResponse<Hasa> createTermHASARelationship(@PathVariable String serverName,
+    public SubjectAreaOMASAPIResponse<HasA> createTermHASARelationship(@PathVariable String serverName,
                                                                        @PathVariable String userId,
 
-                                                                       @RequestBody Hasa termHASARelationship) {
-        return restAPI.createTermHASARelationship(serverName, userId, termHASARelationship);
+                                                                       @RequestBody HasA termHasARelationship) {
+        return restAPI.createTermHASARelationship(serverName, userId, termHasARelationship);
     }
 
     /**
@@ -68,7 +68,7 @@ public class SubjectAreaRelationshipRESTResource {
      * </ul>
      */
     @GetMapping(path = "/users/{userId}/relationships/has-as/{guid}")
-    public SubjectAreaOMASAPIResponse<Hasa> getTermHASARelationship(@PathVariable String serverName,
+    public SubjectAreaOMASAPIResponse<HasA> getTermHASARelationship(@PathVariable String serverName,
                                                                     @PathVariable String userId,
                                                                     @PathVariable String guid) {
         return restAPI.getTermHASARelationship(serverName, userId, guid);
@@ -81,7 +81,7 @@ public class SubjectAreaRelationshipRESTResource {
      * @param serverName           serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId               userId under which the request is performed
      * @param guid                 unique identifier of the Line
-     * @param termHASARelationship the HASA relationship
+     * @param termHasARelationship the HASA relationship
      * @param isReplace            flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the created TermHASARelationship
      * when not successful the following Exception responses can occur
@@ -92,13 +92,13 @@ public class SubjectAreaRelationshipRESTResource {
      * </ul>
      */
     @PutMapping(path = "/users/{userId}/relationships/has-as/{guid}")
-    public SubjectAreaOMASAPIResponse<Hasa> updateTermHASARelationship(@PathVariable String serverName,
+    public SubjectAreaOMASAPIResponse<HasA> updateTermHASARelationship(@PathVariable String serverName,
                                                                        @PathVariable String userId,
                                                                        @PathVariable String guid,
-                                                                       @RequestBody Hasa termHASARelationship,
+                                                                       @RequestBody HasA termHasARelationship,
                                                                        @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace
     ) {
-        return restAPI.updateTermHASARelationship(serverName, userId, guid, termHASARelationship, isReplace);
+        return restAPI.updateTermHASARelationship(serverName, userId, guid, termHasARelationship, isReplace);
     }
 
     /**
@@ -117,7 +117,7 @@ public class SubjectAreaRelationshipRESTResource {
      * </ul>
      */
     @DeleteMapping(path = "/users/{userId}/relationships/has-as/{guid}")
-    public SubjectAreaOMASAPIResponse<Hasa> deleteTermHASARelationship(@PathVariable String serverName,
+    public SubjectAreaOMASAPIResponse<HasA> deleteTermHASARelationship(@PathVariable String serverName,
                                                                        @PathVariable String userId,
                                                                        @PathVariable String guid,
                                                                        @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge
@@ -142,7 +142,7 @@ public class SubjectAreaRelationshipRESTResource {
      * </ul>
      */
     @PostMapping(path = "/users/{userId}/relationships/has-as/{guid}")
-    public SubjectAreaOMASAPIResponse<Hasa> restoreTermHASARelationship(@PathVariable String serverName,
+    public SubjectAreaOMASAPIResponse<HasA> restoreTermHASARelationship(@PathVariable String serverName,
                                                                         @PathVariable String userId,
                                                                         @PathVariable String guid) {
         return restAPI.restoreTermHASARelationship(serverName, userId, guid);
@@ -1227,9 +1227,9 @@ public class SubjectAreaRelationshipRESTResource {
      * </ul>
      */
     @PostMapping(path = "/users/{userId}/relationships/is-as")
-    public SubjectAreaOMASAPIResponse<Isa> createiSARelationship(@PathVariable String serverName,
+    public SubjectAreaOMASAPIResponse<IsA> createiSARelationship(@PathVariable String serverName,
                                                                  @PathVariable String userId,
-                                                                 @RequestBody Isa iSARelationship) {
+                                                                 @RequestBody IsA iSARelationship) {
         return restAPI.createISARelationship(serverName, userId, iSARelationship);
     }
 
@@ -1248,7 +1248,7 @@ public class SubjectAreaRelationshipRESTResource {
      * </ul>
      */
     @GetMapping(path = "/users/{userId}/relationships/is-as/{guid}")
-    public SubjectAreaOMASAPIResponse<Isa> getISARelationship(@PathVariable String serverName,
+    public SubjectAreaOMASAPIResponse<IsA> getISARelationship(@PathVariable String serverName,
                                                               @PathVariable String userId,
                                                               @PathVariable String guid) {
         return restAPI.getISARelationship(serverName, userId, guid);
@@ -1272,10 +1272,10 @@ public class SubjectAreaRelationshipRESTResource {
      * </ul>
      */
     @PutMapping(path = "/users/{userId}/relationships/is-as/{guid}")
-    public SubjectAreaOMASAPIResponse<Isa> updateISARelationship(@PathVariable String serverName,
+    public SubjectAreaOMASAPIResponse<IsA> updateISARelationship(@PathVariable String serverName,
                                                                  @PathVariable String userId,
                                                                  @PathVariable String guid,
-                                                                 @RequestBody Isa isa,
+                                                                 @RequestBody IsA isa,
                                                                  @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace) {
         return restAPI.updateISARelationship(serverName, userId, guid, isa, isReplace);
     }
@@ -1296,7 +1296,7 @@ public class SubjectAreaRelationshipRESTResource {
      * </ul>
      */
     @DeleteMapping(path = "/users/{userId}/relationships/is-as/{guid}")
-    public SubjectAreaOMASAPIResponse<Isa> deleteTermISARelationship(@PathVariable String serverName,
+    public SubjectAreaOMASAPIResponse<IsA> deleteTermISARelationship(@PathVariable String serverName,
                                                                      @PathVariable String userId,
                                                                      @PathVariable String guid,
                                                                      @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge) {
@@ -1320,7 +1320,7 @@ public class SubjectAreaRelationshipRESTResource {
      * </ul>
      */
     @PostMapping(path = "/users/{userId}/relationships/is-as/{guid}")
-    public SubjectAreaOMASAPIResponse<Isa> restoreIsaRelationship(@PathVariable String serverName,
+    public SubjectAreaOMASAPIResponse<IsA> restoreIsaRelationship(@PathVariable String serverName,
                                                                   @PathVariable String userId,
                                                                   @PathVariable String guid) {
         return restAPI.restoreISARelationship(serverName, userId, guid);
@@ -1334,7 +1334,7 @@ public class SubjectAreaRelationshipRESTResource {
      *
      * @param serverName                serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId                    userId under which the request is performed
-     * @param termISATypeOFRelationship the TermISATypeOFRelationship relationship
+     * @param termIsATypeOFRelationship the TermISATypeOFRelationship relationship
      * @return response, when successful contains the created termISATypeOFRelationship relationship
      * when not successful the following Exception responses can occur
      * <ul>
@@ -1344,10 +1344,10 @@ public class SubjectAreaRelationshipRESTResource {
      * </ul>
      */
     @PostMapping(path = "/users/{userId}/relationships/is-a-type-ofs")
-    public SubjectAreaOMASAPIResponse<IsaTypeOf> createtermISATypeOFRelationship(@PathVariable String serverName,
+    public SubjectAreaOMASAPIResponse<IsATypeOf> createtermISATypeOFRelationship(@PathVariable String serverName,
                                                                                  @PathVariable String userId,
-                                                                                 @RequestBody IsaTypeOf termISATypeOFRelationship) {
-        return restAPI.createTermISATypeOFRelationship(serverName, userId, termISATypeOFRelationship);
+                                                                                 @RequestBody IsATypeOf termIsATypeOFRelationship) {
+        return restAPI.createTermISATypeOFRelationship(serverName, userId, termIsATypeOFRelationship);
     }
 
     /**
@@ -1365,7 +1365,7 @@ public class SubjectAreaRelationshipRESTResource {
      * </ul>
      */
     @GetMapping(path = "/users/{userId}/relationships/is-a-type-ofs/{guid}")
-    public SubjectAreaOMASAPIResponse<IsaTypeOf> getTermISATypeOFRelationship(@PathVariable String serverName,
+    public SubjectAreaOMASAPIResponse<IsATypeOf> getTermISATypeOFRelationship(@PathVariable String serverName,
                                                                               @PathVariable String userId,
                                                                               @PathVariable String guid) {
         return restAPI.getTermISATypeOFRelationship(serverName, userId, guid);
@@ -1389,10 +1389,10 @@ public class SubjectAreaRelationshipRESTResource {
      * </ul>
      */
     @PutMapping(path = "/users/{userId}/relationships/is-a-type-ofs/{guid}")
-    public SubjectAreaOMASAPIResponse<IsaTypeOf> updateISARelationship(@PathVariable String serverName,
+    public SubjectAreaOMASAPIResponse<IsATypeOf> updateISARelationship(@PathVariable String serverName,
                                                                        @PathVariable String userId,
                                                                        @PathVariable String guid,
-                                                                       @RequestBody IsaTypeOf isatypeof,
+                                                                       @RequestBody IsATypeOf isatypeof,
                                                                        @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace) {
         return restAPI.updateTermISATypeOFRelationship(serverName, userId, guid, isatypeof, isReplace);
     }
@@ -1414,7 +1414,7 @@ public class SubjectAreaRelationshipRESTResource {
      * </ul>
      */
     @DeleteMapping(path = "/users/{userId}/relationships/is-a-type-ofs/{guid}")
-    public SubjectAreaOMASAPIResponse<IsaTypeOf> deleteTermIsaTypeOfRelationship(@PathVariable String serverName,
+    public SubjectAreaOMASAPIResponse<IsATypeOf> deleteTermIsaTypeOfRelationship(@PathVariable String serverName,
                                                                                  @PathVariable String userId,
                                                                                  @PathVariable String guid,
                                                                                  @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge) {
@@ -1440,7 +1440,7 @@ public class SubjectAreaRelationshipRESTResource {
 
 
     @PostMapping(path = "/users/{userId}/relationships/is-a-type-ofs/{guid}")
-    public SubjectAreaOMASAPIResponse<IsaTypeOf> restoreTermIsaTypeOfRelationship(@PathVariable String serverName,
+    public SubjectAreaOMASAPIResponse<IsATypeOf> restoreTermIsaTypeOfRelationship(@PathVariable String serverName,
                                                                                   @PathVariable String userId,
                                                                                   @PathVariable String guid) {
         return restAPI.restoreTermISATypeOFRelationship(serverName, userId, guid);
