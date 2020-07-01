@@ -2,12 +2,15 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.fvt;
 
-import org.odpi.openmetadata.accessservices.subjectarea.SubjectAreaTerm;
-import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaImpl;
-import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
+import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaEntityClient;
+import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaRestClient;
+import org.odpi.openmetadata.accessservices.subjectarea.client.entities.terms.SubjectAreaTermClient;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectAreaCheckedException;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
 import java.io.IOException;
 
@@ -20,7 +23,7 @@ public class EffectiveDatesFVT
     private static final String DEFAULT_TEST_PAST_GLOSSARY_NAME = "Test past Glossary for term FVT";
     private static final String DEFAULT_TEST_FUTURE_GLOSSARY_NAME = "Test future Glossary for term FVT";
     private static final String DEFAULT_TEST_TERM_NAME = "Test term A";
-    private SubjectAreaTerm subjectAreaTerm = null;
+    private SubjectAreaEntityClient<Term> subjectAreaTerm = null;
     private GlossaryFVT glossaryFVT =null;
     private TermFVT termFVT=null;
     private String serverName = null;
@@ -35,33 +38,30 @@ public class EffectiveDatesFVT
         } catch (IOException e1)
         {
             System.out.println("Error getting user input");
-        } catch (SubjectAreaCheckedException e)
-        {
-            System.out.println("ERROR: " + e.getErrorMessage() + " Suggested action: " + e.getReportedUserAction());
         } catch (SubjectAreaFVTCheckedException e) {
             System.out.println("ERROR: " + e.getMessage() );
+        } catch (UserNotAuthorizedException | InvalidParameterException | PropertyServerException e) {
+            System.out.println("ERROR: " + e.getReportedErrorMessage() + " Suggested action: " + e.getReportedUserAction());
         }
 
     }
-    public EffectiveDatesFVT(String url, String serverName,String userId) throws SubjectAreaCheckedException
-    {
-        subjectAreaTerm = new SubjectAreaImpl(serverName,url).getSubjectAreaTerm();
+    public EffectiveDatesFVT(String url, String serverName,String userId) throws InvalidParameterException {
+        SubjectAreaRestClient client = new SubjectAreaRestClient(serverName, url);
+        subjectAreaTerm = new SubjectAreaTermClient(client);
         System.out.println("Create a glossary");
         glossaryFVT = new GlossaryFVT(url,serverName,userId);
         termFVT= new TermFVT(url,serverName,userId);
         this.serverName=serverName;
         this.userId=userId;
     }
-    public static void runWith2Servers(String url) throws SubjectAreaCheckedException, SubjectAreaFVTCheckedException
-    {
+    public static void runWith2Servers(String url) throws SubjectAreaFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         EffectiveDatesFVT fvt =new EffectiveDatesFVT(url,FVTConstants.SERVER_NAME1,FVTConstants.USERID);
         fvt.run();
         EffectiveDatesFVT fvt2 =new EffectiveDatesFVT(url,FVTConstants.SERVER_NAME2,FVTConstants.USERID);
         fvt2.run();
     }
 
-    public void run() throws SubjectAreaCheckedException, SubjectAreaFVTCheckedException
-    {
+    public void run() throws SubjectAreaFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         try
         {
             Glossary pastgloss = glossaryFVT.createPastToGlossary(DEFAULT_TEST_PAST_GLOSSARY_NAME);

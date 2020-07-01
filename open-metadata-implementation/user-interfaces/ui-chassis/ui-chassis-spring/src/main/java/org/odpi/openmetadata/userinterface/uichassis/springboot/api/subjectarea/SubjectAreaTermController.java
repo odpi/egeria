@@ -4,13 +4,15 @@ package org.odpi.openmetadata.userinterface.uichassis.springboot.api.subjectarea
 
 
 import org.odpi.openmetadata.accessservices.subjectarea.SubjectArea;
-import org.odpi.openmetadata.accessservices.subjectarea.SubjectAreaTerm;
-import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectAreaCheckedException;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder;
+import org.odpi.openmetadata.accessservices.subjectarea.client.entities.terms.SubjectAreaTerm;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
-import org.odpi.openmetadata.accessservices.subjectarea.responses.*;
-import org.odpi.openmetadata.accessservices.subjectarea.utils.DetectUtils;
+import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.api.SecureController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +30,6 @@ import java.util.List;
 @RequestMapping("/api/subject-area/terms")
 public class SubjectAreaTermController  extends SecureController
 {
-    private final SubjectArea subjectArea;
     private static String className = SubjectAreaTermController.class.getName();
     private static final Logger LOG = LoggerFactory.getLogger(className);
     private final SubjectAreaTerm subjectAreaTerm;
@@ -39,8 +40,6 @@ public class SubjectAreaTermController  extends SecureController
      * @param subjectArea main client object for the Subject Area OMAS
      */
     public SubjectAreaTermController(SubjectArea subjectArea) {
-
-        this.subjectArea = subjectArea;
         this.subjectAreaTerm = subjectArea.getSubjectAreaTerm();
     }
 
@@ -60,24 +59,19 @@ public class SubjectAreaTermController  extends SecureController
      * @return response, when successful contains the created term.
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
-     * <li> InvalidParameterException            one of the parameters is null or invalid.
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised.</li>
-     * <li> ClassificationException              Error processing a classification.</li>
-     * <li> StatusNotSupportedException          A status value is not supported.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @PostMapping()
-    public SubjectAreaOMASAPIResponse createTerm(@RequestBody Term suppliedTerm, HttpServletRequest request) {
+    public SubjectAreaOMASAPIResponse<Term> createTerm(@RequestBody Term suppliedTerm, HttpServletRequest request) {
         String userId = getUser(request);
-        SubjectAreaOMASAPIResponse response=null;
+        SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
         try {
-            Term term = this.subjectAreaTerm.createTerm(userId,suppliedTerm);
-            TermResponse termResponse = new TermResponse();
-            termResponse.setTerm(term);
-            response = termResponse;
-        } catch (SubjectAreaCheckedException e) {
-            response = DetectUtils.getResponseFromException(e);
+            Term term = this.subjectAreaTerm.term().create(userId,suppliedTerm);
+            response.addResult(term);
+        } catch (UserNotAuthorizedException | InvalidParameterException | PropertyServerException e) {
+            response.setExceptionInfo(e, className);
         }
         return  response;
     }
@@ -90,25 +84,20 @@ public class SubjectAreaTermController  extends SecureController
      * @return response which when successful contains the term with the requested guid
      *  when not successful the following Exception responses can occur
      * <ul>
-     * <li> UserNotAuthorizedException the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException  not able to communicate with a Metadata respository service.</li>
-     * <li> InvalidParameterException one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException the supplied guid was not recognised</li>
-     * <li> UnrecognizedGUIDException the supplied guid was not recognised</li>
-     * <li> FunctionNotSupportedException   Function not supported</li>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @GetMapping( path = "/{guid}")
-    public  SubjectAreaOMASAPIResponse getTerm(@PathVariable String guid,HttpServletRequest request) {
+    public  SubjectAreaOMASAPIResponse<Term> getTerm(@PathVariable String guid,HttpServletRequest request) {
         String userId = getUser(request);
-        SubjectAreaOMASAPIResponse response=null;
+        SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
         try {
-            Term term = this.subjectAreaTerm.getTermByGuid(userId,guid);
-            TermResponse termResponse = new TermResponse();
-            termResponse.setTerm(term);
-            response = termResponse;
-        } catch (SubjectAreaCheckedException e) {
-            response = DetectUtils.getResponseFromException(e);
+            Term term = this.subjectAreaTerm.term().getByGUID(userId,guid);
+            response.addResult(term);
+        } catch (UserNotAuthorizedException | InvalidParameterException | PropertyServerException e) {
+            response.setExceptionInfo(e, className);
         }
         return  response;
     }
@@ -128,40 +117,39 @@ public class SubjectAreaTermController  extends SecureController
      *
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a find was issued but the repository does not implement find functionality in some way.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @GetMapping( path = "/")
-    public  SubjectAreaOMASAPIResponse findTerm(
+    public  SubjectAreaOMASAPIResponse<Term> findTerm(
                                                 @RequestParam(value = "searchCriteria", required=false) String searchCriteria,
                                                 @RequestParam(value = "asOfTime", required=false) Date asOfTime,
-                                                @RequestParam(value = "offset", required=false) Integer offset,
-                                                @RequestParam(value = "pageSize", required=false) Integer pageSize,
+                                                @RequestParam(value = "offset", required = false, defaultValue = PAGE_OFFSET_DEFAULT_VALUE) Integer offset,
+                                                @RequestParam(value = "pageSize", required = false, defaultValue = PAGE_SIZE_DEFAULT_VALUE) Integer pageSize,
                                                 @RequestParam(value = "sequencingOrder", required=false) SequencingOrder sequencingOrder,
                                                 @RequestParam(value = "SequencingProperty", required=false) String sequencingProperty,
                                                 HttpServletRequest request
     )  {
         String userId = getUser(request);
-        SubjectAreaOMASAPIResponse response;
+        SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
         try {
-            if (offset ==null) {
-                offset=0;
-            }
-            if (pageSize==null) {
-                pageSize=0;
-            }
-            List<Term> terms = this.subjectAreaTerm.findTerm(userId,searchCriteria,asOfTime,offset,pageSize,sequencingOrder,sequencingProperty);
-            TermsResponse termsResponse = new TermsResponse();
-            termsResponse.setTerms(terms);
-            response = termsResponse;
-        } catch (SubjectAreaCheckedException e) {
-            response = DetectUtils.getResponseFromException(e);
+            FindRequest findRequest = new FindRequest();
+            findRequest.setSearchCriteria(searchCriteria);
+            findRequest.setAsOfTime(asOfTime);
+            findRequest.setOffset(offset);
+            findRequest.setPageSize(pageSize);
+            findRequest.setSequencingOrder(sequencingOrder);
+            findRequest.setSequencingProperty(sequencingProperty);
+
+            List<Term> terms = this.subjectAreaTerm.term().find(userId, findRequest);
+            response.addAllResults(terms);
+        } catch (UserNotAuthorizedException | InvalidParameterException | PropertyServerException e) {
+            response.setExceptionInfo(e, className);
         }
         return  response;
     }
-    /*
+    /**
      * Get Term relationships
      *
      * @param guid   guid of the term to get
@@ -183,31 +171,30 @@ public class SubjectAreaTermController  extends SecureController
      * </ul>
      */
     @GetMapping( path = "/{guid}/relationships")
-    public  SubjectAreaOMASAPIResponse getTermRelationships(
+    public  SubjectAreaOMASAPIResponse<Line> getTermRelationships(
                                                             @PathVariable String guid,
                                                             @RequestParam(value = "asOfTime", required=false) Date asOfTime,
-                                                            @RequestParam(value = "offset", required=false) Integer offset,
-                                                            @RequestParam(value = "pageSize", required=false) Integer pageSize,
+                                                            @RequestParam(value = "offset", required = false, defaultValue = PAGE_OFFSET_DEFAULT_VALUE) Integer offset,
+                                                            @RequestParam(value = "pageSize", required = false, defaultValue = PAGE_SIZE_DEFAULT_VALUE) Integer pageSize,
                                                             @RequestParam(value = "sequencingOrder", required=false) SequencingOrder sequencingOrder,
                                                             @RequestParam(value = "SequencingProperty", required=false) String sequencingProperty,
                                                             HttpServletRequest request
     
     ) {
         String userId = getUser(request);
-        SubjectAreaOMASAPIResponse response;
+        SubjectAreaOMASAPIResponse<Line> response = new SubjectAreaOMASAPIResponse<>();
         try {
-            if (offset ==null) {
-                offset=0;
-            }
-            if (pageSize==null) {
-                pageSize=0;
-            }
-            List<Line> lines = this.subjectAreaTerm.getTermRelationships(userId,guid,asOfTime,offset,pageSize,sequencingOrder,sequencingProperty);
-            LinesResponse linesResponse = new LinesResponse();
-            linesResponse.setLines(lines);
-            response = linesResponse;
-        } catch (SubjectAreaCheckedException e) {
-            response = DetectUtils.getResponseFromException(e);
+            FindRequest findRequest = new FindRequest();
+            findRequest.setAsOfTime(asOfTime);
+            findRequest.setOffset(offset);
+            findRequest.setPageSize(pageSize);
+            findRequest.setSequencingOrder(sequencingOrder);
+            findRequest.setSequencingProperty(sequencingProperty);
+
+            List<Line> lines = this.subjectAreaTerm.term().getRelationships(userId,guid, findRequest);
+            response.addAllResults(lines);
+        } catch (UserNotAuthorizedException | InvalidParameterException | PropertyServerException e) {
+            response.setExceptionInfo(e, className);
         }
         return  response;
 
@@ -229,36 +216,29 @@ public class SubjectAreaTermController  extends SecureController
      * @return a response which when successful contains the updated term
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @PutMapping( path = "/{guid}")
-    public  SubjectAreaOMASAPIResponse updateTerm(
+    public  SubjectAreaOMASAPIResponse<Term> updateTerm(
                                                       @PathVariable String guid,
                                                       @RequestBody Term term,
-                                                      @RequestParam(value = "isReplace", required=false) Boolean isReplace,
+                                                      @RequestParam(value = "isReplace", required=false, defaultValue = "false") Boolean isReplace,
                                                       HttpServletRequest request) {
         String userId = getUser(request);
-        SubjectAreaOMASAPIResponse response=null;
+        SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
         try {
             Term updatedTerm;
-            if (isReplace == null){
-                isReplace = false;
-            }
             if (isReplace) {
-                updatedTerm = this.subjectAreaTerm.replaceTerm(userId, guid, term);
+                updatedTerm = this.subjectAreaTerm.term().replace(userId, guid, term);
             } else {
-                updatedTerm = this.subjectAreaTerm.updateTerm(userId, guid, term);
+                updatedTerm = this.subjectAreaTerm.term().update(userId, guid, term);
             }
-            TermResponse termResponse = new TermResponse();
-            termResponse.setTerm(updatedTerm);
-            response = termResponse;
-        } catch (SubjectAreaCheckedException e) {
-            response = DetectUtils.getResponseFromException(e);
+            response.addResult(updatedTerm);
+        } catch (UserNotAuthorizedException | InvalidParameterException | PropertyServerException e) {
+            response.setExceptionInfo(e, className);
         }
         return  response;
     }
@@ -282,36 +262,26 @@ public class SubjectAreaTermController  extends SecureController
      * @return a void response
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
-     * <li> EntityNotDeletedException            a soft delete was issued but the term was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the term was not purged</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @DeleteMapping( path = "/{guid}")
-    public  SubjectAreaOMASAPIResponse deleteTerm(@PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge, HttpServletRequest request)  {
-        if (isPurge == null) {
-            // default to soft delete if isPurge is not specified.
-            isPurge = false;
-        }
+    public  SubjectAreaOMASAPIResponse<Term> deleteTerm(@PathVariable String guid,
+                                                        @RequestParam(value = "isPurge", required=false, defaultValue = "false") Boolean isPurge,
+                                                        HttpServletRequest request)  {
         String userId = getUser(request);
-        SubjectAreaOMASAPIResponse response=null;
+        SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
         try {
             if (isPurge) {
-                this.subjectAreaTerm.purgeTerm(userId,guid);
-                response = new VoidResponse();
+                this.subjectAreaTerm.term().purge(userId,guid);
             } else {
-                Term term = this.subjectAreaTerm.deleteTerm(userId,guid);
-                TermResponse termResponse = new TermResponse();
-                termResponse.setTerm(term);
-                response = termResponse;
+               this.subjectAreaTerm.term().delete(userId, guid);
             }
 
-        } catch (SubjectAreaCheckedException e) {
-            response = DetectUtils.getResponseFromException(e);
+        } catch (UserNotAuthorizedException | InvalidParameterException | PropertyServerException e) {
+            response.setExceptionInfo(e, className);
         }
         return  response;
     }
@@ -324,25 +294,21 @@ public class SubjectAreaTermController  extends SecureController
      * @return response which when successful contains the restored term
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @PostMapping( path = "/{guid}")
-    public SubjectAreaOMASAPIResponse restoreTerm(@PathVariable String guid, HttpServletRequest request)
+    public SubjectAreaOMASAPIResponse<Term> restoreTerm(@PathVariable String guid, HttpServletRequest request)
     {
         String userId = getUser(request);
-        SubjectAreaOMASAPIResponse response=null;
+        SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
         try {
-            Term term = this.subjectAreaTerm.restoreTerm(userId,guid);
-            TermResponse termResponse = new TermResponse();
-            termResponse.setTerm(term);
-            response = termResponse;
-        } catch (SubjectAreaCheckedException e) {
-            response = DetectUtils.getResponseFromException(e);
+            Term term = this.subjectAreaTerm.term().restore(userId,guid);
+            response.addResult(term);
+        } catch (UserNotAuthorizedException | InvalidParameterException | PropertyServerException e) {
+            response.setExceptionInfo(e, className);
         }
         return  response;
     }

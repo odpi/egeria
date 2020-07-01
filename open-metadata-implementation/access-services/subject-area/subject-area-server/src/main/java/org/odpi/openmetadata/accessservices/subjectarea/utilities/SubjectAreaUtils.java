@@ -19,7 +19,6 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.TermAnchor;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
@@ -27,9 +26,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Subject Area OMAS utilities.
@@ -105,7 +102,7 @@ public class SubjectAreaUtils {
      * Convert a Category to a CategorySummary
      *
      * @param category to convert
-     * @param line
+     * @param line {@link Line}
      * @return CategorySummary
      */
     public static CategorySummary extractCategorySummaryFromCategory(Category category, Line line) {
@@ -263,36 +260,6 @@ public class SubjectAreaUtils {
     }
 
     /**
-     * convert omas sequencing order to omrs sequencing order
-     *
-     * @param sequencingOrder supplied omas sequencing order
-     * @return omrs sequencing order
-     */
-    public static SequencingOrder convertOMASToOMRSSequencingOrder(org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder) {
-        SequencingOrder omrsSequencingOrder = null;
-        if (sequencingOrder == null) {
-            omrsSequencingOrder = SequencingOrder.ANY;
-        } else if (sequencingOrder.equals(org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder.ANY)) {
-            omrsSequencingOrder = SequencingOrder.ANY;
-        } else if (sequencingOrder.equals(org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder.CREATION_DATE_RECENT)) {
-            omrsSequencingOrder = SequencingOrder.CREATION_DATE_RECENT;
-        } else if (sequencingOrder.equals(org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder.CREATION_DATE_OLDEST)) {
-            omrsSequencingOrder = SequencingOrder.CREATION_DATE_OLDEST;
-        } else if (sequencingOrder.equals(org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder.LAST_UPDATE_RECENT)) {
-            omrsSequencingOrder = SequencingOrder.LAST_UPDATE_RECENT;
-        } else if (sequencingOrder.equals(org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder.LAST_UPDATE_OLDEST)) {
-            omrsSequencingOrder = SequencingOrder.LAST_UPDATE_OLDEST;
-        } else if (sequencingOrder.equals(org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder.PROPERTY_ASCENDING)) {
-            omrsSequencingOrder = SequencingOrder.PROPERTY_ASCENDING;
-        } else if (sequencingOrder.equals(org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder.PROPERTY_DESCENDING)) {
-            omrsSequencingOrder = SequencingOrder.PROPERTY_DESCENDING;
-        } else if (sequencingOrder.equals(org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder.GUID)) {
-            omrsSequencingOrder = SequencingOrder.GUID;
-        }
-        return omrsSequencingOrder;
-    }
-
-    /**
      * create SystemAttributes instance from an insance header object
      *
      * @param instanceHeader omrs instance header
@@ -371,5 +338,23 @@ public class SubjectAreaUtils {
         Long timestamp = date.getTime();
         primitivePropertyValue.setPrimitiveValue(timestamp);
         instanceProperties.setProperty(propertyName, primitivePropertyValue);
+    }
+
+    /**
+     * Set icon summaries from related media relationships by issuing a call to omrs using the related media guid - which is at one end of the relationship.
+     *
+     * Note that we should only return the icons that are effective - by checking the effective From and To dates against the current time
+     * @param userId userid under which to issue to the get of the related media
+     * @param guid to get associated icons from
+     * @return response with Set of IconSummary objects or an Exception response.
+     */
+    public SubjectAreaOMASAPIResponse<IconSummary> getIconSummarySet(String userId, String guid) {
+        // if there are no icons then return an empty set
+
+        //TODO implement icon logic
+        SubjectAreaOMASAPIResponse<IconSummary> response = new SubjectAreaOMASAPIResponse<>();
+        Set<IconSummary> icons = new HashSet<>();
+        response.addAllResults(icons);
+        return response;
     }
 }
