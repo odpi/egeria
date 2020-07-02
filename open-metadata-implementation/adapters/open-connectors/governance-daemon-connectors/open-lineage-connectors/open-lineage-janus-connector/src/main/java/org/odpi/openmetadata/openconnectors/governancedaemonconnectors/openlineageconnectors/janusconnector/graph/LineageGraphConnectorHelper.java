@@ -82,14 +82,14 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 
 public class LineageGraphConnectorHelper {
 
-    private JanusGraph lineageGraph;
+    private GraphTraversalSource g;
     private String[] glossaryTermEdges = {EDGE_LABEL_SEMANTIC_ASSIGNMENT, EDGE_LABEL_RELATED_TERM, EDGE_LABEL_SYNONYM, EDGE_LABEL_ANTONYM,
             EDGE_LABEL_REPLACEMENT_TERM, EDGE_LABEL_TRANSLATION, EDGE_LABEL_IS_A_RELATIONSHIP};
-    private String[] glossaryTermAndClassificationEdges = {EDGE_LABEL_SEMANTIC_ASSIGNMENT, EDGE_LABEL_RELATED_TERM, EDGE_LABEL_SYNONYM, EDGE_LABEL_ANTONYM,
-            EDGE_LABEL_REPLACEMENT_TERM, EDGE_LABEL_TRANSLATION, EDGE_LABEL_IS_A_RELATIONSHIP, EDGE_LABEL_CLASSIFICATION};
+    private String[] glossaryTermAndClassificationEdges = {EDGE_LABEL_SEMANTIC_ASSIGNMENT, EDGE_LABEL_RELATED_TERM, EDGE_LABEL_SYNONYM,
+            EDGE_LABEL_ANTONYM, EDGE_LABEL_REPLACEMENT_TERM, EDGE_LABEL_TRANSLATION, EDGE_LABEL_IS_A_RELATIONSHIP, EDGE_LABEL_CLASSIFICATION};
 
-    public LineageGraphConnectorHelper(JanusGraph lineageGraph) {
-        this.lineageGraph = lineageGraph;
+    public LineageGraphConnectorHelper(GraphTraversalSource graphTraversalSource) {
+        this.g = graphTraversalSource;
     }
 
     /**
@@ -101,7 +101,6 @@ public class LineageGraphConnectorHelper {
      * @return a subgraph in an Open Lineage specific format.
      */
     LineageVerticesAndEdges ultimateSource(String guid, boolean includeProcesses) {
-        GraphTraversalSource g = lineageGraph.traversal();
 
         Graph sourceGraph = (Graph)
                 g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).
@@ -129,7 +128,6 @@ public class LineageGraphConnectorHelper {
      * @return a subgraph in an Open Lineage specific format.
      */
     LineageVerticesAndEdges ultimateDestination(String guid, boolean includeProcesses) {
-        GraphTraversalSource g = lineageGraph.traversal();
 
         Graph destinationGraph = (Graph)
                 g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).
@@ -157,7 +155,6 @@ public class LineageGraphConnectorHelper {
      * @return a subgraph in an Open Lineage specific format.
      */
     LineageVerticesAndEdges endToEnd(String guid, boolean includeProcesses, String... edgeLabels) {
-        GraphTraversalSource g = lineageGraph.traversal();
 
         Graph endToEndGraph = (Graph)
                 g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).
@@ -201,7 +198,6 @@ public class LineageGraphConnectorHelper {
      * @return a subgraph in an Open Lineage specific format.
      */
     LineageVerticesAndEdges glossary(String guid, boolean includeProcesses) {
-        GraphTraversalSource g = lineageGraph.traversal();
 
         Graph subGraph = (Graph) g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).bothE(glossaryTermAndClassificationEdges)
                 .subgraph("s").cap("s").next();
@@ -318,28 +314,6 @@ public class LineageGraphConnectorHelper {
             nodeID = vertex.property(PROPERTY_KEY_ENTITY_GUID).value().toString();
         }
         return nodeID;
-    }
-
-    /**
-     * Map a Tinkerpop edge to the Open Lineage format.
-     *
-     * @param originalEdge  The edge to be mapped
-     * @param invertedEdges boolean describing if edges should be inverted
-     *
-     * @return The edge in the Open Lineage format.
-     */
-    private LineageEdge abstractEdge(Edge originalEdge, boolean invertedEdges) {
-        Vertex sourceVertex;
-        Vertex destinationVertex;
-        if (invertedEdges && !Arrays.asList(glossaryTermEdges).contains(originalEdge.label())) {
-            sourceVertex = originalEdge.inVertex();
-            destinationVertex = originalEdge.outVertex();
-        } else {
-            sourceVertex = originalEdge.outVertex();
-            destinationVertex = originalEdge.inVertex();
-        }
-
-        return new LineageEdge(originalEdge.label(), getNodeID(sourceVertex), getNodeID(destinationVertex));
     }
 
     /**
@@ -461,7 +435,8 @@ public class LineageGraphConnectorHelper {
         Iterator<Edge> originalEdges = subGraph.edges();
         Set<LineageEdge> lineageEdges = new HashSet<>();
         while (originalEdges.hasNext()) {
-            LineageEdge newLineageEdge = abstractEdge(originalEdges.next(), invertedEdges);
+            Edge next = originalEdges.next();
+            LineageEdge newLineageEdge = new LineageEdge(next.label(), getNodeID(next.outVertex()), getNodeID(next.inVertex()));
             lineageEdges.add(newLineageEdge);
         }
         return lineageEdges;
@@ -529,7 +504,6 @@ public class LineageGraphConnectorHelper {
             return;
         }
 
-        GraphTraversalSource g = lineageGraph.traversal();
         lineageVertices.stream().filter(this::isColumn).forEach(lineageVertex -> {
             Vertex graphVertex = g.V().has(PROPERTY_KEY_ENTITY_GUID, lineageVertex.getGuid()).next();
             Object vertexId = graphVertex.id();
