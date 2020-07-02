@@ -57,6 +57,16 @@ public class GlossaryFVT {
         fvt.run();
     }
 
+    public static void itGlossaryFVT()
+    {
+        try {
+            runIt("https://localhost:10443", "fvtserver", "garygeeke");
+        } catch (Exception e) {
+            // Test method - so ok to do this
+            Thread.dumpStack();
+        }
+    }
+
     public void run() throws SubjectAreaCheckedException, SubjectAreaFVTCheckedException {
         List<Glossary> initialGlossaryState = findGlossaries(null);
         int initialGlossaryCount = 0;

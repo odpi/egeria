@@ -212,6 +212,7 @@
         <springdoc-plugin.version>1.0</springdoc-plugin.version>
         <failsafe-plugin.version>3.0.0-M5</failsafe-plugin.version>
         <git-commit-plugin.version>4.0.0</git-commit-plugin.version>
+        <process-exec-plugin.version>0.9</process-exec-plugin.version>
 
         <!-- Configuration of sonar code scanning-->
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
@@ -2625,6 +2626,12 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-failsafe-plugin</artifactId>
                     <version>${failsafe-plugin.version}</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>com.bazaarvoice.maven.plugins</groupId>
+                    <artifactId>process-exec-maven-plugin</artifactId>
+                    <version>${process-exec-plugin.version}</version>
                 </plugin>
 
             </plugins>
