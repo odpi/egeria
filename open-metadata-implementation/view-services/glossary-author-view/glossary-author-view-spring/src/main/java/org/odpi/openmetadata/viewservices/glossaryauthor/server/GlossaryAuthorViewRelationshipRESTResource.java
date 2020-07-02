@@ -30,15 +30,15 @@ public class GlossaryAuthorViewRelationshipRESTResource {
     }
 
     /**
-     * Create a TermHASARelationship is the relationship between a spine object and a spine attribute.
+     * Create a TermHasARelationship is the relationship between a spine object and a spine attribute.
      * Note that this method does not error if the relationship ends are not spine objects or spine attributes.
      * This allows the user to create terms then make them spine objects and spine attributes at a later stage.
      * <p>
      *
      * @param serverName           serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId               userId under which the request is performed
-     * @param termHasARelationship the HASA relationship
-     * @return response, when successful contains the created TermHASARelationship
+     * @param termHasARelationship the HasA relationship
+     * @return response, when successful contains the created TermHasARelationship
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -47,11 +47,11 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      * </ul>
      */
     @PostMapping(path = "/has-as")
-    public SubjectAreaOMASAPIResponse<HasA> createTermHASARelationship(@PathVariable String serverName,
+    public SubjectAreaOMASAPIResponse<HasA> createTermHasARelationship(@PathVariable String serverName,
                                                                        @PathVariable String userId,
 
                                                                        @RequestBody HasA termHasARelationship) {
-        return restAPI.createTermHASARelationship(serverName, userId, termHasARelationship);
+        return restAPI.createTermHasARelationship(serverName, userId, termHasARelationship);
     }
 
     /**
@@ -69,22 +69,22 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      * </ul>
      */
     @GetMapping(path = "/has-as/{guid}")
-    public SubjectAreaOMASAPIResponse<HasA> getTermHASARelationship(@PathVariable String serverName,
+    public SubjectAreaOMASAPIResponse<HasA> getTermHasARelationship(@PathVariable String serverName,
                                                                     @PathVariable String userId,
                                                                     @PathVariable String guid) {
-        return restAPI.getTermHASARelationship(serverName, userId, guid);
+        return restAPI.getTermHasARelationship(serverName, userId, guid);
     }
 
     /**
-     * Update a TermHASARelationship is the relationship between a spine object and a spine attribute.
+     * Update a TermHasARelationship is the relationship between a spine object and a spine attribute.
      * <p>
      *
      * @param serverName           serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId               userId under which the request is performed
      * @param guid                 unique identifier of the Line
-     * @param termHasARelationship the HASA relationship
+     * @param termHasARelationship the HasA relationship
      * @param isReplace            flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
-     * @return response, when successful contains the created TermHASARelationship
+     * @return response, when successful contains the created TermHasARelationship
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -93,13 +93,13 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      * </ul>
      */
     @PutMapping(path = "/has-as/{guid}")
-    public SubjectAreaOMASAPIResponse<HasA> updateTermHASARelationship(@PathVariable String serverName,
+    public SubjectAreaOMASAPIResponse<HasA> updateTermHasARelationship(@PathVariable String serverName,
                                                                        @PathVariable String userId,
                                                                        @PathVariable String guid,
                                                                        @RequestBody HasA termHasARelationship,
                                                                        @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace
     ) {
-        return restAPI.updateTermHASARelationship(serverName, userId, guid, termHasARelationship, isReplace);
+        return restAPI.updateTermHasARelationship(serverName, userId, guid, termHasARelationship, isReplace);
     }
 
     /**
@@ -118,12 +118,12 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      * </ul>
      */
     @DeleteMapping(path = "/has-as/{guid}")
-    public SubjectAreaOMASAPIResponse<HasA> deleteTermHASARelationship(@PathVariable String serverName,
+    public SubjectAreaOMASAPIResponse<HasA> deleteTermHasARelationship(@PathVariable String serverName,
                                                                        @PathVariable String userId,
                                                                        @PathVariable String guid,
                                                                        @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge
     ) {
-        return restAPI.deleteTermHASARelationship(serverName, userId, guid, isPurge);
+        return restAPI.deleteTermHasARelationship(serverName, userId, guid, isPurge);
     }
 
     /**
@@ -143,10 +143,10 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      * </ul>
      */
     @PostMapping(path = "/has-as/{guid}")
-    public SubjectAreaOMASAPIResponse<HasA> restoreTermHASARelationship(@PathVariable String serverName,
+    public SubjectAreaOMASAPIResponse<HasA> restoreTermHasARelationship(@PathVariable String serverName,
                                                                         @PathVariable String userId,
                                                                         @PathVariable String guid) {
-        return restAPI.restoreTermHASARelationship(serverName, userId, guid);
+        return restAPI.restoreTermHasARelationship(serverName, userId, guid);
     }
 
     /**
@@ -1222,7 +1222,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      *
      * @param serverName      serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId          userId under which the request is performed
-     * @param iSARelationship the ISARelationship relationship
+     * @param iSARelationship the IsARelationship relationship
      * @return response, when successful contains the created iSARelationship relationship
      * when not successful the following Exception responses can occur
      * <ul>
@@ -1253,14 +1253,14 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      * </ul>
      */
     @GetMapping(path = "/is-as/{guid}")
-    public SubjectAreaOMASAPIResponse<IsA> getISARelationship(@PathVariable String serverName,
+    public SubjectAreaOMASAPIResponse<IsA> getIsARelationship(@PathVariable String serverName,
                                                               @PathVariable String userId,
                                                               @PathVariable String guid) {
-        return restAPI.getISARelationship(serverName, userId, guid);
+        return restAPI.getIsARelationship(serverName, userId, guid);
     }
 
     /**
-     * Update a ISARelationship relationship, which is a link between a more general glossary term and a more specific definition.
+     * Update a IsARelationship relationship, which is a link between a more general glossary term and a more specific definition.
      * <p>
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
@@ -1268,7 +1268,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      * @param guid       unique identifier of the Line
      * @param isa        the is-a relationship
      * @param isReplace  flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
-     * @return response, when successful contains the created ISARelationshipRelationship
+     * @return response, when successful contains the created IsARelationshipRelationship
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -1277,20 +1277,20 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      * </ul>
      */
     @PutMapping(path = "/is-as/{guid}")
-    public SubjectAreaOMASAPIResponse<IsA> updateISARelationship(@PathVariable String serverName,
+    public SubjectAreaOMASAPIResponse<IsA> updateIsARelationship(@PathVariable String serverName,
                                                                  @PathVariable String userId,
                                                                  @PathVariable String guid,
                                                                  @RequestBody IsA isa,
                                                                  @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace) {
-        return restAPI.updateISARelationship(serverName, userId, guid, isa, isReplace);
+        return restAPI.updateIsARelationship(serverName, userId, guid, isa, isReplace);
     }
 
     /**
-     * Delete a ISARelationship relationship, which is a link between a more general glossary term and a more specific definition.
+     * Delete a IsARelationship relationship, which is a link between a more general glossary term and a more specific definition.
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       guid of the ISARelationship relationship to delete
+     * @param guid       guid of the IsARelationship relationship to delete
      * @param isPurge    true indicates a hard delete, false is a soft delete.
      * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
@@ -1301,11 +1301,11 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      * </ul>
      */
     @DeleteMapping(path = "/is-as/{guid}")
-    public SubjectAreaOMASAPIResponse<IsA> deleteTermISARelationship(@PathVariable String serverName,
+    public SubjectAreaOMASAPIResponse<IsA> deleteTermIsARelationship(@PathVariable String serverName,
                                                                      @PathVariable String userId,
                                                                      @PathVariable String guid,
                                                                      @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge) {
-        return restAPI.deleteISARelationship(serverName, userId, guid, isPurge);
+        return restAPI.deleteIsARelationship(serverName, userId, guid, isPurge);
     }
 
     /**
@@ -1328,19 +1328,19 @@ public class GlossaryAuthorViewRelationshipRESTResource {
     public SubjectAreaOMASAPIResponse<IsA> restoreIsaRelationship(@PathVariable String serverName,
                                                                   @PathVariable String userId,
                                                                   @PathVariable String guid) {
-        return restAPI.restoreISARelationship(serverName, userId, guid);
+        return restAPI.restoreIsARelationship(serverName, userId, guid);
     }
 
 
     /**
-     * Create a termISATypeOFRelationship relationship, which is an inheritance relationship between two spine objects.
+     * Create a termIsATypeOfRelationship relationship, which is an inheritance relationship between two spine objects.
      *
      * <p>
      *
      * @param serverName                serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId                    userId under which the request is performed
-     * @param termIsATypeOFRelationship the TermISATypeOFRelationship relationship
-     * @return response, when successful contains the created termISATypeOFRelationship relationship
+     * @param termIsATypeOfRelationship the TermIsATypeOfRelationship relationship
+     * @return response, when successful contains the created termIsATypeOfRelationship relationship
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -1349,19 +1349,19 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      * </ul>
      */
     @PostMapping(path = "/is-a-type-ofs")
-    public SubjectAreaOMASAPIResponse<IsATypeOf> createtermISATypeOFRelationship(@PathVariable String serverName,
+    public SubjectAreaOMASAPIResponse<IsATypeOf> createTermIsATypeOfRelationship(@PathVariable String serverName,
                                                                                  @PathVariable String userId,
-                                                                                 @RequestBody IsATypeOf termIsATypeOFRelationship) {
-        return restAPI.createTermISATypeOFRelationship(serverName, userId, termIsATypeOFRelationship);
+                                                                                 @RequestBody IsATypeOf termIsATypeOfRelationship) {
+        return restAPI.createTermIsATypeOfRelationship(serverName, userId, termIsATypeOfRelationship);
     }
 
     /**
-     * Get a termISATypeOFRelationship relationship, which is an inheritance relationship between two spine objects.
+     * Get a termIsATypeOfRelationship relationship, which is an inheritance relationship between two spine objects.
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       guid of the termISATypeOFRelationship relationship to get
-     * @return response which when successful contains the termISATypeOFRelationship relationship with the requested guid
+     * @param guid       guid of the termIsATypeOfRelationship relationship to get
+     * @return response which when successful contains the termIsATypeOfRelationship relationship with the requested guid
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -1370,14 +1370,14 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      * </ul>
      */
     @GetMapping(path = "/is-a-type-ofs/{guid}")
-    public SubjectAreaOMASAPIResponse<IsATypeOf> getTermISATypeOFRelationship(@PathVariable String serverName,
+    public SubjectAreaOMASAPIResponse<IsATypeOf> getTermIsATypeOfRelationship(@PathVariable String serverName,
                                                                               @PathVariable String userId,
                                                                               @PathVariable String guid) {
-        return restAPI.getTermISATypeOFRelationship(serverName, userId, guid);
+        return restAPI.getTermIsATypeOfRelationship(serverName, userId, guid);
     }
 
     /**
-     * Update a ISARelationship relationship, which is a link between a more general glossary term and a more specific definition.
+     * Update a IsARelationship relationship, which is a link between a more general glossary term and a more specific definition.
      * <p>
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
@@ -1385,7 +1385,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      * @param guid       unique identifier of the Line
      * @param isatypeof  the is-a-type-of relationship
      * @param isReplace  flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
-     * @return response, when successful contains the created ISARelationshipRelationship
+     * @return response, when successful contains the created IsARelationshipRelationship
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -1394,21 +1394,21 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      * </ul>
      */
     @PutMapping(path = "/is-a-type-ofs/{guid}")
-    public SubjectAreaOMASAPIResponse<IsATypeOf> updateISARelationship(@PathVariable String serverName,
+    public SubjectAreaOMASAPIResponse<IsATypeOf> updateIsARelationship(@PathVariable String serverName,
                                                                        @PathVariable String userId,
                                                                        @PathVariable String guid,
                                                                        @RequestBody IsATypeOf isatypeof,
                                                                        @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace) {
-        return restAPI.updateTermISATypeOFRelationship(serverName, userId, guid, isatypeof, isReplace);
+        return restAPI.updateTermIsATypeOfRelationship(serverName, userId, guid, isatypeof, isReplace);
     }
 
 
     /**
-     * Delete a TermISATypeOFRelationship relationship, which is an inheritance relationship between two spine objects.
+     * Delete a TermIsATypeOfRelationship relationship, which is an inheritance relationship between two spine objects.
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       guid of the TermISATypeOFRelationship relationship to delete
+     * @param guid       guid of the TermIsATypeOfRelationship relationship to delete
      * @param isPurge    true indicates a hard delete, false is a soft delete.
      * @return response for a soft delete the response contains the deleted relationship
      * when not successful the following Exception responses can occur
@@ -1423,7 +1423,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
                                                                                  @PathVariable String userId,
                                                                                  @PathVariable String guid,
                                                                                  @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge) {
-        return restAPI.deleteTermISATypeOFRelationship(serverName, userId, guid, isPurge);
+        return restAPI.deleteTermIsATypeOfRelationship(serverName, userId, guid, isPurge);
     }
 
     /**
@@ -1448,7 +1448,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
     public SubjectAreaOMASAPIResponse<IsATypeOf> restoreTermIsaTypeOfRelationship(@PathVariable String serverName,
                                                                                   @PathVariable String userId,
                                                                                   @PathVariable String guid) {
-        return restAPI.restoreTermISATypeOFRelationship(serverName, userId, guid);
+        return restAPI.restoreTermIsATypeOfRelationship(serverName, userId, guid);
     }
 
 
@@ -1916,7 +1916,7 @@ public class GlossaryAuthorViewRelationshipRESTResource {
      * </ul>
      */
     @PostMapping(path = "/project-scopes/{guid}")
-    public SubjectAreaOMASAPIResponse<ProjectScope> restoreProjectScoperRelationship(@PathVariable String serverName,
+    public SubjectAreaOMASAPIResponse<ProjectScope> restoreProjectScopeRelationship(@PathVariable String serverName,
                                                                                      @PathVariable String userId,
                                                                                      @PathVariable String guid) {
         return restAPI.restoreProjectScope(serverName, userId, guid);

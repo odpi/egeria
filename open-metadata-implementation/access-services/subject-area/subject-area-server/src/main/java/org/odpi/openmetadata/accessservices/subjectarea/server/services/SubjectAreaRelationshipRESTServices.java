@@ -43,8 +43,8 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> StatusNotSupportedException          A status value is not supported.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<HasA> createTermHASARelationship(String serverName, String userId, HasA termHasARelationship) {
-        String restAPIName = "createTermHASARelationship";
+    public SubjectAreaOMASAPIResponse<HasA> createTermHasARelationship(String serverName, String userId, HasA termHasARelationship) {
+        String restAPIName = "createTermHasARelationship";
         return createLine(serverName, restAPIName, userId, TermHasARelationshipMapper.class, termHasARelationship);
     }
 
@@ -64,9 +64,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<HasA> getTermHASARelationship(String serverName, String userId, String guid) {
+    public SubjectAreaOMASAPIResponse<HasA> getTermHasARelationship(String serverName, String userId, String guid) {
 
-        String restAPIName = "getTermHASARelationship";
+        String restAPIName = "getTermHasARelationship";
         return getLine(serverName, restAPIName, userId, TermHasARelationshipMapper.class, guid);
     }
 
@@ -91,8 +91,8 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<HasA> updateTermHASARelationship(String serverName, String userId, String guid, HasA termHasARelationship, boolean isReplace) {
-        String restAPIName = "updateTermHASARelationship";
+    public SubjectAreaOMASAPIResponse<HasA> updateTermHasARelationship(String serverName, String userId, String guid, HasA termHasARelationship, boolean isReplace) {
+        String restAPIName = "updateTermHasARelationship";
         return updateLine(serverName, restAPIName, userId, guid, TermHasARelationshipMapper.class, termHasARelationship, isReplace);
     }
 
@@ -115,8 +115,8 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<HasA> deleteTermHASARelationship(String serverName, String userId, String guid, Boolean isPurge) {
-        String restAPIName = "deleteTermHASARelationship";
+    public SubjectAreaOMASAPIResponse<HasA> deleteTermHasARelationship(String serverName, String userId, String guid, Boolean isPurge) {
+        String restAPIName = "deleteTermHasARelationship";
         return deleteLine(serverName, restAPIName, userId, TermHasARelationshipMapper.class, guid, isPurge);
     }
 
@@ -140,8 +140,8 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<HasA> restoreTermHASARelationship(String serverName, String userId, String guid) {
-        String restAPIName = "restoreTermHASARelationship";
+    public SubjectAreaOMASAPIResponse<HasA> restoreTermHasARelationship(String serverName, String userId, String guid) {
+        String restAPIName = "restoreTermHasARelationship";
         return restoreLine(serverName, restAPIName, userId, TermHasARelationshipMapper.class, guid);
     }
 
@@ -1095,13 +1095,13 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
     }
 
     /**
-     * Create a termTYPEDBYRelationship relationship, which is a link between a spine attribute and its type.
+     * Create a termTypedByRelationship relationship, which is a link between a spine attribute and its type.
      * <p>
      *
      * @param serverName              serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId                  userId under which the request is performed
-     * @param termTYPEDBYRelationship the TypedBy relationship
-     * @return response, when successful contains the created termTYPEDBYRelationship relationship
+     * @param termTypedByRelationship the TypedBy relationship
+     * @return response, when successful contains the created termTypedByRelationship relationship
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -1112,18 +1112,18 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> StatusNotSupportedException          A status value is not supported.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<TypedBy> createTermTYPEDBYRelationship(String serverName, String userId, TypedBy termTYPEDBYRelationship) {
-        String restAPIName = "createTermTYPEDBYRelationship";
-        return createLine(serverName, restAPIName, userId, TermTYPEDBYRelationshipMapper.class, termTYPEDBYRelationship);
+    public SubjectAreaOMASAPIResponse<TypedBy> createTermTypedByRelationship(String serverName, String userId, TypedBy termTypedByRelationship) {
+        String restAPIName = "createTermTypedByRelationship";
+        return createLine(serverName, restAPIName, userId, TermTypedByRelationshipMapper.class, termTypedByRelationship);
     }
 
     /**
-     * Get a termTYPEDBYRelationship relationship, which is a link between a spine attribute and its type.
+     * Get a termTypedByRelationship relationship, which is a link between a spine attribute and its type.
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       guid of the termTYPEDBYRelationship relationship to get
-     * @return response which when successful contains the termTYPEDBYRelationship relationship with the requested guid
+     * @param guid       guid of the termTypedByRelationship relationship to get
+     * @return response which when successful contains the termTypedByRelationship relationship with the requested guid
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -1132,9 +1132,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<TypedBy> getTermTYPEDBYRelationship(String serverName, String userId, String guid) {
-        String restAPIName = "getTermTYPEDBYRelationship";
-        return getLine(serverName, restAPIName, userId, TermTYPEDBYRelationshipMapper.class, guid);
+    public SubjectAreaOMASAPIResponse<TypedBy> getTermTypedByRelationship(String serverName, String userId, String guid) {
+        String restAPIName = "getTermTypedByRelationship";
+        return getLine(serverName, restAPIName, userId, TermTypedByRelationshipMapper.class, guid);
     }
 
     /**
@@ -1144,7 +1144,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @param serverName              serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId                  userId under which the request is performed
      * @param guid                    unique identifier of the Line
-     * @param termTYPEDBYRelationship the TypedBy relationship
+     * @param termTypedByRelationship the TypedBy relationship
      * @param isReplace               flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the updated TypedBy
      * when not successful the following Exception responses can occur
@@ -1158,9 +1158,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<TypedBy> updateTermTYPEDBYRelationship(String serverName, String userId, String guid, TypedBy termTYPEDBYRelationship, boolean isReplace) {
-        String restAPIName = "updateTermTYPEDBYRelationship";
-        return updateLine(serverName, restAPIName, userId, guid, TermTYPEDBYRelationshipMapper.class, termTYPEDBYRelationship, isReplace);
+    public SubjectAreaOMASAPIResponse<TypedBy> updateTermTypedByRelationship(String serverName, String userId, String guid, TypedBy termTypedByRelationship, boolean isReplace) {
+        String restAPIName = "updateTermTypedByRelationship";
+        return updateLine(serverName, restAPIName, userId, guid, TermTypedByRelationshipMapper.class, termTypedByRelationship, isReplace);
     }
 
     /**
@@ -1182,9 +1182,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<TypedBy> deleteTermTYPEDBYRelationship(String serverName, String userId, String guid, Boolean isPurge) {
-        String restAPIName = "deleteTermTYPEDBYRelationship";
-        return deleteLine(serverName, restAPIName, userId, TermTYPEDBYRelationshipMapper.class, guid, isPurge);
+    public SubjectAreaOMASAPIResponse<TypedBy> deleteTermTypedByRelationship(String serverName, String userId, String guid, Boolean isPurge) {
+        String restAPIName = "deleteTermTypedByRelationship";
+        return deleteLine(serverName, restAPIName, userId, TermTypedByRelationshipMapper.class, guid, isPurge);
     }
 
     /**
@@ -1207,9 +1207,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<TypedBy> restoreTermTYPEDBYRelationship(String serverName, String userId, String guid) {
-        String restAPIName = "restoreTermTYPEDBYRelationship";
-        return restoreLine(serverName, restAPIName, userId, TermTYPEDBYRelationshipMapper.class, guid);
+    public SubjectAreaOMASAPIResponse<TypedBy> restoreTermTypedByRelationship(String serverName, String userId, String guid) {
+        String restAPIName = "restoreTermTypedByRelationship";
+        return restoreLine(serverName, restAPIName, userId, TermTypedByRelationshipMapper.class, guid);
     }
 
     /**
@@ -1231,8 +1231,8 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<IsA> createISARelationship(String serverName, String userId, IsA iSARelationship) {
-        String restAPIName = "createISARelationship";
+    public SubjectAreaOMASAPIResponse<IsA> createIsARelationship(String serverName, String userId, IsA iSARelationship) {
+        String restAPIName = "createIsARelationship";
         return createLine(serverName, restAPIName, userId, IsARelationshipMapper.class, iSARelationship);
     }
 
@@ -1251,8 +1251,8 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<IsA> getISARelationship(String serverName, String userId, String guid) {
-        String restAPIName = "getISARelationship";
+    public SubjectAreaOMASAPIResponse<IsA> getIsARelationship(String serverName, String userId, String guid) {
+        String restAPIName = "getIsARelationship";
         return getLine(serverName, restAPIName, userId, IsARelationshipMapper.class, guid);
     }
 
@@ -1277,8 +1277,8 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<IsA> updateISARelationship(String serverName, String userId, String guid, IsA iSARelationship, boolean isReplace) {
-        String restAPIName = "updateISARelationship";
+    public SubjectAreaOMASAPIResponse<IsA> updateIsARelationship(String serverName, String userId, String guid, IsA iSARelationship, boolean isReplace) {
+        String restAPIName = "updateIsARelationship";
         return updateLine(serverName, restAPIName, userId, guid, IsARelationshipMapper.class, iSARelationship, isReplace);
     }
 
@@ -1301,8 +1301,8 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<IsA> deleteISARelationship(String serverName, String userId, String guid, Boolean isPurge) {
-        String restAPIName = "deleteISARelationship";
+    public SubjectAreaOMASAPIResponse<IsA> deleteIsARelationship(String serverName, String userId, String guid, Boolean isPurge) {
+        String restAPIName = "deleteIsARelationship";
         return deleteLine(serverName, restAPIName, userId, IsARelationshipMapper.class, guid, isPurge);
     }
 
@@ -1326,19 +1326,19 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<IsA> restoreISARelationship(String serverName, String userId, String guid) {
-        String restAPIName = "restoreISARelationship";
+    public SubjectAreaOMASAPIResponse<IsA> restoreIsARelationship(String serverName, String userId, String guid) {
+        String restAPIName = "restoreIsARelationship";
         return restoreLine(serverName, restAPIName, userId, IsARelationshipMapper.class, guid);
     }
 
     /**
-     * Create a termISATypeOFRelationship relationship, which is an inheritance relationship between two spine objects.
+     * Create a termIsATypeOfRelationship relationship, which is an inheritance relationship between two spine objects.
      * <p>
      *
      * @param serverName                serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId                    userId under which the request is performed
-     * @param termIsATypeOFRelationship the IsaTypeOf relationship
-     * @return response, when successful contains the created termISATypeOFRelationship relationship
+     * @param termIsATypeOfRelationship the IsaTypeOf relationship
+     * @return response, when successful contains the created termIsATypeOfRelationship relationship
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -1350,18 +1350,18 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<IsATypeOf> createTermISATypeOFRelationship(String serverName, String userId, IsATypeOf termIsATypeOFRelationship) {
-        String restAPIName = "createTermISATypeOFRelationship";
-        return createLine(serverName, restAPIName, userId, TermIsATypeOfRelationshipMapper.class, termIsATypeOFRelationship);
+    public SubjectAreaOMASAPIResponse<IsATypeOf> createTermIsATypeOfRelationship(String serverName, String userId, IsATypeOf termIsATypeOfRelationship) {
+        String restAPIName = "createTermIsATypeOfRelationship";
+        return createLine(serverName, restAPIName, userId, TermIsATypeOfRelationshipMapper.class, termIsATypeOfRelationship);
     }
 
     /**
-     * Get a termISATypeOFRelationship relationship, which is an inheritance relationship between two spine objects.
+     * Get a termIsATypeOfRelationship relationship, which is an inheritance relationship between two spine objects.
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       guid of the termISATypeOFRelationship relationship to get
-     * @return response which when successful contains the termISATypeOFRelationship relationship with the requested guid
+     * @param guid       guid of the termIsATypeOfRelationship relationship to get
+     * @return response which when successful contains the termIsATypeOfRelationship relationship with the requested guid
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -1370,8 +1370,8 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<IsATypeOf> getTermISATypeOFRelationship(String serverName, String userId, String guid) {
-        String restAPIName = "getTermISATypeOFRelationship";
+    public SubjectAreaOMASAPIResponse<IsATypeOf> getTermIsATypeOfRelationship(String serverName, String userId, String guid) {
+        String restAPIName = "getTermIsATypeOfRelationship";
         return getLine(serverName, restAPIName, userId, TermIsATypeOfRelationshipMapper.class, guid);
     }
 
@@ -1382,7 +1382,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @param serverName                serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId                    userId under which the request is performed
      * @param guid                      unique identifier of the Line
-     * @param termIsATypeOFRelationship the IsaTypeOf relationship
+     * @param termIsATypeOfRelationship the IsaTypeOf relationship
      * @param isReplace                 flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the updated IsaTypeOf
      * when not successful the following Exception responses can occur
@@ -1396,9 +1396,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<IsATypeOf> updateTermISATypeOFRelationship(String serverName, String userId, String guid, IsATypeOf termIsATypeOFRelationship, boolean isReplace) {
-        String restAPIName = "updateTermISATypeOFRelationship";
-        return updateLine(serverName, restAPIName, userId, guid, TermIsATypeOfRelationshipMapper.class, termIsATypeOFRelationship, isReplace);
+    public SubjectAreaOMASAPIResponse<IsATypeOf> updateTermIsATypeOfRelationship(String serverName, String userId, String guid, IsATypeOf termIsATypeOfRelationship, boolean isReplace) {
+        String restAPIName = "updateTermIsATypeOfRelationship";
+        return updateLine(serverName, restAPIName, userId, guid, TermIsATypeOfRelationshipMapper.class, termIsATypeOfRelationship, isReplace);
     }
 
     /**
@@ -1445,8 +1445,8 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<IsATypeOf> restoreTermISATypeOFRelationship(String serverName, String userId, String guid) {
-        String restAPIName = "restoreTermISATypeOFRelationship";
+    public SubjectAreaOMASAPIResponse<IsATypeOf> restoreTermIsATypeOfRelationship(String serverName, String userId, String guid) {
+        String restAPIName = "restoreTermIsATypeOfRelationship";
         return restoreLine(serverName, restAPIName, userId, TermIsATypeOfRelationshipMapper.class, guid);
     }
 

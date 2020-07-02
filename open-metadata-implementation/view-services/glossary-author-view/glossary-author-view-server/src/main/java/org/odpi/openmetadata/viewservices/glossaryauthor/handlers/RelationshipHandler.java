@@ -26,23 +26,23 @@ public class RelationshipHandler {
     }
 
     /**
-     * Create a Term HASA Relationship. A relationship between a spine object and a spine attribute.
+     * Create a Term HasA Relationship. A relationship between a spine object and a spine attribute.
      * Note that this method does not error if the relationship ends are not spine objects or spine attributes.
      * <p>
      * @param userId               userId under which the request is performed
-     * @param termHasARelationship the HASA relationship
-     * @return the created term HASA relationship
+     * @param termHasARelationship the HasA relationship
+     * @return the created term HasA relationship
      *
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
      * @throws PropertyServerException              Property server exception
      */
-    public HasA createTermHASARelationship(String userId, HasA termHasARelationship) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+    public HasA createTermHasARelationship(String userId, HasA termHasARelationship) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         return subjectAreaRelationship.hasA().create(userId, termHasARelationship);
     }
 
     /**
-     * Get a Term HASA Relationship. A relationship between a spine object and a spine attribute.
+     * Get a Term HasA Relationship. A relationship between a spine object and a spine attribute.
      *
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the Hasa relationship to get
@@ -52,47 +52,47 @@ public class RelationshipHandler {
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws PropertyServerException              Property server exception
      */
-    public HasA getTermHASARelationship(String userId, String guid) throws InvalidParameterException,
+    public HasA getTermHasARelationship(String userId, String guid) throws InvalidParameterException,
                                                                            UserNotAuthorizedException,
                                                                            PropertyServerException {
         return subjectAreaRelationship.hasA().getByGUID(userId, guid);
     }
 
     /**
-     * Update a Term HASA Relationship. A relationship between a spine object and a spine attribute.
+     * Update a Term HasA Relationship. A relationship between a spine object and a spine attribute.
      * <p>
      *
      * @param userId               userId under which the request is performed
      * @param guid   guid of the Hasa relationship
-     * @param termHasARelationship the HASA relationship
-     * @return the updated term HASA relationship
+     * @param termHasARelationship the HasA relationship
+     * @return the updated term HasA relationship
      *
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
      * @throws PropertyServerException              Property Server Exception
      */
-    public HasA updateTermHASARelationship(String userId, String guid, HasA termHasARelationship) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+    public HasA updateTermHasARelationship(String userId, String guid, HasA termHasARelationship) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.hasA().update(userId, guid, termHasARelationship);
     }
 
     /**
-     * Replace a Term HASA Relationship.
+     * Replace a Term HasA Relationship.
      * <p>
      *
      * @param userId               userId under which the request is performed
      * @param guid   guid of the Hasa relationship
-     * @param termHasARelationship the HASA relationship
-     * @return the replaced term HASA relationship
+     * @param termHasARelationship the HasA relationship
+     * @return the replaced term HasA relationship
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid
      * @throws PropertyServerException              Property server exception
      */
-    public HasA replaceTermHASARelationship(String userId, String guid, HasA termHasARelationship) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+    public HasA replaceTermHasARelationship(String userId, String guid, HasA termHasARelationship) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.hasA().replace(userId, guid, termHasARelationship);
     }
 
     /**
-     * Delete a Term HASA Relationship. A relationship between a spine object and a spine attribute.
+     * Delete a Term HasA Relationship. A relationship between a spine object and a spine attribute.
      * A delete (also known as a soft delete) means that the relationship instance will exist in a deleted state in the repository after the delete operation. This means
      * that it is possible to undo the delete.
      *
@@ -103,12 +103,12 @@ public class RelationshipHandler {
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws PropertyServerException              Property server exception
      */
-    public void deleteTermHASARelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+    public void deleteTermHasARelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         subjectAreaRelationship.hasA().delete(userId, guid);
     }
 
     /**
-     * Purge a Term HASA Relationship. A relationship between a spine object and a spine attribute.
+     * Purge a Term HasA Relationship. A relationship between a spine object and a spine attribute.
      * A purge means that the relationship will not exist after the operation.
      *
      * @param userId unique identifier for requesting user, under which the request is performed
@@ -117,12 +117,12 @@ public class RelationshipHandler {
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws PropertyServerException              Property server exception
      */
-    public void purgeTermHASARelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+    public void purgeTermHasARelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         subjectAreaRelationship.hasA().purge(userId, guid);
     }
 
     /**
-     * Restore a Term HASA Relationship. A relationship between a spine object and a spine attribute.
+     * Restore a Term HasA Relationship. A relationship between a spine object and a spine attribute.
      * <p>
      * Restore allows the deleted has a relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
      *
@@ -133,7 +133,7 @@ public class RelationshipHandler {
      * @throws InvalidParameterException            one of the parameters is null or invalid
      * @throws PropertyServerException              Property server exception
      */
-    public HasA restoreTermHASARelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+    public HasA restoreTermHasARelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.hasA().restore(userId, guid);
     }
 
@@ -1247,7 +1247,7 @@ public class RelationshipHandler {
      * @throws InvalidParameterException            one of the parameters is null or invalid
      * @throws PropertyServerException              Property server exception
      */
-    public IsATypeOf createTermISATypeOFRelationship(String userId, IsATypeOf isATypeOf) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+    public IsATypeOf createTermIsATypeOfRelationship(String userId, IsATypeOf isATypeOf) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.isaTypeOf().create(userId, isATypeOf);
     }
 
@@ -1261,7 +1261,7 @@ public class RelationshipHandler {
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws PropertyServerException              Property server exception
      */
-    public IsATypeOf getTermISATypeOFRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+    public IsATypeOf getTermIsATypeOfRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.isaTypeOf().getByGUID(userId, guid);
     }
 
@@ -1277,7 +1277,7 @@ public class RelationshipHandler {
      * @throws InvalidParameterException            one of the parameters is null or invalid
      * @throws PropertyServerException              Property server exception
      */
-    public IsATypeOf updateTermISATypeOFRelationship(String userId, String guid, IsATypeOf isATypeOf) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+    public IsATypeOf updateTermIsATypeOfRelationship(String userId, String guid, IsATypeOf isATypeOf) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.isaTypeOf().update(userId, guid, isATypeOf);
     }
 
@@ -1293,7 +1293,7 @@ public class RelationshipHandler {
      * @throws InvalidParameterException            one of the parameters is null or invalid
      * @throws PropertyServerException              Property server exception
      */
-    public IsATypeOf replaceTermISATypeOFRelationship(String userId, String guid, IsATypeOf isATypeOf) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+    public IsATypeOf replaceTermIsATypeOfRelationship(String userId, String guid, IsATypeOf isATypeOf) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return subjectAreaRelationship.isaTypeOf().replace(userId, guid, isATypeOf);
     }
 
@@ -1309,7 +1309,7 @@ public class RelationshipHandler {
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws PropertyServerException              Property server exception
      */
-    public void deleteTermISATypeOFRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+    public void deleteTermIsATypeOfRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         subjectAreaRelationship.isaTypeOf().delete(userId, guid);
     }
 
@@ -1323,7 +1323,7 @@ public class RelationshipHandler {
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws PropertyServerException              Property server exception
      */
-    public void purgeTermISATypeOFRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+    public void purgeTermIsATypeOfRelationship(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         subjectAreaRelationship.isaTypeOf().purge(userId, guid);
     }
 
@@ -1389,7 +1389,7 @@ public class RelationshipHandler {
     }
 
     /**
-     * Replace a Term HASA Relationship.
+     * Replace a Term HasA Relationship.
      * <p>
      *
      * @param userId                         userId under which the request is performed
