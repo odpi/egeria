@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.graph;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__;
 import org.apache.tinkerpop.gremlin.structure.Column;
@@ -23,12 +24,7 @@ import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlinea
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.*;
@@ -326,11 +322,12 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
      */
     private void addOrUpdatePropertiesVertex(Vertex vertex,LineageEntity lineageEntity){
 
-        Map<String, Object> properties  = lineageEntity.getProperties().entrySet().stream().collect(Collectors.toMap(
+        Map<String, Object> properties  = lineageEntity.getProperties().entrySet().stream()
+                .filter(e -> StringUtils.isNotEmpty(e.getValue()))
+                .collect(Collectors.toMap(
                 e -> PROPERTY_KEY_PREFIX_ELEMENT+PROPERTY_KEY_PREFIX_INSTANCE_PROPERTY+e.getKey(),
                 Map.Entry::getValue));
 
-        properties.values().remove(null);
         properties.computeIfAbsent(PROPERTY_KEY_ENTITY_CREATE_TIME,val -> lineageEntity.getCreateTime());
         properties.computeIfAbsent(PROPERTY_KEY_ENTITY_CREATED_BY,val -> lineageEntity.getCreatedBy());
         properties.computeIfAbsent(PROPERTY_KEY_ENTITY_UPDATE_TIME,val -> lineageEntity.getUpdateTime());
