@@ -25,13 +25,13 @@ public class AssetLineageResource {
      *
      * @param serverName name of server instance to call
      * @param userId     the name of the calling user
-     * @param  entityType   the name of the relationship type
+     * @param entityType the name of the relationship type
      * @return a list of unique identifiers (guids) of the available entities with the given type provided as a response
      */
-    @GetMapping(path = "/initial-load-entities/{entityType}")
-    public GUIDListResponse initialLoadEntities(@PathVariable String serverName,
-                                        @PathVariable String userId,
-                                        @PathVariable String entityType) {
-        return restAPI.initialLoadByEntityType(serverName, userId,  entityType);
+    @GetMapping(path = "/initial-load-by-entity-type/{entityType}")
+    public GUIDListResponse initialLoadByEntityType(@PathVariable String serverName,
+                                                    @PathVariable String userId,
+                                                    @PathVariable String entityType) {
+        return restAPI.initialLoadByEntityType(serverName, userId, entityType);
     }
 }

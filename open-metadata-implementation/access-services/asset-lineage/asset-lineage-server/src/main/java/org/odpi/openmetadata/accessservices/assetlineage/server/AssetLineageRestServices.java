@@ -65,7 +65,7 @@ public class AssetLineageRestServices {
             AssetLineagePublisher publisher = instanceHandler.getAssetLineagePublisher(userId, serverName, methodName);
             if (publisher == null) {
                 log.debug("Asset Lineage Publisher is not available. " +
-                        "The context event for Glossary Terms could not be published on the Asset Lineage OMAS Out Topic.");
+                        "The context event for {} could not be published on the Asset Lineage OMAS Out Topic.", entityType);
                 return response;
             }
             publishEntitiesContext(entityType, entitiesByTypeName, publisher);
@@ -83,17 +83,17 @@ public class AssetLineageRestServices {
     }
 
     private void publishEntitiesContext(String typeName, List<EntityDetail> entitiesByType, AssetLineagePublisher publisher) {
-        entitiesByType.forEach(entityDetail -> {
+        entitiesByType.parallelStream().forEach(entityDetail -> {
             try {
-                if(GLOSSARY_TERM.equals(typeName)){
+                if (GLOSSARY_TERM.equals(typeName)) {
                     publisher.publishGlossaryContext(entityDetail);
-                } else if (PROCESS.equals(typeName)){
+                } else if (PROCESS.equals(typeName)) {
                     publisher.publishProcessContext(entityDetail);
                 } else {
                     publisher.publishAssetContext(entityDetail);
                 }
             } catch (OCFCheckedExceptionBase | JsonProcessingException ocfCheckedExceptionBase) {
-                log.error("The context for Glossary Term with guid = {} can not be published.", entityDetail.getGUID());
+                log.error("The context for entity guid = {} - type {} can not be published.", entityDetail.getGUID(), entityDetail.getType().getTypeDefName());
             }
         });
     }

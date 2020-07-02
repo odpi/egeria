@@ -27,12 +27,11 @@ public class ProcessContextHandler {
 
     private static final Logger log = LoggerFactory.getLogger(ProcessContextHandler.class);
 
-    private final RepositoryHandler repositoryHandler;
     private final AssetContextHandler assetContextHandler;
     private final InvalidParameterHandler invalidParameterHandler;
     private final List<String> supportedZones;
     private final HandlerHelper handlerHelper;
-    private  SuperTypesRetriever superTypesRetriever;
+    private SuperTypesRetriever superTypesRetriever;
 
     private AssetContext graph;
 
@@ -52,7 +51,6 @@ public class ProcessContextHandler {
                                  List<String> supportedZones,
                                  List<String> lineageClassificationTypes) {
         this.invalidParameterHandler = invalidParameterHandler;
-        this.repositoryHandler = repositoryHandler;
         this.handlerHelper = new HandlerHelper(invalidParameterHandler, repositoryHelper, repositoryHandler, lineageClassificationTypes);
         this.assetContextHandler = assetContextHandler;
         this.supportedZones = supportedZones;
@@ -136,23 +134,37 @@ public class ProcessContextHandler {
         List<EntityDetail> entityDetails = new ArrayList<>();
         for (Relationship relationship : relationships) {
             EntityDetail endEntity = handlerHelper.buildGraphEdgeByRelationship(userId, startEntity, relationship, graph);
-            if (endEntity == null) return Collections.emptyList();
-
-            Set<String> superTypes = superTypesRetriever.getSuperTypes(endEntity.getType().getTypeDefName());
-            if(superTypes.contains(TABULAR_COLUMN)){
-                AssetContext assetContext = assetContextHandler.getAssetContext(userId, endEntity);
-                graph.getGraphContexts().addAll(assetContext.getGraphContexts());
-                assetContext.getNeighbors().forEach((k, v) -> mergeGraphNeighbors(k, v));
+            if (endEntity == null) {
+                return Collections.emptyList();
             }
 
+            addContextForTabularColumns(userId, endEntity);
             entityDetails.add(endEntity);
         }
 
         return entityDetails;
     }
 
+    /**
+     * Enhance the process context with Tabular Column context
+     * Add the asset neighbors for Tabular Column
+     *
+     * @param userId String - userId of user making request.
+     * @param entity details of the entity
+     * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
+     */
+    private void addContextForTabularColumns(String userId, EntityDetail entity) throws OCFCheckedExceptionBase {
+        Set<String> superTypes = superTypesRetriever.getSuperTypes(entity.getType().getTypeDefName());
+
+        if (superTypes.contains(TABULAR_COLUMN)) {
+            AssetContext assetContext = assetContextHandler.getAssetContext(userId, entity);
+            graph.getGraphContexts().addAll(assetContext.getGraphContexts());
+            assetContext.getNeighbors().forEach(this::mergeGraphNeighbors);
+        }
+    }
+
     private void mergeGraphNeighbors(String k, Set<GraphContext> v) {
-        if(graph.getNeighbors().containsKey(k)) {
+        if (graph.getNeighbors().containsKey(k)) {
             graph.getNeighbors().get(k).addAll(v);
         } else {
             graph.getNeighbors().put(k, v);

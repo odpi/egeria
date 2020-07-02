@@ -23,8 +23,6 @@ import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineag
 public class ClassificationHandler {
 
     private InvalidParameterHandler invalidParameterHandler;
-    private OMRSRepositoryHelper repositoryHelper;
-    private List<String> lineageClassificationTypes;
     private HandlerHelper handlerHelper;
 
     /**
@@ -34,8 +32,6 @@ public class ClassificationHandler {
      */
     public ClassificationHandler(InvalidParameterHandler invalidParameterHandler, List<String> lineageClassificationTypes, OMRSRepositoryHelper repositoryHelper) {
         this.invalidParameterHandler = invalidParameterHandler;
-        this.lineageClassificationTypes = lineageClassificationTypes;
-        this.repositoryHelper = repositoryHelper;
         this.handlerHelper = new HandlerHelper(invalidParameterHandler, repositoryHelper, null, lineageClassificationTypes);
     }
 

@@ -58,28 +58,6 @@ public class HandlerHelper {
         this.lineageClassificationTypes = lineageClassificationTypes;
     }
 
-
-    /**
-     * Query about the entity in the repositories based on the Guid
-     *
-     * @param userId   String - userId of user making request.
-     * @param guid     guid of the asset we need to retrieve from a repository
-     * @param typeName the name of the Open Metadata type for getting details
-     * @return optional with entity details if found, empty optional if not found
-     * @throws InvalidParameterException  the invalid parameter exception
-     * @throws PropertyServerException    the property server exception
-     * @throws UserNotAuthorizedException the user not authorized exception
-     */
-    Optional<EntityDetail> getEntityDetails(String userId, String guid, String typeName) throws OCFCheckedExceptionBase {
-
-        String methodName = "getEntityDetails";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(guid, GUID_PARAMETER, methodName);
-
-        return Optional.ofNullable(repositoryHandler.getEntityByGUID(userId, guid, GUID_PARAMETER, typeName, methodName));
-    }
-
     /**
      * Query about the relationships of an entity based on the type of the relationship
      *
@@ -184,7 +162,7 @@ public class HandlerHelper {
         LineageEntity startVertex;
         LineageEntity endVertex;
 
-        if(startEntity.getGUID().equals(relationship.getEntityTwoProxy().getGUID())){
+        if (startEntity.getGUID().equals(relationship.getEntityTwoProxy().getGUID())) {
             startVertex = converter.createLineageEntity(endEntity);
             endVertex = converter.createLineageEntity(startEntity);
         } else {

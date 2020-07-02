@@ -12,8 +12,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefGallery;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,8 +25,6 @@ import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineag
  * The Asset Context handler provides methods to build graph context for assets that has been created.
  */
 public class AssetContextHandler {
-
-    private static final Logger log = LoggerFactory.getLogger(AssetContextHandler.class);
 
     private final RepositoryHandler repositoryHandler;
     private final InvalidParameterHandler invalidParameterHandler;
@@ -78,11 +74,6 @@ public class AssetContextHandler {
         return graph;
     }
 
-    public Optional<EntityDetail> getEntityDetails(String userId, String guid, String type) throws OCFCheckedExceptionBase {
-        final String methodName = "getEntityDetails";
-        return Optional.ofNullable(repositoryHandler.getEntityByGUID(userId, guid, GUID_PARAMETER, type, methodName));
-    }
-
     private void buildAssetContext(String userId, EntityDetail entityDetail) throws OCFCheckedExceptionBase {
         final String typeDefName = entityDetail.getType().getTypeDefName();
 
@@ -90,10 +81,7 @@ public class AssetContextHandler {
             addContextForSchemaAttributeType(userId, entityDetail, typeDefName);
         }
 
-        List<Relationship> relationships = handlerHelper.getRelationshipsByType(userId, entityDetail.getGUID(), LINEAGE_MAPPING, typeDefName);
-        for (Relationship relationship : relationships) {
-            handlerHelper.buildGraphEdgeByRelationship(userId, entityDetail, relationship, graph);
-        }
+        addLineageMappings(userId, entityDetail, typeDefName);
 
         List<EntityDetail> tableTypeEntities = buildGraphByRelationshipType(userId, entityDetail, ATTRIBUTE_FOR_SCHEMA, typeDefName);
 
@@ -109,6 +97,13 @@ public class AssetContextHandler {
                     buildAssetContext(userId, first.get());
                 }
             }
+        }
+    }
+
+    private void addLineageMappings(String userId, EntityDetail entityDetail, String typeDefName) throws OCFCheckedExceptionBase {
+        List<Relationship> relationships = handlerHelper.getRelationshipsByType(userId, entityDetail.getGUID(), LINEAGE_MAPPING, typeDefName);
+        for (Relationship relationship : relationships) {
+            handlerHelper.buildGraphEdgeByRelationship(userId, entityDetail, relationship, graph);
         }
     }
 
@@ -145,13 +140,9 @@ public class AssetContextHandler {
 
     private void buildAsset(String userId, EntityDetail dataSet) throws OCFCheckedExceptionBase {
         final String typeDefName = dataSet.getType().getTypeDefName();
-        List<EntityDetail> entityDetails;
-        if (typeDefName.equals(DATA_FILE)) {
-            entityDetails = buildGraphByRelationshipType(userId, dataSet, NESTED_FILE, typeDefName);
-        } else {
-            entityDetails = buildGraphByRelationshipType(userId, dataSet, DATA_CONTENT_FOR_DATA_SET, typeDefName);
-        }
 
+        String relationshipType = typeDefName.equals(DATA_FILE) ? NESTED_FILE : DATA_CONTENT_FOR_DATA_SET;
+        List<EntityDetail> entityDetails = buildGraphByRelationshipType(userId, dataSet, relationshipType, typeDefName);
         if (CollectionUtils.isEmpty(entityDetails)) {
             return;
         }

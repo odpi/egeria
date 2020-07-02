@@ -101,7 +101,7 @@ public class GlossaryHandler {
 
         List<Relationship> semanticAssignments = getSemanticAssignments(userId, glossaryTerm.getGUID(), glossaryTerm.getType().getTypeDefName(), methodName);
         if (CollectionUtils.isEmpty(semanticAssignments)) {
-           return null;
+            return null;
         }
 
         addSemanticAssignmentToContext(userId, glossaryTerm, glossaryContext, semanticAssignments.toArray(new Relationship[0]));
@@ -126,10 +126,23 @@ public class GlossaryHandler {
         List<Relationship> semanticAssignments = getSemanticAssignments(userId, glossaryTermGUID, typeDefName, methodName);
         if (semanticAssignments == null) return;
 
-        addSemanticAssignmentToContext(userId, glossaryTerm,graph , semanticAssignments.toArray(new Relationship[0]));
+        addSemanticAssignmentToContext(userId, glossaryTerm, graph, semanticAssignments.toArray(new Relationship[0]));
     }
 
-    public List<Relationship> getSemanticAssignments(String userId, String glossaryTermGUID, String typeDefName, String methodName) throws UserNotAuthorizedException, PropertyServerException {
+    /**
+     * Add semantic assignments for an asset to the Context structure
+     *
+     * @param userId              userId
+     * @param assetContext        context of the asset
+     * @param semanticAssignments array of the semantic assignments
+     */
+    private void addSemanticAssignmentToContext(String userId, EntityDetail glossaryTerm, AssetContext assetContext, Relationship... semanticAssignments) throws OCFCheckedExceptionBase {
+        for (Relationship relationship : semanticAssignments) {
+            handlerHelper.buildGraphEdgeByRelationship(userId, glossaryTerm, relationship, assetContext);
+        }
+    }
+
+    private List<Relationship> getSemanticAssignments(String userId, String glossaryTermGUID, String typeDefName, String methodName) throws UserNotAuthorizedException, PropertyServerException {
         String typeGuid = handlerHelper.getTypeByName(userId, SEMANTIC_ASSIGNMENT);
 
         return repositoryHandler.getRelationshipsByType(userId,
@@ -138,17 +151,5 @@ public class GlossaryHandler {
                 typeGuid,
                 SEMANTIC_ASSIGNMENT,
                 methodName);
-    }
-
-    /**
-     * Add semantic assignments for an asset to the Context structure
-     *  @param userId              userId
-     * @param assetContext
-     * @param semanticAssignments array of the semantic assignments
-     */
-    private void addSemanticAssignmentToContext(String userId, EntityDetail glossaryTerm, AssetContext assetContext, Relationship... semanticAssignments) throws OCFCheckedExceptionBase {
-        for (Relationship relationship : semanticAssignments) {
-            handlerHelper.buildGraphEdgeByRelationship(userId, glossaryTerm, relationship, assetContext);
-        }
     }
 }
