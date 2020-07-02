@@ -151,13 +151,16 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
     }
 
     private void processNewEntity(EntityDetail entityDetail) throws OCFCheckedExceptionBase, JsonProcessingException {
-        if (!immutableValidLineageEntityEvents.contains(entityDetail.getType().getTypeDefName()))
+        String typeDefName = entityDetail.getType().getTypeDefName();
+        if (!immutableValidLineageEntityEvents.contains(typeDefName))
             return;
 
         log.debug(PROCESSING_ENTITYDETAIL_DEBUG_MESSAGE, "newEntity", entityDetail.getGUID());
 
-        if (entityDetail.getType().getTypeDefName().equals(PROCESS)) {
+        if (PROCESS.equals(typeDefName)) {
             publisher.publishProcessContext(entityDetail);
+        } else if (GLOSSARY_TERM.equals(typeDefName)) {
+            publisher.publishGlossaryContext(entityDetail);
         } else {
             publisher.publishAssetContext(entityDetail);
         }
