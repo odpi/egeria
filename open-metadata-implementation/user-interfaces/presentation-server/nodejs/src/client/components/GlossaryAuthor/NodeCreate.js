@@ -81,9 +81,8 @@ function NodeCreate(props) {
       .then((res) => {
         console.log("create worked " + JSON.stringify(res));
 
-        const nodeResponse = res[nodeType.key];
-        // if there is a node response then we have successfully created a node
-        if (nodeResponse) {
+        if (res.relatedHTTPCode == 200 && res.result && res.result[0]) {
+          const nodeResponse = res.result[0]; 
           glossaryAuthorContext.setCreatedActionState();
           setCreateResponse(nodeResponse);
           if (glossaryAuthorContext.myState == 1) {
@@ -105,7 +104,8 @@ function NodeCreate(props) {
           }
         } else {
           let msg = "";
-          if (res.responseCategory) {
+          // if this is a formatted Egeria response, we have a user action
+          if (res.relatedHTTPCode) {
             if (res.exceptionUserAction) {
               msg = "Create Failed: " + res.exceptionUserAction;
             } else {
