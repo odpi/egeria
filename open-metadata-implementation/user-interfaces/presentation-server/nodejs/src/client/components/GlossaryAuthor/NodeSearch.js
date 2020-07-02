@@ -2,9 +2,12 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 import React, { useState, useContext } from "react";
 import { GlossaryAuthorContext } from "../../contexts/GlossaryAuthorContext";
+import Delete16 from "../../images/Egeria_delete_16";
+import Edit16 from "../../images/Egeria_edit_16";
 import {
   Accordion,
   AccordionItem,
+  Button,
   DataTable,
   MultiSelect,
   Pagination,
@@ -17,6 +20,11 @@ import {
   TableCell,
   TableHeader,
   TableBody,
+  TableToolbar,
+  TableToolbarContent,
+  TableBatchActions,
+  TableBatchAction,
+  TableToolbarSearch,
 } from "carbon-components-react";
 
 const NodeSearch = (props) => {
@@ -67,7 +75,7 @@ const NodeSearch = (props) => {
       // if page = 2 and pageSize 10 and results.length = 15, currentPageStart = 11 , currentPageSize = 5
 
       const currentPageStart =
-        1 + (paginationOptions.page - 1) * paginationOptions.pageSize;
+        (paginationOptions.page - 1) * paginationOptions.pageSize;
       let currentPageSize = pageSize;
       // if the last page is not complete ensure that we only specify up the end of the what is actually there in the results.
       if (currentPageStart + currentPageSize - 1 > results.length) {
@@ -133,12 +141,17 @@ const NodeSearch = (props) => {
     });
     return items;
   }
-  const isSelectedNode = () => {
-    let isSelected = false;
-    if (glossaryAuthorContext.selectedNode) {
-      isSelected = true;
-    }
-    return isSelected;
+  const batchActionClick = (selectedRows) => {
+    console.log("batchActionClick" + selectedRows);
+  };
+  const handleAdd = (e) => {
+    console.log("handleAdd" + e);
+  };
+  const handleDelete = (e) => {
+    console.log("handleDelete" + e);
+  };
+  const handleEdit = (e) => {
+    console.log("handleEdit" + e);
   };
   const handleOnChange = (e) => {
     e.preventDefault();
@@ -292,10 +305,34 @@ const NodeSearch = (props) => {
           getHeaderProps,
           getSelectionProps,
           getRowProps,
+          getBatchActionProps,
+          onInputChange,
+          selectedRows,
         }) => (
           <TableContainer
             title={glossaryAuthorContext.currentNodeType.typeName}
           >
+            <TableToolbar>
+              {/* make sure to apply getBatchActionProps so that the bar renders */}
+              <TableBatchActions {...getBatchActionProps()}>
+                {/* inside of you batch actions, you can include selectedRows */}
+                <TableBatchAction
+                  primaryFocus
+                  onClick={handleDelete(selectedRows)}
+                >
+                  Delete
+                </TableBatchAction>
+                <TableBatchAction onClick={handleEdit(selectedRows)}>
+                  Edit
+                </TableBatchAction>
+              </TableBatchActions>
+              <TableToolbarSearch onChange={onInputChange} />
+              <TableToolbarContent>
+                <Button onClick={handleAdd} small kind="primary">
+                  Add new
+                </Button>
+              </TableToolbarContent>
+            </TableToolbar>
             <Table>
               <TableHead>
                 <TableRow>
