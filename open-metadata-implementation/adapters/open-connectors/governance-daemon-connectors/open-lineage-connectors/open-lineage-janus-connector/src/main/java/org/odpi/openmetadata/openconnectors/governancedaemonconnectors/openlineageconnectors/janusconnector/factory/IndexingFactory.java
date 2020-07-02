@@ -37,7 +37,16 @@ public class IndexingFactory {
                                                    boolean unique,
                                                    JanusGraph graph,
                                                    Class type) {
-        String indexName = "vertexIndexComposite" + propertyKeyName;
+
+        String indexName = null;
+        if(Vertex.class.equals(type)){
+            indexName = "vertexIndexComposite" + propertyKeyName;
+        }
+        else if (Edge.class.equals(type)){
+            indexName = "edgeIndexComposite" + propertyKeyName;
+
+        }
+
         log.info("INDEX to be created {}", indexName);
         this.graph = graph;
         checkIndex(indexName,propertyName,propertyKeyName,unique,type);
