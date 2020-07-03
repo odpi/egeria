@@ -8,8 +8,6 @@ import org.odpi.openmetadata.accessservices.subjectarea.responses.*;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.viewservices.glossaryauthor.handlers.RelationshipHandler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
@@ -34,7 +32,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      *
      * @param serverName           serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId               userId under which the request is performed
-     * @param termHASARelationship the HASA relationship
+     * @param termHasARelationship the HasA relationship
      * @return response, when successful contains the created Hasa
      * when not successful the following Exception responses can occur
      * <ul>
@@ -43,19 +41,19 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<Hasa> createTermHASARelationship(String serverName, String userId, Hasa termHASARelationship)
+    public SubjectAreaOMASAPIResponse<HasA> createTermHasARelationship(String serverName, String userId, HasA termHasARelationship)
     {
-        String                     restAPIName = "createTermHASARelationship";
+        String                     restAPIName = "createTermHasARelationship";
         RESTCallToken              token       = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse<Hasa> response = new SubjectAreaOMASAPIResponse<>();
+        SubjectAreaOMASAPIResponse<HasA> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog                   auditLog    = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
-            Hasa createdTermHASARelationship = handler.createTermHASARelationship(userId, termHASARelationship);
-            response.addResult(createdTermHASARelationship);
+            HasA createdTermHasARelationship = handler.createTermHasARelationship(userId, termHasARelationship);
+            response.addResult(createdTermHasARelationship);
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
         }
@@ -70,7 +68,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       guid of the HASA relationship to get
+     * @param guid       guid of the HasA relationship to get
      * @return response which when successful contains the term has a relationship with the requested guid
      * when not successful the following Exception responses can occur
      * <ul>
@@ -80,20 +78,20 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * </ul>
      */
 
-    public SubjectAreaOMASAPIResponse<Hasa> getTermHASARelationship(String serverName, String userId, String guid)
+    public SubjectAreaOMASAPIResponse<HasA> getTermHasARelationship(String serverName, String userId, String guid)
      {
 
-        String restAPIName = "getTermHASARelationship";
+        String restAPIName = "getTermHasARelationship";
          RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-         SubjectAreaOMASAPIResponse<Hasa> response = new SubjectAreaOMASAPIResponse<>();
+         SubjectAreaOMASAPIResponse<HasA> response = new SubjectAreaOMASAPIResponse<>();
          AuditLog auditLog = null;
 
          // should not be called without a supplied relationship - the calling layer should not allow this.
          try {
              auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
              RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
-             Hasa updatedTermHASARelationship = handler.getTermHASARelationship(userId, guid);
-             response.addResult(updatedTermHASARelationship);
+             HasA updatedTermHasARelationship = handler.getTermHasARelationship(userId, guid);
+             response.addResult(updatedTermHasARelationship);
          }  catch (Throwable error) {
              response = getResponseForError(error, auditLog, className, restAPIName);
          }
@@ -107,8 +105,8 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      *
      * @param serverName           serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId               userId under which the request is performed
-     * @param guid       guid of the HASA relationship
-     * @param termHASARelationship the HASA relationship
+     * @param guid       guid of the HasA relationship
+     * @param termHasARelationship the HasA relationship
      * @param isReplace            flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the updated Hasa
      * when not successful the following Exception responses can occur
@@ -118,11 +116,11 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<Hasa> updateTermHASARelationship(String serverName, String userId, String guid, Hasa termHASARelationship, boolean isReplace)
+    public SubjectAreaOMASAPIResponse<HasA> updateTermHasARelationship(String serverName, String userId, String guid, HasA termHasARelationship, boolean isReplace)
      {
-        String restAPIName = "updateTermHASARelationship";
+        String restAPIName = "updateTermHasARelationship";
          RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-         SubjectAreaOMASAPIResponse<Hasa> response = new SubjectAreaOMASAPIResponse<>();
+         SubjectAreaOMASAPIResponse<HasA> response = new SubjectAreaOMASAPIResponse<>();
          AuditLog auditLog = null;
 
          // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -130,11 +128,11 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
              auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
              RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
              if (isReplace) {
-                 Hasa updatedTermHASARelationship = handler.replaceTermHASARelationship(userId, guid, termHASARelationship);
-                 response.addResult(updatedTermHASARelationship);
+                 HasA updatedTermHasARelationship = handler.replaceTermHasARelationship(userId, guid, termHasARelationship);
+                 response.addResult(updatedTermHasARelationship);
              } else {
-                 Hasa updatedTermHASARelationship = handler.updateTermHASARelationship(userId, guid, termHASARelationship);
-                 response.addResult(updatedTermHASARelationship);
+                 HasA updatedTermHasARelationship = handler.updateTermHasARelationship(userId, guid, termHasARelationship);
+                 response.addResult(updatedTermHasARelationship);
              }
 
          }  catch (Throwable error) {
@@ -159,12 +157,12 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<Hasa> deleteTermHASARelationship(String serverName, String userId, String guid, boolean isPurge)
+    public SubjectAreaOMASAPIResponse<HasA> deleteTermHasARelationship(String serverName, String userId, String guid, boolean isPurge)
      {
-        String restAPIName = "deleteTermHASARelationship";
+        String restAPIName = "deleteTermHasARelationship";
 
          RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-         SubjectAreaOMASAPIResponse<Hasa> response = new SubjectAreaOMASAPIResponse<>();
+         SubjectAreaOMASAPIResponse<HasA> response = new SubjectAreaOMASAPIResponse<>();
          AuditLog auditLog = null;
 
          // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -172,9 +170,9 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
              auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
              RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
              if (isPurge) {
-                 handler.purgeTermHASARelationship(userId, guid);
+                 handler.purgeTermHasARelationship(userId, guid);
              } else {
-                 handler.deleteTermHASARelationship(userId, guid);
+                 handler.deleteTermHasARelationship(userId, guid);
              }
          }  catch (Throwable error) {
              response = getResponseForError(error, auditLog, className, restAPIName);
@@ -202,19 +200,19 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<Hasa> restoreTermHASARelationship(String serverName, String userId, String guid)
+    public SubjectAreaOMASAPIResponse<HasA> restoreTermHasARelationship(String serverName, String userId, String guid)
      {
-        String restAPIName = "restoreTermHASARelationship";
+        String restAPIName = "restoreTermHasARelationship";
          RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-         SubjectAreaOMASAPIResponse<Hasa> response = new SubjectAreaOMASAPIResponse<>();
+         SubjectAreaOMASAPIResponse<HasA> response = new SubjectAreaOMASAPIResponse<>();
          AuditLog auditLog = null;
 
          // should not be called without a supplied relationship - the calling layer should not allow this.
          try {
              auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
              RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
-             Hasa restoredTermHASARelationship = handler.restoreTermHASARelationship(userId, guid);
-             response.addResult(restoredTermHASARelationship);
+             HasA restoredTermHasARelationship = handler.restoreTermHasARelationship(userId, guid);
+             response.addResult(restoredTermHasARelationship);
          }  catch (Throwable error) {
              response = getResponseForError(error, auditLog, className, restAPIName);
          }
@@ -301,7 +299,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * @param serverName           serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId               userId under which the request is performed
      * @param guid       guid of the related term relationship
-     * @param relatedTerm the HASA relationship
+     * @param relatedTerm the HasA relationship
      * @param isReplace            flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the updated RelatedTerm
      * when not successful the following Exception responses can occur
@@ -1937,7 +1935,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      *
      * @param serverName           serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId               userId under which the request is performed
-     * @param ISARelationship      the ISA Relationship
+     * @param IsARelationship      the IsA Relationship
      * @return response, when successful contains the created Isa
      * when not successful the following Exception responses can occur
      * <ul>
@@ -1946,19 +1944,19 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<Isa> createIsaRelationship(String serverName, String userId, Isa ISARelationship)
+    public SubjectAreaOMASAPIResponse<IsA> createIsaRelationship(String serverName, String userId, IsA IsARelationship)
     {
         String restAPIName = "createIsaRelationship";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse<Isa> response = new SubjectAreaOMASAPIResponse<>();
+        SubjectAreaOMASAPIResponse<IsA> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
-            Isa createdISARelationship = handler.createIsaRelationship(userId, ISARelationship);
-            response.addResult(createdISARelationship);
+            IsA createdIsARelationship = handler.createIsaRelationship(userId, IsARelationship);
+            response.addResult(createdIsARelationship);
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
         }
@@ -1973,7 +1971,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       guid of the ISA Relationship to get
+     * @param guid       guid of the IsA Relationship to get
      * @return response which when successful contains the term has a relationship with the requested guid
      * when not successful the following Exception responses can occur
      * <ul>
@@ -1983,20 +1981,20 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * </ul>
      */
 
-    public SubjectAreaOMASAPIResponse<Isa> getISARelationship(String serverName, String userId, String guid)
+    public SubjectAreaOMASAPIResponse<IsA> getIsARelationship(String serverName, String userId, String guid)
     {
 
-        String restAPIName = "getISARelationship";
+        String restAPIName = "getIsARelationship";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse<Isa> response = new SubjectAreaOMASAPIResponse<>();
+        SubjectAreaOMASAPIResponse<IsA> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
-            Isa updatedISARelationship = handler.getIsaRelationship(userId, guid);
-            response.addResult(updatedISARelationship);
+            IsA updatedIsARelationship = handler.getIsaRelationship(userId, guid);
+            response.addResult(updatedIsARelationship);
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
         }
@@ -2010,8 +2008,8 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      *
      * @param serverName           serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId               userId under which the request is performed
-     * @param guid       guid of the ISA Relationship
-     * @param ISARelationship the ISA Relationship
+     * @param guid       guid of the IsA Relationship
+     * @param IsARelationship the IsA Relationship
      * @param isReplace            flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the updated Isa
      * when not successful the following Exception responses can occur
@@ -2021,24 +2019,24 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<Isa> updateISARelationship(String serverName, String userId, String guid, Isa ISARelationship, boolean isReplace)
+    public SubjectAreaOMASAPIResponse<IsA> updateIsARelationship(String serverName, String userId, String guid, IsA IsARelationship, boolean isReplace)
     {
-        String restAPIName = "updateISARelationship";
+        String restAPIName = "updateIsARelationship";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse<Isa> response = new SubjectAreaOMASAPIResponse<>();
+        SubjectAreaOMASAPIResponse<IsA> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
-            Isa updatedISARelationship;
+            IsA updatedIsARelationship;
             if (isReplace) {
-                updatedISARelationship = handler.replaceIsaRelationship(userId, guid, ISARelationship);
+                updatedIsARelationship = handler.replaceIsaRelationship(userId, guid, IsARelationship);
             } else {
-                updatedISARelationship = handler.updateIsaRelationship(userId, guid, ISARelationship);
+                updatedIsARelationship = handler.updateIsaRelationship(userId, guid, IsARelationship);
             }
-            response.addResult(updatedISARelationship);
+            response.addResult(updatedIsARelationship);
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
         }
@@ -2051,7 +2049,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       guid of the ISA Relationship to delete
+     * @param guid       guid of the IsA Relationship to delete
      * @param isPurge    true indicates a hard delete, false is a soft delete.
      * @return response which when successful contains the term has a relationship with the requested guid
      * when not successful the following Exception responses can occur
@@ -2061,12 +2059,12 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<Isa> deleteISARelationship(String serverName, String userId, String guid, Boolean isPurge)
+    public SubjectAreaOMASAPIResponse<IsA> deleteIsARelationship(String serverName, String userId, String guid, Boolean isPurge)
     {
-        String restAPIName = "deleteISARelationship";
+        String restAPIName = "deleteIsARelationship";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse<Isa> response = new SubjectAreaOMASAPIResponse<>();
+        SubjectAreaOMASAPIResponse<IsA> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -2100,19 +2098,19 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<Isa> restoreISARelationship(String serverName, String userId, String guid)
+    public SubjectAreaOMASAPIResponse<IsA> restoreIsARelationship(String serverName, String userId, String guid)
     {
-        String restAPIName = "restoreISARelationship";
+        String restAPIName = "restoreIsARelationship";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse<Isa> response = new SubjectAreaOMASAPIResponse<>();
+        SubjectAreaOMASAPIResponse<IsA> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
-            Isa restoredISARelationship = handler.restoreIsaRelationship(userId, guid);
-            response.addResult(restoredISARelationship);
+            IsA restoredIsARelationship = handler.restoreIsaRelationship(userId, guid);
+            response.addResult(restoredIsARelationship);
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
         }
@@ -2121,13 +2119,13 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
     }
 
     /**
-     * Create a termISATypeOFRelationship relationship, which is an inheritance relationship between two spine objects.
+     * Create a termIsATypeOfRelationship relationship, which is an inheritance relationship between two spine objects.
      * <p>
      *
      * @param serverName           serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId               userId under which the request is performed
-     * @param termISATypeOFRelationship          the termISATypeOFRelationship relationship
-     * @return response, when successful contains the created termISATypeOFRelationship
+     * @param termIsATypeOfRelationship          the termIsATypeOfRelationship relationship
+     * @return response, when successful contains the created termIsATypeOfRelationship
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -2135,19 +2133,19 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<IsaTypeOf> createTermISATypeOFRelationship(String serverName, String userId, IsaTypeOf termISATypeOFRelationship)
+    public SubjectAreaOMASAPIResponse<IsATypeOf> createTermIsATypeOfRelationship(String serverName, String userId, IsATypeOf termIsATypeOfRelationship)
     {
-        String restAPIName = "createTermISATypeOFRelationship";
+        String restAPIName = "createTermIsATypeOfRelationship";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse<IsaTypeOf> response = new SubjectAreaOMASAPIResponse<>();
+        SubjectAreaOMASAPIResponse<IsATypeOf> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
-            IsaTypeOf createdTermISATypeOFRelationship = handler.createTermISATypeOFRelationship(userId, termISATypeOFRelationship);
-            response.addResult(createdTermISATypeOFRelationship);
+            IsATypeOf createdTermIsATypeOfRelationship = handler.createTermIsATypeOfRelationship(userId, termIsATypeOfRelationship);
+            response.addResult(createdTermIsATypeOfRelationship);
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
         }
@@ -2158,7 +2156,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
 
 
     /**
-     * Get a termISATypeOFRelationship relationship, which is an inheritance relationship between two spine objects.
+     * Get a termIsATypeOfRelationship relationship, which is an inheritance relationship between two spine objects.
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
@@ -2172,20 +2170,20 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * </ul>
      */
 
-    public SubjectAreaOMASAPIResponse<IsaTypeOf> getTermISATypeOFRelationship(String serverName, String userId, String guid)
+    public SubjectAreaOMASAPIResponse<IsATypeOf> getTermIsATypeOfRelationship(String serverName, String userId, String guid)
     {
 
-        String restAPIName = "getTermISATypeOFRelationship";
+        String restAPIName = "getTermIsATypeOfRelationship";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse<IsaTypeOf> response = new SubjectAreaOMASAPIResponse<>();
+        SubjectAreaOMASAPIResponse<IsATypeOf> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
-            IsaTypeOf updatedTermISATypeOFRelationship = handler.getTermISATypeOFRelationship(userId, guid);
-            response.addResult(updatedTermISATypeOFRelationship);
+            IsATypeOf updatedTermIsATypeOfRelationship = handler.getTermIsATypeOfRelationship(userId, guid);
+            response.addResult(updatedTermIsATypeOfRelationship);
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
         }
@@ -2194,15 +2192,15 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
     }
 
     /**
-     * Update a termISATypeOFRelationship relationship, which is an inheritance relationship between two spine objects.
+     * Update a termIsATypeOfRelationship relationship, which is an inheritance relationship between two spine objects.
      * <p>
      *
      * @param serverName           serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId               userId under which the request is performed
      * @param guid       guid of the IsaTypeOf relationship
-     * @param termISATypeOFRelationship the termISATypeOFRelationship relationship
+     * @param termIsATypeOfRelationship the termIsATypeOfRelationship relationship
      * @param isReplace            flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
-     * @return response, when successful contains the updated termISATypeOFRelationship
+     * @return response, when successful contains the updated termIsATypeOfRelationship
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -2210,25 +2208,25 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<IsaTypeOf> updateTermISATypeOFRelationship(String serverName, String userId, String guid, IsaTypeOf termISATypeOFRelationship, boolean isReplace)
+    public SubjectAreaOMASAPIResponse<IsATypeOf> updateTermIsATypeOfRelationship(String serverName, String userId, String guid, IsATypeOf termIsATypeOfRelationship, boolean isReplace)
     {
-        String restAPIName = "updateTermISATypeOFRelationship";
+        String restAPIName = "updateTermIsATypeOfRelationship";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse<IsaTypeOf> response = new SubjectAreaOMASAPIResponse<>();
+        SubjectAreaOMASAPIResponse<IsATypeOf> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
-            IsaTypeOf updatedTermISATypeOFRelationship;
+            IsATypeOf updatedTermIsATypeOfRelationship;
             if (isReplace) {
-                updatedTermISATypeOFRelationship = handler.replaceTermISATypeOFRelationship(userId, guid, termISATypeOFRelationship);
+                updatedTermIsATypeOfRelationship = handler.replaceTermIsATypeOfRelationship(userId, guid, termIsATypeOfRelationship);
             } else {
-                updatedTermISATypeOFRelationship = handler.updateTermISATypeOFRelationship(userId, guid, termISATypeOFRelationship);
+                updatedTermIsATypeOfRelationship = handler.updateTermIsATypeOfRelationship(userId, guid, termIsATypeOfRelationship);
             }
 
-            response.addResult(updatedTermISATypeOFRelationship);
+            response.addResult(updatedTermIsATypeOfRelationship);
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
         }
@@ -2237,7 +2235,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
     }
 
     /**
-     * Delete a termISATypeOFRelationship relationship, which is an inheritance relationship between two spine objects.
+     * Delete a termIsATypeOfRelationship relationship, which is an inheritance relationship between two spine objects.
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
@@ -2251,12 +2249,12 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<IsaTypeOf> deleteTermISATypeOFRelationship(String serverName, String userId, String guid, Boolean isPurge)
+    public SubjectAreaOMASAPIResponse<IsATypeOf> deleteTermIsATypeOfRelationship(String serverName, String userId, String guid, Boolean isPurge)
     {
-        String restAPIName = "deleteTermISATypeOFRelationship";
+        String restAPIName = "deleteTermIsATypeOfRelationship";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse<IsaTypeOf> response = new SubjectAreaOMASAPIResponse<>();
+        SubjectAreaOMASAPIResponse<IsATypeOf> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
@@ -2264,9 +2262,9 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
             if (isPurge) {
-                handler.purgeTermISATypeOFRelationship(userId, guid);
+                handler.purgeTermIsATypeOfRelationship(userId, guid);
             } else {
-                handler.deleteTermISATypeOFRelationship(userId, guid);
+                handler.deleteTermIsATypeOfRelationship(userId, guid);
             }
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
@@ -2276,7 +2274,7 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
     }
 
     /**
-     * Restore a termISATypeOFRelationship relationship, which is an inheritance relationship between two spine objects.
+     * Restore a termIsATypeOfRelationship relationship, which is an inheritance relationship between two spine objects.
      *
      * Restore allows the deleted relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
@@ -2290,19 +2288,19 @@ public class GlossaryAuthorViewRelationshipRESTServices extends BaseGlossaryAuth
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<IsaTypeOf> restoreTermISATypeOFRelationship(String serverName, String userId, String guid)
+    public SubjectAreaOMASAPIResponse<IsATypeOf> restoreTermIsATypeOfRelationship(String serverName, String userId, String guid)
     {
-        String restAPIName = "restoreTermISATypeOFRelationship";
+        String restAPIName = "restoreTermIsATypeOfRelationship";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, restAPIName);
-        SubjectAreaOMASAPIResponse<IsaTypeOf> response = new SubjectAreaOMASAPIResponse<>();
+        SubjectAreaOMASAPIResponse<IsATypeOf> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied relationship - the calling layer should not allow this.
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, restAPIName);
             RelationshipHandler handler = instanceHandler.getRelationshipHandler(serverName, userId, restAPIName);
-            IsaTypeOf restoredTermISATypeOFRelationship = handler.restoreIsaTypeOfRelationship(userId, guid);
-            response.addResult(restoredTermISATypeOFRelationship);
+            IsATypeOf restoredTermIsATypeOfRelationship = handler.restoreIsaTypeOfRelationship(userId, guid);
+            response.addResult(restoredTermIsATypeOfRelationship);
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, restAPIName);
         }

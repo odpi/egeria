@@ -3,15 +3,18 @@
 // This is a generated file - do not edit - changes should be made to the templates amd/or generator to generate this file with changes.
 
 package org.odpi.openmetadata.accessservices.subjectarea.properties.relationships;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.util.*;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
+
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.*;
 
 //omrs
@@ -21,17 +24,18 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineType;
 
 /**
- * Defines the relationship between a spine object and a spine attribute.
+ * Link between a more general glossary term and a more specific definition.
  */
-@JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
+@JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonIgnoreProperties(ignoreUnknown=true)
-public class Hasa extends Line {
-    private static final Logger log = LoggerFactory.getLogger(Hasa.class);
-    private static final String className = Hasa.class.getName();
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class IsA extends Line {
+    private static final Logger log = LoggerFactory.getLogger(IsA.class);
+    private static final String className = IsA.class.getName();
 
-    private static final String[] PROPERTY_NAMES_SET_VALUES = new String[] {
+    private static final String[] PROPERTY_NAMES_SET_VALUES = new String[]{
             "description",
+            "expression",
             "status",
             "steward",
             "source",
@@ -39,21 +43,22 @@ public class Hasa extends Line {
             // Terminate the list
             null
     };
-    private static final String[] ATTRIBUTE_NAMES_SET_VALUES = new String[] {
+    private static final String[] ATTRIBUTE_NAMES_SET_VALUES = new String[]{
             "description",
+            "expression",
             "steward",
             "source",
 
             // Terminate the list
             null
     };
-    private static final String[] ENUM_NAMES_SET_VALUES = new String[] {
+    private static final String[] ENUM_NAMES_SET_VALUES = new String[]{
             "status",
 
             // Terminate the list
             null
     };
-    private static final String[] MAP_NAMES_SET_VALUES = new String[] {
+    private static final String[] MAP_NAMES_SET_VALUES = new String[]{
 
             // Terminate the list
             null
@@ -62,72 +67,69 @@ public class Hasa extends Line {
     private static final java.util.Set<String> ATTRIBUTE_NAMES_SET = new HashSet<>(Arrays.asList(ATTRIBUTE_NAMES_SET_VALUES));
     private static final java.util.Set<String> ENUM_NAMES_SET = new HashSet<>(Arrays.asList(ENUM_NAMES_SET_VALUES));
     private static final java.util.Set<String> MAP_NAMES_SET = new HashSet<>(Arrays.asList(MAP_NAMES_SET_VALUES));
-    private String owningTermGuid;
-    private String ownedTermGuid;
+    private String specialisedTermGuid;
+    private String termGuid;
 
 
-    public Hasa() {
+    public IsA() {
         initialise();
     }
 
-    private void initialise()
-    {
-        name = "Hasa";
+    private void initialise() {
+        name = "Isa";
         // set the LineType if this is a LineType enum value.
         try {
             lineType = LineType.valueOf(name);
-        }
-        catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             lineType = LineType.Unknown;
         }
-        entity1Name = "objects";
+        entity1Name = "classifies";
         entity1Type = "GlossaryTerm";
-        entity2Name = "attributes";
+        entity2Name = "isA";
         entity2Type = "GlossaryTerm";
-        typeDefGuid = "d67f16d1-5348-419e-ba38-b0bb6fe4ad6c";
+        typeDefGuid = "50fab7c7-68bc-452f-b8eb-ec76829cac85";
     }
 
-    public Hasa(Line template) {
+    public IsA(Line template) {
         super(template);
         initialise();
     }
 
-    public Hasa(Relationship omrsRelationship) {
+    public IsA(Relationship omrsRelationship) {
         super(omrsRelationship);
-        name = "Hasa";
+        name = "Isa";
         // set the LineType if this is a LineType enum value.
         try {
             lineType = LineType.valueOf(name);
-        }
-        catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             lineType = LineType.Unknown;
         }
     }
+
     /**
-     * {@literal Get the guid of owning spine object. }
+     * {@literal Get the guid of the more specialised Term. }
+     *
      * @return {@code String }
      */
-    public String getOwningTermGuid()
-    {
-        return owningTermGuid;
+    public String getSpecialisedTermGuid() {
+        return specialisedTermGuid;
     }
 
-    public void setOwningTermGuid(String owningTermGuid)
-    {
-        this.owningTermGuid = owningTermGuid;
+    public void setSpecialisedTermGuid(String specialisedTermGuid) {
+        this.specialisedTermGuid = specialisedTermGuid;
     }
+
     /**
-     * {@literal Get the guid of owned spine attribute. }
+     * {@literal Get the guid of the more general Term. }
+     *
      * @return {@code String }
      */
-    public String getOwnedTermGuid()
-    {
-        return ownedTermGuid;
+    public String getTermGuid() {
+        return termGuid;
     }
 
-    public void setOwnedTermGuid(String ownedTermGuid)
-    {
-        this.ownedTermGuid = ownedTermGuid;
+    public void setTermGuid(String termGuid) {
+        this.termGuid = termGuid;
     }
 
     InstanceProperties obtainInstanceProperties() {
@@ -136,30 +138,34 @@ public class Hasa extends Line {
             log.debug("==> Method: " + methodName);
         }
         InstanceProperties instanceProperties = new InstanceProperties();
-        EnumPropertyValue enumPropertyValue=null;
+        EnumPropertyValue enumPropertyValue = null;
         enumPropertyValue = new EnumPropertyValue();
         // the status of or confidence in the relationship.
         enumPropertyValue.setOrdinal(status.ordinal());
         enumPropertyValue.setSymbolicName(status.name());
-        instanceProperties.setProperty("status",enumPropertyValue);
-        MapPropertyValue mapPropertyValue=null;
-        PrimitivePropertyValue primitivePropertyValue=null;
+        instanceProperties.setProperty("status", enumPropertyValue);
+        MapPropertyValue mapPropertyValue = null;
+        PrimitivePropertyValue primitivePropertyValue = null;
         primitivePropertyValue = new PrimitivePropertyValue();
-        
+
         primitivePropertyValue.setPrimitiveValue(null);
-        instanceProperties.setProperty("description",primitivePropertyValue);
+        instanceProperties.setProperty("description", primitivePropertyValue);
         primitivePropertyValue = new PrimitivePropertyValue();
-        
+
         primitivePropertyValue.setPrimitiveValue(null);
-        instanceProperties.setProperty("status",primitivePropertyValue);
+        instanceProperties.setProperty("expression", primitivePropertyValue);
         primitivePropertyValue = new PrimitivePropertyValue();
-        
+
         primitivePropertyValue.setPrimitiveValue(null);
-        instanceProperties.setProperty("steward",primitivePropertyValue);
+        instanceProperties.setProperty("status", primitivePropertyValue);
         primitivePropertyValue = new PrimitivePropertyValue();
-        
+
         primitivePropertyValue.setPrimitiveValue(null);
-        instanceProperties.setProperty("source",primitivePropertyValue);
+        instanceProperties.setProperty("steward", primitivePropertyValue);
+        primitivePropertyValue = new PrimitivePropertyValue();
+
+        primitivePropertyValue.setPrimitiveValue(null);
+        instanceProperties.setProperty("source", primitivePropertyValue);
         if (log.isDebugEnabled()) {
             log.debug("<== Method: " + methodName);
         }
@@ -167,47 +173,77 @@ public class Hasa extends Line {
     }
 
     private String description;
+
     /**
      * {@literal Description of the relationship. }
+     *
      * @return {@code String }
      */
     public String getDescription() {
         return this.description;
     }
-    public void setDescription(String description)  {
+
+    public void setDescription(String description) {
         this.description = description;
     }
+
+    private String expression;
+
+    /**
+     * {@literal An expression that explains the relationship. }
+     *
+     * @return {@code String }
+     */
+    public String getExpression() {
+        return this.expression;
+    }
+
+    public void setExpression(String expression) {
+        this.expression = expression;
+    }
+
     private TermRelationshipStatus status;
+
     /**
      * {@literal The status of or confidence in the relationship. }
+     *
      * @return {@code TermRelationshipStatus }
      */
     public TermRelationshipStatus getStatus() {
         return this.status;
     }
-    public void setStatus(TermRelationshipStatus status)  {
+
+    public void setStatus(TermRelationshipStatus status) {
         this.status = status;
     }
+
     private String steward;
+
     /**
      * {@literal Person responsible for the relationship. }
+     *
      * @return {@code String }
      */
     public String getSteward() {
         return this.steward;
     }
-    public void setSteward(String steward)  {
+
+    public void setSteward(String steward) {
         this.steward = steward;
     }
+
     private String source;
+
     /**
      * {@literal Person, organization or automated process that created the relationship. }
+     *
      * @return {@code String }
      */
     public String getSource() {
         return this.source;
     }
-    public void setSource(String source)  {
+
+    public void setSource(String source) {
         this.source = source;
     }
 
@@ -216,19 +252,20 @@ public class Hasa extends Line {
         if (sb == null) {
             sb = new StringBuilder();
         }
-
-        sb.append(" Hasa=");
+        sb.append(" IsA=");
         sb.append(super.toString(sb));
-        sb.append(" Hasa Attributes{");
+        sb.append(" IsA Attributes{");
         sb.append("description=").append(this.description).append(",");
+        sb.append("expression=").append(this.expression).append(",");
         sb.append("steward=").append(this.steward).append(",");
         sb.append("source=").append(this.source).append(",");
-        if ( status!=null) {
+        if (status != null) {
             sb.append("status=").append(status.name());
         }
         sb.append("}");
         return sb;
     }
+
     @Override
     public String toString() {
         return toString(new StringBuilder()).toString();
