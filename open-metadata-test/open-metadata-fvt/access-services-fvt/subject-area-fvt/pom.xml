@@ -25,28 +25,36 @@
         FVT resources for the Subject Area Open Metadata Access Service (OMAS).
     </description>
 
+    <!-- TODO: Properties used for FVT tests. Note tests currently hardcoded, whilst exec plugin is not. Needs consolidation -->
     <properties>
         <fvt.serverport>10443</fvt.serverport>
         <fvt.servername>fvtserver</fvt.servername>
         <fvt.user>garygeeke</fvt.user>
         <fvt.maxwait>10</fvt.maxwait>
+        <!-- TODO: use of an out-of-module relative path isn't ideal, consider better approach -->
         <fvt.platform-wd>../../../../open-metadata-distribution/open-metadata-assemblies/target/egeria-${open-metadata.version}-distribution/egeria-omag-${open-metadata.version}</fvt.platform-wd>
     </properties>
 
     <dependencies>
+
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>subject-area-api</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>subject-area-client</artifactId>
         </dependency>
+
+        <!-- Integration Tests will depend on the assembly -->
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>open-metadata-assemblies</artifactId>
+            <scope>test</scope>
         </dependency>
 
+        <!-- FVT test wrapper uses JUnit5 -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
@@ -55,10 +63,8 @@
 
     </dependencies>
     <build>
-        <!--testSourceDirectory>${project.basedir}/src/main/java</testSourceDirectory-->
         <plugins>
-            <!-- Integration testing -->
-            <!-- start and stop of the server -->
+            <!-- start and stop of the server before/after integration tests. Plugin is good at shutting down process -->
             <plugin>
                 <groupId>com.bazaarvoice.maven.plugins</groupId>
                 <artifactId>process-exec-maven-plugin</artifactId>
@@ -74,7 +80,7 @@
                             <!-- Hard coded path to locate executable . Note here we are in 'target' so it's one level further up than the clean plugin uses -->
                             <workingDir>../${fvt.platform-wd}</workingDir>
                             <waitForInterrupt>false</waitForInterrupt>
-                            <!-- check doesn't support SSL, so we won't wait long-->
+                            <!-- check doesn't support SSL, so we can't use this yet. Maybe when PR addressed -->
                             <!-- healthcheckUrl>https://localhost:${fvt.serverport}/open-metadata/platform-services/users/${fvt.user}/server-platform/origin</healthcheckUrl-->
                             <waitAfterLaunch>${fvt.maxwait}</waitAfterLaunch>
                             <processLogFile>${project.build.testOutputDirectory}/egeria.log</processLogFile>
@@ -98,7 +104,7 @@
                 </executions>
             </plugin>
 
-            <!-- Groovy is used to configure the server before the test -->
+            <!-- Groovy (Java-like) is used to configure the server before the test -->
             <plugin>
                 <groupId>org.codehaus.gmaven</groupId>
                 <artifactId>groovy-maven-plugin</artifactId>
@@ -129,15 +135,10 @@
                         <version>${groovy.version}</version>
                         <classifier>indy</classifier>
                     </dependency>
-                    <!--dependency>
-                        <groupId>org.testng</groupId>
-                        <artifactId>testng</artifactId>
-                        <version>${testng.version}</version>
-                    </dependency-->
                 </dependencies>
             </plugin>
 
-            <!-- failsafe is enabled in the integration test module, but we use non standard paths and filenames, so override for Subject Area -->
+            <!-- failsafe is the main integration test driver. Use 'mvn clean verify' or 'mvn clean install' -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
@@ -158,6 +159,7 @@
                     </execution>
                 </executions>
                 <configuration>
+                    <!-- Catch the case where we haven't run tests - may point to a coding or environment issue -->
                     <failIfNoTests>true</failIfNoTests>
                 </configuration>
             </plugin>
