@@ -4,7 +4,8 @@
   "description": "Egeria UI application",
   "author": "Egeria contributors",
   "license": "Apache-2.0",
-  "repository": "odpi/egrias",
+  "repository": "odpi/egria",
+  "vaadin": { "disableUsageStatistics": true },
   "scripts": {
     "start": "polymer serve",
     "build": "polymer build",
