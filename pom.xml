@@ -270,6 +270,14 @@
             </dependency>
 
             <dependency>
+                 <groupId>com.fasterxml.jackson.datatype</groupId>
+                 <artifactId>jackson-datatype-jsr310</artifactId>
+                 <scope>compile</scope>
+                 <version>${jackson.version}</version>
+             </dependency>
+
+
+            <dependency>
                 <groupId>com.h2database</groupId>
                 <artifactId>h2</artifactId>
                 <scope>compile</scope>
