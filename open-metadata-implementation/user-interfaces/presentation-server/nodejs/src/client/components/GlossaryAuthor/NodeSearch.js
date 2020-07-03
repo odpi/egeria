@@ -74,7 +74,8 @@ const NodeSearch = (props) => {
       // if page = 2 and pageSize 10, currentPageStart = 11
       // if page = 2 and pageSize 10 and results.length = 15, currentPageStart = 11 , currentPageSize = 5
 
-      const currentPageStart = (paginationOptions.page - 1) * paginationOptions.pageSize;
+      const currentPageStart =
+        (paginationOptions.page - 1) * paginationOptions.pageSize;
       let currentPageSize = pageSize;
       // if the last page is not complete ensure that we only specify up the end of the what is actually there in the results.
       if (currentPageStart + currentPageSize - 1 > results.length) {
@@ -170,44 +171,62 @@ const NodeSearch = (props) => {
       })
         .then((res) => res.json())
         .then((res) => {
-          const nodesArray = res[glossaryAuthorContext.currentNodeType.plural];
-          // if there is a node response then we have successfully created a node
-          if (nodesArray) {
-            if (nodesArray.length > 0) {
-              let nodeRows = nodesArray.map(function (node, index) {
-                let row = {};
-                row.id = index;
-                // row.name = node.name;
-                // console.log(" name is " + row.name);
-                // row.description = node.description;
-                // row.qualifiedName = node.qualifiedName;
-                for (const property in node) {
-                  console.log("result property is ", property);
-                  if (property == "glossary") {
-                    const glossary = node[property];
-                    row.glossaryName = glossary.name;
-                    row.glossaryGuid = glossary.guid;
-                  } else if (property == "systemAttributes") {
-                    row.guid = node[property].guid;
-                  } else {
-                    row[property] = node[property];
+          if (res.relatedHTTPCode == 200 && res.result) {
+            const nodesArray = res.result;
+            // if there is a node response then we have successfully created a node
+            if (nodesArray) {
+              if (nodesArray.length > 0) {
+                let nodeRows = nodesArray.map(function (node, index) {
+                  let row = {};
+                  row.id = index;
+                  // row.name = node.name;
+                  // console.log(" name is " + row.name);
+                  // row.description = node.description;
+                  // row.qualifiedName = node.qualifiedName;
+                  for (const property in node) {
+                    console.log("result property is ", property);
+                    if (property == "glossary") {
+                      const glossary = node[property];
+                      row.glossaryName = glossary.name;
+                      row.glossaryGuid = glossary.guid;
+                    } else if (property == "systemAttributes") {
+                      row.guid = node[property].guid;
+                    } else {
+                      row[property] = node[property];
+                    }
                   }
-                }
-                return row;
-              });
-              setResults(nodeRows);
-              setCurrentPage(nodeRows.slice(0, pageSize));
-              setTotal(nodeRows.length);
+                  return row;
+                });
+                setResults(nodeRows);
+                setCurrentPage(nodeRows.slice(0, pageSize));
+                setTotal(nodeRows.length);
+              } else {
+                // no results
+                setResults([]);
+              }
+            } else if (res.relatedHTTPCode) {
+              if (res.exceptionUserAction) {
+                msg = "Search Failed: " + res.exceptionUserAction;
+              } else {
+                msg =
+                  "search Failed unexpected Egeria response: " +
+                  JSON.stringify(res);
+              }
+            } else if (res.errno) {
+              if (res.errno == "ECONNREFUSED") {
+                msg = "Connection refused to the view server.";
+              } else {
+                // TODO create nice messages for all the http codes we think are relevant
+                msg = "Search Failed with http errno " + res.errno;
+              }
             } else {
-              // no results
-              setResults([]);
+              msg = "Search Failed - unexpected response" + JSON.stringify(res);
             }
-          } else {
-            setErrorMsg("Create Failed with code " + res.errno);
+            setErrorMsg(msg);
           }
         })
         .catch((res) => {
-          setErrorMsg("Create Failed");
+          setErrorMsg("Search Failed" + JSON.stringify(res));
         });
     }
   };
@@ -300,13 +319,13 @@ const NodeSearch = (props) => {
                 <TableBatchAction
                   primaryFocus
                   onClick={handleDelete(selectedRows)}
-
                 >
                   Delete
                 </TableBatchAction>
                 <TableBatchAction
                  onClick={handleEdit(selectedRows)}
                  >
+
                   Edit
                 </TableBatchAction>
               </TableBatchActions>
