@@ -369,7 +369,7 @@
                             <goal>npm</goal>
                         </goals>
                         <configuration>
-                            <arguments>install ../src/main/static --silent --prefix .</arguments>
+                            <arguments>install ../src/main/static --prefix .</arguments>
                             <workingDirectory>tools</workingDirectory>
                         </configuration>
                     </execution>
