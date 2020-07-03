@@ -83,7 +83,7 @@ public class AssetLineageRestServices {
     }
 
     private void publishEntitiesContext(String typeName, List<EntityDetail> entitiesByType, AssetLineagePublisher publisher) {
-        entitiesByType.parallelStream().forEach(entityDetail -> {
+        entitiesByType.forEach(entityDetail -> {
             try {
                 if (GLOSSARY_TERM.equals(typeName)) {
                     publisher.publishGlossaryContext(entityDetail);
