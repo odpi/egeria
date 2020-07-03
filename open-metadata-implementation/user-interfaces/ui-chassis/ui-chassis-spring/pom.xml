@@ -358,7 +358,7 @@
                             <goal>npm</goal>
                         </goals>
                         <configuration>
-                            <arguments>install polymer-cli --prefix .</arguments>
+                            <arguments>install polymer-cli --silent --prefix .</arguments>
                             <workingDirectory>tools</workingDirectory>
                         </configuration>
                     </execution>
