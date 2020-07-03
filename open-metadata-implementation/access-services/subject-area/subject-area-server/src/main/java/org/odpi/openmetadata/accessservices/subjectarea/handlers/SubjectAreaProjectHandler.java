@@ -1,30 +1,25 @@
-/* SPDX-License-Identifier: Apache-2.0 */
+    /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.handlers;
 
 
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.EntityNotDeletedException;
-import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
-import org.odpi.openmetadata.accessservices.subjectarea.internalresponse.EntityDetailResponse;
-import org.odpi.openmetadata.accessservices.subjectarea.internalresponse.EntityDetailsResponse;
-import org.odpi.openmetadata.accessservices.subjectarea.internalresponse.RelationshipsResponse;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Graph;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineType;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Node;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.NodeType;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.project.GlossaryProject;
+import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectAreaCheckedException;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.*;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.project.Project;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.*;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.entities.ProjectMapper;
+import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.entities.TermMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
 import org.odpi.openmetadata.accessservices.subjectarea.validators.InputValidator;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,7 +30,7 @@ import java.util.*;
  * SubjectAreaProjectHandler manages Project objects from the property server.  It runs server-side in the subject Area
  * OMAS and retrieves entities and relationships through the OMRSRepositoryConnector.
  */
-public class SubjectAreaProjectHandler extends SubjectAreaHandler{
+public class SubjectAreaProjectHandler extends SubjectAreaHandler {
     private static final Class<?> clazz = SubjectAreaProjectHandler.class;
     private static final String className = clazz.getName();
     private static final Logger log = LoggerFactory.getLogger(clazz);
@@ -48,33 +43,6 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler{
      */
     public SubjectAreaProjectHandler(OMRSAPIHelper oMRSAPIHelper) {
         super(oMRSAPIHelper);
-    }
-
-    /**
-     * Take an entityDetail response and map it to the appropriate Project orientated response
-     *
-     * @param response entityDetailResponse
-     * @return Project response containing the appropriate Project object.
-     */
-    @Override
-    protected SubjectAreaOMASAPIResponse getResponse(SubjectAreaOMASAPIResponse response) {
-        EntityDetailResponse entityDetailResponse = (EntityDetailResponse) response;
-        EntityDetail entityDetail = entityDetailResponse.getEntityDetail();
-        ProjectMapper projectMapper = new ProjectMapper(oMRSAPIHelper);
-
-        try {
-            Project project = projectMapper.mapEntityDetailToNode(entityDetail);
-            if (project.getNodeType() == NodeType.GlossaryProject) {
-                GlossaryProject glossaryProject = (GlossaryProject) project;
-                response = new ProjectResponse(glossaryProject);
-            } else {
-                response = new ProjectResponse(project);
-            }
-        } catch (InvalidParameterException e) {
-            response = OMASExceptionToResponse.convertInvalidParameterException(e);
-        }
-
-        return response;
     }
 
     /**
@@ -106,9 +74,9 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler{
      * <li>StatusNotSupportedException          A status value is not supported.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse createProject(String userId, Project suppliedProject) {
+    public SubjectAreaOMASAPIResponse<Project> createProject(String userId, Project suppliedProject) {
         final String methodName = "createProject";
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Project> response = new SubjectAreaOMASAPIResponse<>();
 
         try {
             InputValidator.validateNodeType(className, methodName, suppliedProject.getNodeType(), NodeType.Project, NodeType.GlossaryProject);
@@ -116,24 +84,15 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler{
             // need to check we have a name
             if (suppliedProjectName == null || suppliedProjectName.equals("")) {
                 ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.GLOSSARY_PROJECT_CREATE_WITHOUT_NAME.getMessageDefinition();
-                throw new InvalidParameterException(messageDefinition,
-                                                    className,
-                                                    methodName,
-                                                    "Name",
-                                                    null);
-
+                throw new InvalidParameterException(messageDefinition, className, methodName, "Name", null);
             } else {
-                ProjectMapper projectMapper = new ProjectMapper(oMRSAPIHelper);
-                EntityDetail projectEntityDetail = projectMapper.mapNodeToEntityDetail(suppliedProject);
-                response = oMRSAPIHelper.callOMRSAddEntity(methodName, userId, projectEntityDetail);
-                if (response.getResponseCategory().equals(ResponseCategory.OmrsEntityDetail)) {
-                    EntityDetailResponse entityDetailResponse = (EntityDetailResponse) response;
-                    EntityDetail entityDetail = entityDetailResponse.getEntityDetail();
-                    response = getProjectByGuid(userId, entityDetail.getGUID());
-                }
+                ProjectMapper projectMapper = mappersFactory.get(ProjectMapper.class);
+                EntityDetail projectEntityDetail = projectMapper.map(suppliedProject);
+                String entityDetailGuid = oMRSAPIHelper.callOMRSAddEntity(methodName, userId, projectEntityDetail);
+                response = getProjectByGuid(userId, entityDetailGuid);
             }
-        } catch (InvalidParameterException e) {
-            response = OMASExceptionToResponse.convertInvalidParameterException(e);
+        } catch (InvalidParameterException | SubjectAreaCheckedException | PropertyServerException | UserNotAuthorizedException e) {
+            response.setExceptionInfo(e, className);
         }
         return response;
     }
@@ -152,18 +111,19 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler{
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse getProjectByGuid(String userId, String guid) {
+    public SubjectAreaOMASAPIResponse<Project> getProjectByGuid(String userId, String guid) {
         final String methodName = "getProjectByGuid";
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Project> response = new SubjectAreaOMASAPIResponse<>();
 
         try {
-            InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
-            response = oMRSAPIHelper.callOMRSGetEntityByGuid(methodName, userId, guid);
-            if (response.getResponseCategory().equals(ResponseCategory.OmrsEntityDetail)) {
-                response = getResponse(response);
+            Optional<EntityDetail> entityDetail = oMRSAPIHelper.callOMRSGetEntityByGuid(userId, guid, PROJECT_TYPE_NAME, methodName);
+            if (entityDetail.isPresent()) {
+                ProjectMapper projectMapper = mappersFactory.get(ProjectMapper.class);
+                Project project = projectMapper.map(entityDetail.get());
+                response.addResult(project);
             }
-        } catch (InvalidParameterException e) {
-            response = OMASExceptionToResponse.convertInvalidParameterException(e);
+        } catch (SubjectAreaCheckedException | PropertyServerException | UserNotAuthorizedException | InvalidParameterException e) {
+            response.setExceptionInfo(e, className);
         }
         return response;
     }
@@ -172,14 +132,7 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler{
      * Find Project
      *
      * @param userId             unique identifier for requesting user, under which the request is performed
-     * @param searchCriteria     String expression matching Project property values. If not specified then all projects are returned.
-     * @param asOfTime           the projects returned as they were at this time. null indicates at the current time.
-     * @param offset             the starting element number for this set of results.  This is used when retrieving elements
-     *                           beyond the first page of results. Zero means the results start from the first element.
-     * @param pageSize           the maximum number of elements that can be returned on this request.
-     *                           0 means there is no limit to the page size
-     * @param sequencingOrder    the sequencing order for the results.
-     * @param sequencingProperty the name of the property that should be used to sequence the results.
+     * @param findRequest        {@link FindRequest}
      * @return A list of Projects meeting the search Criteria
      *
      * <ul>
@@ -189,48 +142,20 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler{
      * <li> FunctionNotSupportedException        Function not supported this indicates that a find was issued but the repository does not implement find functionality in some way.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse findProject(String userId,
-                                                  String searchCriteria,
-                                                  Date asOfTime,
-                                                  Integer offset,
-                                                  Integer pageSize,
-                                                  org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder,
-                                                  String sequencingProperty) {
+    public SubjectAreaOMASAPIResponse<Project> findProject(String userId, FindRequest findRequest) {
 
         final String methodName = "findProject";
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Project> response = new SubjectAreaOMASAPIResponse<>();
 
-        /*
-         * If no search criteria is supplied then we return all projects, this should not be too many.
-         */
-        if (searchCriteria == null) {
-            response = this.oMRSAPIHelper.getEntitiesByType(methodName, userId, "Project", asOfTime, offset, pageSize, sequencingProperty, sequencingOrder);
-        } else {
-            response = this.oMRSAPIHelper.findEntitiesByPropertyValue(methodName, userId, "Project", searchCriteria, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
-        }
-        if (response.getResponseCategory().equals(ResponseCategory.OmrsEntityDetails)) {
-            EntityDetailsResponse entityDetailsResponse = (EntityDetailsResponse) response;
-            List<EntityDetail> entityDetails = entityDetailsResponse.getEntityDetails();
-
-            List<Project> projects = new ArrayList<>();
-            if (entityDetails == null) {
-                response = new ProjectsResponse(projects);
+        try {
+            List<Project> foundGlossaries = findEntities(userId, PROJECT_TYPE_NAME, findRequest, ProjectMapper.class, methodName);
+            if (foundGlossaries != null) {
+                response.addAllResults(foundGlossaries);
             } else {
-                for (EntityDetail entityDetail : entityDetails) {
-                    // call the getProject so that the ProjectSummary and other parts are populated.
-                    response = getProjectByGuid(userId, entityDetail.getGUID());
-                    if (response.getResponseCategory() == ResponseCategory.Project) {
-                        ProjectResponse projectResponse = (ProjectResponse) response;
-                        Project project = projectResponse.getProject();
-                        projects.add(project);
-                    } else {
-                        break;
-                    }
-                }
-                if (response.getResponseCategory() == ResponseCategory.Project) {
-                    response = new ProjectsResponse(projects);
-                }
+                return response;
             }
+        } catch (SubjectAreaCheckedException | PropertyServerException | UserNotAuthorizedException e) {
+            response.setExceptionInfo(e, className);
         }
         return response;
     }
@@ -240,13 +165,7 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler{
      *
      * @param userId             unique identifier for requesting user, under which the request is performed
      * @param guid               guid of the project to get
-     * @param asOfTime           the relationships returned as they were at this time. null indicates at the current time. If specified, the date is in milliseconds since 1970-01-01 00:00:00.
-     * @param offset             the starting element number for this set of results.  This is used when retrieving elements
-     *                           beyond the first page of results. Zero means the results start from the first element.
-     * @param pageSize           the maximum number of elements that can be returned on this request.
-     *                           0 means there is not limit to the page size
-     * @param sequencingOrder    the sequencing order for the results.
-     * @param sequencingProperty the name of the property that should be used to sequence the results.
+     * @param findRequest        {@link FindRequest}
      * @return the relationships associated with the requested Project userId
      * <p>
      * when not successful the following Exception responses can occur
@@ -257,15 +176,9 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler{
      * </ul>
      */
 
-    public SubjectAreaOMASAPIResponse getProjectRelationships(String userId, String guid,
-                                                              Date asOfTime,
-                                                              Integer offset,
-                                                              Integer pageSize,
-                                                              org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder,
-                                                              String sequencingProperty
-                                                             ) {
+    public SubjectAreaOMASAPIResponse<Line> getProjectRelationships(String userId, String guid, FindRequest findRequest) {
         String methodName = "getProjectRelationships";
-        return getRelationshipsFromGuid(methodName, userId, guid, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
+        return getAllRelationshipsForEntity(methodName, userId, guid, findRequest);
     }
 
     /**
@@ -291,64 +204,34 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler{
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse updateProject(String userId, String guid, Project suppliedProject, boolean isReplace) {
+    public SubjectAreaOMASAPIResponse<Project> updateProject(String userId, String guid, Project suppliedProject, boolean isReplace) {
         final String methodName = "updateProject";
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Project> response = new SubjectAreaOMASAPIResponse<>();
 
         try {
             InputValidator.validateNodeType(className, methodName, suppliedProject.getNodeType(), NodeType.Project, NodeType.GlossaryProject);
-            InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
 
             response = getProjectByGuid(userId, guid);
-            if (response.getResponseCategory().equals(ResponseCategory.Project)) {
-                Project updateProject = ((ProjectResponse) response).getProject();
-                if (isReplace) {
-                    // copy over attributes
-                    updateProject.setName(suppliedProject.getName());
-                    updateProject.setQualifiedName(suppliedProject.getQualifiedName());
-                    updateProject.setDescription(suppliedProject.getDescription());
-                    updateProject.setStartDate(suppliedProject.getStartDate());
-                    updateProject.setPlannedEndDate(suppliedProject.getPlannedEndDate());
-                    updateProject.setStatus(suppliedProject.getStatus());
-                    updateProject.setAdditionalProperties(suppliedProject.getAdditionalProperties());
-                } else {
-                    // copy over attributes if specified
-                    if (suppliedProject.getName() != null) {
-                        updateProject.setName(suppliedProject.getName());
-                    }
-                    if (suppliedProject.getQualifiedName() != null) {
-                        updateProject.setQualifiedName(suppliedProject.getQualifiedName());
-                    }
-                    if (suppliedProject.getDescription() != null) {
-                        updateProject.setDescription(suppliedProject.getDescription());
-                    }
-                    if (suppliedProject.getStartDate() != null) {
-                        updateProject.setStartDate(suppliedProject.getStartDate());
-                    }
-                    if (suppliedProject.getPlannedEndDate() != null) {
-                        updateProject.setPlannedEndDate(suppliedProject.getPlannedEndDate());
-                    }
-                    if (suppliedProject.getStatus() != null) {
-                        updateProject.setStatus(suppliedProject.getStatus());
-                    }
-                    if (suppliedProject.getAdditionalProperties() != null) {
-                        updateProject.setAdditionalProperties(suppliedProject.getAdditionalProperties());
-                    }
-                }
+            if (response.getHead() != null) {
+                Project updateProject = response.getHead();
+                if (isReplace)
+                    replaceAttributes(updateProject, suppliedProject);
+                else
+                    updateAttributes(updateProject, suppliedProject);
+
                 Date termFromTime = suppliedProject.getEffectiveFromTime();
                 Date termToTime = suppliedProject.getEffectiveToTime();
                 updateProject.setEffectiveFromTime(termFromTime);
                 updateProject.setEffectiveToTime(termToTime);
-                ProjectMapper projectMapper = new ProjectMapper(oMRSAPIHelper);
-                EntityDetail entityDetail = projectMapper.mapNodeToEntityDetail(updateProject);
-                String projectGuid = entityDetail.getGUID();
-                response = oMRSAPIHelper.callOMRSUpdateEntityProperties(methodName, userId, entityDetail);
-                if (response.getResponseCategory().equals(ResponseCategory.OmrsEntityDetail)) {
-                    response = getProjectByGuid(userId, projectGuid);
-                }
+
+                ProjectMapper projectMapper = mappersFactory.get(ProjectMapper.class);
+                EntityDetail entityDetail = projectMapper.map(updateProject);
+                final String projectGuid = entityDetail.getGUID();
+                oMRSAPIHelper.callOMRSUpdateEntity(methodName, userId, entityDetail);
+                response = getProjectByGuid(userId, projectGuid);
             }
-        } catch (InvalidParameterException e) {
-            response = OMASExceptionToResponse.convertInvalidParameterException(e);
+        } catch (SubjectAreaCheckedException | PropertyServerException | UserNotAuthorizedException e) {
+            response.setExceptionInfo(e, className);
         }
 
         if (log.isDebugEnabled()) {
@@ -357,6 +240,41 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler{
         return response;
     }
 
+    private void replaceAttributes(Project currentProject, Project newProject) {
+        // copy over attributes
+        currentProject.setName(newProject.getName());
+        currentProject.setQualifiedName(newProject.getQualifiedName());
+        currentProject.setDescription(newProject.getDescription());
+        currentProject.setStartDate(newProject.getStartDate());
+        currentProject.setPlannedEndDate(newProject.getPlannedEndDate());
+        currentProject.setStatus(newProject.getStatus());
+        currentProject.setAdditionalProperties(newProject.getAdditionalProperties());
+    }
+
+    private void updateAttributes(Project currentProject, Project newProject) {
+        // copy over attributes if specified
+        if (newProject.getName() != null) {
+            currentProject.setName(newProject.getName());
+        }
+        if (newProject.getQualifiedName() != null) {
+            currentProject.setQualifiedName(newProject.getQualifiedName());
+        }
+        if (newProject.getDescription() != null) {
+            currentProject.setDescription(newProject.getDescription());
+        }
+        if (newProject.getStartDate() != null) {
+            currentProject.setStartDate(newProject.getStartDate());
+        }
+        if (newProject.getPlannedEndDate() != null) {
+            currentProject.setPlannedEndDate(newProject.getPlannedEndDate());
+        }
+        if (newProject.getStatus() != null) {
+            currentProject.setStatus(newProject.getStatus());
+        }
+        if (newProject.getAdditionalProperties() != null) {
+            currentProject.setAdditionalProperties(newProject.getAdditionalProperties());
+        }
+    }
 
     /**
      * Delete a Project instance
@@ -386,57 +304,26 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler{
      * <li> EntityNotPurgedException               a hard delete was issued but the project was not purged</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse deleteProject(String userId, String guid, Boolean isPurge) {
+    public SubjectAreaOMASAPIResponse<Project> deleteProject(String userId, String guid, Boolean isPurge) {
         final String methodName = "deleteProject";
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Project> response = new SubjectAreaOMASAPIResponse<>();
         try {
-            InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
-            // do not delete if there is project content (terms or categories)
-            // look for all project content that is not deleted.
-            List<InstanceStatus> statusList = new ArrayList<>();
-            statusList.add(InstanceStatus.ACTIVE);
-            OMRSRepositoryHelper repositoryHelper = this.oMRSAPIHelper.getOMRSRepositoryHelper();
-            //TODO get source properly
-            String source = oMRSAPIHelper.getServiceName();
-            String projectTypeDefName = "Project";
-            String projectTypeDefGuid = repositoryHelper.getTypeDefByName(source, projectTypeDefName).getGUID();
-
             if (isPurge) {
-                oMRSAPIHelper.callOMRSPurgeEntity(methodName, userId, projectTypeDefName, projectTypeDefGuid, guid);
-                response = new VoidResponse();
+                oMRSAPIHelper.callOMRSPurgeEntity(methodName, userId, PROJECT_TYPE_NAME, guid);
             } else {
-                String termAnchorGuid = repositoryHelper.getTypeDefByName(methodName, "TermAnchor").getGUID();
-                String categoryAnchorGuid = repositoryHelper.getTypeDefByName(methodName, "TermAnchor").getGUID();
-
                 // if this is a not a purge then attempt to get terms and categories, as we should not delete if there are any
-                response = oMRSAPIHelper.callGetRelationshipsForEntity(methodName, userId, guid, termAnchorGuid, 0, statusList, null, null, null, 1);
-                if (response.getResponseCategory().equals(ResponseCategory.OmrsRelationships)) {
-                    RelationshipsResponse termAnchorRelationshipsResponse = (RelationshipsResponse) response;
-                    List<Relationship> termRelationships = termAnchorRelationshipsResponse.getRelationships();
-                    response = oMRSAPIHelper.callGetRelationshipsForEntity(methodName, userId, guid, categoryAnchorGuid, 0, statusList, null, null, null, 1);
-                    if (response.getResponseCategory().equals(ResponseCategory.OmrsRelationships)) {
-                        RelationshipsResponse categoryAnchorRelationshipsResponse = (RelationshipsResponse) response;
-                        List<Relationship> categoryRelationships = categoryAnchorRelationshipsResponse.getRelationships();
-                        if (((termRelationships == null) || termRelationships.isEmpty()) && (categoryRelationships == null || categoryRelationships.isEmpty())) {
-                            response = oMRSAPIHelper.callOMRSDeleteEntity(methodName, userId, projectTypeDefName, projectTypeDefGuid, guid);
-                            if (response.getResponseCategory().equals(ResponseCategory.OmrsEntityDetail)) {
-                                response = getResponse(response);
-                            }
-                        } else {
-                            ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.GLOSSARY_CONTENT_PREVENTED_DELETE.getMessageDefinition(guid);
-                            response = new EntityNotDeletedExceptionResponse(
-                                    new EntityNotDeletedException(messageDefinition,
-                                                                  className,
-                                                                  methodName,
-                                                                  guid)
-                            );
-                        }
-                    }
+                List<String> relationshipTypeNames = Arrays.asList(TERM_ANCHOR_RELATIONSHIP_NAME, CATEGORY_ANCHOR_RELATIONSHIP_NAME);
+                if (oMRSAPIHelper.isEmptyContent(relationshipTypeNames, userId, guid, PROJECT_TYPE_NAME, methodName)) {
+                    oMRSAPIHelper.callOMRSDeleteEntity(methodName, userId, PROJECT_TYPE_NAME, guid);
+                } else {
+                    throw new EntityNotDeletedException(SubjectAreaErrorCode.PROJECT_CONTENT_PREVENTED_DELETE.getMessageDefinition(guid),
+                            className,
+                            methodName,
+                            guid);
                 }
             }
-
-        } catch (InvalidParameterException e) {
-            response = OMASExceptionToResponse.convertInvalidParameterException(e);
+        } catch (UserNotAuthorizedException | SubjectAreaCheckedException | PropertyServerException e) {
+            response.setExceptionInfo(e, className);
         }
         return response;
     }
@@ -459,17 +346,14 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler{
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse restoreProject(String userId, String guid) {
+    public SubjectAreaOMASAPIResponse<Project> restoreProject(String userId, String guid) {
         final String methodName = "restoreProject";
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Project> response = new SubjectAreaOMASAPIResponse<>();
         try {
-            InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
-            response = this.oMRSAPIHelper.callOMRSRestoreEntity(methodName, userId, guid);
-            if (response.getResponseCategory().equals(ResponseCategory.OmrsEntityDetail)) {
-                response = getProjectByGuid(userId, guid);
-            }
-        } catch (InvalidParameterException e) {
-            response = OMASExceptionToResponse.convertInvalidParameterException(e);
+            this.oMRSAPIHelper.callOMRSRestoreEntity(methodName, userId, guid);
+            response = getProjectByGuid(userId, guid);
+        } catch (UserNotAuthorizedException | SubjectAreaCheckedException | PropertyServerException e) {
+            response.setExceptionInfo(e, className);
         }
         return response;
     }
@@ -477,10 +361,8 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler{
     /**
      * Get the terms in this project.
      *
-     * @param subjectAreaGraphHandler graph handler
      * @param userId                  unique identifier for requesting user, under which the request is performed
      * @param guid                    guid of the Project to get
-     * @param asOfTime                the relationships returned as they were at this time. null indicates at the current time. If specified, the date is in milliseconds since 1970-01-01 00:00:00.
      * @return a response which when successful contains the Project terms
      * when not successful the following Exception responses can occur
      * <ul>
@@ -490,41 +372,16 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler{
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse getProjectTerms(
-            SubjectAreaGraphHandler subjectAreaGraphHandler,
-            String userId,
-            String guid,
-            Date asOfTime
-    ) {
-        // find all nodes, project and its subclass GlossaryProject, Term and its subclass Activity
-        String nodeFilter = (new HashSet<>(Arrays.asList(NodeType.Project, NodeType.Term, NodeType.GlossaryProject, NodeType.Activity))).toString();
-        // filter on the project scope relationship
-        String lineFilter = (new HashSet<>(Arrays.asList(LineType.ProjectScope))).toString();
-        SubjectAreaOMASAPIResponse response = subjectAreaGraphHandler.getGraph(
-                userId,
-                guid,
-                asOfTime,
-                nodeFilter,
-                lineFilter,
-                null, 1);
-        List<Term> terms = null;
-        if (response.getResponseCategory() == ResponseCategory.Graph) {
-            GraphResponse graphResponse = (GraphResponse) response;
-            Graph graph = graphResponse.getGraph();
-            if (graph != null) {
-                Set<Node> nodes = graph.getNodes();
-                if (nodes != null) {
-                    for (Node node : nodes) {
-                        if (node.getNodeType() == NodeType.Term) {
-                            if (terms == null) {
-                                terms = new ArrayList<>();
-                            }
-                            terms.add((Term) node);
-                        }
-                    }
-                }
-            }
-            response = new TermsResponse(terms);
+    public SubjectAreaOMASAPIResponse<Term> getProjectTerms(String userId, String guid) {
+        final String methodName = "getProjectTerms";
+        SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
+        try {
+            List<EntityDetail> entityDetails = oMRSAPIHelper.callGetEntitiesForRelationshipEnd1(
+                    methodName, userId, guid, PROJECT_TYPE_NAME, PROJECT_SCOPE_RELATIONSHIP_NAME);
+            List<Term> terms = convertOrmsToOmas(entityDetails, TermMapper.class);
+            response.addAllResults(terms);
+        } catch (PropertyServerException | SubjectAreaCheckedException | UserNotAuthorizedException e) {
+            response.setExceptionInfo(e, className);
         }
         return response;
     }

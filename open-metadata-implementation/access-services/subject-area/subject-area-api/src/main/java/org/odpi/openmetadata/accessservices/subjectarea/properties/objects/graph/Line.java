@@ -9,8 +9,8 @@ import com.fasterxml.jackson.annotation.*;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.OmasObject;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SystemAttributes;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 
@@ -22,35 +22,10 @@ import java.util.Map;
 /**
  * A relationship between 2 subject area OMAS entities. It is called types as it has named fields for the attributes and references.
  */
-@JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
+@JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonIgnoreProperties(ignoreUnknown = true)
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "class")
-@JsonSubTypes(
-        {
-
-                // term to term relationship responses
-                @JsonSubTypes.Type(value = Hasa.class, name = "Hasa"),
-                @JsonSubTypes.Type(value = RelatedTerm.class, name = "RelatedTerm"),
-                @JsonSubTypes.Type(value = Synonym.class, name = "Synonym"),
-                @JsonSubTypes.Type(value = Antonym.class, name = "Antonym"),
-                @JsonSubTypes.Type(value = PreferredTerm.class, name = "PreferredTerm"),
-                @JsonSubTypes.Type(value = ReplacementTerm.class, name = "ReplacementTerm"),
-                @JsonSubTypes.Type(value = Translation.class, name = "Translation"),
-                @JsonSubTypes.Type(value = Isa.class, name = "Isa"),
-                @JsonSubTypes.Type(value = ValidValue.class, name = "ValidValue"),
-                @JsonSubTypes.Type(value = UsedInContext.class, name = "UsedInContext"),
-                @JsonSubTypes.Type(value = IsaTypeOf.class, name = "IsaTypeOf"),
-                @JsonSubTypes.Type(value = TypedBy.class, name = "TypedBy"),
-                @JsonSubTypes.Type(value = TermAnchor.class, name = "TermAnchor"),
-                @JsonSubTypes.Type(value = CategoryAnchor.class, name = "CategoryAnchor"),
-                @JsonSubTypes.Type(value = Categorization.class, name = "Categorization"),
-
-        })
-
-public class Line implements Serializable {
+@JsonIgnoreProperties(ignoreUnknown=true)
+public class Line implements Serializable, OmasObject {
     protected static final long serialVersionUID = 1L;
     private SystemAttributes systemAttributes = null;
     private Date effectiveFromTime = null;

@@ -44,6 +44,11 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
+            <artifactId>open-connector-framework</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
             <artifactId>subject-area-client</artifactId>
         </dependency>
 
@@ -61,7 +66,13 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>repository-services-apis</artifactId>
+        </dependency>
+
     </dependencies>
+
     <build>
         <plugins>
             <!-- start and stop of the server before/after integration tests. Plugin is good at shutting down process -->

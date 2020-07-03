@@ -2,7 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.fvt;
 
-import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectAreaCheckedException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -16,7 +18,7 @@ import java.io.InputStreamReader;
  */
 public class RunAllFVTNow
 {
-    public static void main(String args[])
+    public static void main(String[] args)
     {
         try
         {
@@ -29,20 +31,20 @@ public class RunAllFVTNow
             CategoryFVT.runIt(url,serverName,userId);
             CategoryHierarchyFVT.runIt(url,serverName,userId);
             RelationshipsFVT.runIt(url,serverName,userId);
+            ProjectFVT.runIt(url, serverName, userId);
             SubjectAreaDefinitionCategoryFVT.runIt(url,serverName,userId);
             GraphFVT.runIt(url,serverName,userId);
             System.out.println("FVT ran successfully");
         } catch (IOException e1)
         {
             System.out.println("Error getting user input");
-        } catch (SubjectAreaCheckedException e)
-        {
-            System.out.println("ERROR: " + e.getErrorMessage() + " Suggested action: " + e.getReportedUserAction());
         } catch (SubjectAreaFVTCheckedException e) {
             System.out.println("ERROR: " + e.getMessage() );
+        } catch (UserNotAuthorizedException | InvalidParameterException | PropertyServerException e) {
+            System.out.println("ERROR: " + e.getReportedErrorMessage() + " Suggested action: " + e.getReportedUserAction());
         }
     }
-    public static String getServerName(String args[]) throws IOException
+    public static String getServerName(String[] args) throws IOException
     {
         String name = null;
         if (args.length > 1)
@@ -72,7 +74,7 @@ public class RunAllFVTNow
      * @return the url to use on the calls to the server
      * @throws IOException IO exception occurred while getting input from the user.
      */
-    public static String getUserId(String args[]) throws IOException
+    public static String getUserId(String[] args) throws IOException
     {
         String userId = null;
         if (args.length > 2)
@@ -103,7 +105,7 @@ public class RunAllFVTNow
      * @return the url to use on the calls to the server
      * @throws IOException IO exception occured while getting input from the user.
      */
-    public static String getUrl(String args[]) throws IOException
+    public static String getUrl(String[] args) throws IOException
     {
         String url = null;
         if (args.length > 0)

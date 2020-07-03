@@ -2,15 +2,14 @@
 /* Copyright Contributors to the ODPi Egeria term. */
 package org.odpi.openmetadata.viewservices.glossaryauthor.services;
 
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.*;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.viewservices.glossaryauthor.handlers.TermHandler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Date;
 import java.util.List;
@@ -21,9 +20,7 @@ import java.util.List;
  */
 
 public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
-
     private static String className = GlossaryAuthorViewTermRESTServices.class.getName();
-    private static final Logger LOG = LoggerFactory.getLogger(className);
 
     /**
      * Default constructor
@@ -42,28 +39,24 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
      *
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
-     * <li> InvalidParameterException            one of the parameters is null or invalid.
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised.</li>
-     * <li> ClassificationException              Error processing a classification.</li>
-     * <li> StatusNotSupportedException          A status value is not supported.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
 
-    public SubjectAreaOMASAPIResponse createTerm(String serverName, String userId, Term suppliedTerm) {
+    public SubjectAreaOMASAPIResponse<Term> createTerm(String serverName, String userId, Term suppliedTerm) {
         final String methodName = "createTerm";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied term - the calling layer should not allow this.
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             TermHandler handler = instanceHandler.getTermHandler(serverName, userId, methodName);
-            Term createdTerm = handler.createTerm(userId,
-                    suppliedTerm);
-            response = new TermResponse(createdTerm);
+            Term createdTerm = handler.createTerm(userId, suppliedTerm);
+            response.addResult(createdTerm);
         }  catch (Throwable error) {
             response =  getResponseForError(error, auditLog, className, methodName);
         }
@@ -82,27 +75,23 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
      * @return response which when successful contains the term with the requested guid
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UserNotAuthorizedException the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException  not able to communicate with a Metadata respository service.</li>
-     * <li> InvalidParameterException one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException the supplied guid was not recognised</li>
-     * <li> UnrecognizedGUIDException the supplied guid was not recognised</li>
-     * <li> FunctionNotSupportedException   Function not supported</li>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
 
-    public SubjectAreaOMASAPIResponse getTerm(String serverName, String userId, String guid) {
+    public SubjectAreaOMASAPIResponse<Term> getTerm(String serverName, String userId, String guid) {
         final String methodName = "getTerm";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             TermHandler handler = instanceHandler.getTermHandler(serverName, userId, methodName);
-            Term obtainedTerm = handler.getTermByGuid(userId,
-                    guid);
-            response = new TermResponse(obtainedTerm);
+            Term obtainedTerm = handler.getTermByGuid(userId, guid);
+            response.addResult(obtainedTerm);
         }  catch (Throwable error) {
             response =  getResponseForError(error, auditLog, className, methodName);
         }
@@ -127,46 +116,38 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
      *
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse findTerm(
+    public SubjectAreaOMASAPIResponse<Term> findTerm(
             String serverName,
             String userId,
             Date asOfTime,
             String searchCriteria,
-            Integer offset,
-            Integer pageSize,
+            int offset,
+            int pageSize,
             SequencingOrder sequencingOrder,
             String sequencingProperty
     ) {
         final String methodName = "findTerm";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             TermHandler handler = instanceHandler.getTermHandler(serverName, userId, methodName);
-            if (offset == null) {
-                offset = new Integer(0);
-            }
-            if (pageSize == null) {
-                pageSize = new Integer(0);
-            }
-            List<Term> terms = handler.findTerm(
-                    userId,
-                    searchCriteria,
-                    asOfTime,
-                    offset,
-                    pageSize,
-                    sequencingOrder,
-                    sequencingProperty);
-            TermsResponse termsResponse = new TermsResponse();
-            termsResponse.setTerms(terms);
-            response = termsResponse;
+            FindRequest findRequest = new FindRequest();
+            findRequest.setSearchCriteria(searchCriteria);
+            findRequest.setAsOfTime(asOfTime);
+            findRequest.setOffset(offset);
+            findRequest.setPageSize(pageSize);
+            findRequest.setSequencingOrder(sequencingOrder);
+            findRequest.setSequencingProperty(sequencingProperty);
+
+            List<Term> terms = handler.findTerm(userId, findRequest);
+            response.addAllResults(terms);
         }  catch (Throwable error) {
             response =  getResponseForError(error, auditLog, className, methodName);
         }
@@ -190,19 +171,18 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
      * @return a response which when successful contains the term relationships
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse getTermRelationships(
+    public SubjectAreaOMASAPIResponse<Line> getTermRelationships(
             String serverName,
             String userId,
             String guid,
             Date asOfTime,
-            Integer offset,
-            Integer pageSize,
+            int offset,
+            int pageSize,
             SequencingOrder sequencingOrder,
             String sequencingProperty
 
@@ -211,15 +191,20 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
         final String methodName = "getTermRelationships";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Line> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             TermHandler handler = instanceHandler.getTermHandler(serverName, userId, methodName);
-            List<Line> lines =  handler.getTermRelationships(userId, guid, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
-            LinesResponse linesResponse = new LinesResponse();
-            linesResponse.setLines(lines);
-            response = linesResponse;
+            FindRequest findRequest = new FindRequest();
+            findRequest.setAsOfTime(asOfTime);
+            findRequest.setOffset(offset);
+            findRequest.setPageSize(pageSize);
+            findRequest.setSequencingOrder(sequencingOrder);
+            findRequest.setSequencingProperty(sequencingProperty);
+
+            List<Line> lines =  handler.getTermRelationships(userId, guid, findRequest);
+            response.addAllResults(lines);
         }  catch (Throwable error) {
             response =  getResponseForError(error, auditLog, className, methodName);
         }
@@ -240,25 +225,23 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
      * @return a response which when successful contains the updated term
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
 
-    public SubjectAreaOMASAPIResponse updateTerm(
+    public SubjectAreaOMASAPIResponse<Term> updateTerm(
             String serverName,
             String userId,
             String guid,
             Term term,
-            Boolean isReplace
+            boolean isReplace
     ) {
         final String methodName = "updateTerm";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied term - the calling layer should not allow this.
@@ -266,17 +249,13 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             TermHandler handler = instanceHandler.getTermHandler(serverName, userId, methodName);
             Term updatedTerm;
-            if (isReplace == null) {
-                isReplace = false;
-            }
+
             if (isReplace) {
                 updatedTerm = handler.replaceTerm(userId, guid, term);
             } else {
                 updatedTerm = handler.updateTerm(userId, guid, term);
             }
-            TermResponse termResponse = new TermResponse();
-            termResponse.setTerm(updatedTerm);
-            response = termResponse;
+            response.addResult(updatedTerm);
         }  catch (Throwable error) {
             response =  getResponseForError(error, auditLog, className, methodName);
         }
@@ -304,45 +283,32 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
      * @return a void response
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
-     * <li> EntityNotDeletedException            a soft delete was issued but the term was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the term was not purged</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse deleteTerm(
+    public SubjectAreaOMASAPIResponse<Term> deleteTerm(
             String serverName,
             String userId,
             String guid,
-            Boolean isPurge
+            boolean isPurge
     ) {
 
         final String methodName = "deleteTerm";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied term - the calling layer should not allow this.
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             TermHandler handler = instanceHandler.getTermHandler(serverName, userId, methodName);
-            if (isPurge == null) {
-                // default to soft delete if isPurge is not specified.
-                isPurge = false;
-            }
-
             if (isPurge) {
                 handler.purgeTerm(userId, guid);
-                response = new VoidResponse();
             } else {
-                Term term = handler.deleteTerm(userId, guid);
-                TermResponse termResponse = new TermResponse();
-                termResponse.setTerm(term);
-                response = termResponse;
+                handler.deleteTerm(userId, guid);
             }
         }  catch (Throwable error) {
             response =  getResponseForError(error, auditLog, className, methodName);
@@ -362,21 +328,19 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
      * @return response which when successful contains the restored term
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse restoreTerm(
+    public SubjectAreaOMASAPIResponse<Term> restoreTerm(
             String serverName,
             String userId,
             String guid) {
         final String methodName = "restoreTerm";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied term - the calling layer should not allow this.
@@ -384,9 +348,7 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             TermHandler handler = instanceHandler.getTermHandler(serverName, userId, methodName);
             Term term = handler.restoreTerm(userId, guid);
-            TermResponse termResponse = new TermResponse();
-            termResponse.setTerm(term);
-            response = termResponse;
+            response.addResult(term);
         }  catch (Throwable error) {
             response =  getResponseForError(error, auditLog, className, methodName);
         }

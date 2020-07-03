@@ -6,7 +6,8 @@ package org.odpi.openmetadata.accessservices.subjectarea.server.services;
 import org.odpi.openmetadata.accessservices.subjectarea.handlers.SubjectAreaRelationshipHandler;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
-import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.ExceptionMapper;
+import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.ILineMapper;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,6 +18,7 @@ import org.slf4j.LoggerFactory;
  */
 
 public class SubjectAreaRESTServicesInstance {
+    private static final String className = SubjectAreaRelationshipHandler.class.getName();
     private static final Logger log = LoggerFactory.getLogger(SubjectAreaRESTServicesInstance.class);
 
     public static final String PAGE_OFFSET_DEFAULT_VALUE = "0";
@@ -35,10 +37,11 @@ public class SubjectAreaRESTServicesInstance {
      * Create a Line (relationship), which is a link between two Nodes.
      * <p>
      *
+     * @param <L> {@link Line} type of object for response
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param restAPIName name of the rest API
      * @param userId     userId under which the request is performed
-     * @param className  class name
+     * @param clazz       mapper Class
      * @param line       line to create
      * @return response, when successful contains the created line
      * when not successful the following Exception responses can occur
@@ -52,18 +55,23 @@ public class SubjectAreaRESTServicesInstance {
      * <li> FunctionNotSupportedException        Function is not supported.
      * </ul>
      */
-    protected SubjectAreaOMASAPIResponse createLine(String serverName, String restAPIName, String userId, String className, Line line) {
+    protected <L extends Line> SubjectAreaOMASAPIResponse<L> createLine(String serverName,
+                                                                        String restAPIName,
+                                                                        String userId,
+                                                                        Class<? extends ILineMapper<L>> clazz,
+                                                                        L line)
+    {
 
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + restAPIName + ",userId=" + userId + ",className=" + className);
         }
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<L> response = new SubjectAreaOMASAPIResponse<>();
         try {
             SubjectAreaRelationshipHandler handler = instanceHandler.getSubjectAreaRelationshipHandler(userId, serverName, restAPIName);
-            response = handler.createLine(restAPIName, userId, className, line);
+            response = handler.createLine(restAPIName, userId, clazz, line);
 
-        } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase e) {
-            response = ExceptionMapper.getResponseFromOCFCheckedExceptionBase(e);
+        } catch (OCFCheckedExceptionBase e) {
+            response.setExceptionInfo(e, className);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + restAPIName + ",userId=" + userId + ",className=" + className + ", response =" + response);
@@ -74,10 +82,11 @@ public class SubjectAreaRESTServicesInstance {
     /**
      * Get a Line (relationship)
      *
+     * @param <L> {@link Line} type of object for response
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param restAPIName name of the rest API
      * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param className  class name
+     * @param clazz       mapper Class
      * @param guid       guid of the relationship to get
      * @return response which when successful contains the relationship with the requested guid
      * when not successful the following Exception responses can occur
@@ -88,18 +97,23 @@ public class SubjectAreaRESTServicesInstance {
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-    protected SubjectAreaOMASAPIResponse getLine(String serverName, String restAPIName, String userId, String className, String guid) {
+    protected <L extends Line> SubjectAreaOMASAPIResponse<L> getLine(String serverName,
+                                                                     String restAPIName,
+                                                                     String userId,
+                                                                     Class<? extends ILineMapper<L>> clazz,
+                                                                     String guid)
+    {
 
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + restAPIName + ",userId=" + userId + ",className=" + className);
         }
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<L> response = new SubjectAreaOMASAPIResponse<>();
         try {
             SubjectAreaRelationshipHandler handler = instanceHandler.getSubjectAreaRelationshipHandler(userId, serverName, restAPIName);
-            response = handler.getLine(restAPIName, userId, className, guid);
+            response = handler.getLine(restAPIName, userId, clazz, guid);
 
-        } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase e) {
-            response = ExceptionMapper.getResponseFromOCFCheckedExceptionBase(e);
+        } catch (OCFCheckedExceptionBase e) {
+            response.setExceptionInfo(e, className);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + restAPIName + ",userId=" + userId + ",className=" + className + ", response =" + response);
@@ -111,11 +125,12 @@ public class SubjectAreaRESTServicesInstance {
      * Update a relationship.
      * <p>
      *
+     * @param <L> {@link Line} type of object for response
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param restAPIName rest api name
      * @param userId     userId under which the request is performed
-     * @param guid       unique identifier of the Line
-     * @param className  class name
+     * @param guid        unique identifier of the Line
+     * @param clazz       mapper Class
      * @param line       the relationship to update
      * @param isReplace  flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response,              when successful contains the updated Line
@@ -130,17 +145,24 @@ public class SubjectAreaRESTServicesInstance {
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
-    protected SubjectAreaOMASAPIResponse updateLine(String serverName, String restAPIName, String userId, String guid, String className, Line line, boolean isReplace) {
+    protected <L extends Line> SubjectAreaOMASAPIResponse<L> updateLine(String serverName,
+                                                                        String restAPIName,
+                                                                        String userId,
+                                                                        String guid,
+                                                                        Class<? extends ILineMapper<L>> clazz,
+                                                                        L line,
+                                                                        boolean isReplace)
+    {
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + restAPIName + ",userId=" + userId + ",className=" + className);
         }
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<L> response = new SubjectAreaOMASAPIResponse<>();
         try {
             SubjectAreaRelationshipHandler handler = instanceHandler.getSubjectAreaRelationshipHandler(userId, serverName, restAPIName);
-            response = handler.updateLine(restAPIName, userId, guid, className, line, isReplace);
+            response = handler.updateLine(restAPIName, userId, guid, clazz, line, isReplace);
 
-        } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase e) {
-            response = ExceptionMapper.getResponseFromOCFCheckedExceptionBase(e);
+        } catch (OCFCheckedExceptionBase e) {
+            response.setExceptionInfo(e, className);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + restAPIName + ",userId=" + userId + ",className=" + className + ", response =" + response);
@@ -151,10 +173,11 @@ public class SubjectAreaRESTServicesInstance {
     /**
      * Delete a Line (relationship)
      *
+     * @param <L> {@link Line} type of object for response
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param restAPIName rest API name
      * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param className  class name
+     * @param clazz       mapper Class
      * @param guid       guid of the HAS A relationship to delete
      * @param isPurge    true indicates a hard delete, false is a soft delete.
      * @return response for a soft delete, the response contains the deleted relationship
@@ -169,18 +192,24 @@ public class SubjectAreaRESTServicesInstance {
      * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse deleteLine(String serverName, String restAPIName, String userId, String className, String guid, Boolean isPurge) {
+    public <L extends Line> SubjectAreaOMASAPIResponse<L> deleteLine(String serverName,
+                                                                     String restAPIName,
+                                                                     String userId,
+                                                                     Class<? extends ILineMapper<L>> clazz,
+                                                                     String guid,
+                                                                     Boolean isPurge)
+    {
 
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + restAPIName + ",userId=" + userId + ",className=" + className);
         }
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<L> response = new SubjectAreaOMASAPIResponse<>();
         try {
             SubjectAreaRelationshipHandler handler = instanceHandler.getSubjectAreaRelationshipHandler(userId, serverName, restAPIName);
-            response = handler.deleteLine(restAPIName, userId, className, guid, isPurge);
+            response = handler.deleteLine(restAPIName, userId, clazz, guid, isPurge);
 
-        } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase e) {
-            response = ExceptionMapper.getResponseFromOCFCheckedExceptionBase(e);
+        } catch (OCFCheckedExceptionBase e) {
+            response.setExceptionInfo(e, className);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + restAPIName + ",userId=" + userId + ",className=" + className + ", response =" + response);
@@ -193,10 +222,11 @@ public class SubjectAreaRESTServicesInstance {
      * <p>
      * Restore allows the deleted relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
      *
+     * @param <L> {@link Line} type of object for response
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param restAPIName name of the rest API
      * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param className  class name
+     * @param clazz       mapper Class
      * @param guid       guid of the relationship to restore
      * @return response which when successful contains the restored relationship
      * when not successful the following Exception responses can occur
@@ -210,18 +240,22 @@ public class SubjectAreaRESTServicesInstance {
      * <li> EntityNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-    protected SubjectAreaOMASAPIResponse restoreLine(String serverName, String restAPIName, String userId, String className, String guid) {
-
+    protected <L extends Line> SubjectAreaOMASAPIResponse<L> restoreLine(String serverName,
+                                                                         String restAPIName,
+                                                                         String userId,
+                                                                         Class<? extends ILineMapper<L>> clazz,
+                                                                         String guid)
+    {
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + restAPIName + ",userId=" + userId + ",className=" + className);
         }
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<L> response = new SubjectAreaOMASAPIResponse<>();
         try {
             SubjectAreaRelationshipHandler handler = instanceHandler.getSubjectAreaRelationshipHandler(userId, serverName, restAPIName);
-            response = handler.restoreLine(restAPIName, userId, className, guid);
+            response = handler.restoreLine(restAPIName, userId, clazz, guid);
 
-        } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase e) {
-            response = ExceptionMapper.getResponseFromOCFCheckedExceptionBase(e);
+        } catch (OCFCheckedExceptionBase e) {
+            response.setExceptionInfo(e, className);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + restAPIName + ",userId=" + userId + ",className=" + className + ", response =" + response);
