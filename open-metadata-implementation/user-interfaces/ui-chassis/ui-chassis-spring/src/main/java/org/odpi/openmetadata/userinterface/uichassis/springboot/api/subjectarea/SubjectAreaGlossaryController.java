@@ -4,17 +4,17 @@ package org.odpi.openmetadata.userinterface.uichassis.springboot.api.subjectarea
 
 
 import org.odpi.openmetadata.accessservices.subjectarea.SubjectArea;
-import org.odpi.openmetadata.accessservices.subjectarea.SubjectAreaGlossary;
-import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectAreaCheckedException;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder;
+import org.odpi.openmetadata.accessservices.subjectarea.client.entities.glossaries.SubjectAreaGlossary;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.*;
-import org.odpi.openmetadata.accessservices.subjectarea.utils.DetectUtils;
 
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.api.SecureController;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,11 +29,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/subject-area/glossaries")
 @DependsOn("securityConfig")
-public class SubjectAreaGlossaryController extends SecureController
-{
-    private final SubjectArea subjectArea;
+public class SubjectAreaGlossaryController extends SecureController {
     private static String className = SubjectAreaGlossaryController.class.getName();
-    private static final Logger LOG = LoggerFactory.getLogger(className);
     private final SubjectAreaGlossary subjectAreaGlossary;
 
     /**
@@ -41,8 +38,6 @@ public class SubjectAreaGlossaryController extends SecureController
      * @param subjectArea main client object for the Subject Area OMAS
      */
     public SubjectAreaGlossaryController(SubjectArea subjectArea) {
-
-        this.subjectArea = subjectArea;
         this.subjectAreaGlossary = subjectArea.getSubjectAreaGlossary();
     }
 
@@ -63,24 +58,19 @@ public class SubjectAreaGlossaryController extends SecureController
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
-     * <li> InvalidParameterException            one of the parameters is null or invalid.
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised.</li>
-     * <li> ClassificationException              Error processing a classification.</li>
-     * <li> StatusNotSupportedException          A status value is not supported.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    @PostMapping()
-    public SubjectAreaOMASAPIResponse createGlossary(@RequestBody Glossary suppliedGlossary, HttpServletRequest request) {
+    @PostMapping
+    public SubjectAreaOMASAPIResponse<Glossary> createGlossary(@RequestBody Glossary suppliedGlossary, HttpServletRequest request) {
         String userId = getUser(request);
-        SubjectAreaOMASAPIResponse response=null;
+        SubjectAreaOMASAPIResponse<Glossary> response = new SubjectAreaOMASAPIResponse<>();
         try {
-            Glossary glossary = this.subjectAreaGlossary.createGlossary(userId, suppliedGlossary);
-            GlossaryResponse glossaryResponse = new GlossaryResponse();
-            glossaryResponse.setGlossary(glossary);
-            response = glossaryResponse;
-        } catch (SubjectAreaCheckedException e) {
-            response = DetectUtils.getResponseFromException(e);
+            Glossary glossary = this.subjectAreaGlossary.glossary().create(userId, suppliedGlossary);
+            response.addResult(glossary);
+        } catch (UserNotAuthorizedException | InvalidParameterException | PropertyServerException e) {
+            response.setExceptionInfo(e, className);
         }
         return  response;
     }
@@ -92,25 +82,20 @@ public class SubjectAreaGlossaryController extends SecureController
      * @return response which when successful contains the glossary with the requested guid
      *  when not successful the following Exception responses can occur
      * <ul>
-     * <li> UserNotAuthorizedException the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException  not able to communicate with a Metadata respository service.</li>
-     * <li> InvalidParameterException one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException the supplied guid was not recognised</li>
-     * <li> UnrecognizedGUIDException the supplied guid was not recognised</li>
-     * <li> FunctionNotSupportedException   Function not supported</li>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    @GetMapping( path = "/{guid}")
-    public  SubjectAreaOMASAPIResponse getGlossary(@PathVariable String guid,HttpServletRequest request) {
+    @GetMapping(path = "/{guid}")
+    public  SubjectAreaOMASAPIResponse<Glossary> getGlossary(@PathVariable String guid,HttpServletRequest request) {
         String userId = getUser(request);
-        SubjectAreaOMASAPIResponse response=null;
+        SubjectAreaOMASAPIResponse<Glossary> response = new SubjectAreaOMASAPIResponse<>();
         try {
-            Glossary glossary = this.subjectAreaGlossary.getGlossaryByGuid(userId,guid);
-            GlossaryResponse glossaryResponse = new GlossaryResponse();
-            glossaryResponse.setGlossary(glossary);
-            response = glossaryResponse;
-        } catch (SubjectAreaCheckedException e) {
-            response = DetectUtils.getResponseFromException(e);
+            Glossary glossary = this.subjectAreaGlossary.glossary().getByGUID(userId,guid);
+            response.addResult(glossary);
+        } catch (UserNotAuthorizedException | InvalidParameterException | PropertyServerException e) {
+            response.setExceptionInfo(e, className);
         }
         return  response;
     }
@@ -130,41 +115,39 @@ public class SubjectAreaGlossaryController extends SecureController
      *
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    @GetMapping()
-    public  SubjectAreaOMASAPIResponse findGlossary(
+    @GetMapping
+    public  SubjectAreaOMASAPIResponse<Glossary> findGlossary(
                                                 @RequestParam(value = "searchCriteria", required=false) String searchCriteria,
                                                 @RequestParam(value = "asOfTime", required=false) Date asOfTime,
-                                                @RequestParam(value = "offset", required=false) Integer offset,
-                                                @RequestParam(value = "pageSize", required=false) Integer pageSize,
+                                                @RequestParam(value = "offset", required = false, defaultValue = PAGE_OFFSET_DEFAULT_VALUE) Integer offset,
+                                                @RequestParam(value = "pageSize", required = false, defaultValue = PAGE_SIZE_DEFAULT_VALUE) Integer pageSize,
                                                 @RequestParam(value = "sequencingOrder", required=false) SequencingOrder sequencingOrder,
                                                 @RequestParam(value = "SequencingProperty", required=false) String sequencingProperty,
                                                 HttpServletRequest request
     )  {
         String userId = getUser(request);
-        SubjectAreaOMASAPIResponse response;
+        SubjectAreaOMASAPIResponse<Glossary> response = new SubjectAreaOMASAPIResponse<>();
         try {
+            FindRequest findRequest = new FindRequest();
+            findRequest.setSearchCriteria(searchCriteria);
+            findRequest.setAsOfTime(asOfTime);
+            findRequest.setOffset(offset);
+            findRequest.setPageSize(pageSize);
+            findRequest.setSequencingOrder(sequencingOrder);
+            findRequest.setSequencingProperty(sequencingProperty);
 
-            if (offset == null) {
-                offset = new Integer(0);
-            }
-            if (pageSize == null) {
-               pageSize = new Integer(0);
-            }
-            List<Glossary> glossaries = this.subjectAreaGlossary.findGlossary(userId, searchCriteria, asOfTime, offset,pageSize, sequencingOrder, sequencingProperty);
-            GlossariesResponse glossariesResponse = new GlossariesResponse();
-            glossariesResponse.setGlossaries(glossaries);
-            response = glossariesResponse;
-        } catch (SubjectAreaCheckedException e) {
-            response = DetectUtils.getResponseFromException(e);
+            List<Glossary> glossaries = this.subjectAreaGlossary.glossary().find(userId, findRequest);
+            response.addAllResults(glossaries);
+        } catch (UserNotAuthorizedException | InvalidParameterException | PropertyServerException e) {
+            response.setExceptionInfo(e, className);
         }
         return  response;
     }
-    /*
+    /**
      * Get Glossary relationships
      *
      * @param guid   guid of the glossary to get
@@ -179,32 +162,36 @@ public class SubjectAreaGlossaryController extends SecureController
      * @return a response which when successful contains the glossary relationships
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    @GetMapping( path = "/{guid}/relationships")
-    public  SubjectAreaOMASAPIResponse getGlossaryRelationships(
+    @GetMapping(path = "/{guid}/relationships")
+    public  SubjectAreaOMASAPIResponse<Line> getGlossaryRelationships(
                                                             @PathVariable String guid,
                                                             @RequestParam(value = "asOfTime", required=false) Date asOfTime,
-                                                            @RequestParam(value = "offset", required=false) Integer offset,
-                                                            @RequestParam(value = "pageSize", required=false) Integer pageSize,
+                                                            @RequestParam(value = "offset", required = false, defaultValue = PAGE_OFFSET_DEFAULT_VALUE) Integer offset,
+                                                            @RequestParam(value = "pageSize", required = false, defaultValue = PAGE_SIZE_DEFAULT_VALUE) Integer pageSize,
                                                             @RequestParam(value = "sequencingOrder", required=false) SequencingOrder sequencingOrder,
                                                             @RequestParam(value = "SequencingProperty", required=false) String sequencingProperty,
                                                             HttpServletRequest request
     
     ) {
         String userId = getUser(request);
-        SubjectAreaOMASAPIResponse response;
+        SubjectAreaOMASAPIResponse<Line> response = new SubjectAreaOMASAPIResponse<>();
         try {
-            List<Line> lines = this.subjectAreaGlossary.getGlossaryRelationships(userId,guid,asOfTime,offset,pageSize,sequencingOrder,sequencingProperty);
-            LinesResponse linesResponse = new LinesResponse();
-            linesResponse.setLines(lines);
-            response = linesResponse;
-        } catch (SubjectAreaCheckedException e) {
-            response = DetectUtils.getResponseFromException(e);
+            FindRequest findRequest = new FindRequest();
+            findRequest.setAsOfTime(asOfTime);
+            findRequest.setOffset(offset);
+            findRequest.setPageSize(pageSize);
+            findRequest.setSequencingOrder(sequencingOrder);
+            findRequest.setSequencingProperty(sequencingProperty);
+
+            List<Line> lines = this.subjectAreaGlossary.glossary().getRelationships(userId,guid, findRequest);
+            response.addAllResults(lines);
+        } catch (UserNotAuthorizedException | InvalidParameterException | PropertyServerException e) {
+            response.setExceptionInfo(e, className);
         }
         return  response;
 
@@ -226,36 +213,29 @@ public class SubjectAreaGlossaryController extends SecureController
      * @return a response which when successful contains the updated glossary
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    @PutMapping( path = "/{guid}")
-    public  SubjectAreaOMASAPIResponse updateGlossary(
+    @PutMapping(path = "/{guid}")
+    public  SubjectAreaOMASAPIResponse<Glossary> updateGlossary(
                                                       @PathVariable String guid,
                                                       @RequestBody Glossary glossary,
-                                                      @RequestParam(value = "isReplace", required=false) Boolean isReplace,
+                                                      @RequestParam(value = "isReplace", required=false, defaultValue = "false") Boolean isReplace,
                                                       HttpServletRequest request) {
         String userId = getUser(request);
-        SubjectAreaOMASAPIResponse response=null;
+        SubjectAreaOMASAPIResponse<Glossary> response = new SubjectAreaOMASAPIResponse<>();
         try {
             Glossary updatedGlossary;
-            if (isReplace == null){
-                isReplace = false;
-            }
             if (isReplace) {
-                updatedGlossary = this.subjectAreaGlossary.replaceGlossary(userId, guid, glossary);
+                updatedGlossary = this.subjectAreaGlossary.glossary().replace(userId, guid, glossary);
             } else {
-                updatedGlossary = this.subjectAreaGlossary.updateGlossary(userId, guid, glossary);
+                updatedGlossary = this.subjectAreaGlossary.glossary().update(userId, guid, glossary);
             }
-            GlossaryResponse glossaryResponse = new GlossaryResponse();
-            glossaryResponse.setGlossary(updatedGlossary);
-            response = glossaryResponse;
-        } catch (SubjectAreaCheckedException e) {
-            response = DetectUtils.getResponseFromException(e);
+            response.addResult(updatedGlossary);
+        } catch (UserNotAuthorizedException | InvalidParameterException | PropertyServerException e) {
+            response.setExceptionInfo(e, className);
         }
         return  response;
     }
@@ -279,36 +259,26 @@ public class SubjectAreaGlossaryController extends SecureController
      * @return a void response
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
-     * <li> EntityNotDeletedException            a soft delete was issued but the glossary was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the glossary was not purged</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    @DeleteMapping( path = "/{guid}")
-    public  SubjectAreaOMASAPIResponse deleteGlossary(@PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge, HttpServletRequest request)  {
-        if (isPurge == null) {
-            // default to soft delete if isPurge is not specified.
-            isPurge = false;
-        }
+    @DeleteMapping(path = "/{guid}")
+    public  SubjectAreaOMASAPIResponse<Glossary> deleteGlossary(@PathVariable String guid,
+                                                                @RequestParam(value = "isPurge", required=false, defaultValue = "false") Boolean isPurge,
+                                                                HttpServletRequest request)  {
         String userId = getUser(request);
-        SubjectAreaOMASAPIResponse response=null;
+        SubjectAreaOMASAPIResponse<Glossary> response = new SubjectAreaOMASAPIResponse<>();
         try {
             if (isPurge) {
-                this.subjectAreaGlossary.purgeGlossary(userId, guid);
-                response = new VoidResponse();
+                subjectAreaGlossary.glossary().purge(userId, guid);
             } else {
-                Glossary glossary = this.subjectAreaGlossary.deleteGlossary(userId, guid);
-                GlossaryResponse glossaryResponse = new GlossaryResponse();
-                glossaryResponse.setGlossary(glossary);
-                response = glossaryResponse;
+                subjectAreaGlossary.glossary().delete(userId, guid);
             }
 
-        } catch (SubjectAreaCheckedException e) {
-            response = DetectUtils.getResponseFromException(e);
+        } catch (UserNotAuthorizedException | InvalidParameterException | PropertyServerException e) {
+            response.setExceptionInfo(e, className);
         }
         return  response;
     }
@@ -321,25 +291,21 @@ public class SubjectAreaGlossaryController extends SecureController
      * @return response which when successful contains the restored glossary
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    @PostMapping( path = "/{guid}")
-    public SubjectAreaOMASAPIResponse restoreGlossary(@PathVariable String guid,HttpServletRequest request)
+    @PostMapping(path = "/{guid}")
+    public SubjectAreaOMASAPIResponse<Glossary> restoreGlossary(@PathVariable String guid,HttpServletRequest request)
     {
         String userId = getUser(request);
-        SubjectAreaOMASAPIResponse response=null;
+        SubjectAreaOMASAPIResponse<Glossary> response = new SubjectAreaOMASAPIResponse<>();
         try {
-            Glossary glossary = this.subjectAreaGlossary.restoreGlossary(userId,guid);
-            GlossaryResponse glossaryResponse = new GlossaryResponse();
-            glossaryResponse.setGlossary(glossary);
-            response = glossaryResponse;
-        } catch (SubjectAreaCheckedException e) {
-            response = DetectUtils.getResponseFromException(e);
+            Glossary glossary = this.subjectAreaGlossary.glossary().restore(userId,guid);
+            response.addResult(glossary);
+        } catch (UserNotAuthorizedException | InvalidParameterException | PropertyServerException e) {
+            response.setExceptionInfo(e, className);
         }
         return  response;
     }

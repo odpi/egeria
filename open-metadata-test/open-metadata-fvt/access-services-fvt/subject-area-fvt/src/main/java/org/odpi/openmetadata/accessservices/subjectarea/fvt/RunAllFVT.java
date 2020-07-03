@@ -2,7 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.fvt;
 
-import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectAreaCheckedException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -27,17 +29,17 @@ public class RunAllFVT
             RelationshipsFVT.runWith2Servers(url);
             SubjectAreaDefinitionCategoryFVT.runWith2Servers(url);
             ProjectFVT.runWith2Servers(url);
-            //EffectiveDatesFVT.runWith2Servers(url);
+//            EffectiveDatesFVT.runWith2Servers(url);
             GraphFVT.runWith2Servers(url);
             System.out.println("FVT ran successfully");
         } catch (IOException e1)
         {
             System.out.println("Error getting user input");
-        } catch (SubjectAreaCheckedException e)
-        {
-            System.out.println("ERROR: " + e.getMessage() + " Suggested action: " + e.getReportedUserAction());
         } catch (SubjectAreaFVTCheckedException e) {
             System.out.println("ERROR: " + e.getMessage() );
+        } catch (UserNotAuthorizedException | InvalidParameterException | PropertyServerException e) {
+            System.out.println("ERROR: " + e.getMessage() + " Suggested action: " + e.getReportedUserAction());
+
         }
     }
 
