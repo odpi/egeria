@@ -11,9 +11,8 @@ import javax.net.ssl.HttpsURLConnection
 import javax.net.ssl.SSLContext
 import javax.net.ssl.TrustManager
 import javax.net.ssl.X509TrustManager
-import java.net.URL
 
-// Retrieve configuration - with defaults
+// Retrieve configuration - with defaults to aid in local testing (using default ports)
 user=properties["user"] ?: "garygeeke";
 baseURL=properties["baseURL"] ?: "https://localhost:9443";
 server=properties["server"] ?: "server1";
@@ -50,10 +49,9 @@ catch (Exception e)
     System.exit(-1);
 }
 
+// Wait until the platform is ready
 connected=false;
 i=retries;
-
-
 while (!connected && i>0)
 {
     try {
@@ -71,12 +69,11 @@ while (!connected && i>0)
         }
     } catch (Throwable t)
     {
+        // TODO: look at whether some exceptions should be deemed irrecoverable rather than retry
         i--;
         Thread.sleep(1000 * delay);
     }
 }
-
-// later^
 
 // --- Configure the platform - any errors here and we exit
 System.out.println("=== Configuring server: " + server + " ===");
@@ -89,9 +86,9 @@ if(postRC1.equals(200)) {
     println(post1.getInputStream().getText());
 }
 
-// --- Configure the platform - any errors here and we exit
-System.out.println("=== Starting server: " + server + " ===");
-post2 = new URL(baseURL + "/open-metadata/admin-services/users/" + user + "/servers/" + server + "/instance" ).openConnection()
+// --- Enable Subject Area OMAS - any errors here and we exit
+System.out.println("=== Enabling Subject Area OMAS: " + server + " ===");
+post2 = new URL(baseURL + "/open-metadata/admin-services/users/" + user + "/servers/" + server + "/access-services/subject-area" ).openConnection()
 post2.setRequestMethod("POST")
 post2.setRequestProperty("Content-Type", "application/json")
 postRC2 = post2.getResponseCode();
@@ -100,4 +97,17 @@ if(postRC2.equals(200)) {
     println(post2.getInputStream().getText());
 }
 
+
+// --- Launch the server - any errors here and we exit
+System.out.println("=== Starting server: " + server + " ===");
+post3 = new URL(baseURL + "/open-metadata/admin-services/users/" + user + "/servers/" + server + "/instance" ).openConnection()
+post3.setRequestMethod("POST")
+post3.setRequestProperty("Content-Type", "application/json")
+postRC3 = post3.getResponseCode();
+println(postRC3);
+if(postRC3.equals(200)) {
+    println(post3.getInputStream().getText());
+}
+
+// --- We're done
 System.out.println("=== Configuration complete ===")

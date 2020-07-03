@@ -57,7 +57,7 @@ public class GlossaryFVT {
         fvt.run();
     }
 
-    public static void itGlossaryFVT()
+    public void testGlossary()
     {
         try {
             runIt("https://localhost:10443", "fvtserver", "garygeeke");

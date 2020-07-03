@@ -46,6 +46,13 @@
             <groupId>org.odpi.egeria</groupId>
             <artifactId>open-metadata-assemblies</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
     <build>
         <!--testSourceDirectory>${project.basedir}/src/main/java</testSourceDirectory-->
@@ -70,7 +77,7 @@
                             <!-- check doesn't support SSL, so we won't wait long-->
                             <!-- healthcheckUrl>https://localhost:${fvt.serverport}/open-metadata/platform-services/users/${fvt.user}/server-platform/origin</healthcheckUrl-->
                             <waitAfterLaunch>${fvt.maxwait}</waitAfterLaunch>
-                            <processLogFile>${project.build.outputDirectory}/egeria.log</processLogFile>
+                            <processLogFile>${project.build.testOutputDirectory}/egeria.log</processLogFile>
                             <arguments>
                                 <argument>java</argument>
                                 <argument>-Dserver.port=${fvt.serverport}</argument>
@@ -110,7 +117,7 @@
                                 <server>${fvt.servername}</server>
                                 <user>${fvt.user}</user>
                             </defaults>
-                                <source>${project.basedir}/src/main/script/configureStartServer.groovy</source>
+                                <source>${project.build.testSourceDirectory}/../script/configureStartServer.groovy</source>
                         </configuration>
                     </execution>
                 </executions>
@@ -136,31 +143,23 @@
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>local</id>
+                        <id>test</id>
                         <phase>integration-test</phase>
                         <goals>
                             <goal>integration-test</goal>
                         </goals>
-                        <configuration>
-                            <!-- Our tests are actually in the java source directory -->
-                            <testSourceDirectory>${project.build.sourceDirectory}</testSourceDirectory>
-                            <testClassesDirectory>${project.build.outputDirectory}</testClassesDirectory>
-                            <classesDirectory>${project.build.outputDirectory}</classesDirectory>
-                            <includes>
-                                <include>**/*.java</include>
-                                <include>**/*.java</include>
-                            </includes>
-                            <failIfNoTests>true</failIfNoTests>
-                        </configuration>
                     </execution>
                     <execution>
-                        <id>verify-result</id>
+                        <id>verify</id>
                         <phase>verify</phase>
                         <goals>
                             <goal>verify</goal>
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <failIfNoTests>true</failIfNoTests>
+                </configuration>
             </plugin>
 
             <!-- Javadoc missing from SA fvt. Skipping for now -->
