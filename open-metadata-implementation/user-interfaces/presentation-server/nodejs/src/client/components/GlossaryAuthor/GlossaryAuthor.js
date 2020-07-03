@@ -4,8 +4,8 @@ import React, { useState, useEffect } from "react";
 import GlossaryAuthorContext from "../../contexts/GlossaryAuthorContext";
 import { Accordion, AccordionItem } from "carbon-components-react";
 import getNodeType from "./NodeTypes.js";
-import Egeria_project_16 from "../../images/Egeria_project_16";
-import Egeria_glossary_16 from "../../images/Egeria_glossary_16";
+import Egeria_project_32 from "../../images/Egeria_project_32";
+import Egeria_glossary_32 from "../../images/Egeria_glossary_32";
 import MyNodeSetter from "./MyNodeSetter";
 import GlossaryAuthorNodes from "./GlossaryAuthorNodes";
 
@@ -75,10 +75,7 @@ export default function GlossaryAuthor() {
         .then((res) => res.json())
         .then((res) => {
           console.log("get glossaries worked " + JSON.stringify(res));
-
-          const nodeResponse = res[nodeType.plural];
-          // if there is a node response then we have successfully created a node
-          if (nodeResponse) {
+          if (res.relatedHTTPCode == 200) {
             setConnected(true);
           } else {
             setFullResponse(JSON.stringify(res));
@@ -122,10 +119,18 @@ export default function GlossaryAuthor() {
     <div>
       {connected && (
         <GlossaryAuthorContext>
-          <Egeria_project_16 />
-          <MyNodeSetter typeKey="project" />
-          <Egeria_glossary_16 />
-          <MyNodeSetter typeKey="glossary" />
+          <div className='my-container'>
+            <span className='my-item'>
+              Project
+              <Egeria_project_32 />
+              <MyNodeSetter typeKey="project" />
+            </span>
+            <span className='my-item'>
+              Glossary
+              <Egeria_glossary_32 />
+              <MyNodeSetter typeKey="glossary" />
+            </span>
+          </div>
           <GlossaryAuthorNodes />
         </GlossaryAuthorContext>
       )}
