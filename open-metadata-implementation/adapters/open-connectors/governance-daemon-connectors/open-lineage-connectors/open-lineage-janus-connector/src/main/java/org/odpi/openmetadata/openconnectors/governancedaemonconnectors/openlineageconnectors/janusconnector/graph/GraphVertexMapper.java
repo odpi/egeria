@@ -5,8 +5,6 @@ package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openline
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.apache.tinkerpop.gremlin.structure.VertexProperty;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 import java.util.Objects;
