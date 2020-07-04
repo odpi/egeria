@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.subjectarea.server.mappers.relationships;
 
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.TermRelationshipStatus;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.Isa;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.IsA;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.SubjectAreaMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
@@ -15,10 +15,10 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  * Mapping methods to map between the iSARelationship and the equivalent omrs Relationship.
  */
 @SubjectAreaMapper
-public class ISARelationshipMapper extends LineMapper<Isa> {
+public class IsARelationshipMapper extends LineMapper<IsA> {
     public static final String ISA_RELATIONSHIP = "ISARelationship";
 
-    public ISARelationshipMapper(OMRSAPIHelper omrsapiHelper) {
+    public IsARelationshipMapper(OMRSAPIHelper omrsapiHelper) {
         super(omrsapiHelper);
     }
 
@@ -30,7 +30,7 @@ public class ISARelationshipMapper extends LineMapper<Isa> {
      * @param instanceProperties equivalent instance properties to the Line
      */
     @Override
-    protected void mapLineToInstanceProperties(Isa iSARelationship, InstanceProperties instanceProperties) {
+    protected void mapLineToInstanceProperties(IsA iSARelationship, InstanceProperties instanceProperties) {
         if (iSARelationship.getDescription() != null) {
             SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, iSARelationship.getDescription(), "description");
         }
@@ -59,7 +59,7 @@ public class ISARelationshipMapper extends LineMapper<Isa> {
      * @return true if the propertyName was recognised and mapped to the Line, otherwise false
      */
     @Override
-    protected boolean mapPrimitiveToLine(Isa iSARelationship, String propertyName, Object value) {
+    protected boolean mapPrimitiveToLine(IsA iSARelationship, String propertyName, Object value) {
         String stringValue = (String) value;
         boolean foundProperty = false;
         if (propertyName.equals("description")) {
@@ -82,7 +82,7 @@ public class ISARelationshipMapper extends LineMapper<Isa> {
     }
 
     @Override
-    protected boolean mapEnumToLine(Isa iSARelationship, String propertyName, EnumPropertyValue enumPropertyValue) {
+    protected boolean mapEnumToLine(IsA iSARelationship, String propertyName, EnumPropertyValue enumPropertyValue) {
         boolean foundProperty = false;
         if (propertyName.equals("status")) {
             TermRelationshipStatus status = TermRelationshipStatus.valueOf(enumPropertyValue.getSymbolicName());
@@ -100,7 +100,7 @@ public class ISARelationshipMapper extends LineMapper<Isa> {
      * @return guid for entity proxy 1
      */
     @Override
-    protected String getProxy1Guid(Isa iSARelationship) {
+    protected String getProxy1Guid(IsA iSARelationship) {
         return iSARelationship.getTermGuid();
     }
 
@@ -112,7 +112,7 @@ public class ISARelationshipMapper extends LineMapper<Isa> {
      * @return guid for entity proxy 2
      */
     @Override
-    protected String getProxy2Guid(Isa iSARelationship) {
+    protected String getProxy2Guid(IsA iSARelationship) {
         return iSARelationship.getSpecialisedTermGuid();
     }
 
@@ -122,17 +122,17 @@ public class ISARelationshipMapper extends LineMapper<Isa> {
     }
 
     @Override
-    protected Isa getLineInstance() {
-        return new Isa();
+    protected IsA getLineInstance() {
+        return new IsA();
     }
 
     @Override
-    protected void setEnd1GuidInLine(Isa isaRelationship, String guid) {
-        isaRelationship.setTermGuid(guid);
+    protected void setEnd1GuidInLine(IsA isARelationship, String guid) {
+        isARelationship.setTermGuid(guid);
     }
 
     @Override
-    protected void setEnd2GuidInLine(Isa isaRelationship, String guid) {
-        isaRelationship.setSpecialisedTermGuid(guid);
+    protected void setEnd2GuidInLine(IsA isARelationship, String guid) {
+        isARelationship.setSpecialisedTermGuid(guid);
     }
 }
