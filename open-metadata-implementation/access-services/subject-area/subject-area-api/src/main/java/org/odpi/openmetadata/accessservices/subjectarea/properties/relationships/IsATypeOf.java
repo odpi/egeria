@@ -29,9 +29,9 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class IsaTypeOf extends Line {
-    private static final Logger log = LoggerFactory.getLogger(IsaTypeOf.class);
-    private static final String className = IsaTypeOf.class.getName();
+public class IsATypeOf extends Line {
+    private static final Logger log = LoggerFactory.getLogger(IsATypeOf.class);
+    private static final String className = IsATypeOf.class.getName();
 
     private static final String[] PROPERTY_NAMES_SET_VALUES = new String[]{
             "description",
@@ -69,7 +69,7 @@ public class IsaTypeOf extends Line {
     private String subTypeGuid;
 
 
-    public IsaTypeOf() {
+    public IsATypeOf() {
         initialise();
     }
 
@@ -88,12 +88,12 @@ public class IsaTypeOf extends Line {
         typeDefGuid = "d5d588c3-46c9-420c-adff-6031802a7e51";
     }
 
-    public IsaTypeOf(Line template) {
+    public IsATypeOf(Line template) {
         super(template);
         initialise();
     }
 
-    public IsaTypeOf(Relationship omrsRelationship) {
+    public IsATypeOf(Relationship omrsRelationship) {
         super(omrsRelationship);
         name = "IsaTypeOf";
         // set the LineType if this is a LineType enum value.
@@ -231,9 +231,9 @@ public class IsaTypeOf extends Line {
         if (sb == null) {
             sb = new StringBuilder();
         }
-        sb.append(" IsaTypeOf=");
+        sb.append(" IsATypeOf=");
         sb.append(super.toString(sb));
-        sb.append(" IsaTypeOf Attributes{");
+        sb.append(" IsATypeOf Attributes{");
         sb.append("description=").append(this.description).append(",");
         sb.append("steward=").append(this.steward).append(",");
         sb.append("source=").append(this.source).append(",");
