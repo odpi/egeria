@@ -103,6 +103,9 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
 
     ready() {
         super.ready();
+        var thisElement = this;
+        this.$.tokenAjax.addEventListener('error', () =>
+            thisElement.$.visgraph.importNodesAndEdges([],[]));
         this.$.processMenu.addEventListener('value-changed', () =>
             this._reload(this.$.useCases.items[this.$.useCases.selected].value, this.$.processMenu.value));
 
@@ -195,10 +198,8 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
 
 
     _graphDataChanged(data, newData) {
-        console.debug("oldData" + JSON.stringify(data));
-        console.debug("newData" + JSON.stringify(newData));
         if (data === null || data === undefined) {
-            if (newData != null) {
+            if (newData && newData != null) {
                 data = newData;
             } else {
                 data = {
