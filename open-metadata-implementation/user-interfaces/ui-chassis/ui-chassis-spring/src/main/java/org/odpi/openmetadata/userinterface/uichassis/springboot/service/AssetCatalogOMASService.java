@@ -102,6 +102,9 @@ public class AssetCatalogOMASService {
      * @param user    userId of the user triggering the request
      * @param assetId the unique identifier for the asset
      * @param assetType the open metadata type
+     * @param relationshipTypeGUID the relationships type
+     * @param from starting index
+     * @param pageSize number of relationships to be returned after starting index
      * @return list of relationships for the given asset
      * @throws PropertyServerException   there is a problem retrieving information from the property server
      * @throws InvalidParameterException one of the parameters is null or invalid
