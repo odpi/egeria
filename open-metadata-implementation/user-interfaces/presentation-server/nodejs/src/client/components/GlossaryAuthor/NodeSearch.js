@@ -28,14 +28,13 @@ import {
   TableToolbarSearch,
 } from "carbon-components-react";
 
-
- // Responsible for issuing search requests on a node and displaying the results.
- // - the search is issue with debounce
- // - additional columns can be specified.
- // - the search has pagination
- // - the search results can be selected. When one or moe are selected - then the delete button is shown allowing, so a multiple delete can be issued.    
- // @param {*} props 
- //
+// Responsible for issuing search requests on a node and displaying the results.
+// - the search is issue with debounce
+// - additional columns can be specified.
+// - the search has pagination
+// - the search results can be selected. When one or moe are selected - then the delete button is shown allowing, so a multiple delete can be issued.
+// @param {*} props
+//
 const NodeSearch = (props) => {
   console.log("NodeSearch");
   const glossaryAuthorContext = useContext(GlossaryAuthorContext);
@@ -45,8 +44,8 @@ const NodeSearch = (props) => {
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize] = useState(10);
   const [errorMsg, setErrorMsg] = useState();
-  const [paginationOptions,setPaginationOptions] = useState();
-  // properties that will be displayed be default for a node 
+  const [paginationOptions, setPaginationOptions] = useState();
+  // properties that will be displayed be default for a node
   const mainProperties = [
     {
       key: "name",
@@ -82,7 +81,7 @@ const NodeSearch = (props) => {
   useEffect(
     () => {
       // Make sure we have a value (user has entered something in input)
- 
+
       if (debouncedSearchCriteria) {
         // Set isSearching state
         setIsSearching(true);
@@ -121,14 +120,14 @@ const NodeSearch = (props) => {
   const onPaginationChange = (options) => {
     console.log("onPaginationChange");
     console.log(options);
-    // save the pagination options in state 
+    // save the pagination options in state
     setPaginationOptions(options);
     refreshSearchResults();
   };
   const [headerData, setHeaderData] = useState(mainProperties);
   const additionalProperties = calculateAdditionalProperties();
   let selectedAdditionalProperties = [];
-   
+
   // calculate the results table header - this will be the default columns plus any additional coliumns the user has specified
   function calculateHeaderData() {
     let allProperties = mainProperties;
@@ -146,7 +145,7 @@ const NodeSearch = (props) => {
     setHeaderData(allProperties);
   }
   // refresh the displayed search results
-  // this involves taking the results from state and calculating what we need to display pased on the pagination options 
+  // this involves taking the results from state and calculating what we need to display pased on the pagination options
   // current page is the subset of results that are displayed.
   function refreshSearchResults() {
     if (results && results.length > 0) {
@@ -171,7 +170,7 @@ const NodeSearch = (props) => {
     } else {
       setCurrentPage([]);
     }
-  } 
+  }
   // Additonal attributes can be selected so more columns can be shown
   // the additional attriniutes are in selectedAdditionalProperties
   const onAdditionalAttributesChanged = (items) => {
@@ -205,7 +204,7 @@ const NodeSearch = (props) => {
     });
     return items;
   }
-  // TODO may not use this 
+  // TODO may not use this
   const handleAdd = (e) => {
     console.log("handleAdd" + e);
   };
@@ -259,7 +258,7 @@ const NodeSearch = (props) => {
           setErrorMsg(errorMsg + ",\n" + msg);
           document.getElementById("nodeCreateButton").classList.add("shaker");
         }
-        // re issue the search to refresh the results table to account for any deletes. 
+        // re issue the search to refresh the results table to account for any deletes.
         issueSearch(debouncedSearchCriteria);
       })
       .catch((res) => {
