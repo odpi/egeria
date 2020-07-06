@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.assetlineage.server;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.apache.commons.collections4.CollectionUtils;
-import org.odpi.openmetadata.accessservices.assetlineage.handlers.GlossaryHandler;
+import org.odpi.openmetadata.accessservices.assetlineage.handlers.AssetContextHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.outtopic.AssetLineagePublisher;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
@@ -56,8 +56,8 @@ public class AssetLineageRestServices {
 
         String methodName = "initialLoadByRelationshipType";
         try {
-            GlossaryHandler glossaryHandler = instanceHandler.getGlossaryHandler(userId, serverName, methodName);
-            List<EntityDetail> entitiesByTypeName = glossaryHandler.getEntitiesByTypeName(userId, entityType);
+            AssetContextHandler assetContextHandler = instanceHandler.getAssetContextHandler(userId, serverName, methodName);
+            List<EntityDetail> entitiesByTypeName = assetContextHandler.getEntitiesByTypeName(userId, entityType);
             if (CollectionUtils.isEmpty(entitiesByTypeName)) {
                 return response;
             }

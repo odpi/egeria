@@ -53,20 +53,6 @@ public class GlossaryHandler {
     }
 
     /**
-     * @param userId the user id
-     * @return the existing list of glossary terms available in the repository
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException    something went wrong with the REST call stack.
-     */
-    public List<EntityDetail> getEntitiesByTypeName(String userId, String entityType) throws UserNotAuthorizedException, PropertyServerException {
-        final String methodName = "getGlossaryTerms";
-
-        String typeDefGUID = handlerHelper.getTypeByName(userId, entityType);
-
-        return repositoryHandler.getEntitiesByType(userId, typeDefGUID, 0, 0, methodName);
-    }
-
-    /**
      * Returns the glossary term object corresponding to the supplied asset that can possibly have a glossary Term.
      *
      * @param assetGuid    guid of the asset that has been created

@@ -7,6 +7,8 @@ import org.odpi.openmetadata.accessservices.assetlineage.model.AssetContext;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefGallery;
@@ -66,6 +68,19 @@ public class AssetContextHandler {
         this.supportedZones = supportedZones;
     }
 
+    /**
+     * @param userId the user id
+     * @return the existing list of glossary terms available in the repository
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException    something went wrong with the REST call stack.
+     */
+    public List<EntityDetail> getEntitiesByTypeName(String userId, String entityTypeName) throws UserNotAuthorizedException, PropertyServerException {
+        final String methodName = "getEntitiesByTypeName";
+
+        String typeDefGUID = handlerHelper.getTypeByName(userId, entityTypeName);
+
+        return repositoryHandler.getEntitiesByType(userId, typeDefGUID, 0, 0, methodName);
+    }
 
     /**
      * Gets asset context.
