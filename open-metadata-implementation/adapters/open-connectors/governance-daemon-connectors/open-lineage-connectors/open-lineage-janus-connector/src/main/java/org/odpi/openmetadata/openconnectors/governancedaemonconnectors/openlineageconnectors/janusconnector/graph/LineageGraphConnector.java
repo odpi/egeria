@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.graph;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__;
 import org.apache.tinkerpop.gremlin.structure.Column;
@@ -69,6 +70,26 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_PREFIX_INSTANCE_PROPERTY;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_RELATIONSHIP_GUID;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_NAME_PORT_TYPE;
+import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.addE;
+import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.addV;
+import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.bothE;
+import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.hasLabel;
+import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.inE;
+import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.inV;
+import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.outV;
+import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.unfold;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.ASSET_SCHEMA_TYPE;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.ATTRIBUTE_FOR_SCHEMA;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.DATA_FILE;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.LINEAGE_MAPPING;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.NESTED_SCHEMA_ATTRIBUTE;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.PORT_DELEGATION;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.PORT_IMPLEMENTATION;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.PORT_SCHEMA;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.PROCESS;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.PROCESS_PORT;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.RELATIONAL_TABLE;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.*;
 
 public class LineageGraphConnector extends LineageGraphConnectorBase {
 
@@ -151,10 +172,12 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
      */
     private void findInputColumns(GraphTraversalSource g, String guid) {
         List<Vertex> inputPathsForColumns = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).out(PROCESS_PORT).out(PORT_DELEGATION)
-                                                 .has(PORT_IMPLEMENTATION, PROPERTY_NAME_PORT_TYPE, "INPUT_PORT")
-                                                 .out(PORT_SCHEMA).in(ATTRIBUTE_FOR_SCHEMA).out(LINEAGE_MAPPING)
-                                                 .or(__.out(ATTRIBUTE_FOR_SCHEMA).out(ASSET_SCHEMA_TYPE).has(PROPERTY_KEY_LABEL,DATA_FILE),
-                                                    __.out(NESTED_SCHEMA_ATTRIBUTE).has(PROPERTY_KEY_LABEL,RELATIONAL_TABLE)).toList();
+                .has(PORT_IMPLEMENTATION, PROPERTY_NAME_PORT_TYPE, "INPUT_PORT")
+                .out(PORT_SCHEMA).out(ATTRIBUTE_FOR_SCHEMA).in(LINEAGE_MAPPING)
+                .or(__.in(ATTRIBUTE_FOR_SCHEMA).in(ASSET_SCHEMA_TYPE)
+                                .has(PROPERTY_KEY_LABEL, DATA_FILE),
+                        __.in(NESTED_SCHEMA_ATTRIBUTE).has(PROPERTY_KEY_LABEL, RELATIONAL_TABLE)).toList();
+
 
         Vertex process = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).next();
         inputPathsForColumns.forEach(columnIn -> findOutputColumn(g, columnIn, process));
@@ -170,7 +193,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
     private void findOutputColumn(GraphTraversalSource g, Vertex columnIn, Vertex process) {
         List<Vertex> schemaElementVertex = g.V()
                 .has(PROPERTY_KEY_ENTITY_GUID, g.V(columnIn.id()).elementMap(PROPERTY_KEY_ENTITY_GUID).toList().get(0).get(PROPERTY_KEY_ENTITY_GUID))
-                .in(LINEAGE_MAPPING)
+                .out(LINEAGE_MAPPING)
                 .toList();
 
         Vertex vertexToStart;
@@ -360,17 +383,18 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
      */
     private void addOrUpdatePropertiesVertex(Vertex vertex, LineageEntity lineageEntity) {
 
-        Map<String, Object> properties = lineageEntity.getProperties().entrySet().stream().collect(Collectors.toMap(
-                e -> PROPERTY_KEY_PREFIX_ELEMENT + PROPERTY_KEY_PREFIX_INSTANCE_PROPERTY + e.getKey(),
+        Map<String, Object> properties  = lineageEntity.getProperties().entrySet().stream()
+                .filter(e -> StringUtils.isNotEmpty(e.getValue()))
+                .collect(Collectors.toMap(
+                e -> PROPERTY_KEY_PREFIX_ELEMENT+PROPERTY_KEY_PREFIX_INSTANCE_PROPERTY+e.getKey(),
                 Map.Entry::getValue));
 
-        properties.values().remove(null);
-        properties.computeIfAbsent(PROPERTY_KEY_ENTITY_CREATE_TIME, val -> lineageEntity.getCreateTime());
-        properties.computeIfAbsent(PROPERTY_KEY_ENTITY_CREATED_BY, val -> lineageEntity.getCreatedBy());
-        properties.computeIfAbsent(PROPERTY_KEY_ENTITY_UPDATE_TIME, val -> lineageEntity.getUpdateTime());
-        properties.computeIfAbsent(PROPERTY_KEY_ENTITY_UPDATED_BY, val -> lineageEntity.getUpdatedBy());
-        properties.computeIfAbsent(PROPERTY_KEY_LABEL, val -> lineageEntity.getTypeDefName());
-        properties.computeIfAbsent(PROPERTY_KEY_ENTITY_VERSION, val -> lineageEntity.getVersion());
+        properties.computeIfAbsent(PROPERTY_KEY_ENTITY_CREATE_TIME,val -> lineageEntity.getCreateTime());
+        properties.computeIfAbsent(PROPERTY_KEY_ENTITY_CREATED_BY,val -> lineageEntity.getCreatedBy());
+        properties.computeIfAbsent(PROPERTY_KEY_ENTITY_UPDATE_TIME,val -> lineageEntity.getUpdateTime());
+        properties.computeIfAbsent(PROPERTY_KEY_ENTITY_UPDATED_BY,val -> lineageEntity.getUpdatedBy());
+        properties.computeIfAbsent(PROPERTY_KEY_LABEL,val -> lineageEntity.getTypeDefName());
+        properties.computeIfAbsent(PROPERTY_KEY_ENTITY_VERSION,val -> lineageEntity.getVersion());
         properties.computeIfAbsent(PROPERTY_KEY_METADATA_ID, val -> lineageEntity.getMetadataCollectionId());
 
         g.inject(properties)
@@ -619,11 +643,11 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
             return null;
         }
 
-        try {
-            Iterator<Vertex> end = g.V(endingVertex.id())
-                    .or(__.out(ATTRIBUTE_FOR_SCHEMA).out(ASSET_SCHEMA_TYPE)
-                                    .has(PROPERTY_KEY_LABEL, DATA_FILE).store(VERTEX),
-                            __.out(NESTED_SCHEMA_ATTRIBUTE).has(PROPERTY_KEY_LABEL, RELATIONAL_TABLE)
+        try{
+            Iterator<Vertex> end =  g.V(endingVertex.id())
+                    .or(__.in(ATTRIBUTE_FOR_SCHEMA).in(ASSET_SCHEMA_TYPE)
+                                    .has(PROPERTY_KEY_LABEL,DATA_FILE).store(VERTEX),
+                            __.in(NESTED_SCHEMA_ATTRIBUTE).has(PROPERTY_KEY_LABEL,RELATIONAL_TABLE)
                                     .store(VERTEX)).select(VERTEX).unfold();
 
             if (!end.hasNext()) {
