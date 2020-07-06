@@ -15,7 +15,7 @@ service:
 egeria:
   #logging: OFF
   development: true
-  version: 2.1-SNAPSHOT
+  version: "2.1-SNAPSHOT"
 
 # Defaults for the images (can be overridden here or individually, see comment below)
 # Note for egeria provided images we use the version specified above
