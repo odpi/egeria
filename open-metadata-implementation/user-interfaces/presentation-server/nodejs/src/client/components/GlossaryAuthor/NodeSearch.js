@@ -322,7 +322,10 @@ const NodeSearch = (props) => {
                 >
                   Delete
                 </TableBatchAction>
-                <TableBatchAction onClick={handleEdit(selectedRows)}>
+                <TableBatchAction
+                 onClick={handleEdit(selectedRows)}
+                 >
+
                   Edit
                 </TableBatchAction>
               </TableBatchActions>
