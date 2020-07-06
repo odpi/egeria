@@ -65,18 +65,15 @@ public class LineageGraphConnectorHelper {
      * The queried node can be a column or table.
      *
      * @param guid The guid of the node of which the lineage is queried of. This can be a column or a table.
-     *
      * @return a subgraph in an Open Lineage specific format.
      */
+
     LineageVerticesAndEdges ultimateSource(String guid, boolean includeProcesses) {
 
         Graph sourceGraph = (Graph)
                 g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).
-                        union(
-                                inE(EDGE_LABEL_SEMANTIC_ASSIGNMENT, EDGE_LABEL_CLASSIFICATION).subgraph("subGraph").outV().simplePath(),
-                                until(inE(EDGE_LABEL_DATAFLOW_WITH_PROCESS, EDGE_LABEL_SEMANTIC_ASSIGNMENT).count().is(0)).
-                                        repeat((Traversal) inE(EDGE_LABEL_DATAFLOW_WITH_PROCESS, EDGE_LABEL_SEMANTIC_ASSIGNMENT,
-                                                EDGE_LABEL_CLASSIFICATION).subgraph("subGraph").outV().simplePath())
+                        until(inE(EDGE_LABEL_DATAFLOW_WITH_PROCESS).count().is(0)).
+                        repeat((Traversal) inE(EDGE_LABEL_DATAFLOW_WITH_PROCESS).subgraph("subGraph").outV().simplePath()
                         ).cap("subGraph").next();
 
         List<Vertex> sourcesList = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).
@@ -92,18 +89,15 @@ public class LineageGraphConnectorHelper {
      * The queried node can be a column or table.
      *
      * @param guid The guid of the node of which the lineage is queried of. This can be a column or table node.
-     *
      * @return a subgraph in an Open Lineage specific format.
      */
     LineageVerticesAndEdges ultimateDestination(String guid, boolean includeProcesses) {
 
         Graph destinationGraph = (Graph)
-                g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).
-                        union(
-                                inE(EDGE_LABEL_SEMANTIC_ASSIGNMENT, EDGE_LABEL_CLASSIFICATION).subgraph("subGraph").outV().simplePath(),
-                                until(outE(EDGE_LABEL_DATAFLOW_WITH_PROCESS).count().is(0)).
-                                        repeat((Traversal) outE(EDGE_LABEL_DATAFLOW_WITH_PROCESS).subgraph("subGraph").inV().simplePath())
-                        ).cap("subGraph").next();
+                g.V().has(PROPERTY_KEY_ENTITY_GUID, guid)
+                        .until(outE(EDGE_LABEL_DATAFLOW_WITH_PROCESS).count().is(0))
+                        .repeat((Traversal) outE(EDGE_LABEL_DATAFLOW_WITH_PROCESS).subgraph("subGraph").inV().simplePath())
+                        .cap("subGraph").next();
 
         List<Vertex> destinationsList = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).
                 until(outE(EDGE_LABEL_DATAFLOW_WITH_PROCESS).count().is(0)).
@@ -117,20 +111,18 @@ public class LineageGraphConnectorHelper {
      * Returns a subgraph containing all paths leading from any root node to the queried node, and all of the paths
      * leading from the queried node to any leaf nodes. The queried node can be a column or table.
      *
-     * @param guid       The guid of the node of which the lineage is queried of. This can be a column or a table.
-     * @param edgeLabels Traversed edges
-     *
+     * @param guid The guid of the node of which the lineage is queried of. This can be a column or a table.
      * @return a subgraph in an Open Lineage specific format.
      */
-    LineageVerticesAndEdges endToEnd(String guid, boolean includeProcesses, String... edgeLabels) {
+    LineageVerticesAndEdges endToEnd(String guid, boolean includeProcesses) {
 
         Graph endToEndGraph = (Graph)
                 g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).
                         union(
-                                until(inE(edgeLabels).count().is(0)).
-                                        repeat((Traversal) inE(edgeLabels).subgraph("subGraph").outV().simplePath()),
-                                until(outE(edgeLabels).count().is(0)).
-                                        repeat((Traversal) outE(edgeLabels).subgraph("subGraph").inV().simplePath())
+                                until(inE(EDGE_LABEL_DATAFLOW_WITH_PROCESS).count().is(0)).
+                                        repeat((Traversal) inE(EDGE_LABEL_DATAFLOW_WITH_PROCESS).subgraph("subGraph").outV().simplePath()),
+                                until(outE(EDGE_LABEL_DATAFLOW_WITH_PROCESS).count().is(0)).
+                                        repeat((Traversal) outE(EDGE_LABEL_DATAFLOW_WITH_PROCESS).subgraph("subGraph").inV().simplePath())
                         ).cap("subGraph").next();
 
         return getLineageVerticesAndEdges(endToEndGraph, includeProcesses);
@@ -141,7 +133,6 @@ public class LineageGraphConnectorHelper {
      * The queried node can be a column or table.
      *
      * @param guid The guid of the node of which the lineage is queried of. This can be a column or a table.
-     *
      * @return a subgraph in an Open Lineage specific format
      */
     LineageVerticesAndEdges sourceAndDestination(String guid, boolean includeProcesses) {
@@ -162,7 +153,6 @@ public class LineageGraphConnectorHelper {
      * columns or tables connected to synonyms of the queried glossary term.
      *
      * @param guid The guid of the glossary term of which the lineage is queried of.
-     *
      * @return a subgraph in an Open Lineage specific format.
      */
     LineageVerticesAndEdges glossary(String guid, boolean includeProcesses) {
@@ -211,7 +201,6 @@ public class LineageGraphConnectorHelper {
      * @param ultimateVertices list of ultimate vertices
      * @param condensationType the type of the condensation
      * @param includeProcesses Will filter out all processes and subprocesses from the response if false.
-     *
      * @return the subgraph in an Open Lineage specific format
      */
     private LineageVerticesAndEdges getCondensedLineage(String guid, GraphTraversalSource g, Graph subGraph, Set<LineageVertex> ultimateVertices,
@@ -240,7 +229,6 @@ public class LineageGraphConnectorHelper {
      * Map a Tinkerpop vertex to the Open Lineage format.
      *
      * @param originalVertex The vertex to be mapped.
-     *
      * @return The vertex in the Open Lineage format.
      */
     private LineageVertex abstractVertex(Vertex originalVertex) {
@@ -255,7 +243,7 @@ public class LineageGraphConnectorHelper {
             //Displayname key is stored inconsistently in the graphDB.
             String displayName = originalVertex.property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString();
             lineageVertex.setDisplayName(displayName);
-        } else if (originalVertex.property(PROPERTY_KEY_LABEL).isPresent()){
+        } else if (originalVertex.property(PROPERTY_KEY_LABEL).isPresent()) {
             // if no display props exist use the label. every vertex should have it
             String displayName = originalVertex.property(PROPERTY_KEY_LABEL).value().toString();
             lineageVertex.setDisplayName(displayName);
@@ -289,7 +277,6 @@ public class LineageGraphConnectorHelper {
      * properties that should not be returned to a UI.
      *
      * @param vertex the vertex to de mapped
-     *
      * @return the filtered properties of the vertex
      */
     private Map<String, String> retrieveProperties(Vertex vertex) {
@@ -348,7 +335,6 @@ public class LineageGraphConnectorHelper {
      * Map a tinkerpop Graph object to an Open Lineage specific format.
      *
      * @param subGraph The graph to be mapped.
-     *
      * @return The graph in an Open Lineage specific format.
      */
     private LineageVerticesAndEdges getLineageVerticesAndEdges(Graph subGraph, boolean includeProcesses) {
