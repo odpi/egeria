@@ -99,7 +99,7 @@ public class LineageGraphConnectorHelper {
      * @return a subgraph in an Open Lineage specific format.
      */
 
-    LineageVerticesAndEdges ultimateSource(String guid, boolean includeProcesses) {
+    public LineageVerticesAndEdges ultimateSource(String guid, boolean includeProcesses) {
 
         Graph sourceGraph = (Graph)
                 g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).
@@ -122,7 +122,7 @@ public class LineageGraphConnectorHelper {
      * @param guid The guid of the node of which the lineage is queried of. This can be a column or table node.
      * @return a subgraph in an Open Lineage specific format.
      */
-    LineageVerticesAndEdges ultimateDestination(String guid, boolean includeProcesses) {
+    public LineageVerticesAndEdges ultimateDestination(String guid, boolean includeProcesses) {
 
         Graph destinationGraph = (Graph)
                 g.V().has(PROPERTY_KEY_ENTITY_GUID, guid)
@@ -145,7 +145,7 @@ public class LineageGraphConnectorHelper {
      * @param guid The guid of the node of which the lineage is queried of. This can be a column or a table.
      * @return a subgraph in an Open Lineage specific format.
      */
-    LineageVerticesAndEdges endToEnd(String guid, boolean includeProcesses) {
+    public LineageVerticesAndEdges endToEnd(String guid, boolean includeProcesses) {
 
         Graph endToEndGraph = (Graph)
                 g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).
@@ -166,7 +166,7 @@ public class LineageGraphConnectorHelper {
      * @param guid The guid of the node of which the lineage is queried of. This can be a column or a table.
      * @return a subgraph in an Open Lineage specific format
      */
-    LineageVerticesAndEdges sourceAndDestination(String guid, boolean includeProcesses) {
+    public LineageVerticesAndEdges sourceAndDestination(String guid, boolean includeProcesses) {
         LineageVerticesAndEdges ultimateSourceResponse = ultimateSource(guid, includeProcesses);
         LineageVerticesAndEdges ultimateDestinationResponse = ultimateDestination(guid, includeProcesses);
 
@@ -186,7 +186,7 @@ public class LineageGraphConnectorHelper {
      * @param guid The guid of the glossary term of which the lineage is queried of.
      * @return a subgraph in an Open Lineage specific format.
      */
-    LineageVerticesAndEdges glossary(String guid, boolean includeProcesses) {
+    public LineageVerticesAndEdges glossary(String guid, boolean includeProcesses) {
 
         Graph subGraph = (Graph) g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).bothE(glossaryTermAndClassificationEdges)
                 .subgraph("s").cap("s").next();
