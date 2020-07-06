@@ -123,7 +123,7 @@ class TokenAjax extends PolymerElement {
         var resp   = evt.detail.request.xhr.response;
         // Token is not valid, log out.
         if(status > 299)
-            if (status === 401 || status === 403 || resp.exception == 'io.jsonwebtoken.ExpiredJwtException') {
+            if (status === 401 || status === 403 ) {
                 this.dispatchEvent(new CustomEvent('logout', {
                     bubbles: true,
                     composed: true,
