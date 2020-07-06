@@ -115,18 +115,6 @@ public class LineageGraphConnectorHelper {
         return getCondensedLineage(guid, g, sourceGraph, getLineageVertices(sourcesList), SOURCE_CONDENSATION, includeProcesses);
     }
 
- /*
-    old query for ultimate source
-    g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).
-            union(
-                    inE(EDGE_LABEL_SEMANTIC_ASSIGNMENT, EDGE_LABEL_CLASSIFICATION).subgraph("subGraph").outV().simplePath(),
-                    until(inE(EDGE_LABEL_DATAFLOW_WITH_PROCESS, EDGE_LABEL_SEMANTIC_ASSIGNMENT).count().is(0)).
-                            repeat((Traversal) inE(EDGE_LABEL_DATAFLOW_WITH_PROCESS, EDGE_LABEL_SEMANTIC_ASSIGNMENT,
-                                    EDGE_LABEL_CLASSIFICATION).subgraph("subGraph").outV().simplePath())
-            ).cap("subGraph").next();
-
- */
-
     /**
      * Returns a subgraph containing all leaf nodes of the full graph that are connected with the queried node.
      * The queried node can be a column or table.
@@ -150,33 +138,22 @@ public class LineageGraphConnectorHelper {
         return getCondensedLineage(guid, g, destinationGraph, getLineageVertices(destinationsList), DESTINATION_CONDENSATION, includeProcesses);
     }
 
-/*
-    old query for ultimateDestination
-    g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).
-            union(
-                    inE(EDGE_LABEL_SEMANTIC_ASSIGNMENT, EDGE_LABEL_CLASSIFICATION).subgraph("subGraph").outV().simplePath(),
-                    until(outE(EDGE_LABEL_DATAFLOW_WITH_PROCESS).count().is(0)).
-                            repeat((Traversal) outE(EDGE_LABEL_DATAFLOW_WITH_PROCESS).subgraph("subGraph").inV().simplePath())
-            ).cap("subGraph").next();
-*/
-
     /**
      * Returns a subgraph containing all paths leading from any root node to the queried node, and all of the paths
      * leading from the queried node to any leaf nodes. The queried node can be a column or table.
      *
-     * @param guid       The guid of the node of which the lineage is queried of. This can be a column or a table.
-     * @param edgeLabels Traversed edges
+     * @param guid The guid of the node of which the lineage is queried of. This can be a column or a table.
      * @return a subgraph in an Open Lineage specific format.
      */
-    LineageVerticesAndEdges endToEnd(String guid, boolean includeProcesses, String... edgeLabels) {
+    LineageVerticesAndEdges endToEnd(String guid, boolean includeProcesses) {
 
         Graph endToEndGraph = (Graph)
                 g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).
                         union(
-                                until(inE(edgeLabels).count().is(0)).
-                                        repeat((Traversal) inE(edgeLabels).subgraph("subGraph").outV().simplePath()),
-                                until(outE(edgeLabels).count().is(0)).
-                                        repeat((Traversal) outE(edgeLabels).subgraph("subGraph").inV().simplePath())
+                                until(inE(EDGE_LABEL_DATAFLOW_WITH_PROCESS).count().is(0)).
+                                        repeat((Traversal) inE(EDGE_LABEL_DATAFLOW_WITH_PROCESS).subgraph("subGraph").outV().simplePath()),
+                                until(outE(EDGE_LABEL_DATAFLOW_WITH_PROCESS).count().is(0)).
+                                        repeat((Traversal) outE(EDGE_LABEL_DATAFLOW_WITH_PROCESS).subgraph("subGraph").inV().simplePath())
                         ).cap("subGraph").next();
 
         return getLineageVerticesAndEdges(endToEndGraph, includeProcesses);
