@@ -2,9 +2,11 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.server.mappers.entities;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SystemAttributes;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Node;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.NodeType;
+import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.INodeMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.classifications.ClassificationFactory;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
@@ -21,7 +23,7 @@ import java.util.*;
  * Sub-classes of Node are expected to provide a mapper that extends this class, to provide the mappings for the properties that
  * they support.
  */
-abstract public class EntityDetailMapper {
+abstract public class EntityDetailMapper<N extends Node> implements INodeMapper<N> {
     protected final OMRSRepositoryHelper repositoryHelper;
     protected final OMRSAPIHelper omrsapiHelper;
     public EntityDetailMapper(OMRSAPIHelper omrsapiHelper) {
@@ -34,7 +36,7 @@ abstract public class EntityDetailMapper {
      * @param node to be mapped to (the target of the map)
      * @param omrsEntityDetail entitytDetail to be mapped from (the source of the mapping)
      */
-    protected void mapEntityDetailToNode(Node node, EntityDetail omrsEntityDetail)  {
+    protected void mapEntityDetailToNode(N node, EntityDetail omrsEntityDetail)  {
 
         node.setSystemAttributes(SubjectAreaUtils.createSystemAttributes(omrsEntityDetail));
         // Set properties
@@ -51,7 +53,7 @@ abstract public class EntityDetailMapper {
      * @param node supplied Node to be updated
      * @param omrsEntityDetailProperties entity detail properties
      */
-    private void mapEntityDetailPropertiesToNode(Node node, InstanceProperties omrsEntityDetailProperties) {
+    private void mapEntityDetailPropertiesToNode(N node, InstanceProperties omrsEntityDetailProperties) {
         // copy over effectivity
         node.setEffectiveFromTime(omrsEntityDetailProperties.getEffectiveFromTime());
         node.setEffectiveToTime(omrsEntityDetailProperties.getEffectiveToTime());
@@ -151,7 +153,7 @@ abstract public class EntityDetailMapper {
      * @param value the omrs primitive property value
      * @return true if it was a property we were expecting , otherwise false;
      */
-    protected boolean mapPrimitiveToNode(Node node, String propertyName, Object value) {
+    protected boolean mapPrimitiveToNode(N node, String propertyName, Object value) {
         return false;
     }
     /**
@@ -162,7 +164,7 @@ abstract public class EntityDetailMapper {
      * @param enumPropertyValue the omrs enum property value
      * @return true if it was a property we were expecting , otherwise false;
      */
-    protected boolean mapEnumToNode(Node node, String propertyName, EnumPropertyValue enumPropertyValue) {
+    protected boolean mapEnumToNode(N node, String propertyName, EnumPropertyValue enumPropertyValue) {
         return false;
     }
     /**
@@ -173,7 +175,7 @@ abstract public class EntityDetailMapper {
      * @param instancePropertyForMap the omrs map property value
      * @return true if it was a property we were expecting , otherwise false;
      */
-    protected boolean mapMapToNode(Node node, String propertyName, InstanceProperties instancePropertyForMap) {
+    protected boolean mapMapToNode(N node, String propertyName, InstanceProperties instancePropertyForMap) {
         return false;
     }
 
@@ -182,30 +184,30 @@ abstract public class EntityDetailMapper {
      * @param node source of the effectivity
      * @param instanceProperties instance properties to update
      */
-    private void mapNodeEffectivityToInstanceProperties(Node node, InstanceProperties instanceProperties) {
+    private void mapNodeEffectivityToInstanceProperties(N node, InstanceProperties instanceProperties) {
         instanceProperties.setEffectiveFromTime(node.getEffectiveFromTime());
         instanceProperties.setEffectiveToTime(node.getEffectiveToTime());
     }
-    private void mapOmrsClassificationsToNode(EntityDetail omrsEntityDetail, Node node) {
-        List<Classification> omrsclassifications = omrsEntityDetail.getClassifications() ;
-        if (omrsclassifications != null && !omrsclassifications.isEmpty()){
-            for (Classification omrsClassification:omrsclassifications) {
+    private void mapOmrsClassificationsToNode(EntityDetail omrsEntityDetail, N node) {
+        List<Classification> omrsclassifications = omrsEntityDetail.getClassifications();
+        if (CollectionUtils.isNotEmpty(omrsclassifications)) {
+            ClassificationFactory classficationFactory = new ClassificationFactory(omrsapiHelper);
+            List<org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification>
+                    existingClassifications = node.getClassifications();
+            if (existingClassifications == null) {
+                existingClassifications = new ArrayList<>();
+            }
+            for (Classification omrsClassification : omrsclassifications) {
                 String omrsClassificationName = omrsClassification.getName();
-                ClassificationFactory classficationFactory = new ClassificationFactory(omrsapiHelper);
-                org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification omasClassification = classficationFactory.getOMASClassification(omrsClassificationName,omrsClassification);
-                if (omasClassification !=null) {
+                org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification omasClassification = classficationFactory.getOMASClassification(omrsClassificationName, omrsClassification);
+                if (omasClassification != null) {
                     // this is a classification we know about.
-                    if (!updateNodeWithClassification(node,omasClassification)) {
-                        // need to add this classification to the classifications
-                        List<org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification> existingClassifications = node.getClassifications();
-                        if ( existingClassifications==null) {
-                            existingClassifications = new ArrayList<>();
-                        }
-                        existingClassifications.add(omasClassification);
-                        node.setClassifications(existingClassifications);
-                    }
+                    updateNodeWithClassification(node, omasClassification);
+                    // need to add this classification to the classifications
+                    existingClassifications.add(omasClassification);
                 }
             }
+            node.setClassifications(existingClassifications);
         }
     }
 
@@ -216,7 +218,7 @@ abstract public class EntityDetailMapper {
      * @param omasClassification classification
      * @return flag true if the classification has been dealt with
      */
-    abstract boolean updateNodeWithClassification(Node node, org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification omasClassification);
+    abstract boolean updateNodeWithClassification(N node, org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification omasClassification);
 
     /**
      * This method is supplied a list of OMAS classifications and a supplied entityDetail object. The OMAS Classifications are converted to OMRS classifications and then then
@@ -245,7 +247,7 @@ abstract public class EntityDetailMapper {
      * @param node supplied node, which is a Subject Area Concept
      * @return EntityDetail, which is an OMRS concept
      */
-    public EntityDetail mapNodeToEntityDetail(Node node) {
+    public EntityDetail toEntityDetail(N node) {
         String methodName = "mapNodeToEntityDetail";
 
         EntityDetail omrsEntityDetail = new EntityDetail();
@@ -318,9 +320,21 @@ abstract public class EntityDetailMapper {
         return omrsEntityDetail;
     }
 
-    abstract String getTypeName();
+    @Override
+    public abstract String getTypeName();
 
-    protected void populateAdditionalProperties(Node node, InstanceProperties instanceProperties) {
+    /**
+     * get the EntityTypeDef Guid
+     * This method should be overridden to provide the appropriate guid for the type.
+     *
+     * @return the guid of the entity typedef
+     */
+    @Override
+    public String getTypeDefGuid() {
+        return omrsapiHelper.getTypeDefGUID(getTypeName());
+    }
+
+    protected void populateAdditionalProperties(N node, InstanceProperties instanceProperties) {
         Map<String,String> map =node.getAdditionalProperties();
         MapPropertyValue mapPropertyValue = new MapPropertyValue();
 
@@ -340,7 +354,7 @@ abstract public class EntityDetailMapper {
      * @param node supplied node
      * @return inlined classifications.
      */
-    abstract  List<org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification> getInlinedClassifications(Node node);
+    abstract  List<org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification> getInlinedClassifications(N node);
 
     /**
      * Map the supplied Node to omrs InstanceProperties.
@@ -348,7 +362,7 @@ abstract public class EntityDetailMapper {
      * @param node supplied node
      * @param instanceProperties equivalent instance properties to the Node
      */
-    protected void mapNodeToInstanceProperties(Node node, InstanceProperties instanceProperties) {
+    protected void mapNodeToInstanceProperties(N node, InstanceProperties instanceProperties) {
 
     }
 }

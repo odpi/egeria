@@ -30,9 +30,9 @@
     <packaging>jar</packaging>
 
     <properties>
-        <node.version>v12.14.1</node.version>
+        <node.version>v12.18.2</node.version>
         <node.downloadRoot>https://nodejs.org/dist/</node.downloadRoot>
-        <npm.version>6.13.4</npm.version>
+        <npm.version>6.14.5</npm.version>
         <npm.downloadRoot>https://registry.npmjs.org/npm/-/</npm.downloadRoot>
         <polymer.build>es6-unbundled</polymer.build>
     </properties>
@@ -149,6 +149,12 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>repository-services-client</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.javassist</groupId>
+                    <artifactId>javassist</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
@@ -189,6 +195,12 @@
         <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-jpa</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.javassist</groupId>
+                    <artifactId>javassist</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
@@ -346,7 +358,7 @@
                             <goal>npm</goal>
                         </goals>
                         <configuration>
-                            <arguments>install polymer-cli --prefix .</arguments>
+                            <arguments>install polymer-cli --silent --prefix .</arguments>
                             <workingDirectory>tools</workingDirectory>
                         </configuration>
                     </execution>
@@ -420,7 +432,7 @@
                 <configuration>
                     <layout>ZIP</layout>
                 </configuration>
-		        <executions>
+                <executions>
                     <execution>
                         <goals>
                             <goal>repackage</goal>
@@ -499,7 +511,7 @@
                                 <ignoredUnusedDeclaredDependency>org.odpi.egeria:*spring*
                                 </ignoredUnusedDeclaredDependency>
                                 <ignoredUnusedDeclaredDependency>javax.xml.bind:*jaxb*</ignoredUnusedDeclaredDependency>
-=                                <!-- Spring enablement - false positives from dependency checker -->
+                                <!-- Spring enablement - false positives from dependency checker -->
                                 <ignoredUnusedDeclaredDependency>org.springframework.boot:spring-boot-starter-web:*
                                 </ignoredUnusedDeclaredDependency>
                                 <ignoredUnusedDeclaredDependency>

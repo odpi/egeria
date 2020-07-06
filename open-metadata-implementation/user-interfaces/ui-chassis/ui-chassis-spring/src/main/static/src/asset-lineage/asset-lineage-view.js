@@ -339,7 +339,8 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
     }
 
     _hideIncludeGlossaryTerms(usecase) {
-    return !("ultimateDestination" === usecase || "ultimateSource" === usecase) ;
+        // return !("ultimateDestination" === usecase || "ultimateSource" === usecase) ;
+        return true;
     }
 }
 
