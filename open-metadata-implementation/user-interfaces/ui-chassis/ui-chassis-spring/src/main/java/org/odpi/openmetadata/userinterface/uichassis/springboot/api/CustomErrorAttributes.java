@@ -14,7 +14,7 @@ public class CustomErrorAttributes extends DefaultErrorAttributes {
     /**
      *
      * @param webRequest initial request
-     * @param errorCode
+     * @param errorCode the error code
      * @return error attributes to return to client
      */
     public Map<String, Object> getErrorAttributes(WebRequest webRequest, UserInterfaceErrorCodes errorCode) {
