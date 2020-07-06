@@ -1,7 +1,8 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-import React, { useState, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { GlossaryAuthorContext } from "../../contexts/GlossaryAuthorContext";
+import useDebounce from "./useDebounce";
 import Delete16 from "../../images/Egeria_delete_16";
 import Edit16 from "../../images/Egeria_edit_16";
 import {
@@ -27,16 +28,24 @@ import {
   TableToolbarSearch,
 } from "carbon-components-react";
 
+// Responsible for issuing search requests on a node and displaying the results.
+// - the search is issue with debounce
+// - additional columns can be specified.
+// - the search has pagination
+// - the search results can be selected. When one or moe are selected - then the delete button is shown allowing, so a multiple delete can be issued.
+// @param {*} props
+//
 const NodeSearch = (props) => {
   console.log("NodeSearch");
   const glossaryAuthorContext = useContext(GlossaryAuthorContext);
 
-  const [results, setResults] = useState([]);
   const [total, setTotal] = useState(0);
   const [currentPage, setCurrentPage] = useState([]);
   const [pageNumber, setPageNumber] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize] = useState(10);
   const [errorMsg, setErrorMsg] = useState();
+  const [paginationOptions, setPaginationOptions] = useState();
+  // properties that will be displayed be default for a node
   const mainProperties = [
     {
       key: "name",
@@ -51,6 +60,48 @@ const NodeSearch = (props) => {
       text: "Qualified Name",
     },
   ];
+  // State and setter for search term
+  const [searchCriteria, setSearchCriteria] = useState("");
+  // State and setter for search results
+  const [results, setResults] = useState([]);
+  // State for search status (whether there is a pending API request)
+  const [isSearching, setIsSearching] = useState(false);
+  // const [refresh, setRefresh] = useState(false);
+  // Now we call our hook, passing in the current searchCriteria value.
+  // The hook will only return the latest value (what we passed in) ...
+  // ... if it's been more than 500ms since it was last called.
+  // Otherwise, it will return the previous value of searchCriteria.
+  // The goal is to only have the API call fire when user stops typing ...
+  // ... so that we aren't hitting our API rapidly.
+  const debouncedSearchCriteria = useDebounce(searchCriteria, 500);
+
+  // let refresh = false;
+  // Here's where the API call happens
+  // We use useEffect since this is an asynchronous action
+  useEffect(
+    () => {
+      // Make sure we have a value (user has entered something in input)
+
+      if (debouncedSearchCriteria) {
+        // Set isSearching state
+        setIsSearching(true);
+        // Fire off our API call
+        issueSearch(debouncedSearchCriteria).then((results) => {
+          // Set back to false since request finished
+          setIsSearching(false);
+          // Set results state
+          setResults(results);
+        });
+      } else {
+        setResults([]);
+      }
+    },
+    // This is the useEffect input array
+    // Our useEffect function will only execute if this value changes ...
+    // ... and thanks to our hook it will only change if the original ...
+    // value (searchCriteria) hasn't changed for more than 500ms.
+    [debouncedSearchCriteria]
+  );
 
   const paginationProps = () => ({
     disabled: false,
@@ -65,15 +116,43 @@ const NodeSearch = (props) => {
     itemsPerPageText: "Items per page:",
     onChange: onPaginationChange,
   });
-  const onPaginationChange = (paginationOptions) => {
+  // driven when pagination options have changed - page size or page number
+  const onPaginationChange = (options) => {
     console.log("onPaginationChange");
-    console.log(paginationOptions);
+    console.log(options);
+    // save the pagination options in state
+    setPaginationOptions(options);
+    refreshSearchResults();
+  };
+  const [headerData, setHeaderData] = useState(mainProperties);
+  const additionalProperties = calculateAdditionalProperties();
+  let selectedAdditionalProperties = [];
+
+  // calculate the results table header - this will be the default columns plus any additional coliumns the user has specified
+  function calculateHeaderData() {
+    let allProperties = mainProperties;
+    if (
+      selectedAdditionalProperties !== undefined &&
+      selectedAdditionalProperties &&
+      selectedAdditionalProperties.length > 0
+    ) {
+      console.log("selectedAdditionalProperties.selectedItems 1");
+      console.log(selectedAdditionalProperties);
+      allProperties = mainProperties.concat(selectedAdditionalProperties);
+    }
+    console.log("allProperties 1");
+    console.log(allProperties);
+    setHeaderData(allProperties);
+  }
+  // refresh the displayed search results
+  // this involves taking the results from state and calculating what we need to display pased on the pagination options
+  // current page is the subset of results that are displayed.
+  function refreshSearchResults() {
     if (results && results.length > 0) {
       const pageSize = paginationOptions.pageSize;
       // if page = 1 and pageSize 10, currentPageStart = 1
       // if page = 2 and pageSize 10, currentPageStart = 11
       // if page = 2 and pageSize 10 and results.length = 15, currentPageStart = 11 , currentPageSize = 5
-
       const currentPageStart =
         (paginationOptions.page - 1) * paginationOptions.pageSize;
       let currentPageSize = pageSize;
@@ -91,26 +170,9 @@ const NodeSearch = (props) => {
     } else {
       setCurrentPage([]);
     }
-  };
-  const [headerData, setHeaderData] = useState(mainProperties);
-  const additionalProperties = calculateAdditionalProperties();
-  let selectedAdditionalProperties = [];
-
-  function calculateHeaderData() {
-    let allProperties = mainProperties;
-    if (
-      selectedAdditionalProperties !== undefined &&
-      selectedAdditionalProperties &&
-      selectedAdditionalProperties.length > 0
-    ) {
-      console.log("selectedAdditionalProperties.selectedItems 1");
-      console.log(selectedAdditionalProperties);
-      allProperties = mainProperties.concat(selectedAdditionalProperties);
-    }
-    console.log("allProperties 1");
-    console.log(allProperties);
-    setHeaderData(allProperties);
   }
+  // Additonal attributes can be selected so more columns can be shown
+  // the additional attriniutes are in selectedAdditionalProperties
   const onAdditionalAttributesChanged = (items) => {
     console.log("onAdditionalAttributesChanged");
     console.log(items.selectedItems);
@@ -125,6 +187,7 @@ const NodeSearch = (props) => {
     // render the table by recalculating the header state based on the new values
     calculateHeaderData();
   };
+  // calculate the columns from the main attributes and the additional attributes.
   function calculateAdditionalProperties() {
     let items = [];
     glossaryAuthorContext.currentNodeType.attributes.map(function (attribute) {
@@ -141,95 +204,143 @@ const NodeSearch = (props) => {
     });
     return items;
   }
-  const batchActionClick = (selectedRows) => {
-    console.log("batchActionClick" + selectedRows);
-  };
+  // TODO may not use this
   const handleAdd = (e) => {
     console.log("handleAdd" + e);
   };
-  const handleDelete = (e) => {
-    console.log("handleDelete" + e);
-  };
-  const handleEdit = (e) => {
-    console.log("handleEdit" + e);
-  };
-  const handleOnChange = (e) => {
-    e.preventDefault();
-    if (e.target.value && e.target.value.length > 0) {
-      setPageNumber(1);
-      setTotal(0);
-      const fetchUrl =
-        glossaryAuthorContext.currentNodeType.url +
-        "?offset=0&pageSize=1000&searchCriteria=" +
-        e.target.value;
-      fetch(fetchUrl, {
-        method: "get",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-      })
-        .then((res) => res.json())
-        .then((res) => {
-          if (res.relatedHTTPCode == 200 && res.result) {
-            const nodesArray = res.result;
-            // if there is a node response then we have successfully created a node
-            if (nodesArray) {
-              if (nodesArray.length > 0) {
-                let nodeRows = nodesArray.map(function (node, index) {
-                  let row = {};
-                  row.id = index;
-                  // row.name = node.name;
-                  // console.log(" name is " + row.name);
-                  // row.description = node.description;
-                  // row.qualifiedName = node.qualifiedName;
-                  for (const property in node) {
-                    console.log("result property is ", property);
-                    if (property == "glossary") {
-                      const glossary = node[property];
-                      row.glossaryName = glossary.name;
-                      row.glossaryGuid = glossary.guid;
-                    } else if (property == "systemAttributes") {
-                      row.guid = node[property].guid;
-                    } else {
-                      row[property] = node[property];
-                    }
-                  }
-                  return row;
-                });
-                setResults(nodeRows);
-                setCurrentPage(nodeRows.slice(0, pageSize));
-                setTotal(nodeRows.length);
-              } else {
-                // no results
-                setResults([]);
-              }
-            } else if (res.relatedHTTPCode) {
-              if (res.exceptionUserAction) {
-                msg = "Search Failed: " + res.exceptionUserAction;
-              } else {
-                msg =
-                  "search Failed unexpected Egeria response: " +
-                  JSON.stringify(res);
-              }
-            } else if (res.errno) {
-              if (res.errno == "ECONNREFUSED") {
-                msg = "Connection refused to the view server.";
-              } else {
-                // TODO create nice messages for all the http codes we think are relevant
-                msg = "Search Failed with http errno " + res.errno;
-              }
-            } else {
-              msg = "Search Failed - unexpected response" + JSON.stringify(res);
-            }
-            setErrorMsg(msg);
-          }
-        })
-        .catch((res) => {
-          setErrorMsg("Search Failed" + JSON.stringify(res));
-        });
+  const handleDelete = (selectedRows) => {
+    console.log("handleDelete" + selectedRows);
+    for (let i = 0; i < selectedRows.length; i++) {
+      issueDelete(selectedRows[i]);
     }
   };
+  const handleEdit = (e) => {
+    console.log("handleEdit" + JSON.stringify(e));
+  };
+  // issue the delete rest call for particular row
+  function issueDelete(selectedRow) {
+    const guid = selectedRow.id;
+    const url = glossaryAuthorContext.currentNodeType.url + "/" + guid;
+    console.log("issueDelete " + url);
+    let msg = "";
+    fetch(url, {
+      method: "delete",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log("delete completed " + JSON.stringify(res));
+        if (res.relatedHTTPCode == 200 && res.result) {
+          console.log("Delete successful for guid " + guid);
+        } else {
+          // if this is a formatted Egeria response, we have a user action
+          if (res.relatedHTTPCode) {
+            if (res.exceptionUserAction) {
+              msg = "Delete Failed: " + res.exceptionUserAction;
+            } else {
+              msg =
+                "Delete Failed unexpected Egeria response: " +
+                JSON.stringify(res);
+            }
+          } else if (res.errno) {
+            if (res.errno == "ECONNREFUSED") {
+              msg = "Connection refused to the view server.";
+            } else {
+              // TODO create nice messages for all the http codes we think are relevant
+              msg = "Delete Failed with http errno " + res.errno;
+            }
+          } else {
+            msg = "Delete Failed - unexpected response" + JSON.stringify(res);
+          }
+          setErrorMsg(errorMsg + ",\n" + msg);
+          document.getElementById("nodeCreateButton").classList.add("shaker");
+        }
+        // re issue the search to refresh the results table to account for any deletes.
+        issueSearch(debouncedSearchCriteria);
+      })
+      .catch((res) => {
+        msg = "Delete Failed - logic error " + JSON.stringify(res);
+        setErrorMsg(errorMsg + ",\n" + msg);
+      });
+  }
+  // issue search using a criteria
+  function issueSearch(criteria) {
+    setPageNumber(1);
+    setTotal(0);
+    // encode the URI. Be aware the more recent RFC3986 for URLs makes use of square brackets which are reserved (for IPv6)
+    const fetchUrl = encodeURI(
+      glossaryAuthorContext.currentNodeType.url +
+        "?offset=0&pageSize=1000&searchCriteria=" +
+        criteria
+    );
+    return fetch(fetchUrl, {
+      method: "get",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        if (res.relatedHTTPCode == 200 && res.result) {
+          const nodesArray = res.result;
+          // if there is a node response then we have successfully created a node
+          if (nodesArray) {
+            if (nodesArray.length > 0) {
+              let nodeRows = nodesArray.map(function (node, index) {
+                let row = {};
+                for (const property in node) {
+                  console.log("result property is ", property);
+                  if (property == "glossary") {
+                    const glossary = node[property];
+                    row.glossaryName = glossary.name;
+                    row.glossaryGuid = glossary.guid;
+                  } else if (property == "systemAttributes") {
+                    row.guid = node[property].guid;
+                    row.id = node[property].guid;
+                  } else {
+                    row[property] = node[property];
+                  }
+                }
+                return row;
+              });
+              setResults(nodeRows);
+              setCurrentPage(nodeRows.slice(0, pageSize));
+              setTotal(nodeRows.length);
+            } else {
+              // no results
+              setResults([]);
+              setCurrentPage([]);
+              setTotal(0);
+            }
+          } else if (res.relatedHTTPCode) {
+            if (res.exceptionUserAction) {
+              msg = "Search Failed: " + res.exceptionUserAction;
+            } else {
+              msg =
+                "search Failed unexpected Egeria response: " +
+                JSON.stringify(res);
+            }
+          } else if (res.errno) {
+            if (res.errno == "ECONNREFUSED") {
+              msg = "Connection refused to the view server.";
+            } else {
+              // TODO create nice messages for all the http codes we think are relevant
+              msg = "Search Failed with http errno " + res.errno;
+            }
+          } else {
+            msg = "Search Failed - unexpected response" + JSON.stringify(res);
+          }
+          setErrorMsg(msg);
+        }
+      })
+      .catch((res) => {
+        setErrorMsg("Search Failed" + JSON.stringify(res));
+      });
+  }
   return (
     <div>
       {glossaryAuthorContext.currentNodeType &&
@@ -260,9 +371,10 @@ const NodeSearch = (props) => {
           class="bx--search-input"
           type="text"
           id="search__input-1"
-          onChange={handleOnChange}
+          onChange={(e) => setSearchCriteria(e.target.value)}
           placeholder="Search"
         />
+        {isSearching && <div>Searching ...</div>}
         <svg
           focusable="false"
           preserveAspectRatio="xMidYMid meet"
@@ -318,14 +430,12 @@ const NodeSearch = (props) => {
                 {/* inside of you batch actions, you can include selectedRows */}
                 <TableBatchAction
                   primaryFocus
-                  onClick={handleDelete(selectedRows)}
+                  onClick={() => handleDelete(selectedRows)}
                 >
                   Delete
                 </TableBatchAction>
-                <TableBatchAction
-                 onClick={handleEdit(selectedRows)}
-                 >
 
+                <TableBatchAction onClick={() => handleEdit(selectedRows)}>
                   Edit
                 </TableBatchAction>
               </TableBatchActions>
