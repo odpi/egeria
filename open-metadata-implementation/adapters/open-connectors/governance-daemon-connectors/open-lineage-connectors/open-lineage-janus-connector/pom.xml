@@ -66,17 +66,27 @@
         </dependency>
 
 
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <scope>test</scope>
+        </dependency>
+
         <!-- berkeley & lucene aren't compile dependencies, so need exception for maven dependency plugin -->
         <dependency>
             <groupId>org.janusgraph</groupId>
             <artifactId>janusgraph-berkeleyje</artifactId>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.janusgraph/janusgraph-inmemory -->
+        <dependency>
+            <groupId>org.janusgraph</groupId>
+            <artifactId>janusgraph-inmemory</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.janusgraph</groupId>
             <artifactId>janusgraph-lucene</artifactId>
         </dependency>
-
 
         <dependency>
             <groupId>org.mockito</groupId>
@@ -149,6 +159,8 @@
                                 <ignoredUnusedDeclaredDependency>org.janusgraph:janusgraph-berkeleyje:*
                                 </ignoredUnusedDeclaredDependency>
                                 <ignoredUnusedDeclaredDependency>org.janusgraph:janusgraph-lucene:*
+                                </ignoredUnusedDeclaredDependency>
+                                <ignoredUnusedDeclaredDependency>org.janusgraph:janusgraph-inmemory:*
                                 </ignoredUnusedDeclaredDependency>
                             </ignoredUnusedDeclaredDependencies>
                         </configuration>
