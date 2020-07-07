@@ -1,11 +1,11 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-import React, { useState, useRef, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { GlossaryAuthorContext } from "../../contexts/GlossaryAuthorContext";
 import useDebounce from "./useDebounce";
 import NodeUpdate from "./NodeUpdate";
-import Delete16 from "../../images/Egeria_delete_16";
-import Edit16 from "../../images/Egeria_edit_16";
+// import Delete16 from "../../images/Egeria_delete_16";
+// import Edit16 from "../../images/Egeria_edit_16";
 import {
   Accordion,
   AccordionItem,
@@ -66,7 +66,7 @@ const NodeSearch = (props) => {
   const [searchCriteria, setSearchCriteria] = useState("");
   // State and setter for search results
   const [results, setResults] = useState([]);
-  
+
   // State for search status (whether there is a pending API request)
   const [isSearching, setIsSearching] = useState(false);
   // const [refresh, setRefresh] = useState(false);
@@ -152,27 +152,26 @@ const NodeSearch = (props) => {
   // current page is the subset of results that are displayed.
   function refreshSearchResults(passedPage, passedPageSize) {
     if (results && results.length > 0) {
-      // there seems to be an issue when paginationOptions in the pagination handler 
+      // there seems to be an issue when paginationOptions in the pagination handler
       // then calling this function, the first time paginationOptions is undefined.
-      // A circumvention is to pass the page and page size as parameters and use them if they are set.   
+      // A circumvention is to pass the page and page size as parameters and use them if they are set.
       let pageSize;
       let page;
       if (passedPage) {
-        page = passedPage
+        page = passedPage;
       } else {
         page = paginationOptions.page;
       }
       if (passedPageSize) {
-        pageSize = passedPageSize
+        pageSize = passedPageSize;
       } else {
         pageSize = paginationOptions.pageSize;
       }
-      
+
       // if page = 1 and pageSize 10, currentPageStart = 1
       // if page = 2 and pageSize 10, currentPageStart = 11
       // if page = 2 and pageSize 10 and results.length = 15, currentPageStart = 11 , currentPageSize = 5
-      const currentPageStart =
-        (page - 1) * pageSize;
+      const currentPageStart = (page - 1) * pageSize;
       let currentPageSize = pageSize;
       // if the last page is not complete ensure that we only specify up the end of the what is actually there in the results.
       if (currentPageStart + currentPageSize - 1 > results.length) {
@@ -529,4 +528,3 @@ const NodeSearch = (props) => {
 };
 
 export default NodeSearch;
-
