@@ -328,6 +328,32 @@ app.post("/servers/*", (req, res) => {
   }
 });
 
+app.delete("/servers/*", (req, res) => {
+  const incomingUrl = req.url;
+  console.log("/servers/* delete called " + incomingUrl);
+  if (validateURL(incomingUrl)) {
+    const instance = getAxiosInstance(incomingUrl);
+    instance
+      .delete()
+      .then(function (response) {
+        console.log("response.data");
+        console.log(response.data);
+        const resBody = response.data;
+        res.setHeader("Content-Type", "application/json");
+        res.json(resBody);
+      })
+      .catch(function (error) {
+        console.log(error);
+        res.status(400).send(error);
+      })
+      .then(function () {
+        // always executed
+      });
+  } else {
+    res.status(400).send("Error, invalid supplied URL: " + incomingUrl);
+  }
+});
+
 app.get("/servers/*", (req, res) => {
   const url = req.url;
   console.log("/servers/* get called " + url);
@@ -353,6 +379,8 @@ app.get("/servers/*", (req, res) => {
     res.status(400).send("Error, invalid supplied URL: " + url);
   }
 });
+
+
 
 app.use("*", loggedIn, (req, res) => {
   res.sendFile(joinedPath);
