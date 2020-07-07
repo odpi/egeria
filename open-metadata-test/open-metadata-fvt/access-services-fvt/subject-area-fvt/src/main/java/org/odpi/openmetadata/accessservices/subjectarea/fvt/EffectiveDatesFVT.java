@@ -71,7 +71,7 @@ public class EffectiveDatesFVT
         }
         try
         {
-            Glossary pastgloss =glossaryFVT.createPastFromGlossary(DEFAULT_TEST_PAST_GLOSSARY_NAME);
+            Glossary pastgloss = glossaryFVT.createPastFromGlossary(DEFAULT_TEST_PAST_GLOSSARY_NAME);
             FVTUtils.validateNode(pastgloss);
         } catch (InvalidParameterException e) {
             System.out.println("Expected creation of a Glossary with from in the past failed");
@@ -82,7 +82,7 @@ public class EffectiveDatesFVT
         } catch (InvalidParameterException e) {
             System.out.println("Expected creation of a Glossary with invalid Effectivity dates failed");
         }
-        Glossary futureGloss =glossaryFVT.createFutureGlossary(DEFAULT_TEST_FUTURE_GLOSSARY_NAME);
+        Glossary futureGloss = glossaryFVT.createFutureGlossary(DEFAULT_TEST_FUTURE_GLOSSARY_NAME);
         FVTUtils.validateNode(futureGloss);
         Term term5 =termFVT.createTerm(DEFAULT_TEST_TERM_NAME, futureGloss.getSystemAttributes().getGUID());
         FVTUtils.validateNode(term5);
