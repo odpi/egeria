@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.assetlineage.handlers;
 import org.odpi.openmetadata.accessservices.assetlineage.ffdc.exception.AssetLineageException;
 import org.odpi.openmetadata.accessservices.assetlineage.model.AssetContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
+import org.odpi.openmetadata.accessservices.assetlineage.util.SuperTypesRetriever;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
@@ -14,10 +15,21 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
 import static org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineageErrorCode.RELATIONSHIP_NOT_FOUND;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.*;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.ASSET_LINEAGE_OMAS;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.GUID_PARAMETER;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PORT_ALIAS;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PORT_IMPLEMENTATION;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PROCESS_PORT;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.TABULAR_COLUMN;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.immutableProcessRelationshipsTypes;
 
 /**
  * The process context handler provides methods to build lineage context from processes.
@@ -26,11 +38,11 @@ public class ProcessContextHandler {
 
     private static final Logger log = LoggerFactory.getLogger(ProcessContextHandler.class);
 
-    private final RepositoryHandler repositoryHandler;
     private final AssetContextHandler assetContextHandler;
     private final InvalidParameterHandler invalidParameterHandler;
     private final List<String> supportedZones;
     private final HandlerHelper handlerHelper;
+    private SuperTypesRetriever superTypesRetriever;
 
     private AssetContext graph;
 
@@ -50,17 +62,17 @@ public class ProcessContextHandler {
                                  List<String> supportedZones,
                                  List<String> lineageClassificationTypes) {
         this.invalidParameterHandler = invalidParameterHandler;
-        this.repositoryHandler = repositoryHandler;
         this.handlerHelper = new HandlerHelper(invalidParameterHandler, repositoryHelper, repositoryHandler, lineageClassificationTypes);
-        this.assetContextHandler= assetContextHandler;
+        this.assetContextHandler = assetContextHandler;
         this.supportedZones = supportedZones;
+        this.superTypesRetriever = new SuperTypesRetriever(repositoryHelper);
     }
 
     /**
      * Retrieves the full context for a Process
      *
-     * @param userId      String - userId of user making request.
-     * @param process     the asset that has been created
+     * @param userId  String - userId of user making request.
+     * @param process the asset that has been created
      * @return Map of the relationships between the Entities that are relevant to a Process
      */
     public Map<String, Set<GraphContext>> getProcessContext(String userId, EntityDetail process) throws OCFCheckedExceptionBase {
@@ -132,20 +144,42 @@ public class ProcessContextHandler {
         List<Relationship> relationships = handlerHelper.getRelationshipsByType(userId, startEntity.getGUID(), relationshipType, startEntityType);
         List<EntityDetail> entityDetails = new ArrayList<>();
         for (Relationship relationship : relationships) {
-            EntityDetail endEntity = handlerHelper.buildGraphEdgeByRelationship(userId, startEntity, relationship, graph, false);
-            if (endEntity == null) return Collections.emptyList();
-
-            if (endEntity.getType().getTypeDefName().equals(RELATIONAL_COLUMN)) {
-                AssetContext assetContext = assetContextHandler.getAssetContext(userId, endEntity);
-                Map<String, Set<GraphContext>> neighbors = assetContext.getNeighbors();
-                graph.getGraphContexts().addAll(assetContext.getGraphContexts());
-                graph.getNeighbors().putAll(assetContext.getNeighbors());
+            EntityDetail endEntity = handlerHelper.buildGraphEdgeByRelationship(userId, startEntity, relationship, graph);
+            if (endEntity == null) {
+                return Collections.emptyList();
             }
 
+            addContextForTabularColumns(userId, endEntity);
             entityDetails.add(endEntity);
         }
 
         return entityDetails;
+    }
+
+    /**
+     * Enhance the process context with Tabular Column context
+     * Add the asset neighbors for Tabular Column
+     *
+     * @param userId String - userId of user making request.
+     * @param entity details of the entity
+     * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
+     */
+    private void addContextForTabularColumns(String userId, EntityDetail entity) throws OCFCheckedExceptionBase {
+        Set<String> superTypes = superTypesRetriever.getSuperTypes(entity.getType().getTypeDefName());
+
+        if (superTypes.contains(TABULAR_COLUMN)) {
+            AssetContext assetContext = assetContextHandler.getAssetContext(userId, entity);
+            graph.getGraphContexts().addAll(assetContext.getGraphContexts());
+            assetContext.getNeighbors().forEach(this::mergeGraphNeighbors);
+        }
+    }
+
+    private void mergeGraphNeighbors(String k, Set<GraphContext> v) {
+        if (graph.getNeighbors().containsKey(k)) {
+            graph.getNeighbors().get(k).addAll(v);
+        } else {
+            graph.getNeighbors().put(k, v);
+        }
     }
 
     /**
