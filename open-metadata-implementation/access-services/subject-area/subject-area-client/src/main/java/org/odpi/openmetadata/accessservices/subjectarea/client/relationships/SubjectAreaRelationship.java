@@ -13,9 +13,9 @@ public interface SubjectAreaRelationship {
 
     /**
      * @return {@link SubjectAreaRelationshipClient} for client calls(described in {@link SubjectAreaClient})
-     * when working with Hasa objects
+     * when working with HasA objects
      */
-    SubjectAreaRelationshipClient<Hasa> hasa();
+    SubjectAreaRelationshipClient<HasA> hasA();
 
     /**
      * @return {@link SubjectAreaRelationshipClient} for client calls(described in {@link SubjectAreaClient})
@@ -85,15 +85,15 @@ public interface SubjectAreaRelationship {
 
     /**
      * @return {@link SubjectAreaRelationshipClient} for client calls(described in {@link SubjectAreaClient})
-     * when working with Isa objects
+     * when working with IsA objects
      */
-    SubjectAreaRelationshipClient<Isa> isa();
+    SubjectAreaRelationshipClient<IsA> isA();
 
     /**
      * @return {@link SubjectAreaRelationshipClient} for client calls(described in {@link SubjectAreaClient})
      * when working with IsaTypeOf objects
      */
-    SubjectAreaRelationshipClient<IsaTypeOf> isaTypeOf();
+    SubjectAreaRelationshipClient<IsATypeOf> isaTypeOf();
 
     /**
      * @return {@link SubjectAreaRelationshipClient} for client calls(described in {@link SubjectAreaClient})

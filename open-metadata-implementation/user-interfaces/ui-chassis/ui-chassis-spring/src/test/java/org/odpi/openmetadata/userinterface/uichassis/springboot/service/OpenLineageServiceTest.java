@@ -125,14 +125,15 @@ public class OpenLineageServiceTest {
         checkResponse(response);
     }
 
+    @SuppressWarnings("unchecked")
     private void checkResponse(Map<String, List> ultimateSource) {
         assertNotNull("Response is null", ultimateSource);
         assertEquals("Response should only contain nodes and edges",2, ultimateSource.size());
         assertTrue("Response should contain nodes", ultimateSource.containsKey("nodes"));
         assertTrue("Response should contain edges", ultimateSource.containsKey("edges"));
-        List nodes = ultimateSource.get("nodes");
+        List<Node> nodes = ultimateSource.get("nodes");;
         assertNotNull("List of nodes is null", nodes);
-        List<String> nodesIds = (List)nodes.stream().map(e -> ((Node) e).getId()).collect(Collectors.toList());
+        List<String> nodesIds = nodes.stream().map(e -> e.getId()).collect(Collectors.toList());
         assertEquals("Response should contain 4 nodes", 4, nodes.size());
         assertTrue("Response doesn't contain all nodes", nodesIds.containsAll(Arrays.asList("p0","p30", "p2")));
     }

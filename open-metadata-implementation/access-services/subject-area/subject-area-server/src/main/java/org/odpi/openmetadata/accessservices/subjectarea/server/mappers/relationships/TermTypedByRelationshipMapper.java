@@ -15,10 +15,10 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  * Mapping methods to map between the termTYPEDBYRelationship and the equivalent omrs Relationship.
  */
 @SubjectAreaMapper
-public class TermTYPEDBYRelationshipMapper extends LineMapper<TypedBy> {
+public class TermTypedByRelationshipMapper extends LineMapper<TypedBy> {
     public static final String TERM_TYPED_BY_RELATIONSHIP = "TermTYPEDBYRelationship";
 
-    public TermTYPEDBYRelationshipMapper(OMRSAPIHelper omrsapiHelper) {
+    public TermTypedByRelationshipMapper(OMRSAPIHelper omrsapiHelper) {
         super(omrsapiHelper);
     }
 

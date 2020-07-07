@@ -82,8 +82,8 @@ public class SubjectAreaLine implements SubjectAreaRelationship {
     }
 
     @Override
-    public SubjectAreaRelationshipClient<Hasa> hasa() {
-        return getClient(Hasa.class);
+    public SubjectAreaRelationshipClient<HasA> hasA() {
+        return getClient(HasA.class);
     }
 
     @Override
@@ -142,13 +142,13 @@ public class SubjectAreaLine implements SubjectAreaRelationship {
     }
 
     @Override
-    public SubjectAreaRelationshipClient<Isa> isa() {
-        return getClient(Isa.class);
+    public SubjectAreaRelationshipClient<IsA> isA() {
+        return getClient(IsA.class);
     }
 
     @Override
-    public SubjectAreaRelationshipClient<IsaTypeOf> isaTypeOf() {
-        return getClient(IsaTypeOf.class);
+    public SubjectAreaRelationshipClient<IsATypeOf> isaTypeOf() {
+        return getClient(IsATypeOf.class);
     }
 
     @Override
@@ -188,14 +188,14 @@ public class SubjectAreaLine implements SubjectAreaRelationship {
         }
     }
     @SubjectAreaLineClient
-    static class SubjectAreaHasaClient extends AbstractSubjectAreaRelationship<Hasa> {
+    static class SubjectAreaHasaClient extends AbstractSubjectAreaRelationship<HasA> {
         protected SubjectAreaHasaClient(SubjectAreaRestClient subjectAreaRestClient) {
             super(subjectAreaRestClient, HASA);
         }
 
         @Override
-        public Class<Hasa> type() {
-            return Hasa.class;
+        public Class<HasA> type() {
+            return HasA.class;
         }
     }
     @SubjectAreaLineClient
@@ -320,25 +320,25 @@ public class SubjectAreaLine implements SubjectAreaRelationship {
         }
     }
     @SubjectAreaLineClient
-    static class SubjectAreaIsaClient extends AbstractSubjectAreaRelationship<Isa> {
+    static class SubjectAreaIsaClient extends AbstractSubjectAreaRelationship<IsA> {
         protected SubjectAreaIsaClient(SubjectAreaRestClient subjectAreaRestClient) {
             super(subjectAreaRestClient, IS_A);
         }
 
         @Override
-        public Class<Isa> type() {
-            return Isa.class;
+        public Class<IsA> type() {
+            return IsA.class;
         }
     }
     @SubjectAreaLineClient
-    static class SubjectAreaIsaTypeOfClient extends AbstractSubjectAreaRelationship<IsaTypeOf> {
+    static class SubjectAreaIsaTypeOfClient extends AbstractSubjectAreaRelationship<IsATypeOf> {
         protected SubjectAreaIsaTypeOfClient(SubjectAreaRestClient subjectAreaRestClient) {
             super(subjectAreaRestClient, IS_A_TYPE_OF);
         }
 
         @Override
-        public Class<IsaTypeOf> type() {
-            return IsaTypeOf.class;
+        public Class<IsATypeOf> type() {
+            return IsATypeOf.class;
         }
     }
     @SubjectAreaLineClient
