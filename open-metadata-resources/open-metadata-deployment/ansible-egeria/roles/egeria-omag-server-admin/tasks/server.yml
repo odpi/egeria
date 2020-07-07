@@ -66,10 +66,7 @@
         connectorType:
           class: ConnectorType
           connectorProviderClassName: "{{ config.value.lineage_graph_provider }}"
-        configurationProperties:
-          graphDB: "{{ config.value.lineage_graph_db }}"
-          storageBackend: "{{ config.value.lineage_graph_storage }}"
-          indexSearchBackend: "{{ config.value.lineage_graph_index }}"
+        configurationProperties: "{{ config.value.configurationProperties}}"
   when: config.value.mode == 'open-lineage-service'
 
 - name: "{{ config.key }} data engine proxy service connectivity"
