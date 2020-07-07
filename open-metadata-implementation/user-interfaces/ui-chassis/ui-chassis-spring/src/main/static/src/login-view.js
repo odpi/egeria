@@ -35,7 +35,6 @@ class LoginView extends PolymerElement {
           align-items: center;
           justify-content: center;
         }
-        
         .login {
             padding: 16px;
             color: #757575;
@@ -43,6 +42,7 @@ class LoginView extends PolymerElement {
             background-color: #fff;
             box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
             max-width: 600px;
+            width: 100%;
             width: 100%;
         }
         
@@ -64,8 +64,9 @@ class LoginView extends PolymerElement {
         }
       </style>
       <iron-localstorage name="my-app-storage" value="{{token}}"></iron-localstorage>
-       
+      <iron-ajax id="ajax" url="/src/app/info" auto last-response="{{app}}" ></iron-ajax>
        <h2><div id="logo"></div></h2>
+       <div class="container6"><h3>[[app.title]]</h3></div>
        <div class="container6">
           <div   class="login">
              <iron-form id="form">
