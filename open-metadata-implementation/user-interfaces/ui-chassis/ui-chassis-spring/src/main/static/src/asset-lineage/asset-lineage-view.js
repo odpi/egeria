@@ -195,7 +195,16 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
         }
     }
 
-
+    _parseProperties(props){
+        var obj = {};
+        Object.keys(props).forEach(
+            (key)=> {
+                var newKey = key.split("vertex--").join("");
+                obj[newKey] = ""+props[key];
+            }
+        );
+        return obj;
+    }
 
     _graphDataChanged(data, newData) {
         if (data === null || data === undefined) {
@@ -210,6 +219,8 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
         }
         for (var i = 0; i < data.nodes.length; i++) {
             const egeriaColor = getComputedStyle(this).getPropertyValue('--egeria-primary-color');
+
+            data.nodes[i].properties = this._parseProperties(data.nodes[i].properties);
             data.nodes[i].displayName = data.nodes[i].label;
             data.nodes[i].type = data.nodes[i].group;
             data.nodes[i].label = '<b>'+data.nodes[i].label+'</b>';
@@ -218,8 +229,6 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
             let displayName;
             if (data.nodes[i].properties['tableDisplayName'] != null) {
                 displayName = data.nodes[i].properties['tableDisplayName']
-            } else if (data.nodes[i].properties['vertex--tableDisplayName'] != null) {
-                displayName = data.nodes[i].properties['vertex--tableDisplayName']
             }
             if (displayName != null) {
 
