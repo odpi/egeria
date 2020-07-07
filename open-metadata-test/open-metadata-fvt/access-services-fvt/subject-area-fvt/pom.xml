@@ -24,7 +24,19 @@
     <description>
         FVT resources for the Subject Area Open Metadata Access Service (OMAS).
     </description>
+
+    <!-- TODO: Properties used for FVT tests. Note tests currently hardcoded, whilst exec plugin is not. Needs consolidation -->
+    <properties>
+        <fvt.serverport>10443</fvt.serverport>
+        <fvt.servername>fvtserver</fvt.servername>
+        <fvt.user>garygeeke</fvt.user>
+        <fvt.maxwait>10</fvt.maxwait>
+        <!-- TODO: use of an out-of-module relative path isn't ideal, consider better approach -->
+        <fvt.platform-wd>../../../../open-metadata-distribution/open-metadata-assemblies/target/egeria-${open-metadata.version}-distribution/egeria-omag-${open-metadata.version}</fvt.platform-wd>
+    </properties>
+
     <dependencies>
+
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>subject-area-api</artifactId>
@@ -40,38 +52,182 @@
             <artifactId>subject-area-client</artifactId>
         </dependency>
 
+        <!-- Integration Tests will depend on the assembly -->
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>open-metadata-assemblies</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- FVT test wrapper uses JUnit5 -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <scope>test</scope>
+        </dependency>
+
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>repository-services-apis</artifactId>
         </dependency>
+
     </dependencies>
+
     <build>
         <plugins>
+            <!-- start and stop of the server before/after integration tests. Plugin is good at shutting down process -->
             <plugin>
-                <artifactId>maven-assembly-plugin</artifactId>
+                <groupId>com.bazaarvoice.maven.plugins</groupId>
+                <artifactId>process-exec-maven-plugin</artifactId>
                 <executions>
                     <execution>
-                        <phase>package</phase>
+                        <id>chassis-start</id>
+                        <phase>pre-integration-test</phase>
                         <goals>
-                            <goal>single</goal>
+                            <goal>start</goal>
                         </goals>
                         <configuration>
-                            <archive>
-                                <manifest>
-                                    <mainClass>org.odpi.openmetadata.accessservices.subjectarea.fvt.RunAllFVTNow
-                                    </mainClass>
-                                </manifest>
-                            </archive>
-                            <descriptorRefs>
-                                <descriptorRef>jar-with-dependencies</descriptorRef>
-                            </descriptorRefs>
-                            <appendAssemblyId>false</appendAssemblyId>
-                            <finalName>${project.artifactId}-${project.version}-full</finalName>
+                            <name>chassis-start</name>
+                            <!-- Hard coded path to locate executable . Note here we are in 'target' so it's one level further up than the clean plugin uses -->
+                            <workingDir>../${fvt.platform-wd}</workingDir>
+                            <waitForInterrupt>false</waitForInterrupt>
+                            <!-- check doesn't support SSL, so we can't use this yet. Maybe when PR addressed -->
+                            <!-- healthcheckUrl>https://localhost:${fvt.serverport}/open-metadata/platform-services/users/${fvt.user}/server-platform/origin</healthcheckUrl-->
+                            <waitAfterLaunch>${fvt.maxwait}</waitAfterLaunch>
+                            <processLogFile>${project.build.testOutputDirectory}/egeria.log</processLogFile>
+                            <arguments>
+                                <argument>java</argument>
+                                <argument>-Dserver.port=${fvt.serverport}</argument>
+                                <argument>-Dloader.path=lib</argument>
+                                <argument>-jar</argument>
+                                <argument>server/server-chassis-spring-${open-metadata.version}.jar</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                    <!--Stop all processes in reverse order-->
+                    <execution>
+                        <id>stop-all</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>stop-all</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Groovy (Java-like) is used to configure the server before the test -->
+            <plugin>
+                <groupId>org.codehaus.gmaven</groupId>
+                <artifactId>groovy-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>server-start</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>execute</goal>
+                        </goals>
+                        <configuration>
+                            <defaults>
+                                <name>Egeria chassis</name>
+                                <baseURL>https://localhost:${fvt.serverport}</baseURL>
+                                <server>${fvt.servername}</server>
+                                <user>${fvt.user}</user>
+                            </defaults>
+                                <source>${project.build.testSourceDirectory}/../script/configureStartServer.groovy</source>
+                        </configuration>
+                    </execution>
+                </executions>
+                <!-- need specific version here - pluginManagement etc not sufficient - the dependency version isn't enforced -->
+                <dependencies>
+                    <dependency>
+                        <groupId>org.codehaus.groovy</groupId>
+                        <artifactId>groovy</artifactId>
+                        <version>${groovy.version}</version>
+                        <classifier>indy</classifier>
+                    </dependency>
+                </dependencies>
+            </plugin>
+
+            <!-- failsafe is the main integration test driver. Use 'mvn clean verify' or 'mvn clean install' -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>test</id>
+                        <phase>integration-test</phase>
+                        <goals>
+                            <goal>integration-test</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>verify</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <!-- Catch the case where we haven't run tests - may point to a coding or environment issue -->
+                    <failIfNoTests>true</failIfNoTests>
+                </configuration>
+            </plugin>
+
+            <!-- Javadoc missing from SA fvt. Skipping for now -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+
+            <!-- We don't make use of the assembly at a jar level, but we need it to have been created to run the integration tests -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>analyze</id>
+                        <goals>
+                            <goal>analyze-only</goal>
+                        </goals>
+                        <configuration>
+                            <ignoredUnusedDeclaredDependencies combine.children="append">
+                                <ignoredUnusedDeclaredDependency>
+                                    org.odpi.egeria:open-metadata-assemblies:*
+                                </ignoredUnusedDeclaredDependency>
+                            </ignoredUnusedDeclaredDependencies>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
+
+            <!-- cleanup addition files we created - including the server config file created by launching the chassis for integration testing -->
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>${fvt.platform-wd}</directory>
+                            <includes>
+                                <include>*.config</include>
+                                <include>*.registrystore</include>
+                            </includes>
+                        </fileset>
+                        <fileset>
+                            <directory>${basedir}/src/main/static/build</directory>
+                        </fileset>
+                        <fileset>
+                            <directory>${basedir}/src/main/static/node_modules</directory>
+                        </fileset>
+                    </filesets>
+                </configuration>
+            </plugin>
+
         </plugins>
+
     </build>
 
 </project>
