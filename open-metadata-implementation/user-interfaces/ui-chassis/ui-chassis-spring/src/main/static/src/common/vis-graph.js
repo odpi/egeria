@@ -4,6 +4,7 @@
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 import  '@polymer/paper-progress/paper-progress';
 import '@polymer/paper-dialog/paper-dialog';
+import '@polymer/paper-drawer-panel/paper-drawer-panel';
 import './props-table';
 import '../asset-catalog/asset-tools';
 import '../shared-styles.js';
@@ -66,10 +67,7 @@ class VisGraph  extends mixinBehaviors([ItemViewBehavior], PolymerElement) {
           }
           
         </style>
-        
-        <div id="vis_container">
-          
-        </div>
+        <div id="vis_container"></div>
         <paper-dialog id="visDialog" class="vis-dialog">
           <div>
             <asset-tools guid="[[node.id]]" style="display: inline-flex"></asset-tools>
@@ -139,8 +137,8 @@ class VisGraph  extends mixinBehaviors([ItemViewBehavior], PolymerElement) {
     var container = this.$.vis_container;
     this.network = new vis.Network(container, data, this.options);
     var thisElement = this;
-    this.network.on('selectNode', function(params) {
-      thisElement.handleSelectNode(params);
+    this.network.on('click', function(params) {
+       thisElement.handleSelectNode(this.getNodeAt(params.pointer.DOM));
     });
     this.network.on('stabilizationProgress', function(params) {
       console.debug('graph stabilization in progress');
@@ -186,14 +184,16 @@ class VisGraph  extends mixinBehaviors([ItemViewBehavior], PolymerElement) {
     this.network.setOptions = this.options;
   }
 
-  handleSelectNode(params) {
-    for (var i = 0; i < this.data.nodes.length; i++) {
-      if(this.data.nodes[i].id === params.nodes[0]){
-        this.node = this.data.nodes[i];
-        break;
+  handleSelectNode(nodeId) {
+    if(nodeId){
+      for (var i = 0; i < this.data.nodes.length; i++) {
+        if(this.data.nodes[i].id === nodeId){
+          this.node = this.data.nodes[i];
+          break;
+        }
       }
+      this.$.visDialog.open();
     }
-    this.$.visDialog.open();
   }
 
   _graphChanged(value) {
