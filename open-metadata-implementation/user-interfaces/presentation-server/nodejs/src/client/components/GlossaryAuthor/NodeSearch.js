@@ -2,9 +2,12 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 import React, { useState, useContext } from "react";
 import { GlossaryAuthorContext } from "../../contexts/GlossaryAuthorContext";
+import Delete16 from "../../images/Egeria_delete_16";
+import Edit16 from "../../images/Egeria_edit_16";
 import {
   Accordion,
   AccordionItem,
+  Button,
   DataTable,
   MultiSelect,
   Pagination,
@@ -17,6 +20,11 @@ import {
   TableCell,
   TableHeader,
   TableBody,
+  TableToolbar,
+  TableToolbarContent,
+  TableBatchActions,
+  TableBatchAction,
+  TableToolbarSearch,
 } from "carbon-components-react";
 
 const NodeSearch = (props) => {
@@ -67,7 +75,7 @@ const NodeSearch = (props) => {
       // if page = 2 and pageSize 10 and results.length = 15, currentPageStart = 11 , currentPageSize = 5
 
       const currentPageStart =
-        1 + (paginationOptions.page - 1) * paginationOptions.pageSize;
+        (paginationOptions.page - 1) * paginationOptions.pageSize;
       let currentPageSize = pageSize;
       // if the last page is not complete ensure that we only specify up the end of the what is actually there in the results.
       if (currentPageStart + currentPageSize - 1 > results.length) {
@@ -133,12 +141,17 @@ const NodeSearch = (props) => {
     });
     return items;
   }
-  const isSelectedNode = () => {
-    let isSelected = false;
-    if (glossaryAuthorContext.selectedNode) {
-      isSelected = true;
-    }
-    return isSelected;
+  const batchActionClick = (selectedRows) => {
+    console.log("batchActionClick" + selectedRows);
+  };
+  const handleAdd = (e) => {
+    console.log("handleAdd" + e);
+  };
+  const handleDelete = (e) => {
+    console.log("handleDelete" + e);
+  };
+  const handleEdit = (e) => {
+    console.log("handleEdit" + e);
   };
   const handleOnChange = (e) => {
     e.preventDefault();
@@ -158,44 +171,62 @@ const NodeSearch = (props) => {
       })
         .then((res) => res.json())
         .then((res) => {
-          const nodesArray = res[glossaryAuthorContext.currentNodeType.plural];
-          // if there is a node response then we have successfully created a node
-          if (nodesArray) {
-            if (nodesArray.length > 0) {
-              let nodeRows = nodesArray.map(function (node, index) {
-                let row = {};
-                row.id = index;
-                // row.name = node.name;
-                // console.log(" name is " + row.name);
-                // row.description = node.description;
-                // row.qualifiedName = node.qualifiedName;
-                for (const property in node) {
-                  console.log("result property is ", property);
-                  if (property == "glossary") {
-                    const glossary = node[property];
-                    row.glossaryName = glossary.name;
-                    row.glossaryGuid = glossary.guid;
-                  } else if (property == "systemAttributes") {
-                    row.guid = node[property].guid;
-                  } else {
-                    row[property] = node[property];
+          if (res.relatedHTTPCode == 200 && res.result) {
+            const nodesArray = res.result;
+            // if there is a node response then we have successfully created a node
+            if (nodesArray) {
+              if (nodesArray.length > 0) {
+                let nodeRows = nodesArray.map(function (node, index) {
+                  let row = {};
+                  row.id = index;
+                  // row.name = node.name;
+                  // console.log(" name is " + row.name);
+                  // row.description = node.description;
+                  // row.qualifiedName = node.qualifiedName;
+                  for (const property in node) {
+                    console.log("result property is ", property);
+                    if (property == "glossary") {
+                      const glossary = node[property];
+                      row.glossaryName = glossary.name;
+                      row.glossaryGuid = glossary.guid;
+                    } else if (property == "systemAttributes") {
+                      row.guid = node[property].guid;
+                    } else {
+                      row[property] = node[property];
+                    }
                   }
-                }
-                return row;
-              });
-              setResults(nodeRows);
-              setCurrentPage(nodeRows.slice(0, pageSize));
-              setTotal(nodeRows.length);
+                  return row;
+                });
+                setResults(nodeRows);
+                setCurrentPage(nodeRows.slice(0, pageSize));
+                setTotal(nodeRows.length);
+              } else {
+                // no results
+                setResults([]);
+              }
+            } else if (res.relatedHTTPCode) {
+              if (res.exceptionUserAction) {
+                msg = "Search Failed: " + res.exceptionUserAction;
+              } else {
+                msg =
+                  "search Failed unexpected Egeria response: " +
+                  JSON.stringify(res);
+              }
+            } else if (res.errno) {
+              if (res.errno == "ECONNREFUSED") {
+                msg = "Connection refused to the view server.";
+              } else {
+                // TODO create nice messages for all the http codes we think are relevant
+                msg = "Search Failed with http errno " + res.errno;
+              }
             } else {
-              // no results
-              setResults([]);
+              msg = "Search Failed - unexpected response" + JSON.stringify(res);
             }
-          } else {
-            setErrorMsg("Create Failed with code " + res.errno);
+            setErrorMsg(msg);
           }
         })
         .catch((res) => {
-          setErrorMsg("Create Failed");
+          setErrorMsg("Search Failed" + JSON.stringify(res));
         });
     }
   };
@@ -274,10 +305,34 @@ const NodeSearch = (props) => {
           getHeaderProps,
           getSelectionProps,
           getRowProps,
+          getBatchActionProps,
+          onInputChange,
+          selectedRows,
         }) => (
           <TableContainer
             title={glossaryAuthorContext.currentNodeType.typeName}
           >
+            <TableToolbar>
+              {/* make sure to apply getBatchActionProps so that the bar renders */}
+              <TableBatchActions {...getBatchActionProps()}>
+                {/* inside of you batch actions, you can include selectedRows */}
+                <TableBatchAction
+                  primaryFocus
+                  onClick={handleDelete(selectedRows)}
+                >
+                  Delete
+                </TableBatchAction>
+                <TableBatchAction onClick={handleEdit(selectedRows)}>
+                  Edit
+                </TableBatchAction>
+              </TableBatchActions>
+              <TableToolbarSearch onChange={onInputChange} />
+              <TableToolbarContent>
+                <Button onClick={handleAdd} small kind="primary">
+                  Add new
+                </Button>
+              </TableToolbarContent>
+            </TableToolbar>
             <Table>
               <TableHead>
                 <TableRow>
