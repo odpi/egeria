@@ -2068,12 +2068,79 @@
                 <version>${open-metadata.version}</version>
             </dependency>
 
+
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
-                <artifactId>open-metadata-assemblies</artifactId>
+                <artifactId>server-chassis-spring</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>open-lineage-janus-connector</artifactId>
+                <version>${open-metadata.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>open-connector-archives</artifactId>
+                <version>${open-metadata.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>asset-create-avro-sample</artifactId>
+                <version>${open-metadata.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>asset-create-csv-sample</artifactId>
+                <version>${open-metadata.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>asset-reader-avro-sample</artifactId>
+                <version>${open-metadata.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>asset-reader-csv-sample</artifactId>
+                <version>${open-metadata.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>governance-leadership-sample</artifactId>
+                <version>${open-metadata.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>governance-zone-create-sample</artifactId>
+                <version>${open-metadata.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>subject-area-definition-sample</artifactId>
+                <version>${open-metadata.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>ui-chassis-spring</artifactId>
+                <version>${open-metadata.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>open-metadata-conformance-suite-client</artifactId>
+                <version>${open-metadata.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>egeria</artifactId>
+                <version>${open-metadata.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>admin-services-config-metadata-server-sample</artifactId>
+                <version>${open-metadata.version}</version>
+            </dependency>
+            <!-- End of POM dependency versions -->
 
             <dependency>
                 <groupId>org.slf4j</groupId>

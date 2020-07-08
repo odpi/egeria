@@ -1,0 +1,1053 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- Copyright Contributors to the ODPi Egeria project.  -->
+
+<assembly xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2"
+          xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
+    <formats>
+        <format>tar.gz</format>
+        <format>dir</format>
+    </formats>
+    <id>distribution</id>
+    <baseDirectory>egeria-omag-${open-metadata.version}</baseDirectory>
+    <fileSets>
+
+        <!-- OMAG Server-->
+        <!-- Copy the Jars for the OMAG Server-->
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/server-chassis/server-chassis-spring/target</directory>
+            <outputDirectory>./server</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <!-- Copy the properties for the OMAG Server-->
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/server-chassis/server-chassis-spring/src/main</directory>
+            <outputDirectory>./server</outputDirectory>
+            <includes>
+                <include>resources/*</include>
+            </includes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <!-- Copy the documentation for the OMAG Server-->
+
+        <fileSet>
+            <directory>../docs/omag-server</directory>
+            <outputDirectory>./server</outputDirectory>
+            <includes>
+                <include>*.md</include>
+            </includes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <!-- Open Connectors -->
+        <!-- Copy the Jars for all of the connector implementations -->
+
+        <!-- Standard Open Connectors -->
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/adapters/open-connectors/rest-client-connectors/spring-rest-client-connector/target</directory>
+            <outputDirectory>./server/lib</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}-jar-with-dependencies.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/adapters/open-connectors/configuration-store-connectors/configuration-encrypted-file-store-connector/target</directory>
+            <outputDirectory>./server/lib</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}-jar-with-dependencies.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/adapters/open-connectors/configuration-store-connectors/configuration-file-store-connector/target</directory>
+            <outputDirectory>./server/lib</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}-jar-with-dependencies.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/adapters/open-connectors/repository-services-connectors/audit-log-connectors/audit-log-slf4j-connector/target</directory>
+            <outputDirectory>./server/lib</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}-jar-with-dependencies.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/adapters/open-connectors/repository-services-connectors/audit-log-connectors/audit-log-file-connector/target</directory>
+            <outputDirectory>./server/lib</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}-jar-with-dependencies.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/adapters/open-connectors/repository-services-connectors/audit-log-connectors/audit-log-console-connector/target</directory>
+            <outputDirectory>./server/lib</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}-jar-with-dependencies.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/adapters/open-connectors/repository-services-connectors/audit-log-connectors/audit-log-event-topic-connector/target</directory>
+            <outputDirectory>./server/lib</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}-jar-with-dependencies.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/adapters/open-connectors/repository-services-connectors/cohort-registry-store-connectors/cohort-registry-file-store-connector/target</directory>
+            <outputDirectory>./server/lib</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}-jar-with-dependencies.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-collection-store-connectors/graph-repository-connector/target</directory>
+            <outputDirectory>./server/lib</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}-jar-with-dependencies.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-collection-store-connectors/omrs-rest-repository-connector/target</directory>
+            <outputDirectory>./server/lib</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}-jar-with-dependencies.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-collection-store-connectors/readonly-repository-connector/target</directory>
+            <outputDirectory>./server/lib</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}-jar-with-dependencies.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-collection-store-connectors/inmemory-repository-connector/target</directory>
+            <outputDirectory>./server/lib</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}-jar-with-dependencies.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/adapters/open-connectors/data-store-connectors/cassandra-data-store-connector/target</directory>
+            <outputDirectory>./server/lib</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}-jar-with-dependencies.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/adapters/open-connectors/data-store-connectors/file-connectors/avro-file-connector/target</directory>
+            <outputDirectory>./server/lib</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}-jar-with-dependencies.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/adapters/open-connectors/data-store-connectors/file-connectors/basic-file-connector/target</directory>
+            <outputDirectory>./server/lib</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}-jar-with-dependencies.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/adapters/open-connectors/data-store-connectors/file-connectors/csv-file-connector/target</directory>
+            <outputDirectory>./server/lib</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}-jar-with-dependencies.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/adapters/open-connectors/data-store-connectors/file-connectors/data-folder-connector/target</directory>
+            <outputDirectory>./server/lib</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}-jar-with-dependencies.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/adapters/open-connectors/data-store-connectors/gaian-connector/target</directory>
+            <outputDirectory>./server/lib</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}-jar-with-dependencies.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/adapters/open-connectors/governance-daemon-connectors/data-platform-connectors/cassandra-metadata-extractor-connector/target</directory>
+            <outputDirectory>./server/lib</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}-jar-with-dependencies.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/adapters/open-connectors/event-bus-connectors/open-metadata-topic-connectors/kafka-open-metadata-topic-connector/target</directory>
+            <outputDirectory>./server/lib</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}-jar-with-dependencies.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-archive-connectors/open-metadata-archive-file-connector/target</directory>
+            <outputDirectory>./server/lib</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}-jar-with-dependencies.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/adapters/open-connectors/event-bus-connectors/open-metadata-topic-connectors/inmemory-open-metadata-topic-connector/target</directory>
+            <outputDirectory>./server/lib</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}-jar-with-dependencies.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <!-- Sample Security Connectors -->
+
+        <fileSet>
+            <directory>../../open-metadata-resources/open-metadata-samples/open-metadata-security-samples/target</directory>
+            <outputDirectory>./server/lib</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}-jar-with-dependencies.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <!-- Janus connector for Open Lineage -->
+        <fileSet>
+            <directory>../../open-metadata-implementation/adapters/open-connectors/governance-daemon-connectors/open-lineage-connectors/open-lineage-janus-connector/target</directory>
+            <outputDirectory>./server/lib</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}-jar-with-dependencies.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <!-- Discovery Connector -->
+        <fileSet>
+            <directory>../../open-metadata-implementation/adapters/open-connectors/discovery-service-connectors/target</directory>
+            <outputDirectory>./server/lib</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}-jar-with-dependencies.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <!-- Discovery Connector -->
+        <fileSet>
+            <directory>../../open-metadata-implementation/adapters/open-connectors/governance-daemon-connectors/security-officer-connectors/security-officer-tag-connector/target</directory>
+            <outputDirectory>./server/lib</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}-jar-with-dependencies.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/adapters/open-connectors/governance-daemon-connectors/view-generator-connectors/target</directory>
+            <outputDirectory>./server/lib</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}-jar-with-dependencies.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/adapters/open-connectors/governance-daemon-connectors/security-sync-connectors/ranger-connector/target</directory>
+            <outputDirectory>./server/lib</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}-jar-with-dependencies.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <!-- Open Metadata Archives -->
+        <!-- Copy the archive utilities -->
+
+        <fileSet>
+            <directory>../../open-metadata-resources/open-metadata-archives/open-metadata-types/target</directory>
+            <outputDirectory>./utilities</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}*</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-resources/open-metadata-archives/design-model-archives/cloud-information-model/target</directory>
+            <outputDirectory>./utilities</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}*</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-resources/open-metadata-archives/design-model-archives/glossary-canonical-model/target</directory>
+            <outputDirectory>./utilities</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}*</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-resources/open-metadata-archives/open-connector-archives/target</directory>
+            <outputDirectory>./utilities</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}*</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <!-- Open Metadata Samples -->
+        <!-- Copy the archive utilities -->
+
+        <fileSet>
+            <directory>../../open-metadata-resources/open-metadata-samples/access-services-samples/asset-management-samples/asset-reader-avro-sample/target</directory>
+            <outputDirectory>./samples</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}*</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-resources/open-metadata-samples/access-services-samples/asset-management-samples/asset-reader-csv-sample/target</directory>
+            <outputDirectory>./samples</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}*</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-resources/open-metadata-samples/access-services-samples/asset-management-samples/asset-create-avro-sample/target</directory>
+            <outputDirectory>./samples</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}*</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-resources/open-metadata-samples/access-services-samples/asset-management-samples/asset-create-csv-sample/target</directory>
+            <outputDirectory>./samples</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}*</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-resources/open-metadata-samples/access-services-samples/governance-program-client-samples/governance-leadership-sample/target</directory>
+            <outputDirectory>./samples</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}*</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-resources/open-metadata-samples/access-services-samples/governance-program-client-samples/governance-zone-create-sample/target</directory>
+            <outputDirectory>./samples</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}*</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-resources/open-metadata-samples/access-services-samples/subject-area-client-samples/subject-area-definition-sample/target</directory>
+            <outputDirectory>./samples</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}*</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-resources/open-metadata-samples/admin-services-samples/admin-services-config-metadata-server-sample/target</directory>
+            <outputDirectory>./samples</outputDirectory>
+            <includes>
+                <include>*${open-metadata.version}*</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+
+        <!-- OMAG Clients-->
+        <!-- Copy the Jars for the OMAG Clients-->
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/access-services/asset-catalog/asset-catalog-client/target/</directory>
+            <outputDirectory>./clients</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/access-services/asset-consumer/asset-consumer-client/target/</directory>
+            <outputDirectory>./clients</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/access-services/asset-owner/asset-owner-client/target/</directory>
+            <outputDirectory>./clients</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/access-services/community-profile/community-profile-client/target/</directory>
+            <outputDirectory>./clients</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/access-services/data-engine/data-engine-client/target/</directory>
+            <outputDirectory>./clients</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/access-services/it-infrastructure/it-infrastructure-client/target/</directory>
+            <outputDirectory>./clients</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/access-services/data-manager/data-manager-client/target/</directory>
+            <outputDirectory>./clients</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/access-services/data-privacy/data-privacy-client/target/</directory>
+            <outputDirectory>./clients</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/access-services/data-process/data-process-client/target/</directory>
+            <outputDirectory>./clients</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/access-services/data-science/data-science-client/target/</directory>
+            <outputDirectory>./clients</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/access-services/dev-ops/dev-ops-client/target/</directory>
+            <outputDirectory>./clients</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/access-services/digital-architecture/digital-architecture-client/target/</directory>
+            <outputDirectory>./clients</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/access-services/discovery-engine/discovery-engine-client/target/</directory>
+            <outputDirectory>./clients</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/access-services/governance-engine/governance-engine-client/target/</directory>
+            <outputDirectory>./clients</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/access-services/governance-program/governance-program-client/target/</directory>
+            <outputDirectory>./clients</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/access-services/information-view/information-view-client/target/</directory>
+            <outputDirectory>./clients</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/access-services/project-management/project-management-client/target/</directory>
+            <outputDirectory>./clients</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/access-services/security-officer/security-officer-client/target/</directory>
+            <outputDirectory>./clients</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/access-services/software-developer/software-developer-client/target/</directory>
+            <outputDirectory>./clients</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/access-services/stewardship-action/stewardship-action-client/target/</directory>
+            <outputDirectory>./clients</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/access-services/subject-area/subject-area-client/target/</directory>
+            <outputDirectory>./clients</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/admin-services/admin-services-client/target</directory>
+            <outputDirectory>./clients</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <!-- Copy the documentation for the OMAG Clients-->
+
+        <fileSet>
+            <directory>docs/omag-client</directory>
+            <outputDirectory>./clients</outputDirectory>
+            <includes>
+                <include>*.md</include>
+            </includes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <!-- OMAG User Interface-->
+        <!-- Copy the Jars for the OMAG User Interface-->
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/user-interfaces/ui-chassis/ui-chassis-spring/target</directory>
+            <outputDirectory>./user-interface</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <!-- Copy the properties for the UI -->
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/user-interfaces/ui-chassis/ui-chassis-spring/src/main</directory>
+            <outputDirectory>./user-interface</outputDirectory>
+            <includes>
+                <include>resources/*</include>
+            </includes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <!-- Copy the documentation for the OMAG User Interface-->
+
+        <fileSet>
+            <directory>../docs/ui</directory>
+            <outputDirectory>./user-interface</outputDirectory>
+            <includes>
+                <include>*.md</include>
+            </includes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <!-- OMAG Conformance Suite-->
+        <!-- Copy the Jars for the OMAG Conformance Suite-->
+
+        <fileSet>
+            <directory>../../open-metadata-conformance-suite/open-metadata-conformance-suite-client/target/</directory>
+            <outputDirectory>./conformance-suite</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*javadoc*</exclude>
+                <exclude>*sources*</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <!-- Copy the documentation for the OMAG Conformance Suite-->
+
+        <fileSet>
+            <directory>docs/conformance-suite</directory>
+            <outputDirectory>./conformance-suite</outputDirectory>
+            <includes>
+                <include>*.md</include>
+            </includes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <!-- Copy the license and notice for the whole package-->
+
+        <fileSet>
+            <directory>../..</directory>
+            <outputDirectory>.</outputDirectory>
+            <includes>
+                <include>NOTICE</include>
+                <include>LICENSE</include>
+            </includes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <!-- include the key store -->
+        <fileSet>
+            <directory>../..</directory>
+            <outputDirectory>.</outputDirectory>
+            <includes>
+                <include>truststore.p12</include>
+            </includes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+    </fileSets>
+</assembly>
