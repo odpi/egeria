@@ -49,10 +49,12 @@ public class OpenLineageService {
     /**
      * @param userId           id of the user triggering the request
      * @param guid             unique identifier if the asset
-     * @param includeProcesses
+     * @param includeProcesses if true includes processes in the response
      * @return map of nodes and edges describing the ultimate sources for the asset
      */
-    public Map<String, List> getUltimateSource(String userId, String guid, boolean includeProcesses) {
+    public Map<String, List> getUltimateSource(String userId,
+                                               String guid,
+                                               boolean includeProcesses) {
         try {
             LineageVerticesAndEdges response = openLineageClient.lineage(userId, Scope.ULTIMATE_SOURCE, guid, "", includeProcesses);
             return processResponse(response);
@@ -66,10 +68,12 @@ public class OpenLineageService {
     /**
      * @param userId           id of the user triggering the request
      * @param guid             unique identifier if the asset
-     * @param includeProcesses
+     * @param includeProcesses if true includes processes in the response
      * @return map of nodes and edges describing the end to end flow
      */
-    public Map<String, List> getEndToEndLineage(String userId, String guid, boolean includeProcesses) {
+    public Map<String, List> getEndToEndLineage(String userId,
+                                                String guid,
+                                                boolean includeProcesses) {
         try {
             LineageVerticesAndEdges response =  openLineageClient.lineage(userId, Scope.END_TO_END, guid, "", includeProcesses);
             return processResponse(response);
@@ -82,10 +86,12 @@ public class OpenLineageService {
     /**
      * @param userId           id of the user triggering the request
      * @param guid             unique identifier if the asset
-     * @param includeProcesses
+     * @param includeProcesses if true includes processes in the response
      * @return map of nodes and edges describing the ultimate destinations of the asset
      */
-    public Map<String, List> getUltimateDestination(String userId, String guid, boolean includeProcesses) {
+    public Map<String, List> getUltimateDestination(String userId,
+                                                    String guid,
+                                                    boolean includeProcesses) {
         try {
             LineageVerticesAndEdges response = openLineageClient.lineage(userId, Scope.ULTIMATE_DESTINATION, guid, "",
                     includeProcesses);
@@ -100,10 +106,12 @@ public class OpenLineageService {
     /**
      * @param userId           id of the user triggering the request
      * @param guid             unique identifier if the asset
-     * @param includeProcesses
+     * @param includeProcesses if true includes processes in the response
      * @return map of nodes and edges describing the glossary terms linked to the asset
      */
-    public Map<String, List> getGlossaryLineage(String userId, String guid, boolean includeProcesses) {
+    public Map<String, List> getGlossaryLineage(String userId,
+                                                String guid,
+                                                boolean includeProcesses) {
         try {
             LineageVerticesAndEdges response =  openLineageClient.lineage(userId, Scope.GLOSSARY, guid, "", includeProcesses);
             return processResponse(response);
@@ -117,10 +125,12 @@ public class OpenLineageService {
     /**
      * @param userId           id of the user triggering the request
      * @param guid             unique identifier if the asset
-     * @param includeProcesses
+     * @param includeProcesses if true includes processes in the response
      * @return map of nodes and edges describing the ultimate sources and destinations of the asset
      */
-    public Map<String, List> getSourceAndDestination(String userId, String guid, boolean includeProcesses) {
+    public Map<String, List> getSourceAndDestination(String userId,
+                                                     String guid,
+                                                     boolean includeProcesses) {
         try {
             LineageVerticesAndEdges response = openLineageClient.lineage(userId, Scope.SOURCE_AND_DESTINATION, guid, "",
                     includeProcesses);
