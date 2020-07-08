@@ -2140,6 +2140,11 @@
                 <artifactId>admin-services-config-metadata-server-sample</artifactId>
                 <version>${open-metadata.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>open-metadata-assemblies</artifactId>
+                <version>${open-metadata.version}</version>
+            </dependency>
             <!-- End of POM dependency versions -->
 
             <dependency>
