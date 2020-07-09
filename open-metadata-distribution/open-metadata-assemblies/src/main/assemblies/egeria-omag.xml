@@ -6,7 +6,7 @@
 <assembly xmlns="http://maven.apache.org/ASSEMBLY/2.1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xsi:schemaLocation="http://maven.apache.org/ASSEMBLY/2.1.0 http://maven.apache.org/xsd/assembly-2.1.0.xsd">
     <formats>
-        <!--format>tar.gz</format-->
+        <format>tar.gz</format>
         <format>dir</format>
     </formats>
     <id>distribution</id>
@@ -48,11 +48,17 @@
                 <includeModuleDirectory>false</includeModuleDirectory>
                 <fileSets>
                     <fileSet>
-                        <outputDirectory>./server</outputDirectory>
+                        <outputDirectory>./server/doc</outputDirectory>
                         <includes>
-                            <include>*.md</include>
-                            <include>src/main/resources/*</include>
-
+                            <include>README.md</include>
+                        </includes>
+                    </fileSet>
+                    <!-- A seperate fileset for the docs so we can pull up files from src/main/resources to the top level output dir -->
+                    <fileSet>
+                        <outputDirectory>./server/resources</outputDirectory>
+                        <directory>src/main/resources</directory>
+                        <includes>
+                            <include>*</include>
                         </includes>
                     </fileSet>
                 </fileSets>
@@ -124,7 +130,7 @@
         <moduleSet>
             <useAllReactorProjects>true</useAllReactorProjects>
             <includes>
-                <include>org.odpi.egeria:admin-services-config-metadata-sample:*</include>
+                <include>org.odpi.egeria:admin-services-config-metadata-server-sample:*</include>
                 <include>org.odpi.egeria:asset-create-avro-sample:*</include>
                 <include>org.odpi.egeria:asset-create-csv-sample:*</include>
                 <include>org.odpi.egeria:asset-reader-avro-sample:*</include>
@@ -132,7 +138,6 @@
                 <include>org.odpi.egeria:governance-leadership-sample:*</include>
                 <include>org.odpi.egeria:governance-zone-create-sample:*</include>
                 <include>org.odpi.egeria:subject-area-definition-sample:*</include>
-                <include>org.odpi.egeria:config-metadata-server-sample:*</include>
                 <include>org.odpi.egeria:open-connector-archives:*</include>
             </includes>
             <binaries>
@@ -175,18 +180,6 @@
                 <includeDependencies>true</includeDependencies>
             </binaries>
             <!-- TODO: Consider if samples should have sources - or be in another assembly -->
-            <sources>
-                <!-- Don't include the module name under 'server' ie server-chassis-spring -->
-                <includeModuleDirectory>false</includeModuleDirectory>
-                <fileSets>
-                    <fileSet>
-                        <outputDirectory>./clients</outputDirectory>
-                        <includes>
-                            <include>*.md</include>
-                        </includes>
-                    </fileSet>
-                </fileSets>
-            </sources>
         </moduleSet>
         <!-- User Interface -->
         <moduleSet>
@@ -207,10 +200,10 @@
                 <includeModuleDirectory>false</includeModuleDirectory>
                 <fileSets>
                     <fileSet>
-                        <outputDirectory>./user-interface</outputDirectory>
+                        <outputDirectory>./user-interface/resources</outputDirectory>
+                        <directory>src/main/resources</directory>
                         <includes>
-                            <include>src/main/resources/*</include>
-                            <include>*.md</include>
+                            <include>*</include>
                         </includes>
                     </fileSet>
                 </fileSets>
@@ -225,13 +218,13 @@
             <binaries>
                 <outputDirectory>./conformance-suite</outputDirectory>
                 <unpack>false</unpack>
-                <includeDependencies>false</includeDependencies>
+                <includeDependencies>true</includeDependencies>
             </binaries>
             <sources>
                 <includeModuleDirectory>false</includeModuleDirectory>
                 <fileSets>
                     <fileSet>
-                        <outputDirectory>./conformance-suite</outputDirectory>
+                        <outputDirectory>./conformance-suite/docs</outputDirectory>
                         <includes>
                             <include>*.md</include>
                         </includes>

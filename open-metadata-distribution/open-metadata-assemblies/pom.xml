@@ -292,8 +292,8 @@
                         <configuration>
                             <descriptors>
                                 <descriptor>src/main/assemblies/egeria-omag.xml</descriptor>
-                                <descriptor>src/main/assemblies/egeria-deploy.xml</descriptor>
-                                <descriptor>src/main/assemblies/egeria-presentation-server.xml</descriptor>
+                                <!--descriptor>src/main/assemblies/egeria-deploy.xml</descriptor>
+                                <descriptor>src/main/assemblies/egeria-presentation-server.xml</descriptor-->
                             </descriptors>
                             <finalName>egeria-${open-metadata.version}</finalName>
                             <tarLongFileMode>gnu</tarLongFileMode>

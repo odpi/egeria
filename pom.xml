@@ -159,7 +159,7 @@
         <ranger.version>1.2.0</ranger.version>
         <plexus.version>3.3.0</plexus.version>
         <quartz.version>2.3.2</quartz.version>
-        <lucene-analyzers-common.version>8.4.1</lucene-analyzers-common.version>
+        <lucene.version>8.4.1</lucene.version>
         <guava.version>23.0</guava.version>
         <tink.version>1.3.0</tink.version>
         <jsonld.version>0.13.0</jsonld.version>
@@ -183,6 +183,7 @@
         <jcl-over-slf4j.version>1.7.30</jcl-over-slf4j.version>
         <reflections.version>0.9.12</reflections.version>
         <javassist.version>3.26.0-GA</javassist.version>
+        <HdrHistogram.version>2.1.12</HdrHistogram.version>
 
         <!-- Versions of plugins -->
         <enunciate-maven-plugin.version>2.10.1</enunciate-maven-plugin.version>
@@ -400,6 +401,20 @@
             </dependency>
 
             <dependency>
+                <groupId>org.apache.tinkerpop</groupId>
+                <artifactId>gremlin-driver</artifactId>
+                <scope>compile</scope>
+                <version>${gremlin.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.tinkerpop</groupId>
+                <artifactId>tinkergraph-gremlin</artifactId>
+                <scope>compile</scope>
+                <version>${gremlin.version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>org.apache.tomcat.embed</groupId>
                 <artifactId>tomcat-embed-core</artifactId>
                 <scope>compile</scope>
@@ -444,7 +459,35 @@
                 <groupId>org.apache.lucene</groupId>
                 <artifactId>lucene-analyzers-common</artifactId>
                 <scope>compile</scope>
-                <version>${lucene-analyzers-common.version}</version>
+                <version>${lucene.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.lucene</groupId>
+                <artifactId>lucene-core</artifactId>
+                <scope>compile</scope>
+                <version>${lucene.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.lucene</groupId>
+                <artifactId>lucene-spatial</artifactId>
+                <scope>compile</scope>
+                <version>${lucene.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.lucene</groupId>
+                <artifactId>lucene-spatial-extras</artifactId>
+                <scope>compile</scope>
+                <version>${lucene.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.lucene</groupId>
+                <artifactId>lucene-queryparser</artifactId>
+                <scope>compile</scope>
+                <version>${lucene.version}</version>
             </dependency>
 
             <dependency>
@@ -2474,6 +2517,12 @@
                 <groupId>org.javassist</groupId>
                 <artifactId>javassist</artifactId>
                 <version>${javassist.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.hdrhistogram</groupId>
+                <artifactId>HdrHistogram</artifactId>
+                <version>${HdrHistogram.version}</version>
             </dependency>
 
         </dependencies>
