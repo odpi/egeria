@@ -4,13 +4,13 @@
 package org.odpi.openmetadata.accessservices.subjectarea.fvt.junit;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Disabled;
+import org.odpi.openmetadata.accessservices.subjectarea.fvt.EffectiveDatesFVT;
 
-@Disabled
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+
 public class EffectiveDatesIT {
     @Test
     public void testEffectiveDates() {
-        // TODO skip for now - code needs refactoring
-        // assertDoesNotThrow(() -> EffectiveDatesFVT.runIt("https://localhost:10443", "fvtserver", "garygeeke"));
+        assertDoesNotThrow(() -> EffectiveDatesFVT.runIt("https://localhost:10443", "fvtserver", "garygeeke"));
     }
 }

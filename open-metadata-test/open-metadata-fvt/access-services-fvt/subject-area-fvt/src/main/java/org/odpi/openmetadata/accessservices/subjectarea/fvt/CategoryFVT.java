@@ -17,7 +17,10 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 /**
  * FVT resource to call subject area category client API
@@ -32,12 +35,20 @@ public class CategoryFVT {
     private GlossaryFVT glossaryFVT = null;
     private String serverName = null;
     private String userId = null;
+    private int existingCategoryCount = 0;
+    /*
+     * Keep track of all the created guids in this set, by adding create and restore guids and removing when deleting.
+     * At the end of the test it will delete any remaining guids.
+     *
+     * Note this FVT is called by other FVTs. Who ever constructs the FVT should run deleteRemainingCategories
+     */
+    private Set<String> createdCategoriesSet = new HashSet<>();
 
     public static void main(String[] args) {
         SubjectArea subjectArea = null;
         String url = null;
         try {
-            url = RunAllFVT.getUrl(args);
+            url = RunAllFVTOn2Servers.getUrl(args);
             runWith2Servers(url);
         } catch (IOException e1) {
             System.out.println("Error getting user input");
@@ -50,26 +61,35 @@ public class CategoryFVT {
     }
 
     public static void runWith2Servers(String url) throws SubjectAreaFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        CategoryFVT fvt = new CategoryFVT(url, FVTConstants.SERVER_NAME1, FVTConstants.USERID);
-        fvt.run();
-        CategoryFVT fvt2 = new CategoryFVT(url, FVTConstants.SERVER_NAME2, FVTConstants.USERID);
-        fvt2.run();
+        runIt(url, FVTConstants.SERVER_NAME1, FVTConstants.USERID);
+        runIt(url, FVTConstants.SERVER_NAME2, FVTConstants.USERID);
     }
 
-    public CategoryFVT(String url, String serverName, String userId) throws InvalidParameterException {
+    public CategoryFVT(String url, String serverName, String userId) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         SubjectAreaRestClient client = new SubjectAreaRestClient(serverName, url);
         subjectAreaCategory = new SubjectAreaCategoryClient(client);
         glossaryFVT = new GlossaryFVT(url, serverName, userId);
         this.serverName = serverName;
         this.userId = userId;
+        existingCategoryCount = findCategories(".*").size();
+        System.out.println("existingCategoryCount " + existingCategoryCount);
     }
 
     public static void runIt(String url, String serverName, String userId) throws SubjectAreaFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        System.out.println("CategoryFVT runIt started");
         CategoryFVT fvt = new CategoryFVT(url, serverName, userId);
         fvt.run();
+        fvt.deleteRemaining();
+        System.out.println("CategoryFVT runIt stopped");
+    }
+    public static int getCategoryCount(String url, String serverName, String userId) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException, SubjectAreaFVTCheckedException  {
+        CategoryFVT fvt = new CategoryFVT(url, serverName, userId);
+        return fvt.findCategories(".*").size();
     }
 
     public void run() throws  SubjectAreaFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+
+
 
         System.out.println("Create a glossary");
         Glossary glossary = glossaryFVT.createGlossary(serverName + " " + DEFAULT_TEST_GLOSSARY_NAME);
@@ -132,12 +152,12 @@ public class CategoryFVT {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected 2 back on the find got " + results.size());
         }
         results = findCategories(null);
-        if (results.size() != 6) {
-            throw new SubjectAreaFVTCheckedException("ERROR: Expected 6 back on the find got " + results.size());
+        if (results.size() != 6 +existingCategoryCount) {
+            throw new SubjectAreaFVTCheckedException("ERROR1: Expected 6 back on the find got " + results.size());
         }
 
         results = subjectAreaCategory.findAll(userId);
-        if (results.size() != 6) {
+        if (results.size() != 6 + existingCategoryCount) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected 6 back on the find got " + results.size());
         }
         //soft delete a category and check it is not found
@@ -164,7 +184,7 @@ public class CategoryFVT {
         CategorySummary parentCategory = new CategorySummary();
         parentCategory.setGuid(parentGuid);
         category.setParentCategory(parentCategory);
-        Category newCategory = subjectAreaCategory.create(this.userId, category);
+        Category newCategory =issueCreateCategory(category);
         FVTUtils.validateNode(newCategory);
 
         System.out.println("Created Category " + newCategory.getName() + " with glossaryGuid " + newCategory.getSystemAttributes().getGUID());
@@ -177,9 +197,32 @@ public class CategoryFVT {
         GlossarySummary glossarySummary = new GlossarySummary();
         glossarySummary.setGuid(glossaryGuid);
         category.setGlossary(glossarySummary);
-        Category newCategory = subjectAreaCategory.create(this.userId, category);
+        Category newCategory = issueCreateCategory(category);
         FVTUtils.validateNode(newCategory);
         System.out.println("Created Category " + newCategory.getName() + " with userId " + newCategory.getSystemAttributes().getGUID());
+        return newCategory;
+    }
+    /**
+     * Create a category associated under a parent category and associate with the named glossary
+     *
+     * @param categoryName name of the category to create
+     * @param parent       category under which to create this category
+     * @param glossaryGuid userId of the associated glossary
+     * @return created category
+     */
+    Category createCategoryWithParentGlossary(String categoryName, Category parent, String glossaryGuid) throws SubjectAreaFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        Category category = new Category();
+        category.setName(categoryName);
+        GlossarySummary glossarySummary = new GlossarySummary();
+        glossarySummary.setGuid(glossaryGuid);
+        category.setGlossary(glossarySummary);
+        CategorySummary parentCategorysummary = new CategorySummary();
+        parentCategorysummary.setGuid(parent.getSystemAttributes().getGUID());
+        category.setParentCategory(parentCategorysummary);
+        Category newCategory = issueCreateCategory(category);
+        FVTUtils.validateNode(newCategory);
+        System.out.println("Created Category " + newCategory.getName() + " with userId " + newCategory.getSystemAttributes().getGUID());
+
         return newCategory;
     }
 
@@ -191,6 +234,7 @@ public class CategoryFVT {
     private Category issueCreateCategory(Category category) throws PropertyServerException, UserNotAuthorizedException, InvalidParameterException {
         Category newCategory = subjectAreaCategory.create(this.userId, category);
         if (newCategory != null) {
+            createdCategoriesSet.add(newCategory.getSystemAttributes().getGUID());
             System.out.println("Created Category " + newCategory.getName() + " with userId " + newCategory.getSystemAttributes().getGUID());
         }
         return newCategory;
@@ -227,13 +271,14 @@ public class CategoryFVT {
     }
 
     public void deleteCategory(String guid) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        subjectAreaCategory.delete(this.userId, guid);
-        System.out.println("Deleted Category succeeded");
+            subjectAreaCategory.delete(this.userId, guid);
+            createdCategoriesSet.remove(guid);
+            System.out.println("Deleted Category succeeded");
     }
-
     public Category restoreCategory(String guid) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, SubjectAreaFVTCheckedException {
         Category restoredCategory = subjectAreaCategory.restore(this.userId, guid);
         FVTUtils.validateNode(restoredCategory);
+        createdCategoriesSet.add(guid);
         System.out.println("restored Category name is " + restoredCategory.getName());
         return restoredCategory;
     }
@@ -245,5 +290,21 @@ public class CategoryFVT {
 
     public List<Line> getCategoryRelationships(Category category) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         return subjectAreaCategory.getAllRelationships(this.userId, category.getSystemAttributes().getGUID());
+    }
+    private void deleteRemaining() throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException, SubjectAreaFVTCheckedException {
+      deleteRemainingCategories();
+      glossaryFVT.deleteRemainingGlossaries();
+    }
+    void deleteRemainingCategories() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, SubjectAreaFVTCheckedException {
+        Iterator<String> iter =  createdCategoriesSet.iterator();
+        while (iter.hasNext()) {
+            String guid = iter.next();
+            iter.remove();
+            deleteCategory(guid);
+        }
+        List<Category> categories = findCategories(".*");
+        if (categories.size() != existingCategoryCount) {
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected " + existingCategoryCount  +" Categories to be found, got " + categories.size());
+        }
     }
 }
