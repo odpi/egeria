@@ -4,6 +4,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { GlossaryAuthorContext } from "../../contexts/GlossaryAuthorContext";
 import useDebounce from "./useDebounce";
 import NodeUpdate from "./NodeUpdate";
+import NodeCreate from "./NodeCreate";
 // import Delete16 from "../../images/Egeria_delete_16";
 // import Edit16 from "../../images/Egeria_edit_16";
 import {
@@ -61,7 +62,7 @@ const NodeSearch = (props) => {
       text: "Qualified Name",
     },
   ];
-  const [mutationRow, setMutationRow] = useState();
+
   // State and setter for search term
   const [searchCriteria, setSearchCriteria] = useState("");
   // State and setter for search results
@@ -236,7 +237,10 @@ const NodeSearch = (props) => {
     if (selectedRows.length == 0) {
       alert("Please select something to edit.");
     } else if (selectedRows.length == 1) {
-      setMutationRow(selectedRows[0].id);
+      let guid = selectedRows[0].id;
+      const getResponse = issueGet(guid);
+      glossaryAuthorContext.setSelectedNode(getResponse);
+      console.log("guid " + guid);
     } else {
       alert("Please select only one row to edit.");
     }
@@ -292,6 +296,52 @@ const NodeSearch = (props) => {
       })
       .catch((res) => {
         msg = "Delete Failed - logic error " + JSON.stringify(res);
+        setErrorMsg(errorMsg + ",\n" + msg);
+      });
+  }
+  // issue the get rest call for particular guid
+  function issueGet(guid) {
+    const url = glossaryAuthorContext.currentNodeType.url + "/" + guid;
+    console.log("issueGet " + url);
+    let msg = "";
+    fetch(url, {
+      method: "delete",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log("get completed " + JSON.stringify(res));
+        if (res.relatedHTTPCode == 200 && res.result) {
+          console.log("Get successful for guid " + guid);
+          return res;
+        } else {
+          // if this is a formatted Egeria response, we have a user action
+          if (res.relatedHTTPCode) {
+            if (res.exceptionUserAction) {
+              msg = "Get Failed: " + res.exceptionUserAction;
+            } else {
+              msg =
+                "Get Failed unexpected Egeria response: " + JSON.stringify(res);
+            }
+          } else if (res.errno) {
+            if (res.errno == "ECONNREFUSED") {
+              msg = "Connection refused to the view server.";
+            } else {
+              // TODO create nice messages for all the http codes we think are relevant
+              msg = "Get Failed with http errno " + res.errno;
+            }
+          } else {
+            msg = "Get Failed - unexpected response" + JSON.stringify(res);
+          }
+          setErrorMsg(errorMsg + ",\n" + msg);
+          document.getElementById("nodeCreateButton").classList.add("shaker");
+        }
+      })
+      .catch((res) => {
+        msg = "Get Failed - logic error " + JSON.stringify(res);
         setErrorMsg(errorMsg + ",\n" + msg);
       });
   }
@@ -522,7 +572,11 @@ const NodeSearch = (props) => {
           </div>
         </div>
       </div>
-      {mutationRow && <div className="top-search-item">{NodeUpdate}</div>}
+      <div className="top-search-item"> Ding dong </div>
+      <NodeUpdate/>
+      {glossaryAuthorContext.selectedNode && (<div className="top-search-item"> Dong ding </div>) }
+      {glossaryAuthorContext.selectedNode && (<div className="top-search-item"> {NodeCreate} </div>) }
+
     </div>
   );
 };

@@ -6,8 +6,8 @@ import Search16 from "../../images/Egeria_search_16";
 import NodeActionContent from "./NodeActionContent";
 import { GlossaryAuthorContext } from "../../contexts/GlossaryAuthorContext";
 
-const NodeSCUD = props => {
-  console.log("NodeSCUD");
+const NodeAction = props => {
+  console.log("NodeAction");
   const glossaryAuthorContext = useContext(GlossaryAuthorContext);
   const onClickAdd = () => {
     glossaryAuthorContext.setCreatingActionState()
@@ -15,7 +15,7 @@ const NodeSCUD = props => {
   const onClickSearch = () => {
     glossaryAuthorContext.setSearchingActionState()
   };
-  console.log("NodeSCUD " + glossaryAuthorContext.myState);
+  console.log("NodeAction " + glossaryAuthorContext.myState);
   if (glossaryAuthorContext.myState == 0) {
     return null;
   } else {
@@ -37,4 +37,4 @@ const NodeSCUD = props => {
   }
 };
 
-export default NodeSCUD;
+export default NodeAction;

@@ -36,9 +36,7 @@ function NodeUpdate(props) {
 
   useEffect(() => {
     // Update the document title using the browser API
-    if (
-      glossaryAuthorContext.authoringActionState == 1 
-    )
+    if (glossaryAuthorContext.authoringActionState == 1)
       setUpdateResponse(undefined);
   });
   /**
@@ -57,7 +55,7 @@ function NodeUpdate(props) {
     // if (nodeType.typeForCreate) {
     //   body.nodeType = nodeType.nodeTypeForCreate;
     // } else {
-      body.nodeType = nodeType.typeName;
+    body.nodeType = nodeType.typeName;
     // }
     if (nodeType.hasGlossary) {
       let glossary = {};
@@ -81,7 +79,7 @@ function NodeUpdate(props) {
         console.log("update worked " + JSON.stringify(res));
 
         if (res.relatedHTTPCode == 200 && res.result && res.result[0]) {
-          const nodeResponse = res.result[0]; 
+          const nodeResponse = res.result[0];
           glossaryAuthorContext.setCreatedActionState();
           setUpdateResponse(nodeResponse);
           if (glossaryAuthorContext.myState == 1) {
@@ -220,6 +218,7 @@ function NodeUpdate(props) {
 
   return (
     <div>
+     <div>Node update .....</div> 
       {glossaryAuthorContext.currentNodeType && updateResponse && (
         <div>
           <DataTable

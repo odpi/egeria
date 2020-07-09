@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 import React, { useContext } from "react";
-import NodeSearch from "./NodeSearch.js";
+import NodeManagement from "./NodeManagement.js";
 import NodeCreate from "./NodeCreate.js";
 import { GlossaryAuthorContext } from "../../contexts/GlossaryAuthorContext";
 
@@ -12,7 +12,7 @@ const NodeActionContent = props => {
     if (glossaryAuthorContext.authoringActionState == 1 || glossaryAuthorContext.authoringActionState == 2) {
       return <NodeCreate/>;
     } else  if (glossaryAuthorContext.authoringActionState == 3 || glossaryAuthorContext.authoringActionState == 4) {
-      return <NodeSearch/>;
+      return <NodeManagement/>;
     } else {
       return <NodeCreate/>;
     }
