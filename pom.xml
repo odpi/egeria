@@ -390,6 +390,13 @@
             </dependency>
 
             <dependency>
+                <groupId>org.apache.tinkerpop</groupId>
+                <artifactId>gremlin-driver</artifactId>
+                <scope>compile</scope>
+                <version>${gremlin.version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>org.apache.tomcat.embed</groupId>
                 <artifactId>tomcat-embed-core</artifactId>
                 <scope>compile</scope>
@@ -474,6 +481,13 @@
                 <artifactId>janusgraph-berkeleyje</artifactId>
                 <version>${janus.version}</version>
                 <scope>runtime</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.janusgraph</groupId>
+                <artifactId>janusgraph-inmemory</artifactId>
+                <version>${janus.version}</version>
+                <scope>test</scope>
             </dependency>
 
             <dependency>

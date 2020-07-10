@@ -41,7 +41,7 @@ public class SuperTypesRetriever {
         }
         superTypes.add(type.getName());
 
-        if(type.getSuperType() == null){
+        if (type.getSuperType() == null) {
             return;
         }
 

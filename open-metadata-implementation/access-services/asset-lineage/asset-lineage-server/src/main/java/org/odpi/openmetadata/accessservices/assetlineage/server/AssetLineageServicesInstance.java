@@ -4,7 +4,11 @@ package org.odpi.openmetadata.accessservices.assetlineage.server;
 
 
 import org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineageErrorCode;
-import org.odpi.openmetadata.accessservices.assetlineage.handlers.*;
+import org.odpi.openmetadata.accessservices.assetlineage.handlers.AssetContextHandler;
+import org.odpi.openmetadata.accessservices.assetlineage.handlers.ClassificationHandler;
+import org.odpi.openmetadata.accessservices.assetlineage.handlers.GlossaryHandler;
+import org.odpi.openmetadata.accessservices.assetlineage.handlers.ProcessContextHandler;
+import org.odpi.openmetadata.accessservices.assetlineage.outtopic.AssetLineagePublisher;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OCFOMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
@@ -19,11 +23,11 @@ import java.util.List;
  */
 public class AssetLineageServicesInstance extends OCFOMASServiceInstance {
     private static AccessServiceDescription myDescription = AccessServiceDescription.ASSET_LINEAGE_OMAS;
-    private HandlerHelper handlerHelper;
     private GlossaryHandler glossaryHandler;
     private AssetContextHandler assetContextHandler;
     private ProcessContextHandler processContextHandler;
     private ClassificationHandler classificationHandler;
+    private AssetLineagePublisher assetLineagePublisher;
 
     /**
      * Set up the handlers for this server.
@@ -126,6 +130,13 @@ public class AssetLineageServicesInstance extends OCFOMASServiceInstance {
         return classificationHandler;
     }
 
+    public void setAssetLineagePublisher(AssetLineagePublisher assetLineagePublisher) {
+        this.assetLineagePublisher = assetLineagePublisher;
+    }
+
+    public AssetLineagePublisher getAssetLineagePublisher() {
+        return assetLineagePublisher;
+    }
 }
 
 
