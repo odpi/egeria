@@ -23,6 +23,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -398,7 +399,7 @@ public class LineageGraphConnectorHelper {
 
     private Set<LineageVertex> getLineageVertices(Graph subGraph) {
         Iterator<Vertex> originalVertices = subGraph.vertices();
-        Set<LineageVertex> lineageVertices = new HashSet<>();
+        Set<LineageVertex> lineageVertices = new LinkedHashSet<>();
         while (originalVertices.hasNext()) {
             LineageVertex newVertex = abstractVertex(originalVertices.next());
             lineageVertices.add(newVertex);
