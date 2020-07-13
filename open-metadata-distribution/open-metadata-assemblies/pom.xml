@@ -297,6 +297,32 @@
                             </descriptors>
                             <finalName>egeria-${open-metadata.version}</finalName>
                             <tarLongFileMode>gnu</tarLongFileMode>
+                            <attach>false</attach>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Specifically attach the .gz format assembly only -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-artifacts</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>attach-artifact</goal>
+                        </goals>
+                        <configuration>
+                            <artifacts>
+                                <artifact>
+                                    <file>target/egeria-${open-metadata.version}-distribution.tar.gz</file>
+                                    <type>jar</type>
+                                    <classifier>bin</classifier>
+                                </artifact>
+                                ...
+                            </artifacts>
                         </configuration>
                     </execution>
                 </executions>

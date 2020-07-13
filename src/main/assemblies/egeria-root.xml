@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- Copyright Contributors to the ODPi Egeria project.  -->
+<assembly xmlns="http://maven.apache.org/ASSEMBLY/2.1.0"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://maven.apache.org/ASSEMBLY/2.1.0 http://maven.apache.org/xsd/assembly-2.1.0.xsd">
+ <id>root</id>
+ <formats>
+   <format>tar.gz</format>
+ </formats>
+ <fileSets>
+   <fileSet>
+     <directory>${project.basedir}</directory>
+     <includes>
+       <include>README*</include>
+       <include>THIRD_PARTY*</include>
+       <include>NOTICE*</include>
+       <include>LICENSE*</include>
+       <include>licenses/*</include>
+       <include>*p12</include>
+       <include>pom.xml</include>
+     </includes>
+     <useDefaultExcludes>true</useDefaultExcludes>
+   </fileSet>
+ </fileSets>
+</assembly>

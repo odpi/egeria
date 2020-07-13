@@ -232,11 +232,12 @@
                 </fileSets>
             </sources>
         </moduleSet>
-        <!-- LICENSE & NOTICE and truststore from top level-->
+        <!-- LICENSE & NOTICE and truststore from top level - this is a custom artifact -->
         <moduleSet>
             <useAllReactorProjects>true</useAllReactorProjects>
             <includes>
-                <include>org.odpi.egeria:egeria:*</include>
+                <!-- Full qualification here is groupId:artifactId:packaging:classifier:version -->
+                <include>org.odpi.egeria:egeria:*:root:*</include>
             </includes>
             <sources>
                 <includeModuleDirectory>false</includeModuleDirectory>
