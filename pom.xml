@@ -3078,7 +3078,7 @@
                                 <artifact>
                                     <file>target/egeria-${open-metadata.version}-root.tar.gz
                                     </file>
-                                    <type>jar</type>
+                                    <type>tar.gz</type>
                                     <classifier>root</classifier>
                                 </artifact>
                             </artifacts>

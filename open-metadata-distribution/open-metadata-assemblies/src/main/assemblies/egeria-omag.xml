@@ -237,7 +237,7 @@
             <useAllReactorProjects>true</useAllReactorProjects>
             <includes>
                 <!-- Full qualification here is groupId:artifactId:packaging:classifier:version -->
-                <include>org.odpi.egeria:egeria:*:root:*</include>
+                <include>org.odpi.egeria:egeria:pom:root:${open-metadata.version}</include>
             </includes>
             <sources>
                 <includeModuleDirectory>false</includeModuleDirectory>
