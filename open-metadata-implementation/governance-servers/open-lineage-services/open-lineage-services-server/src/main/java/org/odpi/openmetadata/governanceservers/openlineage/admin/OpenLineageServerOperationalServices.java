@@ -42,6 +42,7 @@ public class OpenLineageServerOperationalServices {
     private OMRSAuditLog auditLog = null;
     private LineageGraph lineageGraphConnector;
     private OpenMetadataTopicConnector inTopicConnector;
+    private int jobIntervalInSeconds;
 
     /**
      * Constructor used at server startup.
@@ -92,6 +93,7 @@ public class OpenLineageServerOperationalServices {
         final String actionDescription = "Initialize Open lineage Services";
         Connection lineageGraphConnection = openLineageServerConfig.getLineageGraphConnection();
         Connection inTopicConnection = openLineageServerConfig.getInTopicConnection();
+        jobIntervalInSeconds = openLineageServerConfig.getJobIntervalInSeconds();
 
         this.lineageGraphConnector = (LineageGraph) getConnector(lineageGraphConnection, OpenLineageServerErrorCode.ERROR_OBTAINING_LINEAGE_GRAPH_CONNECTOR,
                 OpenLineageServerAuditCode.ERROR_OBTAINING_LINEAGE_GRAPH_CONNECTOR);
@@ -205,7 +207,7 @@ public class OpenLineageServerOperationalServices {
         final String methodName = "startIntopicConnector";
         final OpenLineageServerAuditCode auditCode = OpenLineageServerAuditCode.ERROR_STARTING_IN_TOPIC_CONNECTOR;
         inTopicConnector.setAuditLog(auditLog);
-        StoringServices storingServices = new StoringServices(lineageGraphConnector);
+        StoringServices storingServices = new StoringServices(lineageGraphConnector, jobIntervalInSeconds);
         OpenMetadataTopicListener openLineageInTopicListener = new OpenLineageInTopicListener(storingServices, auditLog);
         inTopicConnector.registerListener(openLineageInTopicListener);
         try {

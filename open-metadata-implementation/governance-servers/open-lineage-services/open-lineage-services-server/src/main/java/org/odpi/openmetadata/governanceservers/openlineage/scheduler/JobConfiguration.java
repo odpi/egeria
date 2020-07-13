@@ -22,9 +22,11 @@ public class JobConfiguration {
 
     private static Scheduler scheduler;
     private static LineageGraph lineageGraph;
+    private static int jobInterval;
 
-    public JobConfiguration(LineageGraph lineageGraph){
+    public JobConfiguration(LineageGraph lineageGraph, int jobInterval){
         this.lineageGraph = lineageGraph;
+        this.jobInterval = jobInterval;
         schedule();
     }
 
@@ -62,14 +64,9 @@ public class JobConfiguration {
 
     private static Trigger buildSimpleSchedulerTrigger() {
 
-
-//        int INTERVAL_SECONDS = 600;
-        //TODO Remove after development
-        int INTERVAL_SECONDS = 10;
-
         return TriggerBuilder.newTrigger().withIdentity("LineageGraphJob", GROUP)
                 .withSchedule(
-                        SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(INTERVAL_SECONDS).repeatForever())
+                        SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(jobInterval).repeatForever())
                 .build();
     }
 

@@ -30,6 +30,7 @@ public class OpenLineageServerConfig extends AdminServicesConfigHeader
     private String inTopicName;
     private Connection inTopicConnection;
     private Connection lineageGraphConnection;
+    private int jobIntervalInSeconds;
 
     /**
      * Default constructor
@@ -187,6 +188,22 @@ public class OpenLineageServerConfig extends AdminServicesConfigHeader
      */
     public void setLineageGraphConnection(Connection lineageGraphConnection) {
         this.lineageGraphConnection = lineageGraphConnection;
+    }
+
+    /**
+     *
+     * @return  Interval for Open Lineage Services background processing job
+     */
+    public int getJobIntervalInSeconds() {
+        return jobIntervalInSeconds;
+    }
+
+    /**
+     *
+     * @param jobIntervalInSeconds Interval to be used by Open Lineage Services background processing job
+     */
+    public void setJobIntervalInSeconds(int jobIntervalInSeconds) {
+        this.jobIntervalInSeconds = jobIntervalInSeconds;
     }
 
     @Override
