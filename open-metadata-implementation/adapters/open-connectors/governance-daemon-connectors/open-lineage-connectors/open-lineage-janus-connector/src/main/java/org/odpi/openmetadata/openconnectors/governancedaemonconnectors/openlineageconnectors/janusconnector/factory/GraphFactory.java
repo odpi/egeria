@@ -103,11 +103,7 @@ public class GraphFactory extends IndexingFactory {
             log.error("A connection with the graph database could not be established with the provided configuration", e);
             JanusConnectorErrorCode errorCode = JanusConnectorErrorCode.CANNOT_OPEN_GRAPH_DB;
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(e.getMessage(), methodName, GraphFactory.class.getName());
-            throw new JanusConnectorException(GraphFactory.class.getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction());
+            throw mapConnectorException(methodName, errorMessage, errorCode);
         }
     }
 
@@ -130,16 +126,12 @@ public class GraphFactory extends IndexingFactory {
             if (properties.get(LineageGraphRemoteConnectorProvider.SCHEMA_MANAGEMENT_ENABLE)!=null && properties.get(LineageGraphRemoteConnectorProvider.SCHEMA_MANAGEMENT_ENABLE).toString().equalsIgnoreCase("true")) {
                 initializeRemoteGraph(client);
             }
-            return traversal().withRemote(DriverRemoteConnection.using(cluster, this.properties.get(LineageGraphRemoteConnectorProvider.SOURCE_NAME).toString()));
+            return traversal().withRemote(DriverRemoteConnection.using(cluster, this.properties.getOrDefault(LineageGraphRemoteConnectorProvider.SOURCE_NAME,"g").toString()));
         } catch (Exception e) {
             log.error("A connection with the graph database could not be established with the provided configuration", e);
             JanusConnectorErrorCode errorCode = JanusConnectorErrorCode.CANNOT_OPEN_GRAPH_DB;
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(e.getMessage(), methodName, GraphFactory.class.getName());
-            throw new JanusConnectorException(GraphFactory.class.getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction());
+            throw mapConnectorException(methodName, errorMessage, errorCode);
         }
     }
 
@@ -170,11 +162,7 @@ public class GraphFactory extends IndexingFactory {
             log.error("{} failed  during graph initialize operation with error: ", e);
             JanusConnectorErrorCode errorCode = JanusConnectorErrorCode.GRAPH_INITIALIZATION_ERROR;
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(e.getMessage(), methodName, GraphFactory.class.getName());
-            throw new JanusConnectorException(GraphFactory.class.getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction());
+            throw mapConnectorException(methodName, errorMessage, errorCode);
         }
     }
 
@@ -214,11 +202,7 @@ public class GraphFactory extends IndexingFactory {
             log.error("{} failed  during graph initialize operation with error: ", e);
             JanusConnectorErrorCode errorCode = JanusConnectorErrorCode.GRAPH_INITIALIZATION_ERROR;
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(e.getMessage(), methodName, GraphFactory.class.getName());
-            throw new JanusConnectorException(GraphFactory.class.getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction());
+            throw mapConnectorException(methodName, errorMessage, errorCode);
         }
     }
 
@@ -284,14 +268,15 @@ public class GraphFactory extends IndexingFactory {
 
             GryoMapper.Builder builder = GryoMapper.build().addRegistry(JanusGraphIoRegistry.getInstance()); //TODO: Check for replacement
             Cluster.Builder clusterBuilder = Cluster.build()
-                    .port(Integer.parseInt(properties.get(LineageGraphRemoteConnectorProvider.CLUSTER_PORT).toString()))
-                    .addContactPoints(((List<String>) properties.get(LineageGraphRemoteConnectorProvider.CLUSTER_HOSTS)).toArray(new String[0]))
                     .serializer(new GryoMessageSerializerV3d0(builder)); //TODO: Check this setting. Binary serializer was not working.
-
+            if (properties.get(LineageGraphRemoteConnectorProvider.CLUSTER_PORT) != null)
+                clusterBuilder.port(Integer.parseInt(properties.get(LineageGraphRemoteConnectorProvider.CLUSTER_PORT).toString()));
+            if (properties.get(LineageGraphRemoteConnectorProvider.CLUSTER_HOSTS) != null) {
+                String[] hosts = properties.get(LineageGraphRemoteConnectorProvider.CLUSTER_HOSTS).toString().split(",");
+                clusterBuilder.addContactPoints(hosts);
+            }
             if (properties.get(LineageGraphRemoteConnectorProvider.CLUSTER_CREDENTIALS_USERNAME) != null && properties.get(LineageGraphRemoteConnectorProvider.CLUSTER_CREDENTIALS_USERNAME) != null)
                 clusterBuilder.credentials(properties.get(LineageGraphRemoteConnectorProvider.CLUSTER_CREDENTIALS_USERNAME).toString(), properties.get(LineageGraphRemoteConnectorProvider.CLUSTER_TRUST_STORE).toString());
-
-
             if (properties.get(LineageGraphRemoteConnectorProvider.CLUSTER_MIN_CONNECTION_POOL_SIZE) != null)
                 clusterBuilder.minConnectionPoolSize(Integer.parseInt(properties.get(LineageGraphRemoteConnectorProvider.CLUSTER_MIN_CONNECTION_POOL_SIZE).toString()));
             if (properties.get(LineageGraphRemoteConnectorProvider.CLUSTER_MAX_CONNECTION_POOL_SIZE) != null)
@@ -300,7 +285,6 @@ public class GraphFactory extends IndexingFactory {
                 clusterBuilder.maxSimultaneousUsagePerConnection(Integer.parseInt(properties.get(LineageGraphRemoteConnectorProvider.CLUSTER_MAX_SIMULTANEOUS_USAGE_PER_CONNECTION).toString()));
             if (properties.get(LineageGraphRemoteConnectorProvider.CLUSTER_MAX_IN_PROCESS_PER_CONNECTION) != null)
                 clusterBuilder.maxInProcessPerConnection(Integer.parseInt(properties.get(LineageGraphRemoteConnectorProvider.CLUSTER_MAX_IN_PROCESS_PER_CONNECTION).toString()));
-
             if (properties.get(LineageGraphRemoteConnectorProvider.CLUSTER_SSL_ENABLE) != null && properties.get(LineageGraphRemoteConnectorProvider.CLUSTER_SSL_ENABLE).toString().equalsIgnoreCase("true")) {
                 clusterBuilder.enableSsl(true);
                 if (properties.get(LineageGraphRemoteConnectorProvider.CLUSTER_KEYSTORE_TYPE) != null)
@@ -316,18 +300,13 @@ public class GraphFactory extends IndexingFactory {
                 if (properties.get(LineageGraphRemoteConnectorProvider.CLUSTER_TRUST_STORE_PASSWORD) != null)
                     clusterBuilder.trustStorePassword(properties.get(LineageGraphRemoteConnectorProvider.CLUSTER_TRUST_STORE_PASSWORD).toString());
             }
-
             return clusterBuilder.create();
         }
         catch (Exception e){
             log.error("Cluster initiation for remote connection to the graph  failed with error: ", e);
             JanusConnectorErrorCode errorCode = JanusConnectorErrorCode.GRAPH_CLUSTER_INIT_FAILED;
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(e.getMessage(), methodName, GraphFactory.class.getName());
-            throw new JanusConnectorException(GraphFactory.class.getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction());
+            throw mapConnectorException(methodName, errorMessage, errorCode);
         }
     }
 
@@ -410,6 +389,14 @@ public class GraphFactory extends IndexingFactory {
 
     public boolean isSupportingTransactions() {
         return supportingTransactions;
+    }
+
+    private JanusConnectorException mapConnectorException(String methodName, String errorMessage, JanusConnectorErrorCode errorCode) {
+        return new JanusConnectorException(GraphFactory.class.getName(),
+                methodName,
+                errorMessage,
+                errorCode.getSystemAction(),
+                errorCode.getUserAction());
     }
 
 
