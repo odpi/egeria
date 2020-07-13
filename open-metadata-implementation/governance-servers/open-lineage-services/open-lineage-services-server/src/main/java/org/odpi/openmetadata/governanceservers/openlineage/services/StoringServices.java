@@ -22,9 +22,9 @@ public class StoringServices {
     private LineageGraph lineageGraph;
     private JobConfiguration jobConfiguration;
 
-    public StoringServices(LineageGraph graphStore) {
+    public StoringServices(LineageGraph graphStore, int jobIntervalInSeconds) {
         this.lineageGraph = graphStore;
-        this.jobConfiguration = new JobConfiguration(graphStore);
+        this.jobConfiguration = new JobConfiguration(graphStore, jobIntervalInSeconds);
     }
 
     /**
