@@ -135,7 +135,7 @@
         <kafka.version>2.5.0</kafka.version>
         <janus.version>0.5.2</janus.version>
         <gremlin.version>3.4.7</gremlin.version>
-        <netty.version>4.1.50.Final</netty.version>
+        <netty.version>4.1.51.Final</netty.version>
         <spring-boot.version>2.3.1.RELEASE</spring-boot.version>
         <spring.version>5.2.7.RELEASE</spring.version>
         <spring-security.version>5.3.3.RELEASE</spring-security.version>
