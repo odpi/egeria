@@ -126,7 +126,7 @@
         <junit.jupiter.version>5.6.2</junit.jupiter.version>
         <junit.version>4.13</junit.version>
         <surefire.plugin.version>3.0.0-M4</surefire.plugin.version>
-        <mockito.version>3.3.3</mockito.version>
+        <mockito.version>3.4.0</mockito.version>
         <testng.version>7.1.0</testng.version>
         <slf4j.version>1.7.30</slf4j.version>
         <logback.version>1.2.3</logback.version>
@@ -135,7 +135,7 @@
         <kafka.version>2.5.0</kafka.version>
         <janus.version>0.5.2</janus.version>
         <gremlin.version>3.4.7</gremlin.version>
-        <netty.version>4.1.50.Final</netty.version>
+        <netty.version>4.1.51.Final</netty.version>
         <spring-boot.version>2.3.1.RELEASE</spring-boot.version>
         <spring.version>5.2.7.RELEASE</spring.version>
         <spring-security.version>5.3.3.RELEASE</spring-security.version>
