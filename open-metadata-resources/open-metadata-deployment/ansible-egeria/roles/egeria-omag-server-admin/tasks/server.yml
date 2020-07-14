@@ -67,6 +67,7 @@
           class: ConnectorType
           connectorProviderClassName: "{{ config.value.lineage_graph_provider }}"
         configurationProperties: "{{ config.value.configurationProperties}}"
+      jobIntervalInSeconds: "{{ config.value.jobIntervalInSeconds }}"
   when: config.value.mode == 'open-lineage-service'
 
 - name: "{{ config.key }} data engine proxy service connectivity"
