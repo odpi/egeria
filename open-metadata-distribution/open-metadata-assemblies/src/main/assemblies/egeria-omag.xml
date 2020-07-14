@@ -43,26 +43,6 @@
                 <includeDependencies>false</includeDependencies>
             </binaries>
             <!-- Extra files from the source tree - relative to that project -->
-            <sources>
-                <!-- Don't include the module name under 'server' ie server-chassis-spring -->
-                <includeModuleDirectory>false</includeModuleDirectory>
-                <fileSets>
-                    <fileSet>
-                        <outputDirectory>./server/doc</outputDirectory>
-                        <includes>
-                            <include>README.md</include>
-                        </includes>
-                    </fileSet>
-                    <!-- A seperate fileset for the docs so we can pull up files from src/main/resources to the top level output dir -->
-                    <fileSet>
-                        <outputDirectory>./server/resources</outputDirectory>
-                        <directory>src/main/resources</directory>
-                        <includes>
-                            <include>*</include>
-                        </includes>
-                    </fileSet>
-                </fileSets>
-            </sources>
         </moduleSet>
         <!-- Pull in all of our open connectors under server/lib. -->
         <moduleSet>
@@ -194,20 +174,6 @@
                 <!-- For most jars we'd include dependencies, but the chassis is already a large springboot application which includes all it needs -->
                 <includeDependencies>false</includeDependencies>
             </binaries>
-            <!-- Extra files from the source tree - relative to that project -->
-            <sources>
-                <!-- Don't include the module name under 'server' ie server-chassis-spring -->
-                <includeModuleDirectory>false</includeModuleDirectory>
-                <fileSets>
-                    <fileSet>
-                        <outputDirectory>./user-interface/resources</outputDirectory>
-                        <directory>src/main/resources</directory>
-                        <includes>
-                            <include>*</include>
-                        </includes>
-                    </fileSet>
-                </fileSets>
-            </sources>
         </moduleSet>
         <!-- Conformance Suite -->
         <moduleSet>
@@ -220,30 +186,22 @@
                 <unpack>false</unpack>
                 <includeDependencies>true</includeDependencies>
             </binaries>
-            <sources>
-                <includeModuleDirectory>false</includeModuleDirectory>
-                <fileSets>
-                    <fileSet>
-                        <outputDirectory>./conformance-suite/docs</outputDirectory>
-                        <includes>
-                            <include>*.md</include>
-                        </includes>
-                    </fileSet>
-                </fileSets>
-            </sources>
         </moduleSet>
         <!-- LICENSE & NOTICE and truststore from top level - this is a custom artifact -->
         <moduleSet>
+            <!-- See https://issues.apache.org/jira/browse/MASSEMBLY-938 - causes a warning - appears to be bug, without - assembly fails-->
             <useAllReactorProjects>true</useAllReactorProjects>
+            <includeSubModules>false</includeSubModules>
             <includes>
                 <!-- Full qualification here is groupId:artifactId:packaging:classifier:version -->
-                <include>org.odpi.egeria:egeria:pom:root:${open-metadata.version}</include>
+                <!-- This retrieves our extra 'root' pom we use for carrying non-java extras needed -->
+                <include>org.odpi.egeria:egeria:*</include>
             </includes>
             <sources>
                 <includeModuleDirectory>false</includeModuleDirectory>
                 <fileSets>
                     <fileSet>
-                        <outputDirectory>.</outputDirectory>
+                        <outputDirectory>/</outputDirectory>
                         <includes>
                             <include>NOTICE</include>
                             <include>LICENSE</include>
