@@ -5,7 +5,6 @@ package org.odpi.openmetadata.accessservices.subjectarea.fvt;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaEntityClient;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaRestClient;
 import org.odpi.openmetadata.accessservices.subjectarea.client.entities.projects.SubjectAreaProjectClient;
-import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectAreaCheckedException;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.project.GlossaryProject;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
@@ -16,7 +15,10 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 /**
  * FVT resource to call subject area project client API
@@ -33,25 +35,32 @@ public class ProjectFVT
     private SubjectAreaEntityClient<Project> subjectAreaProject = null;
     private String serverName = null;
     private String userId = null;
+    private int existingProjectCount = 0;
+    /*
+     * Keep track of all the created guids in this set, by adding create and restore guids and removing when deleting.
+     * At the end of the test it will delete any remaining guids.
+     *
+     * Note this FVT is called by other FVTs. Who ever constructs the FVT should run deleteRemainingProjects.
+     */
+    private Set<String> createdProjectsSet = new HashSet<>();
 
-    public ProjectFVT(String url, String serverName, String userId) throws InvalidParameterException {
+    public ProjectFVT(String url, String serverName, String userId) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         SubjectAreaRestClient client = new SubjectAreaRestClient(serverName, url);
         subjectAreaProject = new SubjectAreaProjectClient(client);
         this.serverName=serverName;
         this.userId=userId;
+        existingProjectCount = findProjects(".*").size();
+        System.out.println("existingProjectCount " + existingProjectCount);
     }
     public static void runWith2Servers(String url) throws SubjectAreaFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        ProjectFVT fvt =new ProjectFVT(url,FVTConstants.SERVER_NAME1,FVTConstants.USERID);
-        fvt.run();
-        // check that a second server will work
-        ProjectFVT fvt2 =new ProjectFVT(url,FVTConstants.SERVER_NAME2,FVTConstants.USERID);
-        fvt2.run();
+        runIt(url, FVTConstants.SERVER_NAME1, FVTConstants.USERID);
+        runIt(url, FVTConstants.SERVER_NAME2, FVTConstants.USERID);
     }
     public static void main(String args[])
     {
         try
         {
-           String url = RunAllFVT.getUrl(args);
+           String url = RunAllFVTOn2Servers.getUrl(args);
            runWith2Servers(url);
 
         } catch (IOException e1)
@@ -65,8 +74,15 @@ public class ProjectFVT
     }
 
     public static void runIt(String url, String serverName, String userId) throws SubjectAreaFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        System.out.println("ProjectFVT runIt started");
         ProjectFVT fvt =new ProjectFVT(url,serverName,userId);
         fvt.run();
+        fvt.deleteRemainingProjects();
+        System.out.println("ProjectFVT runIt stopped");
+    }
+    public static int getProjectCount(String url, String serverName, String userId) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException, SubjectAreaFVTCheckedException  {
+        ProjectFVT fvt = new ProjectFVT(url, serverName, userId);
+        return fvt.findProjects(".*").size();
     }
 
     public void run() throws SubjectAreaFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
@@ -157,6 +173,7 @@ public class ProjectFVT
         Project newProject = subjectAreaProject.create(this.userId, project);
         if (newProject != null)
         {
+            createdProjectsSet.add(newProject.getSystemAttributes().getGUID());
             System.out.println("Created Project " + newProject.getName() + " with userId " + newProject.getSystemAttributes().getGUID());
         }
         return newProject;
@@ -201,13 +218,14 @@ public class ProjectFVT
     }
 
     public void deleteProject(String guid) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        subjectAreaProject.delete(this.userId, guid);
-       //FVTUtils.validateNode(deletedProject);
-        System.out.println("Deleted Project succeeded");
+            subjectAreaProject.delete(this.userId, guid);
+            createdProjectsSet.remove(guid);
+            System.out.println("Deleted Project succeeded");
     }
     public Project restoreProject(String guid) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, SubjectAreaFVTCheckedException {
         Project restoredProject = subjectAreaProject.restore(this.userId, guid);
         FVTUtils.validateNode(restoredProject);
+        createdProjectsSet.add(restoredProject.getSystemAttributes().getGUID());
         System.out.println("Restored Project name is " + restoredProject.getName());
         return restoredProject;
     }
@@ -218,5 +236,18 @@ public class ProjectFVT
     }
     public List<Line> getProjectRelationships(Project project) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         return subjectAreaProject.getAllRelationships(this.userId, project.getSystemAttributes().getGUID());
+    }
+
+    void deleteRemainingProjects() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, SubjectAreaFVTCheckedException {
+        Iterator<String> iter =  createdProjectsSet.iterator();
+        while (iter.hasNext()) {
+            String guid = iter.next();
+            iter.remove();
+            deleteProject(guid);
+        }
+        List<Project> projects = findProjects(".*");
+        if (projects.size() !=existingProjectCount) {
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected " + existingProjectCount + " Projects to be found, got " + projects.size());
+        }
     }
 }

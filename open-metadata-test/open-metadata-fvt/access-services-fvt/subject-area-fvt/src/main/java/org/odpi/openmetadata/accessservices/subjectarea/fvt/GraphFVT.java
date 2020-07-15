@@ -46,7 +46,7 @@ public class GraphFVT
     {
         try
         {
-            String url = RunAllFVT.getUrl(args);
+            String url = RunAllFVTOn2Servers.getUrl(args);
             runWith2Servers(url);
         } catch (IOException e1)
         {
@@ -59,7 +59,7 @@ public class GraphFVT
         }
 
     }
-    public GraphFVT(String url, String serverName,String userId) throws InvalidParameterException {
+    public GraphFVT(String url, String serverName,String userId) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         SubjectAreaRestClient client = new SubjectAreaRestClient(serverName, url);
         subjectAreaGraph = new SubjectAreaGraphClient(client);
         System.out.println("Create a glossary");
@@ -71,16 +71,25 @@ public class GraphFVT
         this.serverName=serverName;
         this.userId=userId;
     }
+    public void deleteRemaining() throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException, SubjectAreaFVTCheckedException {
+        termFVT.deleteRemainingTerms();
+        // delete the subject area first so the delete of the categories do not pick them up
+        subjectAreaFVT.deleteRemainingSubjectAreas();
+        categoryFVT.deleteRemainingCategories();
+        relationshipFVT.deleteRemaining();
+        glossaryFVT.deleteRemainingGlossaries();
+    }
     public static void runWith2Servers(String url) throws SubjectAreaFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        GraphFVT fvt =new GraphFVT(url,FVTConstants.SERVER_NAME1,FVTConstants.USERID);
-        fvt.run();
-        GraphFVT fvt2 =new GraphFVT(url,FVTConstants.SERVER_NAME2,FVTConstants.USERID);
-        fvt2.run();
+        runIt(url, FVTConstants.SERVER_NAME1, FVTConstants.USERID);
+        runIt(url, FVTConstants.SERVER_NAME2, FVTConstants.USERID);
     }
 
     public static void runIt(String url, String serverName, String userId) throws InvalidParameterException, SubjectAreaFVTCheckedException, PropertyServerException, UserNotAuthorizedException {
+        System.out.println("GraphFVT runIt started");
         GraphFVT fvt = new GraphFVT(url, serverName, userId);
         fvt.run();
+        fvt.deleteRemaining();
+        System.out.println("GraphFVT runIt stopped");
     }
 
     public void run() throws SubjectAreaFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
@@ -220,6 +229,14 @@ public class GraphFVT
         checkGraphContent(graph,2,1);
         checkNodesContainNodeType(graph.getNodes(),NodeType.Taxonomy);
         checkNodesContainNodeType(graph.getNodes(),NodeType.SubjectAreaDefinition);
+        // delete the term, category and subject area we created.
+        subjectAreaFVT.deleteSubjectAreaDefinition(subjectAreaDefinition.getSystemAttributes().getGUID());
+        categoryFVT.deleteCategory(category.getSystemAttributes().getGUID());
+        termFVT.deleteTerm(term1.getSystemAttributes().getGUID());
+        termFVT.deleteTerm(term2.getSystemAttributes().getGUID());
+        termFVT.deleteTerm(term3.getSystemAttributes().getGUID());
+        glossaryFVT.deleteGlossary(taxonomyGuid);
+        glossaryFVT.deleteGlossary(glossaryGuid);
     }
 
     private void checkNodesContainNodeType(Set<? extends Node> nodes, NodeType nodeTypeToCheck) throws SubjectAreaFVTCheckedException {

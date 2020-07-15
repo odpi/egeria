@@ -207,7 +207,6 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
                 }
             }
         }
-        // return the Term without a Glossary summary as we have not got one.
     }
 
     /**

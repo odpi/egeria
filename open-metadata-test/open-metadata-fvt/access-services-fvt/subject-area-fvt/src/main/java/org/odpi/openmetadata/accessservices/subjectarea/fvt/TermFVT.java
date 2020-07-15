@@ -24,8 +24,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 
 import java.io.IOException;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * FVT resource to call subject area term client API
@@ -36,14 +35,21 @@ public class TermFVT {
     private static final String DEFAULT_TEST_TERM_NAME_UPDATED = "Test term A updated";
     private SubjectAreaEntityClient<Term> subjectAreaTerm = null;
     private GlossaryFVT glossaryFVT =null;
-    private String serverName = null;
     private String userId =null;
+    private int existingTermCount = 0;
+    /*
+     * Keep track of all the created guids in this set, by adding create and restore guids and removing when deleting.
+     * At the end of the test it will delete any remaining guids.
+     *
+     * Note this FVT is called by other FVTs. Who ever constructs the FVT should run deleteRemainingTerms.
+     */
+    private Set<String> createdTermsSet = new HashSet<>();
 
     public static void main(String args[])
     {
         try
         {
-            String url = RunAllFVT.getUrl(args);
+            String url = RunAllFVTOn2Servers.getUrl(args);
             runWith2Servers(url);
         } catch (IOException e1)
         {
@@ -55,24 +61,30 @@ public class TermFVT {
         }
 
     }
-    public TermFVT(String url,String serverName,String userId) throws InvalidParameterException {
+    public TermFVT(String url,String serverName,String userId) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         SubjectAreaRestClient client = new SubjectAreaRestClient(serverName, url);
         subjectAreaTerm = new SubjectAreaTermClient(client);
         System.out.println("Create a glossary");
         glossaryFVT = new GlossaryFVT(url,serverName,userId);
-        this.serverName=serverName;
         this.userId=userId;
+        existingTermCount = findTerms(".*").size();
+        System.out.println("existingTermCount " + existingTermCount);
     }
     public static void runWith2Servers(String url) throws SubjectAreaFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        TermFVT fvt =new TermFVT(url,FVTConstants.SERVER_NAME1,FVTConstants.USERID);
-        fvt.run();
-        TermFVT fvt2 =new TermFVT(url,FVTConstants.SERVER_NAME2,FVTConstants.USERID);
-        fvt2.run();
+        runIt(url, FVTConstants.SERVER_NAME1, FVTConstants.USERID);
+        runIt(url, FVTConstants.SERVER_NAME2, FVTConstants.USERID);
     }
 
     public static void runIt(String url, String serverName, String userId) throws  SubjectAreaFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        System.out.println("TermFVT runIt started");
         TermFVT fvt =new TermFVT(url,serverName,userId);
         fvt.run();
+        fvt.deleteRemaining();
+        System.out.println("TermFVT runIt stopped");
+    }
+    public static int getTermCount(String url, String serverName, String userId) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException, SubjectAreaFVTCheckedException  {
+        TermFVT fvt = new TermFVT(url, serverName, userId);
+        return fvt.findTerms(".*").size();
     }
 
     public void run() throws SubjectAreaFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
@@ -277,7 +289,9 @@ public class TermFVT {
         Term newTerm = subjectAreaTerm.create(this.userId, term);
         if (newTerm != null)
         {
-            System.out.println("Created Term " + newTerm.getName() + " with userId " + newTerm.getSystemAttributes().getGUID());
+            String guid = newTerm.getSystemAttributes().getGUID();
+            System.out.println("Created Term " + newTerm.getName() + " with guid " + guid);
+            createdTermsSet.add(guid);
         }
         return newTerm;
     }
@@ -364,6 +378,7 @@ public class TermFVT {
         if (restoredTerm != null)
         {
             System.out.println("Restored Term " + restoredTerm.getName());
+            createdTermsSet.add(guid);
         }
         return restoredTerm;
     }
@@ -382,10 +397,18 @@ public class TermFVT {
     }
 
     public void deleteTerm(String guid) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        subjectAreaTerm.delete(this.userId, guid);
-        System.out.println("Delete succeeded");
+            subjectAreaTerm.delete(this.userId, guid);
+            createdTermsSet.remove(guid);
+            System.out.println("Delete succeeded");
     }
 
+    /**
+     * Purge - we should not need to decrement the createdTermsSet as the soft delete should have done this
+     * @param guid
+     * @throws InvalidParameterException
+     * @throws PropertyServerException
+     * @throws UserNotAuthorizedException
+     */
     public void purgeTerm(String guid) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         subjectAreaTerm.purge(this.userId, guid);
         System.out.println("Purge succeeded");
@@ -403,5 +426,21 @@ public class TermFVT {
         findRequest.setSequencingOrder(sequenceOrder);
         findRequest.setSequencingProperty(sequenceProperty);
         return subjectAreaTerm.getRelationships(this.userId, term.getSystemAttributes().getGUID(),findRequest);
+    }
+    void deleteRemaining() throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException, SubjectAreaFVTCheckedException {
+        deleteRemainingTerms();
+        glossaryFVT.deleteRemainingGlossaries();
+    }
+    void deleteRemainingTerms() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, SubjectAreaFVTCheckedException {
+        Iterator<String> iter =  createdTermsSet.iterator();
+        while (iter.hasNext()) {
+            String guid = iter.next();
+            iter.remove();
+            deleteTerm(guid);
+        }
+        List<Term> terms = findTerms(".*");
+        if (terms.size() != existingTermCount) {
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected " +existingTermCount + " Terms to be found, got " + terms.size());
+        }
     }
 }

@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * FVT resource to call subject area term client API
+ * FVT resource to call subject area relationships client API
  */
 public class RelationshipsFVT {
     private static final String DEFAULT_TEST_GLOSSARY_NAME = "Test Glossary for relationships FVT";
@@ -39,7 +39,7 @@ public class RelationshipsFVT {
     private String serverName = null;
     private String userId = null;
 
-    public RelationshipsFVT(String url, String serverName, String userId) throws InvalidParameterException {
+    public RelationshipsFVT(String url, String serverName, String userId) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         this.url = url;
         SubjectAreaRestClient client = new SubjectAreaRestClient(serverName, url);
         subjectAreaRelationship = new SubjectAreaLine(client);
@@ -51,9 +51,24 @@ public class RelationshipsFVT {
         this.userId = userId;
     }
 
+    /**
+     * Delete the nodes that have been created to test relationships. This method deletes all those nodes - so the
+     * associated relationships will be deleted as the associated node is deleted.
+     * @throws UserNotAuthorizedException
+     * @throws PropertyServerException
+     * @throws InvalidParameterException
+     * @throws SubjectAreaFVTCheckedException
+     */
+    void deleteRemaining() throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException, SubjectAreaFVTCheckedException {
+        catFVT.deleteRemainingCategories();
+        termFVT.deleteRemainingTerms();
+        glossaryFVT.deleteRemainingGlossaries();
+        projectFVT.deleteRemainingProjects();
+    }
+
     public static void main(String args[]) {
         try {
-            String url = RunAllFVT.getUrl(args);
+            String url = RunAllFVTOn2Servers.getUrl(args);
             runWith2Servers(url);
         } catch (IOException e1) {
             System.out.println("Error getting user input");
@@ -66,15 +81,16 @@ public class RelationshipsFVT {
     }
 
     public static void runWith2Servers(String url) throws  SubjectAreaFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        RelationshipsFVT fvt = new RelationshipsFVT(url, FVTConstants.SERVER_NAME1, FVTConstants.USERID);
-        fvt.run();
-        RelationshipsFVT fvt2 = new RelationshipsFVT(url, FVTConstants.SERVER_NAME2, FVTConstants.USERID);
-        fvt2.run();
+        runIt(url, FVTConstants.SERVER_NAME1, FVTConstants.USERID);
+        runIt(url, FVTConstants.SERVER_NAME2, FVTConstants.USERID);
     }
 
     public static void runIt(String url, String serverName, String userId) throws SubjectAreaFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        System.out.println("relationshipFVT runIt started");
         RelationshipsFVT fvt = new RelationshipsFVT(url, serverName, userId);
         fvt.run();
+        fvt.deleteRemaining();
+        System.out.println("relationshipFVT runIt stopped");
     }
 
     public void run() throws SubjectAreaFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {

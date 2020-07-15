@@ -219,17 +219,20 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
         }
         for (var i = 0; i < data.nodes.length; i++) {
             const egeriaColor = getComputedStyle(this).getPropertyValue('--egeria-primary-color');
+            let displayName;
+            if(data.nodes[i].properties && data.nodes[i].properties!==null && data.nodes[i].properties!==undefined ){
+                data.nodes[i].properties = this._parseProperties(data.nodes[i].properties);
 
-            data.nodes[i].properties = this._parseProperties(data.nodes[i].properties);
+                if (data.nodes[i].properties['tableDisplayName'] != null
+                    && data.nodes[i].properties['tableDisplayName'] != undefined) {
+                    displayName = data.nodes[i].properties['tableDisplayName']
+                }
+            }
             data.nodes[i].displayName = data.nodes[i].label;
             data.nodes[i].type = data.nodes[i].group;
+
             data.nodes[i].label = '<b>'+data.nodes[i].label+'</b>';
             data.nodes[i].label += ' \n\n Type : ' + this._camelCaseToSentence(data.nodes[i].group);
-
-            let displayName;
-            if (data.nodes[i].properties['tableDisplayName'] != null) {
-                displayName = data.nodes[i].properties['tableDisplayName']
-            }
             if (displayName != null) {
 
                 data.nodes[i].label += ' \n\n From : ' + displayName;
