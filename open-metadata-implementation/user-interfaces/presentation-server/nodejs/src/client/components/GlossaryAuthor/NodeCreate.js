@@ -21,7 +21,6 @@ import {
   TableBody,
 } from "carbon-components-react";
 
-// import { IdentificationContext } from "../../contexts/IdentificationContext";
 import { GlossaryAuthorContext } from "../../contexts/GlossaryAuthorContext";
 import Info16 from "@carbon/icons-react/lib/information/16";
 
