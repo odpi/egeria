@@ -2189,6 +2189,16 @@
                 <artifactId>open-metadata-assemblies</artifactId>
                 <version>${open-metadata.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>open-metadata-labs</artifactId>
+                <version>${open-metadata.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>presentation-server</artifactId>
+                <version>${open-metadata.version}</version>
+            </dependency>
             <!-- End of POM dependency versions -->
 
             <dependency>

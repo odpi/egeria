@@ -32,6 +32,8 @@
 
     <!-- Every dependency needed by the assembly must be included here to ensure all are built before the assembly -->
     <dependencies>
+
+        <!-- These are needed for the main assembly -->
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>server-chassis-spring</artifactId>
@@ -278,7 +280,16 @@
             <groupId>org.odpi.egeria</groupId>
             <artifactId>egeria</artifactId>
         </dependency-->
-    </dependencies>
+
+        <!-- For the current node based UI we also need: -->
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>presentation-server</artifactId>
+        </dependency>
+
+        <!-- Deployment assembly needs some artifacts, but currently they are only pulled from source, so no binary dependency -->
+  </dependencies>
+
     <build>
         <plugins>
             <plugin>
