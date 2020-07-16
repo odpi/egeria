@@ -13,12 +13,12 @@ import java.util.List;
 
 /**
  * @param <E> inherited from {@link Node} object type
- * Interface for Subject Area client entity operations
+ * Interface for Subject Area client node operations
  */
 public interface SubjectAreaEntityClient<E extends Node> extends SubjectAreaClient<E> {
 
     /**
-     * Request to search relationships for current entity.
+     * Request to search relationships for current node.
      * @param userId unique identifier for requesting user, under which the request is performed.
      * @param guid   unique identifier of the object to which the found objects should relate.
      * @param findRequest information object for find calls.
@@ -35,7 +35,7 @@ public interface SubjectAreaEntityClient<E extends Node> extends SubjectAreaClie
                                                                 UserNotAuthorizedException;
 
     /**
-     * Request to search all relationships for current entity.
+     * Request to search all relationships for current node.
      * @param userId unique identifier for requesting user, under which the request is performed.
      * @param guid   unique identifier of the object to which the found objects should relate.
      * @return list all relationships.
