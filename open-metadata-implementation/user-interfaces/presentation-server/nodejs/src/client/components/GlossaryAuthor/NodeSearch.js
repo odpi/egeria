@@ -3,13 +3,11 @@
 import React, { useState, useEffect, useContext } from "react";
 import { GlossaryAuthorContext } from "../../contexts/GlossaryAuthorContext";
 import useDebounce from "./useDebounce";
-import NodeUpdate from "./NodeUpdate";
 // import Delete16 from "../../images/Egeria_delete_16";
 // import Edit16 from "../../images/Egeria_edit_16";
 import {
   Accordion,
   AccordionItem,
-  Button,
   DataTable,
   MultiSelect,
   Pagination,
@@ -17,35 +15,31 @@ import {
   Table,
   TableHead,
   TableRow,
-  TableSelectAll,
   TableSelectRow,
   TableCell,
   TableHeader,
   TableBody,
-  TableToolbar,
-  TableToolbarContent,
-  TableBatchActions,
-  TableBatchAction,
-  TableToolbarSearch,
 } from "carbon-components-react";
 
 // Responsible for issuing search requests on a node and displaying the results.
 // - the search is issue with debounce
 // - additional columns can be specified.
 // - the search has pagination
-// - the search results can be selected. When one or moe are selected - then the delete button is shown allowing, so a multiple delete can be issued.
+// - the search results can be selected.
 // @param {*} props
 //
 const NodeSearch = (props) => {
-  console.log("NodeSearch");
+  console.log("NodeSearch " + props.refresh);
   const glossaryAuthorContext = useContext(GlossaryAuthorContext);
 
   const [total, setTotal] = useState(0);
   const [currentPage, setCurrentPage] = useState([]);
   const [pageNumber, setPageNumber] = useState(1);
+  const [refreshed, setRefreshed] = useState(false);
   const [pageSize] = useState(10);
   const [errorMsg, setErrorMsg] = useState();
   const [paginationOptions, setPaginationOptions] = useState();
+
   // properties that will be displayed be default for a node
   const mainProperties = [
     {
@@ -61,7 +55,7 @@ const NodeSearch = (props) => {
       text: "Qualified Name",
     },
   ];
-  const [mutationRow, setMutationRow] = useState();
+
   // State and setter for search term
   const [searchCriteria, setSearchCriteria] = useState("");
   // State and setter for search results
@@ -119,6 +113,18 @@ const NodeSearch = (props) => {
     itemsPerPageText: "Items per page:",
     onChange: onPaginationChange,
   });
+
+  if (props.refresh && !refreshed) {
+    setRefreshed(true);
+    console.log("Refreshing search");
+    issueSearch(debouncedSearchCriteria).then((results) => {
+      // Set back to false since request finished
+      setIsSearching(false);
+      // Set results state
+      setResults(results);
+    });
+  }
+
   // driven when pagination options have changed - page size or page number
   const onPaginationChange = (options) => {
     console.log("onPaginationChange");
@@ -147,6 +153,7 @@ const NodeSearch = (props) => {
     console.log(allProperties);
     setHeaderData(allProperties);
   }
+
   // refresh the displayed search results
   // this involves taking the results from state and calculating what we need to display pased on the pagination options
   // current page is the subset of results that are displayed.
@@ -221,34 +228,13 @@ const NodeSearch = (props) => {
     });
     return items;
   }
-  // TODO may not use this
-  const handleAdd = (e) => {
-    console.log("handleAdd" + e);
-  };
-  const handleDelete = (selectedRows) => {
-    console.log("handleDelete" + selectedRows);
-    for (let i = 0; i < selectedRows.length; i++) {
-      issueDelete(selectedRows[i]);
-    }
-  };
-  const handleEdit = (selectedRows) => {
-    console.log("handleEdit" + selectedRows);
-    if (selectedRows.length == 0) {
-      alert("Please select something to edit.");
-    } else if (selectedRows.length == 1) {
-      setMutationRow(selectedRows[0].id);
-    } else {
-      alert("Please select only one row to edit.");
-    }
-  };
-  // issue the delete rest call for particular row
-  function issueDelete(selectedRow) {
-    const guid = selectedRow.id;
+  // issue the get rest call for particular guid
+  function issueGet(guid) {
     const url = glossaryAuthorContext.currentNodeType.url + "/" + guid;
-    console.log("issueDelete " + url);
+    console.log("issueGet " + url);
     let msg = "";
-    fetch(url, {
-      method: "delete",
+    return fetch(url, {
+      method: "get",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
@@ -256,42 +242,40 @@ const NodeSearch = (props) => {
     })
       .then((res) => res.json())
       .then((res) => {
-        console.log("delete completed " + JSON.stringify(res));
+        console.log("get completed " + JSON.stringify(res));
         if (res.relatedHTTPCode == 200 && res.result) {
-          console.log("Delete successful for guid " + guid);
+          console.log("Get successful for guid " + guid);
+          console.log("res.result) " + res.result);
+          if (res.result.length == 1) {
+            glossaryAuthorContext.updateSelectedNode(res.result[0]);
+            console.log("glossaryAuthorContext.selectednode");
+            console.log(glossaryAuthorContext.selectednode);
+          }
         } else {
           // if this is a formatted Egeria response, we have a user action
           if (res.relatedHTTPCode) {
             if (res.exceptionUserAction) {
-              msg = "Delete Failed: " + res.exceptionUserAction;
+              msg = "Get Failed: " + res.exceptionUserAction;
             } else {
               msg =
-                "Delete Failed unexpected Egeria response: " +
-                JSON.stringify(res);
+                "Get Failed unexpected Egeria response: " + JSON.stringify(res);
             }
           } else if (res.errno) {
             if (res.errno == "ECONNREFUSED") {
               msg = "Connection refused to the view server.";
             } else {
               // TODO create nice messages for all the http codes we think are relevant
-              msg = "Delete Failed with http errno " + res.errno;
+              msg = "Get Failed with http errno " + res.errno;
             }
           } else {
-            msg = "Delete Failed - unexpected response" + JSON.stringify(res);
+            msg = "Get Failed - unexpected response" + JSON.stringify(res);
           }
           setErrorMsg(errorMsg + ",\n" + msg);
           document.getElementById("nodeCreateButton").classList.add("shaker");
         }
-        // re issue the search to refresh the results table to account for any deletes.
-        issueSearch(debouncedSearchCriteria).then((results) => {
-          // Set back to false since request finished
-          setIsSearching(false);
-          // Set results state
-          setResults(results);
-        });
       })
       .catch((res) => {
-        msg = "Delete Failed - logic error " + JSON.stringify(res);
+        const msg = "Get Failed - logic error " + JSON.stringify(res);
         setErrorMsg(errorMsg + ",\n" + msg);
       });
   }
@@ -385,7 +369,7 @@ const NodeSearch = (props) => {
             glossaryAuthorContext.currentNodeType.attributes.length > 3 && (
               <div className="search-item">
                 <Accordion>
-                  <AccordionItem title="Show additional properties">
+                  <AccordionItem title="Search options">
                     <div class="bx--form-item">
                       <div style={{ width: 150 }}>
                         <MultiSelect
@@ -451,6 +435,7 @@ const NodeSearch = (props) => {
           {isSearching && <div className="search-item">Searching ...</div>}
           <div className="search-item">
             <DataTable
+              radio
               isSortable
               rows={currentPage}
               headers={headerData}
@@ -460,43 +445,19 @@ const NodeSearch = (props) => {
                 getHeaderProps,
                 getSelectionProps,
                 getRowProps,
-                getBatchActionProps,
-                onInputChange,
-                selectedRows,
               }) => (
                 <TableContainer
                   title={glossaryAuthorContext.currentNodeType.typeName}
                 >
-                  <TableToolbar>
-                    {/* make sure to apply getBatchActionProps so that the bar renders */}
-                    <TableBatchActions {...getBatchActionProps()}>
-                      {/* inside of you batch actions, you can include selectedRows */}
-                      <TableBatchAction
-                        primaryFocus
-                        onClick={() => handleDelete(selectedRows)}
-                      >
-                        Delete
-                      </TableBatchAction>
-
-                      <TableBatchAction
-                        onClick={() => handleEdit(selectedRows)}
-                      >
-                        Edit
-                      </TableBatchAction>
-                    </TableBatchActions>
-                    <TableToolbarSearch onChange={onInputChange} />
-                    <TableToolbarContent>
-                      <Button onClick={handleAdd} small kind="primary">
-                        Add new
-                      </Button>
-                    </TableToolbarContent>
-                  </TableToolbar>
                   <Table>
                     <TableHead>
                       <TableRow>
-                        <TableSelectAll {...getSelectionProps()} />
+                        <TableHeader />
                         {headers.map((header) => (
-                          <TableHeader {...getHeaderProps({ header })}>
+                          <TableHeader
+                            {...getHeaderProps({ header })}
+                            key={header.key}
+                          >
                             {header.text}
                           </TableHeader>
                         ))}
@@ -504,8 +465,13 @@ const NodeSearch = (props) => {
                     </TableHead>
                     <TableBody>
                       {rows.map((row) => (
-                        <TableRow {...getRowProps({ row })}>
-                          <TableSelectRow {...getSelectionProps({ row })} />
+                        <TableRow {...getRowProps({ row })} key={row.id}>
+                          <TableSelectRow
+                            {...getSelectionProps({
+                              row,
+                              onClick: () => onSelectRow(row),
+                            })}
+                          />
                           {row.cells.map((cell) => (
                             <TableCell key={cell.id}>{cell.value}</TableCell>
                           ))}
@@ -522,7 +488,6 @@ const NodeSearch = (props) => {
           </div>
         </div>
       </div>
-      {mutationRow && <div className="top-search-item">{NodeUpdate}</div>}
     </div>
   );
 };
