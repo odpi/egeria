@@ -24,11 +24,16 @@ public class AssetController {
     AssetCatalogOMASService assetCatalogOMASService;
 
     /**
+     *
      * @param searchCriteria the query parameter with the search phrase
+     * @param types OM types list to search for
      * @return list of assets
+     * @throws PropertyServerException if a configuration on the backend
+     * @throws InvalidParameterException if parameter validation fails
      */
     @GetMapping( path = "/search")
-    public List<AssetElements> searchAssets(@RequestParam("q") String searchCriteria, @RequestParam("types") List<String> types)
+    public List<AssetElements> searchAssets(@RequestParam("q") String searchCriteria,
+                                            @RequestParam("types") List<String> types)
             throws PropertyServerException, InvalidParameterException {
         String user = SecurityContextHolder.getContext().getAuthentication().getName();
         SearchParameters searchParameters = new SearchParameters();

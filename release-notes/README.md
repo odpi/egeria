@@ -23,6 +23,14 @@ and bad.  We would love to hear from you.
 
 Below are the release notes for the latest ODPi Egeria release:
 
+ * [Release 2.0](release-notes-2-0.md) - June 2020
+    * https security for server chassis
+    * encrypted file connector
+    * Bug fixes
+    * Dependency updates
+
+## Older Releases
+
 * [Release 1.8](release-notes-1-8.md) - May 2020
     * Additional tutorial content in the form of the Egeria Dojo
     * Repository explorer usability and functionality improvements
@@ -32,8 +40,6 @@ Below are the release notes for the latest ODPi Egeria release:
     * Bug fixes
     * Dependency updates
     
-## Older Releases
-
 * [Release 1.7](release-notes-1-7.md) - April 2020
     * Bug fixes
     
@@ -78,24 +84,19 @@ This way you can monitor and feedback on future items as they are developed.
 
 The draft release notes for our future planned releases are below:
     
-* [Release 2.0](release-notes-2-0.md) - Planned May 2020
-    * https security for server chassis
-    * IT Infrastructure cataloging maintained through DevOps pipelines
-    * API development support
-
-* [Release 2.1](release-notes-2-1.md) - Planned June 2020
+* [Release 2.1](release-notes-2-1.md) - Planned July 2020
     * Data Science and AI model governance
     * Ethics governance
     
- * [Release 2.2](release-notes-2-2.md) - Planned July 2020
+ * [Release 2.2](release-notes-2-2.md) - Planned August 2020
     * Governance and Privacy Programs
     * Licenses, certification, terms and conditions governance
     
-* [Release 2.3](release-notes-2-3.md) - Planned August 2020
+* [Release 2.3](release-notes-2-3.md) - Planned September 2020
     * Metadata Controlled Security
     * Data Virtualization Configuration
     
-* [Release 2.4](release-notes-2-4.md) - Planned September 2020
+* [Release 2.4](release-notes-2-4.md) - Planned October 2020
     * Digital Architecture
     * Digital service lifecycle management
     
