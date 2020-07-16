@@ -43,7 +43,7 @@
             </activation>
             <modules>
                 <module>ui-chassis</module>
-                <module>presentation-server</module>
+                <!--module>presentation-server</module-->
             </modules>
         </profile>
     </profiles>
