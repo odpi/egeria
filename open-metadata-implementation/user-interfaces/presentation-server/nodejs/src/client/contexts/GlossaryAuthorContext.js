@@ -26,6 +26,10 @@ const GlossaryAuthorContextProvider = (props) => {
    // The myState refers to the default Glossary and Project that need to be set in order to create terms and categories.
   // 0 = unset 1 = setting my glossary 2 = setting my project 3 = glossary set project not, 4 = project set glossary not, 5 authoring
   const [myState, setMyState] = useState(0);
+
+  const updateSelectedNode = async (nodeIn) => {
+    await setSelectedNode(nodeIn);
+  }
   const settingMyGlossaryState = () => {
     console.log("settingMyGlossaryState");
     setMyState(1);
@@ -58,7 +62,7 @@ const GlossaryAuthorContextProvider = (props) => {
     }
   };
 
-  // 0 = unset 1 = creating 2 = created 3 = searching 4 searched.
+  // 0 = unset 1 = creating 2 = created 3 = searching 4 searched 5 refresh search
   const [authoringActionState, setAuthoringActionState] = useState(0);
 
   const setCreatingActionState = () => {
@@ -73,9 +77,18 @@ const GlossaryAuthorContextProvider = (props) => {
     console.log("setSearchingActionState");
     setAuthoringActionState(3);
   };
+
   const setSearchedActionState = () => {
-    console.log("setActionSearched");
+    console.log("setActionSearchedState");
     setAuthoringActionState(4);
+  };
+  const setRefreshSearchingActionState = () => {
+    console.log("setRefreshSearchingActionState");
+    setAuthoringActionState(5);
+  };
+  const removeSelectedNode = () => {
+    console.log("removeSelectedNode");
+    setSelectedNode(undefined);
   };
 
   const setNodeTypeFromKey = (key) => {
@@ -99,7 +112,6 @@ const GlossaryAuthorContextProvider = (props) => {
         setCurrentNodeType,
         setNodeTypeFromKey,
         selectedNode,
-        setSelectedNode,
         myProject,
         setMyProject,
         myGlossary,
@@ -120,7 +132,9 @@ const GlossaryAuthorContextProvider = (props) => {
         setCreatedActionState,
         setSearchingActionState,
         setSearchedActionState,
-      
+        setRefreshSearchingActionState,
+        updateSelectedNode,
+        removeSelectedNode
       }}
     >
       {props.children}
