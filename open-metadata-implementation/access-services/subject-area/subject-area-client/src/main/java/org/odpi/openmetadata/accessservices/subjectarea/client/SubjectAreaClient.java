@@ -21,7 +21,7 @@ public interface SubjectAreaClient<T> {
      * Get object by guid
      *
      * @param userId unique identifier for requesting user, under which the request is performed.
-     * @param guid   unique identifier of the object to which the found objects should relate.
+     * @param guid   unique identifier of the object.
      * @return found objects of the T type.
      *
      * @throws PropertyServerException    something went wrong with the REST call stack.
@@ -49,7 +49,7 @@ public interface SubjectAreaClient<T> {
 
     /**
      * Request to find all objects of the type T.
-     * Getting all objects when there are 100s of thousands may be will lill the system.
+     * Be aware that getting all objects may incur a big performance hit when there re many objects.
      *
      * @param userId unique identifier for requesting user, under which the request is performed.
      * @return list all objects of the T type.
@@ -66,7 +66,7 @@ public interface SubjectAreaClient<T> {
     }
 
     /**
-     * Request to find entities of the type T.
+     * Request to find objects of the type T.
      *
      * @param userId      unique identifier for requesting user, under which the request is performed.
      * @param findRequest information object for find calls.
@@ -83,7 +83,7 @@ public interface SubjectAreaClient<T> {
     /**
      * Update or replace a object.
      *
-     * @param guid      unique identifier of the object to which the found objects should relate.
+     * @param guid      unique identifier of the object.
      * @param userId    unique identifier for requesting user, under which the request is performed.
      * @param supplied  object to be updated or replaced.
      * @param isReplace flag to indicate that this update is a replace.
@@ -100,7 +100,7 @@ public interface SubjectAreaClient<T> {
     /**
      * Replace a object. This means to override all the existing attributes with the supplied attributes.
      *
-     * @param guid     unique identifier of the object to which the found objects should relate.
+     * @param guid     unique identifier of the object.
      * @param userId   unique identifier for requesting user, under which the request is performed.
      * @param supplied object to be replaced.
      * @return replaced object.
@@ -119,7 +119,7 @@ public interface SubjectAreaClient<T> {
     /**
      * Update a object. This means to update the object with any non-null attributes from the supplied object.
      *
-     * @param guid     unique identifier of the object to which the found objects should relate.
+     * @param guid     unique identifier of the object.
      * @param userId   unique identifier for requesting user, under which the request is performed.
      * @param supplied object to be updated.
      * @return updated object.
@@ -138,7 +138,7 @@ public interface SubjectAreaClient<T> {
     /**
      * Delete a object.
      *
-     * @param guid    unique identifier of the object to which the found objects should relate.
+     * @param guid    unique identifier of the object.
      * @param userId  unique identifier for requesting user, under which the request is performed.
      * @param isPurge true indicates a hard delete, false is a soft delete.
      *
@@ -153,7 +153,7 @@ public interface SubjectAreaClient<T> {
     /**
      * Purge a object.
      *
-     * @param guid    unique identifier of the object to which the found objects should relate.
+     * @param guid    unique identifier of the object.
      * @param userId  unique identifier for requesting user, under which the request is performed.
      *
      * @throws PropertyServerException    something went wrong with the REST call stack.
@@ -170,7 +170,7 @@ public interface SubjectAreaClient<T> {
     /**
      * Soft delete a object.
      *
-     * @param guid    unique identifier of the object to which the found objects should relate.
+     * @param guid    unique identifier of the object.
      * @param userId  unique identifier for requesting user, under which the request is performed.
      *
      * @throws PropertyServerException    something went wrong with the REST call stack.
@@ -187,7 +187,7 @@ public interface SubjectAreaClient<T> {
     /**
      * Restore of a soft deleted object.
      *
-     * @param guid    unique identifier of the object to which the found objects should relate.
+     * @param guid    unique identifier of the object.
      * @param userId  unique identifier for requesting user, under which the request is performed.
      *
      * @throws PropertyServerException    something went wrong with the REST call stack.

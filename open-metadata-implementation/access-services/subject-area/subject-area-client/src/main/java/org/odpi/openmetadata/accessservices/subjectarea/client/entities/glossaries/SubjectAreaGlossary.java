@@ -13,7 +13,7 @@ public interface SubjectAreaGlossary {
 
    /**
     * @return {@link SubjectAreaEntityClient} for client calls(described in {@link SubjectAreaClient})
-    * when working with Glossary objects
+    * when working with Glossaries
     */
    SubjectAreaEntityClient<Glossary> glossary();
 }

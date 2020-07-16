@@ -18,7 +18,7 @@ import java.util.List;
 
 /**
  * @param <E> inherited from {@link Node} object type
- * Abstract class for Subject Area client entity operations
+ * Abstract class for Subject Area client node operations
  */
 public abstract class AbstractSubjectAreaEntity<E extends Node> extends AbstractSubjectArea<E> implements SubjectAreaEntityClient<E> {
     protected AbstractSubjectAreaEntity(SubjectAreaRestClient client, String baseUrl) {
