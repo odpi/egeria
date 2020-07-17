@@ -2195,10 +2195,21 @@
                 <artifactId>admin-services-config-metadata-server-sample</artifactId>
                 <version>${open-metadata.version}</version>
             </dependency>
+            <!-- Main distribution of egeria -->
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
                 <artifactId>open-metadata-assemblies</artifactId>
                 <version>${open-metadata.version}</version>
+                <type>pom</type>
+                <classifier>distribution</classifier>
+            </dependency>
+            <!-- used for demo environment -->
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>open-metadata-assemblies</artifactId>
+                <version>${open-metadata.version}</version>
+                <classifier>deploy</classifier>
+                <type>pom</type>
             </dependency>
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
