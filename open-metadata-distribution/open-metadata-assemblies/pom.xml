@@ -285,11 +285,11 @@
             <artifactId>egeria</artifactId>
         </dependency-->
 
-        <!-- For the current node based UI we also need: -->
-        <dependency>
+        <!-- For the current node based UI we also need: (currently disabled whilst p.s. being developed) -->
+        <!--dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>presentation-server</artifactId>
-        </dependency>
+        </dependency-->
 
         <!-- Deployment assembly needs some artifacts, but currently they are only pulled from source, so no binary dependency -->
   </dependencies>
@@ -308,7 +308,8 @@
                             <descriptors>
                                 <descriptor>src/main/assemblies/egeria-omag.xml</descriptor>
                                 <descriptor>src/main/assemblies/egeria-deploy.xml</descriptor>
-                                <descriptor>src/main/assemblies/egeria-presentation-server.xml</descriptor>
+                                <!--disabled whilst being developed -->
+                                <!--descriptor>src/main/assemblies/egeria-presentation-server.xml</descriptor-->
                             </descriptors>
                             <finalName>egeria-${open-metadata.version}</finalName>
                             <tarLongFileMode>gnu</tarLongFileMode>
