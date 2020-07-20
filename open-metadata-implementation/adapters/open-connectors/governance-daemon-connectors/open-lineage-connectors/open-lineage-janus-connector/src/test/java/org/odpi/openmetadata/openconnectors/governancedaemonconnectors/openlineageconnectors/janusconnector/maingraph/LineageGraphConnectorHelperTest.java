@@ -39,8 +39,8 @@ public class LineageGraphConnectorHelperTest {
 
     @BeforeClass
     public static void beforeClass() {
-        Graph cyclicGraph = JanusGraphFactory.build().set("storage.backend", "inmemory").open();
-        GraphTraversalSource g = cyclicGraph.traversal();
+        Graph graph = JanusGraphFactory.build().set("storage.backend", "inmemory").open();
+        GraphTraversalSource g = graph.traversal();
         mainGraphConnector = new LineageGraphConnectorHelper(g);
 
         addColumnLineageData(g);
