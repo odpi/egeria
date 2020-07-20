@@ -51,6 +51,7 @@ public class GraphConstants {
     public static final String PROPERTY_NAME_GLOSSARY = "glossary";
     public static final String PROPERTY_NAME_METADATA_ID = "metadataCollectionId";
     private static final String PROPERTY_NAME_PATH = "path";
+    public static final String PROPERTY_NAME_PROCESS_PAINTED = "processPainted";
 
     public static final String CONDENSED_NODE_DISPLAY_NAME = "...";
     public static final String SOURCE_CONDENSATION = "source";
@@ -101,6 +102,7 @@ public class GraphConstants {
     public static final String PROPERTY_KEY_DATABASE_DISPLAY_NAME = PROPERTY_KEY_PREFIX_ELEMENT + PROPERTY_NAME_DATABASE_DISPLAY_NAME;
     public static final String PROPERTY_KEY_CONNECTION_NAME = PROPERTY_KEY_PREFIX_ELEMENT + PROPERTY_NAME_CONNECTION;
     public static final String PROPERTY_KEY_PATH = PROPERTY_KEY_PREFIX_ELEMENT + PROPERTY_NAME_PATH;
+    public static final String PROPERTY_KEY_PROCESS_PAINTED = PROPERTY_KEY_PREFIX_VERTEX_INSTANCE_PROPERTY + PROPERTY_NAME_PROCESS_PAINTED;
 
     public static final String PROPERTY_KEY_RELATIONSHIP_GUID = PROPERTY_KEY_PREFIX_RELATIONSHIP + PROPERTY_NAME_GUID;
     public static final String PROPERTY_KEY_RELATIONSHIP_VERSION = PROPERTY_KEY_PREFIX_RELATIONSHIP + PROPERTY_NAME_VERSION;
