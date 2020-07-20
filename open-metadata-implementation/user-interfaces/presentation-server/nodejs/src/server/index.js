@@ -132,7 +132,9 @@ app.use(session({ secret: "cats" }));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(passport.initialize());
 app.use(passport.session());
-
+/**
+ * Middleware to configure Passport t use Local strategy 
+ */
 passport.use(
   new LocalStrategy(function (username, password, cb) {
     console.log("username: " + username);
@@ -162,7 +164,9 @@ passport.serializeUser(function (user, cb) {
   console.log("serializeUser called with user " + user);
   cb(null, user.id);
 });
-
+/**
+ * Deserialise the user. This means look up the id in the database (db).  
+ */
 passport.deserializeUser(function (id, cb) {
   console.log("deserializeUser called with id " + id);
   db.users.findById(id, function (err, user) {
@@ -173,7 +177,11 @@ passport.deserializeUser(function (id, cb) {
     cb(null, user);
   });
 });
-
+/**
+ * Middleware to handle post requests that start with /login i.e. the login request. The tenant segment has been removed by previous middleware. 
+ * The login is performed using passport' local authentication (http://www.passportjs.org/docs/authenticate/). 
+ * TODO support other authentication style e.g oauth and ldap both of which passport supports.
+ */
 app.post("/login", function (req, res, next) {
   console.log("/login");
   passport.authenticate("local", function (err, user, next) {
@@ -194,7 +202,12 @@ app.post("/login", function (req, res, next) {
     });
   })(req, res, next);
 });
-
+/**
+ * If not logged in redirect to the login screen otehreise continue to process the request by calling the next in the middleware chain.
+ * @param {*} req request
+ * @param {*} res response
+ * @param {*} next function of the next in the middleware chain 
+ */
 function loggedIn(req, res, next) {
   if (req.user) {
     next();
@@ -202,7 +215,9 @@ function loggedIn(req, res, next) {
     res.redirect("/" + req.query.serverName + "/login");
   }
 }
-
+/**
+ * logout - destroy the session
+ */
 app.get("/logout", function (req, res) {
   console.log("/logout");
   req.session.destroy(function (err) {
@@ -217,14 +232,17 @@ app.get("/logout", function (req, res) {
 const staticJoinedPath = path.join(__dirname, "../../dist");
 app.use(express.static(staticJoinedPath, { index: false }));
 const joinedPath = path.join(__dirname, "../../dist", "index.html");
-
+/**
+ * Process login url,
+ */
 app.get("/login", (req, res) => {
   console.log("/login called " + joinedPath);
   res.sendFile(joinedPath);
 });
 app.use(bodyParser.json());
 /**
- * Validate the URL structure isofthe form /servers/<serverName>/<view-service-name>/users/<userId>/<optional additional endpoint information>
+ * Validate the URL structure is of the form /servers/<serverName>/<view-service-name>/users/<userId>/<optional additional endpoint information>
+ * 
  * @param {*} url url to validate
  */
 const validateURL = (url) => {
@@ -245,7 +263,7 @@ const validateURL = (url) => {
       console.log("No supplied serverName ");
       isValid = false;
     } else {
-      // check against environment -which have ben parsed into the servers variable
+      // check against environment -which have been parsed into the servers variable
       const serverDetails = servers[suppliedserverName];
       if (serverDetails == null) {
         console.log("ServerName not configured");
@@ -327,7 +345,42 @@ app.post("/servers/*", (req, res) => {
     res.status(400).send("Error, invalid supplied URL: " + incomingUrl);
   }
 });
+/**
+ * Middleware to proxy put requests that start with /servers.
+ * The outbound call is made with https. 
+ */
+app.put("/servers/*", (req, res) => {
+  const incomingUrl = req.url;
+  console.log("/servers/* put called " + incomingUrl);
+  const body = req.body;
+  console.log("Got body:", body);
+  if (validateURL(incomingUrl)) {
+    const instance = getAxiosInstance(incomingUrl);
+    instance
+      .put("", body)
+      .then(function (response) {
+        console.log("response.data");
+        console.log(response.data);
+        const resBody = response.data;
+        res.setHeader("Content-Type", "application/json");
+        res.json(resBody);
+      })
+      .catch(function (error) {
+        console.log(error);
+        res.status(400).send(error);
+      })
+      .then(function () {
+        // always executed
+      });
+  } else {
+    res.status(400).send("Error, invalid supplied URL: " + incomingUrl);
+  }
+});
 
+/**
+ * Middleware to proxy delete requests that start with /servers.
+ * The outbound call is made with https. 
+ */
 app.delete("/servers/*", (req, res) => {
   const incomingUrl = req.url;
   console.log("/servers/* delete called " + incomingUrl);
@@ -353,7 +406,10 @@ app.delete("/servers/*", (req, res) => {
     res.status(400).send("Error, invalid supplied URL: " + incomingUrl);
   }
 });
-
+/**
+ * Middleware to proxy get requests that start with /servers.
+ * The outbound call is made with https. 
+ */
 app.get("/servers/*", (req, res) => {
   const url = req.url;
   console.log("/servers/* get called " + url);
@@ -362,6 +418,8 @@ app.get("/servers/*", (req, res) => {
     instance
       .get()
       .then(function (response) {
+        console.log("response");
+        console.log(response);
         console.log("response.data");
         console.log(response.data);
         const resBody = response.data;
