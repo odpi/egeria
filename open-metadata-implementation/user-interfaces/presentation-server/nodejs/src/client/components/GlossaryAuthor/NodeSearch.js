@@ -38,6 +38,7 @@ const NodeSearch = (props) => {
   const [refreshed, setRefreshed] = useState(false);
   const [pageSize] = useState(10);
   const [errorMsg, setErrorMsg] = useState();
+  const [tableKey, setTableKey] = useState(1);
   const [paginationOptions, setPaginationOptions] = useState();
 
   // properties that will be displayed be default for a node
@@ -115,8 +116,7 @@ const NodeSearch = (props) => {
     onChange: onPaginationChange,
   });
 
-  if (props.refresh && !refreshed) {
-    setRefreshed(true);
+  if (glossaryAuthorContext.authoringActionState == 5) {
     console.log("Refreshing search");
     issueSearch(debouncedSearchCriteria).then((results) => {
       // Set back to false since request finished
@@ -159,6 +159,7 @@ const NodeSearch = (props) => {
   // this involves taking the results from state and calculating what we need to display pased on the pagination options
   // current page is the subset of results that are displayed.
   function refreshSearchResults(passedPage, passedPageSize) {
+    let selectedInResults = false;
     if (results && results.length > 0) {
       // there seems to be an issue when paginationOptions in the pagination handler
       // then calling this function, the first time paginationOptions is undefined.
@@ -190,11 +191,13 @@ const NodeSearch = (props) => {
         currentPageStart + currentPageSize
       );
       let resultsToshow = slicedResults.map(function (row) {
+        row.id = row.systemAttributes.guid;
         if (
           glossaryAuthorContext.selectedNode &&
           glossaryAuthorContext.selectedNode.systemAttributes.guid == row.id
         ) {
           row.isSelected = true;
+          selectedInResults =true;
         }
       });
       console.log("resultsToshow");
@@ -203,6 +206,11 @@ const NodeSearch = (props) => {
     } else {
       setCurrentPage([]);
     }
+    // we have selectedNode but it is not in the search results - we must have deleted it. 
+    if (!selectedInResults) {
+      glossaryAuthorContext.updateSelectedNode(undefined);
+    }
+
   }
   // Additonal attributes can be selected so more columns can be shown
   // the additional attriniutes are in selectedAdditionalProperties
@@ -323,6 +331,7 @@ const NodeSearch = (props) => {
       .then((res) => {
         if (res.relatedHTTPCode == 200 && res.result) {
           const nodesArray = res.result;
+          let msg = "";
           // if there is a node response then we have successfully updated a node
           if (nodesArray) {
             if (nodesArray.length > 0) {
@@ -346,12 +355,14 @@ const NodeSearch = (props) => {
               //setResults(nodeRows);
               setCurrentPage(nodeRows.slice(0, pageSize));
               setTotal(nodeRows.length);
+              setTableKey(tableKey+1);
               return nodeRows;
             } else {
               // no results
               // setResults([]);
               setCurrentPage([]);
               setTotal(0);
+              setTableKey(tableKey+1);
               return [];
             }
           } else if (res.relatedHTTPCode) {
@@ -377,36 +388,18 @@ const NodeSearch = (props) => {
           setResults([]);
           setCurrentPage([]);
           setTotal(0);
+          setTableKey(tableKey+1);
         }
       })
       .catch((res) => {
         setErrorMsg("Search Failed" + JSON.stringify(res));
+        setTableKey(tableKey+1);
       });
   }
   return (
     <div className="top-search-container">
       <div className="top-search-item">
         <div className="search-container">
-          {glossaryAuthorContext.currentNodeType &&
-            glossaryAuthorContext.currentNodeType.attributes.length > 3 && (
-              <div className="search-item">
-                <Accordion>
-                  <AccordionItem title="Search options">
-                    <label forHtml="exactMatch">Exact Match </label>
-                    <input type="checkbox" id="exactMatch" />
-                    <div className="bx--form-item">
-                      <div style={{ width: 150 }}>
-                        <MultiSelect
-                          onChange={onAdditionalAttributesChanged}
-                          items={additionalProperties}
-                          itemToString={(item) => (item ? item.text : "")}
-                        />
-                      </div>
-                    </div>
-                  </AccordionItem>
-                </Accordion>
-              </div>
-            )}
           <div data-search role="search" className="bx--search bx--search--l">
             <div className="search-item">
               <label
@@ -456,10 +449,31 @@ const NodeSearch = (props) => {
               </button>
             </div>
           </div>
+          {glossaryAuthorContext.currentNodeType &&
+            glossaryAuthorContext.currentNodeType.attributes.length > 3 && (
+              <div className="search-item">
+                <Accordion>
+                  <AccordionItem title="Search options">
+                    <label forHtml="exactMatch">Exact Match </label>
+                    <input type="checkbox" id="exactMatch" onClick={onClickExactMatch}/>
+                    <div className="bx--form-item">
+                      <div style={{ width: 150 }}>
+                        <MultiSelect
+                          onChange={onAdditionalAttributesChanged}
+                          items={additionalProperties}
+                          itemToString={(item) => (item ? item.text : "")}
+                        />
+                      </div>
+                    </div>
+                  </AccordionItem>
+                </Accordion>
+              </div>
+            )}
           {isSearching && <div className="search-item">Searching ...</div>}
           <div className="search-item">
             <DataTable
               radio
+              key={tableKey}
               isSortable
               rows={currentPage}
               headers={headerData}

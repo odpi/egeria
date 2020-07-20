@@ -34,32 +34,19 @@ const NodeActionContent = (props) => {
         )}
       </div>
     );
-  } else if (glossaryAuthorContext.authoringActionState == 5 ) {
+  } else if (glossaryAuthorContext.authoringActionState == 5  || (glossaryAuthorContext.authoringActionState == 6 )) {
     return (
       <div className="actions-container">
         <div className="actions-item">
-          <NodeSearch refresh={true} />
+          <NodeSearch/>
         </div>
         {glossaryAuthorContext.selectedNode && (
           <div className="actions-item">
-            <NodeUpdate />
+            <NodeUpdate key={glossaryAuthorContext.selectedNode.systemAttributes.guid}/>
           </div>
         )}
       </div>
     );
-  } else if (glossaryAuthorContext.authoringActionState == 6 ) {
-    return (
-      <div className="actions-container">
-        <div className="actions-item">
-          <NodeSearch refresh={false}/>
-        </div>
-        {glossaryAuthorContext.selectedNode && (
-          <div className="actions-item">
-            <NodeUpdate />
-          </div>
-        )}
-      </div>
-    );   
  } else {
     return <NodeCreate />;
   }
