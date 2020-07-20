@@ -708,7 +708,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
                     errorCode.getUserAction());
         }
 
-        LineageVerticesAndEdges lineageVerticesAndEdges = null;
+        Optional<LineageVerticesAndEdges> lineageVerticesAndEdges = Optional.empty();
 
         switch (scope) {
             case SOURCE_AND_DESTINATION:
@@ -727,9 +727,11 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
                 lineageVerticesAndEdges = helper.glossary(guid, includeProcesses);
                 break;
         }
-        if (!displayNameMustContain.isEmpty())
-            helper.filterDisplayName(lineageVerticesAndEdges, displayNameMustContain);
-        return new LineageResponse(lineageVerticesAndEdges);
+        if (lineageVerticesAndEdges.isPresent() && !displayNameMustContain.isEmpty()) {
+            helper.filterDisplayName(lineageVerticesAndEdges.get(), displayNameMustContain);
+        }
+
+        return new LineageResponse(lineageVerticesAndEdges.orElse(null));
     }
 
 

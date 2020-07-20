@@ -60,7 +60,7 @@ public class LineageGraphConnectorHelperTest {
         expectedNodeIDs.add(queriedNodeID);
         expectedNodeIDs.add(PROPERTY_VALUE_NODE_ID_CONDENSED_SOURCE);
 
-        LineageVerticesAndEdges lineageVerticesAndEdges = mainGraphConnector.ultimateSource(queriedNodeID, true);
+        LineageVerticesAndEdges lineageVerticesAndEdges = mainGraphConnector.ultimateSource(queriedNodeID, true).get();
         Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
         validateResponse(expectedNodeIDs, lineageVertices);
     }
@@ -74,7 +74,7 @@ public class LineageGraphConnectorHelperTest {
         expectedNodeIDs.add(queriedNodeID);
         expectedNodeIDs.add(PROPERTY_VALUE_NODE_ID_CONDENSED_DESTINATION);
 
-        LineageVerticesAndEdges lineageVerticesAndEdges = mainGraphConnector.ultimateDestination(queriedNodeID, true);
+        LineageVerticesAndEdges lineageVerticesAndEdges = mainGraphConnector.ultimateDestination(queriedNodeID, true).get();
         Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
 
         validateResponse(expectedNodeIDs, lineageVertices);
@@ -92,7 +92,7 @@ public class LineageGraphConnectorHelperTest {
         expectedNodeIDs.add(PROPERTY_VALUE_NODE_ID_CONDENSED_SOURCE);
         expectedNodeIDs.add(PROPERTY_VALUE_NODE_ID_CONDENSED_DESTINATION);
         System.out.println(mainGraphConnector);
-        LineageVerticesAndEdges lineageVerticesAndEdges = mainGraphConnector.sourceAndDestination(queriedNodeID, true);
+        LineageVerticesAndEdges lineageVerticesAndEdges = mainGraphConnector.sourceAndDestination(queriedNodeID, true).get();
         Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
 
         validateResponse(expectedNodeIDs, lineageVertices);
@@ -115,7 +115,7 @@ public class LineageGraphConnectorHelperTest {
         expectedNodeIDs.add("p3");
         expectedNodeIDs.add("p4");
 
-        LineageVerticesAndEdges lineageVerticesAndEdges = mainGraphConnector.endToEnd(queriedNodeID, true);
+        LineageVerticesAndEdges lineageVerticesAndEdges = mainGraphConnector.endToEnd(queriedNodeID, true).get();
         Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
 
         validateResponse(expectedNodeIDs, lineageVertices);
@@ -132,7 +132,7 @@ public class LineageGraphConnectorHelperTest {
         expectedNodeIDs.add("g3");
         expectedNodeIDs.add("c2");
 
-        LineageVerticesAndEdges lineageVerticesAndEdges = mainGraphConnector.glossary(queriedNodeID, true);
+        LineageVerticesAndEdges lineageVerticesAndEdges = mainGraphConnector.glossary(queriedNodeID, true).get();
 
         Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
 
@@ -168,7 +168,7 @@ public class LineageGraphConnectorHelperTest {
         expectedNodeIDs.add("p1");
         expectedNodeIDs.add(queriedNodeID);
 
-        LineageVerticesAndEdges lineageVerticesAndEdges = mainGraphConnector.ultimateSource(queriedNodeID, true);
+        LineageVerticesAndEdges lineageVerticesAndEdges = mainGraphConnector.ultimateSource(queriedNodeID, true).get();
         Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
         validateResponse(expectedNodeIDs, lineageVertices);
     }
@@ -181,7 +181,7 @@ public class LineageGraphConnectorHelperTest {
         expectedNodeIDs.add("t2");
         expectedNodeIDs.add(queriedNodeID);
 
-        LineageVerticesAndEdges lineageVerticesAndEdges = mainGraphConnector.ultimateDestination(queriedNodeID, true);
+        LineageVerticesAndEdges lineageVerticesAndEdges = mainGraphConnector.ultimateDestination(queriedNodeID, true).get();
         Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
 
         validateResponse(expectedNodeIDs, lineageVertices);
@@ -198,7 +198,7 @@ public class LineageGraphConnectorHelperTest {
         expectedNodeIDs.add(queriedNodeID);
 
         System.out.println(mainGraphConnector);
-        LineageVerticesAndEdges lineageVerticesAndEdges = mainGraphConnector.sourceAndDestination(queriedNodeID, true);
+        LineageVerticesAndEdges lineageVerticesAndEdges = mainGraphConnector.sourceAndDestination(queriedNodeID, true).get();
         Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
 
         validateResponse(expectedNodeIDs, lineageVertices);
@@ -214,7 +214,7 @@ public class LineageGraphConnectorHelperTest {
         expectedNodeIDs.add("t2");
         expectedNodeIDs.add(queriedNodeID);
 
-        LineageVerticesAndEdges lineageVerticesAndEdges = mainGraphConnector.endToEnd(queriedNodeID, true);
+        LineageVerticesAndEdges lineageVerticesAndEdges = mainGraphConnector.endToEnd(queriedNodeID, true).get();
         Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
 
         validateResponse(expectedNodeIDs, lineageVertices);

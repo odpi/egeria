@@ -26,6 +26,7 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -70,8 +71,12 @@ public class LineageGraphConnectorHelper {
      * @return a subgraph in an Open Lineage specific format.
      */
 
-    public LineageVerticesAndEdges ultimateSource(String guid, boolean includeProcesses) {
-        String edgeLabel = getEdgeLabelForDataFlow(g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).next());
+    public Optional<LineageVerticesAndEdges> ultimateSource(String guid, boolean includeProcesses) {
+        Optional<String> edgeLabelOptional = getEdgeLabelForDataFlow(g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).next());
+        if (!edgeLabelOptional.isPresent()) {
+            return Optional.empty();
+        }
+        String edgeLabel = edgeLabelOptional.get();
 
         Graph sourceGraph = (Graph)
                 g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).
@@ -84,7 +89,7 @@ public class LineageGraphConnectorHelper {
                 repeat(inE(edgeLabel).outV().simplePath()).
                 dedup().toList();
 
-        return getCondensedLineage(guid, g, sourceGraph, getLineageVertices(sourcesList), SOURCE_CONDENSATION, includeProcesses);
+        return Optional.of(getCondensedLineage(guid, g, sourceGraph, getLineageVertices(sourcesList), SOURCE_CONDENSATION, includeProcesses));
     }
 
     /**
@@ -95,8 +100,12 @@ public class LineageGraphConnectorHelper {
      *
      * @return a subgraph in an Open Lineage specific format.
      */
-    public LineageVerticesAndEdges ultimateDestination(String guid, boolean includeProcesses) {
-        String edgeLabel = getEdgeLabelForDataFlow(g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).next());
+    public Optional<LineageVerticesAndEdges> ultimateDestination(String guid, boolean includeProcesses) {
+        Optional<String> edgeLabelOptional = getEdgeLabelForDataFlow(g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).next());
+        if (!edgeLabelOptional.isPresent()) {
+            return Optional.empty();
+        }
+        String edgeLabel = edgeLabelOptional.get();
 
         Graph destinationGraph = (Graph)
                 g.V().has(PROPERTY_KEY_ENTITY_GUID, guid)
@@ -109,7 +118,8 @@ public class LineageGraphConnectorHelper {
                 repeat(outE(edgeLabel).inV().simplePath()).
                 dedup().toList();
 
-        return getCondensedLineage(guid, g, destinationGraph, getLineageVertices(destinationsList), DESTINATION_CONDENSATION, includeProcesses);
+        return Optional.of(getCondensedLineage(guid, g, destinationGraph, getLineageVertices(destinationsList), DESTINATION_CONDENSATION,
+                includeProcesses));
     }
 
     /**
@@ -120,8 +130,13 @@ public class LineageGraphConnectorHelper {
      *
      * @return a subgraph in an Open Lineage specific format.
      */
-    public LineageVerticesAndEdges endToEnd(String guid, boolean includeProcesses) {
-        String edgeLabel = getEdgeLabelForDataFlow(g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).next());
+    public Optional<LineageVerticesAndEdges> endToEnd(String guid, boolean includeProcesses) {
+        Optional<String> edgeLabelOptional = getEdgeLabelForDataFlow(g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).next());
+        if (!edgeLabelOptional.isPresent()) {
+            return Optional.empty();
+        }
+        String edgeLabel = edgeLabelOptional.get();
+
 
         Graph endToEndGraph = (Graph)
                 g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).
@@ -132,7 +147,7 @@ public class LineageGraphConnectorHelper {
                                         repeat((Traversal) outE(edgeLabel).subgraph("subGraph").inV().simplePath())
                         ).cap("subGraph").next();
 
-        return getLineageVerticesAndEdges(endToEndGraph, includeProcesses);
+        return Optional.of(getLineageVerticesAndEdges(endToEndGraph, includeProcesses));
     }
 
     /**
@@ -143,17 +158,27 @@ public class LineageGraphConnectorHelper {
      *
      * @return a subgraph in an Open Lineage specific format
      */
-    public LineageVerticesAndEdges sourceAndDestination(String guid, boolean includeProcesses) {
-        LineageVerticesAndEdges ultimateSourceResponse = ultimateSource(guid, includeProcesses);
-        LineageVerticesAndEdges ultimateDestinationResponse = ultimateDestination(guid, includeProcesses);
+    public Optional<LineageVerticesAndEdges> sourceAndDestination(String guid, boolean includeProcesses) {
+        Optional<LineageVerticesAndEdges> ultimateSourceResponse = ultimateSource(guid, includeProcesses);
+        Optional<LineageVerticesAndEdges> ultimateDestinationResponse = ultimateDestination(guid, includeProcesses);
 
-        Set<LineageVertex> sourceAndDestinationVertices = Stream.concat(ultimateSourceResponse.getLineageVertices().stream(),
-                ultimateDestinationResponse.getLineageVertices().stream()).collect(Collectors.toSet());
+        if (ultimateSourceResponse.isPresent() && ultimateDestinationResponse.isPresent()) {
+            Set<LineageVertex> sourceAndDestinationVertices = Stream.concat(ultimateSourceResponse.get().getLineageVertices().stream(),
+                    ultimateDestinationResponse.get().getLineageVertices().stream()).collect(Collectors.toSet());
 
-        Set<LineageEdge> sourceAndDestinationEdges = Stream.concat(ultimateSourceResponse.getLineageEdges().stream(),
-                ultimateDestinationResponse.getLineageEdges().stream()).collect(Collectors.toSet());
+            Set<LineageEdge> sourceAndDestinationEdges = Stream.concat(ultimateSourceResponse.get().getLineageEdges().stream(),
+                    ultimateDestinationResponse.get().getLineageEdges().stream()).collect(Collectors.toSet());
 
-        return new LineageVerticesAndEdges(sourceAndDestinationVertices, sourceAndDestinationEdges);
+            return Optional.of(new LineageVerticesAndEdges(sourceAndDestinationVertices, sourceAndDestinationEdges));
+        } else if(ultimateSourceResponse.isPresent()) {
+            return ultimateSourceResponse;
+        }
+        else {
+            if(ultimateDestinationResponse.isPresent()) {
+                return ultimateDestinationResponse;
+            }
+        }
+        return Optional.empty();
     }
 
     /**
@@ -164,12 +189,12 @@ public class LineageGraphConnectorHelper {
      *
      * @return a subgraph in an Open Lineage specific format.
      */
-    public LineageVerticesAndEdges glossary(String guid, boolean includeProcesses) {
+    public Optional<LineageVerticesAndEdges> glossary(String guid, boolean includeProcesses) {
 
         Graph subGraph = (Graph) g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).bothE(glossaryTermAndClassificationEdges)
                 .subgraph("s").cap("s").next();
 
-        return getLineageVerticesAndEdges(subGraph, includeProcesses);
+        return Optional.of(getLineageVerticesAndEdges(subGraph, includeProcesses));
     }
 
     /**
@@ -583,17 +608,17 @@ public class LineageGraphConnectorHelper {
         }
     }
 
-    private String getEdgeLabelForDataFlow(Vertex queriedVertex) {
+    private Optional<String> getEdgeLabelForDataFlow(Vertex queriedVertex) {
         String queriedNodeType = queriedVertex.label();
         switch (queriedNodeType) {
             case TABULAR_COLUMN:
             case RELATIONAL_COLUMN:
-                return EDGE_LABEL_COLUMN_DATA_FLOW;
+                return Optional.of(EDGE_LABEL_COLUMN_DATA_FLOW);
             case DATA_FILE:
             case RELATIONAL_TABLE:
-                return EDGE_LABEL_TABLE_DATA_FLOW;
+                return Optional.of(EDGE_LABEL_TABLE_DATA_FLOW);
             default:
-                return null;
+                return Optional.empty();
         }
     }
 }
