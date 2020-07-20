@@ -232,7 +232,7 @@ function NodeCreate(props) {
                   <TableHead>
                     <TableRow>
                       {headers.map((header) => (
-                        <TableHeader {...getHeaderProps({ header })}>
+                        <TableHeader key={header.key} {...getHeaderProps({ header })}>
                           {header.header}
                         </TableHeader>
                       ))}
@@ -254,7 +254,7 @@ function NodeCreate(props) {
 
           <Accordion>
             <AccordionItem title="System Attributes">
-              <div class="bx--form-item">
+              <div className="bx--form-item">
                 <DataTable
                   isSortable
                   rows={getSystemDataRowData()}
@@ -265,7 +265,7 @@ function NodeCreate(props) {
                         <TableHead>
                           <TableRow>
                             {headers.map((header) => (
-                              <TableHeader {...getHeaderProps({ header })}>
+                              <TableHeader key={header.key} {...getHeaderProps({ header })}>
                                 {header.header}
                               </TableHeader>
                             ))}
@@ -309,14 +309,14 @@ function NodeCreate(props) {
               !createResponse &&
               glossaryAuthorContext.currentNodeType.attributes.map((item) => {
                 return (
-                  <div class="bx--form-item">
-                    <label for={createLabelId(item.key)} class="bx--label">
+                  <div className="bx--form-item" key={item.key}>
+                    <label htmlFor={createLabelId(item.key)} className="bx--label">
                       {item.label} <Info16 />
                     </label>
                     <input
                       id={createLabelId(item.key)}
                       type="text"
-                      class="bx--text-input"
+                      className="bx--text-input"
                       value={item.name}
                       onChange={(e) => setAttribute(item, e.target.value)}
                       placeholder={item.label}
@@ -343,10 +343,10 @@ function NodeCreate(props) {
               </AccordionItem>
             </Accordion>
 
-            <div class="bx--form-item">
+            <div className="bx--form-item">
               <button
                 id="nodeCreateButton"
-                class="bx--btn bx--btn--primary"
+                className="bx--btn bx--btn--primary"
                 disabled={!validateForm()}
                 onClick={handleClick}
                 onAnimationEnd={handleOnAnimationEnd}

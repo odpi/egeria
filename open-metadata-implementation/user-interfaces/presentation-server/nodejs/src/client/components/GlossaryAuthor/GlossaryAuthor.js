@@ -140,10 +140,10 @@ export default function GlossaryAuthor() {
             Unable to use the UI as we are not Connected to the server - press
             button to retry.
           </div>
-          <div class="bx--form-item">
+          <div className="bx--form-item">
             <button
               id="connectionChecker"
-              class="bx--btn bx--btn--secondary"
+              className="bx--btn bx--btn--secondary"
               onClick={handleOnClick}
               type="button"
               onAnimationEnd={handleOnAnimationEnd}

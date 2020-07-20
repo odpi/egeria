@@ -27,8 +27,8 @@ const GlossaryAuthorContextProvider = (props) => {
   // 0 = unset 1 = setting my glossary 2 = setting my project 3 = glossary set project not, 4 = project set glossary not, 5 authoring
   const [myState, setMyState] = useState(0);
 
-  const updateSelectedNode = async (nodeIn) => {
-    await setSelectedNode(nodeIn);
+  const updateSelectedNode = (nodeIn) => {
+    setSelectedNode(nodeIn);
   }
   const settingMyGlossaryState = () => {
     console.log("settingMyGlossaryState");
@@ -62,7 +62,7 @@ const GlossaryAuthorContextProvider = (props) => {
     }
   };
 
-  // 0 = unset 1 = creating 2 = created 3 = searching 4 searched 5 refresh search
+  // 0 = unset 1 = creating 2 = created 3 = searching 4 searched 5 refresh search, 6 deleting 
   const [authoringActionState, setAuthoringActionState] = useState(0);
 
   const setCreatingActionState = () => {
@@ -82,13 +82,18 @@ const GlossaryAuthorContextProvider = (props) => {
     console.log("setActionSearchedState");
     setAuthoringActionState(4);
   };
-  const setRefreshSearchingActionState = () => {
+  const setRefreshSearchActionState = () => {
     console.log("setRefreshSearchingActionState");
     setAuthoringActionState(5);
   };
+  const setDeletingActionState = () => {
+    console.log("setDeletingActionState");
+    setAuthoringActionState(6);
+  };
+
   const removeSelectedNode = () => {
     console.log("removeSelectedNode");
-    setSelectedNode(undefined);
+    setSelectedNode(undefined);    
   };
 
   const setNodeTypeFromKey = (key) => {
@@ -132,7 +137,8 @@ const GlossaryAuthorContextProvider = (props) => {
         setCreatedActionState,
         setSearchingActionState,
         setSearchedActionState,
-        setRefreshSearchingActionState,
+        setRefreshSearchActionState,
+        setDeletingActionState,
         updateSelectedNode,
         removeSelectedNode
       }}

@@ -34,11 +34,11 @@ const NodeActionContent = (props) => {
         )}
       </div>
     );
-  } else if (glossaryAuthorContext.authoringActionState == 5) {
+  } else if (glossaryAuthorContext.authoringActionState == 5 ) {
     return (
       <div className="actions-container">
         <div className="actions-item">
-          <NodeSearch refresh />
+          <NodeSearch refresh={true} />
         </div>
         {glossaryAuthorContext.selectedNode && (
           <div className="actions-item">
@@ -47,7 +47,20 @@ const NodeActionContent = (props) => {
         )}
       </div>
     );
-  } else {
+  } else if (glossaryAuthorContext.authoringActionState == 6 ) {
+    return (
+      <div className="actions-container">
+        <div className="actions-item">
+          <NodeSearch refresh={false}/>
+        </div>
+        {glossaryAuthorContext.selectedNode && (
+          <div className="actions-item">
+            <NodeUpdate />
+          </div>
+        )}
+      </div>
+    );   
+ } else {
     return <NodeCreate />;
   }
 };

@@ -44,7 +44,7 @@ const NodeTypeChooser = (props) => {
       {glossaryAuthorContext.isMyState(5) && (
         <div>
           <div>Choose what to author:</div>
-          <div class="bx--col-lg-2 bx--col-md-2">
+          <div className="bx--col-lg-2 bx--col-md-2">
             <div margin="0 auto">
               <select
                 id="nodes"

@@ -71,6 +71,7 @@ const NodeSearch = (props) => {
   // The goal is to only have the API call fire when user stops typing ...
   // ... so that we aren't hitting our API rapidly.
   const debouncedSearchCriteria = useDebounce(searchCriteria, 500);
+  const [exactMatch, setExactMatch] = useState(false);
 
   // let refresh = false;
   // Here's where the API call happens
@@ -184,10 +185,18 @@ const NodeSearch = (props) => {
       if (currentPageStart + currentPageSize - 1 > results.length) {
         currentPageSize = results.length - currentPageStart;
       }
-      const resultsToshow = results.slice(
+      const slicedResults = results.slice(
         currentPageStart,
         currentPageStart + currentPageSize
       );
+      let resultsToshow = slicedResults.map(function (row) {
+        if (
+          glossaryAuthorContext.selectedNode &&
+          glossaryAuthorContext.selectedNode.systemAttributes.guid == row.id
+        ) {
+          row.isSelected = true;
+        }
+      });
       console.log("resultsToshow");
       console.log(resultsToshow);
       setCurrentPage(resultsToshow);
@@ -248,8 +257,8 @@ const NodeSearch = (props) => {
           console.log("res.result) " + res.result);
           if (res.result.length == 1) {
             glossaryAuthorContext.updateSelectedNode(res.result[0]);
-            console.log("glossaryAuthorContext.selectednode");
-            console.log(glossaryAuthorContext.selectednode);
+            console.log("glossaryAuthorContext.selectedNode");
+            console.log(glossaryAuthorContext.selectedNode);
           }
         } else {
           // if this is a formatted Egeria response, we have a user action
@@ -279,16 +288,29 @@ const NodeSearch = (props) => {
         setErrorMsg(errorMsg + ",\n" + msg);
       });
   }
+  const onClickExactMatch = () => {
+    console.log("onClickExactMatch");
+    const checkBox = document.getElementById("exactMatch");
+    setExactMatch(checkBox.checked);
+  };
+  const onSelectRow = (row) => {
+    console.log("onSelectRow");
+    issueGet(row.id);
+  };
   // issue search using a criteria
   function issueSearch(criteria) {
     setPageNumber(1);
     setTotal(0);
+    let actualCriteria = criteria;
+    if (!exactMatch) {
+      actualCriteria = criteria + ".*";
+    }
 
     // encode the URI. Be aware the more recent RFC3986 for URLs makes use of square brackets which are reserved (for IPv6)
     const fetchUrl = encodeURI(
       glossaryAuthorContext.currentNodeType.url +
         "?offset=0&pageSize=1000&searchCriteria=" +
-        criteria
+        actualCriteria
     );
     return fetch(fetchUrl, {
       method: "get",
@@ -370,7 +392,9 @@ const NodeSearch = (props) => {
               <div className="search-item">
                 <Accordion>
                   <AccordionItem title="Search options">
-                    <div class="bx--form-item">
+                    <label forHtml="exactMatch">Exact Match </label>
+                    <input type="checkbox" id="exactMatch" />
+                    <div className="bx--form-item">
                       <div style={{ width: 150 }}>
                         <MultiSelect
                           onChange={onAdditionalAttributesChanged}
@@ -383,17 +407,17 @@ const NodeSearch = (props) => {
                 </Accordion>
               </div>
             )}
-          <div data-search role="search" class="bx--search bx--search--l">
+          <div data-search role="search" className="bx--search bx--search--l">
             <div className="search-item">
               <label
                 id="search-input-label-1"
-                class="bx--label"
+                className="bx--label"
                 for="search__input-1"
               >
                 Search
               </label>
               <input
-                class="bx--search-input"
+                className="bx--search-input"
                 type="text"
                 id="search__input-1"
                 onChange={(e) => setSearchCriteria(e.target.value)}
@@ -403,7 +427,7 @@ const NodeSearch = (props) => {
                 focusable="false"
                 preserveAspectRatio="xMidYMid meet"
                 xmlns="http://www.w3.org/2000/svg"
-                class="bx--search-magnifier"
+                className="bx--search-magnifier"
                 width="16"
                 height="16"
                 viewBox="0 0 16 16"
@@ -412,7 +436,7 @@ const NodeSearch = (props) => {
                 <path d="M15,14.3L10.7,10c1.9-2.3,1.6-5.8-0.7-7.7S4.2,0.7,2.3,3S0.7,8.8,3,10.7c2,1.7,5,1.7,7,0l4.3,4.3L15,14.3z M2,6.5  C2,4,4,2,6.5,2S11,4,11,6.5S9,11,6.5,11S2,9,2,6.5z"></path>
               </svg>
               <button
-                class="bx--search-close bx--search-close--hidden"
+                className="bx--search-close bx--search-close--hidden"
                 title="Clear search
             input"
                 aria-label="Clear search input"
@@ -421,7 +445,7 @@ const NodeSearch = (props) => {
                   focusable="false"
                   preserveAspectRatio="xMidYMid meet"
                   xmlns="http://www.w3.org/2000/svg"
-                  class="bx--search-clear"
+                  className="bx--search-clear"
                   width="20"
                   height="20"
                   viewBox="0 0 32 32"

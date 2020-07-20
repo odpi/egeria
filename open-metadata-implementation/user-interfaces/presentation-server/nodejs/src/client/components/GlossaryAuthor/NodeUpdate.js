@@ -6,16 +6,11 @@ import {
   AccordionItem,
   DatePicker,
   DatePickerInput,
-  Button,
   DataTable,
-  Select,
-  SelectItem,
   TableContainer,
   Table,
   TableHead,
   TableRow,
-  TableSelectAll,
-  TableSelectRow,
   TableCell,
   TableHeader,
   TableBody,
@@ -53,7 +48,10 @@ function NodeUpdate(props) {
       glossary.guid = glossaryAuthorContext.myGlossary.systemAttributes.guid;
       body.glossary = glossary;
     }
-    const url = nodeType.url + "/" + glossaryAuthorContext.selectedNode.systemAttributes.guid;
+    const url =
+      nodeType.url +
+      "/" +
+      glossaryAuthorContext.selectedNode.systemAttributes.guid;
     console.log("Body to be submitted is " + JSON.stringify(body));
     console.log("URL to be submitted is " + url);
 
@@ -68,11 +66,12 @@ function NodeUpdate(props) {
       .then((res) => res.json())
       .then((res) => {
         console.log("update worked " + JSON.stringify(res));
-        glossaryAuthorContext.updateSelectedNode(res);
+        // glossaryAuthorContext.updateSelectedNode(res);
 
         if (res.relatedHTTPCode == 200 && res.result && res.result[0]) {
-          const nodeResponse = res.result[0];
-          glossaryAuthorContext.updateSelectedNode(nodeResponse);
+          // const nodeResponse = res.result[0];
+          // glossaryAuthorContext.updateSelectedNode(nodeResponse);
+          glossaryAuthorContext.setRefreshSearchActionState();
         } else {
           let msg = "";
           // if this is a formatted Egeria response, we have a user action
@@ -114,7 +113,8 @@ function NodeUpdate(props) {
 
   const getSystemDataRowData = () => {
     let rowData = [];
-    const systemAttributes = glossaryAuthorContext.selectedNode.systemAttributes;
+    const systemAttributes =
+      glossaryAuthorContext.selectedNode.systemAttributes;
     for (var prop in systemAttributes) {
       let row = {};
       row.id = prop;
@@ -143,40 +143,40 @@ function NodeUpdate(props) {
     },
   ];
 
-  const getTableAttrRowData = () => {
-    let rowData = [];
-    const attributes = glossaryAuthorContext.currentNodeType.attributes;
+  // const getTableAttrRowData = () => {
+  //   let rowData = [];
+  //   const attributes = glossaryAuthorContext.currentNodeType.attributes;
 
-    for (var prop in glossaryAuthorContext.selectedNode) {
-      if (
-        prop != "systemAttributes" &&
-        prop != "glossary" &&
-        prop != "classifications" &&
-        prop != "class"
-      ) {
-        let row = {};
-        row.id = prop;
-        row.attrName = prop;
-        // if we know about the attribute then use the label.
-        if (prop == "nodeType") {
-          row.attrName = "Node Type";
-        } else {
-          for (var i = 0; i < attributes.length; i++) {
-            if (attributes[i].key == prop) {
-              row.attrName = attributes[i].label;
-            }
-          }
-        }
+  //   for (var prop in glossaryAuthorContext.selectedNode) {
+  //     if (
+  //       prop != "systemAttributes" &&
+  //       prop != "glossary" &&
+  //       prop != "classifications" &&
+  //       prop != "class"
+  //     ) {
+  //       let row = {};
+  //       row.id = prop;
+  //       row.attrName = prop;
+  //       // if we know about the attribute then use the label.
+  //       if (prop == "nodeType") {
+  //         row.attrName = "Node Type";
+  //       } else {
+  //         for (var i = 0; i < attributes.length; i++) {
+  //           if (attributes[i].key == prop) {
+  //             row.attrName = attributes[i].label;
+  //           }
+  //         }
+  //       }
 
-        let value = updateResponse[prop];
-        // TODO deal with the other types (and null? and arrays?) properly
-        value = JSON.stringify(value);
-        row.value = value;
-        rowData.push(row);
-      }
-    }
-    return rowData;
-  };
+  //       let value = updateResponse[prop];
+  //       // TODO deal with the other types (and null? and arrays?) properly
+  //       value = JSON.stringify(value);
+  //       row.value = value;
+  //       rowData.push(row);
+  //     }
+  //   }
+  //   return rowData;
+  // };
 
   return (
     <div>
@@ -192,14 +192,14 @@ function NodeUpdate(props) {
         </div>
         {glossaryAuthorContext.currentNodeType.attributes.map((item) => {
           return (
-            <div class="bx--form-item">
-              <label for={createLabelId(item.key)} class="bx--label">
+            <div className="bx--form-item" key={item.key}>
+              <label htmlFor={createLabelId(item.key)} className="bx--label">
                 {item.label} <Info16 />
               </label>
               <input
                 id={createLabelId(item.key)}
                 type="text"
-                class="bx--text-input"
+                className="bx--text-input"
                 value={glossaryAuthorContext.selectedNode[item.key]}
                 //value={item.name}
                 onChange={(e) => setAttribute(item, e.target.value)}
@@ -230,47 +230,45 @@ function NodeUpdate(props) {
           </AccordionItem>
         </Accordion>
         <Accordion>
-            <AccordionItem title="System Attributes">
-              <div class="bx--form-item">
-                <DataTable
-                  isSortable
-                  rows={getSystemDataRowData()}
-                  headers={createdTableHeaderData}
-                  render={({ rows, headers, getHeaderProps }) => (
-                    <TableContainer title="System Attributes">
-                      <Table size="normal">
-                        <TableHead>
-                          <TableRow>
-                            {headers.map((header) => (
-                              <TableHeader {...getHeaderProps({ header })}>
-                                {header.header}
-                              </TableHeader>
+          <AccordionItem title="System Attributes">
+            <div className="bx--form-item">
+              <DataTable
+                isSortable
+                rows={getSystemDataRowData()}
+                headers={createdTableHeaderData}
+                render={({ rows, headers, getHeaderProps }) => (
+                  <TableContainer title="System Attributes">
+                    <Table size="normal">
+                      <TableHead>
+                        <TableRow>
+                          {headers.map((header) => (
+                            <TableHeader key={header.key}  {...getHeaderProps({ header })} >
+                              {header.header}
+                            </TableHeader>
+                          ))}
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        {rows.map((row) => (
+                          <TableRow key={row.id}>
+                            {row.cells.map((cell) => (
+                              <TableCell key={cell.id}>{cell.value}</TableCell>
                             ))}
                           </TableRow>
-                        </TableHead>
-                        <TableBody>
-                          {rows.map((row) => (
-                            <TableRow key={row.id}>
-                              {row.cells.map((cell) => (
-                                <TableCell key={cell.id}>
-                                  {cell.value}
-                                </TableCell>
-                              ))}
-                            </TableRow>
-                          ))}
-                        </TableBody>
-                      </Table>
-                    </TableContainer>
-                  )}
-                />
-              </div>
-            </AccordionItem>
-          </Accordion>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                )}
+              />
+            </div>
+          </AccordionItem>
+        </Accordion>
 
-        <div class="bx--form-item">
+        <div className="bx--form-item">
           <button
             id="nodeUpdateButton"
-            class="bx--btn bx--btn--primary"
+            className="bx--btn bx--btn--primary"
             disabled={!validateForm()}
             onClick={handleUpdate}
             onAnimationEnd={handleOnAnimationEnd}

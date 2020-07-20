@@ -10,11 +10,11 @@ const GlossaryAuthorNodes = props => {
   console.log("GlossaryAuthorNodes");
   return (
     <div>
-      <div class="bx--grid">
-        <div class="bx--row">
+      <div className="bx--grid">
+        <div className="bx--row">
           <NodeTypeChooser />
         </div>
-        <div class="bx--row"> 
+        <div className="bx--row"> 
           <NodeAction/>
         </div>
       </div>

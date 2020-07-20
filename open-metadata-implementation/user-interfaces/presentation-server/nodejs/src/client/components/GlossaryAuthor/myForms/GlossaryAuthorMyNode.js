@@ -15,20 +15,20 @@ const GlossaryAuthorMyNode = (props) => {
     return <NodeCreate typeKey={props.typeKey} />;
   } else {
     return (
-      <div class="bx--grid">
-        <div class="bx--row">
-          <div class="bx--col">
+      <div className="bx--grid">
+        <div className="bx--row">
+          <div className="bx--col">
             <Button kind="primary">Recent</Button>
           </div>
-          <div class="bx--col">
+          <div className="bx--col">
             <Button kind="primary">Favourites</Button>
           </div>
-          <div class="bx--col">
+          <div className="bx--col">
             <Button kind="primary" onClick={handleOnClick}>
               Create New
             </Button>
           </div>
-          <div class="bx--col">
+          <div className="bx--col">
             <Button kind="primary">All {props.typeKey}</Button>
           </div>
         </div>
