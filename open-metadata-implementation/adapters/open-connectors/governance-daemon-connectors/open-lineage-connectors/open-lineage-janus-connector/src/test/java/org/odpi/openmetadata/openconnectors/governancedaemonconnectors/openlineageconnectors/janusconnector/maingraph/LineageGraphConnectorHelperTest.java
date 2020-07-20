@@ -19,7 +19,7 @@ import java.util.Set;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_DATAFLOW_WITH_PROCESS;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_COLUMN_DATA_FLOW;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_RELATED_TERM;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_SEMANTIC_ASSIGNMENT;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.NODE_LABEL_COLUMN;
@@ -56,31 +56,31 @@ public class LineageGraphConnectorHelperTest {
         Vertex p3 = g.addV(NODE_LABEL_SUB_PROCESS).property(PROPERTY_KEY_ENTITY_GUID, "p3").property(PROPERTY_KEY_ENTITY_NODE_ID, "p3").next();
         Vertex p4 = g.addV(NODE_LABEL_SUB_PROCESS).property(PROPERTY_KEY_ENTITY_GUID, "p4").property(PROPERTY_KEY_ENTITY_NODE_ID, "p4").next();
 
-        g.addE(EDGE_LABEL_DATAFLOW_WITH_PROCESS).from(c11).to(p1).next();
-        g.addE(EDGE_LABEL_DATAFLOW_WITH_PROCESS).from(c12).to(p1).next();
+        g.addE(EDGE_LABEL_COLUMN_DATA_FLOW).from(c11).to(p1).next();
+        g.addE(EDGE_LABEL_COLUMN_DATA_FLOW).from(c12).to(p1).next();
 
-        g.addE(EDGE_LABEL_DATAFLOW_WITH_PROCESS).from(p1).to(c21).next();
-        g.addE(EDGE_LABEL_DATAFLOW_WITH_PROCESS).from(p1).to(c21).next();
+        g.addE(EDGE_LABEL_COLUMN_DATA_FLOW).from(p1).to(c21).next();
+        g.addE(EDGE_LABEL_COLUMN_DATA_FLOW).from(p1).to(c21).next();
 
-        g.addE(EDGE_LABEL_DATAFLOW_WITH_PROCESS).from(c21).to(p2).next();
-        g.addE(EDGE_LABEL_DATAFLOW_WITH_PROCESS).from(c22).to(p2).next();
+        g.addE(EDGE_LABEL_COLUMN_DATA_FLOW).from(c21).to(p2).next();
+        g.addE(EDGE_LABEL_COLUMN_DATA_FLOW).from(c22).to(p2).next();
 
-        g.addE(EDGE_LABEL_DATAFLOW_WITH_PROCESS).from(p2).to(c31).next();
-        g.addE(EDGE_LABEL_DATAFLOW_WITH_PROCESS).from(p2).to(c32).next();
+        g.addE(EDGE_LABEL_COLUMN_DATA_FLOW).from(p2).to(c31).next();
+        g.addE(EDGE_LABEL_COLUMN_DATA_FLOW).from(p2).to(c32).next();
 
         //p3 branch causes the cycle
-        g.addE(EDGE_LABEL_DATAFLOW_WITH_PROCESS).from(c31).to(p3).next();
-        g.addE(EDGE_LABEL_DATAFLOW_WITH_PROCESS).from(c32).to(p3).next();
+        g.addE(EDGE_LABEL_COLUMN_DATA_FLOW).from(c31).to(p3).next();
+        g.addE(EDGE_LABEL_COLUMN_DATA_FLOW).from(c32).to(p3).next();
 
-        g.addE(EDGE_LABEL_DATAFLOW_WITH_PROCESS).from(p3).to(c21).next();
-        g.addE(EDGE_LABEL_DATAFLOW_WITH_PROCESS).from(p3).to(c22).next();
+        g.addE(EDGE_LABEL_COLUMN_DATA_FLOW).from(p3).to(c21).next();
+        g.addE(EDGE_LABEL_COLUMN_DATA_FLOW).from(p3).to(c22).next();
 
         //p4 branch leads to the destination
-        g.addE(EDGE_LABEL_DATAFLOW_WITH_PROCESS).from(c31).to(p4).next();
-        g.addE(EDGE_LABEL_DATAFLOW_WITH_PROCESS).from(c32).to(p4).next();
+        g.addE(EDGE_LABEL_COLUMN_DATA_FLOW).from(c31).to(p4).next();
+        g.addE(EDGE_LABEL_COLUMN_DATA_FLOW).from(c32).to(p4).next();
 
-        g.addE(EDGE_LABEL_DATAFLOW_WITH_PROCESS).from(p4).to(c41).next();
-        g.addE(EDGE_LABEL_DATAFLOW_WITH_PROCESS).from(p4).to(c42).next();
+        g.addE(EDGE_LABEL_COLUMN_DATA_FLOW).from(p4).to(c41).next();
+        g.addE(EDGE_LABEL_COLUMN_DATA_FLOW).from(p4).to(c42).next();
 
         Vertex g1 = g.addV(NODE_LABEL_COLUMN).property(PROPERTY_KEY_ENTITY_NODE_ID, "g1").property(PROPERTY_KEY_ENTITY_GUID, "g1").next();
         Vertex g2 = g.addV(NODE_LABEL_COLUMN).property(PROPERTY_KEY_ENTITY_NODE_ID, "g2").property(PROPERTY_KEY_ENTITY_GUID, "g2").next();
@@ -206,9 +206,9 @@ public class LineageGraphConnectorHelperTest {
         Vertex c2 = g.addV(NODE_LABEL_COLUMN).property(PROPERTY_KEY_ENTITY_NODE_ID, "c2").next();
         Vertex c3 = g.addV(NODE_LABEL_COLUMN).property(PROPERTY_KEY_ENTITY_NODE_ID, "c3").next();
 
-        g.addE(EDGE_LABEL_DATAFLOW_WITH_PROCESS).from(c1).to(c2).next();
-        g.addE(EDGE_LABEL_DATAFLOW_WITH_PROCESS).from(c2).to(c3).next();
-        g.addE(EDGE_LABEL_DATAFLOW_WITH_PROCESS).from(c3).to(c1).next();
+        g.addE(EDGE_LABEL_COLUMN_DATA_FLOW).from(c1).to(c2).next();
+        g.addE(EDGE_LABEL_COLUMN_DATA_FLOW).from(c2).to(c3).next();
+        g.addE(EDGE_LABEL_COLUMN_DATA_FLOW).from(c3).to(c1).next();
         final String queriedNodeID = "c32";
         mainGraphConnector.ultimateSource(queriedNodeID, true);
         mainGraphConnector.ultimateDestination( queriedNodeID, true);

@@ -74,8 +74,8 @@ public class GraphConstants {
     public static final String EDGE_LABEL_CONDENSED = "condensed";
     public static final String EDGE_LABEL_INCLUDED_IN = "includedIn";
 
-    public static final String EDGE_LABEL_DATAFLOW_WITHOUT_PROCESS = "DataFlowWithoutProcess";
-    public static final String EDGE_LABEL_DATAFLOW_WITH_PROCESS = "DataFlowWithProcess";
+    public static final String EDGE_LABEL_COLUMN_DATA_FLOW = "ColumnDataFlow";
+    public static final String EDGE_LABEL_TABLE_DATA_FLOW = "TableDataFlow";
 
     // CLASSIFICATION RELATED EDGE LABELS
     public static final String EDGE_LABEL_CLASSIFICATION = "Classification";
