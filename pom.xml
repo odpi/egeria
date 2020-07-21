@@ -126,7 +126,7 @@
         <junit.jupiter.version>5.6.2</junit.jupiter.version>
         <junit.version>4.13</junit.version>
         <surefire.plugin.version>3.0.0-M4</surefire.plugin.version>
-        <mockito.version>3.4.0</mockito.version>
+        <mockito.version>3.4.2</mockito.version>
         <testng.version>7.1.0</testng.version>
         <slf4j.version>1.7.30</slf4j.version>
         <logback.version>1.2.3</logback.version>
@@ -144,7 +144,7 @@
         <commons-io.version>2.7</commons-io.version>
         <commons-collections4.version>4.4</commons-collections4.version>
         <jena.version>3.16.0</jena.version>
-        <commons-lang.version>3.10</commons-lang.version>
+        <commons-lang.version>3.11</commons-lang.version>
         <h2-database.version>1.4.200</h2-database.version>
         <jwt.version>0.9.1</jwt.version>
         <jakarta.persistence.version>2.2.3</jakarta.persistence.version>
