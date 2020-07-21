@@ -7,10 +7,13 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-annotations:2.11.1'
     implementation project(':open-metadata-implementation:repository-services:repository-services-apis')
     implementation project(':open-metadata-resources:open-metadata-archives:open-metadata-types')
+    implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
+    implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
 }
 
 description = 'Open Types Test generator'
 
-//java {
-//    withJavadocJar()
-//}
+java {
+    withJavadocJar()
+}
+
