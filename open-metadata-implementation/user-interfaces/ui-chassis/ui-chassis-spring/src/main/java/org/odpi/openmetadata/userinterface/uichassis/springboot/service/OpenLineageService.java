@@ -18,12 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -157,12 +152,6 @@ public class OpenLineageService {
             graphData.put(NODES_LABEL, listNodes);
         }
 
-        listNodes = Optional.ofNullable(response).map(LineageVerticesAndEdges::getLineageVertices)
-                .map(Collection::stream)
-                .orElseGet(Stream::empty)
-                .map(this::createNode)
-                .collect(Collectors.toList());
-
         listEdges = Optional.ofNullable(response).map(LineageVerticesAndEdges::getLineageEdges)
                 .map(Collection::stream)
                 .orElseGet(Stream::empty)
@@ -170,10 +159,49 @@ public class OpenLineageService {
                         e.getDestinationNodeID()))
                 .collect(Collectors.toList());
 
+        listNodes = Optional.ofNullable(response).map(LineageVerticesAndEdges::getLineageVertices)
+                .map(Collection::stream)
+                .orElseGet(Stream::empty)
+                .map(this::createNode)
+                .collect(Collectors.toList());
+
+        setNodesOrder(listNodes,listEdges);
+        listNodes.sort(Comparator.comparing(Node::getOrder));
+
         graphData.put(EDGES_LABEL, listEdges);
         graphData.put(NODES_LABEL, listNodes);
 
         return graphData;
+    }
+
+    /**
+     *  Sets the order field of nodes to -1 for ultimate sources , 1 for final destination otherwise value is 0
+     * @param listNodes the list of nodes to set order for
+     * @param listEdges the list of edges for setting nodes order accordingly
+     */
+    private void setNodesOrder(List<Node> listNodes, List<Edge> listEdges) {
+        for( Edge e : listEdges ){
+            boolean b1 = false, b2 = false;
+            for ( Node n : listNodes ){
+                System.out.println("n -> "+n.getId() +" e: "+e.getFrom()+" "+e.getTo());
+                if ( n.getId().equals( e.getFrom() ) ){
+                   b1 = true;
+                   if ( n.getOrder() == 1 ){
+                       n.setOrder(0);
+                   } else {
+                       n.setOrder(-1);
+                   }
+                }else if ( n.getId().equals( e.getTo() )){
+                    b2 = true;
+                    if (n.getOrder() == -1){
+                        n.setOrder(0);
+                    } else{
+                        n.setOrder(1);
+                    }
+                }
+                if(b1 && b2 ) break;
+            }
+        }
     }
 
     /**
@@ -189,5 +217,4 @@ public class OpenLineageService {
         node.setProperties(currentNode.getProperties());
         return node;
     }
-
 }
