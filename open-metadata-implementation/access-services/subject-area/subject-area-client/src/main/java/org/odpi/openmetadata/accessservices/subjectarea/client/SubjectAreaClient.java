@@ -10,19 +10,22 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import java.util.List;
 
 /**
- * @param <T> Glossary artifact type for supplied and return.
+ * @param <T> Glossary Artifact type for supplied and return.
  * Interface describing common methods to client working with Subject area resources.
+ *
+ * This is the Subject Area client API, for use by the subject area expert.
+ * This API exposes SCRUD (search, create, read ,update, delete) operations that can be performed on a Glossary Artifact.
  */
 public interface SubjectAreaClient<T> {
 
     FindRequest EMPTY_FIND_REQUEST = new FindRequest();
 
     /**
-     * Get Glossary artifact by guid
+     * Get Glossary Artifact by guid
      *
      * @param userId unique identifier for requesting user, under which the request is performed.
-     * @param guid   unique identifier of the Glossary artifact.
-     * @return found Glossary artifacts of the T type.
+     * @param guid   unique identifier of the Glossary Artifact.
+     * @return found Glossary Artifact of the T type.
      *
      * @throws PropertyServerException    something went wrong with the REST call stack.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -33,11 +36,11 @@ public interface SubjectAreaClient<T> {
                                                    UserNotAuthorizedException;
 
     /**
-     * Create a Glossary artifact. To create, you must pass the created object and specify a unique user identifier.
+     * Create a Glossary Artifact. To create, you must pass the created object and specify a unique user identifier.
      *
      * @param userId   unique identifier for requesting user, under which the request is performed.
-     * @param supplied Glossary artifact to create.
-     * @return created Glossary artifact.
+     * @param supplied Glossary Artifact to create.
+     * @return created Glossary Artifact.
      *
      * @throws PropertyServerException    something went wrong with the REST call stack.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -48,11 +51,11 @@ public interface SubjectAreaClient<T> {
                                                UserNotAuthorizedException;
 
     /**
-     * Request to find all Glossary artifacts of the type T.
+     * Request to find all Glossary Artifacts of the type T.
      * Be aware that getting all objects may incur a big performance hit when there are many objects.
      *
      * @param userId unique identifier for requesting user, under which the request is performed.
-     * @return list all Glossary artifacts of the T type.
+     * @return list all Glossary Artifacts of the T type.
      *
      * @throws PropertyServerException    something went wrong with the REST call stack.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -66,11 +69,11 @@ public interface SubjectAreaClient<T> {
     }
 
     /**
-     * Request to find Glossary artifacts of the type T.
+     * Request to find Glossary Artifacts of the type T.
      *
      * @param userId      unique identifier for requesting user, under which the request is performed.
-     * @param findRequest information Glossary artifact for find calls.
-     * @return list Glossary artifacts of the T type relevant in the findRequest information.
+     * @param findRequest information Glossary Artifact for find calls.
+     * @return list Glossary Artifacts of the T type relevant in the findRequest information.
      *
      * @throws PropertyServerException    something went wrong with the REST call stack.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -81,13 +84,13 @@ public interface SubjectAreaClient<T> {
                                                                UserNotAuthorizedException;
 
     /**
-     * Update or replace a Glossary artifact.
+     * Update or replace a Glossary Artifact.
      *
-     * @param guid      unique identifier of the Glossary artifact.
+     * @param guid      unique identifier of the Glossary Artifact.
      * @param userId    unique identifier for requesting user, under which the request is performed.
-     * @param supplied  Glossary artifact to be updated or replaced.
+     * @param supplied  Glossary Artifact to be updated or replaced.
      * @param isReplace flag to indicate that this update is a replace.
-     * @return updated Glossary artifact.
+     * @return updated Glossary Artifact.
      *
      * @throws PropertyServerException    something went wrong with the REST call stack.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -98,12 +101,12 @@ public interface SubjectAreaClient<T> {
                                                                                UserNotAuthorizedException;
 
     /**
-     * Replace a Glossary artifact. This means to override all the existing attributes with the supplied attributes.
+     * Replace a Glossary Artifact. This means to override all the existing attributes with the supplied attributes.
      *
-     * @param guid     unique identifier of the Glossary artifact.
+     * @param guid     unique identifier of the Glossary Artifact.
      * @param userId   unique identifier for requesting user, under which the request is performed.
-     * @param supplied Glossary artifact to be replaced.
-     * @return replaced Glossary artifact.
+     * @param supplied Glossary Artifact to be replaced.
+     * @return replaced Glossary Artifact.
      *
      * @throws PropertyServerException    something went wrong with the REST call stack.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -117,12 +120,12 @@ public interface SubjectAreaClient<T> {
     }
 
     /**
-     * Update a Glossary artifact. This means to update the object with any non-null attributes from the supplied Glossary artifact.
+     * Update a Glossary Artifact. This means to update the object with any non-null attributes from the supplied Glossary Artifact.
      *
-     * @param guid     unique identifier of the Glossary artifact.
+     * @param guid     unique identifier of the Glossary Artifact.
      * @param userId   unique identifier for requesting user, under which the request is performed.
-     * @param supplied Glossary artifact to be updated.
-     * @return updated Glossary artifact.
+     * @param supplied Glossary Artifact to be updated.
+     * @return updated Glossary Artifact.
      *
      * @throws PropertyServerException    something went wrong with the REST call stack.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -136,9 +139,9 @@ public interface SubjectAreaClient<T> {
     }
 
     /**
-     * Delete a Glossary artifact.
+     * Delete a Glossary Artifact.
      *
-     * @param guid    unique identifier of the Glossary artifact.
+     * @param guid    unique identifier of the Glossary Artifact.
      * @param userId  unique identifier for requesting user, under which the request is performed.
      * @param isPurge true indicates a hard delete, false is a soft delete.
      *
@@ -151,9 +154,9 @@ public interface SubjectAreaClient<T> {
                                                                      UserNotAuthorizedException;
 
     /**
-     * Purge a Glossary artifact.
+     * Purge a Glossary Artifact.
      *
-     * @param guid    unique identifier of the Glossary artifact.
+     * @param guid    unique identifier of the Glossary Artifact.
      * @param userId  unique identifier for requesting user, under which the request is performed.
      *
      * @throws PropertyServerException    something went wrong with the REST call stack.
@@ -168,9 +171,9 @@ public interface SubjectAreaClient<T> {
     }
 
     /**
-     * Soft delete a Glossary artifact.
+     * Soft delete a Glossary Artifact.
      *
-     * @param guid    unique identifier of the Glossary artifact.
+     * @param guid    unique identifier of the Glossary Artifact.
      * @param userId  unique identifier for requesting user, under which the request is performed.
      *
      * @throws PropertyServerException    something went wrong with the REST call stack.
@@ -185,9 +188,9 @@ public interface SubjectAreaClient<T> {
     }
 
     /**
-     * Restore of a soft deleted Glossary artifact.
+     * Restore of a soft deleted Glossary Artifact.
      *
-     * @param guid    unique identifier of the Glossary artifact.
+     * @param guid    unique identifier of the Glossary Artifact.
      * @param userId  unique identifier for requesting user, under which the request is performed.
      *
      * @throws PropertyServerException    something went wrong with the REST call stack.
