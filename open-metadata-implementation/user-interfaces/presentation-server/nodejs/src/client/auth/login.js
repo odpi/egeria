@@ -6,6 +6,16 @@ import "./Login.css";
 import Egeriacolor from "../images/Egeria_logo_color";
 import { IdentificationContext } from "../contexts/IdentificationContext";
 
+import {
+  Grid,
+  Row,
+  Column,
+  Form,
+  FormGroup,
+  TextInput,
+  Button
+} from 'carbon-components-react';
+
 const Login = () => {
   const identificationContext = useContext(IdentificationContext);
   const [password, setPassword] = useState("");
@@ -63,29 +73,45 @@ const Login = () => {
   return (
     <div>
       <Egeriacolor />
-      <form id="egeria-login-form">
-        <div>
-          <label>Username:</label>
-          <input
-            type="text"
-            name="username"
-            value={userId}
-            onChange={handleOnChange}
-          />
-        </div>
-        <div>
-          <label>Password:</label>
-          <input
-            type="password"
-            name="password"
-            value={password}
-            onChange={e => setPassword(e.target.value)}
-          />
-        </div>
-        <div>
-          <input onClick={handleOnClick}  disabled={!validateForm()} value="Log In" />
-        </div>
-      </form>
+      <Grid>
+        <Row>
+          <Column
+            sm={{ span: 4 }}
+            md={{ span: 4, offset: 2 }}
+            lg={{ span: 4, offset: 6 }}
+          >
+            <Form id="egeria-login-form">
+              <FormGroup>
+                <TextInput
+                  type="text"
+                  labelText="Username"
+                  name="username"
+                  value={userId}
+                  onChange={handleOnChange}
+                  placeholder="Username"
+                  required
+                />
+                <TextInput
+                  type="password"
+                  labelText="Password"
+                  name="password"
+                  value={password}
+                  onChange={e => setPassword(e.target.value)}
+                  placeholder="Password"
+                  required
+                  />
+              </FormGroup>
+              <Button
+                type="submit"
+                onClick={handleOnClick}
+                disabled={!validateForm()}
+              >
+                Log In
+              </Button>
+            </Form>
+          </Column>
+        </Row>
+      </Grid>
       {/* <div style={errorStyle}>{message}</div> */}
       <div> {errorMsg} </div>
     </div>
