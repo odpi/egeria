@@ -2761,9 +2761,11 @@
                         <exclude>**/*.graphml</exclude>
                         <exclude>**/*.isx</exclude>
                         <exclude>**/target/**</exclude>
+                        <exclude>**/build/**</exclude>
                         <exclude>**/venv/**</exclude>
                         <exclude>**/.repository/**</exclude>
                         <exclude>**/charts/**/charts/**</exclude>
+                        <exclude>gradle/wrapper/**</exclude>
                         <exclude>**/log</exclude>
                         <exclude>**/*.lock</exclude>
                         <exclude>**/m2repo*/**</exclude>
