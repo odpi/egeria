@@ -183,7 +183,6 @@ public class OpenLineageService {
         for( Edge e : listEdges ){
             boolean b1 = false, b2 = false;
             for ( Node n : listNodes ){
-                System.out.println("n -> "+n.getId() +" e: "+e.getFrom()+" "+e.getTo());
                 if ( n.getId().equals( e.getFrom() ) ){
                    b1 = true;
                    if ( n.getOrder() == 1 ){
