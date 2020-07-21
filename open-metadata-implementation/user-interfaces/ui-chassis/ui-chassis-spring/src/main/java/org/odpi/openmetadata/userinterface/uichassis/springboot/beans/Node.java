@@ -10,6 +10,7 @@ public class Node {
     private String label;
     private String group;
     private Map<String, String> properties;
+    private Integer order = 0;
 
     public Node(String id, String label) {
         this.id = id;
@@ -46,5 +47,13 @@ public class Node {
 
     public void setProperties(Map<String, String> properties) {
         this.properties = properties;
+    }
+
+    public Integer getOrder() {
+        return order;
+    }
+
+    public void setOrder(Integer order) {
+        this.order = order;
     }
 }
