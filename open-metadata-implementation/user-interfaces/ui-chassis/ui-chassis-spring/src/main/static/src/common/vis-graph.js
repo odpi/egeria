@@ -2,9 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
-import  '@polymer/paper-progress/paper-progress';
+import '@polymer/paper-progress/paper-progress';
 import '@polymer/paper-dialog/paper-dialog';
-import '@polymer/paper-drawer-panel/paper-drawer-panel';
 import './props-table';
 import '../asset-catalog/asset-tools';
 import '../shared-styles.js';
@@ -23,14 +22,7 @@ class VisGraph  extends mixinBehaviors([ItemViewBehavior], PolymerElement) {
             --iron-icon-height:16px;
           }
           
-          #vis_container {
-            display: flex;
-            flex-direction: column;
-            flex-grow: 1;
-            /*align-items: stretch;*/
-          }
-          
-          .vis-network {
+          vaadin-app-layout, #vis_container, .vis-network  {
             display: flex;
             flex-direction: column;
             flex-grow: 1;
@@ -38,25 +30,9 @@ class VisGraph  extends mixinBehaviors([ItemViewBehavior], PolymerElement) {
           
           div.vis-network canvas {
              flex-grow: 1;
+             height: fit-content;
           }
           
-          .vis-tooltip {
-            position: absolute;
-            visibility: hidden;
-            padding: 5px;
-            white-space: nowrap;
-            font-family: verdana;
-            font-size: 14px;
-            color: #000000;
-            background-color: #f5f4ed;
-            -moz-border-radius: 3px;
-            -webkit-border-radius: 3px;
-            border-radius: 3px;
-            border: 1px solid #808074;
-            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
-            pointer-events: none;
-            z-index: 5;
-          }
           paper-dialog.vis-dialog {
             position: fixed;
             top: 116px;
@@ -67,13 +43,16 @@ class VisGraph  extends mixinBehaviors([ItemViewBehavior], PolymerElement) {
           }
           
         </style>
-        <div id="vis_container"></div>
+        <div  id="vis_container"></div>
+        
         <paper-dialog id="visDialog" class="vis-dialog">
           <div>
             <asset-tools guid="[[node.id]]" style="display: inline-flex"></asset-tools>
             <paper-button dialog-confirm style="float: right">Close</paper-button>
           </div>
-          <props-table items="[[_attributes(node.properties)]]"  title="[[node.type]]: [[node.displayName]]" with-row-stripes ></props-table>
+          <props-table  items="[[_attributes(node.properties)]]"  
+                        title="[[node.type]]: [[node.displayName]]" 
+                        with-row-stripes ></props-table>
         </paper-dialog>
      
     `;
@@ -139,18 +118,6 @@ class VisGraph  extends mixinBehaviors([ItemViewBehavior], PolymerElement) {
     var thisElement = this;
     this.network.on('click', function(params) {
        thisElement.handleSelectNode(this.getNodeAt(params.pointer.DOM));
-    });
-    this.network.on('stabilizationProgress', function(params) {
-      console.debug('graph stabilization in progress');
-    });
-
-    this.network.on('stabilizationIterationsDone', function(params) {
-      console.debug('graph stabilization is done');
-
-    });
-    this.network.on('stabilized', function(params) {
-      console.debug('stabilized!');
-
     });
     this.network.stabilize();
   }
