@@ -1723,9 +1723,9 @@ public class SubjectAreaRelationshipRESTResource {
      * </ul>
      */
     @GetMapping(path = "/users/{userId}/relationships/category-anchor/{guid}")
-    public SubjectAreaOMASAPIResponse<CategoryAnchor> getCategoryAnchorRelationship(@PathVariable String serverName,
-                                                                                    @PathVariable String userId,
-                                                                                    @PathVariable String guid) {
+    public SubjectAreaOMASAPIResponse<CategoryAnchor> getCategoryAnchor(@PathVariable String serverName,
+                                                                        @PathVariable String userId,
+                                                                        @PathVariable String guid) {
         return restAPI.getCategoryAnchorRelationship(serverName, userId, guid);
     }
 
@@ -1747,11 +1747,11 @@ public class SubjectAreaRelationshipRESTResource {
      * </ul>
      */
     @PutMapping(path = "/users/{userId}/relationships/category-anchor/{guid}")
-    public SubjectAreaOMASAPIResponse<CategoryAnchor> updateCategoryAnchorRelationship(@PathVariable String serverName,
-                                                                       @PathVariable String userId,
-                                                                       @PathVariable String guid,
-                                                                       @RequestBody CategoryAnchor categoryAnchor,
-                                                                       @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace
+    public SubjectAreaOMASAPIResponse<CategoryAnchor> updateCategoryAnchor(@PathVariable String serverName,
+                                                                           @PathVariable String userId,
+                                                                           @PathVariable String guid,
+                                                                           @RequestBody CategoryAnchor categoryAnchor,
+                                                                           @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace
     ) {
         return restAPI.updateCategoryAnchorRelationship(serverName, userId, guid, categoryAnchor, isReplace);
     }
@@ -1772,10 +1772,10 @@ public class SubjectAreaRelationshipRESTResource {
      * </ul>
      */
     @DeleteMapping(path = "/users/{userId}/relationships/category-anchor/{guid}")
-    public SubjectAreaOMASAPIResponse<CategoryAnchor> deleteCategoryAnchorRelationship(@PathVariable String serverName,
-                                                                                       @PathVariable String userId,
-                                                                                       @PathVariable String guid,
-                                                                                       @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge
+    public SubjectAreaOMASAPIResponse<CategoryAnchor> deleteCategoryAnchor(@PathVariable String serverName,
+                                                                           @PathVariable String userId,
+                                                                           @PathVariable String guid,
+                                                                           @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge
     ) {
         return restAPI.deleteCategoryAnchorRelationship(serverName, userId, guid, isPurge);
     }
@@ -1797,9 +1797,9 @@ public class SubjectAreaRelationshipRESTResource {
      * </ul>
      */
     @PostMapping(path = "/users/{userId}/relationships/category-anchor/{guid}")
-    public SubjectAreaOMASAPIResponse<CategoryAnchor> restoreCategoryAnchorRelationship(@PathVariable String serverName,
-                                                                                        @PathVariable String userId,
-                                                                                        @PathVariable String guid) {
+    public SubjectAreaOMASAPIResponse<CategoryAnchor> restoreCategoryAnchor(@PathVariable String serverName,
+                                                                            @PathVariable String userId,
+                                                                            @PathVariable String guid) {
         return restAPI.restoreCategoryAnchorRelationship(serverName, userId, guid);
     }
 
@@ -1938,5 +1938,121 @@ public class SubjectAreaRelationshipRESTResource {
                                                                                             @PathVariable String userId,
                                                                                             @PathVariable String guid) {
         return restAPI.getSemanticAssignmentRelationship(serverName, userId, guid);
+    }
+
+    /**
+     * Create a CategoryHierarchyLink Relationship. A relationship between a Category and a Category.
+     *
+     * @param serverName                 serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId                     userId under which the request is performed
+     * @param categoryHierarchyLink the CategoryHierarchyLink relationship
+     * @return response, when successful contains the created categoryHierarchyLink relationship
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
+     * </ul>
+     */
+    @PostMapping(path = "/users/{userId}/relationships/category-hierarchy-link")
+    public SubjectAreaOMASAPIResponse<CategoryHierarchyLink> createCategoryHierarchyLink(@PathVariable String serverName,
+                                                                                         @PathVariable String userId,
+                                                                                         @RequestBody CategoryHierarchyLink categoryHierarchyLink) {
+        return restAPI.createCategoryHierarchyLink(serverName, userId, categoryHierarchyLink);
+    }
+
+    /**
+     * Get a categoryAnchor Relationship. A relationship between a Category and a Category.
+     *
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the categoryAnchor Relationship to get
+     * @return response which when successful contains the categoryAnchorRelationship relationship with the requested guid
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
+     * </ul>
+     */
+    @GetMapping(path = "/users/{userId}/relationships/category-hierarchy-link/{guid}")
+    public SubjectAreaOMASAPIResponse<CategoryHierarchyLink> getCategoryHierarchyLink(@PathVariable String serverName,
+                                                                                      @PathVariable String userId,
+                                                                                      @PathVariable String guid) {
+        return restAPI.getCategoryHierarchyLink(serverName, userId, guid);
+    }
+
+    /**
+     * Update a CategoryHierarchyLink Relationship. A relationship between a Category and a Category.
+     *
+     * @param serverName           serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId               userId under which the request is performed
+     * @param guid       guid of the CategoryAnchor relationship
+     * @param categoryHierarchyLink the categoryAnchor relationship
+     * @param isReplace            flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
+     * @return response, when successful contains the updated categoryHierarchyLink
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
+     * </ul>
+     */
+    @PutMapping(path = "/users/{userId}/relationships/category-hierarchy-link/{guid}")
+    public SubjectAreaOMASAPIResponse<CategoryHierarchyLink> updateCategoryAnchor(@PathVariable String serverName,
+                                                                                  @PathVariable String userId,
+                                                                                  @PathVariable String guid,
+                                                                                  @RequestBody CategoryHierarchyLink categoryHierarchyLink,
+                                                                                  @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace
+    ) {
+        return restAPI.updateCategoryHierarchyLink(serverName, userId, guid, categoryHierarchyLink, isReplace);
+    }
+
+    /**
+     * Delete a CategoryHierarchyLink Relationship. A relationship between a Category and a Category.
+     *
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the CategoryHierarchyLink relationship to delete
+     * @param isPurge    true indicates a hard delete, false is a soft delete.
+     * @return response for a soft delete the response contains the deleted relationship
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
+     * </ul>
+     */
+    @DeleteMapping(path = "/users/{userId}/relationships/category-hierarchy-link/{guid}")
+    public SubjectAreaOMASAPIResponse<CategoryHierarchyLink> deleteCategoryHierarchyLink(@PathVariable String serverName,
+                                                                                         @PathVariable String userId,
+                                                                                         @PathVariable String guid,
+                                                                                         @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge
+    ) {
+        return restAPI.deleteCategoryHierarchyLink(serverName, userId, guid, isPurge);
+    }
+
+    /**
+     * Restore a CategoryHierarchyLink Relationship. A relationship between a Category and a Category.
+     * <p>
+     * Restore allows the deleted CategoryHierarchyLink Relationship to be made active again. Restore allows deletes to be undone.
+     * Hard deletes are not stored in the repository so cannot be restored.
+     *
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the CategoryHierarchyLink Relationship to delete
+     * @return response which when successful contains the restored CategoryHierarchyLink
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
+     * </ul>
+     */
+    @PostMapping(path = "/users/{userId}/relationships/category-hierarchy-link/{guid}")
+    public SubjectAreaOMASAPIResponse<CategoryHierarchyLink> restoreCategoryHierarchyLink(@PathVariable String serverName,
+                                                                                          @PathVariable String userId,
+                                                                                          @PathVariable String guid) {
+        return restAPI.restoreCategoryHierarchyLink(serverName, userId, guid);
     }
 }
