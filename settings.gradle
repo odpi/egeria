@@ -29,7 +29,8 @@ include(':open-metadata-implementation:adapters:open-connectors:repository-servi
 include(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-archive-connectors:open-metadata-archive-file-connector')
 include(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-archive-connectors')
 include(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors')
-include(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:gaian-connector')
+//TODO: gaian removed
+//include(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:gaian-connector')
 include(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:basic-file-connector')
 include(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:csv-file-connector')
 include(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:avro-file-connector')
@@ -58,10 +59,12 @@ include(':open-metadata-implementation:adapters:open-connectors:rest-client-conn
 include(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors')
 include(':open-metadata-implementation:adapters:open-connectors:connector-configuration-factory')
 include(':open-metadata-implementation:adapters:open-connectors')
-include(':open-metadata-implementation:adapters:governance-engines-plugins:gaian-ranger-plugin')
+//TODO: gaian ranger plugin removed
+//include(':open-metadata-implementation:adapters:governance-engines-plugins:gaian-ranger-plugin')
 include(':open-metadata-implementation:adapters:governance-engines-plugins')
 include(':open-metadata-implementation:adapters:authentication-plugins:http-helper')
-include(':open-metadata-implementation:adapters:authentication-plugins:gaian-impersonation')
+//TODO: gaian removed
+//include(':open-metadata-implementation:adapters:authentication-plugins:gaian-impersonation')
 include(':open-metadata-implementation:adapters:authentication-plugins')
 include(':open-metadata-implementation:adapters')
 include(':open-metadata-implementation:common-services:ffdc-services')
@@ -358,7 +361,8 @@ project(':open-metadata-implementation:adapters:open-connectors:repository-servi
 project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-archive-connectors:open-metadata-archive-file-connector').projectDir = file('open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-archive-connectors/open-metadata-archive-file-connector')
 project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-archive-connectors').projectDir = file('open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-archive-connectors')
 project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors').projectDir = file('open-metadata-implementation/adapters/open-connectors/repository-services-connectors')
-project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:gaian-connector').projectDir = file('open-metadata-implementation/adapters/open-connectors/data-store-connectors/gaian-connector')
+//TODO: gaian removed
+//project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:gaian-connector').projectDir = file('open-metadata-implementation/adapters/open-connectors/data-store-connectors/gaian-connector')
 project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:basic-file-connector').projectDir = file('open-metadata-implementation/adapters/open-connectors/data-store-connectors/file-connectors/basic-file-connector')
 project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:csv-file-connector').projectDir = file('open-metadata-implementation/adapters/open-connectors/data-store-connectors/file-connectors/csv-file-connector')
 project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:avro-file-connector').projectDir = file('open-metadata-implementation/adapters/open-connectors/data-store-connectors/file-connectors/avro-file-connector')
@@ -387,10 +391,12 @@ project(':open-metadata-implementation:adapters:open-connectors:rest-client-conn
 project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors').projectDir = file('open-metadata-implementation/adapters/open-connectors/rest-client-connectors')
 project(':open-metadata-implementation:adapters:open-connectors:connector-configuration-factory').projectDir = file('open-metadata-implementation/adapters/open-connectors/connector-configuration-factory')
 project(':open-metadata-implementation:adapters:open-connectors').projectDir = file('open-metadata-implementation/adapters/open-connectors')
-project(':open-metadata-implementation:adapters:governance-engines-plugins:gaian-ranger-plugin').projectDir = file('open-metadata-implementation/adapters/governance-engines-plugins/gaian-ranger-plugin')
+//TODO: Gaian ranger plugin removed
+//project(':open-metadata-implementation:adapters:governance-engines-plugins:gaian-ranger-plugin').projectDir = file('open-metadata-implementation/adapters/governance-engines-plugins/gaian-ranger-plugin')
 project(':open-metadata-implementation:adapters:governance-engines-plugins').projectDir = file('open-metadata-implementation/adapters/governance-engines-plugins')
 project(':open-metadata-implementation:adapters:authentication-plugins:http-helper').projectDir = file('open-metadata-implementation/adapters/authentication-plugins/http-helper')
-project(':open-metadata-implementation:adapters:authentication-plugins:gaian-impersonation').projectDir = file('open-metadata-implementation/adapters/authentication-plugins/gaian-impersonation')
+//TODO: gaian removed
+//project(':open-metadata-implementation:adapters:authentication-plugins:gaian-impersonation').projectDir = file('open-metadata-implementation/adapters/authentication-plugins/gaian-impersonation')
 project(':open-metadata-implementation:adapters:authentication-plugins').projectDir = file('open-metadata-implementation/adapters/authentication-plugins')
 project(':open-metadata-implementation:adapters').projectDir = file('open-metadata-implementation/adapters')
 project(':open-metadata-implementation:common-services:ffdc-services').projectDir = file('open-metadata-implementation/common-services/ffdc-services')

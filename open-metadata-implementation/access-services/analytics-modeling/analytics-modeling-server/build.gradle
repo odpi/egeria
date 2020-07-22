@@ -24,7 +24,7 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-annotations:2.11.1'
 
     //TODO: Special library used in maven build, process needs porting using gradle's test fixtures - should refactor
-    testCompile project(':open-metadata-implementation:access-services:analytics-modeling:analytics-modeling-api').sourceSets.test.output
+    testImplementation project(':open-metadata-implementation:access-services:analytics-modeling:analytics-modeling-api').sourceSets.test.output
 
 
 }
