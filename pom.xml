@@ -139,7 +139,7 @@
         <spring-boot.version>2.3.1.RELEASE</spring-boot.version>
         <spring.version>5.2.8.RELEASE</spring.version>
         <spring-security.version>5.3.3.RELEASE</spring-security.version>
-        <spring-data.version>2.3.1.RELEASE</spring-data.version>
+        <spring-data.version>2.3.2.RELEASE</spring-data.version>
         <tomcat.version>9.0.36</tomcat.version>
         <commons-io.version>2.7</commons-io.version>
         <commons-collections4.version>4.4</commons-collections4.version>
