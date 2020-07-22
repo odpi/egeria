@@ -2,12 +2,15 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.fvt;
 
+import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaEntityClient;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaRestClient;
+import org.odpi.openmetadata.accessservices.subjectarea.client.entities.categories.SubjectAreaCategoryClient;
 import org.odpi.openmetadata.accessservices.subjectarea.client.relationships.SubjectAreaRelationship;
 import org.odpi.openmetadata.accessservices.subjectarea.client.relationships.SubjectAreaLine;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.CategorySummary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.project.Project;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.*;
@@ -32,6 +35,7 @@ public class RelationshipsFVT {
     private static final String DEFAULT_TEST_CAT_NAME3 = "Test cat C1";
     private static final String DEFAULT_TEST_CAT_NAME4 = "Test cat D1";
     private SubjectAreaRelationship subjectAreaRelationship = null;
+    private SubjectAreaEntityClient<Category> subjectAreaCategory = null;
     private GlossaryFVT glossaryFVT = null;
     private TermFVT termFVT = null;
     private CategoryFVT catFVT = null;
@@ -44,6 +48,7 @@ public class RelationshipsFVT {
         this.url = url;
         SubjectAreaRestClient client = new SubjectAreaRestClient(serverName, url);
         subjectAreaRelationship = new SubjectAreaLine(client);
+        subjectAreaCategory = new SubjectAreaCategoryClient(client);
         termFVT = new TermFVT(url, serverName, userId);
         catFVT = new CategoryFVT(url, serverName, userId);
         glossaryFVT = new GlossaryFVT(url, serverName, userId);
@@ -1434,6 +1439,8 @@ public class RelationshipsFVT {
         CategoryHierarchyLink gotCategoryHierarchyLink = subjectAreaRelationship.categoryHierarchyLink().getByGUID(this.userId, guid);
         FVTUtils.validateLine(gotCategoryHierarchyLink);
         System.out.println("Got CategoryHierarchyLink " + categoryHierarchyLink);
+        Category gotChild = subjectAreaCategory.getByGUID(userId, child.getSystemAttributes().getGUID());
+        checkParent(parent, gotChild);
         subjectAreaRelationship.categoryHierarchyLink().delete(this.userId, guid);
         //FVTUtils.validateLine(gotTermCategorizationRelationship);
         System.out.println("Soft deleted CategoryHierarchyLink with userId=" + guid);
@@ -1458,5 +1465,19 @@ public class RelationshipsFVT {
         System.out.println("Created CategoryHierarchyLink " + categoryHierarchyLink);
 
         return categoryHierarchyLink;
+    }
+
+    public void checkParent(Category parent, Category gotChildCategory) throws SubjectAreaFVTCheckedException {
+        if (gotChildCategory.getParentCategory() != null) {
+            CategorySummary categorySummary = gotChildCategory.getParentCategory();
+            String parentGuid = parent.getSystemAttributes().getGUID();
+            String parentGuidFromChild = categorySummary.getGuid();
+            if(!parentGuid.equals(parentGuidFromChild)) {
+                throw new SubjectAreaFVTCheckedException("ERROR parent category guid - " + parentGuid
+                        + " no equal parent guid " + parentGuidFromChild + " from child.");
+            }
+        } else {
+            throw new SubjectAreaFVTCheckedException("ERROR parent category is null");
+        }
     }
 }
