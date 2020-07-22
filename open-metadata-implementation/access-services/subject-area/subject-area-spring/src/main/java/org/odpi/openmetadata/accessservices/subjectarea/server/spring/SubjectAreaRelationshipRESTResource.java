@@ -1962,12 +1962,12 @@ public class SubjectAreaRelationshipRESTResource {
     }
 
     /**
-     * Get a categoryAnchor Relationship. A relationship between two categories used to create nested categories.
+     * Get a CategoryHierarchyLink Relationship. A relationship between two categories used to create nested categories.
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       guid of the categoryAnchor Relationship to get
-     * @return response which when successful contains the categoryAnchorRelationship relationship with the requested guid
+     * @param guid       guid of the CategoryHierarchyLink Relationship to get
+     * @return response which when successful contains the CategoryHierarchyLink relationship with the requested guid
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
