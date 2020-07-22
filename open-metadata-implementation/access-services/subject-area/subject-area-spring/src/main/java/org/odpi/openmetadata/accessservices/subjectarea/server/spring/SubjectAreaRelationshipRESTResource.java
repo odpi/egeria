@@ -1941,10 +1941,10 @@ public class SubjectAreaRelationshipRESTResource {
     }
 
     /**
-     * Create a CategoryHierarchyLink Relationship. A relationship between a Category and a Category.
+     * Create a CategoryHierarchyLink Relationship. A relationship between two categories used to create nested categories.
      *
-     * @param serverName                 serverName under which this request is performed, this is used in multi tenanting to identify the tenant
-     * @param userId                     userId under which the request is performed
+     * @param serverName            serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId                userId under which the request is performed
      * @param categoryHierarchyLink the CategoryHierarchyLink relationship
      * @return response, when successful contains the created categoryHierarchyLink relationship
      * when not successful the following Exception responses can occur
@@ -1962,7 +1962,7 @@ public class SubjectAreaRelationshipRESTResource {
     }
 
     /**
-     * Get a categoryAnchor Relationship. A relationship between a Category and a Category.
+     * Get a categoryAnchor Relationship. A relationship between two categories used to create nested categories.
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
@@ -1983,13 +1983,13 @@ public class SubjectAreaRelationshipRESTResource {
     }
 
     /**
-     * Update a CategoryHierarchyLink Relationship. A relationship between a Category and a Category.
+     * Update a CategoryHierarchyLink Relationship. A relationship between two categories used to create nested categories.
      *
-     * @param serverName           serverName under which this request is performed, this is used in multi tenanting to identify the tenant
-     * @param userId               userId under which the request is performed
-     * @param guid       guid of the CategoryAnchor relationship
-     * @param categoryHierarchyLink the categoryAnchor relationship
-     * @param isReplace            flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
+     * @param serverName            serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId                userId under which the request is performed
+     * @param guid                  guid of the CategoryHierarchyLink relationship
+     * @param categoryHierarchyLink the CategoryHierarchyLink relationship
+     * @param isReplace             flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the updated categoryHierarchyLink
      * when not successful the following Exception responses can occur
      * <ul>
@@ -1999,17 +1999,17 @@ public class SubjectAreaRelationshipRESTResource {
      * </ul>
      */
     @PutMapping(path = "/users/{userId}/relationships/category-hierarchy-link/{guid}")
-    public SubjectAreaOMASAPIResponse<CategoryHierarchyLink> updateCategoryAnchor(@PathVariable String serverName,
-                                                                                  @PathVariable String userId,
-                                                                                  @PathVariable String guid,
-                                                                                  @RequestBody CategoryHierarchyLink categoryHierarchyLink,
-                                                                                  @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace
+    public SubjectAreaOMASAPIResponse<CategoryHierarchyLink> updateCategoryHierarchyLink(@PathVariable String serverName,
+                                                                                         @PathVariable String userId,
+                                                                                         @PathVariable String guid,
+                                                                                         @RequestBody CategoryHierarchyLink categoryHierarchyLink,
+                                                                                         @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace
     ) {
         return restAPI.updateCategoryHierarchyLink(serverName, userId, guid, categoryHierarchyLink, isReplace);
     }
 
     /**
-     * Delete a CategoryHierarchyLink Relationship. A relationship between a Category and a Category.
+     * Delete a CategoryHierarchyLink Relationship. A relationship between two categories used to create nested categories.
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
@@ -2033,7 +2033,7 @@ public class SubjectAreaRelationshipRESTResource {
     }
 
     /**
-     * Restore a CategoryHierarchyLink Relationship. A relationship between a Category and a Category.
+     * Restore a CategoryHierarchyLink Relationship. A relationship between two categories used to create nested categories.
      * <p>
      * Restore allows the deleted CategoryHierarchyLink Relationship to be made active again. Restore allows deletes to be undone.
      * Hard deletes are not stored in the repository so cannot be restored.
