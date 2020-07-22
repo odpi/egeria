@@ -73,8 +73,10 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_METADATA_ID;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_PREFIX_ELEMENT;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_PREFIX_INSTANCE_PROPERTY;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_PROCESS_PAINTED;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_RELATIONSHIP_GUID;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_NAME_PORT_TYPE;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_NAME_PROCESS_PAINTED;
 
 public class LineageGraphConnector extends LineageGraphConnectorBase {
 
@@ -135,7 +137,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
         try {
             List<Vertex> vertices = g.V()
                     .and(__.has(PROPERTY_KEY_LABEL, PROCESS),
-                            or(__.has(PROPERTY_KEY_PROCESS_PAINTED, "false"),__.hasNot(PROPERTY_KEY_PROCESS_PAINTED)))
+                            or(__.has(PROPERTY_KEY_PROCESS_PAINTED, Boolean.FALSE.toString()),__.hasNot(PROPERTY_KEY_PROCESS_PAINTED)))
                     .toList();
             List<String> guidList = vertices.stream()
                     .map(v ->  g.V(v.id()).elementMap(PROPERTY_KEY_ENTITY_GUID).toList().get(0).get(PROPERTY_KEY_ENTITY_GUID).toString())
@@ -143,7 +145,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
 
             guidList.forEach(
                     guid -> {findInputColumns(g, guid);
-                    g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).property(PROPERTY_KEY_PROCESS_PAINTED, "true").iterate();
+                    g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).property(PROPERTY_KEY_PROCESS_PAINTED, Boolean.TRUE.toString()).iterate();
             });
             if (graphFactory.isSupportingTransactions()) {
                 g.tx().commit();
@@ -436,8 +438,8 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
     @Override
     public void updateEntity(LineageEntity lineageEntity) {
         // on update, unpaint a process in order to make it eligible again for the scheduled job
-        if(lineageEntity.getTypeDefName().equals("Process")){
-            lineageEntity.getProperties().put(PROPERTY_NAME_PROCESS_PAINTED, "false");
+        if(lineageEntity.getTypeDefName().equals(PROCESS)){
+            lineageEntity.getProperties().put(PROPERTY_NAME_PROCESS_PAINTED, Boolean.FALSE.toString());
         }
 
         Iterator<Vertex> vertex = g.V().has(PROPERTY_KEY_ENTITY_GUID, lineageEntity.getGuid());
