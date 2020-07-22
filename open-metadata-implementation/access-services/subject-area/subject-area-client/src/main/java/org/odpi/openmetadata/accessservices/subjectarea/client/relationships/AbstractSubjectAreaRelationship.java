@@ -10,7 +10,10 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph
 
 import java.util.List;
 
-
+/**
+ * @param <L> inherited from {@link Line} object type
+ * Abstract class for Subject Area client relationship operations
+ */
 public abstract class AbstractSubjectAreaRelationship<L extends Line> extends AbstractSubjectArea<L> implements SubjectAreaRelationshipClient<L> {
     protected AbstractSubjectAreaRelationship(SubjectAreaRestClient subjectAreaRestClient, String resourceUrnName)
     {
