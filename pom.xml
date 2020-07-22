@@ -2571,9 +2571,6 @@
                         <reuseForks>true</reuseForks>
                         <!--suppress UnresolvedMavenProperty -->
                         <argLine>-Xmx1024m ${argLine}</argLine>
-                        <includes>
-                            <include>**/*Test.java</include>
-                        </includes>
                         <systemPropertyVariables>
                             <org.slf4j.simpleLogger.defaultLogLevel>INFO</org.slf4j.simpleLogger.defaultLogLevel>
                         </systemPropertyVariables>
