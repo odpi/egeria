@@ -1,9 +1,9 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.subjectarea.client.entities;
+package org.odpi.openmetadata.accessservices.subjectarea.client.nodes;
 
 import org.odpi.openmetadata.accessservices.subjectarea.client.AbstractSubjectArea;
-import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaEntityClient;
+import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaNodeClient;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaRestClient;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
@@ -20,7 +20,7 @@ import java.util.List;
  * @param <E> inherited from {@link Node} object type
  * Abstract class for Subject Area client node operations
  */
-public abstract class AbstractSubjectAreaEntity<E extends Node> extends AbstractSubjectArea<E> implements SubjectAreaEntityClient<E> {
+public abstract class AbstractSubjectAreaEntity<E extends Node> extends AbstractSubjectArea<E> implements SubjectAreaNodeClient<E> {
     protected AbstractSubjectAreaEntity(SubjectAreaRestClient client, String baseUrl) {
         super(client, baseUrl);
     }

@@ -1,10 +1,10 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.subjectarea.client.entities.categories;
+package org.odpi.openmetadata.accessservices.subjectarea.client.nodes.categories;
 
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaRestClient;
-import org.odpi.openmetadata.accessservices.subjectarea.client.entities.AbstractSubjectAreaEntity;
-import org.odpi.openmetadata.accessservices.subjectarea.client.entities.SubjectAreaNodeClient;
+import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.AbstractSubjectAreaEntity;
+import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.SubjectAreaNodeClient;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
 
 @SubjectAreaNodeClient
