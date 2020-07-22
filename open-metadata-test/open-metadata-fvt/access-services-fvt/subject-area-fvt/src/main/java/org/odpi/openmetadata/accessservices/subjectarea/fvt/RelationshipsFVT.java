@@ -30,6 +30,7 @@ public class RelationshipsFVT {
     private static final String DEFAULT_TEST_CAT_NAME1 = "Test cat A1";
     private static final String DEFAULT_TEST_CAT_NAME2 = "Test cat B1";
     private static final String DEFAULT_TEST_CAT_NAME3 = "Test cat C1";
+    private static final String DEFAULT_TEST_CAT_NAME4 = "Test cat D1";
     private SubjectAreaRelationship subjectAreaRelationship = null;
     private GlossaryFVT glossaryFVT = null;
     private TermFVT termFVT = null;
@@ -198,6 +199,9 @@ public class RelationshipsFVT {
         projectFVT.deleteProject(project.getSystemAttributes().getGUID());
         projectFVT.purgeProject(project.getSystemAttributes().getGUID());
 
+        Category cat3 = catFVT.createCategory(DEFAULT_TEST_CAT_NAME3, glossaryGuid);
+        Category cat4 = catFVT.createCategory(DEFAULT_TEST_CAT_NAME4, glossaryGuid);
+        categoryHierarchyLinkFVT(cat3, cat4);
     }
 
     private void checkRelationshipNumberforTerm(int expectedrelationshipcount, Term term) throws SubjectAreaFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
@@ -1422,5 +1426,37 @@ public class RelationshipsFVT {
         FVTUtils.validateLine(createdProjectScope);
         System.out.println("CreatedProjectScopeRelationship " + createdProjectScope);
         return createdProjectScope;
+    }
+
+    private void categoryHierarchyLinkFVT(Category parent, Category child) throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException, SubjectAreaFVTCheckedException {
+        CategoryHierarchyLink categoryHierarchyLink = createCategoryHierarchyLink(parent, child);
+        String guid = categoryHierarchyLink.getGuid();
+        CategoryHierarchyLink gotCategoryHierarchyLink = subjectAreaRelationship.categoryHierarchyLink().getByGUID(this.userId, guid);
+        FVTUtils.validateLine(gotCategoryHierarchyLink);
+        System.out.println("Got CategoryHierarchyLink " + categoryHierarchyLink);
+        subjectAreaRelationship.categoryHierarchyLink().delete(this.userId, guid);
+        //FVTUtils.validateLine(gotTermCategorizationRelationship);
+        System.out.println("Soft deleted CategoryHierarchyLink with userId=" + guid);
+        gotCategoryHierarchyLink = subjectAreaRelationship.categoryHierarchyLink().restore(this.userId, guid);
+        FVTUtils.validateLine(gotCategoryHierarchyLink);
+        System.out.println("Restored CategoryHierarchyLink with userId=" + guid);
+        subjectAreaRelationship.categoryHierarchyLink().delete(this.userId, guid);
+        //FVTUtils.validateLine(gotTermCategorizationRelationship);
+        System.out.println("Soft deleted CategoryHierarchyLink with userId=" + guid);
+        subjectAreaRelationship.categoryHierarchyLink().purge(this.userId, guid);
+        System.out.println("Hard deleted CategoryHierarchyLink with userId=" + guid);
+    }
+
+    public CategoryHierarchyLink createCategoryHierarchyLink(Category parent, Category child) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, SubjectAreaFVTCheckedException {
+        CategoryHierarchyLink link = new CategoryHierarchyLink();
+        link.setSuperCategoryGuid(parent.getSystemAttributes().getGUID());
+        link.setSubCategoryGuid(child.getSystemAttributes().getGUID());
+        CategoryHierarchyLink categoryHierarchyLink = subjectAreaRelationship.categoryHierarchyLink().create(this.userId, link);
+        FVTUtils.validateLine(categoryHierarchyLink);
+        FVTUtils.checkGuidEnd1s("CategoryHierarchyLink", parent.getSystemAttributes().getGUID(), categoryHierarchyLink.getSuperCategoryGuid());
+        FVTUtils.checkGuidEnd2s("CategoryHierarchyLink", child.getSystemAttributes().getGUID(), categoryHierarchyLink.getSubCategoryGuid());
+        System.out.println("Created CategoryHierarchyLink " + categoryHierarchyLink);
+
+        return categoryHierarchyLink;
     }
 }
