@@ -24,7 +24,6 @@ import org.odpi.openmetadata.userinterface.uichassis.springboot.beans.Edge;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.beans.Node;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import sun.security.pkcs11.wrapper.Functions;
 
 import java.io.File;
 import java.io.IOException;
