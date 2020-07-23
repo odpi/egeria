@@ -5,15 +5,13 @@
 
 package org.odpi.openmetadata.accessservices.subjectarea.server.mappers.classifications;
 
+import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.SubjectArea;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.PrimitivePropertyValue;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -28,7 +26,7 @@ public class SubjectAreaMapper extends ClassificationMapper{
         super(omrsapiHelper);
     }
     @Override
-    protected Set<String> mapKnownAttributesToOmrs(org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification omasClassification, InstanceProperties omrsClassificationProperties) {
+    protected Set<String> mapKnownAttributesToOmrs(Classification omasClassification, InstanceProperties omrsClassificationProperties) {
         SubjectArea canonicalVocabulary = (SubjectArea)omasClassification;
         String stringValue = repositoryHelper.getStringProperty(omrsapiHelper.getServiceName(),"name",omrsClassificationProperties,"");
         canonicalVocabulary.setName(stringValue);
@@ -41,11 +39,11 @@ public class SubjectAreaMapper extends ClassificationMapper{
     }
 
     @Override
-    protected org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification createOmasClassification() {
+    protected Classification createOmasClassification() {
         return new SubjectArea();
     }
     @Override
-    protected InstanceProperties updateOMRSAttributes(org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification omasClassification) {
+    protected InstanceProperties updateOMRSAttributes(Classification omasClassification) {
         InstanceProperties instanceProperties = new InstanceProperties();
         SubjectArea canonicalVocabulary = (SubjectArea)omasClassification;
         if (canonicalVocabulary.getName()!=null) {

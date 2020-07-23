@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.properties.objects.comm
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 
 import java.util.Date;
 import java.util.Objects;
@@ -20,6 +21,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class FindRequest
 {
+    private String               searchCriteria       = null;
     private String               sequencingProperty   = null;
     private SequencingOrder      sequencingOrder      = null;
     private int                  offset               = 0;
@@ -28,8 +30,7 @@ public class FindRequest
     /**
      * Default constructor
      */
-    public FindRequest()
-    {
+    public FindRequest() {
     }
 
     /**
@@ -37,17 +38,24 @@ public class FindRequest
      *
      * @param template object to copy
      */
-    public FindRequest(FindRequest template)
-    {
-        if (template != null)
-        {
+    public FindRequest(FindRequest template) {
+        if (template != null) {
+            this.searchCriteria = template.getSearchCriteria();
             this.sequencingProperty = template.getSequencingProperty();
             this.sequencingOrder = template.getSequencingOrder();
+            this.asOfTime = template.getAsOfTime();
             this.offset = template.getOffset();
             this.pageSize = getPageSize();
         }
     }
 
+    public String getSearchCriteria() {
+        return searchCriteria;
+    }
+
+    public void setSearchCriteria(String searchCriteria) {
+        this.searchCriteria = searchCriteria;
+    }
 
     /**
      * Return the name of the property that should be used to sequence the results.
@@ -173,32 +181,20 @@ public class FindRequest
 
     /**
      * Compare the values of the supplied object with those stored in the current object.
-     *
-     * @param objectToCompare supplied object
      * @return boolean result of comparison
      */
     @Override
-    public boolean equals(Object objectToCompare)
-    {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (!(objectToCompare instanceof FindRequest))
-        {
-            return false;
-        }
-        if (!super.equals(objectToCompare))
-        {
-            return false;
-        }
-       FindRequest that = (FindRequest) objectToCompare;
-        return getOffset() == that.getOffset() &&
-                getPageSize() == that.getPageSize() &&
-                Objects.equals(getSequencingProperty(), that.getSequencingProperty()) &&
-                getSequencingOrder() == that.getSequencingOrder();
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        FindRequest that = (FindRequest) o;
+        return offset == that.offset &&
+                pageSize == that.pageSize &&
+                Objects.equals(searchCriteria, that.searchCriteria) &&
+                Objects.equals(sequencingProperty, that.sequencingProperty) &&
+                sequencingOrder == that.sequencingOrder &&
+                Objects.equals(asOfTime, that.asOfTime);
     }
-
 
     /**
      * Create a hash code for this element type.
@@ -206,13 +202,7 @@ public class FindRequest
      * @return int hash code
      */
     @Override
-    public int hashCode()
-    {
-
-        return Objects.hash(super.hashCode(),
-                getSequencingProperty(),
-                getSequencingOrder(),
-                getOffset(),
-                getPageSize());
+    public int hashCode() {
+        return Objects.hash(searchCriteria, sequencingProperty, sequencingOrder, offset, pageSize, asOfTime);
     }
 }

@@ -7,8 +7,8 @@ package org.odpi.openmetadata.accessservices.subjectarea.fvt;
  */
 public class FVTConstants
 {
-    public static final String USERID = "Fred";
-    public static final String DEFAULT_URL = "http://localhost:8080";
-    public static final String SERVER_NAME1  = "Server1";
-    public static final String SERVER_NAME2  = "Server2";
+    public static final String USERID = "erinoverview";
+    public static final String DEFAULT_URL = "https://localhost:9443";
+    public static final String SERVER_NAME1  = "cocoMDS4";
+    public static final String SERVER_NAME2  = "cocoMDS1";
 }

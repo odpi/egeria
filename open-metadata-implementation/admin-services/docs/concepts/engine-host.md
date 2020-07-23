@@ -18,6 +18,8 @@ In Egeria today there are two types of engine hosts:
 * [Stewardship Server](stewardship-server.md) that is managing the resolution of issues reported in the open
 metadata ecosystem or the assets it supports.
 
+----
+Return to the [Governance Server Types](governance-server-types.md)
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

@@ -1,0 +1,243 @@
+{
+	"info": {
+		"_postman_id": "c3affe9a-344d-49d5-9ee2-4fe56f557b6f",
+		"name": "Egeria-admin-services-operational",
+		"description": "Requests for configuring an OMAG Server",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Start server - using stored configuration",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/instance",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"open-metadata",
+						"admin-services",
+						"users",
+						"{{user}}",
+						"servers",
+						"{{server}}",
+						"instance"
+					]
+				},
+				"description": "Activate a server on the OMAG Server Platform.  Use the configuration document found in the configuration document store."
+			},
+			"response": []
+		},
+		{
+			"name": "Start server - using supplied configuration",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"class\": \"OMAGServerConfigResponse\",\n    \"relatedHTTPCode\": 200,\n    \"omagserverConfig\": {\n        \"class\": \"OMAGServerConfig\",\n        \"versionId\": \"V2.0\",\n        \"localServerId\": \"863ae16f-46eb-4f9a-a619-76917e8fa950\",\n        \"localServerName\": \"myserver\",\n        \"localServerType\": \"Open Metadata and Governance Server\",\n        \"localServerURL\": \"https://localhost:9443\",\n        \"localServerUserId\": \"OMAGServer\",\n        \"maxPageSize\": 1000\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/instance",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"open-metadata",
+						"admin-services",
+						"users",
+						"{{user}}",
+						"servers",
+						"{{server}}",
+						"instance"
+					]
+				},
+				"description": "Activate a server on the OMAG Server Platform.  Use the configuration document passed on the request. This configuration document is saved to the configuration document store and then the server is started."
+			},
+			"response": []
+		},
+		{
+			"name": "Get active server configuration",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/instance/configuration",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"open-metadata",
+						"admin-services",
+						"users",
+						"{{user}}",
+						"servers",
+						"{{server}}",
+						"instance",
+						"configuration"
+					]
+				},
+				"description": "Retrieve the configuration document used to start the named server."
+			},
+			"response": []
+		},
+		{
+			"name": "Load open metadata archive file",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "text/plain"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "filename",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/instance/open-metadata-archives/file",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"open-metadata",
+						"admin-services",
+						"users",
+						"{{user}}",
+						"servers",
+						"{{server}}",
+						"instance",
+						"open-metadata-archives",
+						"file"
+					]
+				},
+				"description": "Load a file that contains open metadata types and instances."
+			},
+			"response": []
+		},
+		{
+			"name": "Load open metadata archive connection",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "text/plain"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"class\": \"Connection\",\n    \"connectorType\": {\n        \"class\": \"ConnectorType\",\n        \"connectorProviderClassName\": \"class name of connector provider here\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/instance/open-metadata-archives/file",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"open-metadata",
+						"admin-services",
+						"users",
+						"{{user}}",
+						"servers",
+						"{{server}}",
+						"instance",
+						"open-metadata-archives",
+						"file"
+					]
+				},
+				"description": "Load a file that contains open metadata types and instances."
+			},
+			"response": []
+		},
+		{
+			"name": "Shutdown server",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/instance",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"open-metadata",
+						"admin-services",
+						"users",
+						"{{user}}",
+						"servers",
+						"{{server}}",
+						"instance"
+					]
+				},
+				"description": "Stop the server running on the OMAG Server Platform."
+			},
+			"response": []
+		},
+		{
+			"name": "Shutdown and delete server",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"open-metadata",
+						"admin-services",
+						"users",
+						"{{user}}",
+						"servers",
+						"{{server}}"
+					]
+				},
+				"description": "Unregister server and remove its configuration"
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

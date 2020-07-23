@@ -37,7 +37,7 @@ The [Open Metadata Repository Services (OMRS)](../../repository-services/docs/co
 provides an extension to the audit log destination that supports
 audit log store connectors.
 This means that an OMAG Server can be configured to route 
-audit log messages to different destination.
+audit log messages to different destinations.
 
 Details of the supported audit log store connectors and
 how to set them up are described in

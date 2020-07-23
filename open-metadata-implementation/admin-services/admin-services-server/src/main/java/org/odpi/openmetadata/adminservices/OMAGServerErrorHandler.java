@@ -10,6 +10,9 @@ import org.odpi.openmetadata.adminservices.ffdc.OMAGAdminErrorCode;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 
 import java.util.List;
@@ -158,6 +161,7 @@ public class OMAGServerErrorHandler
                                                       methodName);
         }
     }
+
 
     /**
      * Check that a requested view service is registered with this server before allowing the view service to be configured
@@ -366,7 +370,7 @@ public class OMAGServerErrorHandler
 
 
     /**
-     * Validate that the connection is not null.
+     * Validate that the connection is not null.  This is used for server specific requests
      *
      * @param connection  connection passed on the request
      * @param serverName  server name for this server
@@ -383,11 +387,13 @@ public class OMAGServerErrorHandler
                                                     this.getClass().getName(),
                                                     methodName);
         }
+
+        tryConnection(connection, methodName);
     }
 
 
     /**
-     * Validate that the connection is not null.
+     * Validate that the connection is not null.  This is used for OMAG Platform Requests
      *
      * @param connection  connection passed on the request
      * @param methodName  method called
@@ -401,6 +407,40 @@ public class OMAGServerErrorHandler
             throw new OMAGInvalidParameterException(OMAGAdminErrorCode.NULL_PLATFORM_CONNECTION.getMessageDefinition(methodName),
                                                     this.getClass().getName(),
                                                     methodName);
+        }
+
+        tryConnection(connection, methodName);
+    }
+
+
+    /**
+     * Check that the connection is valid
+     *
+     * @param connection  connection passed on the request
+     * @param methodName  method called
+     * @throws OMAGInvalidParameterException the connection is null
+     */
+    private void tryConnection(Connection connection,
+                               String     methodName) throws OMAGInvalidParameterException
+    {
+
+        try
+        {
+            ConnectorBroker connectorBroker = new ConnectorBroker();
+
+            connectorBroker.getConnector(connection);
+        }
+        catch (ConnectionCheckedException | ConnectorCheckedException  error)
+        {
+            throw new OMAGInvalidParameterException(OMAGAdminErrorCode.BAD_CONNECTION.getMessageDefinition(methodName,
+                                                                                                           connection.toString(),
+                                                                                                           error.getClass().getName(),
+                                                                                                           error.getMessage(),
+                                                                                                           error.getReportedSystemAction(),
+                                                                                                           error.getReportedUserAction()),
+                                                    this.getClass().getName(),
+                                                    methodName,
+                                                    error);
         }
     }
 
@@ -425,6 +465,7 @@ public class OMAGServerErrorHandler
                                                     methodName);
         }
     }
+
 
     /**
      * Validate that the root URL of the server where an access service resides is not null.

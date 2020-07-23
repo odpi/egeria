@@ -48,7 +48,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  *         localServerURL - network address of the OMAG server platform where this server runs
  *         (typically host and port number but may also include the initial part of the URL before "open-metadata").
  *
- *         The default value is "http://localhost:8080".
+ *         The default value is "https://localhost:9443".
  *     </li>
  *     <li>
  *         localServerUserId - UserId to use for server initiated REST calls.
@@ -78,7 +78,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
      */
     public  static final String  defaultLocalServerType                   = "Open Metadata and Governance Server";
     private static final String  defaultLocalOrganizationName             = null;
-    private static final String  defaultLocalServerURL                    = "http://localhost:8080";
+    private static final String  defaultLocalServerURL                    = "https://localhost:9443";
     private static final String  defaultLocalServerUserId                 = "OMAGServer";
     private static final int     defaultMaxPageSize                       = 1000;
 

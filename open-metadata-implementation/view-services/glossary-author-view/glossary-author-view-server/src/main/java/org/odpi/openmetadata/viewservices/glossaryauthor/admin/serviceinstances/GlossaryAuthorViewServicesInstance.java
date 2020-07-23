@@ -2,13 +2,18 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.viewservices.glossaryauthor.admin.serviceinstances;
 
-import org.odpi.openmetadata.accessservices.subjectarea.*;
+import org.odpi.openmetadata.accessservices.subjectarea.SubjectArea;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaImpl;
+import org.odpi.openmetadata.accessservices.subjectarea.client.entities.categories.SubjectAreaCategory;
+import org.odpi.openmetadata.accessservices.subjectarea.client.entities.glossaries.SubjectAreaGlossary;
+import org.odpi.openmetadata.accessservices.subjectarea.client.entities.projects.SubjectAreaProject;
+import org.odpi.openmetadata.accessservices.subjectarea.client.entities.terms.SubjectAreaTerm;
+import org.odpi.openmetadata.accessservices.subjectarea.client.relationships.SubjectAreaGraph;
+import org.odpi.openmetadata.accessservices.subjectarea.client.relationships.SubjectAreaRelationship;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstance;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 
 
 /**

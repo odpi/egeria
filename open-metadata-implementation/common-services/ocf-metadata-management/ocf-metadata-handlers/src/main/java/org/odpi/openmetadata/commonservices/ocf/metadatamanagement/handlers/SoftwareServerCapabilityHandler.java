@@ -148,19 +148,19 @@ public class SoftwareServerCapabilityHandler
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public String   createDatabasePlatform(String               userId,
-                                           String               uniqueName,
-                                           String               displayName,
-                                           String               description,
-                                           String               type,
-                                           String               version,
-                                           String               patchLevel,
-                                           String               source,
-                                           Map<String, String>  additionalProperties,
-                                           Map<String, String>  vendorProperties,
-                                           String               methodName) throws InvalidParameterException,
-                                                                                   UserNotAuthorizedException,
-                                                                                   PropertyServerException
+    public String createDatabaseManager(String               userId,
+                                        String               uniqueName,
+                                        String               displayName,
+                                        String               description,
+                                        String               type,
+                                        String               version,
+                                        String               patchLevel,
+                                        String               source,
+                                        Map<String, String>  additionalProperties,
+                                        Map<String, String>  vendorProperties,
+                                        String               methodName) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
     {
         SoftwareServerCapabilityBuilder builder = new SoftwareServerCapabilityBuilder(uniqueName,
                                                                                       displayName,
@@ -176,8 +176,8 @@ public class SoftwareServerCapabilityHandler
                                                                                       serverName);
 
         String databasePlatformGUID = repositoryHandler.createEntity(userId,
-                                                                     SoftwareServerCapabilityMapper.DATABASE_PLATFORM_TYPE_GUID,
-                                                                     SoftwareServerCapabilityMapper.DATABASE_PLATFORM_TYPE_NAME,
+                                                                     SoftwareServerCapabilityMapper.DATABASE_MANAGER_TYPE_GUID,
+                                                                     SoftwareServerCapabilityMapper.DATABASE_MANAGER_TYPE_NAME,
                                                                      builder.getInstanceProperties(methodName),
                                                                      methodName);
 
@@ -595,7 +595,7 @@ public class SoftwareServerCapabilityHandler
      * @param userId calling user
      * @param integratorGUID unique identifier of software server capability representing the caller
      * @param integratorName unique name of software server capability representing the caller
-     *
+     * @param methodName calling method
      * @throws InvalidParameterException the integrator GUID or name does not match what is in the metadata repository
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem

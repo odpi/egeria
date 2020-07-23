@@ -2,8 +2,10 @@
 package org.odpi.openmetadata.accessservices.subjectarea.properties.objects.governednode;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.apache.commons.collections4.CollectionUtils;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.*;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.GovernanceActions;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Node;
@@ -13,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -62,27 +65,18 @@ public class GovernedNode extends Node implements Serializable {
         return toString(new StringBuilder()).toString();
     }
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
-        GovernedNode governedNode = (GovernedNode) o;
-        Node node = (Node) o;
-        if (!node.equals((Node)this)) return false;
-
-        if (governanceActions != null ? !governanceActions.equals(governedNode.governanceActions) : governedNode.governanceActions != null)
-            return false;
-        return true;
-
+        if (!super.equals(o)) return false;
+        GovernedNode that = (GovernedNode) o;
+        return Objects.equals(governanceActions, that.governanceActions);
     }
 
     @Override
     public int hashCode() {
-        int result = super.hashCode();
-            result = 31 * result + (governanceActions != null ? governanceActions.hashCode() : 0);
-        return result;
+        return Objects.hash(super.hashCode(), governanceActions);
     }
 
     /**
@@ -91,8 +85,9 @@ public class GovernedNode extends Node implements Serializable {
      *
      * @param classifications the list of classifications to set on the GovernedNode.
      */
+    @JsonIgnore
     public void setClassifications(List<Classification> classifications) {
-        if (classifications!=null && classifications.size() >0) {
+        if (CollectionUtils.isNotEmpty(classifications)) {
             List<Classification> newClassifications = new ArrayList<>();
             if (this.governanceActions ==null) {
                 this.governanceActions = new GovernanceActions();

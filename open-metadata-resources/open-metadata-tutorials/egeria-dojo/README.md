@@ -30,6 +30,10 @@ show how advanced your knowledge is becoming.
 The schedule also includes estimated times needed to complete
 each session as well as breaks to give your mind a rest from time to time.
 
+Also within the sessions are links to videos of the live sessions run
+in May 2020.  These videos are  consolidated into single playlist on
+YouTube here: [https://www.youtube.com/playlist?list=PLhfwwk2gl_5Y7ZE8kHjGKyuIEZMQ5Hkfp](https://www.youtube.com/playlist?list=PLhfwwk2gl_5Y7ZE8kHjGKyuIEZMQ5Hkfp) 
+
 ----
 
 ## Day 1
@@ -65,7 +69,7 @@ and take it all the way through the process to update Egeria's git repository.
 
 ----
 Links to content:
-* [Open Source Philosophy](egeria-dojo-day-2-1-open-source-philosphy.md)
+* [Open Source Philosophy](egeria-dojo-day-2-1-open-source-philosophy.md)
 * [Tools for Contributors](egeria-dojo-day-2-2-tools-for-contributors.md)
 * [Making a contribution - Step-by-Step](egeria-dojo-day-2-3-contribution-to-egeria.md)
 * [Types of Contribution](egeria-dojo-day-2-4-types-of-contribution.md)
@@ -91,6 +95,14 @@ Links to content:
 * [Egeria architecture and philosophy (the deep stuff)](egeria-dojo-day-3-3-egeria-architecture.md)
 * [Egeria social](egeria-dojo-day-3-4-egeria-social.md)
 
+
+## Video Links
+
+On 26th-28th May 2020, the Egeria community ran three live sessions walking
+through the dojo.  The videos are from these sessions.
+
+* Watch a [video describing the Dojo](https://youtu.be/ECF4m0CAHY4)
+* Link to the [YouTube play list for all of the recorded dojo sessions](https://www.youtube.com/watch?v=ECF4m0CAHY4&list=PLhfwwk2gl_5Y7ZE8kHjGKyuIEZMQ5Hkfp).
 
 ----
 * Return to [Tutorials Menu](..)

@@ -33,7 +33,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = CanonicalGlossary.class, name = "CanonicalGlossary")
         })
 
-public class Glossary extends Node{
+public class Glossary extends Node {
     public Glossary() {
         nodeType = NodeType.Glossary;
     }
@@ -111,8 +111,7 @@ public class Glossary extends Node{
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        if (!(this.equals((Node)o))) return false;
-        return  true;
+        return this.equals(o);
     }
 
     @Override

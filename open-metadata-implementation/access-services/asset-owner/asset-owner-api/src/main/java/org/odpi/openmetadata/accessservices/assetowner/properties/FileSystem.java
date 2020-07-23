@@ -114,7 +114,7 @@ public class FileSystem extends ReferenceableProperties
     /**
      * Set up the type of the file system.
      *
-     * @param type stirng name
+     * @param type string name
      */
     public void setFileSystemType(String type)
     {
