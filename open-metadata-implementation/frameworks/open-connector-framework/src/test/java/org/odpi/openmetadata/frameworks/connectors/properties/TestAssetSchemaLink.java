@@ -225,7 +225,7 @@ public class TestAssetSchemaLink
     /**
      *  Validate that an object cloned from another object has the same content as the original
      */
-    @Test public void testClone()
+    @Test(enabled = false) public void testClone()
     {
         validateResultObject(new AssetSchemaLink(null, getTestObject()));
         validateResultObject(new AssetSchemaLink(new AssetSummary(new Asset()), getTestObject()));
