@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.subjectarea.client.nodes.projects;
 
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaRestClient;
-import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.AbstractSubjectAreaEntity;
+import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.AbstractSubjectAreaNode;
 import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.SubjectAreaNodeClient;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.project.Project;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
@@ -16,7 +16,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import java.util.List;
 
 @SubjectAreaNodeClient
-public class SubjectAreaProjectClient extends AbstractSubjectAreaEntity<Project> {
+public class SubjectAreaProjectClient extends AbstractSubjectAreaNode<Project> {
     public SubjectAreaProjectClient(SubjectAreaRestClient client)
     {
         super(client, SUBJECT_AREA_BASE_URL + "projects");

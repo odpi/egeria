@@ -3,12 +3,12 @@
 package org.odpi.openmetadata.accessservices.subjectarea.client.nodes.categories;
 
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaRestClient;
-import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.AbstractSubjectAreaEntity;
+import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.AbstractSubjectAreaNode;
 import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.SubjectAreaNodeClient;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
 
 @SubjectAreaNodeClient
-public class SubjectAreaCategoryClient extends AbstractSubjectAreaEntity<Category> {
+public class SubjectAreaCategoryClient extends AbstractSubjectAreaNode<Category> {
     public SubjectAreaCategoryClient(SubjectAreaRestClient client)
     {
         super(client, SUBJECT_AREA_BASE_URL + "categories");

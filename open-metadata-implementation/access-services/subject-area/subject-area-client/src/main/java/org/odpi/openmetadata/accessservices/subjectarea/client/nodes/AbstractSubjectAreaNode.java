@@ -17,11 +17,11 @@ import org.springframework.core.ParameterizedTypeReference;
 import java.util.List;
 
 /**
- * @param <E> inherited from {@link Node} object type
+ * @param <E> inherited from {@link Node} type
  * Abstract class for Subject Area client node operations
  */
-public abstract class AbstractSubjectAreaEntity<E extends Node> extends AbstractSubjectArea<E> implements SubjectAreaNodeClient<E> {
-    protected AbstractSubjectAreaEntity(SubjectAreaRestClient client, String baseUrl) {
+public abstract class AbstractSubjectAreaNode<E extends Node> extends AbstractSubjectArea<E> implements SubjectAreaNodeClient<E> {
+    protected AbstractSubjectAreaNode(SubjectAreaRestClient client, String baseUrl) {
         super(client, baseUrl);
     }
 

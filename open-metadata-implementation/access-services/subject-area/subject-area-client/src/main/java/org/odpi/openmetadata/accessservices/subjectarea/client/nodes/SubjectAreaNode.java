@@ -44,11 +44,11 @@ public class SubjectAreaNode implements SubjectAreaCategory, SubjectAreaTerm, Su
         Set<Class<?>> clientClasses = reflections.getTypesAnnotatedWith(org.odpi.openmetadata.accessservices.subjectarea.client.nodes.SubjectAreaNodeClient.class);
         for (Class<?> declaredClass : clientClasses) {
             try {
-                if (AbstractSubjectAreaEntity.class.isAssignableFrom(declaredClass)) {
+                if (AbstractSubjectAreaNode.class.isAssignableFrom(declaredClass)) {
                     Constructor<?> ctor = declaredClass.getDeclaredConstructor(SubjectAreaRestClient.class);
                     ctor.setAccessible(true);
-                    final AbstractSubjectAreaEntity newInstance =
-                            (AbstractSubjectAreaEntity) ctor.newInstance(subjectAreaRestClient);
+                    final AbstractSubjectAreaNode newInstance =
+                            (AbstractSubjectAreaNode) ctor.newInstance(subjectAreaRestClient);
                     cache.put(newInstance.type(), newInstance);
                 }
             } catch (NoSuchMethodException
@@ -102,7 +102,7 @@ public class SubjectAreaNode implements SubjectAreaCategory, SubjectAreaTerm, Su
      * @param <T> - {@link Line} type of object
      * @param clazz - the class for which you want to get the client from cache
      *
-     * @return SubjectAreaEntityClient or null if this client is not present
+     * @return SubjectAreaNodeClient or null if this client is not present
      * */
     @SuppressWarnings("unchecked")
     public <T extends Node> SubjectAreaNodeClient<T> getClient(Class<T> clazz) {

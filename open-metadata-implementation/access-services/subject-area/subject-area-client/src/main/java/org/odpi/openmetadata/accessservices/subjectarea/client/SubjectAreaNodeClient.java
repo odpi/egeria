@@ -12,7 +12,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import java.util.List;
 
 /**
- * @param <E> inherited from {@link Node} object type
+ * @param <E> inherited from {@link Node} type
  * Interface for Subject Area client node operations
  */
 public interface SubjectAreaNodeClient<E extends Node> extends SubjectAreaClient<E> {

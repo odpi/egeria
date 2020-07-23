@@ -13,7 +13,7 @@ public interface SubjectAreaProject {
 
     /**
      * @return {@link SubjectAreaNodeClient} for client calls(described in {@link SubjectAreaClient})
-     * when working with Project objects
+     * when working with Projects
      */
     SubjectAreaNodeClient<Project> project();
 }

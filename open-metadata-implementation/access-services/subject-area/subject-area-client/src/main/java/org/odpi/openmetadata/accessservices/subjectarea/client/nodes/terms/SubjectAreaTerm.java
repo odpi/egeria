@@ -13,7 +13,7 @@ public interface SubjectAreaTerm {
 
     /**
      * @return {@link SubjectAreaNodeClient} for client calls(described in {@link SubjectAreaClient})
-     * when working with Term objects
+     * when working with Terms
      */
     SubjectAreaNodeClient<Term> term();
 }

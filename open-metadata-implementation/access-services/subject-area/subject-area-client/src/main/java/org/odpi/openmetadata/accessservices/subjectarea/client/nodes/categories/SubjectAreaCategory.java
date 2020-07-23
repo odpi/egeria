@@ -14,13 +14,13 @@ public interface SubjectAreaCategory {
 
     /**
      * @return {@link SubjectAreaNodeClient} for client calls(described in {@link SubjectAreaClient})
-     * when working with Category objects
+     * when working with Categories
      */
     SubjectAreaNodeClient<Category> category();
 
     /**
      * @return {@link SubjectAreaNodeClient} for client calls(described in {@link SubjectAreaClient})
-     * when working with SubjectAreaDefinition objects
+     * when working with SubjectAreaDefinitions
      */
     SubjectAreaNodeClient<SubjectAreaDefinition> subjectAreaDefinition();
 }
