@@ -169,7 +169,9 @@ public class OpenLineageService {
                 .filter(n -> n.getId().equals(guid))
                 .collect(Collectors.toList());
 
-        setNodesLevel( startList, new ArrayList<>( nodes ), new ArrayList<>( edges ) );
+        if(startList.size() > 0) {
+            setNodesLevel(startList, new ArrayList<>(nodes), new ArrayList<>(edges));
+        }
 
         graphData.put(EDGES_LABEL, edges);
         graphData.put(NODES_LABEL, nodes);
@@ -188,6 +190,7 @@ public class OpenLineageService {
      * @param listEdges the list of edges
      */
     private void setNodesLevel(List<Node> startNodes, List<Node> listNodes, List<Edge> listEdges) {
+
         ArrayList<Node> newStartNodes = new ArrayList<>();
 
         ListIterator<Edge> edgeListIterator = listEdges.listIterator();
