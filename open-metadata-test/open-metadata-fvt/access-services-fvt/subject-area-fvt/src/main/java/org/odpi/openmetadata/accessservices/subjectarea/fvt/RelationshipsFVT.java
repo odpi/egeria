@@ -1442,13 +1442,11 @@ public class RelationshipsFVT {
         Category gotChild = subjectAreaCategory.getByGUID(userId, child.getSystemAttributes().getGUID());
         checkParent(parent, gotChild);
         subjectAreaRelationship.categoryHierarchyLink().delete(this.userId, guid);
-        //FVTUtils.validateLine(gotTermCategorizationRelationship);
         System.out.println("Soft deleted CategoryHierarchyLink with userId=" + guid);
         gotCategoryHierarchyLink = subjectAreaRelationship.categoryHierarchyLink().restore(this.userId, guid);
         FVTUtils.validateLine(gotCategoryHierarchyLink);
         System.out.println("Restored CategoryHierarchyLink with userId=" + guid);
         subjectAreaRelationship.categoryHierarchyLink().delete(this.userId, guid);
-        //FVTUtils.validateLine(gotTermCategorizationRelationship);
         System.out.println("Soft deleted CategoryHierarchyLink with userId=" + guid);
         subjectAreaRelationship.categoryHierarchyLink().purge(this.userId, guid);
         System.out.println("Hard deleted CategoryHierarchyLink with userId=" + guid);
