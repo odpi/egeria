@@ -2,15 +2,14 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.viewservices.glossaryauthor.handlers;
 
-import org.odpi.openmetadata.accessservices.subjectarea.SubjectAreaProject;
-import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.*;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder;
+import org.odpi.openmetadata.accessservices.subjectarea.client.entities.projects.SubjectAreaProject;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.project.Project;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -18,12 +17,11 @@ import java.util.List;
  * The handler exposes methods for project functionality for the glossary author view
  */
 public class ProjectHandler {
-    private static final Logger log = LoggerFactory.getLogger(ProjectHandler.class);
-
     private SubjectAreaProject subjectAreaProject;
 
     /**
      * Constructor for the ProjectHandler
+     *
      * @param subjectAreaProject The SubjectAreaDefinition Open Metadata Access Service (OMAS) API for projects. This is the same as the
      *                           The SubjectAreaDefinition Open Metadata View Service (OMVS) API for projects.
      */
@@ -47,16 +45,13 @@ public class ProjectHandler {
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
-     * @throws ClassificationException              Error processing a classification
-     * @throws FunctionNotSupportedException        Function not supported
-     *                                              <p>
-     *                                              Client library Exceptions
-     * @throws MetadataServerUncontactableException Unable to contact the server
-     * @throws UnexpectedResponseException          an unexpected response was returned from the server
+     * @throws PropertyServerException              property server exception
      */
-    public Project createProject(String userId, Project suppliedProject) throws MetadataServerUncontactableException, UnrecognizedGUIDException, ClassificationException, FunctionNotSupportedException, UnexpectedResponseException, InvalidParameterException, UserNotAuthorizedException {
-        return subjectAreaProject.createProject(userId, suppliedProject);
+    public Project createProject(String userId, Project suppliedProject) throws InvalidParameterException,
+                                                                                PropertyServerException,
+                                                                                UserNotAuthorizedException
+    {
+        return subjectAreaProject.project().create(userId, suppliedProject);
     }
 
     /**
@@ -69,15 +64,10 @@ public class ProjectHandler {
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
-     * @throws FunctionNotSupportedException        Function not supported
-     *                                              <p>
-     *                                              Client library Exceptions
-     * @throws MetadataServerUncontactableException Unable to contact the server
-     * @throws UnexpectedResponseException          an unexpected response was returned from the server
+     * @throws PropertyServerException              property server exception
      */
-    public Project getProjectByGuid(String userId, String guid) throws MetadataServerUncontactableException, UnrecognizedGUIDException, FunctionNotSupportedException, UnexpectedResponseException, InvalidParameterException, UserNotAuthorizedException {
-        return subjectAreaProject.getProjectByGuid(userId, guid);
+    public Project getProjectByGuid(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+        return subjectAreaProject.project().getByGUID(userId, guid);
     }
 
     /**
@@ -85,54 +75,32 @@ public class ProjectHandler {
      *
      * @param userId             unique identifier for requesting user, under which the request is performed
      * @param guid               guid of the Project to get
-     * @param guid               guid of the Project to get
-     * @param asOfTime           the relationships returned as they were at this time. null indicates at the current time.
-     * @param offset             the starting element number for this set of results.  This is used when retrieving elements
-     *                           beyond the first page of results. Zero means the results start from the first element.
-     * @param pageSize           the maximum number of elements that can be returned on this request.
-     *                           0 means there is not limit to the page size
-     * @param sequencingOrder    the sequencing order for the results.
-     * @param sequencingProperty the name of the property that should be used to sequence the results.
+     * @param findRequest        {@link FindRequest}
      * @return the relationships associated with the requested Project guid
      * <p>
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws FunctionNotSupportedException        Function not supported
-     *                                              <p>
-     *                                              Client library Exceptions
-     * @throws MetadataServerUncontactableException Unable to contact the server
-     * @throws UnexpectedResponseException          an unexpected response was returned from the server
+     * @throws PropertyServerException              property server exception
      */
-    public List<Line> getProjectRelationships(String userId, String guid, Date asOfTime, int offset, int pageSize, SequencingOrder sequencingOrder, String sequencingProperty) throws FunctionNotSupportedException, UnexpectedResponseException, MetadataServerUncontactableException, InvalidParameterException, UserNotAuthorizedException {
-        return subjectAreaProject.getProjectRelationships(userId, guid, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
+    public List<Line> getProjectRelationships(String userId, String guid, FindRequest findRequest) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+        return subjectAreaProject.project().getRelationships(userId, guid, findRequest);
     }
 
     /**
      * Find Project
      *
      * @param userId             unique identifier for requesting user, under which the request is performed
-     * @param searchCriteria     String expression matching Project properties. If not specified then all projects are returned.
-     * @param asOfTime           Projects returned as they were at this time. null indicates at the current time.
-     * @param offset             the starting element number for this set of results.  This is used when retrieving elements
-     *                           beyond the first page of results. Zero means the results start from the first element.
-     * @param pageSize           the maximum number of elements that can be returned on this request.
-     *                           0 means there is no limit to the page size
-     * @param sequencingOrder    the sequencing order for the results.
-     * @param sequencingProperty the name of the property that should be used to sequence the results.
+     * @param findRequest        {@link FindRequest}
      * @return A list of Projects meeting the search Criteria
      * <p>
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws FunctionNotSupportedException        Function not supported
-     *                                              <p>
-     *                                              Client library Exceptions
-     * @throws MetadataServerUncontactableException Unable to contact the server
-     * @throws UnexpectedResponseException          an unexpected response was returned from the server
+     * @throws PropertyServerException              property server exception
      */
-    public List<Project> findProject(String userId, String searchCriteria, Date asOfTime, int offset, int pageSize, SequencingOrder sequencingOrder, String sequencingProperty) throws MetadataServerUncontactableException, FunctionNotSupportedException, UnexpectedResponseException, InvalidParameterException, UserNotAuthorizedException {
-        return subjectAreaProject.findProject(userId, searchCriteria, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
+    public List<Project> findProject(String userId, FindRequest findRequest) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+        return subjectAreaProject.project().find(userId, findRequest);
     }
 
     /**
@@ -146,14 +114,10 @@ public class ProjectHandler {
      * @return replaced Project
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws FunctionNotSupportedException        Function not supported
-     *                                              <p>
-     *                                              Client library Exceptions
-     * @throws MetadataServerUncontactableException Unable to contact the server
-     * @throws UnexpectedResponseException          an unexpected response was returned from the server
+     * @throws PropertyServerException              property server exception
      */
-    public Project replaceProject(String userId, String guid, Project suppliedProject) throws UnexpectedResponseException, FunctionNotSupportedException, MetadataServerUncontactableException, InvalidParameterException, UserNotAuthorizedException {
-        return subjectAreaProject.replaceProject(userId, guid, suppliedProject);
+    public Project replaceProject(String userId, String guid, Project suppliedProject) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+        return subjectAreaProject.project().replace(userId, guid, suppliedProject);
     }
 
     /**
@@ -168,14 +132,10 @@ public class ProjectHandler {
      * when not successful the following Exceptions can occur
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws FunctionNotSupportedException        Function not supported
-     *                                              <p>
-     *                                              Client library Exceptions
-     * @throws MetadataServerUncontactableException Unable to contact the server
-     * @throws UnexpectedResponseException          an unexpected response was returned from the server
+     * @throws PropertyServerException              property server exception
      */
-    public Project updateProject(String userId, String guid, Project suppliedProject) throws UnexpectedResponseException, FunctionNotSupportedException, MetadataServerUncontactableException, InvalidParameterException, UserNotAuthorizedException {
-        return subjectAreaProject.updateProject(userId, guid, suppliedProject);
+    public Project updateProject(String userId, String guid, Project suppliedProject) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+        return subjectAreaProject.project().update(userId, guid, suppliedProject);
     }
 
     /**
@@ -188,19 +148,12 @@ public class ProjectHandler {
      *
      * @param userId userId under which the request is performed
      * @param guid   guid of the Project to be deleted.
-     * @return the deleted Project
-     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws EntityNotDeletedException            a delete was issued but the Project was not deleted.
-     *                                              <p>
-     *                                              Client library Exceptions
-     * @throws MetadataServerUncontactableException Unable to contact the server
-     * @throws UnexpectedResponseException          an unexpected response was returned from the server
+     * @throws PropertyServerException              property server exception
      */
-    public Project deleteProject(String userId, String guid) throws MetadataServerUncontactableException, UnrecognizedGUIDException, FunctionNotSupportedException, UnexpectedResponseException, EntityNotDeletedException, InvalidParameterException, UserNotAuthorizedException {
-        return subjectAreaProject.deleteProject(userId, guid);
+    public void deleteProject(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+        subjectAreaProject.project().delete(userId, guid);
     }
 
     /**
@@ -212,18 +165,12 @@ public class ProjectHandler {
      *
      * @param userId userId under which the request is performed
      * @param guid   guid of the Project to be deleted.
-     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws GUIDNotPurgedException               a hard delete was issued but the Project was not purged
-     * @throws FunctionNotSupportedException        Function not supported
-     *                                              <p>
-     *                                              Client library Exceptions
-     * @throws MetadataServerUncontactableException Unable to contact the server
-     * @throws UnexpectedResponseException          an unexpected response was returned from the server
+     * @throws PropertyServerException              Property Server Exception
      */
-    public void purgeProject(String userId, String guid) throws MetadataServerUncontactableException, UnrecognizedGUIDException, GUIDNotPurgedException, UnexpectedResponseException, FunctionNotSupportedException, InvalidParameterException, UserNotAuthorizedException {
-        subjectAreaProject.purgeProject(userId, guid);
+    public void purgeProject(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+        subjectAreaProject.project().purge(userId, guid);
     }
 
     /**
@@ -234,16 +181,11 @@ public class ProjectHandler {
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the Project to restore
      * @return the restored Project
-     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.
-     *                                              Client library Exceptions
-     * @throws MetadataServerUncontactableException Unable to contact the server
-     * @throws UnexpectedResponseException          an unexpected response was returned from the server
+     * @throws PropertyServerException              property server exception
      */
-    public Project restoreProject(String userId, String guid) throws MetadataServerUncontactableException, UnrecognizedGUIDException, FunctionNotSupportedException, UnexpectedResponseException, InvalidParameterException, UserNotAuthorizedException {
-        return subjectAreaProject.restoreProject(userId, guid);
+    public Project restoreProject(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+        return subjectAreaProject.project().restore(userId, guid);
     }
-
 }

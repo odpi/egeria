@@ -7,7 +7,6 @@ import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuil
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchiveType;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSLogicErrorException;
@@ -141,6 +140,8 @@ public class OpenMetadataTypesArchive
          */
         update0010BaseModel();
         add0057IntegrationCapabilities();
+        update0220FilesAndFolders();
+        update0221DocumentStores();
         update0224Databases();
         update0512DerivedSchemaAttributes();
         update0130Projects();
@@ -229,7 +230,7 @@ public class OpenMetadataTypesArchive
     {
         this.archiveBuilder.addEntityDef(addMetadataIntegrationCapabilityEntity());
 
-        this.archiveBuilder.addClassificationDef(addDataPlatformIntegrationClassification());
+        this.archiveBuilder.addClassificationDef(addDataManagerIntegrationClassification());
         this.archiveBuilder.addClassificationDef(addDataEngineIntegrationClassification());
     }
 
@@ -252,12 +253,12 @@ public class OpenMetadataTypesArchive
     }
 
 
-    private ClassificationDef addDataPlatformIntegrationClassification()
+    private ClassificationDef addDataManagerIntegrationClassification()
     {
         final String guid = "2356af59-dda5-45ad-927f-540bed6b281d";
 
-        final String name            = "DataPlatformIntegration";
-        final String description     = "Integrating metadata about data platforms.";
+        final String name            = "DataManagerIntegration";
+        final String description     = "Integrating metadata about data managers such as database servers, content managers and file systems.";
         final String descriptionGUID = null;
 
         final String linkedToEntity = "MetadataIntegrationCapability";
@@ -270,6 +271,31 @@ public class OpenMetadataTypesArchive
                                                   this.archiveBuilder.getEntityDef(linkedToEntity),
                                                   false);
     }
+
+
+    private ClassificationDef addDataEngineIntegrationClassification()
+    {
+        final String guid = "b675a6d1-7dd7-4b20-b91b-43b358dfe0cf";
+
+        final String name            = "DataEngineIntegration";
+        final String description     = "Integrating metadata from data engines.";
+        final String descriptionGUID = null;
+
+        final String linkedToEntity = "MetadataIntegrationCapability";
+
+        return archiveHelper.getClassificationDef(guid,
+                                                  name,
+                                                  null,
+                                                  description,
+                                                  descriptionGUID,
+                                                  this.archiveBuilder.getEntityDef(linkedToEntity),
+                                                  false);
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
 
     /**
      * 0130 - update ProjectScope description
@@ -309,8 +335,8 @@ public class OpenMetadataTypesArchive
         final String attribute1DescriptionGUID = null;
 
         property = archiveHelper.getDateTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
+                                                         attribute1Description,
+                                                         attribute1DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
 
         properties.add(property);
@@ -320,8 +346,8 @@ public class OpenMetadataTypesArchive
         final String attribute2DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                                                         attribute2Description,
-                                                         attribute2DescriptionGUID);
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
 
         properties.add(property);
 
@@ -330,15 +356,26 @@ public class OpenMetadataTypesArchive
         return typeDefPatch;
     }
 
-    private ClassificationDef addDataEngineIntegrationClassification()
-    {
-        final String guid = "b675a6d1-7dd7-4b20-b91b-43b358dfe0cf";
 
-        final String name            = "DataEngineIntegration";
-        final String description     = "Integrating metadata from data engines.";
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+
+    private void update0220FilesAndFolders()
+    {
+        this.archiveBuilder.addClassificationDef(getFileManagerClassification());
+    }
+
+
+    private ClassificationDef getFileManagerClassification()
+    {
+        final String guid            = "eadec807-02f0-4d6f-911c-261eddd0c2f5";
+        final String name            = "FileManager";
+        final String description     = "Identifies a software server capability as a manager of a collection of files and folders.";
         final String descriptionGUID = null;
 
-        final String linkedToEntity = "MetadataIntegrationCapability";
+        final String linkedToEntity = "SoftwareServerCapability";
 
         return archiveHelper.getClassificationDef(guid,
                                                   name,
@@ -355,19 +392,63 @@ public class OpenMetadataTypesArchive
      */
 
 
-    /**
-     * 0224 - Add the databasePlatform to cover the software server capability for the database server.
-     */
-    private void update0224Databases()
+    private void update0221DocumentStores()
     {
-        this.archiveBuilder.addEntityDef(addDatabasePlatformEntity());
+        this.archiveBuilder.addTypeDefPatch(deprecateConnectManagerClassification());
+        this.archiveBuilder.addClassificationDef(getContentCollectionManagerClassification());
     }
 
 
-    private EntityDef addDatabasePlatformEntity()
+    private TypeDefPatch deprecateConnectManagerClassification()
+    {
+        final String typeName = "ContentManager";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
+
+        return typeDefPatch;
+    }
+
+
+    private ClassificationDef getContentCollectionManagerClassification()
+    {
+        final String guid            = "dbde6a5b-fc89-4b04-969a-9dc09a60ebd7";
+        final String name            = "ContentCollectionManager";
+        final String description     = "Identifies a software server capability as a manager of controlled documents and related media.";
+        final String descriptionGUID = null;
+
+        final String linkedToEntity = "SoftwareServerCapability";
+
+        return archiveHelper.getClassificationDef(guid,
+                                                  name,
+                                                  null,
+                                                  description,
+                                                  descriptionGUID,
+                                                  this.archiveBuilder.getEntityDef(linkedToEntity),
+                                                  false);
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    /**
+     * 0224 - Add the databaseManager to cover the software server capability for the database server.
+     */
+    private void update0224Databases()
+    {
+        this.archiveBuilder.addEntityDef(addDatabaseManagerEntity());
+    }
+
+
+    private EntityDef addDatabaseManagerEntity()
     {
         final String guid            = "68b35c1e-6c28-4ac3-94f9-2c3dbcbb79e9";
-        final String name            = "DatabasePlatform";
+        final String name            = "DatabaseManager";
         final String description     = "Defines a capability that manages data organized as relational schemas.";
         final String descriptionGUID = null;
 
@@ -429,9 +510,6 @@ public class OpenMetadataTypesArchive
         return typeDefPatch;
 
     }
-
-
-
 
 
     /*

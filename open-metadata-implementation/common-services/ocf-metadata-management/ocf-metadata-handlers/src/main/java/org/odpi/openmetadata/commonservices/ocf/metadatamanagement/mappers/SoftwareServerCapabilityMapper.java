@@ -98,16 +98,16 @@ public class SoftwareServerCapabilityMapper
     public static final String METADATA_INTEGRATION_CAPABILITY_TYPE_NAME = "MetadataIntegrationCapability";
     /* SoftwareServerCapability */
 
-    public static final String DATA_PLATFORM_INTEGRATION_CLASSIFICATION_GUID   = "2356af59-dda5-45ad-927f-540bed6b281d";
-    public static final String DATA_PLATFORM_INTEGRATION_CLASSIFICATION_NAME   = "DataPlatformIntegration";
+    public static final String DATA_MANAGER_INTEGRATION_CLASSIFICATION_GUID   = "2356af59-dda5-45ad-927f-540bed6b281d";
+    public static final String DATA_MANAGER_INTEGRATION_CLASSIFICATION_NAME   = "DataManagerIntegration";
     /* MetadataIntegrationCapability */
 
     public static final String DATA_ENGINE_INTEGRATION_CLASSIFICATION_GUID   = "2356af59-dda5-45ad-927f-540bed6b281d";
     public static final String DATA_ENGINE_INTEGRATION_CLASSIFICATION_NAME   = "DataEngineIntegration";
     /* MetadataIntegrationCapability */
 
-    public static final String DATABASE_PLATFORM_TYPE_GUID           = "68b35c1e-6c28-4ac3-94f9-2c3dbcbb79e9";
-    public static final String DATABASE_PLATFORM_TYPE_NAME           = "DatabasePlatform";
+    public static final String DATABASE_MANAGER_TYPE_GUID            = "68b35c1e-6c28-4ac3-94f9-2c3dbcbb79e9";
+    public static final String DATABASE_MANAGER_TYPE_NAME            = "DatabaseManager";
     /* SoftwareServerCapability */
 
 }

@@ -136,7 +136,7 @@ public abstract class OMAGServerConfigurationClient
      * this server's REST interfaces.  Typically this is the URL root of the OMAG Server Platform
      * Where the server is deployed to.  However it may be a DNS name - particularly if the server is
      * deployed to multiple platforms for high availability (HA).
-     * The default value is "http://localhost:8080".
+     * The default value is "https://localhost:9443".
      *
      * @param serverURLRoot  String url.
      * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.

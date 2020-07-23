@@ -512,12 +512,13 @@ public class RepositoryErrorHandler
                                                 InstanceProperties properties,
                                                 String             methodName) throws PropertyServerException
     {
+        String propertiesAsString = properties != null ? properties.toString() : "";
         throw new PropertyServerException(RepositoryHandlerErrorCode.NULL_ENTITY_RETURNED_FOR_CLASSIFICATION.getMessageDefinition(methodName,
                                                                                                                                   serverName,
                                                                                                                                   entityGUID,
                                                                                                                                   classificationTypeName,
                                                                                                                                   classificationTypeGUID,
-                                                                                                                                  properties.toString()),
+                                                                                                                                  propertiesAsString),
                                           this.getClass().getName(),
                                           methodName);
     }

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- Copyright Contributors to the ODPi Egeria project.  -->
+
+<!-- TODO: This is a first pass for the egeria presentation server node-based UI -->
+<!-- The node/webpack build will evolve and create a more appropriate bundle for distribution -->
+
+<assembly xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2"
+          xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
+    <formats>
+        <format>tar.gz</format>
+        <format>dir</format>
+    </formats>
+    <id>presentation-server</id>
+    <baseDirectory>egeria-presentation-server-${open-metadata.version}</baseDirectory>
+    <fileSets>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/user-interfaces/presentation-server/nodejs</directory>
+            <outputDirectory>.</outputDirectory>
+            <includes>
+                <include>package.json</include>
+                <include>dist/**</include>
+                <include>src/**</include>
+                <include>ssl/**</include>
+            </includes>
+            <excludes>
+              <exclude>package-lock.json</exclude>
+              <exclude>node_modules/**</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+      </fileSets>
+
+</assembly>

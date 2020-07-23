@@ -41,7 +41,7 @@ This has been verified by running the [Subject Area samples](../../../open-metad
 ## Example REST calls: 
 ### Create Glossary instance
 
-POST url: `localhost:8080/servers/{serverName}/open-metadata/access-services/subject-area/users/{user}/glossaries`
+POST url: `localhost:9443/servers/{serverName}/open-metadata/access-services/subject-area/users/{user}/glossaries`
 
 JSON body:
 
@@ -57,14 +57,14 @@ JSON body:
  Get Glossary instance (where {serverName} is the name of the server, {guid} is the guid in the Glossary create response and {user} is the userid )
 
 
-GET url: `localhost:8080/servers/{serverName}/open-metadata/access-services/subject-area/users/{user}/glossaries/{guid}`
+GET url: `localhost:9443/servers/{serverName}/open-metadata/access-services/subject-area/users/{user}/glossaries/{guid}`
 
 (where `{guid}` is the GUID in the Glossary create response)
 
 ### Delete Glossary instance
 
 Delete Glossary instance (where {guid} is the guid in the Glossary create response and {user} is the userid )
-DELETE url : localhost:8080/open-metadata/access-services/subject-area/users/{user}/glossaries/{guid}
+DELETE url : localhost:9443/open-metadata/access-services/subject-area/users/{user}/glossaries/{guid}
 
 ## The Subject Area OMAS philosophy
 

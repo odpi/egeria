@@ -17,7 +17,7 @@ $ AssetConsumerOMASFVTSuite serverURLRoot
 
 Where:
 
-* `serverURLRoot` is the hostname and port name for the OMAG Server.  For example: `http://localhost:8080`
+* `serverURLRoot` is the hostname and port name for the OMAG Server.  For example: `https://localhost:9443`
 
 
 

@@ -3,48 +3,47 @@
 package org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions;
 
 
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
+
 /**
  * The UnrecognizedGUIDException is thrown by the Subject Area OMAS when the unique identifier (guid)
  * used to request an object is either unrecognized, or is the identifier for a different type of object.
  */
-public class UnrecognizedGUIDException extends SubjectAreaCheckedExceptionBase {
-    private String guid=null;
+public class UnrecognizedGUIDException extends GuidOrientatedException {
+
     /**
-     * This is the typical constructor used for creating a UnrecognizedGUIDException.
+     * This is the typical constructor used for creating an UnrecognizedGUIDException
      *
-     * @param httpCode          http response code to use if this exception flows over a rest call
+     * @param messageDefinition content of the message
      * @param className         name of class reporting error
      * @param actionDescription description of function it was performing when error detected
-     * @param errorMessage      description of error
-     * @param systemAction      actions of the system as a result of the error
-     * @param userAction        instructions for correcting the error
      * @param guid              unrecognised guid
      */
-    public UnrecognizedGUIDException(int httpCode, String className, String actionDescription, String errorMessage, String systemAction, String userAction,String guid) {
-        super(httpCode, className, actionDescription, errorMessage, systemAction, userAction);
-        this.guid=guid;
+    public UnrecognizedGUIDException(ExceptionMessageDefinition messageDefinition,
+                                     String className,
+                                     String actionDescription,
+                                     String guid) {
+        super(messageDefinition, className, actionDescription, guid);
     }
 
 
     /**
-     * This is the constructor used for creating a UnrecognizedGUIDException that resulted from a previous error.
+     * This is the constructor used for creating an UnrecognizedGUIDException when an unexpected error has been caught.
+     * The properties allow additional information to be associated with the exception.
      *
-     * @param httpCode          http response code to use if this exception flows over a rest call
+     * @param messageDefinition content of the message
      * @param className         name of class reporting error
      * @param actionDescription description of function it was performing when error detected
-     * @param errorMessage      description of error
-     * @param systemAction      actions of the system as a result of the error
-     * @param userAction        instructions for correcting the error
-     * @param caughtError       the error that resulted in this exception.
+     * @param caughtError       previous error causing this exception
      * @param guid              unrecognised guid
      */
-    public UnrecognizedGUIDException(int httpCode, String className, String actionDescription, String errorMessage, String systemAction, String userAction,String guid, Throwable caughtError) {
-        super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError);
-        this.guid=guid;
-    }
-
-    public String getGuid() {
-        return guid;
+    public UnrecognizedGUIDException(ExceptionMessageDefinition messageDefinition,
+                                     String className,
+                                     String actionDescription,
+                                     Throwable caughtError,
+                                     String guid) {
+        super(messageDefinition, className, actionDescription, caughtError, guid);
     }
 
 }
+

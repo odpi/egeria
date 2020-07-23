@@ -73,10 +73,10 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_METADATA_ID;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_PREFIX_ELEMENT;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_PREFIX_INSTANCE_PROPERTY;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_PROCESS_PAINTED;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_PROCESS_LINEAGE_COMPLETED_FLAG;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_RELATIONSHIP_GUID;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_NAME_PORT_TYPE;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_NAME_PROCESS_PAINTED;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_NAME_PROCESS_LINEAGE_COMPLETED_FLAG;
 
 public class LineageGraphConnector extends LineageGraphConnectorBase {
 
@@ -137,16 +137,15 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
         try {
             List<Vertex> vertices = g.V()
                     .and(__.has(PROPERTY_KEY_LABEL, PROCESS),
-                            or(__.has(PROPERTY_KEY_PROCESS_PAINTED, Boolean.FALSE.toString()),__.hasNot(PROPERTY_KEY_PROCESS_PAINTED)))
+                            or(__.has(PROPERTY_KEY_PROCESS_LINEAGE_COMPLETED_FLAG, Boolean.FALSE.toString()),__.hasNot(PROPERTY_KEY_PROCESS_LINEAGE_COMPLETED_FLAG)))
                     .toList();
             List<String> guidList = vertices.stream()
                     .map(v ->  g.V(v.id()).elementMap(PROPERTY_KEY_ENTITY_GUID).toList().get(0).get(PROPERTY_KEY_ENTITY_GUID).toString())
                     .collect(Collectors.toList());
 
             guidList.forEach(
-                    guid -> {findInputColumns(g, guid);
-                    g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).property(PROPERTY_KEY_PROCESS_PAINTED, Boolean.TRUE.toString()).iterate();
-            });
+                    guid -> findInputColumns(g, guid)
+            );
             if (graphFactory.isSupportingTransactions()) {
                 g.tx().commit();
             }
@@ -273,6 +272,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
             g.V(subProcess.id()).addE(EDGE_LABEL_INCLUDED_IN).to(g.V(process.id())).next();
 
             addAssetToProcessEdges(columnIn, columnOut, process);
+            g.V(process.id()).property(PROPERTY_KEY_PROCESS_LINEAGE_COMPLETED_FLAG, Boolean.TRUE.toString()).iterate();
 
             if (graphFactory.isSupportingTransactions()) {
                 g.tx().commit();
@@ -437,9 +437,9 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
      */
     @Override
     public void updateEntity(LineageEntity lineageEntity) {
-        // on update, unpaint a process in order to make it eligible again for the scheduled job
+        // on update, clear lineage status flag for a process in order to make it eligible again for the scheduled job
         if(lineageEntity.getTypeDefName().equals(PROCESS)){
-            lineageEntity.getProperties().put(PROPERTY_NAME_PROCESS_PAINTED, Boolean.FALSE.toString());
+            lineageEntity.getProperties().put(PROPERTY_NAME_PROCESS_LINEAGE_COMPLETED_FLAG, Boolean.FALSE.toString());
         }
 
         Iterator<Vertex> vertex = g.V().has(PROPERTY_KEY_ENTITY_GUID, lineageEntity.getGuid());

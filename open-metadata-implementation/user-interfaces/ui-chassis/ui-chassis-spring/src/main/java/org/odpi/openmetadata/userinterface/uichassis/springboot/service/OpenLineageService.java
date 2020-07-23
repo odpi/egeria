@@ -18,12 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -49,86 +44,97 @@ public class OpenLineageService {
     /**
      * @param userId           id of the user triggering the request
      * @param guid             unique identifier if the asset
-     * @param includeProcesses
+     * @param includeProcesses if true includes processes in the response
      * @return map of nodes and edges describing the ultimate sources for the asset
      */
-    public Map<String, List> getUltimateSource(String userId, String guid, boolean includeProcesses) {
-        LineageVerticesAndEdges response = null;
+    public Map<String, List> getUltimateSource(String userId,
+                                               String guid,
+                                               boolean includeProcesses) {
         try {
-            response = openLineageClient.lineage(userId, Scope.ULTIMATE_SOURCE, guid, "", includeProcesses);
+            LineageVerticesAndEdges response = openLineageClient.lineage(userId, Scope.ULTIMATE_SOURCE, guid, "", includeProcesses);
+            return processResponse(response);
         } catch (InvalidParameterException | PropertyServerException | OpenLineageException e) {
-            LOG.error(e.getErrorMessage(), e);
+            LOG.error("Cannot get ultimate source lineage for guid {}", guid);
+            throw new RuntimeException("ultimate source lineage error", e);
         }
-        return processResponse(response);
     }
+
 
     /**
      * @param userId           id of the user triggering the request
      * @param guid             unique identifier if the asset
-     * @param includeProcesses
+     * @param includeProcesses if true includes processes in the response
      * @return map of nodes and edges describing the end to end flow
      */
-    public Map<String, List> getEndToEndLineage(String userId, String guid, boolean includeProcesses) {
-        LineageVerticesAndEdges response = null;
+    public Map<String, List> getEndToEndLineage(String userId,
+                                                String guid,
+                                                boolean includeProcesses) {
         try {
-            response = openLineageClient.lineage(userId, Scope.END_TO_END, guid, "", includeProcesses);
+            LineageVerticesAndEdges response =  openLineageClient.lineage(userId, Scope.END_TO_END, guid, "", includeProcesses);
+            return processResponse(response);
         } catch (InvalidParameterException | PropertyServerException | OpenLineageException e) {
-            LOG.error(e.getErrorMessage(), e);
+            LOG.error("Cannot get end to end lineage for guid {}", guid);
+            throw new RuntimeException("end2end lineage error", e);
         }
-        return processResponse(response);
     }
 
     /**
      * @param userId           id of the user triggering the request
      * @param guid             unique identifier if the asset
-     * @param includeProcesses
+     * @param includeProcesses if true includes processes in the response
      * @return map of nodes and edges describing the ultimate destinations of the asset
      */
-    public Map<String, List> getUltimateDestination(String userId, String guid, boolean includeProcesses) {
-        LineageVerticesAndEdges response = null;
+    public Map<String, List> getUltimateDestination(String userId,
+                                                    String guid,
+                                                    boolean includeProcesses) {
         try {
-            response = openLineageClient.lineage(userId, Scope.ULTIMATE_DESTINATION, guid, "",
+            LineageVerticesAndEdges response = openLineageClient.lineage(userId, Scope.ULTIMATE_DESTINATION, guid, "",
                     includeProcesses);
+            return processResponse(response);
         } catch (InvalidParameterException | PropertyServerException | OpenLineageException e) {
-            LOG.error(e.getErrorMessage(), e);
+            LOG.error("Cannot get ultimate destination lineage for guid {}", guid);
+            throw new RuntimeException("ultimate destination lineage error", e);
         }
 
-        return processResponse(response);
     }
 
     /**
      * @param userId           id of the user triggering the request
      * @param guid             unique identifier if the asset
-     * @param includeProcesses
+     * @param includeProcesses if true includes processes in the response
      * @return map of nodes and edges describing the glossary terms linked to the asset
      */
-    public Map<String, List> getGlossaryLineage(String userId, String guid, boolean includeProcesses) {
-        LineageVerticesAndEdges response = null;
+    public Map<String, List> getGlossaryLineage(String userId,
+                                                String guid,
+                                                boolean includeProcesses) {
         try {
-            response = openLineageClient.lineage(userId, Scope.GLOSSARY, guid, "", includeProcesses);
+            LineageVerticesAndEdges response =  openLineageClient.lineage(userId, Scope.GLOSSARY, guid, "", includeProcesses);
+            return processResponse(response);
         } catch (InvalidParameterException | PropertyServerException | OpenLineageException e) {
-            LOG.error(e.getErrorMessage(), e);
+            LOG.error("Cannot get glossary lineage for guid {}", guid);
+            throw new RuntimeException("glossary lineage error", e);
         }
 
-        return processResponse(response);
     }
 
     /**
      * @param userId           id of the user triggering the request
      * @param guid             unique identifier if the asset
-     * @param includeProcesses
+     * @param includeProcesses if true includes processes in the response
      * @return map of nodes and edges describing the ultimate sources and destinations of the asset
      */
-    public Map<String, List> getSourceAndDestination(String userId, String guid, boolean includeProcesses) {
-        LineageVerticesAndEdges response = null;
+    public Map<String, List> getSourceAndDestination(String userId,
+                                                     String guid,
+                                                     boolean includeProcesses) {
         try {
-            response = openLineageClient.lineage(userId, Scope.SOURCE_AND_DESTINATION, guid, "",
+            LineageVerticesAndEdges response = openLineageClient.lineage(userId, Scope.SOURCE_AND_DESTINATION, guid, "",
                     includeProcesses);
+            return processResponse(response);
         } catch (InvalidParameterException | PropertyServerException | OpenLineageException e) {
-            LOG.error(e.getErrorMessage(), e);
+            LOG.error("Cannot get source and destination lineage for guid {}", guid);
+            throw new RuntimeException("source and destination lineage error ", e);
         }
 
-        return processResponse(response);
     }
 
     /**
@@ -146,26 +152,55 @@ public class OpenLineageService {
             graphData.put(NODES_LABEL, listNodes);
         }
 
-        listNodes = Optional.ofNullable(response.getLineageVertices())
+        listEdges = Optional.ofNullable(response).map(LineageVerticesAndEdges::getLineageEdges)
                 .map(Collection::stream)
                 .orElseGet(Stream::empty)
-                .map(v -> createNode(v))
+                .map(e -> new Edge(e.getSourceNodeID(),
+                        e.getDestinationNodeID()))
                 .collect(Collectors.toList());
 
-        listEdges = Optional.ofNullable(response.getLineageEdges())
-                .map(e -> e.stream())
+        listNodes = Optional.ofNullable(response).map(LineageVerticesAndEdges::getLineageVertices)
+                .map(Collection::stream)
                 .orElseGet(Stream::empty)
-                .map(e -> {
-                    Edge newEdge = new Edge(e.getSourceNodeID(),
-                            e.getDestinationNodeID());
-                    return newEdge;
-                })
+                .map(this::createNode)
                 .collect(Collectors.toList());
+
+        setNodesOrder(listNodes,listEdges);
+        listNodes.sort(Comparator.comparing(Node::getOrder));
 
         graphData.put(EDGES_LABEL, listEdges);
         graphData.put(NODES_LABEL, listNodes);
 
         return graphData;
+    }
+
+    /**
+     *  Sets the order field of nodes to -1 for ultimate sources , 1 for final destination otherwise value is 0
+     * @param listNodes the list of nodes to set order for
+     * @param listEdges the list of edges for setting nodes order accordingly
+     */
+    private void setNodesOrder(List<Node> listNodes, List<Edge> listEdges) {
+        for( Edge e : listEdges ){
+            boolean b1 = false, b2 = false;
+            for ( Node n : listNodes ){
+                if ( n.getId().equals( e.getFrom() ) ){
+                   b1 = true;
+                   if ( n.getOrder() == 1 ){
+                       n.setOrder(0);
+                   } else {
+                       n.setOrder(-1);
+                   }
+                }else if ( n.getId().equals( e.getTo() )){
+                    b2 = true;
+                    if (n.getOrder() == -1){
+                        n.setOrder(0);
+                    } else{
+                        n.setOrder(1);
+                    }
+                }
+                if(b1 && b2 ) break;
+            }
+        }
     }
 
     /**
@@ -181,5 +216,4 @@ public class OpenLineageService {
         node.setProperties(currentNode.getProperties());
         return node;
     }
-
 }

@@ -165,7 +165,7 @@ public class OMAGServerAdminForAccessServices
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
-            EventBusConfig            eventBusConfig          = errorHandler.validateEventBusIsSet(serverName, serverConfig, methodName);
+            EventBusConfig            eventBusConfig          = serverConfig.getEventBusConfig();
             List<AccessServiceConfig> accessServiceConfigList = serverConfig.getAccessServicesConfig();
             EnterpriseAccessConfig    enterpriseAccessConfig  = this.getEnterpriseAccessConfig(serverConfig);
 
@@ -342,18 +342,22 @@ public class OMAGServerAdminForAccessServices
         AccessServiceConfig accessServiceConfig = new AccessServiceConfig(registration);
 
         accessServiceConfig.setAccessServiceOptions(accessServiceOptions);
-        accessServiceConfig.setAccessServiceInTopic(
-                connectorConfigurationFactory.getDefaultEventBusConnection(eventBusConfig.getConnectorProvider(),
-                                                                           eventBusConfig.getTopicURLRoot() + ".server." + serverName,
-                                                                           registration.getAccessServiceInTopic(),
-                                                                           localServerId,
-                                                                           eventBusConfig.getConfigurationProperties()));
-        accessServiceConfig.setAccessServiceOutTopic(
-                connectorConfigurationFactory.getDefaultEventBusConnection(eventBusConfig.getConnectorProvider(),
-                                                                           eventBusConfig.getTopicURLRoot() + ".server." + serverName,
-                                                                           registration.getAccessServiceOutTopic(),
-                                                                           localServerId,
-                                                                           eventBusConfig.getConfigurationProperties()));
+
+        if (eventBusConfig != null)
+        {
+            accessServiceConfig.setAccessServiceInTopic(
+                    connectorConfigurationFactory.getDefaultEventBusConnection(eventBusConfig.getConnectorProvider(),
+                                                                               eventBusConfig.getTopicURLRoot() + ".server." + serverName,
+                                                                               registration.getAccessServiceInTopic(),
+                                                                               localServerId,
+                                                                               eventBusConfig.getConfigurationProperties()));
+            accessServiceConfig.setAccessServiceOutTopic(
+                    connectorConfigurationFactory.getDefaultEventBusConnection(eventBusConfig.getConnectorProvider(),
+                                                                               eventBusConfig.getTopicURLRoot() + ".server." + serverName,
+                                                                               registration.getAccessServiceOutTopic(),
+                                                                               localServerId,
+                                                                               eventBusConfig.getConfigurationProperties()));
+        }
 
         return accessServiceConfig;
     }

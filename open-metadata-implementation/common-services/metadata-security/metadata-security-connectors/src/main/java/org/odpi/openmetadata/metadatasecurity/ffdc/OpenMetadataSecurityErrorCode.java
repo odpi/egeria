@@ -43,11 +43,12 @@ public enum OpenMetadataSecurityErrorCode implements ExceptionMessageSet
                                    "Review the error message to determine the cause of the problem."),
 
     UNAUTHORIZED_PLATFORM_ACCESS(403, "OMAG-PLATFORM-SECURITY-403-001 ",
-                                 "User {0} is not authorized to issue request {1}",
+                                 "User {0} is not authorized to issue request to {1}",
                                  "The system is unable to process a request from the user because they do not have access to the requested platform" +
                                          " services.  The request fails with a UserNotAuthorizedException exception.",
                                  "Determine if this is a configuration error, a mistake or the platform is under attack.  Correct any " +
-                                         "configuration error and re-run the request."),
+                                         "configuration error and re-run the request, if it is a valid request; otherwise contact your security " +
+                                         "team."),
 
     UNAUTHORIZED_SERVER_ACCESS(403, "OMAG-PLATFORM-SECURITY-403-002 ",
                                 "User {0} is not authorized to issue a request to server {1}",

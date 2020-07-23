@@ -8,12 +8,11 @@ web server and uses [Spring Boot](https://spring.io/) to support REST APIs.
 
 By default
 * It registers the REST APIs
-at **http://localhost:8080**. This address is called the server platform's **root URL** and
+at **https://localhost:9443**. This address is called the server platform's **root URL** and
 is configured in a number of places in the [OMAG Server](configuring-an-omag-server.md) configuration.
 
 * The platform also supports no specific security
-  authorization and stores its configuration in files in clear
-  text JSON format.
+  authorization.
 
 These defaults are suitable for a development environment. However for
 production, the platform should be configured with more robust options.
