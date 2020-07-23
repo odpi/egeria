@@ -56,4 +56,15 @@ public class Node {
     public void setLevel(Integer level) {
         this.level = level;
     }
+
+    @Override
+    public String toString() {
+        return "Node{" +
+                "id='" + id + '\'' +
+                ", label='" + label + '\'' +
+                ", group='" + group + '\'' +
+                ", properties=" + properties +
+                ", level=" + level +
+                '}';
+    }
 }
