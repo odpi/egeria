@@ -78,6 +78,13 @@ Follow [this link](https://github.com/odpi/data-governance/tree/master/webinars)
 for details of the webinar schedule, and links to download
 the presentations from past webinars.
 
+## Acknowledgements
+
+![YourKit](https://www.yourkit.com/images/yklogo.png)
+
+We are grateful to [YourKit, LLC](https://www.yourkit.com) for supporting open source projects with its full-feature
+Java Profiler.
+
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 Copyright Contributors to the ODPi Egeria project.
