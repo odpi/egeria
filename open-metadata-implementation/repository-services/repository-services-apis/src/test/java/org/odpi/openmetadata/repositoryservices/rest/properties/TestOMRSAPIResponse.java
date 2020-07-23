@@ -12,7 +12,7 @@ import static org.testng.Assert.assertTrue;
  */
 public class TestOMRSAPIResponse
 {
-    @Test public void TestToString()
+    @Test(enabled=false) public void TestToString()
     {
         assertTrue(new MockAPIResponse().toString().contains("OMRSRESTAPIResponse"));
 

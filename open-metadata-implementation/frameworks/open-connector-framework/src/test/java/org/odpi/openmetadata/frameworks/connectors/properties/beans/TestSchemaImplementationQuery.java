@@ -103,7 +103,7 @@ public class TestSchemaImplementationQuery
      * Validate that an object generated from a JSON String has the same content as the object used to
      * create the JSON String.
      */
-    @Test public void testJSON()
+    @Test(enabled = false) public void testJSON()
     {
         ObjectMapper objectMapper = new ObjectMapper();
         String       jsonString   = null;
