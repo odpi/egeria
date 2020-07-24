@@ -14,6 +14,7 @@ const path = require("path");
 require("dotenv").config();
 // Create the Express app
 const app = express();
+const validateAdminURL = require("./validations/validateAdminURL");
 
 const PORT = process.env.PORT || 8091;
 
@@ -103,7 +104,7 @@ app.use(function (req, res, next) {
     const segment1 = segmentArray.slice(1, 2).join("/");
     console.log("segment1 " + segment1);
 
-    if (segment1 != "servers") {
+    if (segment1 != "servers" && segment1 != "open-metadata") {
       // in a production scenario we are looking at login, favicon.ico and bundle.js for for now look for those in the last segment
       // TODO once we have development webpack, maybe the client should send a /js/ or a /static/ segment after the servername so we know to keep the subsequent segments.
 
@@ -438,6 +439,85 @@ app.get("/servers/*", (req, res) => {
   }
 });
 
+
+// Handle admin services
+app.get("/open-metadata/admin-services/*", (req, res) => {
+  const incomingUrl = req.path;
+  console.log("/open-metadata/admin-services/* get called " + incomingUrl);
+  if (!(validateAdminURL(incomingUrl))) {
+    res.status(400).send("Error, invalid supplied URL: " + incomingUrl);
+    return;
+  }
+  const {
+    platformURL
+  } = req.query;
+  const apiReq = {
+    method: 'get',
+    url: decodeURIComponent(platformURL) + incomingUrl,
+    httpsAgent: new https.Agent({
+      // ca: - at some stage add the certificate authority
+      cert: cert,
+      key: key,
+      rejectUnauthorized: false,
+    }),
+  }
+  axios(apiReq)
+    .then(function (response) {
+      console.log({response})
+      const resBody = response.data;
+      console.log({resBody});
+      if (resBody.relatedHTTPCode == 200) {
+        res.json(resBody);
+      } else {
+        throw new Error(resBody.exceptionErrorMessage)
+      }
+    })
+    .catch(function (error) {
+      console.error({error});
+      res.status(400).send(error);
+    })
+});
+
+app.post("/open-metadata/admin-services/*", (req, res) => {
+  const incomingUrl = req.url;
+  console.log("/open-metadata/admin-services/* post called " + incomingUrl);
+  const {
+    config,
+    platformURL,
+  } = req.body;
+  if (validateAdminURL(incomingUrl)) {
+    const apiReq = {
+      method: 'post',
+      url: platformURL + incomingUrl,
+      headers: { 
+        'Content-Type': 'application/json'
+      },
+      httpsAgent: new https.Agent({
+        // ca: - at some stage add the certificate authority
+        cert: cert,
+        key: key,
+        rejectUnauthorized: false,
+      }),
+      data: config,
+    }
+    axios(apiReq)
+      .then(function (response) {
+        const resBody = response.data;
+        if (resBody.relatedHTTPCode == 400) {
+          // Config parameter error
+          throw new Error(resBody.exceptionErrorMessage);
+        }
+        res.setHeader("Content-Type", "application/json");
+        res.json(resBody);
+      })
+      .catch(function (error) {
+        console.log(error);
+        res.status(400).send(error);
+      });
+  } else {
+    res.status(400).send("Error, invalid supplied URL: " + incomingUrl);
+  }
+});
 
 
 app.use("*", loggedIn, (req, res) => {
