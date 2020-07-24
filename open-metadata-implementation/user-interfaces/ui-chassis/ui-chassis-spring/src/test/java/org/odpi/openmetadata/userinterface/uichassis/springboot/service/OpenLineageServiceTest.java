@@ -137,7 +137,7 @@ public class OpenLineageServiceTest {
 
     @Test
     @DisplayName("TestNodesLevels")
-    public void testNodesLevels() throws PropertyServerException, InvalidParameterException {
+    public void testNodesLevels() throws PropertyServerException, InvalidParameterException, IOException {
         setupLineageVerticesAndEdges();
         try {
             when(openLineageClient.lineage(eq(USER_ID), eq(Scope.END_TO_END), eq("n11"), eq(""), eq(true)))
@@ -166,6 +166,7 @@ public class OpenLineageServiceTest {
         assertEquals("Level of n17 should be 3", Integer.valueOf(3), nodesMap.get("n17").getLevel());
         assertEquals("Level of n15 should be 4", Integer.valueOf(4), nodesMap.get("n15").getLevel());
 
+        readResource();
     }
 
     @SuppressWarnings("unchecked")
@@ -179,6 +180,7 @@ public class OpenLineageServiceTest {
         List<String> nodesIds = nodes.stream().map(e -> e.getId()).collect(Collectors.toList());
         assertEquals("Response should contain 4 nodes", 4, nodes.size());
         assertTrue("Response doesn't contain all nodes", nodesIds.containsAll(Arrays.asList("p0","p30", "p2")));
+
     }
 
     /**
@@ -231,26 +233,4 @@ public class OpenLineageServiceTest {
 
     }
 
-
-
-
-    @Test
-    public void test(){
-        Stream.of("d2", "a2", "b1", "b3", "c")
-
-                .map(s -> {
-                    System.out.println("map: " + s);
-                    return s.toUpperCase();
-                })
-                .forEach(s -> {
-                    System.out.println("forEach: " + s);
-                })
-//                .anyMatch(s -> {
-//                    System.out.println("allMatch: " + s);
-//                    return s.startsWith("A");
-//                })
-
-        ;
-
-    }
 }
