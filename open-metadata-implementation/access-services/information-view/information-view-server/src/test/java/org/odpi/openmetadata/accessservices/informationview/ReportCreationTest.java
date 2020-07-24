@@ -6,7 +6,9 @@ package org.odpi.openmetadata.accessservices.informationview;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.io.FileUtils;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
 import org.odpi.openmetadata.accessservices.informationview.reports.ReportHandler;
 import org.odpi.openmetadata.accessservices.informationview.events.*;
 import org.odpi.openmetadata.accessservices.informationview.lookup.LookupHelper;
@@ -36,6 +38,7 @@ public class ReportCreationTest extends InMemoryRepositoryTest{
     }
 
 
+    @Ignore
     @Test
     public void testReportCreation() throws Exception {
 
@@ -97,6 +100,7 @@ public class ReportCreationTest extends InMemoryRepositoryTest{
 
     }
 
+    @Ignore
     @Test
     public void testReportBasicPropertiesUpdate() throws Exception {
         String payload = FileUtils.readFileToString(new File("./src/test/resources/report1.json"), "UTF-8");
@@ -112,6 +116,7 @@ public class ReportCreationTest extends InMemoryRepositoryTest{
         assertEquals("test_author", ((PrimitivePropertyValue) reportEntity.getProperties().getPropertyValue(Constants.AUTHOR)).getPrimitiveValue());
     }
 
+    @Ignore
     @Test
     public void testReportSectionUpdate() throws Exception {
         String payload = FileUtils.readFileToString(new File("./src/test/resources/report1.json"), "UTF-8");
@@ -133,6 +138,7 @@ public class ReportCreationTest extends InMemoryRepositoryTest{
         assertEquals("SectionA", ((PrimitivePropertyValue) reportSectionEntity.getProperties().getPropertyValue(Constants.NAME)).getPrimitiveValue());
     }
 
+    @Ignore
     @Test
     public void testReportColumnUpdate() throws Exception {
         String payload = FileUtils.readFileToString(new File("./src/test/resources/report1.json"), "UTF-8");
