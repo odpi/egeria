@@ -2,9 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 import React from "react";
 
-import NodeAction from "./NodeAction";
+import NodeController from "./NodeController";
 import NodeTypeChooser from "./NodeTypeChooser";
-import { GlossaryAuthorContext } from "../../contexts/GlossaryAuthorContext";
 
 const GlossaryAuthorNodes = props => {
   console.log("GlossaryAuthorNodes");
@@ -15,7 +14,7 @@ const GlossaryAuthorNodes = props => {
           <NodeTypeChooser />
         </div>
         <div className="bx--row"> 
-          <NodeAction/>
+          <NodeController/>
         </div>
       </div>
     </div>

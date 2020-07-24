@@ -19,12 +19,12 @@ import {
 import { GlossaryAuthorContext } from "../../contexts/GlossaryAuthorContext";
 import Info16 from "@carbon/icons-react/lib/information/16";
 
-function NodeUpdate(props) {
+function NodeUpdateView(props) {
   // const {node} = props;
-  console.log("NodeUpdate");
+  console.log("NodeUpdateView");
 
   const glossaryAuthorContext = useContext(GlossaryAuthorContext);
-  console.log("NodeUpdate glossaryAuthorContext", glossaryAuthorContext);
+  console.log("NodeUpdateView glossaryAuthorContext", glossaryAuthorContext);
 
   const [errorMsg, setErrorMsg] = useState();
   const [updateBody, setUpdateBody] = useState({});
@@ -34,7 +34,7 @@ function NodeUpdate(props) {
    * @param {*} e end anomation event
    */
   const handleOnAnimationEnd = (e) => {
-    document.getElementById("nodeUpdateButton").classList.remove("shaker");
+    document.getElementById("NodeUpdateViewButton").classList.remove("shaker");
   };
 
   const handleUpdate = (e) => {
@@ -94,7 +94,7 @@ function NodeUpdate(props) {
             msg = "Update Failed - unexpected response" + JSON.stringify(res);
           }
           setErrorMsg(msg);
-          document.getElementById("nodeUpdateButton").classList.add("shaker");
+          document.getElementById("NodeUpdateViewButton").classList.add("shaker");
         }
       })
       .catch((res) => {
@@ -267,7 +267,7 @@ function NodeUpdate(props) {
 
         <div className="bx--form-item">
           <button
-            id="nodeUpdateButton"
+            id="NodeUpdateViewButton"
             className="bx--btn bx--btn--primary"
             disabled={!validateForm()}
             onClick={handleUpdate}
@@ -283,4 +283,4 @@ function NodeUpdate(props) {
   );
 }
 
-export default NodeUpdate;
+export default NodeUpdateView;

@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 import React, { useContext } from "react";
-import { IdentificationContext } from "../../contexts/IdentificationContext";
+import { IdentificationContext } from "../../../../contexts/IdentificationContext";
 
 const getNodeType = (key) => {
   const identificationContext = useContext(IdentificationContext);
