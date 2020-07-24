@@ -10,7 +10,7 @@ public class Node {
     private String label;
     private String group;
     private Map<String, String> properties;
-    private Integer order = 0;
+    private Integer level = 0;
 
     public Node(String id, String label) {
         this.id = id;
@@ -49,11 +49,22 @@ public class Node {
         this.properties = properties;
     }
 
-    public Integer getOrder() {
-        return order;
+    public Integer getLevel() {
+        return level;
     }
 
-    public void setOrder(Integer order) {
-        this.order = order;
+    public void setLevel(Integer level) {
+        this.level = level;
+    }
+
+    @Override
+    public String toString() {
+        return "Node{" +
+                "id='" + id + '\'' +
+                ", label='" + label + '\'' +
+                ", group='" + group + '\'' +
+                ", properties=" + properties +
+                ", level=" + level +
+                '}';
     }
 }
