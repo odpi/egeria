@@ -137,6 +137,7 @@ public class OpenLineageServiceTest {
 
     @Test
     @DisplayName("TestNodesLevels")
+    @SuppressWarnings("unchecked")
     public void testNodesLevels() throws PropertyServerException, InvalidParameterException, IOException {
         setupLineageVerticesAndEdges();
         try {
