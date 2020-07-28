@@ -1,0 +1,109 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright Contributors to the ODPi Egeria project.
+ */
+
+
+/*
+ * Used for Build scripts/plugins only
+*/
+
+buildscript {
+    repositories { jcenter()
+    }
+
+    dependencies {
+        classpath 'com.netflix.nebula:gradle-aggregate-javadocs-plugin:3.0.1'
+    }
+}
+
+/*
+ * Plugins for this parent module only - so just high level project related 
+ */
+
+plugins {
+        //id "nebula.lint" version "16.9.0"
+        //id "nebula-aggregate-javadocs'" "
+        id "io.spring.dependency-management" version "1.0.9.RELEASE"
+    }
+
+//apply plugin: 'nebula-aggregate-javadocs'
+
+
+
+
+/* 
+ * Configuration for all projects - INCLUDING this one
+ */
+
+allprojects {
+
+    group = 'org.odpi.egeria'
+    version = '2.1-SNAPSHOT'
+
+
+    // This enforces version checking but is slow to process 
+    //apply plugin: 'nebula.lint'
+    //gradleLint {
+    //    rules = ['all-dependency'] // TODO: Change to criticalRules when ready to enforce
+    //    
+    //}
+
+}
+
+/* 
+ * Configuration for sub projects only 
+ */
+
+subprojects {
+
+    apply plugin: "io.spring.dependency-management" 
+
+    // Mostly java, so default to this for now
+    apply plugin: 'java'
+
+    // As we've migrated from maven - we'll assume all submodules publish directly to maven
+    apply plugin: 'maven-publish'
+
+    // In a few cases we need dependencies from outside the tree - mostly just hadoop binding (and the pom)
+
+    // Use JCenter for performance, and our own official build snapshots for gaian/ranger/derby & main egeria BOM for version fixing
+    repositories {
+        jcenter()
+        maven { url("https://odpi.jfrog.io/odpi/egeria-snapshot") }
+        //mavenLocal()
+        }
+
+    //dependencies {
+    ////    testImplementation 'org.slf4j:slf4j-simple:1.7.30'
+    ////}
+
+    /*
+     * Dependency Management - to fix versions. Pick up maven build settings for now
+     */
+    //TODO: Migrate to native gradle dependency project - but for now this keeps us in-sync with maven
+    dependencyManagement {
+         imports {
+              mavenBom 'org.odpi.egeria:egeria:2.1-SNAPSHOT'
+         }
+    }
+
+    java {
+        withSourcesJar()
+    }
+
+    publishing {
+        publications {
+            maven(MavenPublication) {
+                from(components.java)
+            }
+        }
+    }
+
+    tasks.withType(JavaCompile) {
+        options.encoding = 'UTF-8'
+        sourceCompatibility = "1.8"
+        targetCompatibility = "1.8"
+    }
+
+}
