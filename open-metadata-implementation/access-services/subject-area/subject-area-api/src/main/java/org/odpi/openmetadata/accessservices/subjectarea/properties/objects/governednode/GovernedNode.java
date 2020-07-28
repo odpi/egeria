@@ -2,8 +2,10 @@
 package org.odpi.openmetadata.accessservices.subjectarea.properties.objects.governednode;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.apache.commons.collections4.CollectionUtils;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.*;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.GovernanceActions;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Node;
@@ -83,8 +85,9 @@ public class GovernedNode extends Node implements Serializable {
      *
      * @param classifications the list of classifications to set on the GovernedNode.
      */
+    @JsonIgnore
     public void setClassifications(List<Classification> classifications) {
-        if (classifications!=null && classifications.size() >0) {
+        if (CollectionUtils.isNotEmpty(classifications)) {
             List<Classification> newClassifications = new ArrayList<>();
             if (this.governanceActions ==null) {
                 this.governanceActions = new GovernanceActions();

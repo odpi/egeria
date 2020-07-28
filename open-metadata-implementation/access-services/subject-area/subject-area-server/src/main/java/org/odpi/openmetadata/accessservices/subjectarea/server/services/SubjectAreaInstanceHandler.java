@@ -203,5 +203,4 @@ class SubjectAreaInstanceHandler extends OCFOMASServiceInstanceHandler
 
         return null;
     }
-
 }
