@@ -112,4 +112,10 @@ public interface SubjectAreaRelationship {
      * when working with CategoryAnchor objects
      */
     SubjectAreaRelationshipClient<CategoryAnchor> categoryAnchor();
+
+    /**
+     * @return {@link SubjectAreaRelationshipClient} for client calls(described in {@link SubjectAreaClient})
+     * when working with CategoryHierarchyLink objects
+     */
+    SubjectAreaClient<CategoryHierarchyLink> categoryHierarchyLink();
 }

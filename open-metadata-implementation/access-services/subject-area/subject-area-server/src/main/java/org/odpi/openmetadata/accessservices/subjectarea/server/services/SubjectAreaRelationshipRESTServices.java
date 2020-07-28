@@ -1935,6 +1935,107 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse<SemanticAssignment> getSemanticAssignmentRelationship(String serverName, String userId, String guid) {
         String restAPIName = "getSemanticAssignmentRelationship";
-        return restoreLine(serverName, restAPIName, userId, SemanticAssignmentMapper.class, guid);
+        return getLine(serverName, restAPIName, userId, SemanticAssignmentMapper.class, guid);
+    }
+
+    /**
+     * Update a CategoryHierarchyLink Relationship. A relationship between two categories used to create nested categories.
+     *
+     * @param serverName            serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId                userId under which the request is performed
+     * @param guid                  guid of the CategoryHierarchyLink relationship
+     * @param categoryHierarchyLink the CategoryHierarchyLink relationship
+     * @param isReplace             flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
+     * @return response, when successful contains the updated categoryHierarchyLink
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
+     * </ul>
+     */
+    public SubjectAreaOMASAPIResponse<CategoryHierarchyLink> updateCategoryHierarchyLink(String serverName, String userId, String guid, CategoryHierarchyLink categoryHierarchyLink, Boolean isReplace) {
+        String restAPIName = "updateCategoryHierarchyLink";
+        return updateLine(serverName,restAPIName, userId, guid, CategoryHierarchyLinkMapper.class, categoryHierarchyLink, isReplace);
+    }
+
+    /**
+     * Create a CategoryHierarchyLink Relationship. A relationship between two categories used to create nested categories.
+     *
+     * @param serverName            serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId                userId under which the request is performed
+     * @param categoryHierarchyLink the CategoryHierarchyLink relationship
+     * @return response, when successful contains the created categoryHierarchyLink relationship
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
+     * </ul>
+     */
+    public SubjectAreaOMASAPIResponse<CategoryHierarchyLink> createCategoryHierarchyLink(String serverName, String userId, CategoryHierarchyLink categoryHierarchyLink) {
+        String restAPIName = "createCategoryHierarchyLink";
+        return createLine(serverName,restAPIName,userId, CategoryHierarchyLinkMapper.class, categoryHierarchyLink);
+    }
+
+    /**
+     * Get a CategoryHierarchyLink Relationship. A relationship between two categories used to create nested categories.
+     *
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the CategoryHierarchyLink Relationship to get
+     * @return response which when successful contains the CategoryHierarchyLink relationship with the requested guid
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
+     * </ul>
+     */
+    public SubjectAreaOMASAPIResponse<CategoryHierarchyLink> getCategoryHierarchyLink(String serverName, String userId, String guid) {
+        String restAPIName = "getCategoryHierarchyLink";
+        return getLine(serverName, restAPIName, userId, CategoryHierarchyLinkMapper.class, guid);
+    }
+
+    /**
+     * Delete a CategoryHierarchyLink Relationship. A relationship between two categories used to create nested categories.
+     *
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the CategoryHierarchyLink relationship to delete
+     * @param isPurge    true indicates a hard delete, false is a soft delete.
+     * @return response for a soft delete the response contains the deleted relationship
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
+     * </ul>
+     */
+    public SubjectAreaOMASAPIResponse<CategoryHierarchyLink> deleteCategoryHierarchyLink(String serverName, String userId, String guid, Boolean isPurge) {
+        String restAPIName = "deleteCategoryHierarchyLink";
+        return deleteLine(serverName, restAPIName, userId, CategoryHierarchyLinkMapper.class, guid, isPurge);
+    }
+
+    /**
+     * Restore a CategoryHierarchyLink Relationship. A relationship between two categories used to create nested categories.
+     * <p>
+     * Restore allows the deleted CategoryHierarchyLink Relationship to be made active again. Restore allows deletes to be undone.
+     * Hard deletes are not stored in the repository so cannot be restored.
+     *
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the CategoryHierarchyLink Relationship to delete
+     * @return response which when successful contains the restored CategoryHierarchyLink
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
+     * </ul>
+     */
+    public SubjectAreaOMASAPIResponse<CategoryHierarchyLink> restoreCategoryHierarchyLink(String serverName, String userId, String guid) {
+        String restAPIName = "restoreCategoryHierarchyLink";
+        return restoreLine(serverName, restAPIName, userId, CategoryHierarchyLinkMapper.class, guid);
     }
 }

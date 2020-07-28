@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.client.relationships;
 
+import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaClient;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaRelationshipClient;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaRestClient;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
@@ -35,6 +36,7 @@ public class SubjectAreaLine implements SubjectAreaRelationship {
     private static final String TERM_ANCHOR = "term-anchor";
     private static final String CATEGORY_ANCHOR = "category-anchor";
     private static final String PROJECT_SCOPE = "project-scopes";
+    private static final String CATEGORY_HIERARCHY_LINK = "category-hierarchy-link";
 
     private Map<Class<?>, SubjectAreaRelationshipClient<?>> cache = new HashMap<>();
     private static final String DEFAULT_SCAN_PACKAGE = SubjectAreaLine.class.getPackage().getName();
@@ -162,9 +164,27 @@ public class SubjectAreaLine implements SubjectAreaRelationship {
     }
 
     @Override
+    public SubjectAreaClient<CategoryHierarchyLink> categoryHierarchyLink() {
+        return getClient(CategoryHierarchyLink.class);
+    }
+
+    @Override
     public SubjectAreaRelationshipClient<CategoryAnchor> categoryAnchor() {
         return getClient(CategoryAnchor.class);
     }
+
+    @SubjectAreaLineClient
+    static class SubjectAreaCategoryHierarchyLinkClient extends AbstractSubjectAreaRelationship<CategoryHierarchyLink> {
+        protected SubjectAreaCategoryHierarchyLinkClient(SubjectAreaRestClient subjectAreaRestClient) {
+            super(subjectAreaRestClient, CATEGORY_HIERARCHY_LINK);
+        }
+
+        @Override
+        public Class<CategoryHierarchyLink> type() {
+            return CategoryHierarchyLink.class;
+        }
+    }
+
     @SubjectAreaLineClient
     static class SubjectAreaTermAnchorClient extends AbstractSubjectAreaRelationship<TermAnchor> {
         protected SubjectAreaTermAnchorClient(SubjectAreaRestClient subjectAreaRestClient) {
