@@ -125,7 +125,7 @@ abstract public class EntityDetailMapper<N extends Node> implements INodeMapper<
                         while (iter.hasNext()) {
                             String mapkey = iter.next();
                             PrimitivePropertyValue primitivePropertyMapValue = (PrimitivePropertyValue) instancePropertyForMap.getPropertyValue(mapkey);
-                            String mapvalue =  primitivePropertyMapValue.getPrimitiveValue().toString();
+                            String mapvalue = primitivePropertyMapValue.getPrimitiveValue().toString();
                             actualMap.put(mapkey, mapvalue);
                         }
                         node.setAdditionalProperties(actualMap);
@@ -133,7 +133,6 @@ abstract public class EntityDetailMapper<N extends Node> implements INodeMapper<
                         if (null==node.getAdditionalProperties())  {
                             node.setAdditionalProperties(new HashMap<String, String>());
                         }
-                        node.getAdditionalProperties().put(propertyName,mapPropertyValue.valueAsString());
                     }
                     break;
                 case ARRAY:
