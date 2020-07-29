@@ -44,10 +44,6 @@ class ToastFeedback extends PolymerElement {
 
     static get properties() {
         return {
-            duration: {
-                type: Number,
-                value: 5
-            },
             message: String,
             level: {
                 type: String,
