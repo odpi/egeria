@@ -2,10 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea;
 
-import org.odpi.openmetadata.accessservices.subjectarea.client.entities.glossaries.SubjectAreaGlossary;
-import org.odpi.openmetadata.accessservices.subjectarea.client.entities.terms.SubjectAreaTerm;
-import org.odpi.openmetadata.accessservices.subjectarea.client.entities.projects.SubjectAreaProject;
-import org.odpi.openmetadata.accessservices.subjectarea.client.entities.categories.SubjectAreaCategory;
+import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.glossaries.SubjectAreaGlossary;
+import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.terms.SubjectAreaTerm;
+import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.projects.SubjectAreaProject;
+import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.categories.SubjectAreaCategory;
 import org.odpi.openmetadata.accessservices.subjectarea.client.relationships.SubjectAreaRelationship;
 import org.odpi.openmetadata.accessservices.subjectarea.client.relationships.SubjectAreaGraph;
 

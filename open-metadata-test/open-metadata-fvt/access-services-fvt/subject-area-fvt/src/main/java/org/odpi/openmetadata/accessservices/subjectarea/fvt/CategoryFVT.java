@@ -3,9 +3,9 @@
 package org.odpi.openmetadata.accessservices.subjectarea.fvt;
 
 import org.odpi.openmetadata.accessservices.subjectarea.SubjectArea;
-import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaEntityClient;
+import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaNodeClient;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaRestClient;
-import org.odpi.openmetadata.accessservices.subjectarea.client.entities.categories.SubjectAreaCategoryClient;
+import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.categories.SubjectAreaCategoryClient;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
@@ -31,7 +31,7 @@ public class CategoryFVT {
     private static final String DEFAULT_TEST_CATEGORY_NAME_UPDATED = "Test category A updated";
     private static final String DEFAULT_TEST_CATEGORY_NAME2 = "Test category B";
     private static final String DEFAULT_TEST_CATEGORY_NAME3 = "Test category C";
-    private SubjectAreaEntityClient<Category> subjectAreaCategory = null;
+    private SubjectAreaNodeClient<Category> subjectAreaCategory = null;
     private GlossaryFVT glossaryFVT = null;
     private String serverName = null;
     private String userId = null;
