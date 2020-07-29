@@ -37,7 +37,7 @@ const NodeTypeChooser = () => {
         glossaryAuthorContext.myGlossary === undefined &&
         glossaryAuthorContext.isEdittingMyProject() && (
           <div>
-            Changing My Project (2).
+            Creating My Project (2).
           </div>
         )}
       {/* case three nothing set, editting my glossary  */}
@@ -45,56 +45,56 @@ const NodeTypeChooser = () => {
         glossaryAuthorContext.myGlossary === undefined &&
         glossaryAuthorContext.isEdittingMyGlossary() && (
           <div>
-            Changing My Glossary (3).
+            Creating My Glossary (3).
           </div>
         )}
-      {/* case four for my project and glossary are set, changing project */}
+      {/* case four for my project and glossary are set, Creating project */}
       {glossaryAuthorContext.myProject &&
         glossaryAuthorContext.myGlossary &&
         glossaryAuthorContext.isEdittingMyProject() && (
           <div>
-            Changing My Project (4).
+            Creating My Project (4).
           </div>
         )}
-      {/* case five for my project and glossary are set, changing glossary */}
+      {/* case five for my project and glossary are set, Creating glossary */}
       {glossaryAuthorContext.myProject &&
         glossaryAuthorContext.myGlossary &&
         glossaryAuthorContext.isEdittingMyProject() && (
           <div>
-            Changing My Glossary (5).
+            Creating My Glossary (5).
           </div>
         )}
-      {/* case six for my project set and glossary not set, changing project */}
+      {/* case six for my project set and glossary not set, Creating project */}
       {glossaryAuthorContext.myProject &&
         glossaryAuthorContext.myGlossary === undefined &&
         glossaryAuthorContext.isEdittingMyProject() && (
           <div>
-            Changing My Project (6).
+            Creating My Project (6).
           </div>
         )}
-      {/* case seven my glossary set and project not set, changing project */}
+      {/* case seven my glossary set and project not set, Creating project */}
       {glossaryAuthorContext.myGlossary &&
         glossaryAuthorContext.myProject === undefined &&
         glossaryAuthorContext.isEdittingMyProject() && (
           <div>
-            Changing My Project (7).
+            Creating My Project (7).
           </div>
         )}
 
-      {/* case eight for my project set and glossary not set, changing glossary */}
+      {/* case eight for my project set and glossary not set, Creating glossary */}
       {glossaryAuthorContext.myProject &&
         glossaryAuthorContext.myGlossary === undefined &&
         glossaryAuthorContext.isEdittingMyGlossary() && (
           <div>
-            Changing My Glossary (8).
+            Creating My Glossary (8).
           </div>
         )}
-      {/* case nine my glossary set and project not set, changing glossary */}
+      {/* case nine my glossary set and project not set, Creating glossary */}
       {glossaryAuthorContext.myGlossary &&
         glossaryAuthorContext.myProject === undefined &&
         glossaryAuthorContext.isEdittingMyGlossary() && (
           <div>
-            Changing My Glossary (9).
+            Creating My Glossary (9).
           </div>
         )}
       {/* case nine my glossary set and project are set and are not being editted. 

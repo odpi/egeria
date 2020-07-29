@@ -116,6 +116,9 @@ const NodeController = (props) => {
         glossaryAuthorContext.doCreatedMyGlossary(node);
       } else if (glossaryAuthorContext.isEdittingMyProject()) {
         glossaryAuthorContext.doCreatedMyProject(node);
+      } else {
+        // future thought consider passing the created node to save in context.
+        glossaryAuthorContext.doCreatedAction();
       }
     } else {
       onErrorGet("Error did not get a node from the server");

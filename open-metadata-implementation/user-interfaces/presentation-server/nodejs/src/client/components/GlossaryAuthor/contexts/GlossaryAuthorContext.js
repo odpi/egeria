@@ -24,6 +24,7 @@ const GlossaryAuthorContextProvider = (props) => {
     CREATING: Symbol("creating"),
     CREATED: Symbol("created"),
     SEARCHING: Symbol("searching"),
+    SEARCHED: Symbol("searched"),
     REFRESH: Symbol("refresh"),
     DELETING: Symbol("deleting"),
     SET_CURRENT_NODE_TYPE: Symbol("SET_CURRENT_NODE_TYPE"),
@@ -171,13 +172,13 @@ const GlossaryAuthorContextProvider = (props) => {
       case Types.SET_CURRENT_NODE_TYPE.toString():
         let nodeType;
         // payload is the nodeType's key
-        if (payload == "term") {
+        if (action.payload == "term") {
           nodeType = termNodeType;
-        } else if (payload == "category") {
+        } else if (action.payload == "category") {
           nodeType = categoryNodeType;
-        } else if (payload == "glossary") {
+        } else if (action.payload == "glossary") {
           nodeType = glossaryNodeType;
-        } else if (payload == "project") {
+        } else if (action.payload == "project") {
           nodeType = projectNodeType;
         }
         return {
@@ -246,7 +247,7 @@ const GlossaryAuthorContextProvider = (props) => {
   };
 
   const doCreatedAction = () => {
-    dispatch({ type: Types.CREATED });
+    dispatch({ type: Types.CREATED});  
   };
 
   const doSearchingAction = () => {
@@ -265,6 +266,10 @@ const GlossaryAuthorContextProvider = (props) => {
   const doDeletingAction = () => {
     console.log("setDeletingAction");
     dispatch({ type: Types.DELETING });
+  };
+
+  const doSetNodeType = (key) => {
+    dispatch({ type: Types.SET_CURRENT_NODE_TYPE, payload: key });
   };
 
   // The following is methods are queries on state
@@ -326,9 +331,6 @@ const GlossaryAuthorContextProvider = (props) => {
     return Operations.NONE.toString() == operation.toString();
   };
 
-  const doSetNodeType = (key) => {
-    dispatch({ type: Operations.SET_CURRENT_NODE_TYPE, payload: key });
-  };
   return (
     <GlossaryAuthorContext.Provider
       value={{
