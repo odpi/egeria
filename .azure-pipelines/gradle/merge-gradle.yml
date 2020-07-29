@@ -8,7 +8,12 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/java
 
 trigger:
-- gradletest
+  branches:
+    include:
+      - master
+      - egeria-release-*
+
+pr: none
 
 pool:
   vmImage: 'ubuntu-latest'
