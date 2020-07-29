@@ -4,8 +4,8 @@ package org.odpi.openmetadata.accessservices.subjectarea.samples.definition;
 
 import org.odpi.openmetadata.accessservices.subjectarea.SubjectArea;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaImpl;
-import org.odpi.openmetadata.accessservices.subjectarea.client.entities.categories.SubjectAreaCategory;
-import org.odpi.openmetadata.accessservices.subjectarea.client.entities.glossaries.SubjectAreaGlossary;
+import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.categories.SubjectAreaCategory;
+import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.glossaries.SubjectAreaGlossary;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectAreaCheckedException;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.SubjectAreaDefinition;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
