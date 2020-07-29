@@ -221,7 +221,8 @@ const GlossaryAuthorContextProvider = (props) => {
     return (
       myGlossary &&
       myProject &&
-      myEdittingType.toString() == MyEdittingTypes.NONE.toString
+      myEdittingType && 
+      myEdittingType.toString() == MyEdittingTypes.NONE.toString()
     );
   };
   /**
