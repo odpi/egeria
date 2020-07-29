@@ -18,12 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -57,7 +52,7 @@ public class OpenLineageService {
                                                boolean includeProcesses) {
         try {
             LineageVerticesAndEdges response = openLineageClient.lineage(userId, Scope.ULTIMATE_SOURCE, guid, "", includeProcesses);
-            return processResponse(response);
+            return processResponse(response,guid);
         } catch (InvalidParameterException | PropertyServerException | OpenLineageException e) {
             LOG.error("Cannot get ultimate source lineage for guid {}", guid);
             throw new RuntimeException("ultimate source lineage error", e);
@@ -76,7 +71,7 @@ public class OpenLineageService {
                                                 boolean includeProcesses) {
         try {
             LineageVerticesAndEdges response =  openLineageClient.lineage(userId, Scope.END_TO_END, guid, "", includeProcesses);
-            return processResponse(response);
+            return processResponse(response,guid);
         } catch (InvalidParameterException | PropertyServerException | OpenLineageException e) {
             LOG.error("Cannot get end to end lineage for guid {}", guid);
             throw new RuntimeException("end2end lineage error", e);
@@ -95,7 +90,7 @@ public class OpenLineageService {
         try {
             LineageVerticesAndEdges response = openLineageClient.lineage(userId, Scope.ULTIMATE_DESTINATION, guid, "",
                     includeProcesses);
-            return processResponse(response);
+            return processResponse(response,guid);
         } catch (InvalidParameterException | PropertyServerException | OpenLineageException e) {
             LOG.error("Cannot get ultimate destination lineage for guid {}", guid);
             throw new RuntimeException("ultimate destination lineage error", e);
@@ -114,7 +109,7 @@ public class OpenLineageService {
                                                 boolean includeProcesses) {
         try {
             LineageVerticesAndEdges response =  openLineageClient.lineage(userId, Scope.GLOSSARY, guid, "", includeProcesses);
-            return processResponse(response);
+            return processResponse(response,guid);
         } catch (InvalidParameterException | PropertyServerException | OpenLineageException e) {
             LOG.error("Cannot get glossary lineage for guid {}", guid);
             throw new RuntimeException("glossary lineage error", e);
@@ -134,7 +129,7 @@ public class OpenLineageService {
         try {
             LineageVerticesAndEdges response = openLineageClient.lineage(userId, Scope.SOURCE_AND_DESTINATION, guid, "",
                     includeProcesses);
-            return processResponse(response);
+            return processResponse(response,guid);
         } catch (InvalidParameterException | PropertyServerException | OpenLineageException e) {
             LOG.error("Cannot get source and destination lineage for guid {}", guid);
             throw new RuntimeException("source and destination lineage error ", e);
@@ -146,34 +141,92 @@ public class OpenLineageService {
      * @param response string returned from Open Lineage Services to be processed
      * @return map of nodes and edges describing the end to end flow
      */
-    private Map<String, List> processResponse(LineageVerticesAndEdges response) {
+    private Map<String, List> processResponse(LineageVerticesAndEdges response, String guid) {
         Map<String, List> graphData = new HashMap<>();
-        List<Edge> listEdges = new ArrayList<>();
-        List<Node> listNodes = new ArrayList<>();
+        List<Edge> edges = new ArrayList<>();
+        List<Node> nodes = new ArrayList<>();
 
         LOG.debug("Received response from open lineage service: {}", response);
         if (response == null || CollectionUtils.isEmpty(response.getLineageVertices())) {
-            graphData.put(EDGES_LABEL, listEdges);
-            graphData.put(NODES_LABEL, listNodes);
+            graphData.put(EDGES_LABEL, edges);
+            graphData.put(NODES_LABEL, nodes);
         }
 
-        listNodes = Optional.ofNullable(response).map(LineageVerticesAndEdges::getLineageVertices)
-                .map(Collection::stream)
-                .orElseGet(Stream::empty)
-                .map(this::createNode)
-                .collect(Collectors.toList());
-
-        listEdges = Optional.ofNullable(response).map(LineageVerticesAndEdges::getLineageEdges)
+        edges = Optional.ofNullable(response).map(LineageVerticesAndEdges::getLineageEdges)
                 .map(Collection::stream)
                 .orElseGet(Stream::empty)
                 .map(e -> new Edge(e.getSourceNodeID(),
                         e.getDestinationNodeID()))
                 .collect(Collectors.toList());
 
-        graphData.put(EDGES_LABEL, listEdges);
-        graphData.put(NODES_LABEL, listNodes);
+        nodes = Optional.ofNullable(response).map(LineageVerticesAndEdges::getLineageVertices)
+                .map(Collection::stream)
+                .orElseGet(Stream::empty)
+                .map(this::createNode)
+                .collect(Collectors.toList());
+
+        List<Node> startList = nodes.stream()
+                .filter(n -> n.getId().equals(guid))
+                .collect(Collectors.toList());
+
+        if(startList.size() > 0) {
+            setNodesLevel(startList, new ArrayList<>(nodes), new ArrayList<>(edges));
+        }
+
+        graphData.put(EDGES_LABEL, edges);
+        graphData.put(NODES_LABEL, nodes);
 
         return graphData;
+    }
+
+    /**
+     * sets the level field for the nodes, in order to be displayed on levels
+     * Stars from a start list of nodes and sets a the level+1 for the nodes on the ends of "to" edges and
+     * legel -1 for the nodes from the "from" end of it's edges
+     * once an edge or node is processed is removed from the list.
+     *
+     * @param startNodes the starting nodes
+     * @param listNodes the list of nodes
+     * @param listEdges the list of edges
+     */
+    private void setNodesLevel(List<Node> startNodes, List<Node> listNodes, List<Edge> listEdges) {
+
+        ArrayList<Node> newStartNodes = new ArrayList<>();
+
+        ListIterator<Edge> edgeListIterator = listEdges.listIterator();
+
+        while (edgeListIterator.hasNext()) {
+            Edge e = edgeListIterator.next();
+            for ( Node node: startNodes ){
+                if ( node.getId().equals(e.getFrom()) ) {
+
+                    listNodes.stream()
+                            .filter( n -> n.getLevel() == 0 && n.getId().equals( e.getTo() ))
+                            .forEach( item -> {
+                                item.setLevel( node.getLevel() + 1 );
+                                newStartNodes.add(item);
+                                edgeListIterator.remove();
+                            });
+
+                } else if ( node.getId().equals(e.getTo()) ) {
+
+                    listNodes.stream()
+                            .filter( n -> n.getLevel() == 0 && n.getId().equals( e.getFrom() ))
+                            .forEach( item -> {
+                                item.setLevel( node.getLevel() - 1 );
+                                newStartNodes.add(item);
+                                edgeListIterator.remove();
+                            });
+
+                }
+                listNodes.removeAll(newStartNodes);
+            }
+
+        }
+
+        if(newStartNodes.size() > 0 && listEdges.size() > 0){
+            setNodesLevel(newStartNodes , listNodes, listEdges );
+        }
     }
 
     /**
@@ -189,5 +242,4 @@ public class OpenLineageService {
         node.setProperties(currentNode.getProperties());
         return node;
     }
-
 }
