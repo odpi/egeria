@@ -161,5 +161,6 @@ jitdump*dmp
 THIRD_PARTY*.txt
 
 # gradle
+!gradle/**
 .gradle/
 build/
