@@ -22,7 +22,7 @@ class Legend extends mixinBehaviors([ItemViewBehavior], PolymerElement) {
            <table>
            <template is="dom-repeat" items="[[legendNodes]]"> 
               <tr>
-                 <td><iron-icon style = "color: {{item.color}}" icon="{{item.shape}}"></iron-icon></td>
+                 <td><iron-icon style = "fill: {{item.color}};" icon="{{item.shape}}"></iron-icon></td>
                  <td>{{item.group}}</td>
                  <td>{{item.appearances}}</td>   
               </tr>
