@@ -45,6 +45,7 @@ export async function issueRestGet(url, onSuccessful, onError ) {
 }
 
 export async function issueRestCreate(url, body, onSuccessful, onError) {
+  console.log("issueRestCreate");
   try {
     const response = await fetch(url, {
       method: "post",

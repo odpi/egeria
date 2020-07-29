@@ -38,7 +38,7 @@ const NodeSearchView = (props) => {
   // const [refreshed, setRefreshed] = useState(false);
   // const [pageSize] = useState(10);
   // const [errorMsg, setErrorMsg] = useState();
-  const [tableKey, setTableKey] = useState(1);
+  // const [tableKey, setTableKey] = useState(1);
 
   // properties that will be displayed be default for a node
   const mainProperties = [
@@ -103,19 +103,19 @@ const NodeSearchView = (props) => {
 
   const paginationProps = () => ({
     disabled: false,
-    page: pageNumber,
+    page: props.pageNumber,
     pagesUnknown: true,
     pageInputDisabled: false,
     backwardText: "Previous page",
     forwardText: "Next page",
-    totalItems: total,
-    pageSize: pageSize,
+    totalItems: props.total,
+    pageSize: props.pageSize,
     pageSizes: [5, 10, 50, 100],
     itemsPerPageText: "Items per page:",
-    onChange: onPaginationChange,
+    onChange: props.onPagination,
   });
 
-  // if (glossaryAuthorContext.authoringActionState == 5) {
+  // if (glossaryAuthorContext.authoringOperation == 5) {
   //   console.log("Refreshing search");
   //   issueSearch(debouncedSearchCriteria).then((results) => {
   //     // Set back to false since request finished
@@ -205,13 +205,16 @@ const NodeSearchView = (props) => {
   //   } else {
   //     setCurrentPage([]);
   //   }
-  //   // we have selectedNode but it is not in the search results - we must have deleted it. 
+  //   // we have selectedNode but it is not in the search results - we must have deleted it.
   //   if (!selectedInResults) {
   //     glossaryAuthorContext.updateSelectedNode(undefined);
   //   }
 
   // }
-  // Additonal attributes can be selected so more columns can be shown
+  const onSearchCriteria = (e) => {
+    props.onSearchCriteria(e.target.value);
+  }
+  // Additional attributes can be selected so more columns can be shown
   // the additional attriniutes are in selectedAdditionalProperties
   const onAdditionalAttributesChanged = (items) => {
     console.log("onAdditionalAttributesChanged");
@@ -298,7 +301,7 @@ const NodeSearchView = (props) => {
   const onClickExactMatch = () => {
     console.log("onClickExactMatch");
     const checkBox = document.getElementById("exactMatch");
-    setExactMatch(checkBox.checked);
+    props.onExactMatch(checkBox.checked);
   };
   // const onSelectRow = (row) => {
   //   console.log("onSelectRow");
@@ -413,7 +416,7 @@ const NodeSearchView = (props) => {
                 className="bx--search-input"
                 type="text"
                 id="search__input-1"
-                onChange={(e) => setSearchCriteria(e.target.value)}
+                onChange={onSearchCriteria}
                 placeholder="Search"
               />
               <svg
@@ -455,7 +458,11 @@ const NodeSearchView = (props) => {
                 <Accordion>
                   <AccordionItem title="Search options">
                     <label forHtml="exactMatch">Exact Match </label>
-                    <input type="checkbox" id="exactMatch" onClick={onClickExactMatch}/>
+                    <input
+                      type="checkbox"
+                      id="exactMatch"
+                      onClick={onClickExactMatch}
+                    />
                     <div className="bx--form-item">
                       <div style={{ width: 150 }}>
                         <MultiSelect
@@ -469,13 +476,13 @@ const NodeSearchView = (props) => {
                 </Accordion>
               </div>
             )}
-          {isSearching && <div className="search-item">Searching ...</div>}
           <div className="search-item">
             <DataTable
               radio
-              key={tableKey}
+              key={props.tableKey}
               isSortable
-              rows={currentPage}
+              // rows={props.tableRows}
+              rows={[]}
               headers={headerData}
               render={({
                 rows,

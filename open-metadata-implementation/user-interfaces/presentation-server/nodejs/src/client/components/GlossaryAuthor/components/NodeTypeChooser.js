@@ -18,15 +18,15 @@ const NodeTypeChooser = () => {
   const handleNodeChange = (e) => {
     const value = e.target.value;
     console.log("handleSelectChange (() " + value);
-    glossaryAuthorContext.setNodeTypeFromKey(value);
+    glossaryAuthorContext.doSetNodeType(value);
   };
   return (
     <div>
       {/* case one nothing set no editing being attempted  */}
       {glossaryAuthorContext.myGlossary === undefined &&
         glossaryAuthorContext.myProject === undefined &&
-        glossaryAuthorContext.isEdittingMyGlossary() === undefined &&
-        glossaryAuthorContext.isEdittingMyProject()  === undefined && (
+        glossaryAuthorContext.isEdittingMyGlossary() &&
+        glossaryAuthorContext.isEdittingMyProject() && (
           <div>
             My Project and My Glossary need to be set; as authored content will
             be stored there (1).
@@ -49,23 +49,23 @@ const NodeTypeChooser = () => {
           </div>
         )}
       {/* case four for my project and glossary are set, changing project */}
-      {glossaryAuthorContext.myProject !== undefined &&
-        glossaryAuthorContext.myGlossary !== undefined &&
+      {glossaryAuthorContext.myProject &&
+        glossaryAuthorContext.myGlossary &&
         glossaryAuthorContext.isEdittingMyProject() && (
           <div>
             Changing My Project (4).
           </div>
         )}
       {/* case five for my project and glossary are set, changing glossary */}
-      {glossaryAuthorContext.myProject !== undefined &&
-        glossaryAuthorContext.myGlossary !== undefined &&
+      {glossaryAuthorContext.myProject &&
+        glossaryAuthorContext.myGlossary &&
         glossaryAuthorContext.isEdittingMyProject() && (
           <div>
             Changing My Glossary (5).
           </div>
         )}
       {/* case six for my project set and glossary not set, changing project */}
-      {glossaryAuthorContext.myProject !== undefined &&
+      {glossaryAuthorContext.myProject &&
         glossaryAuthorContext.myGlossary === undefined &&
         glossaryAuthorContext.isEdittingMyProject() && (
           <div>
@@ -73,7 +73,7 @@ const NodeTypeChooser = () => {
           </div>
         )}
       {/* case seven my glossary set and project not set, changing project */}
-      {glossaryAuthorContext.myGlossary = undefined &&
+      {glossaryAuthorContext.myGlossary &&
         glossaryAuthorContext.myProject === undefined &&
         glossaryAuthorContext.isEdittingMyProject() && (
           <div>
@@ -82,7 +82,7 @@ const NodeTypeChooser = () => {
         )}
 
       {/* case eight for my project set and glossary not set, changing glossary */}
-      {glossaryAuthorContext.myProject !== undefined &&
+      {glossaryAuthorContext.myProject &&
         glossaryAuthorContext.myGlossary === undefined &&
         glossaryAuthorContext.isEdittingMyGlossary() && (
           <div>
@@ -90,7 +90,7 @@ const NodeTypeChooser = () => {
           </div>
         )}
       {/* case nine my glossary set and project not set, changing glossary */}
-      {glossaryAuthorContext.myGlossary !== undefined &&
+      {glossaryAuthorContext.myGlossary &&
         glossaryAuthorContext.myProject === undefined &&
         glossaryAuthorContext.isEdittingMyGlossary() && (
           <div>
@@ -99,10 +99,7 @@ const NodeTypeChooser = () => {
         )}
       {/* case nine my glossary set and project are set and are not being editted. 
       Authoring of other nodes that are not myProject or or My Glossary */}
-      {glossaryAuthorContext.myGlossary = undefined &&
-        glossaryAuthorContext.myProject !== undefined &&
-        !glossaryAuthorContext.isEdittingMyGlossary() &&
-        !glossaryAuthorContext.isEdittingMyProject() && (
+      {glossaryAuthorContext.isSetupComplete() && (
           <div>
             <div>Choose what to author:</div>
             <div className="bx--col-lg-2 bx--col-md-2">

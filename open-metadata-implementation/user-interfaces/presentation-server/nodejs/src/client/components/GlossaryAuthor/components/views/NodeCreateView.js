@@ -37,7 +37,7 @@ function NodeCreateView(props) {
   // useEffect(() => {
     // Update the document title using the browser API
     // if (
-    //   glossaryAuthorContext.authoringActionState == 1 
+    //   glossaryAuthorContext.authoringOperation == 1 
     // )
       // setcreatedNode(undefined);
   // });

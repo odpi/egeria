@@ -71,7 +71,7 @@ function NodeUpdateView(props) {
         if (res.relatedHTTPCode == 200 && res.result && res.result[0]) {
           // const nodeResponse = res.result[0];
           // glossaryAuthorContext.updateSelectedNode(nodeResponse);
-          glossaryAuthorContext.setRefreshSearchActionState();
+          glossaryAuthorContext.setRefreshSearchOperation();
         } else {
           let msg = "";
           // if this is a formatted Egeria response, we have a user action
