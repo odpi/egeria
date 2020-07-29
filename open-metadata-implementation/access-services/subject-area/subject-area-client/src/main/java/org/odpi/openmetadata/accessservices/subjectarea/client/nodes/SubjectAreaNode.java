@@ -1,13 +1,13 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.subjectarea.client.entities;
+package org.odpi.openmetadata.accessservices.subjectarea.client.nodes;
 
-import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaEntityClient;
+import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaNodeClient;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaRestClient;
-import org.odpi.openmetadata.accessservices.subjectarea.client.entities.categories.SubjectAreaCategory;
-import org.odpi.openmetadata.accessservices.subjectarea.client.entities.glossaries.SubjectAreaGlossary;
-import org.odpi.openmetadata.accessservices.subjectarea.client.entities.projects.SubjectAreaProject;
-import org.odpi.openmetadata.accessservices.subjectarea.client.entities.terms.SubjectAreaTerm;
+import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.categories.SubjectAreaCategory;
+import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.glossaries.SubjectAreaGlossary;
+import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.projects.SubjectAreaProject;
+import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.terms.SubjectAreaTerm;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.SubjectAreaDefinition;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
@@ -28,11 +28,11 @@ import java.util.*;
  * {@link SubjectAreaProject}, {@link SubjectAreaGlossary}
  */
 public class SubjectAreaNode implements SubjectAreaCategory, SubjectAreaTerm, SubjectAreaProject, SubjectAreaGlossary {
-    private Map<Class<?>, SubjectAreaEntityClient<?>> cache = new HashMap<>();
+    private Map<Class<?>, SubjectAreaNodeClient<?>> cache = new HashMap<>();
     private static final String DEFAULT_SCAN_PACKAGE = SubjectAreaNode.class.getPackage().getName();
 
     /**
-     * @param packagesToScan - search packages for finding classes placed by annotation {@link SubjectAreaNodeClient}
+     * @param packagesToScan - search packages for finding classes placed by annotation {@link org.odpi.openmetadata.accessservices.subjectarea.client.nodes.SubjectAreaNodeClient}
      * @param subjectAreaRestClient - rest client for Subject Area OMAS REST APIs
      * */
     @SuppressWarnings("rawtypes")
@@ -41,14 +41,14 @@ public class SubjectAreaNode implements SubjectAreaCategory, SubjectAreaTerm, Su
         packages.add(DEFAULT_SCAN_PACKAGE);
 
         Reflections reflections = new Reflections(packages);
-        Set<Class<?>> clientClasses = reflections.getTypesAnnotatedWith(SubjectAreaNodeClient.class);
+        Set<Class<?>> clientClasses = reflections.getTypesAnnotatedWith(org.odpi.openmetadata.accessservices.subjectarea.client.nodes.SubjectAreaNodeClient.class);
         for (Class<?> declaredClass : clientClasses) {
             try {
-                if (AbstractSubjectAreaEntity.class.isAssignableFrom(declaredClass)) {
+                if (AbstractSubjectAreaNode.class.isAssignableFrom(declaredClass)) {
                     Constructor<?> ctor = declaredClass.getDeclaredConstructor(SubjectAreaRestClient.class);
                     ctor.setAccessible(true);
-                    final AbstractSubjectAreaEntity newInstance =
-                            (AbstractSubjectAreaEntity) ctor.newInstance(subjectAreaRestClient);
+                    final AbstractSubjectAreaNode newInstance =
+                            (AbstractSubjectAreaNode) ctor.newInstance(subjectAreaRestClient);
                     cache.put(newInstance.type(), newInstance);
                 }
             } catch (NoSuchMethodException
@@ -64,8 +64,8 @@ public class SubjectAreaNode implements SubjectAreaCategory, SubjectAreaTerm, Su
     }
 
     /**
-     *  The constructor uses the current package to scan "org.odpi.openmetadata.accessservices.subjectarea.client.entities"
-     *  to search for classes placed by annotation {@link SubjectAreaNodeClient}.
+     *  The constructor uses the current package to scan "org.odpi.openmetadata.accessservices.subjectarea.client.nodes"
+     *  to search for classes placed by annotation {@link org.odpi.openmetadata.accessservices.subjectarea.client.nodes.SubjectAreaNodeClient}.
      *
      * @param subjectAreaRestClient - rest client for Subject Area OMAS REST APIs
      */
@@ -74,27 +74,27 @@ public class SubjectAreaNode implements SubjectAreaCategory, SubjectAreaTerm, Su
     }
 
     @Override
-    public SubjectAreaEntityClient<Category> category() {
+    public SubjectAreaNodeClient<Category> category() {
         return getClient(Category.class);
     }
 
     @Override
-    public SubjectAreaEntityClient<SubjectAreaDefinition> subjectAreaDefinition() {
+    public SubjectAreaNodeClient<SubjectAreaDefinition> subjectAreaDefinition() {
         return getClient(SubjectAreaDefinition.class);
     }
 
     @Override
-    public SubjectAreaEntityClient<Glossary> glossary() {
+    public SubjectAreaNodeClient<Glossary> glossary() {
         return getClient(Glossary.class);
     }
 
     @Override
-    public SubjectAreaEntityClient<Project> project() {
+    public SubjectAreaNodeClient<Project> project() {
         return getClient(Project.class);
     }
 
     @Override
-    public SubjectAreaEntityClient<Term> term() {
+    public SubjectAreaNodeClient<Term> term() {
         return getClient(Term.class);
     }
 
@@ -102,12 +102,12 @@ public class SubjectAreaNode implements SubjectAreaCategory, SubjectAreaTerm, Su
      * @param <T> - {@link Line} type of object
      * @param clazz - the class for which you want to get the client from cache
      *
-     * @return SubjectAreaEntityClient or null if this client is not present
+     * @return SubjectAreaNodeClient or null if this client is not present
      * */
     @SuppressWarnings("unchecked")
-    public <T extends Node> SubjectAreaEntityClient<T> getClient(Class<T> clazz) {
+    public <T extends Node> SubjectAreaNodeClient<T> getClient(Class<T> clazz) {
         if (cache.containsKey(clazz)) {
-            return (SubjectAreaEntityClient<T>) cache.get(clazz);
+            return (SubjectAreaNodeClient<T>) cache.get(clazz);
         }
         return null;
     }

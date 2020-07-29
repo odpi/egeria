@@ -2,9 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.fvt;
 
-import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaEntityClient;
+import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaNodeClient;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaRestClient;
-import org.odpi.openmetadata.accessservices.subjectarea.client.entities.categories.SubjectAreaDefinitionClient;
+import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.categories.SubjectAreaDefinitionClient;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.SubjectAreaDefinition;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
@@ -30,7 +30,7 @@ public class SubjectAreaDefinitionCategoryFVT
     private static final String DEFAULT_TEST_CATEGORY_NAME_UPDATED = "Test subject area definition A updated";
     private static final String DEFAULT_TEST_CATEGORY_NAME2 = "Test subject area definition B";
     private static final String DEFAULT_TEST_CATEGORY_NAME3 = "Test subject area definition C";
-    private static SubjectAreaEntityClient<SubjectAreaDefinition> subjectAreaCategory = null;
+    private static SubjectAreaNodeClient<SubjectAreaDefinition> subjectAreaCategory = null;
     private GlossaryFVT glossaryFVT =null;
     private String userId = null;
     private int existingSubjectAreaCount = 0;
