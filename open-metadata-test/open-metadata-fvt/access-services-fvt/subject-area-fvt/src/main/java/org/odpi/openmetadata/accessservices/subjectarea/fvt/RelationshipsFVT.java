@@ -2,9 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.fvt;
 
-import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaEntityClient;
+import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaNodeClient;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaRestClient;
-import org.odpi.openmetadata.accessservices.subjectarea.client.entities.categories.SubjectAreaCategoryClient;
+import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.categories.SubjectAreaCategoryClient;
 import org.odpi.openmetadata.accessservices.subjectarea.client.relationships.SubjectAreaRelationship;
 import org.odpi.openmetadata.accessservices.subjectarea.client.relationships.SubjectAreaLine;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
@@ -35,7 +35,7 @@ public class RelationshipsFVT {
     private static final String DEFAULT_TEST_CAT_NAME3 = "Test cat C1";
     private static final String DEFAULT_TEST_CAT_NAME4 = "Test cat D1";
     private SubjectAreaRelationship subjectAreaRelationship = null;
-    private SubjectAreaEntityClient<Category> subjectAreaCategory = null;
+    private SubjectAreaNodeClient<Category> subjectAreaCategory = null;
     private GlossaryFVT glossaryFVT = null;
     private TermFVT termFVT = null;
     private CategoryFVT catFVT = null;
