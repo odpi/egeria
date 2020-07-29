@@ -133,7 +133,7 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
 
       <app-route route="{{route}}" pattern="/:page" data="{{routeData}}" tail="{{tail}}"></app-route>
        
-      <toast-feedback duration="0"></toast-feedback> 
+      <toast-feedback></toast-feedback> 
        
         <template is="dom-if" if="[[!token]]"  restamp="true">
             <login-view id="loginView" token="{{token}}"></login-view>
