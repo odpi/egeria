@@ -37,7 +37,9 @@ export async function issueRestGet(url, onSuccessful, onError ) {
       } else {
         msg = "Get Failed - unexpected response" + JSON.stringify(res);
       }
-      onError(msg);
+      if (msg) {
+        onError(msg);
+      }
     }
   } catch (msg) {
     onError(msg);

@@ -89,6 +89,7 @@ const NodeController = (props) => {
     setExactMatch(flag);
   };
   const onSearchCriteria = (criteria) => {
+    console.log("onSearchCriteria " + criteria);
     setErrorMsg("");
     setSearchCriteria(criteria);
   };
@@ -96,7 +97,6 @@ const NodeController = (props) => {
     setSearchTableRows(rows);
     setSearchTableKey(searchTableKey + 1);
   };
-
   // driven when pagination options have changed - page size or page number
   const onPagination = (options) => {
     console.log("onPaginationChange");
@@ -336,7 +336,7 @@ const NodeController = (props) => {
               <div className="actions-item">
                 <NodeSearchView
                   tableKey={searchTableKey}
-                  searchTableRows={searchTableRows}
+                  tableRows={searchTableRows}
                   pageSize={pageSize}
                   total={total}
                   pageNumber={pageNumber}

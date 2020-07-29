@@ -149,7 +149,6 @@ const GlossaryAuthorContextProvider = (props) => {
         return {
           ...state,
           operation: Operations.SEARCHING,
-          currentNodeType: undefined,
           selectedNode: undefined,
         };
       case Types.SEARCHED.toString():
@@ -242,7 +241,7 @@ const GlossaryAuthorContextProvider = (props) => {
   };
 
   const doCreatingAction = () => {
-    console.log("setCreatingAction");
+    console.log("doCreatingAction");
     dispatch({ type: Types.CREATING });
   };
 
@@ -251,7 +250,7 @@ const GlossaryAuthorContextProvider = (props) => {
   };
 
   const doSearchingAction = () => {
-    console.log("setSearchingAction");
+    console.log("doSearchingAction");
     dispatch({ type: Types.SEARCHING });
   };
   const doSearchedAction = () => {

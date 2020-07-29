@@ -481,8 +481,7 @@ const NodeSearchView = (props) => {
               radio
               key={props.tableKey}
               isSortable
-              // rows={props.tableRows}
-              rows={[]}
+              rows={props.tableRows}
               headers={headerData}
               render={({
                 rows,
