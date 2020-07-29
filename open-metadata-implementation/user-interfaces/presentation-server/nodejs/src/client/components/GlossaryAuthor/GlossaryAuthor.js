@@ -121,14 +121,14 @@ export default function GlossaryAuthor() {
         <GlossaryAuthorContext>
           <div className='my-container'>
             <span className='my-item'>
-              Project
-              <Egeria_project_32 />
-              <MyNodeView typeKey="project" />
-            </span>
-            <span className='my-item'>
-              Glossary
+              Current Glossary
               <Egeria_glossary_32 />
               <MyNodeView typeKey="glossary" />
+            </span>
+            <span className='my-item'>
+              Current Project
+              <Egeria_project_32 />
+              <MyNodeView typeKey="project" />
             </span>
           </div>
           <GlossaryAuthorNodes />

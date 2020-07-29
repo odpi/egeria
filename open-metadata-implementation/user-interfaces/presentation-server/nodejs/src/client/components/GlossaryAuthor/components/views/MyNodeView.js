@@ -14,7 +14,7 @@ const MyNodeView = props => {
     return (
       <span>
         <Button kind="primary" onClick={() => glossaryAuthorContext.doCreatingMyGlossary()}>
-          {glossaryAuthorContext.myGlossary ? glossaryAuthorContext.myGlossary.name : "Choose My Glossary"}
+          {glossaryAuthorContext.myGlossary ? glossaryAuthorContext.myGlossary.name : "None"}
         </Button>
       </span>
     );
@@ -22,7 +22,7 @@ const MyNodeView = props => {
     return (
       <span>
        <Button kind="primary" onClick={() => glossaryAuthorContext.doCreatingMyProject()}>
-          {glossaryAuthorContext.myProject ? glossaryAuthorContext.myProject.name : "Choose My Project"}
+          {glossaryAuthorContext.myProject ? glossaryAuthorContext.myProject.name : "None"}
         </Button>
       </span>
     );

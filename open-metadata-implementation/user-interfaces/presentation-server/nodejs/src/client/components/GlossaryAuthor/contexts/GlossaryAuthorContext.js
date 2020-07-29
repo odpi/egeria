@@ -215,12 +215,11 @@ const GlossaryAuthorContextProvider = (props) => {
     dispatch({ type: Types.CREATING_MY_PROJECT });
   };
   /**
-   * Is setup complete - i.e. have we set uyp the glossary and project we want to uthor in and were not currently editting them
+   * Is setup complete - i.e. have we set up the current glossary we want to author in and were not currently editting current glossary or current project
    */
   const isSetupComplete = () => {
     return (
       myGlossary &&
-      myProject &&
       myEdittingType && 
       myEdittingType.toString() == MyEdittingTypes.NONE.toString()
     );
