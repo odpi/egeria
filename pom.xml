@@ -126,7 +126,7 @@
         <junit.jupiter.version>5.6.2</junit.jupiter.version>
         <junit.version>4.13</junit.version>
         <surefire.plugin.version>3.0.0-M4</surefire.plugin.version>
-        <mockito.version>3.4.4</mockito.version>
+        <mockito.version>3.4.6</mockito.version>
         <testng.version>7.1.0</testng.version>
         <slf4j.version>1.7.30</slf4j.version>
         <logback.version>1.2.3</logback.version>
@@ -167,7 +167,7 @@
         <commons-codec.version>1.14</commons-codec.version>
         <json-sanitizer.version>1.2.1</json-sanitizer.version>
         <googlefindbugs.version>3.0.2</googlefindbugs.version>
-        <oss.version>4.7.2</oss.version>
+        <oss.version>4.8.0</oss.version>
         <spotbugs-annotations.version>4.0.6</spotbugs-annotations.version>
         <sleepycat.version>18.3.12</sleepycat.version>
         <joda.version>2.10.6</joda.version>

@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.subjectarea.client.entities;
+package org.odpi.openmetadata.accessservices.subjectarea.client.nodes;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
