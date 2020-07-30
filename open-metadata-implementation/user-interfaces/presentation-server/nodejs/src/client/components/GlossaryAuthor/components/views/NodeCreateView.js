@@ -24,29 +24,29 @@ import {
 import { GlossaryAuthorContext } from "../../contexts/GlossaryAuthorContext";
 import Info16 from "@carbon/icons-react/lib/information/16";
 
-function NodeCreate(props) {
-  console.log("Nodecreate");
+function NodeCreateView(props) {
+  console.log("NodeCreateView");
 
   const glossaryAuthorContext = useContext(GlossaryAuthorContext);
-  console.log("NodeCreate glossaryAuthorContext", glossaryAuthorContext);
+  console.log("NodeCreateView glossaryAuthorContext", glossaryAuthorContext);
 
-  const [errorMsg, setErrorMsg] = useState();
+  // const [errorMsg, setErrorMsg] = useState();
   const [createBody, setCreateBody] = useState({});
-  const [createResponse, setCreateResponse] = useState(undefined);
+  // const [createdNode, setcreatedNode] = useState(undefined);
 
-  useEffect(() => {
+  // useEffect(() => {
     // Update the document title using the browser API
-    if (
-      glossaryAuthorContext.authoringActionState == 1 
-    )
-      setCreateResponse(undefined);
-  });
+    // if (
+    //   glossaryAuthorContext.authoringOperation == 1 
+    // )
+      // setcreatedNode(undefined);
+  // });
   /**
    * If there was an error the button has a class added to it to cause it to shake. After the animation ends, we need to remove the class.
    * @param {*} e end anomation event
    */
   const handleOnAnimationEnd = (e) => {
-    document.getElementById("nodeCreateButton").classList.remove("shaker");
+    document.getElementById("NodeCreateViewButton").classList.remove("shaker");
   };
 
   const handleClick = (e) => {
@@ -64,71 +64,7 @@ function NodeCreate(props) {
       glossary.guid = glossaryAuthorContext.myGlossary.systemAttributes.guid;
       body.glossary = glossary;
     }
-
-    console.log("Body to be submitted is " + JSON.stringify(body));
-    console.log("URL to be submitted is " + nodeType.url);
-
-    fetch(nodeType.url, {
-      method: "post",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(body),
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        console.log("create worked " + JSON.stringify(res));
-
-        if (res.relatedHTTPCode == 200 && res.result && res.result[0]) {
-          const nodeResponse = res.result[0]; 
-          glossaryAuthorContext.setCreatedActionState();
-          setCreateResponse(nodeResponse);
-          if (glossaryAuthorContext.myState == 1) {
-            glossaryAuthorContext.setMyGlossary(nodeResponse);
-            glossaryAuthorContext.setMyGlossaryLabel(nodeResponse.name);
-            glossaryAuthorContext.setMyGlossaryState();
-          } else if (glossaryAuthorContext.myState == 2) {
-            glossaryAuthorContext.setMyProject(nodeResponse);
-            glossaryAuthorContext.setMyProjectLabel(nodeResponse.name);
-            glossaryAuthorContext.setMyProjectState();
-          }
-
-          // check if fully setup - we might still have only set the myProject or myGlossary (not both)
-          if (
-            glossaryAuthorContext.myProject &&
-            glossaryAuthorContext.myGlossary
-          ) {
-            glossaryAuthorContext.setMyState(5);
-          }
-        } else {
-          let msg = "";
-          // if this is a formatted Egeria response, we have a user action
-          if (res.relatedHTTPCode) {
-            if (res.exceptionUserAction) {
-              msg = "Create Failed: " + res.exceptionUserAction;
-            } else {
-              msg =
-                "Create Failed unexpected Egeria response: " +
-                JSON.stringify(res);
-            }
-          } else if (res.errno) {
-            if (res.errno == "ECONNREFUSED") {
-              msg = "Connection refused to the view server.";
-            } else {
-              // TODO create nice messages for all the http codes we think are relevant
-              msg = "Create Failed with http errno " + res.errno;
-            }
-          } else {
-            msg = "Create Failed - unexpected response" + JSON.stringify(res);
-          }
-          setErrorMsg(msg);
-          document.getElementById("nodeCreateButton").classList.add("shaker");
-        }
-      })
-      .catch((res) => {
-        setErrorMsg("Create Failed - logic error");
-      });
+    props.issueCreate(body);
   };
   const validateForm = () => {
     //TODO consider marking name as manditory in the nodetype definition
@@ -140,6 +76,7 @@ function NodeCreate(props) {
     return "text-input-" + labelKey;
   };
   const setAttribute = (item, value) => {
+    console.log("setAttribute " + item.key + ",value="+value);
     let myCreateBody = createBody;
     myCreateBody[item.key] = value;
     setCreateBody(myCreateBody);
@@ -156,14 +93,14 @@ function NodeCreate(props) {
   ];
 
   const getCreatedTableTitle = () => {
-    return "Successfully created " + createResponse.name;
+    return "Successfully created " + props.createdNode.name;
   };
 
   const getCreatedTableAttrRowData = () => {
     let rowData = [];
     const attributes = glossaryAuthorContext.currentNodeType.attributes;
 
-    for (var prop in createResponse) {
+    for (var prop in props.createdNode) {
       if (
         prop != "systemAttributes" &&
         prop != "glossary" &&
@@ -184,7 +121,7 @@ function NodeCreate(props) {
           }
         }
 
-        let value = createResponse[prop];
+        let value = props.createdNode[prop];
         // TODO deal with the other types (and null? and arrays?) properly
         value = JSON.stringify(value);
         row.value = value;
@@ -195,7 +132,7 @@ function NodeCreate(props) {
   };
   const getSystemDataRowData = () => {
     let rowData = [];
-    const systemAttributes = createResponse.systemAttributes;
+    const systemAttributes = props.createdNode.systemAttributes;
     for (var prop in systemAttributes) {
       let row = {};
       row.id = prop;
@@ -220,7 +157,7 @@ function NodeCreate(props) {
 
   return (
     <div>
-      {glossaryAuthorContext.currentNodeType && createResponse && (
+      {glossaryAuthorContext.currentNodeType && props.createdNode != undefined  && (
         <div>
           <DataTable
             isSortable
@@ -232,7 +169,7 @@ function NodeCreate(props) {
                   <TableHead>
                     <TableRow>
                       {headers.map((header) => (
-                        <TableHeader {...getHeaderProps({ header })}>
+                        <TableHeader key={header.key} {...getHeaderProps({ header })}>
                           {header.header}
                         </TableHeader>
                       ))}
@@ -254,7 +191,7 @@ function NodeCreate(props) {
 
           <Accordion>
             <AccordionItem title="System Attributes">
-              <div class="bx--form-item">
+              <div className="bx--form-item">
                 <DataTable
                   isSortable
                   rows={getSystemDataRowData()}
@@ -265,7 +202,7 @@ function NodeCreate(props) {
                         <TableHead>
                           <TableRow>
                             {headers.map((header) => (
-                              <TableHeader {...getHeaderProps({ header })}>
+                              <TableHeader key={header.key} {...getHeaderProps({ header })}>
                                 {header.header}
                               </TableHeader>
                             ))}
@@ -292,7 +229,7 @@ function NodeCreate(props) {
         </div>
       )}
 
-      {glossaryAuthorContext.currentNodeType && !createResponse && (
+      {glossaryAuthorContext.currentNodeType && props.createdNode == undefined && (
         <div>
           <form>
             <div>
@@ -306,17 +243,17 @@ function NodeCreate(props) {
             </div>
 
             {glossaryAuthorContext.currentNodeType &&
-              !createResponse &&
+              props.createdNode == undefined &&
               glossaryAuthorContext.currentNodeType.attributes.map((item) => {
                 return (
-                  <div class="bx--form-item">
-                    <label for={createLabelId(item.key)} class="bx--label">
+                  <div className="bx--form-item" key={item.key}>
+                    <label htmlFor={createLabelId(item.key)} className="bx--label">
                       {item.label} <Info16 />
                     </label>
                     <input
                       id={createLabelId(item.key)}
                       type="text"
-                      class="bx--text-input"
+                      className="bx--text-input"
                       value={item.name}
                       onChange={(e) => setAttribute(item, e.target.value)}
                       placeholder={item.label}
@@ -343,10 +280,10 @@ function NodeCreate(props) {
               </AccordionItem>
             </Accordion>
 
-            <div class="bx--form-item">
+            <div className="bx--form-item">
               <button
-                id="nodeCreateButton"
-                class="bx--btn bx--btn--primary"
+                id="NodeCreateViewButton"
+                className="bx--btn bx--btn--primary"
                 disabled={!validateForm()}
                 onClick={handleClick}
                 onAnimationEnd={handleOnAnimationEnd}
@@ -354,7 +291,6 @@ function NodeCreate(props) {
               >
                 Create
               </button>
-              <div style={{ color: "red" }}>{errorMsg}</div>
             </div>
           </form>
         </div>
@@ -363,4 +299,4 @@ function NodeCreate(props) {
   );
 }
 
-export default NodeCreate;
+export default NodeCreateView;
