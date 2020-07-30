@@ -75,5 +75,15 @@
 			<artifactId>mockito-junit-jupiter</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.odpi.egeria</groupId>
+			<artifactId>ffdc-services</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.odpi.egeria</groupId>
+			<artifactId>audit-log-framework</artifactId>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 </project>
