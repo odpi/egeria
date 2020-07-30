@@ -247,158 +247,17 @@ const NodeSearchView = (props) => {
     });
     return items;
   }
-  // // issue the get rest call for particular guid
-  // function issueGet(guid) {
-  //   const url = glossaryAuthorContext.currentNodeType.url + "/" + guid;
-  //   console.log("issueGet " + url);
-  //   let msg = "";
-  //   return fetch(url, {
-  //     method: "get",
-  //     headers: {
-  //       Accept: "application/json",
-  //       "Content-Type": "application/json",
-  //     },
-  //   })
-  //     .then((res) => res.json())
-  //     .then((res) => {
-  //       console.log("get completed " + JSON.stringify(res));
-  //       if (res.relatedHTTPCode == 200 && res.result) {
-  //         console.log("Get successful for guid " + guid);
-  //         console.log("res.result) " + res.result);
-  //         if (res.result.length == 1) {
-  //           glossaryAuthorContext.updateSelectedNode(res.result[0]);
-  //           console.log("glossaryAuthorContext.selectedNode");
-  //           console.log(glossaryAuthorContext.selectedNode);
-  //         }
-  //       } else {
-  //         // if this is a formatted Egeria response, we have a user action
-  //         if (res.relatedHTTPCode) {
-  //           if (res.exceptionUserAction) {
-  //             msg = "Get Failed: " + res.exceptionUserAction;
-  //           } else {
-  //             msg =
-  //               "Get Failed unexpected Egeria response: " + JSON.stringify(res);
-  //           }
-  //         } else if (res.errno) {
-  //           if (res.errno == "ECONNREFUSED") {
-  //             msg = "Connection refused to the view server.";
-  //           } else {
-  //             // TODO create nice messages for all the http codes we think are relevant
-  //             msg = "Get Failed with http errno " + res.errno;
-  //           }
-  //         } else {
-  //           msg = "Get Failed - unexpected response" + JSON.stringify(res);
-  //         }
-  //         setErrorMsg(errorMsg + ",\n" + msg);
-  //         document.getElementById("nodeCreateButton").classList.add("shaker");
-  //       }
-  //     })
-  //     .catch((res) => {
-  //       const msg = "Get Failed - logic error " + JSON.stringify(res);
-  //       setErrorMsg(errorMsg + ",\n" + msg);
-  //     });
-  // }
+  
   const onClickExactMatch = () => {
     console.log("onClickExactMatch");
     const checkBox = document.getElementById("exactMatch");
     props.onExactMatch(checkBox.checked);
   };
-  // const onSelectRow = (row) => {
-  //   console.log("onSelectRow");
-  //   issueGet(row.id);
-  // };
-  // // issue search using a criteria
-  // function issueSearch(criteria) {
-  //   setPageNumber(1);
-  //   setTotal(0);
-  //   let actualCriteria = criteria;
-  //   if (!exactMatch) {
-  //     actualCriteria = criteria + ".*";
-  //   }
-
-  //   // encode the URI. Be aware the more recent RFC3986 for URLs makes use of square brackets which are reserved (for IPv6)
-  //   const fetchUrl = encodeURI(
-  //     glossaryAuthorContext.currentNodeType.url +
-  //       "?offset=0&pageSize=1000&searchCriteria=" +
-  //       actualCriteria
-  //   );
-  //   return fetch(fetchUrl, {
-  //     method: "get",
-  //     headers: {
-  //       Accept: "application/json",
-  //       "Content-Type": "application/json",
-  //     },
-  //   })
-  //     .then((res) => res.json())
-  //     .then((res) => {
-  //       if (res.relatedHTTPCode == 200 && res.result) {
-  //         const nodesArray = res.result;
-  //         let msg = "";
-  //         // if there is a node response then we have successfully updated a node
-  //         if (nodesArray) {
-  //           if (nodesArray.length > 0) {
-  //             let nodeRows = nodesArray.map(function (node) {
-  //               let row = {};
-  //               for (const property in node) {
-  //                 console.log("result property is ", property);
-  //                 if (property == "glossary") {
-  //                   const glossary = node[property];
-  //                   row.glossaryName = glossary.name;
-  //                   row.glossaryGuid = glossary.guid;
-  //                 } else if (property == "systemAttributes") {
-  //                   row.guid = node[property].guid;
-  //                   row.id = node[property].guid;
-  //                 } else {
-  //                   row[property] = node[property];
-  //                 }
-  //               }
-  //               return row;
-  //             });
-  //             //setResults(nodeRows);
-  //             setCurrentPage(nodeRows.slice(0, pageSize));
-  //             setTotal(nodeRows.length);
-  //             setTableKey(tableKey+1);
-  //             return nodeRows;
-  //           } else {
-  //             // no results
-  //             // setResults([]);
-  //             setCurrentPage([]);
-  //             setTotal(0);
-  //             setTableKey(tableKey+1);
-  //             return [];
-  //           }
-
-  //         } else if (res.relatedHTTPCode) {
-  //           if (res.exceptionUserAction) {
-  //             msg = "Search Failed: " + res.exceptionUserAction;
-  //           } else {
-  //             msg =
-  //               "search Failed unexpected Egeria response: " +
-  //               JSON.stringify(res);
-  //           }
-  //         } else if (res.errno) {
-  //           if (res.errno == "ECONNREFUSED") {
-  //             msg = "Connection refused to the view server.";
-  //           } else {
-  //             // TODO create nice messages for all the http codes we think are relevant
-  //             msg = "Search Failed with http errno " + res.errno;
-  //           }
-  //         } else {
-  //           msg = "Search Failed - unexpected response" + JSON.stringify(res);
-  //         }
-  //         setErrorMsg(msg);
-  //         // no results
-  //         setResults([]);
-  //         setCurrentPage([]);
-  //         setTotal(0);
-  //         setTableKey(tableKey+1);
-  //       }
-  //     })
-  //     .catch((res) => {
-  //       setErrorMsg("Search Failed" + JSON.stringify(res));
-  //       setTableKey(tableKey+1);
-  //     });
-  // }
+  const onSelectRow = (row) => {
+    console.log("onSelectRow");
+    props.onSelectRow(row);
+  };
+ 
   return (
     <div className="top-search-container">
       <div className="top-search-item">

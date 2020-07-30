@@ -117,7 +117,7 @@ const NodeController = (props) => {
       } else if (glossaryAuthorContext.isEdittingMyProject()) {
         glossaryAuthorContext.doCreatedMyProject(node);
       } else {
-        // future thought consider passing the created node to save in context.
+        // future: consider passing the created node to save in context.
         glossaryAuthorContext.doCreatedAction();
       }
     } else {
@@ -139,20 +139,15 @@ const NodeController = (props) => {
   const onErrorGet = (msg) => {
     console.log("Error on Get " + msg);
     setErrorMsg(msg);
-    // TODO should we reset the selected node here instead?
-    //glossaryAuthorContext.updateSelectedNode(undefined);
     glossaryAuthorContext.doRefreshSearchAction();
   };
   const onErrorDelete = (msg) => {
     console.log("Error on delete " + msg);
     setErrorMsg(msg);
-    // glossaryAuthorContext.updateSelectedNode(undefined);
-    glossaryAuthorContext.doRefreshSearchAction();
+    issueSearch(debouncedSearchCriteria);
   };
   const onSuccessfulDelete = () => {
-    //glossaryAuthorContext.updateSelectedNode(undefined);
-    // refresh the search results and unset selected node if the current node is not there.
-    glossaryAuthorContext.doRefreshSearchAction();
+    issueSearch(debouncedSearchCriteria);
   };
 
   const onSuccessfulSearch = (json) => {
@@ -190,6 +185,7 @@ const NodeController = (props) => {
       // Set results state
       setResults([]);
     }
+    glossaryAuthorContext.doSearchedAction();
   };
   const onErrorSearch = (msg) => {
     console.log("Error " + msg);
@@ -198,6 +194,7 @@ const NodeController = (props) => {
     updateSearchTableRows([]);
     setTotal(0);
     setIsSearching(false);
+    glossaryAuthorContext.doSearchedAction();
   };
   // refresh the displayed search results
   // this involves taking the results from state and calculating what we need to display pased on the pagination options
@@ -268,7 +265,7 @@ const NodeController = (props) => {
     issueRestCreate(url, body, onSuccessfulCreate, onErrorCreate);
   }
   const onSelectRow = (row) => {
-    console.log("onSelectRow");
+    console.log("onSelectRow issueGet");
     issueGet(row.id);
   };
 
@@ -295,11 +292,6 @@ const NodeController = (props) => {
     const url = glossaryAuthorContext.currentNodeType.url + "/" + guid;
     issueRestDelete(url, onSuccessfulDelete, onErrorDelete);
   }
-
-  // if (glossaryAuthorContext.isRefreshSearchOperation()) {
-  //   console.log("Refreshing search");
-  //   issueSearch(debouncedSearchCriteria);
-  // }
   <div style={{ color: "red" }}>{errorMsg}</div>;
 
   if (glossaryAuthorContext.currentNodeType === undefined) {
@@ -330,6 +322,7 @@ const NodeController = (props) => {
           {glossaryAuthorContext.isCreatedOperation() && (
             <NodeCreateView createdNode={createdNode} />
           )}
+
           {(glossaryAuthorContext.isSearchingOperation() ||
             glossaryAuthorContext.isSearchedOperation()) && (
             <div className="actions-container">
@@ -341,7 +334,7 @@ const NodeController = (props) => {
                   total={total}
                   pageNumber={pageNumber}
                   onPagination={onPagination}
-                  onSelect={onSelectRow}
+                  onSelectRow={onSelectRow}
                   onExactMatch={onExactMatch}
                   onSearchCriteria={onSearchCriteria}
                 />
@@ -349,33 +342,6 @@ const NodeController = (props) => {
               {glossaryAuthorContext.selectedNode && (
                 <div className="actions-item">
                   <NodeUpdateView />
-                </div>
-              )}
-            </div>
-          )}
-          {(glossaryAuthorContext.isRefreshSearchOperation() ||
-            glossaryAuthorContext.isDeletingOperation()) && (
-            <div className="actions-container">
-              <div className="actions-item">
-                <NodeSearchView
-                  tableKey={searchTableKey}
-                  searchTableRows={searchTableRows}
-                  pageSize={pageSize}
-                  total={total}
-                  pageNumber={pageNumber}
-                  onPagination={onPagination}
-                  onSelect={onSelectRow}
-                  onExactMatch={onExactMatch}
-                  onSearchCriteria={onSearchCriteria}
-                />
-              </div>
-              {glossaryAuthorContext.selectedNode && (
-                <div className="actions-item">
-                  <NodeUpdateView
-                    key={
-                      glossaryAuthorContext.selectedNode.systemAttributes.guid
-                    }
-                  />
                 </div>
               )}
             </div>

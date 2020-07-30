@@ -320,7 +320,7 @@ const GlossaryAuthorContextProvider = (props) => {
     return Operations.SEARCHED.toString() == operation.toString();
   };
   const isRefreshSearchOperation = () => {
-    return Operations.REFRESH.toString() == operation.toString();
+    return Operations.REFRESH.toString() == operation.toString();  
   };
   const isDeletingOperation = () => {
     return Operations.DELETING.toString() == operation.toString();

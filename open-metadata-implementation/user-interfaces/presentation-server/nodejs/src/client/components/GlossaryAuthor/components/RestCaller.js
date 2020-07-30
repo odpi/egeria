@@ -4,7 +4,7 @@ import React, { useState, useContext } from "react";
 
 import { GlossaryAuthorContext } from "../contexts/GlossaryAuthorContext";
 
-export async function issueRestGet(url, onSuccessful, onError ) {
+export async function issueRestGet(url, onSuccessful, onError) {
   try {
     const response = await fetch(url, {
       method: "get",
@@ -15,8 +15,8 @@ export async function issueRestGet(url, onSuccessful, onError ) {
     });
     const json = await response.json();
 
-    if (json.relatedHTTPCode == 200 && json.result) {
-      let msg = "";
+    if (json.relatedHTTPCode == 200) {
+      let msg;
       if (json.result) {
         onSuccessful(json);
       } else if (json.relatedHTTPCode) {
@@ -24,8 +24,7 @@ export async function issueRestGet(url, onSuccessful, onError ) {
           msg = "Get Failed: " + json.exceptionUserAction;
         } else {
           msg =
-            "Get Failed unexpected Egeria response: " +
-            JSON.stringify(json);
+            "Get Failed unexpected Egeria response: " + JSON.stringify(json);
         }
       } else if (response.errno) {
         if (response.errno == "ECONNREFUSED") {
@@ -43,7 +42,7 @@ export async function issueRestGet(url, onSuccessful, onError ) {
     }
   } catch (msg) {
     onError(msg);
-  } 
+  }
 }
 
 export async function issueRestCreate(url, body, onSuccessful, onError) {
@@ -53,43 +52,42 @@ export async function issueRestCreate(url, body, onSuccessful, onError) {
       method: "post",
       headers: {
         Accept: "application/json",
-       "Content-Type": "application/json",
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(body),
     });
     const json = await response.json();
     let msg;
     if (json.relatedHTTPCode == 200 && json.result && json.result[0]) {
-        onSuccessful(json);
+      onSuccessful(json);
     } else if (json.relatedHTTPCode) {
-        if (json.exceptionUserAction) {
-          msg = "Create Failed: " + json.exceptionUserAction;
-        } else {
-          msg =
-            "Create Failed unexpected Egeria response: " +
-            JSON.stringify(json);
-        }
+      if (json.exceptionUserAction) {
+        msg = "Create Failed: " + json.exceptionUserAction;
+      } else {
+        msg =
+          "Create Failed unexpected Egeria response: " + JSON.stringify(json);
+      }
     } else if (response.errno) {
-        if (response.errno == "ECONNREFUSED") {
-          msg = "Connection refused to the view server.";
-        } else {
-          // TODO create nice messages for all the http codes we think are relevant
-          msg = "Create Failed with http errno " + response.errno;
-        }
+      if (response.errno == "ECONNREFUSED") {
+        msg = "Connection refused to the view server.";
+      } else {
+        // TODO create nice messages for all the http codes we think are relevant
+        msg = "Create Failed with http errno " + response.errno;
+      }
     } else {
-        msg = "Create Failed - unexpected response" + JSON.stringify(res);
+      msg = "Create Failed - unexpected response" + JSON.stringify(res);
     }
     if (msg) {
       onError(msg);
     }
   } catch (msg) {
     onError(msg);
-  } 
+  }
 }
 
-export async function issueRestRestDelete(deleteUrl, onSuccessful, onError ) {
+export async function issueRestDelete(deleteUrl, onSuccessful, onError) {
   try {
-    const response = await fetch(fetchUrl, {
+    const response = await fetch(deleteUrl, {
       method: "delete",
       headers: {
         Accept: "application/json",
@@ -105,9 +103,7 @@ export async function issueRestRestDelete(deleteUrl, onSuccessful, onError ) {
         if (json.exceptionUserAction) {
           msg = "Delete Failed: " + json.exceptionUserAction;
         } else {
-          msg =
-            "Delete Failed unexpected Egeria response: " +
-            JSON.stringify(json);
+          onSuccessful(json);
         }
       } else if (response.errno) {
         if (response.errno == "ECONNREFUSED") {
@@ -117,7 +113,8 @@ export async function issueRestRestDelete(deleteUrl, onSuccessful, onError ) {
           msg = "Delete Failed with http errno " + response.errno;
         }
       } else {
-        onSuccessful(json);
+        msg =
+          "Delete Failed unexpected Egeria response: " + JSON.stringify(json);
       }
       if (msg) {
         onError(msg);
@@ -125,46 +122,44 @@ export async function issueRestRestDelete(deleteUrl, onSuccessful, onError ) {
     }
   } catch (msg) {
     onError(msg);
-  }     
-  
+  }
 }
 
-export async function  issueUpdate(url, body, onSuccessful, onError) {
+export async function issueUpdate(url, body, onSuccessful, onError) {
   try {
     const response = await fetch(url, {
       method: "put",
       headers: {
         Accept: "application/json",
-       "Content-Type": "application/json",
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(body),
     });
     const json = await response.json();
     let msg;
     if (json.relatedHTTPCode == 200 && json.result && json.result[0]) {
-        onSuccessful(json);
+      onSuccessful(json);
     } else if (json.relatedHTTPCode) {
-        if (json.exceptionUserAction) {
-          msg = "Update Failed: " + json.exceptionUserAction;
-        } else {
-          msg =
-            "Update Failed unexpected Egeria response: " +
-            JSON.stringify(json);
-        }
+      if (json.exceptionUserAction) {
+        msg = "Update Failed: " + json.exceptionUserAction;
+      } else {
+        msg =
+          "Update Failed unexpected Egeria response: " + JSON.stringify(json);
+      }
     } else if (response.errno) {
-        if (response.errno == "ECONNREFUSED") {
-          msg = "Connection refused to the view server.";
-        } else {
-          // TODO create nice messages for all the http codes we think are relevant
-          msg = "Delete Failed with http errno " + response.errno;
-        }
+      if (response.errno == "ECONNREFUSED") {
+        msg = "Connection refused to the view server.";
+      } else {
+        // TODO create nice messages for all the http codes we think are relevant
+        msg = "Update Failed with http errno " + response.errno;
+      }
     } else {
-        msg = "Delete Failed - unexpected response" + JSON.stringify(res);
+      msg = "Update Failed - unexpected response" + JSON.stringify(res);
     }
     if (msg) {
       onError(msg);
     }
   } catch (msg) {
     onError(msg);
-  } 
+  }
 }
