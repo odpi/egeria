@@ -7,6 +7,7 @@ import {
   DatePicker,
   DatePickerInput,
   DataTable,
+  FormGroup,
   TableContainer,
   Table,
   TableHead,
@@ -14,6 +15,7 @@ import {
   TableCell,
   TableHeader,
   TableBody,
+  TextInput
 } from "carbon-components-react";
 
 import { GlossaryAuthorContext } from "../../contexts/GlossaryAuthorContext";
@@ -91,45 +93,9 @@ function NodeUpdateView(props) {
       key: "value",
     },
   ];
-
-  // const getTableAttrRowData = () => {
-  //   let rowData = [];
-  //   const attributes = glossaryAuthorContext.currentNodeType.attributes;
-
-  //   for (var prop in glossaryAuthorContext.selectedNode) {
-  //     if (
-  //       prop != "systemAttributes" &&
-  //       prop != "glossary" &&
-  //       prop != "classifications" &&
-  //       prop != "class"
-  //     ) {
-  //       let row = {};
-  //       row.id = prop;
-  //       row.attrName = prop;
-  //       // if we know about the attribute then use the label.
-  //       if (prop == "nodeType") {
-  //         row.attrName = "Node Type";
-  //       } else {
-  //         for (var i = 0; i < attributes.length; i++) {
-  //           if (attributes[i].key == prop) {
-  //             row.attrName = attributes[i].label;
-  //           }
-  //         }
-  //       }
-
-  //       let value = updateResponse[prop];
-  //       // TODO deal with the other types (and null? and arrays?) properly
-  //       value = JSON.stringify(value);
-  //       row.value = value;
-  //       rowData.push(row);
-  //     }
-  //   }
-  //   return rowData;
-  // };
-
   return (
     <div>
-      <form>
+      <FormGroup>
         <div>
           <h4>
             Update{" "}
@@ -145,17 +111,14 @@ function NodeUpdateView(props) {
               <label htmlFor={createLabelId(item.key)} className="bx--label">
                 {item.label} <Info16 />
               </label>
-              <input
+              <TextInput
                 id={createLabelId(item.key)}
                 type="text"
                 className="bx--text-input"
-                value={glossaryAuthorContext.selectedNode[item.key]}
-                //value={item.name}
+                defaultValue={glossaryAuthorContext.selectedNode[item.key]}
                 onChange={(e) => setAttribute(item, e.target.value)}
                 placeholder={item.label}
-              >
-                {glossaryAuthorContext.selectedNode[item.name]}
-              </input>
+              />
             </div>
           );
         })}
@@ -227,7 +190,7 @@ function NodeUpdateView(props) {
           </button>
           <div style={{ color: "red" }}>{errorMsg}</div>
         </div>
-      </form>
+      </FormGroup>
     </div>
   );
 }

@@ -87,6 +87,7 @@ const NodeController = (props) => {
   };
   const onExactMatch = (flag) => {
     setExactMatch(flag);
+    refreshSearchResults();
   };
   const onSearchCriteria = (criteria) => {
     console.log("onSearchCriteria " + criteria);
