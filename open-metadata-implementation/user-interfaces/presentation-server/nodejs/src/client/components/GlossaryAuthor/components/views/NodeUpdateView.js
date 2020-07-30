@@ -48,58 +48,7 @@ function NodeUpdateView(props) {
       glossary.guid = glossaryAuthorContext.myGlossary.systemAttributes.guid;
       body.glossary = glossary;
     }
-    const url =
-      nodeType.url +
-      "/" +
-      glossaryAuthorContext.selectedNode.systemAttributes.guid;
-    console.log("Body to be submitted is " + JSON.stringify(body));
-    console.log("URL to be submitted is " + url);
-
-    fetch(url, {
-      method: "put",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(body),
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        console.log("update worked " + JSON.stringify(res));
-        // glossaryAuthorContext.updateSelectedNode(res);
-
-        if (res.relatedHTTPCode == 200 && res.result && res.result[0]) {
-          // const nodeResponse = res.result[0];
-          // glossaryAuthorContext.updateSelectedNode(nodeResponse);
-          glossaryAuthorContext.setRefreshSearchOperation();
-        } else {
-          let msg = "";
-          // if this is a formatted Egeria response, we have a user action
-          if (res.relatedHTTPCode) {
-            if (res.exceptionUserAction) {
-              msg = "Update Failed: " + res.exceptionUserAction;
-            } else {
-              msg =
-                "Update Failed unexpected Egeria response: " +
-                JSON.stringify(res);
-            }
-          } else if (res.errno) {
-            if (res.errno == "ECONNREFUSED") {
-              msg = "Connection refused to the view server.";
-            } else {
-              // TODO create nice messages for all the http codes we think are relevant
-              msg = "Update Failed with http errno " + res.errno;
-            }
-          } else {
-            msg = "Update Failed - unexpected response" + JSON.stringify(res);
-          }
-          setErrorMsg(msg);
-          document.getElementById("NodeUpdateViewButton").classList.add("shaker");
-        }
-      })
-      .catch((res) => {
-        setErrorMsg("Update Failed - logic error");
-      });
+    props.onUpdate(body);
   };
   const validateForm = () => {
     //TODO consider marking name as manditory in the nodetype definition

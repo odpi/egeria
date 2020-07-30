@@ -149,6 +149,14 @@ const NodeController = (props) => {
   const onSuccessfulDelete = () => {
     issueSearch(debouncedSearchCriteria);
   };
+  const onSuccessfulUpdate = () => {
+    issueSearch(debouncedSearchCriteria);
+  };
+  const onErrorUpdate = (msg) => {
+    console.log("Error on update " + msg);
+    setErrorMsg(msg);
+    issueSearch(debouncedSearchCriteria);
+  };
 
   const onSuccessfulSearch = (json) => {
     const nodesArray = json.result;
@@ -268,6 +276,12 @@ const NodeController = (props) => {
     console.log("onSelectRow issueGet");
     issueGet(row.id);
   };
+  const onUpdate = (body) => {
+    console.log("onUpdate");
+    const guid = glossaryAuthorContext.selectedNode.systemAttributes.guid;
+    const url = glossaryAuthorContext.currentNodeType.url + "/" + guid;
+    issueRestUpdate(url, body, onSuccessfulUpdate, onErrorUpdate) 
+  };
 
   // issue search using a criteria
   function issueSearch(criteria) {
@@ -341,7 +355,7 @@ const NodeController = (props) => {
               </div>
               {glossaryAuthorContext.selectedNode && (
                 <div className="actions-item">
-                  <NodeUpdateView />
+                  <NodeUpdateView onUpdate={onUpdate}/>
                 </div>
               )}
             </div>

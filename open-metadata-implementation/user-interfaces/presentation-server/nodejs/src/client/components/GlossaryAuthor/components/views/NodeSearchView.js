@@ -32,14 +32,6 @@ const NodeSearchView = (props) => {
   console.log("NodeSearchView " + props.refresh);
   const glossaryAuthorContext = useContext(GlossaryAuthorContext);
 
-  // const [total, setTotal] = useState(0);
-  // const [currentPage, setCurrentPage] = useState([]);
-  // const [pageNumber, setPageNumber] = useState(1);
-  // const [refreshed, setRefreshed] = useState(false);
-  // const [pageSize] = useState(10);
-  // const [errorMsg, setErrorMsg] = useState();
-  // const [tableKey, setTableKey] = useState(1);
-
   // properties that will be displayed be default for a node
   const mainProperties = [
     {
@@ -56,51 +48,6 @@ const NodeSearchView = (props) => {
     },
   ];
 
-  // // State and setter for search term
-  // const [searchCriteria, setSearchCriteria] = useState("");
-  // // State and setter for search results
-  // const [results, setResults] = useState([]);
-
-  // // State for search status (whether there is a pending API request)
-  // const [isSearching, setIsSearching] = useState(false);
-  // // const [refresh, setRefresh] = useState(false);
-  // // Now we call our hook, passing in the current searchCriteria value.
-  // // The hook will only return the latest value (what we passed in) ...
-  // // ... if it's been more than 500ms since it was last called.
-  // // Otherwise, it will return the previous value of searchCriteria.
-  // // The goal is to only have the API call fire when user stops typing ...
-  // // ... so that we aren't hitting our API rapidly.
-  // const debouncedSearchCriteria = useDebounce(searchCriteria, 500);
-  // const [exactMatch, setExactMatch] = useState(false);
-
-  // // let refresh = false;
-  // // Here's where the API call happens
-  // // We use useEffect since this is an asynchronous action
-  // useEffect(
-  //   () => {
-  //     // Make sure we have a value (user has entered something in input)
-
-  //     if (debouncedSearchCriteria) {
-  //       // Set isSearching state
-  //       setIsSearching(true);
-  //       // Fire off our API call
-  //       issueSearch(debouncedSearchCriteria).then((results) => {
-  //         // Set back to false since request finished
-  //         setIsSearching(false);
-  //         // Set results state
-  //         setResults(results);
-  //       });
-  //     } else {
-  //       setResults([]);
-  //     }
-  //   },
-  //   // This is the useEffect input array
-  //   // Our useEffect function will only execute if this value changes ...
-  //   // ... and thanks to our hook it will only change if the original ...
-  //   // value (searchCriteria) hasn't changed for more than 500ms.
-  //   [debouncedSearchCriteria]
-  // );
-
   const paginationProps = () => ({
     disabled: false,
     page: props.pageNumber,
@@ -115,24 +62,6 @@ const NodeSearchView = (props) => {
     onChange: props.onPagination,
   });
 
-  // if (glossaryAuthorContext.authoringOperation == 5) {
-  //   console.log("Refreshing search");
-  //   issueSearch(debouncedSearchCriteria).then((results) => {
-  //     // Set back to false since request finished
-  //     setIsSearching(false);
-  //     // Set results state
-  //     setResults(results);
-  //   });
-  // }
-
-  // // driven when pagination options have changed - page size or page number
-  // const onPaginationChange = (options) => {
-  //   console.log("onPaginationChange");
-  //   console.log(options);
-  //   // save the pagination options in state
-  //   setPaginationOptions(options);
-  //   refreshSearchResults(options.page, options.pageSize);
-  // };
   const [headerData, setHeaderData] = useState(mainProperties);
   const additionalProperties = calculateAdditionalProperties();
   let selectedAdditionalProperties = [];
@@ -154,63 +83,6 @@ const NodeSearchView = (props) => {
     setHeaderData(allProperties);
   }
 
-  // // refresh the displayed search results
-  // // this involves taking the results from state and calculating what we need to display pased on the pagination options
-  // // current page is the subset of results that are displayed.
-  // function refreshSearchResults(passedPage, passedPageSize) {
-  //   let selectedInResults = false;
-  //   if (results && results.length > 0) {
-  //     // there seems to be an issue when paginationOptions in the pagination handler
-  //     // then calling this function, the first time paginationOptions is undefined.
-  //     // A circumvention is to pass the page and page size as parameters and use them if they are set.
-  //     let pageSize;
-  //     let page;
-  //     if (passedPage) {
-  //       page = passedPage;
-  //     } else {
-  //       page = paginationOptions.page;
-  //     }
-  //     if (passedPageSize) {
-  //       pageSize = passedPageSize;
-  //     } else {
-  //       pageSize = paginationOptions.pageSize;
-  //     }
-
-  //     // if page = 1 and pageSize 10, currentPageStart = 1
-  //     // if page = 2 and pageSize 10, currentPageStart = 11
-  //     // if page = 2 and pageSize 10 and results.length = 15, currentPageStart = 11 , currentPageSize = 5
-  //     const currentPageStart = (page - 1) * pageSize;
-  //     let currentPageSize = pageSize;
-  //     // if the last page is not complete ensure that we only specify up the end of the what is actually there in the results.
-  //     if (currentPageStart + currentPageSize - 1 > results.length) {
-  //       currentPageSize = results.length - currentPageStart;
-  //     }
-  //     const slicedResults = results.slice(
-  //       currentPageStart,
-  //       currentPageStart + currentPageSize
-  //     );
-  //     let resultsToshow = slicedResults.map(function (row) {
-  //       row.id = row.systemAttributes.guid;
-  //       if (
-  //         glossaryAuthorContext.selectedNode &&
-  //         glossaryAuthorContext.selectedNode.systemAttributes.guid == row.id
-  //       ) {
-  //         row.isSelected = true;
-  //         selectedInResults =true;
-  //       }
-  //     });
-  //     console.log("resultsToshow");
-  //     console.log(resultsToshow);
-  //     setCurrentPage(resultsToshow);
-  //   } else {
-  //     setCurrentPage([]);
-  //   }
-  //   // we have selectedNode but it is not in the search results - we must have deleted it.
-  //   if (!selectedInResults) {
-  //     glossaryAuthorContext.updateSelectedNode(undefined);
-  //   }
-
-  // }
   const onSearchCriteria = (e) => {
     props.onSearchCriteria(e.target.value);
   }

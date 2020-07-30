@@ -1,8 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-import React, { useState, useContext } from "react";
-
-import { GlossaryAuthorContext } from "../contexts/GlossaryAuthorContext";
 
 export async function issueRestGet(url, onSuccessful, onError) {
   try {
@@ -125,7 +122,7 @@ export async function issueRestDelete(deleteUrl, onSuccessful, onError) {
   }
 }
 
-export async function issueUpdate(url, body, onSuccessful, onError) {
+export async function issueRestUpdate(url, body, onSuccessful, onError) {
   try {
     const response = await fetch(url, {
       method: "put",
