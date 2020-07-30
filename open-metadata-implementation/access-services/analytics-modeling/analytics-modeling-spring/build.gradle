@@ -15,6 +15,10 @@ dependencies {
     testImplementation 'org.mockito:mockito-core:3.4.2'
     testImplementation 'org.mockito:mockito-junit-jupiter:3.4.2'
     implementation 'com.fasterxml.jackson.core:jackson-annotations:2.11.1'
+    testImplementation project(':open-metadata-implementation:frameworks:open-connector-framework')
+    testImplementation project(':open-metadata-implementation:frameworks:audit-log-framework')
+    testImplementation project(':open-metadata-implementation:common-services:ffdc-services')
+    testImplementation project(':open-metadata-implementation:common-services:multi-tenant')
 
 }
 
