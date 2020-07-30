@@ -49,7 +49,7 @@ class VisGraph extends mixinBehaviors([ItemViewBehavior], PolymerElement) {
         }
         </style>
         
-        <div class = "layout horizontal displayLength">
+        <div class = "layout horizontal displayLength" style="flex-grow: 1">
             <div id="vis_container"></div>            
             <legend-div class = "legendDisplay" groups = [[groups]] hidden = "[[hideLegend]]" data = "{{data.nodes}}"> </legend-div>
         </div>
