@@ -24,16 +24,40 @@ import {mixinBehaviors} from "@polymer/polymer/lib/legacy/class";
 class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
     static get template() {
         return html`
+        <custom-style>
+          <style is="custom-style">
+            
+            paper-input.custom {
+              --paper-input-container-input: {
+                padding-left: 8px;
+              };
+              --paper-input-container-label: {
+                padding: 0 8px;
+                
+              };
+              --paper-input-container-input-invalid: {
+                background: rgba(255, 0, 0, 0.2);
+                width: 95%;
+              }
+              
+            }
+          </style>
+        </custom-style>
+            
+            
       <style include="shared-styles">
         :host {
           display: flex;
           flex-flow: column;
           min-height: var(--egeria-view-min-height);
+          
+        }
+        .multi-combo {
+            min-width: 350px;
         }
         #search { 
           --iron-icon-fill-color: white;
         }
-        
         vaadin-grid {
           flex-grow: 1;
         }
@@ -53,20 +77,34 @@ class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
       <iron-form id="searchForm">
         <form method="get">
             <iron-a11y-keys keys="enter" on-keys-pressed="_search"></iron-a11y-keys>
-           <div>
-                <div style="width: 200pt; display: inline-block">
-                    <paper-input label="Search" value="{{q}}" no-label-float required autofocus>
-                        <iron-icon icon="search" slot="prefix" class="icon"></iron-icon>
-                    </paper-input>
+            <div>
+                <div style="display: inline-block; vertical-align: top"> 
+                     <div style="width: 200pt; display: inline-block;">
+                        <paper-input class="custom" id="searchField" 
+                            label="Search" value="{{q}}" 
+                            no-label-float 
+                            required
+                            minlength="2"
+                            
+                            autofocus>
+                            <iron-icon icon="search" slot="prefix" class="icon" style="background: transparent"></iron-icon>
+                        </paper-input>
+                    </div>
+                
+                    <vaadin-button id="searchSubmit" theme="primary" on-tap="_search">
+                        <iron-icon id="search" icon="search"></iron-icon>
+                    </vaadin-button>
                 </div>
-         
-                <vaadin-button id="searchSubmit" theme="primary" on-tap="_search">
-                    <iron-icon id="search" icon="search"></iron-icon>
-                </vaadin-button>
-             
-                <multiselect-combo-box id="combo" items="[[items]]" item-label-path="name" ordered="false">
+                 
+                <multiselect-combo-box class="multi-combo" id="combo" items="[[items]]" 
+                    item-label-path="name" 
+                    ordered="false"
+                    placeholder="Open Metadata Type"
+                    required
+                    error-message="Please select one">
                 </multiselect-combo-box>
-           </div>
+                
+            </div>
         </form>
       </iron-form>
       <vaadin-grid id="grid" items="[[searchResp]]" theme="row-stripes"
@@ -159,16 +197,36 @@ class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
         console.log('usecase changed');
     }
 
+    _validateSearch(){
+        let validSearch = true;
+        if( ! this.$.searchField.validate() ) {
+            validSearch = false;
+            this.dispatchEvent(new CustomEvent('show-modal', {
+                bubbles: true,
+                composed: true,
+                detail: { message: "Search criteria minimum length is 2 characters !", level: 'error'}}));
+        } else if ( ! this.$.combo.validate() ){
+            validSearch = false;
+            this.dispatchEvent(new CustomEvent('show-modal', {
+                bubbles: true,
+                composed: true,
+                detail: { message: "Please select at least one Open Metadata Type !", level: 'error'}}));
+        }
+        return validSearch;
+    }
+
     _search() {
         console.debug('searching: '+ this.q);
-        var types = [];
+        if(  this._validateSearch() ) {
+            var types = [];
 
-        this.$.combo.selectedItems.forEach(function(item){
-            types.push( item.name);
-        });
+            this.$.combo.selectedItems.forEach(function (item) {
+                types.push(item.name);
+            });
 
-        this.$.tokenAjax.url = '/api/assets/search?q='+this.q + '&types=' + types;
-        this.$.tokenAjax._go();
+            this.$.tokenAjax.url = '/api/assets/search?q=' + this.q + '&types=' + types;
+            this.$.tokenAjax._go();
+        }
     }
 
     _itemClass(item){

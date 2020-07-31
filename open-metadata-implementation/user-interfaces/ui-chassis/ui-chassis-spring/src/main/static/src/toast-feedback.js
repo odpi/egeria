@@ -16,7 +16,7 @@ class ToastFeedback extends PolymerElement {
               }
             </style>
 
-            <paper-toast id="toast" duration="[[duration]]" text="[[message]]">
+            <paper-toast id="toast" text="[[message]]">
                 <paper-button on-tap="_onClose" class="yellow-button">Close!</paper-button>
             </paper-toast>
     `;
@@ -44,10 +44,6 @@ class ToastFeedback extends PolymerElement {
 
     static get properties() {
         return {
-            duration: {
-                type: Number,
-                value: 5
-            },
             message: String,
             level: {
                 type: String,
