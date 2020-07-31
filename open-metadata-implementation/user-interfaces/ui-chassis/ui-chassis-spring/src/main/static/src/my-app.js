@@ -132,9 +132,16 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
       <app-location route="{{route}}" url-space-regex="^[[rootPath]]" use-hash-as-path query-params="{{queryParams}}"></app-location>
 
       <app-route route="{{route}}" pattern="/:page" data="{{routeData}}" tail="{{tail}}"></app-route>
-       
-      <toast-feedback duration="0"></toast-feedback> 
-       
+        
+        <toast-feedback></toast-feedback> 
+        
+        <paper-dialog id="modal" modal>
+          <p>[[modalMessage]]</p>
+          <div class="buttons">
+            <paper-button dialog-confirm autofocus>OK</paper-button>
+          </div>
+        </paper-dialog>
+        
         <template is="dom-if" if="[[!token]]"  restamp="true">
             <login-view id="loginView" token="{{token}}"></login-view>
         </template>
@@ -260,6 +267,7 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
         super.ready();
         this.addEventListener('logout', this._onLogout);
         this.addEventListener('open-page', this._onPageChanged);
+        this.addEventListener('show-modal', this._onShowModal);
         this.addEventListener('set-title', this._onSetTitle);
         this.addEventListener('push-crumb', this._onPushCrumb);
     }
@@ -285,6 +293,11 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
         var crumbs = [].concat(this.crumbs);
         crumbs.push( event.detail );
         this.crumbs = crumbs;
+    }
+
+    _onShowModal(event) {
+        this.modalMessage = event.detail.message;
+        this.$.modal.open();
     }
 
     _updateBreadcrumb(page) {
