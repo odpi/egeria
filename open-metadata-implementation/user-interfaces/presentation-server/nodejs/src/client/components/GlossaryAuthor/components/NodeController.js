@@ -74,7 +74,7 @@ const NodeController = (props) => {
     // Our useEffect function will only execute if this value changes ...
     // ... and thanks to our hook it will only change if the original ...
     // value (searchCriteria) hasn't changed for more than 500ms.
-    // If the exactMatch changes then we need to re issuethe search. 
+    // If the exactMatch changes then we need to re-issue the search. 
     [debouncedSearchCriteria, exactMatch]
   );
 
