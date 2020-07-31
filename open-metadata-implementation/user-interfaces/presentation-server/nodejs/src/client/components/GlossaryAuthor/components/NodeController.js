@@ -74,6 +74,7 @@ const NodeController = (props) => {
     // Our useEffect function will only execute if this value changes ...
     // ... and thanks to our hook it will only change if the original ...
     // value (searchCriteria) hasn't changed for more than 500ms.
+    // If the exactMatch changes then we need to re-issue the search. 
     [debouncedSearchCriteria, exactMatch]
   );
 
@@ -181,6 +182,12 @@ const NodeController = (props) => {
             row[property] = node[property];
           }
         }
+        // If we have a selected node we need to show its row as selected.
+        if (glossaryAuthorContext.selectedNode && (row.id == glossaryAuthorContext.selectedNode.systemAttributes.guid)) {
+          row.isSelected = true;
+        } else {
+          row.isSelected = false;
+        }
         return row;
       });
       //setResults(nodeRows);
@@ -263,12 +270,6 @@ const NodeController = (props) => {
       glossaryAuthorContext.doUpdateSelectedNode(undefined);
     }
   }
-  // issue the get rest call for particular guid
-  function issueGet(guid) {
-    const url = glossaryAuthorContext.currentNodeType.url + "/" + guid;
-    console.log("issueGet " + url);
-    issueRestGet(url, onSuccessfulGet, onErrorGet);
-  }
   // issue the create rest call for the supplied body
   function issueCreate(body) {
     const url = glossaryAuthorContext.currentNodeType.url;
@@ -276,8 +277,10 @@ const NodeController = (props) => {
     issueRestCreate(url, body, onSuccessfulCreate, onErrorCreate);
   }
   const onSelectRow = (row) => {
-    console.log("onSelectRow issueGet");
-    issueGet(row.id);
+    console.log("onSelectRow issueRestGet"); 
+    const url = glossaryAuthorContext.currentNodeType.url + "/" +row.id;
+    console.log("issueGet " + url);
+    issueRestGet(url, onSuccessfulGet, onErrorGet);
   };
   const onUpdate = (body) => {
     console.log("onUpdate");
@@ -358,7 +361,7 @@ const NodeController = (props) => {
               </div>
               {glossaryAuthorContext.selectedNode && (
                 <div className="actions-item">
-                  <NodeUpdateView onUpdate={onUpdate}/>
+                  <NodeUpdateView onUpdate={onUpdate} />
                 </div>
               )}
             </div>
