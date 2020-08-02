@@ -16,6 +16,9 @@ const IdentificationContextProvider = props => {
    * Get the home url for the browser
    */
   const getBrowserURL = pageName => {
+    if (process.env.NODE_ENV === "development") {
+      return "/" + "cocoView1" + "/" + pageName;
+    }
     return "/" + serverName + "/" + pageName;
   };
   /**

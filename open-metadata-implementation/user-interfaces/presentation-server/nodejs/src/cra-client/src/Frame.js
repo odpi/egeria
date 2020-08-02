@@ -106,6 +106,9 @@ export default function Frame(props) {
                   <Route path={rootUrl} exact>
                     <Home />
                   </Route>
+                  <Route path={"/"} exact>
+                    <Home />
+                  </Route>
                   <Route path={homeUrl}>
                     <Home />
                   </Route>
