@@ -22,7 +22,6 @@ import { GlossaryAuthorContext } from "../../contexts/GlossaryAuthorContext";
 import Info16 from "@carbon/icons-react/lib/information/16";
 
 function NodeUpdateView(props) {
-  // const {node} = props;
   console.log("NodeUpdateView");
 
   const glossaryAuthorContext = useContext(GlossaryAuthorContext);
@@ -105,7 +104,7 @@ function NodeUpdateView(props) {
             <Info16 />
           </h4>
         </div>
-        {glossaryAuthorContext.currentNodeType.attributes.map((item) => {
+        {glossaryAuthorContext.selectedNode && glossaryAuthorContext.currentNodeType.attributes.map((item) => {
           return (
             <div className="bx--form-item" key={item.key}>
               <label htmlFor={createLabelId(item.key)} className="bx--label">
@@ -115,7 +114,9 @@ function NodeUpdateView(props) {
                 id={createLabelId(item.key)}
                 type="text"
                 className="bx--text-input"
-                defaultValue={glossaryAuthorContext.selectedNode[item.key]}
+                 defaultValue={glossaryAuthorContext.selectedNode[item.key]}
+                 key={glossaryAuthorContext.selectedNode[item.key]}
+                //value={glossaryAuthorContext.selectedNode[item.key]?glossaryAuthorContext.selectedNode[item.key]:""}
                 onChange={(e) => setAttribute(item, e.target.value)}
                 placeholder={item.label}
               />
