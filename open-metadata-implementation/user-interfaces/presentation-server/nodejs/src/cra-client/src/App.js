@@ -1,21 +1,27 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+/* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
+import React from "react";
+import "./app.scss";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import Login from "./auth/login";
+import Frame from "./Frame";
+import IdentificationContext  from "./contexts/IdentificationContext";
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React</h2>
-        </div>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-      </div>
-    );
-  }
+export default function App() {
+  return (
+    <div>
+      <IdentificationContext>
+        <Router>
+          <Switch>
+            <Route path="/*/login" exact>
+              <Login />
+            </Route>
+            <Route path="/*/">
+              <Frame />
+            </Route>
+          </Switch>
+        </Router>
+      </IdentificationContext>
+    </div>
+  );
 }
-
-export default App;
