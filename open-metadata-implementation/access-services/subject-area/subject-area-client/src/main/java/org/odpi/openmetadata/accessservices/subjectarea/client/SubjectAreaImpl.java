@@ -15,6 +15,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.client.relationships.Sub
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.springframework.util.StringUtils;
 
 
 /**
@@ -81,7 +82,7 @@ public class SubjectAreaImpl implements SubjectArea {
             throw new InvalidParameterException(messageDefinition, className, "initRestClient",
                     "One of the parameters (serverName, omasServerURL) is not correct.");
         }
-        if (userId != null && !"".equals(userId)) {
+        if (userId == null) {
             return new SubjectAreaRestClient(serverName, omasServerURL);
         } else {
             return new SubjectAreaRestClient(serverName, omasServerURL, userId, password);
