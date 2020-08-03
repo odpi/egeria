@@ -10,7 +10,7 @@ A full list of changes can be seen [by comparing on github](https://github.com/o
 The highlights include:
 
 * Bug fixes
-  - Subject Area OMAS has added testing including automated FVTs, code cleanup & numerous bug fixes
+  - Subject Area OMAS has added testing including automated FVTs, code cleanup & bug fixes
   - User Interface fixes & usability improvements
 * Dependency Updates
   - Spring updated to 5.2.8
