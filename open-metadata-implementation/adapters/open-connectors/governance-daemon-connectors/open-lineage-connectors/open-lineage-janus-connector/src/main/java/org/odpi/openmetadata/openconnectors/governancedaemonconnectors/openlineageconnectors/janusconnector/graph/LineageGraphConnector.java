@@ -679,7 +679,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
                                     .store(VERTEX)).select(VERTEX).unfold();
 
             if (!end.hasNext()) {
-                List<Vertex> next = g.V(endingVertex.id()).both(LINEAGE_MAPPING).toList();
+                List<Vertex> next = g.V(endingVertex.id()).out(LINEAGE_MAPPING).toList();
                 Vertex nextVertex = null;
                 for (Vertex vert : next) {
                     if (vert.equals(startingVertex)) {
