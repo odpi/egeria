@@ -5,31 +5,31 @@ import React, { useState, useContext } from "react";
 import { Button } from "react-bootstrap";
 import { GlossaryAuthorContext } from "../../contexts/GlossaryAuthorContext";
 
-const MyNodeSetter = props => {
+const MyNodeView = props => {
   const glossaryAuthorContext = useContext(GlossaryAuthorContext);
-  console.log("MyNodeSetter");
+  console.log("MyNodeView");
   const [typeKey] = useState(props.typeKey);
 
   if (typeKey == "glossary") {
     return (
       <span>
-        <Button kind="primary" onClick={() => glossaryAuthorContext.settingMyGlossaryState()}>
-          {glossaryAuthorContext.myGlossaryLabel}
+        <Button kind="primary" onClick={() => glossaryAuthorContext.doCreatingMyGlossary()}>
+          {glossaryAuthorContext.myGlossary ? glossaryAuthorContext.myGlossary.name : "None"}
         </Button>
       </span>
     );
   } else if (typeKey == "project") {
     return (
       <span>
-       <Button kind="primary" onClick={() => glossaryAuthorContext.settingMyProjectState()}>
-          {glossaryAuthorContext.myProjectLabel}
+       <Button kind="primary" onClick={() => glossaryAuthorContext.doCreatingMyProject()}>
+          {glossaryAuthorContext.myProject ? glossaryAuthorContext.myProject.name : "None"}
         </Button>
       </span>
     );
   } else {
-      console.log("MyNodeSetter typeKey null", typeKey);
+      console.log("MyNodeView typeKey null", typeKey);
       return null;
   }
 };
 
-export default MyNodeSetter;
+export default MyNodeView;

@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 // Our hook
 export default function useDebounce(value, delay) {
@@ -12,6 +12,7 @@ export default function useDebounce(value, delay) {
     () => {
       // Set debouncedValue to value (passed in) after the specified delay
       const handler = setTimeout(() => {
+        console.log("setDebouncedValue" + value);
         setDebouncedValue(value);
       }, delay);
 
