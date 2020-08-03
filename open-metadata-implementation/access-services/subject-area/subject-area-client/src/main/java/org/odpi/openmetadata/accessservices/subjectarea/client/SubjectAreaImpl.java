@@ -15,7 +15,6 @@ import org.odpi.openmetadata.accessservices.subjectarea.client.relationships.Sub
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.springframework.util.StringUtils;
 
 
 /**
