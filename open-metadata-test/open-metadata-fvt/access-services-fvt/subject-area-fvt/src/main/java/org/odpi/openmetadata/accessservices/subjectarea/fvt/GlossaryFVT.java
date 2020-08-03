@@ -2,9 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.fvt;
 
-import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaEntityClient;
+import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaNodeClient;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaRestClient;
-import org.odpi.openmetadata.accessservices.subjectarea.client.entities.glossaries.SubjectAreaGlossaryClient;
+import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.glossaries.SubjectAreaGlossaryClient;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Taxonomy;
@@ -24,7 +24,7 @@ public class GlossaryFVT {
     private static final String DEFAULT_TEST_GLOSSARY_NAME = "Testglossary1";
     private static final String DEFAULT_TEST_GLOSSARY_NAME2 = "Testglossary2";
     private static final String DEFAULT_TEST_GLOSSARY_NAME3 = "Testglossary3";
-    private SubjectAreaEntityClient<Glossary> subjectAreaGlossary = null;
+    private SubjectAreaNodeClient<Glossary> subjectAreaGlossary = null;
     private String serverName = null;
     private String userId = null;
     private int existingGlossaryCount = 0;

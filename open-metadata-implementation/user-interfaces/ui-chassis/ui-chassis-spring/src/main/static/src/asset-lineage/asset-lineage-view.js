@@ -92,11 +92,12 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
                 </vaadin-list-box>  
               </template>
             </vaadin-select>
+            <paper-button id = "closeLegendButton" on-tap="toggleLegend">Toggle legend</paper-button>
         </div>
     </div>
 
     <div id="container">
-        <vis-graph id="visgraph" data=[[graphData]]></vis-graph>
+        <vis-graph id="visgraph" groups=[[groups]] data=[[graphData]]></vis-graph>
     </div>
     `;
   }
@@ -144,29 +145,36 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
                 type: Object,
                 value: {
                     GlossaryTerm: {
-                        color: '#f0e442'
-
+                        color: '#f0e442',
+                        icon: 'vaadin:records'
                     },
                     Column: {
-                        color: '#009e73'
+                        color: '#009e73',
+                        icon: 'vaadin:grid-h'
                     },
                     RelationalColumn: {
-                        color: '#73c0ee'
+                        color: '#73c0ee',
+                        icon: 'vaadin:road-branches'
                     },
                     TabularColumn: {
-                        color: '#cc79a7'
+                        color: '#cc79a7',
+                        icon: 'vaadin:tab'
                     },
                     RelationalTable: {
-                        color: '#50c67a'
+                        color: '#50c67a',
+                        icon: 'vaadin:table'
                     },
                     Process: {
-                        color: '#ffff00'
+                        color: '#ffff00',
+                        icon: 'vaadin:file-process'
                     },
                     subProcess: {
-                        color: '#ffff00'
+                        color: '#ffff00',
+                        icon: 'vaadin:cogs'
                     },
                     condensedNode: {
-                        color: '#faa43a'
+                        color: '#faa43a',
+                        icon: 'vaadin:cogs'
                     }
                 }
             }
@@ -344,6 +352,10 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
             this._sourceAndDestination(this.routeData.guid, includeProcesses);
             break;
     }
+    }
+
+    toggleLegend() {
+        this.$$('vis-graph').toggleLegend();
     }
 
     _getUseCase(usecase){

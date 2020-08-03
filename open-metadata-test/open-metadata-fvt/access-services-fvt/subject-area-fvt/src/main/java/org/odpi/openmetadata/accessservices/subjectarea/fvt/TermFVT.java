@@ -2,9 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.fvt;
 
-import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaEntityClient;
+import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaNodeClient;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaRestClient;
-import org.odpi.openmetadata.accessservices.subjectarea.client.entities.terms.SubjectAreaTermClient;
+import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.terms.SubjectAreaTermClient;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Confidence;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Confidentiality;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Criticality;
@@ -33,7 +33,7 @@ public class TermFVT {
     private static final String DEFAULT_TEST_GLOSSARY_NAME = "Test Glossary for term FVT";
     private static final String DEFAULT_TEST_TERM_NAME = "Test term A";
     private static final String DEFAULT_TEST_TERM_NAME_UPDATED = "Test term A updated";
-    private SubjectAreaEntityClient<Term> subjectAreaTerm = null;
+    private SubjectAreaNodeClient<Term> subjectAreaTerm = null;
     private GlossaryFVT glossaryFVT =null;
     private String userId =null;
     private int existingTermCount = 0;

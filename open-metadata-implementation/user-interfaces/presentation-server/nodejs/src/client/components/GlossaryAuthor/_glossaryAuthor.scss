@@ -17,6 +17,32 @@
   margin: 10px;
   font-weight: bold;
 }
+.search-controls {
+  height           : 100%;
+  display          : flex;
+  flex-flow        : row;
+}
+
+.search-options-container {
+  height           : 100%;
+  width            : 300px;
+  display          : flex;
+  flex-flow        : column;
+}
+
+.search-option-container {
+  width            : 300px;
+  height           : 100%;
+  display          : flex;
+  flex-flow        : row;
+}
+.search-option-item-label {
+  flex-basis: 35%;
+  text-align: left;
+}
+.search-option-item-value {
+  flex-basis: 65%;
+}
 
 .actions-container {
   height           : 100%;
