@@ -2,9 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.fvt;
 
-import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaEntityClient;
+import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaNodeClient;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaRestClient;
-import org.odpi.openmetadata.accessservices.subjectarea.client.entities.projects.SubjectAreaProjectClient;
+import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.projects.SubjectAreaProjectClient;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.project.GlossaryProject;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
@@ -32,7 +32,7 @@ public class ProjectFVT
     private static final String DEFAULT_TEST_PROJECT_NAME5 = "Testproject5";
     private static final String DEFAULT_TEST_PROJECT_NAME6 = "Testproject6";
     private static final String DEFAULT_TEST_PROJECT_NAME7 = "Testproject7";
-    private SubjectAreaEntityClient<Project> subjectAreaProject = null;
+    private SubjectAreaNodeClient<Project> subjectAreaProject = null;
     private String serverName = null;
     private String userId = null;
     private int existingProjectCount = 0;

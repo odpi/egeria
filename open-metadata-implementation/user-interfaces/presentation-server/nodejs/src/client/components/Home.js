@@ -32,11 +32,6 @@ export default function Home() {
           link={identificationContext.getBrowserURL("glossary-author")}
         />
       </InfoSection>
-
-      {/* <div class="bx--aspect-ratio bx--aspect-ratio--1x1">
-  <div class="bx--aspect-ratio--object">1:1a</div>
-  <div class="bx--aspect-ratio--object">1:1b</div>
-</div> */}
     </div>
   );
 }
