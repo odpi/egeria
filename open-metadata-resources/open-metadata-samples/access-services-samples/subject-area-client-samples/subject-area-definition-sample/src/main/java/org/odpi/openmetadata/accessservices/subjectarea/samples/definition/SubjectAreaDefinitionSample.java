@@ -79,9 +79,8 @@ public class SubjectAreaDefinitionSample
 
     /**
      * Run the sample
-     * @throws SubjectAreaCheckedException error
      */
-    private void run() throws SubjectAreaCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+    private void run() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         SubjectArea subjectArea = new SubjectAreaImpl(this.serverName, this.serverURLRoot);
         subjectAreaGlossary = subjectArea.getSubjectAreaGlossary();
         subjectAreaCategory = subjectArea.getSubjectAreaCategory();

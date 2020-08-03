@@ -13,9 +13,8 @@ import org.odpi.openmetadata.accessservices.subjectarea.client.relationships.Sub
 import org.odpi.openmetadata.accessservices.subjectarea.client.relationships.SubjectAreaLine;
 import org.odpi.openmetadata.accessservices.subjectarea.client.relationships.SubjectAreaRelationship;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
-import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
-import org.odpi.openmetadata.accessservices.subjectarea.validators.InputValidator;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 
 
 /**
@@ -42,39 +41,51 @@ public class SubjectAreaImpl implements SubjectArea {
      * @throws InvalidParameterException one of the parameters is null or invalid.
      */
     public SubjectAreaImpl(String serverName, String omasServerURL) throws InvalidParameterException {
-        String methodName = "SubjectAreaImpl";
-        InputValidator.validateRemoteServerNameNotNull(className, methodName, serverName);
-        InputValidator.validateRemoteServerURLNotNull(className, methodName, omasServerURL);
-        try {
-            SubjectAreaRestClient client = new SubjectAreaRestClient(serverName, omasServerURL);
-            SubjectAreaNode subjectAreaNode = new SubjectAreaNode(client);
-            SubjectAreaLine subjectAreaLine = new SubjectAreaLine(client);
-            SubjectAreaGraph subjectAreaGraph = new SubjectAreaGraphClient(client);
+        this(initRestClient(serverName, omasServerURL, null, null));
+    }
 
-            this.glossaryAPI = subjectAreaNode;
-            this.termAPI =  subjectAreaNode;
-            this.categoryAPI = subjectAreaNode;
-            this.relationshipAPI = subjectAreaLine;
-            this.graphAPI = subjectAreaGraph;
-            this.projectAPI = subjectAreaNode;
-        } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException e) {
-            String parameterName = "serverName or omasServerURL";
-            String parameterValue = "unknown";
-            if (serverName == null ||  "".equals(serverName)) {
-                parameterName = "serverName";
-                parameterValue = serverName;
-            }
-            if (omasServerURL == null || "".equals(omasServerURL)) {
-                parameterName = "omasServerURL";
-                parameterValue = omasServerURL;
-            }
+    /**
+     * Constructor used once a connector is created.
+     *
+     * @param serverName    serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param omasServerURL - unique id for the connector instance
+     * @param userId - unique identifier for user
+     * @param password - password for user
+     * @throws InvalidParameterException one of the parameters (serverName, omasServerURL) is null or invalid.
+     */
+    public SubjectAreaImpl(String serverName, String omasServerURL, String userId, String password) throws InvalidParameterException {
+        this(initRestClient(serverName, omasServerURL, userId, password));
+    }
+
+    private SubjectAreaImpl(SubjectAreaRestClient client) {
+        SubjectAreaNode subjectAreaNode = new SubjectAreaNode(client);
+        SubjectAreaLine subjectAreaLine = new SubjectAreaLine(client);
+        SubjectAreaGraph subjectAreaGraph = new SubjectAreaGraphClient(client);
+
+        this.glossaryAPI = subjectAreaNode;
+        this.termAPI =  subjectAreaNode;
+        this.categoryAPI = subjectAreaNode;
+        this.relationshipAPI = subjectAreaLine;
+        this.graphAPI = subjectAreaGraph;
+        this.projectAPI = subjectAreaNode;
+        this.serverName = client.getServerName();
+        this.omasServerUrl = client.getServerPlatformURLRoot();
+    }
+
+    private static SubjectAreaRestClient initRestClient(String serverName,
+                                                        String omasServerURL,
+                                                        String userId,
+                                                        String password) throws InvalidParameterException {
+        if (serverName == null || omasServerURL == null) {
             ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.SUBJECT_AREA_FAILED_TO_INITIALISE.getMessageDefinition();
-            messageDefinition.setMessageParameters(parameterName, parameterValue);
-            throw new InvalidParameterException(messageDefinition, className, methodName, e, parameterName, parameterValue);
+            throw new InvalidParameterException(messageDefinition, className, "initRestClient",
+                    "One of the parameters (serverName, omasServerURL) is not correct.");
         }
-
-        this.serverName = serverName;
-        this.omasServerUrl = omasServerURL;
+        if (userId != null && !"".equals(userId)) {
+            return new SubjectAreaRestClient(serverName, omasServerURL);
+        } else {
+            return new SubjectAreaRestClient(serverName, omasServerURL, userId, password);
+        }
     }
 
     /**

@@ -6,7 +6,7 @@ import org.odpi.openmetadata.accessservices.assetcatalog.AssetCatalog;
 import org.odpi.openmetadata.accessservices.glossaryview.client.GlossaryViewClient;
 import org.odpi.openmetadata.accessservices.subjectarea.SubjectArea;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaImpl;
-import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.governanceservers.openlineage.client.OpenLineageClient;
 import org.odpi.openmetadata.http.HttpHelper;
 import org.odpi.openmetadata.userinterface.uichassis.springboot.auth.AuthService;
@@ -56,7 +56,7 @@ public class EgeriaUIPlatform {
 
     @Bean
     public AssetCatalog getAssetCatalog(@Value("${omas.server.url}") String serverUrl,
-                                        @Value("${omas.server.name}") String serverName) throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException {
+                                        @Value("${omas.server.name}") String serverName) throws InvalidParameterException {
         return new AssetCatalog(serverName, serverUrl);
     }
 
@@ -68,13 +68,13 @@ public class EgeriaUIPlatform {
 
     @Bean
     public GlossaryViewClient getGlossaryViewClient(@Value("${omas.server.url}") String serverUrl,
-                                             @Value("${omas.server.name}") String serverName) throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException {
+                                             @Value("${omas.server.name}") String serverName) throws InvalidParameterException {
         return new GlossaryViewClient(serverName, serverUrl);
     }
 
     @Bean
     public OpenLineageClient getOpenLineage(@Value("${open.lineage.server.url}") String serverUrl,
-                                            @Value("${open.lineage.server.name}") String serverName) throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException {
+                                            @Value("${open.lineage.server.name}") String serverName) throws InvalidParameterException {
         return new OpenLineageClient(serverName, serverUrl);
     }
 
