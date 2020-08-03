@@ -7,8 +7,6 @@ import { GlossaryAuthorContext } from "../contexts/GlossaryAuthorContext";
  * In the cases where we are editting one of them then some text is displayed indicating what is being editted.
  * In the case where the My glossary and my project are set and we are not editing them, then we display a dropdown
  * for the user to choose the type of node they want to author.
- * 
- * All of the conditional checks on the context should be mutually exclusive.
  */
 const NodeTypeChooser = () => {
   console.log("GlossaryAuthorNodes");

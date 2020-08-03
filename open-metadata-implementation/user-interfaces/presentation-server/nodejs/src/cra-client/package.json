@@ -20,7 +20,7 @@
     "react-cookie": "^4.0.3",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "0.9.x"
+    "react-scripts": "^3.4.1"
   },
   "devDependencies": {},
   "scripts": {
@@ -30,5 +30,17 @@
     "eject": "react-scripts eject"
   },
   "author": "Jacob Madsen",
-  "license": "ISC"
+  "license": "ISC",
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
 }
