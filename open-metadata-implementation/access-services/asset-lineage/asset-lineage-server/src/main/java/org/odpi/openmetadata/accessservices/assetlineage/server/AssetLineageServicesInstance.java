@@ -8,6 +8,7 @@ import org.odpi.openmetadata.accessservices.assetlineage.handlers.AssetContextHa
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.ClassificationHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.GlossaryHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.ProcessContextHandler;
+import org.odpi.openmetadata.accessservices.assetlineage.outtopic.AssetLineagePublisher;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OCFOMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
@@ -26,15 +27,16 @@ public class AssetLineageServicesInstance extends OCFOMASServiceInstance {
     private AssetContextHandler assetContextHandler;
     private ProcessContextHandler processContextHandler;
     private ClassificationHandler classificationHandler;
+    private AssetLineagePublisher assetLineagePublisher;
 
     /**
      * Set up the handlers for this server.
      *
-     * @param repositoryConnector link to the repository responsible for servicing the REST calls.
-     * @param supportedZones      list of zones that AssetLineage is allowed to serve Assets from.
-     * @param lineageClassificationTypes
-     * @param localServerUserId   userId used for server initiated actions
-     * @param auditLog            destination for audit log events.
+     * @param repositoryConnector        link to the repository responsible for servicing the REST calls.
+     * @param supportedZones             list of zones that AssetLineage is allowed to serve Assets from.
+     * @param lineageClassificationTypes list of lineage classification supported
+     * @param localServerUserId          userId used for server initiated actions
+     * @param auditLog                   destination for audit log events.
      * @throws NewInstanceException a problem occurred during initialization
      */
     public AssetLineageServicesInstance(OMRSRepositoryConnector repositoryConnector,
@@ -55,24 +57,28 @@ public class AssetLineageServicesInstance extends OCFOMASServiceInstance {
             glossaryHandler = new GlossaryHandler(
                     invalidParameterHandler,
                     repositoryHelper,
-                    repositoryHandler);
+                    repositoryHandler,
+                    lineageClassificationTypes);
 
             assetContextHandler = new AssetContextHandler(
                     invalidParameterHandler,
                     repositoryHelper,
                     repositoryHandler,
-                    supportedZones);
+                    supportedZones,
+                    lineageClassificationTypes);
 
             processContextHandler = new ProcessContextHandler(
                     invalidParameterHandler,
                     repositoryHelper,
                     repositoryHandler,
-                    supportedZones);
+                    assetContextHandler,
+                    supportedZones,
+                    lineageClassificationTypes);
 
             classificationHandler = new ClassificationHandler(
                     invalidParameterHandler,
-                    lineageClassificationTypes
-            );
+                    lineageClassificationTypes,
+                    repositoryHelper);
 
         } else {
             AssetLineageErrorCode errorCode = AssetLineageErrorCode.OMRS_NOT_INITIALIZED;
@@ -124,6 +130,13 @@ public class AssetLineageServicesInstance extends OCFOMASServiceInstance {
         return classificationHandler;
     }
 
+    public void setAssetLineagePublisher(AssetLineagePublisher assetLineagePublisher) {
+        this.assetLineagePublisher = assetLineagePublisher;
+    }
+
+    public AssetLineagePublisher getAssetLineagePublisher() {
+        return assetLineagePublisher;
+    }
 }
 
 

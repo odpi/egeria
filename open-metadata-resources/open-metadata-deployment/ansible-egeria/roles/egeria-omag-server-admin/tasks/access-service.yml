@@ -1,0 +1,40 @@
+---
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the ODPi Egeria project.
+
+- name: DEBUG Access Services Config.
+  debug:
+    msg: "{{ admin_omag_access_services_config[config.key]}}"
+
+- name: prep server url base
+  set_fact:
+    server_base_url: "{{ admin_omag_server_config[config.key].url }}/open-metadata/admin-services/users/{{ admin_omag_server_config[config.key].user }}/servers/{{ config.key }}"
+
+- name: Enable ALL avaiable accecss services
+  uri:
+    url: "{{ server_base_url }}/access-services/"
+    method: POST
+    headers:
+      Content-Type: application/json
+    validate_certs: no
+  register: response
+  when: "'all' in admin_omag_access_services_config[config.key].keys()"
+
+- name: Enable accecss service by name
+  uri:
+    url: "{{ server_base_url }}/access-services/{{ svc_item.key }}"
+    method: POST
+    body_format: json
+    body: "{{ svc_item.value.body }}"
+    headers:
+      Content-Type: application/json
+    validate_certs: no
+  register: response
+  with_items: "{{ query('dict', admin_omag_access_services_config[config.key]) }}"
+  when: "'all' not in admin_omag_access_services_config[config.key].keys()"
+  loop_control:
+    loop_var: svc_item
+
+- name: Server reponse
+  debug:
+    var: response
