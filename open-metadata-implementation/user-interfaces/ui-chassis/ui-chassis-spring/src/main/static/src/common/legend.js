@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 import {PolymerElement, html} from '@polymer/polymer';
 import {mixinBehaviors} from '@polymer/polymer/lib/legacy/class.js';
-import {ItemViewBehavior} from '../common/item';
+import {IronFitBehavior} from '@polymer/iron-fit-behavior/iron-fit-behavior.js';
 import '@polymer/app-layout/app-grid/app-grid-style.js';
 import '@vaadin/vaadin-icons/vaadin-icons.js';
 import '@polymer/paper-styles/paper-styles.js';
@@ -11,23 +11,26 @@ import '../shared-styles.js';
 
 import '../shared-styles.js';
 
-class Legend extends mixinBehaviors([ItemViewBehavior], PolymerElement) {
+class Legend extends mixinBehaviors([IronFitBehavior], PolymerElement) {
 
     static get template() {
         return html`
-      <style include="shared-styles">   
-
+      <style include="shared-styles">  
+          :host { 
+            background: rgba(var(--egeria-primary-color-rgb),0.1);
+            padding: 20px 10px;
+          }
+          
       </style>
-        <div>
-           <table>
-           <template is="dom-repeat" items="[[legendNodes]]"> 
-              <tr>
-                 <td><iron-icon style = "fill: {{item.color}};" icon="{{item.shape}}"></iron-icon></td>
-                 <td>{{item.group}}</td>
-                 <td>{{item.appearances}}</td>   
-              </tr>
-           </template>
-           </table>
+      <slot></slot>
+        <div id="legend-container">
+           <dom-repeat items="[[legendNodes]]"> 
+            <template> 
+                <p> 
+                    <iron-icon style = "fill: {{item.color}};" icon="{{item.shape}}"></iron-icon> {{item.group}} {{item.appearances}}
+                </p>
+            </template>
+           </dom-repeat>
         </div>
     `;
     }
@@ -47,6 +50,14 @@ class Legend extends mixinBehaviors([ItemViewBehavior], PolymerElement) {
             }
         }
     }
+    ready() {
+        super.ready();
+        this.addEventListener('dom-change', this.domChanged);
+    }
+
+    domChanged(event) {
+        this.refit();
+    }
 
     dataObserver(data, newData) {
         if (data == null && newData != null) {
@@ -57,12 +68,16 @@ class Legend extends mixinBehaviors([ItemViewBehavior], PolymerElement) {
         if (this.groups == null) {
             return;
         }
+        const egeriaColor = getComputedStyle(this).getPropertyValue('--egeria-primary-color');
         for (var i = 0; i < data.length; i++) {
+
             if (uniqueObjects[data[i].group] === undefined) {
+                let groupColor = this.groups[data[i].group].color;
+                if(groupColor === undefined) groupColor = egeriaColor;
                 uniqueObjects[data[i].group] = {
                     group: data[i].group,
                     appearances: 1,
-                    color: this.groups[data[i].group].color,
+                    color: groupColor,
                     shape: this.groups[data[i].group].icon
                 }
             } else {
