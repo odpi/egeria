@@ -49,6 +49,7 @@ public class AssetLineageRestServices {
      *
      * @param serverName name of server instance to call
      * @param userId     the name of the calling user
+     *
      * @return a list of unique identifiers (guids) of the available Glossary Terms as a response
      */
     public GUIDListResponse initialLoadByEntityType(String serverName, String userId, String entityType) {
@@ -90,10 +91,12 @@ public class AssetLineageRestServices {
                 } else if (PROCESS.equals(typeName)) {
                     publisher.publishProcessContext(entityDetail);
                 } else {
-                    publisher.publishAssetContext(entityDetail);
+                    // only Processes and GlossaryTerms are the types supported for initial load
+                    log.error("Unsupported typeName {} for entity with guid {}. THe context can not be published", typeName, entityDetail.getGUID());
                 }
             } catch (OCFCheckedExceptionBase | JsonProcessingException ocfCheckedExceptionBase) {
-                log.error("The context for entity guid = {} - type {} can not be published.", entityDetail.getGUID(), entityDetail.getType().getTypeDefName());
+                log.error("The context for entity guid = {} - type {} can not be published.", entityDetail.getGUID(),
+                        entityDetail.getType().getTypeDefName());
             }
         });
     }
