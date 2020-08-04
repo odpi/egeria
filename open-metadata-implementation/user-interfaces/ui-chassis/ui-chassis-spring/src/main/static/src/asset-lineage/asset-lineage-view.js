@@ -136,7 +136,7 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
                 value: {
                     hierarchical: {
                         enabled: true,
-                        levelSeparation: 300,
+                        levelSeparation: 250,
                         direction: 'LR'
                     }
                 }
@@ -238,17 +238,20 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
                 data.nodes[i].label += ' \n\n From : ' + displayName;
             }
             if (data.nodes[i].id === this.routeData.guid){
-                data.nodes[i].group='QueryNode';
-                data.nodes[i].color=egeriaColor;
-                // data.nodes[i].color.border=egeriaColor;
-                // data.nodes[i].font= {color:'white'};
-                // data.nodes[i].shape= 'circle';
+                data.nodes[i].group ='QueryNode';
+                data.nodes[i].color = {
+                    background:'white',
+                    border:egeriaColor,
+                    highlight:{background:egeriaColor,border:'#a7a7a7'},
+                    hover:{background:'white',border:'#a7a7a7'}
+                };
             }else{
                 data.nodes[i].color = {
                     background:'white',
-                    border:'#d3d3d3',
-                    highlight:{background:'#ff62004d',border:'#ff62008a'},
-                    hover:{background:'white',border:'red'}};
+                    border:'#a7a6a6',
+                    highlight:{background:egeriaColor,border:'#a7a7a7'},
+                    hover:{background:'white',border:'#a7a7a7'}
+                };
             }
         }
         if (!this._hideIncludeGlossaryTerms(this.routeData.usecase) && this.$.glossaryTermMenu.value === "false" ) {
