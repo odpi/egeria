@@ -210,10 +210,16 @@ public class HandlerHelper {
         return Collections.emptyList();
     }
 
-    public void addLineageClassificationToContext(EntityDetail startEntity, AssetContext graph) {
-        List<Classification> classifications = filterLineageClassifications(startEntity.getClassifications());
+    /**
+     * Adds the classification context to the asset context.
+     *
+     * @param assetContext  the context of the asset that is to be updated
+     * @param entity the entity with its classifications
+     */
+    public void addLineageClassificationToContext(EntityDetail entity, AssetContext assetContext) {
+        List<Classification> classifications = filterLineageClassifications(entity.getClassifications());
         if (CollectionUtils.isNotEmpty(classifications)) {
-            addClassificationsToGraphContext(classifications, graph, startEntity);
+            addClassificationsToGraphContext(classifications, assetContext, entity);
         }
     }
 

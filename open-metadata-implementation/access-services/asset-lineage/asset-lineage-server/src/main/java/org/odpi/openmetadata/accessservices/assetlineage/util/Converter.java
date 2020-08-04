@@ -59,8 +59,8 @@ public class Converter {
         LineageEntity firstEntity = getLineageEntityFromLineageProxy(relationship.getEntityOneProxy());
         LineageEntity secondEntity = getLineageEntityFromLineageProxy(relationship.getEntityTwoProxy());
 
-        lineageRelationship.setFirstEntity(firstEntity);
-        lineageRelationship.setSecondEntity(secondEntity);
+        lineageRelationship.setSourceEntity(firstEntity);
+        lineageRelationship.setTargetEntity(secondEntity);
 
         return lineageRelationship;
     }

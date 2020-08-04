@@ -58,13 +58,15 @@ public class GlossaryHandler {
      * @param assetGuid    guid of the asset that has been created
      * @param userId       String - userId of user making request.
      * @param assetContext the asset context
+     *
      * @return Glossary Term retrieved from the repository, null if not semantic assignment to the asset
+     *
      * @throws InvalidParameterException the invalid parameter exception
      */
-    public Map<String, Set<GraphContext>> getGlossaryTerm(String assetGuid,
-                                                          String userId,
-                                                          AssetContext assetContext,
-                                                          SuperTypesRetriever superTypesRetriever) throws OCFCheckedExceptionBase {
+    public Map<String, Set<GraphContext>> getGlossaryTermContext(String assetGuid,
+                                                                 String userId,
+                                                                 AssetContext assetContext,
+                                                                 SuperTypesRetriever superTypesRetriever) throws OCFCheckedExceptionBase {
 
         String methodName = "getGlossaryTerm";
 
@@ -77,7 +79,7 @@ public class GlossaryHandler {
                 !superTypesRetriever.getSuperTypes(vertex.getTypeDefName()).contains(COMPLEX_SCHEMA_TYPE)).collect(Collectors.toSet());
 
         for (LineageEntity vertex : vertices)
-            getGlossary(userId, vertex.getGuid(), vertex.getTypeDefName());
+            addGlossaryContextToAssetContext(userId, vertex.getGuid(), vertex.getTypeDefName());
 
         return graph.getNeighbors();
     }
@@ -100,13 +102,13 @@ public class GlossaryHandler {
     }
 
     /**
-     * Retrieves semantic assignments for a Glossary Term
+     * Builds the context structure for a glossary term and adds it to the asset context
      *
      * @param userId           userId
      * @param glossaryTermGUID guid of the glossary term
      * @param typeDefName      the typeName of the asset.
      */
-    private void getGlossary(String userId, String glossaryTermGUID, String typeDefName) throws OCFCheckedExceptionBase {
+    private void addGlossaryContextToAssetContext(String userId, String glossaryTermGUID, String typeDefName) throws OCFCheckedExceptionBase {
         final String methodName = "getGlossary";
 
         EntityDetail glossaryTerm = repositoryHandler.getEntityByGUID(userId, glossaryTermGUID, "guid", typeDefName, methodName);
