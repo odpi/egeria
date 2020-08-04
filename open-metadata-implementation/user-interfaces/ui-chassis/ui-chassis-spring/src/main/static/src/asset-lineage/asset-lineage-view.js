@@ -136,7 +136,7 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
                     hierarchical: {
                         enabled: true,
                         levelSeparation: 300,
-                        direction: 'RL'
+                        direction: 'LR'
                     }
                 }
             },
