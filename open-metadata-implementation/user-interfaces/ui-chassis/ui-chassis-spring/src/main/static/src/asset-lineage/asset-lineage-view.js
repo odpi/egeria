@@ -230,11 +230,9 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
             }
             data.nodes[i].displayName = data.nodes[i].label;
             data.nodes[i].type = data.nodes[i].group;
-
             data.nodes[i].label = '<b>'+data.nodes[i].label+'</b>';
             data.nodes[i].label += ' \n\n' + this._camelCaseToSentence(data.nodes[i].group);
             if (displayName != null) {
-
                 data.nodes[i].label += ' \n\n From : ' + displayName;
             }
             if (data.nodes[i].id === this.routeData.guid){
