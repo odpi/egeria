@@ -27,8 +27,9 @@ const GlossaryAuthorContextProvider = (props) => {
     SEARCHED: Symbol("searched"),
     REFRESH: Symbol("refresh"),
     DELETING: Symbol("deleting"),
-    SET_CURRENT_NODE_TYPE: Symbol("SET_CURRENT_NODE_TYPE"),
-    UPDATE_SELECTED_NODE: Symbol("updatedSelectedNode"),
+    SET_CURRENT_NODE_TYPE: Symbol("setCurrentNodeType"),
+    UPDATE_SELECTED_NODE: Symbol("updateSelectedNode"),
+    UPDATE_SELECTED_NODE_LINES: Symbol("updateSelectedNodeLines"),
     RESET: Symbol("reset"),
   };
   Object.freeze(Types);
@@ -48,6 +49,7 @@ const GlossaryAuthorContextProvider = (props) => {
     SEARCHED: Symbol("searched"),
     REFRESH: Symbol("refresh"),
     DELETING: Symbol("deleting"),
+    GETTING_CURRENT_NODE_LINES: Symbol("gettingCurrentNodeLines"),
   };
   // freeze the "enum" so it cannot change
   Object.freeze(Operations);
@@ -68,6 +70,7 @@ const GlossaryAuthorContextProvider = (props) => {
     operation, // this is a more granular state
     currentNodeType,
     selectedNode,
+    selectedNodeLines,
   } = state;
 
   function initialiseState() {
@@ -78,6 +81,7 @@ const GlossaryAuthorContextProvider = (props) => {
       operation: Operations.NONE,
       // currentNodeType: undefined,
       // selectedNode: undefined,
+      // selectedNodeLines: undefined,
     };
   }
   /**
@@ -103,6 +107,7 @@ const GlossaryAuthorContextProvider = (props) => {
           operation: operation,
           currentNodeType: glossaryNodeType,
           selectedNode: undefined,
+          selectedNodeLines: undefined,
         };
       case Types.CREATED_MY_GLOSSARY.toString():
         return {
@@ -111,6 +116,7 @@ const GlossaryAuthorContextProvider = (props) => {
           myEdittingType: MyEdittingTypes.NONE,
           operation: Operations.CREATED,
           selectedNode: undefined,
+          selectedNodeLines: undefined,
         };
       case Types.CREATING_MY_PROJECT.toString(): {
         if (state.myProject) {
@@ -150,6 +156,7 @@ const GlossaryAuthorContextProvider = (props) => {
           ...state,
           operation: Operations.SEARCHING,
           selectedNode: undefined,
+          selectedNodeLines: undefined,
         };
       case Types.SEARCHED.toString():
         return {
@@ -188,6 +195,12 @@ const GlossaryAuthorContextProvider = (props) => {
         return {
           ...state,
           selectedNode: action.payload, // payload is the selected Node
+          // operation: Operations.GETTING_CURRENT_NODE_LINES,
+        };
+      case Types.UPDATE_SELECTED_NODE_LINES.toString():
+        return {
+          ...state,
+          selectedNodeLines: action.payload, // payload is the selected Node Lines
         };
       case Types.RESET.toString():
         return initialiseState();
@@ -200,6 +213,11 @@ const GlossaryAuthorContextProvider = (props) => {
   const doUpdateSelectedNode = (nodeIn) => {
     dispatch({ type: Types.UPDATE_SELECTED_NODE, payload: nodeIn });
   };
+
+  const doUpdateSelectedNodeLines = (lines) => {
+    dispatch({ type: Types.UPDATE_SELECTED_NODE_LINES, payload: lines });
+  };
+
   /**
    * About to set my glossary
    */
@@ -220,7 +238,7 @@ const GlossaryAuthorContextProvider = (props) => {
   const isSetupComplete = () => {
     return (
       myGlossary &&
-      myEdittingType && 
+      myEdittingType &&
       myEdittingType.toString() == MyEdittingTypes.NONE.toString()
     );
   };
@@ -245,7 +263,7 @@ const GlossaryAuthorContextProvider = (props) => {
   };
 
   const doCreatedAction = () => {
-    dispatch({ type: Types.CREATED});  
+    dispatch({ type: Types.CREATED });
   };
 
   const doSearchingAction = () => {
@@ -320,10 +338,15 @@ const GlossaryAuthorContextProvider = (props) => {
     return Operations.SEARCHED.toString() == operation.toString();
   };
   const isRefreshSearchOperation = () => {
-    return Operations.REFRESH.toString() == operation.toString();  
+    return Operations.REFRESH.toString() == operation.toString();
   };
   const isDeletingOperation = () => {
     return Operations.DELETING.toString() == operation.toString();
+  };
+  const isGettingCurrentNodeLines = () => {
+    return (
+      operation && Operations.GETTING_CURRENT_NODE_LINES.toString() == operation.toString()
+    );
   };
   const isUndefinedOperation = () => {
     return Operations.NONE.toString() == operation.toString();
@@ -335,6 +358,7 @@ const GlossaryAuthorContextProvider = (props) => {
         // exposed state
         currentNodeType,
         selectedNode,
+        selectedNodeLines,
         myProject,
         myGlossary,
         // do methods requesting actions
@@ -350,6 +374,7 @@ const GlossaryAuthorContextProvider = (props) => {
         doRefreshSearchAction,
         doDeletingAction,
         doUpdateSelectedNode,
+        doUpdateSelectedNodeLines,
         // is methods interrogate state
         isEdittingMyGlossary,
         isEdittingMyProject,
@@ -361,6 +386,7 @@ const GlossaryAuthorContextProvider = (props) => {
         isDeletingOperation,
         isUndefinedOperation,
         isSetupComplete,
+        isGettingCurrentNodeLines
       }}
     >
       {props.children}
