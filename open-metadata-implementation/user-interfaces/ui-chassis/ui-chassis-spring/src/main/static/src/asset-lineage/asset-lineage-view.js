@@ -145,35 +145,27 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
                 type: Object,
                 value: {
                     GlossaryTerm: {
-                        color: '#f0e442',
                         icon: 'vaadin:records'
                     },
                     Column: {
-                        color: '#009e73',
                         icon: 'vaadin:grid-h'
                     },
                     RelationalColumn: {
-                        color: '#73c0ee',
                         icon: 'vaadin:road-branches'
                     },
                     TabularColumn: {
-                        color: '#cc79a7',
                         icon: 'vaadin:tab'
                     },
                     RelationalTable: {
-                        color: '#50c67a',
                         icon: 'vaadin:table'
                     },
                     Process: {
-                        color: '#ffff00',
                         icon: 'vaadin:file-process'
                     },
                     subProcess: {
-                        color: '#ffff00',
                         icon: 'vaadin:cogs'
                     },
                     condensedNode: {
-                        color: '#faa43a',
                         icon: 'vaadin:cogs'
                     }
                 }
@@ -225,8 +217,8 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
                 };
             }
         }
+        const egeriaColor = getComputedStyle(this).getPropertyValue('--egeria-primary-color');
         for (var i = 0; i < data.nodes.length; i++) {
-            const egeriaColor = getComputedStyle(this).getPropertyValue('--egeria-primary-color');
             let displayName;
             if(data.nodes[i].properties && data.nodes[i].properties!==null && data.nodes[i].properties!==undefined ){
                 data.nodes[i].properties = this._parseProperties(data.nodes[i].properties);
@@ -240,16 +232,23 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
             data.nodes[i].type = data.nodes[i].group;
 
             data.nodes[i].label = '<b>'+data.nodes[i].label+'</b>';
-            data.nodes[i].label += ' \n\n Type : ' + this._camelCaseToSentence(data.nodes[i].group);
+            data.nodes[i].label += ' \n\n' + this._camelCaseToSentence(data.nodes[i].group);
             if (displayName != null) {
 
                 data.nodes[i].label += ' \n\n From : ' + displayName;
             }
             if (data.nodes[i].id === this.routeData.guid){
-                data.nodes[i].group='';
+                data.nodes[i].group='QueryNode';
                 data.nodes[i].color=egeriaColor;
-                data.nodes[i].font= {color:'white'};
-                data.nodes[i].shape= 'circle';
+                // data.nodes[i].color.border=egeriaColor;
+                // data.nodes[i].font= {color:'white'};
+                // data.nodes[i].shape= 'circle';
+            }else{
+                data.nodes[i].color = {
+                    background:'white',
+                    border:'#d3d3d3',
+                    highlight:{background:'#ff62004d',border:'#ff62008a'},
+                    hover:{background:'white',border:'red'}};
             }
         }
         if (!this._hideIncludeGlossaryTerms(this.routeData.usecase) && this.$.glossaryTermMenu.value === "false" ) {
