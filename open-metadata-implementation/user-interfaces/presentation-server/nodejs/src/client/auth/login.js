@@ -43,6 +43,8 @@ const Login = () => {
         if (res.status == "success") {
           console.log("login worked " + JSON.stringify(res));
           identificationContext.setUserId(userId);
+          identificationContext.setUser(res.user);
+          identificationContext.setAuthenticated(true);
           const path = identificationContext.getBrowserURL(''); 
           history.push(path);
         } else {
