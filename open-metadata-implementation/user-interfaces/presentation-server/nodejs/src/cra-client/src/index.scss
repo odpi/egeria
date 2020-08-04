@@ -1,0 +1,12 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
+@import '@carbon/themes/scss/themes';
+@import 'carbon-components/scss/globals/scss/styles.scss';
+@import '@carbon/elements/scss/elements';
+@import './components/Info/_info.scss';
+@import './components/GlossaryAuthor/_glossaryAuthor.scss';
+
+
+// @import 'carbon-components/scss/globals/scss/vendor/@carbon/layout/scss/breakpoint.scss';
+// @import 'carbon-components/scss/globals/scss/typography.scss';
+// @import 'carbon-components/scss/globals/scss/vars.scss';
