@@ -10,6 +10,7 @@ export default function generateServerConfig(options) {
     newServerOrganizationName,
     newServerLocalUserId,
     newServerLocalPassword,
+    newServerMaxPageSize,
   } = options;
 
   if (!newServerName) {
@@ -45,6 +46,7 @@ export default function generateServerConfig(options) {
     "localServerURL": newServerLocalURLRoot,
     "localServerUserId": newServerLocalUserId,
     "localServerPassword": newServerLocalPassword,
+    "maxPageSize": newServerMaxPageSize,
   }
 
 }

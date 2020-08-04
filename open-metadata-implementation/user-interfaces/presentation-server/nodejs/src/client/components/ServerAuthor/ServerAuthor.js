@@ -10,37 +10,41 @@ import {
   Grid,
   InlineNotification,
   Loading,
-  MultiSelect,
   ProgressIndicator,
   ProgressStep,
   Row,
-  Select,
-  SelectItem,
   TextInput,
+  TileGroup,
+  RadioTile,
+  SelectableTile
 } from "carbon-components-react";
+import JSONPretty from 'react-json-pretty';
 import axios from "axios";
 
 import { IdentificationContext } from "../../contexts/IdentificationContext";
 import generateServerConfig from "./generateServerConfig";
 import accessServices from "./accessServices";
+import serverTypes from "./serverTypes";
 
 export default function ServerAuthor() {
 
-  const { userId: originalUserId } = useContext(IdentificationContext);
-  const [userId] = useState(originalUserId);
+  const { userId, serverName: tenantId, user } = useContext(IdentificationContext);
+  const newServerOrganizationName = user.organizationName;
   const [newServerName, setNewServerName] = useState("");
-  const [newServerLocalURLRoot, setNewServerLocalURLRoot] = useState("https://localhost:19443");
-  const [newServerLocalServerType, setNewServerLocalServerType] = useState("Open Metadata and Governance Server");
-  const [newServerOrganizationName, setNewServerOrganizationName] = useState("");
+  const [newServerLocalURLRoot, setNewServerLocalURLRoot] = useState("https://localhost:9443");
+  const [newServerLocalServerType, setNewServerLocalServerType] = useState(serverTypes[0].label);
+  // const [newServerOrganizationName, setNewServerOrganizationName] = useState("");
   const [newServerLocalUserId, setNewServerLocalUserId] = useState("");
   const [newServerLocalPassword, setNewServerLocalPassword] = useState("");
-  const [newServerAccessServices, setNewServerAccessServices] = useState([]);
-  const [newServerRepository, setNewServerRepository] = useState("");
+  const [newServerAccessServices, setNewServerAccessServices] = useState(accessServices.map((s) => s.id));
+  const [newServerRepository, setNewServerRepository] = useState("in-memory-repository");
   const [newServerMaxPageSize, setNewServerMaxPageSize] = useState(1000);
   const [notificationKind, setNotificationKind] = useState("");
   const [notificationTitle, setNotificationTitle] = useState("");
   const [notificationSubtitle, setNotificationSubtitle] = useState("");
   const [progressIndicatorIndex, setProgressIndicatorIndex] = useState(0);
+  const [loadingText, setLoadingText] = useState("Loading...");
+  const [newServerConfig, setNewServerConfig] = useState("");
 
   const formStartRef = useRef(null);
 
@@ -53,7 +57,7 @@ export default function ServerAuthor() {
     try {
       const fetchServerConfigResponse = await axios.get(fetchServerConfigURL, {
         params: {
-          platformURL: newServerLocalURLRoot
+          tenantId,
         }
       });
       console.debug({fetchServerConfigResponse});
@@ -68,9 +72,23 @@ export default function ServerAuthor() {
     }
   }
 
+  const handleServerTypeSelection = async e => {
+    e.preventDefault();
+    document.getElementById("server-type-container").style.display = "none";
+    document.getElementById("config-basic-container").style.display = "block";
+    setProgressIndicatorIndex(1);
+  }
+
+  const handleBackToServerTypeSelection = e => {
+    e.preventDefault();
+    document.getElementById("config-basic-container").style.display = "none";
+    document.getElementById("server-type-container").style.display = "block";
+    setProgressIndicatorIndex(0);
+  }
+
   const handleBasicConfig = async e => {
     e.preventDefault();
-    console.log("server-author-basic-config-form submitted");
+    setLoadingText("Generating server configuration...");
     document.getElementById("config-basic-container").style.display = "none";
     document.getElementById("loading-container").style.display = "block";
     const configOptions = {
@@ -81,6 +99,7 @@ export default function ServerAuthor() {
       newServerOrganizationName,
       newServerLocalUserId,
       newServerLocalPassword,
+      newServerMaxPageSize,
     }
     let serverConfig;
     try {
@@ -91,21 +110,19 @@ export default function ServerAuthor() {
       return;
     }
     // Post server config
+    setLoadingText("Storing basic server configuration on OMAG server platform...");
     const setServerConfigURL = `/open-metadata/admin-services/users/${userId}/servers/${newServerName}/configuration`;
     try {
       const setServerConfigResponse = await axios.post(setServerConfigURL, {
         config: serverConfig,
-        platformURL: newServerLocalURLRoot,
+        tenantId,
       }, {
         headers: {
           'Content-Type': 'application/json'
         },
       });
       if (setServerConfigResponse.data.relatedHTTPCode == 200) {
-        document.getElementById("config-preview").innerHTML = JSON.stringify(serverConfig, null, 2);
-        setProgressIndicatorIndex(1);
-        document.getElementById("loading-container").style.display = "none";
-        document.getElementById("config-advanced-container").style.display = "block";
+        setNewServerConfig(serverConfig);
       } else {
         console.error(setServerConfigResponse.data);
         throw new Error("error in setServerConfigResponse")
@@ -118,96 +135,168 @@ export default function ServerAuthor() {
       document.getElementById("loading-container").style.display = "none";
       document.getElementById("config-basic-container").style.display = "block";
       document.getElementById("notification-container").style.display = "block";
+      return;
     }
-  }
-
-  const handleBackToBasicConfig = e => {
-    e.preventDefault();
-    console.log("back to basic config");
-    document.getElementById("config-advanced-container").style.display = "none";
-    document.getElementById("config-basic-container").style.display = "block";
-    setProgressIndicatorIndex(0);
-  }
-
-  const handleAdvancedConfig = async e => {
-    e.preventDefault();
-    console.log("server-author-advanced-config-form submitted");
-    document.getElementById("config-advanced-container").style.display = "none";
-    document.getElementById("loading-container").style.display = "block";
-    // Enable Access Services
-    setNewServerAccessServices("asset-owner"); // TODO: use array of access services
-    const enableServiceAccessURL = `/open-metadata/admin-services/users/${userId}/servers/${newServerName}/access-services/${newServerAccessServices}`;
+    // Enable chosen repository
+    setLoadingText("Enabling chosen repository...");
+    const enableRepositoryURL = `/open-metadata/admin-services/users/${userId}/servers/${newServerName}/local-repository/mode/${newServerRepository}`;
     try {
-      const enableServiceAccessResponse = await axios.post(enableServiceAccessURL, {
+      const enableRepositoryURLResponse = await axios.post(enableRepositoryURL, {
         config: '',
-        platformURL: newServerLocalURLRoot,
+        tenantId,
       }, {
         headers: {
           'Content-Type': 'application/json'
         },
       });
-      if (enableServiceAccessResponse.data.relatedHTTPCode == 200) {
-        // Enable chosen repository
-        const enableRepositoryURL = `/open-metadata/admin-services/users/${userId}/servers/${newServerName}/local-repository/mode/${newServerRepository}`;
-        try {
-          const enableRepositoryURLResponse = await axios.post(enableRepositoryURL, {
-            config: '',
-            platformURL: newServerLocalURLRoot,
-          }, {
-            headers: {
-              'Content-Type': 'application/json'
-            },
-          });
-          if (enableRepositoryURLResponse.data.relatedHTTPCode == 200) {
-            try {
-              const serverConfig = await fetchServerConfig();
-              document.getElementById("config-preview").innerHTML = JSON.stringify(serverConfig, null, 2);
-              document.getElementById("loading-container").style.display = "none";
-              document.getElementById("config-preview-container").style.display = "block";
-              setProgressIndicatorIndex(2);
-            } catch(error) {
-              console.error("error fetching server config", {error});
-              setNotificationKind("error");
-              setNotificationTitle("Configuration Error")
-              setNotificationSubtitle(`Error fetching configuration for the server.`);
-              document.getElementById("loading-container").style.display = "none";
-              document.getElementById("config-advanced-container").style.display = "block";
-              document.getElementById("notification-container").style.display = "block";
-            }
-          }
-        } catch(error) {
-          console.error("error enabling chosen repository", {error});
-          setNotificationKind("error");
-          setNotificationTitle("Configuration Error")
-          setNotificationSubtitle(`Error enabling ${newServerRepository} repository for the server.`);
-          document.getElementById("loading-container").style.display = "none";
-          document.getElementById("config-advanced-container").style.display = "block";
-          document.getElementById("notification-container").style.display = "block";
-        }
-
+      if (enableRepositoryURLResponse.data.relatedHTTPCode != 200) {
+        console.error(enableRepositoryURLResponse.data);
+        throw new Error("error in enableRepositoryURLResponse")
       }
     } catch(error) {
-      console.error("error enabling service access", {error});
+      console.error("error enabling chosen repository", {error});
       setNotificationKind("error");
       setNotificationTitle("Configuration Error")
-      setNotificationSubtitle("Error enabling service access to the server.");
+      setNotificationSubtitle(`Error enabling ${newServerRepository} repository for the server.`);
       document.getElementById("loading-container").style.display = "none";
-      document.getElementById("config-advanced-container").style.display = "block";
+      document.getElementById("config-basic-container").style.display = "block";
+      document.getElementById("notification-container").style.display = "block";
+      return;
+    }
+    // Configure event bus
+    setLoadingText("Configuring event bus...");
+    const configureEventBusURL = `/open-metadata/admin-services/users/${userId}/servers/${newServerName}/event-bus?topicURLRoot=egeriaTopics`;
+    try {
+      const configureEventBusURLResponse = await axios.post(configureEventBusURL, {
+        config: '',
+        tenantId,
+      }, {
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      });
+      if (configureEventBusURLResponse.data.relatedHTTPCode == 200) {
+        setProgressIndicatorIndex(2);
+        document.getElementById("loading-container").style.display = "none";
+        document.getElementById("access-services-container").style.display = "block";
+      } else {
+        console.error(configureEventBusURLResponse.data);
+        throw new Error("error in configureEventBusURLResponse")
+      }
+    } catch(error) {
+      console.error("error configuring event bus", {error});
+      setNotificationKind("error");
+      setNotificationTitle("Configuration Error")
+      setNotificationSubtitle(`Error configuring event bus.`);
+      document.getElementById("loading-container").style.display = "none";
+      document.getElementById("config-basic-container").style.display = "block";
+      document.getElementById("notification-container").style.display = "block";
+      return;
+    }
+  }
+
+  const handleBackToBasicConfig = e => {
+    e.preventDefault();
+    document.getElementById("access-services-container").style.display = "none";
+    document.getElementById("config-basic-container").style.display = "block";
+    setProgressIndicatorIndex(1);
+  }
+
+  const handleDeselectAllAccessServices = () => {
+    const boxes = document.getElementsByName('access-services');
+    for (let b=0; boxes.length - 1; b++) {
+      const isChecked = boxes[b].checked;
+      if (isChecked)
+        boxes[b].click();
+    };
+  }
+
+  const handleSelectAllAccessServices = () => {
+    const boxes = document.getElementsByName('access-services');
+    for (let b=0; boxes.length - 1; b++) {
+      const isChecked = boxes[b].checked;
+      if (!isChecked)
+        boxes[b].click();
+    };
+  }
+
+  const handleAccessServicesConfig = async e => {
+    e.preventDefault();
+    const boxes = [...document.getElementsByName('access-services')];
+    const checkedAccessServices = boxes.filter((box) => { return box.checked }).map((box) => { return box.value });
+    setNewServerAccessServices(checkedAccessServices);
+    setLoadingText("Enabling access services...");
+    document.getElementById("access-services-container").style.display = "none";
+    document.getElementById("loading-container").style.display = "block";
+    // Enable Access Services
+    const accessServiceURLs = [];
+    // check if all
+    if (checkedAccessServices.length == accessServices.length) {
+      accessServiceURLs.push(`/open-metadata/admin-services/users/${userId}/servers/${newServerName}/access-services`);
+    } else {
+      checkedAccessServices.forEach((accessService) => {
+        accessServiceURLs.push(`/open-metadata/admin-services/users/${userId}/servers/${newServerName}/access-services/${accessService}`);
+      })
+    }
+    for (const enableServiceAccessURL of accessServiceURLs) {
+      try {
+        const urlArray = enableServiceAccessURL.split("/")
+        const serviceType = urlArray[urlArray.length - 1];
+        if (serviceType != 'access-services') {
+          setLoadingText(`Enabling ${serviceType} access service...`);
+        }
+        const enableServiceAccessResponse = await axios.post(enableServiceAccessURL, {
+          config: '',
+          tenantId,
+        }, {
+          headers: {
+            'Content-Type': 'application/json'
+          },
+        });
+        if (enableServiceAccessResponse.data.relatedHTTPCode != 200) {
+          console.error(enableServiceAccessResponse.data);
+          throw new Error("error in enableServiceAccessResponse");
+        }
+      } catch(error) {
+        console.error("error enabling service access", {error});
+        setNotificationKind("error");
+        setNotificationTitle("Configuration Error")
+        setNotificationSubtitle("Error enabling service access to the server.");
+        document.getElementById("loading-container").style.display = "none";
+        document.getElementById("access-services-container").style.display = "block";
+        document.getElementById("notification-container").style.display = "block";
+        return;
+      }
+    }
+    // Fetch Server Config
+    setLoadingText("Fetching final stored server configuration...");
+    try {
+      const serverConfig = await fetchServerConfig();
+      setNewServerConfig(serverConfig);
+      document.getElementById("loading-container").style.display = "none";
+      document.getElementById("config-preview-container").style.display = "block";
+      setProgressIndicatorIndex(3);
+    } catch(error) {
+      console.error("error fetching server config", {error});
+      setNotificationKind("error");
+      setNotificationTitle("Configuration Error")
+      setNotificationSubtitle(`Error fetching configuration for the server.`);
+      document.getElementById("loading-container").style.display = "none";
+      document.getElementById("access-services-container").style.display = "block";
       document.getElementById("notification-container").style.display = "block";
     }
   }
 
-  const handleBackToAdvancedConfig = e => {
+  const handleBackToAccessServicesConfig = e => {
     e.preventDefault();
-    console.log("back to advanced config");
     document.getElementById("config-preview-container").style.display = "none";
-    document.getElementById("config-advanced-container").style.display = "block";
-    setProgressIndicatorIndex(1);
+    document.getElementById("access-services-container").style.display = "block";
+    setProgressIndicatorIndex(2);
   }
 
   const handleDeployConfig = async e => {
     e.preventDefault();
-    console.log("store config and deploy server");
+    setLoadingText("Deploying OMAG server from stored configuration...")
     document.getElementById("config-preview-container").style.display = "none";
     document.getElementById("loading-container").style.display = "block";
     // Issue the instance call to start the new server
@@ -215,7 +304,7 @@ export default function ServerAuthor() {
     try{
       const startServerResponse = await axios.post(startServerURL, {
         config: '',
-        platformURL: newServerLocalURLRoot,
+        tenantId,
       }, {
         headers: {
           'Content-Type': 'application/json'
@@ -227,270 +316,322 @@ export default function ServerAuthor() {
         setNotificationSubtitle(`Server instance deployed from configuration.`);
         document.getElementById("loading-container").style.display = "none";
         document.getElementById("notification-container").style.display = "block";
+      } else {
+        console.error(startServerResponse.data);
+        throw new Error("error in startServerResponse");
       }
     } catch(error) {
-      console.log("error starting server from stored config", {error});
+      console.error("error starting server from stored config", {error});
+      setNotificationKind("error");
+      setNotificationTitle("Deployment Error")
+      setNotificationSubtitle(`Error starting server from stored configuration file.`);
+      document.getElementById("loading-container").style.display = "none";
+      document.getElementById("config-preview-container").style.display = "block";
+      document.getElementById("notification-container").style.display = "block";
     }
   }
+
+  const serverTypeTiles = serverTypes.map((serverType, i) => {
+    return (
+      <RadioTile
+        id={serverType.id}
+        light={false}
+        name={`server-serverType-${i}`}
+        tabIndex={i}
+        value={serverType.label}
+      >
+        {serverType.label}
+      </RadioTile>
+    )
+  });
+
+  const accessServiceTiles = accessServices.map((service, i) => {
+    return (
+      <SelectableTile
+        id={service.id}
+        light={false}
+        name={'access-services'}
+        // onChange={handleAccessServiceClick}
+        selected={true}
+        tabIndex={i}
+        title={service.label}
+        value={service.id}
+      >
+        {service.label}
+      </SelectableTile>
+    )
+  })
 
   return (
     <Grid>
 
-      <Row id="config-basic-container">
+      <Row id="server-config-container">
+
         <Column
+          id="server-config-forms"
           sm={{ span: 4 }}
-          md={{ span: 8 }}
-          lg={{ span: 8, offset: 4 }}
+          md={{ span: 6 }}
+          lg={{ span: 10, offset: 2 }}
         >
-          <h1>Create New OMAG Server</h1>
-          <p style={{marginBottom: "24px"}}>Logged in as <CodeSnippet type="inline" >{userId}</CodeSnippet></p>
-          <h4 style={{textAlign: "left", marginBottom: "32px"}}>Basic Configuration</h4>
-          <Form id="server-author-basic-config-form" onSubmit={handleBasicConfig}>
-            <FormGroup>
-              <TextInput
-                type="text"
-                labelText="Server name"
-                name="new-server-name"
-                defaultValue={newServerName}
-                onChange={e => setNewServerName(e.target.value)}
-                placeholder="e.g., cocoMDS1"
-                required
-                style={{marginBottom: "32px"}}
-                ref={formStartRef}
-              />
-              <TextInput
-                type="text"
-                labelText="Local URL root"
-                name="new-server-local-url-root"
-                defaultValue={newServerLocalURLRoot}
-                onChange={e => setNewServerLocalURLRoot(e.target.value)}
-                placeholder="e.g., https://localhost:19443"
-                required
-                style={{marginBottom: "32px"}}
-              />
-              <TextInput
-                type="text"
-                labelText="Local server type"
-                name="new-server-local-server-type"
-                defaultValue={newServerLocalServerType}
-                onChange={e => setNewServerLocalServerType(e.target.value)}
-                placeholder="e.g., Open Metadata and Governance Server"
-                required
-                style={{marginBottom: "32px"}}
-              />
-              <TextInput
-                type="text"
-                labelText="Organization name"
-                name="new-server-organization-name"
-                defaultValue={newServerOrganizationName}
-                onChange={e => setNewServerOrganizationName(e.target.value)}
-                placeholder="e.g., myOrg"
-                required
-                style={{marginBottom: "32px"}}
-              />
-              <TextInput
-                type="text"
-                labelText="Local user ID"
-                name="new-server-local-user-id"
-                defaultValue={newServerLocalUserId}
-                onChange={e => setNewServerLocalUserId(e.target.value)}
-                placeholder="e.g., myMetadataServerUserId"
-                required
-                style={{marginBottom: "32px"}}
-              />
-              <TextInput.PasswordInput
-                labelText="Local password"
-                name="new-server-local-password"
-                defaultValue={newServerLocalPassword}
-                onChange={e => setNewServerLocalPassword(e.target.value)}
-                placeholder="e.g., myMetadataServerPassword"
-                required
-              />
-            </FormGroup>
-            <FormGroup class="bx--btn-set">
+        
+          <div id="server-type-container">
+            <h1>Create New OMAG Server</h1>
+            <p style={{marginBottom: "24px"}}>Logged in as <CodeSnippet type="inline" >{userId}</CodeSnippet></p>
+            <h4 style={{textAlign: "left", marginBottom: "32px"}}>Select Server Type</h4>
+            <TileGroup
+              defaultSelected={serverTypes[0].label}
+              name="server-types"
+              valueSelected=""
+              onChange={value => setNewServerLocalServerType(value)}
+            >
+              {serverTypeTiles}
+            </TileGroup>
+            <Button
+              kind="primary"
+              style={{margin: "16px auto"}}
+              onClick={handleServerTypeSelection}
+            >
+              Proceed to basic configuration
+            </Button>
+          </div>
+
+          <div id="config-basic-container" style={{display: "none"}}>
+            <h1>Create New OMAG Server</h1>
+            <p style={{marginBottom: "24px"}}>Logged in as <CodeSnippet type="inline" >{userId}</CodeSnippet></p>
+            <h4 style={{textAlign: "left", marginBottom: "16px"}}>Basic Configuration</h4>
+            <Form id="server-author-basic-config-form" onSubmit={handleBasicConfig}>
+              <FormGroup>
+                <TextInput
+                  type="text"
+                  labelText="Server name"
+                  name="new-server-name"
+                  defaultValue={newServerName}
+                  onChange={e => setNewServerName(e.target.value)}
+                  placeholder="cocoMDS1"
+                  required
+                  style={{marginBottom: "16px"}}
+                  ref={formStartRef}
+                />
+                <TextInput
+                  type="text"
+                  labelText="Local URL root"
+                  name="new-server-local-url-root"
+                  defaultValue={newServerLocalURLRoot}
+                  onChange={e => setNewServerLocalURLRoot(e.target.value)}
+                  placeholder="https://localhost:9443"
+                  required
+                  style={{marginBottom: "16px"}}
+                />
+                <TextInput
+                  type="text"
+                  labelText="Local user ID"
+                  name="new-server-local-user-id"
+                  defaultValue={newServerLocalUserId}
+                  onChange={e => setNewServerLocalUserId(e.target.value)}
+                  placeholder="myMetadataServerUserId"
+                  required
+                  style={{marginBottom: "16px"}}
+                />
+                <TextInput.PasswordInput
+                  labelText="Local password"
+                  name="new-server-local-password"
+                  defaultValue={newServerLocalPassword}
+                  onChange={e => setNewServerLocalPassword(e.target.value)}
+                  placeholder="myMetadataServerPassword"
+                  required
+                  style={{marginBottom: "16px"}}
+                />
+                <TextInput
+                  type="text"
+                  labelText="Max page size"
+                  name="new-server-max-page-size"
+                  defaultValue={newServerMaxPageSize}
+                  onChange={e => setNewServerMaxPageSize(e.target.value)}
+                  placeholder="1000"
+                  style={{marginBottom: "16px"}}
+                />
+                <TileGroup
+                  defaultSelected="in-memory-repository"
+                  name="repository-types"
+                  valueSelected=""
+                  legend="Server repository"
+                  onChange={value => setNewServerRepository(value)}
+                >
+                  <RadioTile
+                    id="in-memory-repository"
+                    light={false}
+                    name="in-memory-repository"
+                    tabIndex={0}
+                    value="in-memory-repository"
+                  >
+                    In Memory
+                  </RadioTile>
+                  <RadioTile
+                    id="local-graph-repository"
+                    light={false}
+                    name="local-graph-repository"
+                    tabIndex={0}
+                    value="local-graph-repository"
+                  >
+                    Janus Graph
+                  </RadioTile>
+                </TileGroup>
+              </FormGroup>
+              <div className="bx--btn-set">
+                <Button
+                  kind="secondary"
+                  style={{margin: "16px auto"}}
+                  onClick={handleBackToServerTypeSelection}
+                >
+                  Back to server type selection
+                </Button>
+                <Button
+                  kind="primary"
+                  type="submit"
+                  style={{margin: "16px auto"}}
+                  // disabled={!validateForm()}
+                >
+                  Proceed to access services
+                </Button>
+              </div>
+            </Form>
+          </div>
+          
+          <div id="access-services-container" style={{display: "none"}}>
+            <h1>Create New OMAG Server</h1>
+            <p style={{marginBottom: "32px"}}>Logged in as <CodeSnippet type="inline" >{userId}</CodeSnippet></p>
+            <h4 style={{textAlign: "left", marginBottom: "24px"}}>Select Access Services</h4>
+            <div className="bx--btn-set">
               <Button
-                type="submit"
-                style={{marginTop: "48px", marginBottom: "16px"}}
-                // disabled={!validateForm()}
+                kind="secondary"
+                style={{margin: "4px auto"}}
+                onClick={handleDeselectAllAccessServices}
               >
-                Proceed to advanced configuration
+                Deselect All
               </Button>
-            </FormGroup>
-          </Form>
-        </Column>
-      </Row>
-      
-      <Row id="config-advanced-container" style={{display: "none"}}>
-        <Column
-          sm={{ span: 4 }}
-          md={{ span: 8 }}
-          lg={{ span: 8, offset: 4 }}
-        >
-          <h1>Create New OMAG Server</h1>
-          <p style={{marginBottom: "32px"}}>Logged in as <CodeSnippet type="inline" >{userId}</CodeSnippet></p>
-          <h4 style={{textAlign: "left", marginBottom: "24px"}}>Advanced Configuration (Optional)</h4>
-          <Form id="server-author-advanced-config-form" onSubmit={(e) => e.preventDefault()}>
-            <FormGroup>
-              <MultiSelect
-                id="new-server-access-services"
-                items={accessServices}
-                label="Access Services"
-                onChange={e => setNewServerAccessServices(e && e.selectedItems.length ? e.selectedItems.map((item) => item.id) : [])}
+              <Button
+                kind="secondary"
+                style={{margin: "4px auto"}}
+                onClick={handleSelectAllAccessServices}
               >
-                <SelectItem
-                  disabled
-                  hidden
-                  value="placeholder-option"
-                  text="Choose an option"
-                />
-                <SelectItem
-                  value="asset-owner"
-                  text="Asset Owner"
-                />
-              </MultiSelect>
-              <Select
-                name="new-server-repository"
-                defaultValue="placeholder-option"
-                // onChange={e => console.log(e)} // setNewServerRepository(e.options[e.selectedIndex].value)}
-              >
-                <SelectItem
-                  disabled
-                  hidden
-                  value="placeholder-option"
-                  text="Choose an option"
-                />
-                <SelectItem
-                  value="in-memory-repository"
-                  text="In Memory"
-                  onClick={() => setNewServerRepository("in-memory-repository")}
-                />
-                <SelectItem
-                  value="local-graph-repository"
-                  text="Janus Graph"
-                  onClick={() => setNewServerRepository("in-memory-repository")}
-                />
-              </Select>
-              <TextInput
-                type="text"
-                labelText="Max page size"
-                name="new-server-max-page-size"
-                defaultValue={newServerMaxPageSize}
-                onChange={e => setNewServerMaxPageSize(e.target.value)}
-                placeholder="e.g., 1000"
-                style={{marginBottom: "32px"}}
-              />
-            </FormGroup>
+                Select All
+              </Button>
+            </div>
+            <Form id="server-author-access-services-form" onSubmit={(e) => e.preventDefault()}>
+              <FormGroup>
+                <div
+                  aria-label="selectable tiles"
+                  role="group"
+                >
+                  {accessServiceTiles}
+                </div>
+              </FormGroup>
+              <div className="bx--btn-set">
+                <Button
+                  kind="secondary"
+                  style={{margin: "16px auto"}}
+                  onClick={handleBackToBasicConfig}
+                >
+                  Back to basic configuration
+                </Button>
+                <Button
+                  type="submit"
+                  kind="primary"
+                  style={{margin: "16px auto"}}
+                  onClick={handleAccessServicesConfig}
+                  // disabled={!validateForm()}
+                >
+                  Proceed to preview configuration
+                </Button>
+              </div>
+            </Form>
+          </div>
+        
+          <div id="config-preview-container" style={{display: "none"}}>
+            <h1>Create New OMAG Server</h1>
+            <p style={{marginBottom: "32px"}}>Logged in as <CodeSnippet type="inline" >{userId}</CodeSnippet></p>
+            <h4 style={{textAlign: "left", marginBottom: "24px"}}>Preview Configuration</h4>
+            <div style={{
+              backgroundColor: "#d3d3d3",
+              textAlign: "left",
+              overflow: "scroll",
+              height: "400px"
+            }}>
+              <JSONPretty id="config-preview" data={newServerConfig}></JSONPretty>
+            </div>
             <FormGroup class="bx--btn-set">
               <Button
                 kind="secondary"
-                onClick={handleBackToBasicConfig}
+                style={{margin: "16px auto"}}
+                onClick={handleBackToAccessServicesConfig}
               >
-                Back to basic configuration
+                Back to access services
               </Button>
               <Button
                 type="submit"
                 kind="primary"
-                style={{marginTop: "48px", marginBottom: "16px"}}
-                onClick={handleAdvancedConfig}
-                // disabled={!validateForm()}
+                style={{margin: "16px auto"}}
+                onClick={handleDeployConfig}
               >
-                Proceed to preview configuration
+                Deploy instance
               </Button>
             </FormGroup>
-          </Form>
-        </Column>
-      </Row>
-      
-      <Row id="config-preview-container" style={{display: "none"}}>
-        <Column
-          sm={{ span: 4 }}
-          md={{ span: 6, offset: 1 }}
-          lg={{ span: 12, offset: 2 }}
-        >
-          <h1>Create New OMAG Server</h1>
-          <p style={{marginBottom: "32px"}}>Logged in as <CodeSnippet type="inline" >{userId}</CodeSnippet></p>
-          <h4 style={{textAlign: "left", marginBottom: "24px"}}>Preview Configuration</h4>
-          <CodeSnippet id="config-preview" type="multi"></CodeSnippet>
-          <FormGroup class="bx--btn-set">
-            <Button
-              kind="secondary"
-              onClick={handleBackToAdvancedConfig}
-            >
-              Back to advanced configuration
-            </Button>
-            <Button
-              type="submit"
-              kind="primary"
-              style={{marginTop: "48px", marginBottom: "16px"}}
-              onClick={handleDeployConfig}
-            >
-              Deploy instance
-            </Button>
-          </FormGroup>
-        </Column>
-      </Row>
-      
-      <Row id="loading-container" style={{display: "none"}}>
-        <Column
-          sm={{ span: 4 }}
-          md={{ span: 8 }}
-          lg={{ span: 8, offset: 4 }}
-        >
-          <Loading
-            description="Active loading indicator"
-            withOverlay={false}
-          />
-        </Column>
-      </Row>
+          </div>
+        
+          <div id="loading-container" style={{display: "none"}}>
+            <Loading
+              description="Active loading indicator"
+              withOverlay={false}
+              style={{margin: 'auto'}}
+            />
+            <p>{loadingText}</p>
+          </div>
 
-      <Row id="notification-container" style={{display: "none"}}>
-        <Column
-          sm={{ span: 4 }}
-          md={{ span: 8 }}
-          lg={{ span: 8, offset: 4 }}
-        >
-          <InlineNotification
-            kind={notificationKind}
-            title={notificationTitle}
-            subtitle={notificationSubtitle}
-          />
-        </Column>
-      </Row>
+          <div id="notification-container" style={{display: "none"}}>
+            <InlineNotification
+              kind={notificationKind}
+              title={notificationTitle}
+              subtitle={notificationSubtitle}
+            />
+          </div>
 
-      <Row id="config-progress-container">
+        </Column>
+        
         <Column
+          id="config-progress-container"
           sm={{ span: 4 }}
-          md={{ span: 6, offset: 1 }}
-          lg={{ span: 8, offset: 4 }}
+          md={{ span: 2 }}
+          lg={{ span: 4 }}
         >
           <ProgressIndicator
             id="config-progress-indicator"
             vertical={false}
             currentIndex={progressIndicatorIndex}
             spaceEqually={false}
+            vertical={true}
+            style={{marginTop: "98px"}}
           >
             <ProgressStep
-              label="First step"
+              label="Select server type"
+              // secondaryLabel=""
               description="Step 1: OMAG server wizard"
-              secondaryLabel="Basic configuration"
             />
             <ProgressStep
-              label="Second step"
+              label="Basic configuration"
+              // secondaryLabel=""
               description="Step 2: OMAG server wizard"
-              secondaryLabel="Advanced configuration"
-              /* Advanced config to include:
-                  Max page size,
-                  Enabling Janus graph repository,
-                  Enabling access services (asset-owner by default)
-              */
             />
             <ProgressStep
-              label="Third step"
+              label="Select access services"
               description="Step 3: OMAG server wizard"
-              secondaryLabel="Preview configuration and deploy instance"
+            />
+            <ProgressStep
+              label="Preview configuration and deploy instance"
+              description="Step 4: OMAG server wizard"
             />
           </ProgressIndicator>
         </Column>
+
       </Row>
 
     </Grid>
