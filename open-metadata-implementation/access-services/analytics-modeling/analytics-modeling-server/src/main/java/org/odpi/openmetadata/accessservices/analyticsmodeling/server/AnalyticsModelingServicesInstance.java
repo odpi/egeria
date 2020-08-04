@@ -40,7 +40,7 @@ public class AnalyticsModelingServicesInstance extends OCFOMASServiceInstance
         
         OMEntityDao omEntityDao = new OMEntityDao(repositoryConnector, supportedZones, auditLog);
 
-        databaseContextHandler = new DatabaseContextHandler(omEntityDao);
+        databaseContextHandler = new DatabaseContextHandler(omEntityDao, invalidParameterHandler);
     }
 
 

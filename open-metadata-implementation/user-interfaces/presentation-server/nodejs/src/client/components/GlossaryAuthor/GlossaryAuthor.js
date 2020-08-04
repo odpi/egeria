@@ -1,13 +1,13 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 import React, { useState, useEffect } from "react";
-import GlossaryAuthorContext from "../../contexts/GlossaryAuthorContext";
+import GlossaryAuthorContext from "./contexts/GlossaryAuthorContext";
 import { Accordion, AccordionItem } from "carbon-components-react";
-import getNodeType from "./NodeTypes.js";
+import getNodeType from "./components/properties/NodeTypes.js";
 import Egeria_project_32 from "../../images/Egeria_project_32";
 import Egeria_glossary_32 from "../../images/Egeria_glossary_32";
-import MyNodeSetter from "./MyNodeSetter";
-import GlossaryAuthorNodes from "./GlossaryAuthorNodes";
+import MyNodeView from "./components/views/MyNodeView";
+import GlossaryAuthorNodes from "./components/GlossaryAuthorNodes";
 
 export default function GlossaryAuthor() {
   const [connected, setConnected] = useState();
@@ -121,14 +121,14 @@ export default function GlossaryAuthor() {
         <GlossaryAuthorContext>
           <div className='my-container'>
             <span className='my-item'>
-              Project
-              <Egeria_project_32 />
-              <MyNodeSetter typeKey="project" />
+              Current Glossary
+              <Egeria_glossary_32 />
+              <MyNodeView typeKey="glossary" />
             </span>
             <span className='my-item'>
-              Glossary
-              <Egeria_glossary_32 />
-              <MyNodeSetter typeKey="glossary" />
+              Current Project
+              <Egeria_project_32 />
+              <MyNodeView typeKey="project" />
             </span>
           </div>
           <GlossaryAuthorNodes />
@@ -140,10 +140,10 @@ export default function GlossaryAuthor() {
             Unable to use the UI as we are not Connected to the server - press
             button to retry.
           </div>
-          <div class="bx--form-item">
+          <div className="bx--form-item">
             <button
               id="connectionChecker"
-              class="bx--btn bx--btn--secondary"
+              className="bx--btn bx--btn--secondary"
               onClick={handleOnClick}
               type="button"
               onAnimationEnd={handleOnAnimationEnd}

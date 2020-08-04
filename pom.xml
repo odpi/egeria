@@ -126,11 +126,11 @@
         <junit.jupiter.version>5.6.2</junit.jupiter.version>
         <junit.version>4.13</junit.version>
         <surefire.plugin.version>3.0.0-M4</surefire.plugin.version>
-        <mockito.version>3.4.4</mockito.version>
-        <testng.version>7.1.0</testng.version>
+        <mockito.version>3.4.6</mockito.version>
+        <testng.version>7.3.0</testng.version>
         <slf4j.version>1.7.30</slf4j.version>
         <logback.version>1.2.3</logback.version>
-        <jackson.version>2.11.1</jackson.version>
+        <jackson.version>2.11.2</jackson.version>
         <jackson.databind.version>2.10.0</jackson.databind.version>
         <kafka.version>2.5.0</kafka.version>
         <janus.version>0.5.2</janus.version>
@@ -159,8 +159,8 @@
         <ranger.version>1.2.0</ranger.version>
         <plexus.version>3.3.0</plexus.version>
         <quartz.version>2.3.2</quartz.version>
-        <lucene-analyzers-common.version>8.4.1</lucene-analyzers-common.version>
-        <guava.version>23.0</guava.version>
+        <lucene-analyzers-common.version>8.6.0</lucene-analyzers-common.version>
+        <guava.version>29.0-jre</guava.version>
         <tink.version>1.4.0</tink.version>
         <jsonld.version>0.13.0</jsonld.version>
         <commons-logging.version>1.2</commons-logging.version>
@@ -168,7 +168,7 @@
         <json-sanitizer.version>1.2.1</json-sanitizer.version>
         <googlefindbugs.version>3.0.2</googlefindbugs.version>
         <oss.version>4.8.0</oss.version>
-        <spotbugs-annotations.version>4.0.6</spotbugs-annotations.version>
+        <spotbugs-annotations.version>4.1.1</spotbugs-annotations.version>
         <sleepycat.version>18.3.12</sleepycat.version>
         <joda.version>2.10.6</joda.version>
         <jackson-asl.version>1.9.13</jackson-asl.version>
