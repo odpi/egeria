@@ -23,13 +23,17 @@ and bad.  We would love to hear from you.
 
 Below are the release notes for the latest ODPi Egeria release:
 
+ * [Release 2.1](release-notes-2-1.md) - July 2020
+    * Bug fixes
+    * Dependency updates
+
+## Older Releases
+
  * [Release 2.0](release-notes-2-0.md) - June 2020
     * https security for server chassis
     * encrypted file connector
     * Bug fixes
     * Dependency updates
-
-## Older Releases
 
 * [Release 1.8](release-notes-1-8.md) - May 2020
     * Additional tutorial content in the form of the Egeria Dojo
