@@ -59,12 +59,7 @@ class VisGraph extends mixinBehaviors([ItemViewBehavior], PolymerElement) {
             vertical-align="top"
             horizontal-align="right"
             auto-fit-on-attach
-            > 
-              <h2></h2>
-              
-              
-           </template>
-              </legend-div>
+            ></legend-div>
         </div>
         
         <paper-dialog id="visDialog" class = "vis-dialog">
