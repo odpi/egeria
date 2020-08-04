@@ -92,17 +92,21 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
                 </vaadin-list-box>  
               </template>
             </vaadin-select>
+            <paper-button id = "closeLegendButton" on-tap="toggleLegend">Toggle legend</paper-button>
         </div>
     </div>
 
     <div id="container">
-        <vis-graph id="visgraph" data=[[graphData]]></vis-graph>
+        <vis-graph id="visgraph" groups=[[groups]] data=[[graphData]]></vis-graph>
     </div>
     `;
   }
 
     ready() {
         super.ready();
+        var thisElement = this;
+        this.$.tokenAjax.addEventListener('error', () =>
+            thisElement.$.visgraph.importNodesAndEdges([],[]));
         this.$.processMenu.addEventListener('value-changed', () =>
             this._reload(this.$.useCases.items[this.$.useCases.selected].value, this.$.processMenu.value));
 
@@ -124,7 +128,6 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
             graphInteraction: {
                 type: Object,
                 value: {
-                    tooltipDelay: 200,
                     hideEdgesOnDrag: true
                 }
             },
@@ -133,7 +136,7 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
                 value: {
                     hierarchical: {
                         enabled: true,
-                        levelSeparation: 300,
+                        levelSeparation: 250,
                         direction: 'LR'
                     }
                 }
@@ -142,28 +145,28 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
                 type: Object,
                 value: {
                     GlossaryTerm: {
-                        color: '#f0e442',
-                        shape: 'circle'
+                        icon: 'vaadin:records'
                     },
                     Column: {
-                        color: '#009e73'
+                        icon: 'vaadin:grid-h'
                     },
                     RelationalColumn: {
-                        color: '#0072b2'
+                        icon: 'vaadin:road-branches'
                     },
                     TabularColumn: {
-                        color: '#cc79a7'
+                        icon: 'vaadin:tab'
                     },
                     RelationalTable: {
-                        shape: 'box',
-                        color: '#007836'
+                        icon: 'vaadin:table'
                     },
                     Process: {
-                        shape: 'parallelogram',
-                        color: '#b276b2'
+                        icon: 'vaadin:file-process'
+                    },
+                    subProcess: {
+                        icon: 'vaadin:cogs'
                     },
                     condensedNode: {
-                        color: '#faa43a'
+                        icon: 'vaadin:cogs'
                     }
                 }
             }
@@ -192,11 +195,20 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
         }
     }
 
+    _parseProperties(props){
+        var obj = {};
+        Object.keys(props).forEach(
+            (key)=> {
+                var newKey = key.split("vertex--").join("");
+                obj[newKey] = ""+props[key];
+            }
+        );
+        return obj;
+    }
+
     _graphDataChanged(data, newData) {
-        console.debug("oldData" + JSON.stringify(data));
-        console.debug("newData" + JSON.stringify(newData));
         if (data === null || data === undefined) {
-            if (newData != null) {
+            if (newData && newData != null) {
                 data = newData;
             } else {
                 data = {
@@ -205,25 +217,39 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
                 };
             }
         }
+        const egeriaColor = getComputedStyle(this).getPropertyValue('--egeria-primary-color');
         for (var i = 0; i < data.nodes.length; i++) {
-            const egeriaColor = getComputedStyle(this).getPropertyValue('--egeria-primary-color');
-            data.nodes[i].title = JSON.stringify(data.nodes[i].properties, "", '<br>');
-            if (data.nodes[i].properties == null) {
-                continue;
-            }
             let displayName;
-            if (data.nodes[i].id === this.routeData.guid){
-                data.nodes[i].group='';
-                data.nodes[i].color=egeriaColor;
-                data.nodes[i].font= {color:'white'};
+            if(data.nodes[i].properties && data.nodes[i].properties!==null && data.nodes[i].properties!==undefined ){
+                data.nodes[i].properties = this._parseProperties(data.nodes[i].properties);
+
+                if (data.nodes[i].properties['tableDisplayName'] != null
+                    && data.nodes[i].properties['tableDisplayName'] != undefined) {
+                    displayName = data.nodes[i].properties['tableDisplayName']
+                }
             }
-            if (data.nodes[i].properties['tableDisplayName'] != null) {
-                displayName = data.nodes[i].properties['tableDisplayName']
-            } else if (data.nodes[i].properties['vertex--tableDisplayName'] != null) {
-                displayName = data.nodes[i].properties['vertex--tableDisplayName']
-            }
+            data.nodes[i].displayName = data.nodes[i].label;
+            data.nodes[i].type = data.nodes[i].group;
+            data.nodes[i].label = '<b>'+data.nodes[i].label+'</b>';
+            data.nodes[i].label += ' \n\n' + this._camelCaseToSentence(data.nodes[i].group);
             if (displayName != null) {
-                data.nodes[i].label += ' \n Table : ' + displayName;
+                data.nodes[i].label += ' \n\n From : ' + displayName;
+            }
+            if (data.nodes[i].id === this.routeData.guid){
+                data.nodes[i].group ='QueryNode';
+                data.nodes[i].color = {
+                    background:'white',
+                    border:egeriaColor,
+                    highlight:{background:egeriaColor,border:'#a7a7a7'},
+                    hover:{background:'white',border:'#a7a7a7'}
+                };
+            }else{
+                data.nodes[i].color = {
+                    background:'white',
+                    border:'#a7a6a6',
+                    highlight:{background:egeriaColor,border:'#a7a7a7'},
+                    hover:{background:'white',border:'#a7a7a7'}
+                };
             }
         }
         if (!this._hideIncludeGlossaryTerms(this.routeData.usecase) && this.$.glossaryTermMenu.value === "false" ) {
@@ -328,12 +354,17 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
     }
     }
 
+    toggleLegend() {
+        this.$$('vis-graph').toggleLegend();
+    }
+
     _getUseCase(usecase){
         return this.usecases.indexOf(usecase);
     }
 
     _hideIncludeGlossaryTerms(usecase) {
-    return !("ultimateDestination" === usecase || "ultimateSource" === usecase) ;
+        // return !("ultimateDestination" === usecase || "ultimateSource" === usecase) ;
+        return true;
     }
 }
 

@@ -18,7 +18,7 @@ import static org.testng.Assert.assertTrue;
  */
 public class DataFolderConnectorTest
 {
-    private static  String  resourcesDirectory = "target/test-classes/";
+    private static  String  resourcesDirectory = "src/test/resources/";
     private static  String  complexColumnsWithColumnNamesFile  = "ComplexColumnsWithColumnNames.csv";
     private static  String  emptyFile                          = "EmptyFile.csv";
     private static  String  justColumnNamesFile                = "JustColumnNames.csv";

@@ -2,212 +2,84 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.responses;
 
-import com.fasterxml.jackson.annotation.*;
-import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectAreaCheckedException;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.LibraryTermReference;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
+ * @param <R> type for response results
  * SubjectAreaOMASAPIResponse provides a common header for Subject Area OMAS managed rest to its REST API.
  * It manages information about exceptions.  If no exception has been raised exceptionClassName is null.
  */
-@JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
+@JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonIgnoreProperties(ignoreUnknown=true)
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "class")
-@JsonSubTypes(
-        {
-                @JsonSubTypes.Type(value = CategoryResponse.class, name = "CategoryResponse"),
-                @JsonSubTypes.Type(value = CategoriesResponse.class, name = "CategoriesResponse"),
-                @JsonSubTypes.Type(value = GlossaryResponse.class, name = "GlossaryResponse"),
-                @JsonSubTypes.Type(value = GlossariesResponse.class, name = "GlossariesResponse"),
-                @JsonSubTypes.Type(value = SubjectAreaDefinitionResponse.class, name = "SubjectAreaDefinitionResponse"),
-                @JsonSubTypes.Type(value = SubjectAreaDefinitionsResponse.class, name = "SubjectAreaDefinitionsResponse"),
-                @JsonSubTypes.Type(value = TermResponse.class, name = "TermResponse"),
-                @JsonSubTypes.Type(value = TermsResponse.class, name = "TermsResponse"),
-                @JsonSubTypes.Type(value = VoidResponse.class, name = "VoidResponse"),
-                @JsonSubTypes.Type(value = ProjectResponse.class, name = "ProjectResponse"),
-                @JsonSubTypes.Type(value = ProjectsResponse.class, name = "ProjectsResponse"),
-                @JsonSubTypes.Type(value = LinesResponse.class, name = "LinesResponse"),
-
-                // Lines
-
-                // term to term relationship responses
-                @JsonSubTypes.Type(value = TermHASARelationshipResponse.class, name = "TermHASARelationshipResponse"),
-                @JsonSubTypes.Type(value = RelatedTermResponse.class, name = "RelatedTermResponse"),
-                @JsonSubTypes.Type(value = SynonymRelationshipResponse.class, name = "SynonymRelationshipResponse"),
-                @JsonSubTypes.Type(value = AntonymRelationshipResponse.class, name = "AntonymRelationshipResponse"),
-                @JsonSubTypes.Type(value = PreferredTermRelationshipResponse.class, name = "PreferredTermRelationshipResponse"),
-                @JsonSubTypes.Type(value = ReplacementRelationshipResponse.class, name = "ReplacementRelationshipResponse"),
-                @JsonSubTypes.Type(value = TranslationRelationshipResponse.class, name = "TranslationRelationshipResponse"),
-                @JsonSubTypes.Type(value = ValidValueRelationshipResponse.class, name = "ValidValueRelationshipResponse"),
-                @JsonSubTypes.Type(value = UsedInContextRelationshipResponse.class, name = "UsedInContextRelationshipResponse"),
-                @JsonSubTypes.Type(value = TermISATYPEOFRelationshipResponse.class, name = "TermISATYPEOFRelationshipResponse"),
-                @JsonSubTypes.Type(value = TermTYPEDBYRelationshipResponse.class, name = "TermTYPEDBYRelationshipResponse"),
-                @JsonSubTypes.Type(value = TermISARelationshipResponse.class,name = "TermISARelationshipResponse"),
-                // term to glossary response
-                @JsonSubTypes.Type(value = TermAnchorRelationshipResponse.class,name = "TermAnchorRelationshipResponse"),
-                // category to glossary response
-                @JsonSubTypes.Type(value =CategoryAnchorRelationshipResponse.class,name = "CategoryAnchorRelationshipResponse"),
-                // category to term response
-                @JsonSubTypes.Type(value = TermCategorizationRelationshipResponse.class, name = "TermCategorizationRelationshipResponse"),
-                // Term to asset response
-                @JsonSubTypes.Type(value = SemanticAssignementRelationshipResponse.class, name = "SemanticAssignementRelationshipResponse"),
-                // external glossary responses
-                @JsonSubTypes.Type(value = LibraryTermReference.class, name = "LibraryTermReference"),
-                @JsonSubTypes.Type(value = LibraryCategoryReferenceResponse.class, name = "LibraryCategoryReferenceResponse"),
-
-                @JsonSubTypes.Type(value = ProjectScopeRelationshipResponse.class, name = "ProjectScopeRelationshipResponse"),
-                /*
-                 Exception responses - note that each exception has the same 4 Exception orientated fields.
-                 Ideally these should be in a superclass. Due to restrictions in the @JsonSubTypes processing it is only possible to have
-                 one level of inheritance at this time.
-                 */
-                @JsonSubTypes.Type(value = ClassificationExceptionResponse.class, name = "ClassificationExceptionResponse"),
-                @JsonSubTypes.Type(value = EntityNotDeletedExceptionResponse.class, name = "EntityNotDeletedExceptionResponse") ,
-                @JsonSubTypes.Type(value = EntityNotPurgedExceptionResponse.class, name = "EntityNotPurgedExceptionResponse") ,
-                @JsonSubTypes.Type(value = RelationshipNotDeletedExceptionResponse.class, name = "RelationshipNotDeletedExceptionResponse") ,
-                @JsonSubTypes.Type(value = RelationshipNotPurgedExceptionResponse.class, name = "RelationshipNotPurgedExceptionResponse") ,
-                @JsonSubTypes.Type(value = FunctionNotSupportedExceptionResponse.class, name = "FunctionNotSupportedExceptionResponse") ,
-                @JsonSubTypes.Type(value = InvalidParameterExceptionResponse.class, name = "InvalidParameterExceptionResponse") ,
-                @JsonSubTypes.Type(value = MetadataServerUncontactableExceptionResponse.class, name = "MetadataServerUncontactableExceptionResponse") ,
-                @JsonSubTypes.Type(value = RelationshipNotDeletedExceptionResponse.class, name = "RelationshipNotDeletedExceptionResponse") ,
-                @JsonSubTypes.Type(value = StatusNotsupportedExceptionResponse.class, name = "StatusNotsupportedExceptionResponse") ,
-                @JsonSubTypes.Type(value = UnrecognizedGUIDExceptionResponse.class, name = "UnrecognizedGUIDExceptionResponse") ,
-                @JsonSubTypes.Type(value = UserNotAuthorizedExceptionResponse.class, name = "UserNotAuthorizedExceptionResponse"),
-                @JsonSubTypes.Type(value = PropertyServerExceptionResponse.class, name = "PropertyServerExceptionResponse"),
-
-                @JsonSubTypes.Type(value = GraphResponse.class, name = "GraphResponse")
-
-        })
-public abstract class SubjectAreaOMASAPIResponse
-{
-    protected int       relatedHTTPCode = 200;
-    protected ResponseCategory responseCategory;
-    protected String    messageId = null;
-    protected String    className = null;
-    protected String    actionDescription = null;
-    protected String    formattedMessage = null;
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class SubjectAreaOMASAPIResponse<R> extends FFDCResponseBase {
+    private List<R> result = new ArrayList<>();
 
     /**
-     * Default constructor
-     */
-    public SubjectAreaOMASAPIResponse() {
-
+     * Add several results for the response
+     * @param entities collection with results
+     * */
+    public void addAllResults(Collection<? extends R> entities) {
+        this.result.addAll(entities);
     }
 
     /**
-     * Constructor taking an Exception
-     * @param e subject area exception
-     */
-    public SubjectAreaOMASAPIResponse(SubjectAreaCheckedException e)
-    {
-        this.actionDescription = e.getReportingActionDescription();
-        this.messageId =  e.getReportedErrorMessageId();
-        this.formattedMessage = e.getMessage();
-        this.className= e.getReportingClassName();
-        relatedHTTPCode = e.getReportedHTTPCode();
+     * Add single result for the response
+     * @param entity - one result
+     * */
+    public void addResult(R entity){
+        this.result.add(entity);
     }
 
-
-
-
     /**
-     * Return the HTTP Code to use if forwarding response to HTTP client.
+     * Set a standard exceptional info for the response
      *
-     * @return integer HTTP status code
-     */
-    public int getRelatedHTTPCode()
-    {
-        return relatedHTTPCode;
-    }
-
-
-    public ResponseCategory getResponseCategory() {
-        return responseCategory;
-    }
-
-    public void setResponseCategory(ResponseCategory responseCategory) {
-        this.responseCategory = responseCategory;
-    }
-
-    @Override
-    public String toString()
-    {
-        return "relatedHTTPCode=" + relatedHTTPCode +
-                ", ResponseCategory='" + responseCategory + '\'' +
-                ", exceptionClassName=" + getExceptionClassName() + '\'' +
-                ", actionDescription='" + getActionDescription() + '\'' +
-                ", messageId='" + getMessageId();
-
+     * @param e exception {@link OCFCheckedExceptionBase}
+     * @param className name of the class being called.
+     **/
+    public void setExceptionInfo(OCFCheckedExceptionBase e, String className) {
+        super.setRelatedHTTPCode(e.getReportedHTTPCode());
+        super.setExceptionClassName(className);
+        super.setActionDescription(e.getReportingActionDescription());
+        super.setExceptionUserAction(e.getReportedUserAction());
+        super.setExceptionErrorMessage(e.getReportedErrorMessage());
+        super.setExceptionSystemAction(e.getReportedSystemAction());
+        super.setExceptionProperties(e.getRelatedProperties());
     }
 
     /**
-     * Return the name of the Java class name to use to recreate the exception.
+     * Get head element from result array.
+     * Needed when we know for sure that the answer is single object
      *
-     * @return String name of the fully-qualified java class name
-     */
-    public String getExceptionClassName()
-    {
-        return className;
+     * @return result
+     **/
+    @JsonIgnore
+    public R getHead() {
+        if (!result.isEmpty()) {
+            return getResult().get(0);
+        }
+
+        return null;
     }
 
     /**
-     * Set up the name of the Java class name to use to recreate the exception.
+     * Get all results of the response
      *
-     * @param exceptionClassName - String name of the fully-qualified java class name
-     */
-    public void setExceptionClassName(String exceptionClassName)
-    {
-        this.className = exceptionClassName;
-    }
-
-    /**
-     * Return the description of the action that was being issued when the exception occurred.
-     *
-     * @return String action description
-     */
-    public String getActionDescription() {
-        return actionDescription;
-    }
-
-    /**
-     * Set up the description of the action that was being issued when the exception occurred.
-     *
-     * @param actionDescription String action description
-     */
-    public void setActionDescription(String actionDescription) {
-        this.actionDescription = actionDescription;
-    }
-
-    /**
-     * Return the message id; the unique identifier of the message
-     *
-     * @return String message id
-     */
-    public String getMessageId() {
-        return messageId;
-    }
-
-    /**
-     * These Exceptions are include in Exception rest responses. This is useful for callers of the Rest API
-     * that are not using Java; as this would be the only way for them to see the complete message.
-     * @return formatted Message
-     */
-    public String getMessage() {
-         return formattedMessage;
-    }
-
-    /**
-     * Set up the message id; the unique identifier of the message
-     *
-     * @param messageId String messageId
-     */
-    public void setMessageId(String messageId) {
-        this.messageId = messageId;
+     * @return results
+     **/
+    public List<R> getResult() {
+        return new ArrayList<>(result);
     }
 }

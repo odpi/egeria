@@ -16,12 +16,12 @@ import org.odpi.openmetadata.commonservices.multitenant.OCFOMASServiceInstanceHa
  * access service instances. The instance map is thread-safe. Instances are
  * added and removed by the AnalyticsModelingAdmin class.
  */
-class AnalyticsModelingInstanceHandler extends OCFOMASServiceInstanceHandler {
+public class AnalyticsModelingInstanceHandler extends OCFOMASServiceInstanceHandler {
 
 	/**
 	 * Default constructor registers the access service
 	 */
-	AnalyticsModelingInstanceHandler() {
+	public AnalyticsModelingInstanceHandler() {
         super(AccessServiceDescription.ANALYTICS_MODELING_OMAS.getAccessServiceFullName());
 
         AnalyticsModelingOMASRegistration.registerAccessService();
@@ -37,7 +37,7 @@ class AnalyticsModelingInstanceHandler extends OCFOMASServiceInstanceHandler {
 	 * @throws AnalyticsModelingCheckedException if server is not initialized.
 	 */
 
-	DatabaseContextHandler getDatabaseContextHandler(String serverName, String userId, String serviceOperationName)
+	public DatabaseContextHandler getDatabaseContextHandler(String serverName, String userId, String serviceOperationName)
 			throws AnalyticsModelingCheckedException {
 		
 		try {

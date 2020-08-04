@@ -33,7 +33,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = CanonicalGlossary.class, name = "CanonicalGlossary")
         })
 
-public class Glossary extends Node{
+public class Glossary extends Node {
     public Glossary() {
         nodeType = NodeType.Glossary;
     }

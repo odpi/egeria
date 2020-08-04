@@ -22,6 +22,8 @@ import org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.exceptions.An
 import org.odpi.openmetadata.accessservices.analyticsmodeling.model.*;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.model.module.*;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.utils.Constants;
+import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -49,10 +51,13 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 public class DatabaseContextHandler {
 
 
+	public static final String DATA_SOURCE_GUID = "dataSourceGUID";
 	private OMEntityDao omEntityDao;
+	private InvalidParameterHandler invalidParameterHandler;
 
-	public DatabaseContextHandler(OMEntityDao omEntityDao) {
+	public DatabaseContextHandler(OMEntityDao omEntityDao, InvalidParameterHandler invalidParameterHandler) {
 		this.omEntityDao = omEntityDao;
+		this.invalidParameterHandler = invalidParameterHandler;
 	}
 	
 	/**
@@ -67,10 +72,14 @@ public class DatabaseContextHandler {
 
 	/**
 	 * Get list of databases on the server.
+	 * 
+     * @param startFrom	starting element (used in paging through large result sets)
+     * @param pageSize	maximum number of results to return
 	 * @return list of database descriptors.
 	 * @throws AnalyticsModelingCheckedException in case of an repository operation failure.
 	 */
-	public List<ResponseContainerDatabase> getDatabases() throws AnalyticsModelingCheckedException {
+	public List<ResponseContainerDatabase> getDatabases(Integer startFrom, Integer pageSize) 
+			throws AnalyticsModelingCheckedException {
 		
 		setContext("getDatabases");
 
@@ -82,7 +91,19 @@ public class DatabaseContextHandler {
 				.filter(Objects::nonNull).collect(Collectors.toList());
 		
 		ret.sort(Comparator.comparing(rdb->rdb.getDbName().toUpperCase()));
-		return ret;
+		
+		return getPage(startFrom, pageSize, ret);
+	}
+
+	private <T> List<T> getPage(Integer startFrom, Integer pageSize, List<T> list) {
+
+		int toElement = pageSize == 0 ? list.size() : (startFrom + pageSize);
+		
+		if (toElement > list.size()) {
+			toElement = list.size();
+		}
+
+		return list.subList(startFrom,  toElement);
 	}
 	
 	private ResponseContainerDatabase buildDatabase(EntityDetail e) {
@@ -100,12 +121,19 @@ public class DatabaseContextHandler {
 	 * Retrieve schemas for given database from repository.
 	 * 
 	 * @param guidDataSource defines database
+     * @param startFrom	starting element (used in paging through large result sets)
+     * @param pageSize	maximum number of results to return
 	 * @return list of schemas attributes.
 	 * @throws AnalyticsModelingCheckedException in case of an repository operation failure.
+	 * @throws InvalidParameterException if passed GUID is invalid.
 	 */
-	public List<ResponseContainerDatabaseSchema> getDatabaseSchemas(String guidDataSource) throws AnalyticsModelingCheckedException {
+	public List<ResponseContainerDatabaseSchema> getDatabaseSchemas(String guidDataSource, Integer startFrom, Integer pageSize) 
+			throws AnalyticsModelingCheckedException, InvalidParameterException {
 
-		setContext("getDatabaseSchemas");
+		String context = "getDatabaseSchemas";
+		setContext(context);
+		
+		invalidParameterHandler.validateGUID(guidDataSource, DATA_SOURCE_GUID, context);
 
 		EntityDetail db = omEntityDao.getEntityByGuid(guidDataSource);
 		String catalogName = getEntityStringProperty(db, Constants.ATTRIBUTE_NAME);
@@ -124,7 +152,7 @@ public class DatabaseContextHandler {
 		
 		ret.sort(Comparator.comparing(e->e.getSchema()));
 
-		return ret;
+		return getPage(startFrom, pageSize, ret);
 	}
 
 	/**
@@ -158,10 +186,14 @@ public class DatabaseContextHandler {
 	 * @param schema         name.
 	 * @return list of table names.
 	 * @throws AnalyticsModelingCheckedException if failed
+	 * @throws InvalidParameterException if passed GUID is invalid.
 	 */
-	public ResponseContainerSchemaTables getSchemaTables(String guidDataSource, String schema) throws AnalyticsModelingCheckedException {
+	public ResponseContainerSchemaTables getSchemaTables(String guidDataSource, String schema) throws AnalyticsModelingCheckedException, InvalidParameterException {
 
-		setContext("getSchemaTables");
+		String context = "getSchemaTables";
+		setContext(context);
+
+		invalidParameterHandler.validateGUID(guidDataSource, DATA_SOURCE_GUID, context);
 
 		ResponseContainerSchemaTables ret = new ResponseContainerSchemaTables();
 
@@ -214,10 +246,14 @@ public class DatabaseContextHandler {
 	 * @param schema of the module
 	 * @return module built for defined schema
 	 * @throws AnalyticsModelingCheckedException in case of an repository operation failure.
+	 * @throws InvalidParameterException if passed GUID is invalid.
 	 */
-	public ResponseContainerModule getModule(String databaseGuid, String catalog, String schema) throws AnalyticsModelingCheckedException {
+	public ResponseContainerModule getModule(String databaseGuid, String catalog, String schema) 
+			throws AnalyticsModelingCheckedException, InvalidParameterException {
 
-		setContext("getModule");
+		String context = "getModule";
+		invalidParameterHandler.validateGUID(databaseGuid, DATA_SOURCE_GUID, context);
+		setContext(context);
 
 		ResponseContainerModule ret = new ResponseContainerModule();
 		ret.setId(catalog + "_" + schema);

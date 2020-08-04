@@ -2,15 +2,12 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.fvt;
 
-import org.odpi.openmetadata.accessservices.subjectarea.SubjectArea;
-import org.odpi.openmetadata.accessservices.subjectarea.SubjectAreaCategory;
-import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaImpl;
-import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectAreaCheckedException;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.CategorySummary;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.GlossarySummary;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
 import java.io.IOException;
 import java.util.HashSet;
@@ -29,56 +26,44 @@ public class CategoryHierarchyFVT
     private static final int DEPTH = 4;
     private static int depth_counter = 0;
 
-    private static SubjectAreaCategory subjectAreaCategory = null;
     private GlossaryFVT glossaryFVT =null;
-    private String url = null;
-    private String glossaryGuid = null;
-    private String userId = null;
-    private String serverName = null;
+    private CategoryFVT categoryFVT = null;
 
     public static void main(String args[])
     {
-        SubjectArea subjectArea = null;
-        String url = null;
         try
         {
-            url = RunAllFVT.getUrl(args);
+            String url = RunAllFVTOn2Servers.getUrl(args);
             runWith2Servers(url);
         } catch (IOException e1)
         {
             System.out.println("Error getting user input");
-        } catch (SubjectAreaCheckedException e)
-        {
-            System.out.println("ERROR: " + e.getErrorMessage() + " Suggested action: " + e.getReportedUserAction());
         } catch (SubjectAreaFVTCheckedException e) {
             System.out.println("ERROR: " + e.getMessage() );
+        } catch (UserNotAuthorizedException | InvalidParameterException | PropertyServerException e) {
+            System.out.println("ERROR: " + e.getReportedErrorMessage() + " Suggested action: " + e.getReportedUserAction());
         }
 
     }
-    public static void runWith2Servers(String url) throws SubjectAreaCheckedException, SubjectAreaFVTCheckedException
-    {
-        CategoryHierarchyFVT fvt =new CategoryHierarchyFVT(url,FVTConstants.SERVER_NAME1,FVTConstants.USERID);
-        fvt.run();
+    public static void runWith2Servers(String url) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException, SubjectAreaFVTCheckedException {
+        runIt(url, FVTConstants.SERVER_NAME1, FVTConstants.USERID);
+        runIt(url, FVTConstants.SERVER_NAME2, FVTConstants.USERID);
     }
 
-    public CategoryHierarchyFVT(String url,String serverName,String userId) throws InvalidParameterException
-    {
-        subjectAreaCategory = new SubjectAreaImpl(serverName,url).getSubjectAreaCategory();
+    public CategoryHierarchyFVT(String url,String serverName,String userId) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        categoryFVT = new CategoryFVT(url,serverName,userId);
         glossaryFVT = new GlossaryFVT(url,serverName,userId);
-        this.url=url;
-        this.userId=userId;
-        this.serverName=serverName;
     }
 
-    public static void runIt(String url, String serverName, String userId) throws SubjectAreaCheckedException, SubjectAreaFVTCheckedException {
-        CategoryHierarchyFVT fvt =new CategoryHierarchyFVT(url,serverName,userId);
+    public static void runIt(String url, String serverName, String userId) throws InvalidParameterException, PropertyServerException, SubjectAreaFVTCheckedException, UserNotAuthorizedException {
+        System.out.println("CategoryHierarchyFVT runIt started");
+        CategoryHierarchyFVT fvt = new CategoryHierarchyFVT(url,serverName,userId);
         fvt.run();
+        fvt.deleteRemaining();
+        System.out.println("CategoryHierarchyFVT runIt stopped");
     }
 
-    public void run() throws SubjectAreaCheckedException, SubjectAreaFVTCheckedException
-    {
-        SubjectArea subjectArea = null;
-
+    public void run() throws SubjectAreaFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         System.out.println("Create a glossary");
         Glossary glossary = glossaryFVT.createGlossary(DEFAULT_TEST_GLOSSARY_NAME);
         FVTUtils.validateNode(glossary);
@@ -88,7 +73,7 @@ public class CategoryHierarchyFVT
         while (depth_counter < DEPTH)
         {
             depth_counter++;
-            Set<Category> childrenCategories = new HashSet();
+            Set<Category> childrenCategories = new HashSet<>();
             for (Category category : categories)
             {
                 FVTUtils.validateNode(category);
@@ -102,15 +87,14 @@ public class CategoryHierarchyFVT
      * Create top categories i.e. categories with no parent category
      * @param glossaryGuid glossary userId
      * @return a set of created categories
-     * @throws SubjectAreaCheckedException, SubjectAreaFVTCheckedException an error occurred.
+     * @throws SubjectAreaFVTCheckedException an error occurred.
      */
-    private Set<Category> createTopCategories(String glossaryGuid) throws SubjectAreaCheckedException, SubjectAreaFVTCheckedException
-    {
-        Set<Category> categories = new HashSet();
+    private Set<Category> createTopCategories(String glossaryGuid) throws SubjectAreaFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        Set<Category> categories = new HashSet<>();
         for (int width_counter = 0; width_counter < WIDTH; width_counter++)
         {
             String categoryName = createName(0, width_counter);
-            Category category = createCategoryWithGlossaryGuid(categoryName,glossaryGuid);
+            Category category =categoryFVT.createCategoryWithGlossaryGuid(categoryName,glossaryGuid);
             FVTUtils.validateNode(category);
             System.out.println("Created category with name  " + categoryName + " with no parent");
             categories.add(category);
@@ -138,14 +122,13 @@ public class CategoryHierarchyFVT
      * @return a set of created categories
      * @throws SubjectAreaCheckedException, SubjectAreaFVTCheckedException an error occurred.
      */
-    private Set<Category> createChildrenCategories(Category parent,String glossaryGuid) throws SubjectAreaCheckedException, SubjectAreaFVTCheckedException
-    {
+    private Set<Category> createChildrenCategories(Category parent,String glossaryGuid) throws SubjectAreaFVTCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
 
         Set<Category> categories = new HashSet<>();
         for (int width_counter = 0; width_counter < WIDTH; width_counter++)
         {
             String categoryName = createName(depth_counter, width_counter);
-            Category category = createCategoryWithParentGlossary(categoryName, parent, glossaryGuid);
+            Category category = categoryFVT.createCategoryWithParentGlossary(categoryName, parent, glossaryGuid);
             FVTUtils.validateNode(category);
             System.out.println("Created category with name  " + categoryName + " with parent " + parent.getName());
             categories.add(category);
@@ -153,50 +136,8 @@ public class CategoryHierarchyFVT
         return categories;
     }
 
-    /**
-     * Create a category associated under a parent category and associate with the named glossary
-     *
-     * @param categoryName name of the category to create
-     * @param parent       category under which to create this category
-     * @param glossaryGuid userId of the associated glossary
-     * @return created category
-     * @throws SubjectAreaCheckedException, SubjectAreaFVTCheckedException
-     */
-    private Category createCategoryWithParentGlossary(String categoryName, Category parent, String glossaryGuid) throws SubjectAreaCheckedException, SubjectAreaFVTCheckedException
-    {
-        Category category = new Category();
-        category.setName(categoryName);
-        GlossarySummary glossarySummary = new GlossarySummary();
-        glossarySummary.setGuid(glossaryGuid);
-        category.setGlossary(glossarySummary);
-        CategorySummary parentCategorysummary = new CategorySummary();
-        parentCategorysummary.setGuid(parent.getSystemAttributes().getGUID());
-        category.setParentCategory(parentCategorysummary);
-        Category newCategory = subjectAreaCategory.createCategory(userId, category);
-        FVTUtils.validateNode(newCategory);
-        System.out.println("Created Category " + newCategory.getName() + " with userId " + newCategory.getSystemAttributes().getGUID());
-        return newCategory;
-    }
-
-    /**
-     * Create a category associated with a glossary, identified with a userId.
-     *
-     * @param categoryName name of the category to create
-     * @param glossaryGuid userId of the glossary to associate with this category
-     * @return created category
-     * @throws SubjectAreaCheckedException subject area error
-     * @throws SubjectAreaFVTCheckedException FVT error
-     */
-    public  Category createCategoryWithGlossaryGuid(String categoryName, String glossaryGuid) throws SubjectAreaCheckedException, SubjectAreaFVTCheckedException
-    {
-        Category category = new Category();
-        category.setName(categoryName);
-        GlossarySummary glossarySummary = new GlossarySummary();
-        glossarySummary.setGuid(glossaryGuid);
-        category.setGlossary(glossarySummary);
-        Category newCategory = subjectAreaCategory.createCategory(userId, category);
-        FVTUtils.validateNode(newCategory);
-        System.out.println("Created Category " + newCategory.getName() + " with userId " + newCategory.getSystemAttributes().getGUID());
-        return newCategory;
+    void deleteRemaining() throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException, SubjectAreaFVTCheckedException {
+        categoryFVT.deleteRemainingCategories();
+        glossaryFVT.deleteRemainingGlossaries();
     }
 }

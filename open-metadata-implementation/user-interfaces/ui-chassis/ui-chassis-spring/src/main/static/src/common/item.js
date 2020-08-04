@@ -45,7 +45,7 @@ export const ItemViewBehavior = {
             (key)=> {
                 var value = obj[key];
                 if(typeof value !== 'object' && value !== null)
-                arr.push( { 'key' : this._camelCaseToSentence(key) , 'value' : value } );
+                    arr.push( { 'key' : this._camelCaseToSentence(key) , 'value' : value } );
             }
         );
         return arr;
