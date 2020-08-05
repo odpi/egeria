@@ -109,7 +109,7 @@ class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
       </iron-form>
       <vaadin-grid id="grid" items="[[searchResp]]" theme="row-stripes"
                      column-reordering-allowed multi-sort>
-            <vaadin-grid-column width="10em" resizable>
+            <vaadin-grid-column width="5em" resizable>
                 <template class="header">
                     <vaadin-grid-sorter path="properties.displayName">Name</vaadin-grid-sorter>
                 </template>
@@ -120,28 +120,13 @@ class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
                 </template>
             </vaadin-grid-column>
                
-             <vaadin-grid-column width="6em" resizable>
+             <vaadin-grid-column width="5em" resizable>
                 <template class="header">
                     <vaadin-grid-sorter path="type.name">Type</vaadin-grid-sorter>
                 </template>
                 <template>[[item.type.name]]</template>
             </vaadin-grid-column>
             
-             <vaadin-grid-column width="10em" resizable>
-                <template class="header">
-                    <vaadin-grid-sorter path="classifications.0.properties.level">Classifications</vaadin-grid-sorter>
-                </template>
-                <template>
-                <dom-repeat items="[[item.classifications]]">
-                  <template>
-                    <div class$="[[_itemClass(item)]]">
-                        <span>[[item.name]] : [[item.properties.level]] [[item.properties.zoneMembership]] [[item.properties.dataType]]</span>
-                    </div>
-                  </template>
-                </dom-repeat>
-                </template>
-             </vaadin-grid-column>
-             
              
             <vaadin-grid-column width="15em" resizable>
                 <template class="header">
