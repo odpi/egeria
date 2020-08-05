@@ -99,7 +99,7 @@ class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
                 <multiselect-combo-box class="multi-combo" id="combo" items="[[items]]" 
                     item-label-path="name" 
                     ordered="false"
-                    placeholder="Open Metadata Type"
+                    placeholder="Open Metadata Type (required)"
                     required
                     error-message="Please select one">
                 </multiselect-combo-box>
