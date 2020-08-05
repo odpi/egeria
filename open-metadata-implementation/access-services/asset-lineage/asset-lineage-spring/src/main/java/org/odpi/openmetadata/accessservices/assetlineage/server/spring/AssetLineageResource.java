@@ -33,6 +33,6 @@ public class AssetLineageResource {
     public GUIDListResponse publishEntities(@PathVariable String serverName,
                                             @PathVariable String userId,
                                             @PathVariable String entityType) {
-        return restAPI.initialLoadByEntityType(serverName, userId, entityType);
+        return restAPI.publishEntities(serverName, userId, entityType);
     }
 }

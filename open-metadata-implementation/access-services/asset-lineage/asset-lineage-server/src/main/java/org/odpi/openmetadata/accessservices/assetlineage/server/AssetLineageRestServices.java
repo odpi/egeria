@@ -44,18 +44,19 @@ public class AssetLineageRestServices {
     }
 
     /**
-     * Scan the cohort for Glossary Terms available
-     * Publish the context for each Glossary Term on OMAS out Topic
+     * Scan the cohort for available entities of the provided entityType
+     * Publish the context for each entity on the AL OMAS out Topic
      *
      * @param serverName name of server instance to call
      * @param userId     the name of the calling user
+     * @param entityType the type of the entity to search for
      *
-     * @return a list of unique identifiers (guids) of the available Glossary Terms as a response
+     * @return a list of unique identifiers (guids) of the available entityType as a response
      */
-    public GUIDListResponse initialLoadByEntityType(String serverName, String userId, String entityType) {
+    public GUIDListResponse publishEntities(String serverName, String userId, String entityType) {
         GUIDListResponse response = new GUIDListResponse();
 
-        String methodName = "initialLoadByRelationshipType";
+        String methodName = "publishEntities";
         try {
             AssetContextHandler assetContextHandler = instanceHandler.getAssetContextHandler(userId, serverName, methodName);
             List<EntityDetail> entitiesByTypeName = assetContextHandler.getEntitiesByTypeName(userId, entityType);

@@ -68,7 +68,7 @@ public class GlossaryHandler {
                                                                  AssetContext assetContext,
                                                                  SuperTypesRetriever superTypesRetriever) throws OCFCheckedExceptionBase {
 
-        String methodName = "getGlossaryTerm";
+        String methodName = "getGlossaryTermContext";
 
         invalidParameterHandler.validateGUID(assetGuid, GUID_PARAMETER, methodName);
 
@@ -109,7 +109,7 @@ public class GlossaryHandler {
      * @param typeDefName      the typeName of the asset.
      */
     private void addGlossaryContextToAssetContext(String userId, String glossaryTermGUID, String typeDefName) throws OCFCheckedExceptionBase {
-        final String methodName = "getGlossary";
+        final String methodName = "addGlossaryContextToAssetContext";
 
         EntityDetail glossaryTerm = repositoryHandler.getEntityByGUID(userId, glossaryTermGUID, "guid", typeDefName, methodName);
         handlerHelper.addLineageClassificationToContext(glossaryTerm, graph);
