@@ -167,6 +167,15 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
                     },
                     condensedNode: {
                         icon: 'vaadin:cogs'
+                    },
+                    GlossaryCategory : {
+                        icon: 'vaadin:ticket'
+                    },
+                    DataFile : {
+                        icon: 'vaadin:file'
+                    },
+                    AssetZoneMembership : {
+                        icon: 'vaadin:handshake'
                     }
                 }
             }
