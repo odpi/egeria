@@ -21,17 +21,18 @@ public class AssetLineageResource {
     private final AssetLineageRestServices restAPI = new AssetLineageRestServices();
 
     /**
-     * Scan the cohort based on the given entity type
+     * Scan the cohort based on the given entity type and publish the contexts for the found entities to the out topic
      *
      * @param serverName name of server instance to call
      * @param userId     the name of the calling user
      * @param entityType the name of the relationship type
+     *
      * @return a list of unique identifiers (guids) of the available entities with the given type provided as a response
      */
-    @GetMapping(path = "/initial-load-by-entity-type/{entityType}")
-    public GUIDListResponse initialLoadByEntityType(@PathVariable String serverName,
-                                                    @PathVariable String userId,
-                                                    @PathVariable String entityType) {
+    @GetMapping(path = "/publish-entities/{entityType}")
+    public GUIDListResponse publishEntities(@PathVariable String serverName,
+                                            @PathVariable String userId,
+                                            @PathVariable String entityType) {
         return restAPI.initialLoadByEntityType(serverName, userId, entityType);
     }
 }
