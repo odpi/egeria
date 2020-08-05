@@ -145,6 +145,7 @@ public class OpenMetadataTypesArchive
         update0224Databases();
         update0512DerivedSchemaAttributes();
         update0130Projects();
+        updateClashingControlProperties();
     }
 
 
@@ -214,6 +215,1600 @@ public class OpenMetadataTypesArchive
         classificationDef.setPropertiesDefinition(properties);
 
         return classificationDef;
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+
+    /**
+     * A number of types have attributes whose names clash with header (control) attributes. It is not possible to
+     * patch an attribute to change its name for compatibility reasons. These patches deprecate the old (clashing)
+     * property names, and introduce new (non-clashing) properties to replace them.
+     */
+    private void updateClashingControlProperties()
+    {
+        this.archiveBuilder.addTypeDefPatch(updateSoftwareServerPlatformEntity());
+        this.archiveBuilder.addTypeDefPatch(updateSoftwareServerEntity());
+        this.archiveBuilder.addTypeDefPatch(updateSoftwareServerCapabilityEntity());
+        this.archiveBuilder.addTypeDefPatch(updateCloudPlatformClassification());
+        this.archiveBuilder.addTypeDefPatch(updateCloudTenantClassification());
+        this.archiveBuilder.addTypeDefPatch(updateCloudServiceClassification());
+        this.archiveBuilder.addTypeDefPatch(updateCommentEntity());
+        this.archiveBuilder.addTypeDefPatch(updateGraphStoreEntity());
+        this.archiveBuilder.addTypeDefPatch(updateLogFileEntity());
+        this.archiveBuilder.addTypeDefPatch(updateDatabaseEntity());
+        this.archiveBuilder.addTypeDefPatch(updateDatabaseServerClassification());
+        this.archiveBuilder.addTypeDefPatch(updateMetadataRepositoryEntity());
+        this.archiveBuilder.addTypeDefPatch(updateMetadataServerClassification());
+        this.archiveBuilder.addTypeDefPatch(updateRepositoryProxyClassification());
+        this.archiveBuilder.addTypeDefPatch(updateBusinessCapabilityEntity());
+        this.archiveBuilder.addTypeDefPatch(updateDataStoreEntity());
+        this.archiveBuilder.addTypeDefPatch(updateDataSourcePhysicalStatusAnnotationEntity());
+        this.archiveBuilder.addTypeDefPatch(updateEnterpriseAccessLayerEntity());
+        this.archiveBuilder.addTypeDefPatch(updateMetadataCollectionEntity());
+        this.archiveBuilder.addTypeDefPatch(updateExternalReferenceEntity());
+        this.archiveBuilder.addTypeDefPatch(updatePropertyFacetEntity());
+        this.archiveBuilder.addTypeDefPatch(updateCohortMemberEntity());
+        this.archiveBuilder.addTypeDefPatch(updateImplementationSnippetEntity());
+        this.archiveBuilder.addTypeDefPatch(updatePolicyAdministrationPointClassification());
+        this.archiveBuilder.addTypeDefPatch(updatePolicyDecisionPointClassification());
+        this.archiveBuilder.addTypeDefPatch(updatePolicyEnforcementPointClassification());
+        this.archiveBuilder.addTypeDefPatch(updatePolicyInformationPointClassification());
+        this.archiveBuilder.addTypeDefPatch(updatePolicyRetrievalPointClassification());
+    }
+
+
+    /**
+     * Deprecate clashing properties and add new ones to replace them.
+     * @return the type def patch
+     * @see #updateSoftwareServerPlatformEntity()
+     */
+    private TypeDefPatch updateSoftwareServerPlatformEntity()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "SoftwareServerPlatform";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "type";
+        final String attribute1Description     = "Deprecated attribute. Use the platformType attribute to describe the type of software server platform.";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                attribute1Description,
+                attribute1DescriptionGUID);
+        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
+
+        properties.add(property);
+
+        final String attribute2Name            = "platformType";
+        final String attribute2Description     = "Type of software server platform.";
+        final String attribute2DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                attribute2Description,
+                attribute2DescriptionGUID);
+
+        properties.add(property);
+
+        final String attribute3Name            = "version";
+        final String attribute3Description     = "Deprecated attribute. Use the platformVersion attribute to define the version number of software server platform.";
+        final String attribute3DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
+                attribute3Description,
+                attribute3DescriptionGUID);
+        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
+
+        properties.add(property);
+
+        final String attribute4Name            = "platformVersion";
+        final String attribute4Description     = "Version number of the software server platform.";
+        final String attribute4DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
+                attribute4Description,
+                attribute4DescriptionGUID);
+
+        properties.add(property);
+
+
+        typeDefPatch.setPropertyDefinitions(properties);
+        return typeDefPatch;
+    }
+
+
+    /**
+     * Deprecate clashing properties and add new ones to replace them.
+     * @return the type def patch
+     * @see #updateSoftwareServerPlatformEntity()
+     */
+    private TypeDefPatch updateSoftwareServerEntity()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "SoftwareServer";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "type";
+        final String attribute1Description     = "Deprecated attribute. Use the serverType attribute to describe the type of software server.";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                attribute1Description,
+                attribute1DescriptionGUID);
+        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
+
+        properties.add(property);
+
+        final String attribute2Name            = "serverType";
+        final String attribute2Description     = "Type of software server.";
+        final String attribute2DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                attribute2Description,
+                attribute2DescriptionGUID);
+
+        properties.add(property);
+
+        final String attribute3Name            = "version";
+        final String attribute3Description     = "Deprecated attribute. Use the serverVersion attribute to define the version number of software server.";
+        final String attribute3DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
+                attribute3Description,
+                attribute3DescriptionGUID);
+        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
+
+        properties.add(property);
+
+        final String attribute4Name            = "serverVersion";
+        final String attribute4Description     = "Version number of the software server.";
+        final String attribute4DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
+                attribute4Description,
+                attribute4DescriptionGUID);
+
+        properties.add(property);
+
+
+        typeDefPatch.setPropertyDefinitions(properties);
+        return typeDefPatch;
+    }
+
+
+    /**
+     * Deprecate clashing properties and add new ones to replace them.
+     * @return the type def patch
+     * @see #updateSoftwareServerPlatformEntity()
+     */
+    private TypeDefPatch updateSoftwareServerCapabilityEntity()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "SoftwareServerCapability";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "type";
+        final String attribute1Description     = "Deprecated attribute. Use the capabilityType attribute to describe the type of software server capability.";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                attribute1Description,
+                attribute1DescriptionGUID);
+        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
+
+        properties.add(property);
+
+        final String attribute2Name            = "capabilityType";
+        final String attribute2Description     = "Type of the software server capability.";
+        final String attribute2DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                attribute2Description,
+                attribute2DescriptionGUID);
+
+        properties.add(property);
+
+        final String attribute3Name            = "version";
+        final String attribute3Description     = "Deprecated attribute. Use the capabilityVersion attribute to define the version number of software server capability.";
+        final String attribute3DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
+                attribute3Description,
+                attribute3DescriptionGUID);
+        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
+
+        properties.add(property);
+
+        final String attribute4Name            = "capabilityVersion";
+        final String attribute4Description     = "Version number of the software server capability.";
+        final String attribute4DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
+                attribute4Description,
+                attribute4DescriptionGUID);
+
+        properties.add(property);
+
+
+        typeDefPatch.setPropertyDefinitions(properties);
+        return typeDefPatch;
+    }
+
+
+    /**
+     * Deprecate clashing properties and add new ones to replace them.
+     * @return the type def patch
+     * @see #updateSoftwareServerPlatformEntity()
+     */
+    private TypeDefPatch updateCloudPlatformClassification()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "CloudPlatform";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "type";
+        final String attribute1Description     = "Deprecated attribute. Use the platformType attribute to describe the type of cloud platform.";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                attribute1Description,
+                attribute1DescriptionGUID);
+        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
+
+        properties.add(property);
+
+        final String attribute2Name            = "platformType";
+        final String attribute2Description     = "Type of cloud platform.";
+        final String attribute2DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                attribute2Description,
+                attribute2DescriptionGUID);
+
+        properties.add(property);
+
+
+        typeDefPatch.setPropertyDefinitions(properties);
+        return typeDefPatch;
+    }
+
+
+    /**
+     * Deprecate clashing properties and add new ones to replace them.
+     * @return the type def patch
+     * @see #updateSoftwareServerPlatformEntity()
+     */
+    private TypeDefPatch updateCloudTenantClassification()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "CloudTenant";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "type";
+        final String attribute1Description     = "Deprecated attribute. Use the tenantType attribute to describe the type of cloud tenant.";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                attribute1Description,
+                attribute1DescriptionGUID);
+        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
+
+        properties.add(property);
+
+        final String attribute2Name            = "tenantType";
+        final String attribute2Description     = "Description of the type of tenant.";
+        final String attribute2DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                attribute2Description,
+                attribute2DescriptionGUID);
+
+        properties.add(property);
+
+
+        typeDefPatch.setPropertyDefinitions(properties);
+        return typeDefPatch;
+    }
+
+
+    /**
+     * Deprecate clashing properties and add new ones to replace them.
+     * @return the type def patch
+     * @see #updateSoftwareServerPlatformEntity()
+     */
+    private TypeDefPatch updateCloudServiceClassification()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "CloudService";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "type";
+        final String attribute1Description     = "Deprecated attribute. Use the serviceType attribute to describe the type of cloud service.";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                attribute1Description,
+                attribute1DescriptionGUID);
+        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
+
+        properties.add(property);
+
+        final String attribute2Name            = "serviceType";
+        final String attribute2Description     = "Description of the type of the service.";
+        final String attribute2DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                attribute2Description,
+                attribute2DescriptionGUID);
+
+        properties.add(property);
+
+
+        typeDefPatch.setPropertyDefinitions(properties);
+        return typeDefPatch;
+    }
+
+
+    /**
+     * Deprecate clashing properties and add new ones to replace them.
+     * @return the type def patch
+     * @see #updateSoftwareServerPlatformEntity()
+     */
+    private TypeDefPatch updateCommentEntity()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "Comment";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "type";
+        final String attribute1Description     = "Deprecated attribute. Use the commentType attribute to describe the type of comment.";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getEnumTypeDefAttribute("CommentType",
+                attribute1Name,
+                attribute1Description,
+                attribute1DescriptionGUID);
+        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
+
+        properties.add(property);
+
+        final String attribute2Name            = "commentType";
+        final String attribute2Description     = "Type of comment.";
+        final String attribute2DescriptionGUID = null;
+
+        property = archiveHelper.getEnumTypeDefAttribute("CommentType",
+                attribute2Name,
+                attribute2Description,
+                attribute2DescriptionGUID);
+
+        properties.add(property);
+
+
+        typeDefPatch.setPropertyDefinitions(properties);
+        return typeDefPatch;
+    }
+
+
+    /**
+     * Deprecate clashing properties and add new ones to replace them.
+     * @return the type def patch
+     * @see #updateSoftwareServerPlatformEntity()
+     */
+    private TypeDefPatch updateGraphStoreEntity()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "GraphStore";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "type";
+        final String attribute1Description     = "Deprecated attribute. Use the storeType attribute to describe the type of graph store.";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                attribute1Description,
+                attribute1DescriptionGUID);
+        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
+
+        properties.add(property);
+
+        final String attribute2Name            = "storeType";
+        final String attribute2Description     = "Type of graph store.";
+        final String attribute2DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                attribute2Description,
+                attribute2DescriptionGUID);
+
+        properties.add(property);
+
+
+        typeDefPatch.setPropertyDefinitions(properties);
+        return typeDefPatch;
+    }
+
+
+    /**
+     * Deprecate clashing properties and add new ones to replace them.
+     * @return the type def patch
+     * @see #updateSoftwareServerPlatformEntity()
+     */
+    private TypeDefPatch updateLogFileEntity()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "LogFile";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "type";
+        final String attribute1Description     = "Deprecated attribute. Use the fileType attribute to describe the type of log file.";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                attribute1Description,
+                attribute1DescriptionGUID);
+        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
+
+        properties.add(property);
+
+        final String attribute2Name            = "fileType";
+        final String attribute2Description     = "Type of log file.";
+        final String attribute2DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                attribute2Description,
+                attribute2DescriptionGUID);
+
+        properties.add(property);
+
+
+        typeDefPatch.setPropertyDefinitions(properties);
+        return typeDefPatch;
+    }
+
+
+    /**
+     * Deprecate clashing properties and add new ones to replace them.
+     * @return the type def patch
+     * @see #updateSoftwareServerPlatformEntity()
+     */
+    private TypeDefPatch updateDatabaseEntity()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "Database";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "type";
+        final String attribute1Description     = "Deprecated attribute. Use the databaseType attribute to describe the type of database.";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                attribute1Description,
+                attribute1DescriptionGUID);
+        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
+
+        properties.add(property);
+
+        final String attribute2Name            = "databaseType";
+        final String attribute2Description     = "Type of database.";
+        final String attribute2DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                attribute2Description,
+                attribute2DescriptionGUID);
+
+        properties.add(property);
+
+        final String attribute3Name            = "version";
+        final String attribute3Description     = "Deprecated attribute. Use the databaseVersion attribute to define the version number of database.";
+        final String attribute3DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
+                attribute3Description,
+                attribute3DescriptionGUID);
+        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
+
+        properties.add(property);
+
+        final String attribute4Name            = "databaseVersion";
+        final String attribute4Description     = "Version of the database.";
+        final String attribute4DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
+                attribute4Description,
+                attribute4DescriptionGUID);
+
+        properties.add(property);
+
+
+        typeDefPatch.setPropertyDefinitions(properties);
+        return typeDefPatch;
+    }
+
+
+    /**
+     * Deprecate clashing properties and add new ones to replace them.
+     * @return the type def patch
+     * @see #updateSoftwareServerPlatformEntity()
+     */
+    private TypeDefPatch updateDatabaseServerClassification()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "DatabaseServer";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "type";
+        final String attribute1Description     = "Deprecated attribute. Use the serverType attribute to describe the type of database server.";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                attribute1Description,
+                attribute1DescriptionGUID);
+        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
+
+        properties.add(property);
+
+        final String attribute2Name            = "serverType";
+        final String attribute2Description     = "Type of database server.";
+        final String attribute2DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                attribute2Description,
+                attribute2DescriptionGUID);
+
+        properties.add(property);
+
+        final String attribute3Name            = "version";
+        final String attribute3Description     = "Deprecated attribute. Use the softwareVersion attribute to define the version number of database server software.";
+        final String attribute3DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
+                attribute3Description,
+                attribute3DescriptionGUID);
+        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
+
+        properties.add(property);
+
+        final String attribute4Name            = "softwareVersion";
+        final String attribute4Description     = "Version of the database server software.";
+        final String attribute4DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
+                attribute4Description,
+                attribute4DescriptionGUID);
+
+        properties.add(property);
+
+
+        typeDefPatch.setPropertyDefinitions(properties);
+        return typeDefPatch;
+    }
+
+
+    /**
+     * Deprecate clashing properties and add new ones to replace them.
+     * @return the type def patch
+     * @see #updateSoftwareServerPlatformEntity()
+     */
+    private TypeDefPatch updateMetadataRepositoryEntity()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "MetadataRepository";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "type";
+        final String attribute1Description     = "Deprecated attribute. Use the repositoryType attribute to describe the type of metadata repository.";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                attribute1Description,
+                attribute1DescriptionGUID);
+        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
+
+        properties.add(property);
+
+        final String attribute2Name            = "repositoryType";
+        final String attribute2Description     = "Type of metadata repository.";
+        final String attribute2DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                attribute2Description,
+                attribute2DescriptionGUID);
+
+        properties.add(property);
+
+
+        typeDefPatch.setPropertyDefinitions(properties);
+        return typeDefPatch;
+    }
+
+
+    /**
+     * Deprecate clashing properties and add new ones to replace them.
+     * @return the type def patch
+     * @see #updateSoftwareServerPlatformEntity()
+     */
+    private TypeDefPatch updateMetadataServerClassification()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "MetadataServer";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "type";
+        final String attribute1Description     = "Deprecated attribute. Use the serverType attribute to describe the type of metadata server.";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                attribute1Description,
+                attribute1DescriptionGUID);
+        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
+
+        properties.add(property);
+
+        final String attribute2Name            = "serverType";
+        final String attribute2Description     = "Type of metadata server.";
+        final String attribute2DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                attribute2Description,
+                attribute2DescriptionGUID);
+
+        properties.add(property);
+
+
+        typeDefPatch.setPropertyDefinitions(properties);
+        return typeDefPatch;
+    }
+
+
+    /**
+     * Deprecate clashing properties and add new ones to replace them.
+     * @return the type def patch
+     * @see #updateSoftwareServerPlatformEntity()
+     */
+    private TypeDefPatch updateRepositoryProxyClassification()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "RepositoryProxy";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "type";
+        final String attribute1Description     = "Deprecated attribute. Use the proxyType attribute to describe the type of repository proxy.";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                attribute1Description,
+                attribute1DescriptionGUID);
+        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
+
+        properties.add(property);
+
+        final String attribute2Name            = "proxyType";
+        final String attribute2Description     = "Type of repository proxy.";
+        final String attribute2DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                attribute2Description,
+                attribute2DescriptionGUID);
+
+        properties.add(property);
+
+
+        typeDefPatch.setPropertyDefinitions(properties);
+        return typeDefPatch;
+    }
+
+
+    /**
+     * Deprecate clashing properties and add new ones to replace them.
+     * @return the type def patch
+     * @see #updateSoftwareServerPlatformEntity()
+     */
+    private TypeDefPatch updateBusinessCapabilityEntity()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "BusinessCapability";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "type";
+        final String attribute1Description     = "Deprecated attribute. Use the capabilityType attribute to describe the type of business capability.";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getEnumTypeDefAttribute("BusinessCapabilityType",
+                attribute1Name,
+                attribute1Description,
+                attribute1DescriptionGUID);
+        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
+
+        properties.add(property);
+
+        final String attribute2Name            = "capabilityType";
+        final String attribute2Description     = "Type of business capability.";
+        final String attribute2DescriptionGUID = null;
+
+        property = archiveHelper.getEnumTypeDefAttribute("BusinessCapabilityType",
+                attribute2Name,
+                attribute2Description,
+                attribute2DescriptionGUID);
+
+        properties.add(property);
+
+
+        typeDefPatch.setPropertyDefinitions(properties);
+        return typeDefPatch;
+    }
+
+
+    /**
+     * Deprecate clashing properties and add new ones to replace them.
+     * @return the type def patch
+     * @see #updateSoftwareServerPlatformEntity()
+     */
+    private TypeDefPatch updateDataStoreEntity()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "DataStore";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "createTime";
+        final String attribute1Description     = "Deprecated attribute. Use the storeCreateTime attribute to describe the creation time of the data store.";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getDateTypeDefAttribute(attribute1Name,
+                attribute1Description,
+                attribute1DescriptionGUID);
+        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
+
+        properties.add(property);
+
+        final String attribute2Name            = "storeCreateTime";
+        final String attribute2Description     = "Creation time of the data store.";
+        final String attribute2DescriptionGUID = null;
+
+        property = archiveHelper.getDateTypeDefAttribute(attribute2Name,
+                attribute2Description,
+                attribute2DescriptionGUID);
+
+        properties.add(property);
+
+        final String attribute3Name            = "modifiedTime";
+        final String attribute3Description     = "Deprecated attribute. Use the storeUpdateTime attribute to define the last known modification time of the data store.";
+        final String attribute3DescriptionGUID = null;
+
+        property = archiveHelper.getDateTypeDefAttribute(attribute3Name,
+                attribute3Description,
+                attribute3DescriptionGUID);
+        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
+
+        properties.add(property);
+
+        final String attribute4Name            = "storeUpdateTime";
+        final String attribute4Description     = "Last known modification time of the data store.";
+        final String attribute4DescriptionGUID = null;
+
+        property = archiveHelper.getDateTypeDefAttribute(attribute4Name,
+                attribute4Description,
+                attribute4DescriptionGUID);
+
+        properties.add(property);
+
+
+        typeDefPatch.setPropertyDefinitions(properties);
+        return typeDefPatch;
+    }
+
+
+    /**
+     * Deprecate clashing properties and add new ones to replace them.
+     * @return the type def patch
+     * @see #updateSoftwareServerPlatformEntity()
+     */
+    private TypeDefPatch updateDataSourcePhysicalStatusAnnotationEntity()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "DataSourcePhysicalStatusAnnotation";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "createTime";
+        final String attribute1Description     = "Deprecated attribute. Use the sourceCreateTime attribute to describe when the data source was created.";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getDateTypeDefAttribute(attribute1Name,
+                attribute1Description,
+                attribute1DescriptionGUID);
+        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
+
+        properties.add(property);
+
+        final String attribute2Name            = "sourceCreateTime";
+        final String attribute2Description     = "When the data source was created.";
+        final String attribute2DescriptionGUID = null;
+
+        property = archiveHelper.getDateTypeDefAttribute(attribute2Name,
+                attribute2Description,
+                attribute2DescriptionGUID);
+
+        properties.add(property);
+
+        final String attribute3Name            = "modifiedTime";
+        final String attribute3Description     = "Deprecated attribute. Use the sourceUpdateTime attribute to describe when the data source was last modified.";
+        final String attribute3DescriptionGUID = null;
+
+        property = archiveHelper.getDateTypeDefAttribute(attribute3Name,
+                attribute3Description,
+                attribute3DescriptionGUID);
+        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
+
+        properties.add(property);
+
+        final String attribute4Name            = "sourceUpdateTime";
+        final String attribute4Description     = "When the data source was last modified.";
+        final String attribute4DescriptionGUID = null;
+
+        property = archiveHelper.getDateTypeDefAttribute(attribute4Name,
+                attribute4Description,
+                attribute4DescriptionGUID);
+
+        properties.add(property);
+
+
+        typeDefPatch.setPropertyDefinitions(properties);
+        return typeDefPatch;
+    }
+
+
+    /**
+     * Deprecate clashing properties and add new ones to replace them.
+     * @return the type def patch
+     * @see #updateSoftwareServerPlatformEntity()
+     */
+    private TypeDefPatch updateEnterpriseAccessLayerEntity()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "EnterpriseAccessLayer";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "metadataCollectionId";
+        final String attribute1Description     = "Deprecated attribute. Use the accessedMetadataCollectionId attribute to define the unique identifier for the metadata collection accessed through this enterprise access layer.";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                attribute1Description,
+                attribute1DescriptionGUID);
+        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
+
+        properties.add(property);
+
+        final String attribute2Name            = "accessedMetadataCollectionId";
+        final String attribute2Description     = "Unique identifier for the metadata collection accessed through this enterprise access layer.";
+        final String attribute2DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                attribute2Description,
+                attribute2DescriptionGUID);
+
+        properties.add(property);
+
+
+        typeDefPatch.setPropertyDefinitions(properties);
+        return typeDefPatch;
+    }
+
+
+    /**
+     * Deprecate clashing properties and add new ones to replace them.
+     * @return the type def patch
+     * @see #updateSoftwareServerPlatformEntity()
+     */
+    private TypeDefPatch updateMetadataCollectionEntity()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "MetadataCollection";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "metadataCollectionId";
+        final String attribute1Description     = "Deprecated attribute. Use the managedMetadataCollectionId attribute to define the unique identifier for the metadata collection managed in the local repository.";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                attribute1Description,
+                attribute1DescriptionGUID);
+        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
+
+        properties.add(property);
+
+        final String attribute2Name            = "managedMetadataCollectionId";
+        final String attribute2Description     = "Unique identifier for the metadata collection managed in the local repository.";
+        final String attribute2DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                attribute2Description,
+                attribute2DescriptionGUID);
+
+        properties.add(property);
+
+
+        typeDefPatch.setPropertyDefinitions(properties);
+        return typeDefPatch;
+    }
+
+
+    /**
+     * Deprecate clashing properties and add new ones to replace them.
+     * @return the type def patch
+     * @see #updateSoftwareServerPlatformEntity()
+     */
+    private TypeDefPatch updateExternalReferenceEntity()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "ExternalReference";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "version";
+        final String attribute1Description     = "Deprecated attribute. Use the referenceVersion attribute to define the version number of the external reference.";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                attribute1Description,
+                attribute1DescriptionGUID);
+        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
+
+        properties.add(property);
+
+        final String attribute2Name            = "referenceVersion";
+        final String attribute2Description     = "Version number of the external reference.";
+        final String attribute2DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                attribute2Description,
+                attribute2DescriptionGUID);
+
+        properties.add(property);
+
+
+        typeDefPatch.setPropertyDefinitions(properties);
+        return typeDefPatch;
+    }
+
+
+    /**
+     * Deprecate clashing properties and add new ones to replace them.
+     * @return the type def patch
+     * @see #updateSoftwareServerPlatformEntity()
+     */
+    private TypeDefPatch updatePropertyFacetEntity()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "PropertyFacet";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "version";
+        final String attribute1Description     = "Deprecated attribute. Use the schemaVersion attribute to define the version number of the property facet schema.";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                attribute1Description,
+                attribute1DescriptionGUID);
+        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
+
+        properties.add(property);
+
+        final String attribute2Name            = "schemaVersion";
+        final String attribute2Description     = "Version of the property facet schema.";
+        final String attribute2DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                attribute2Description,
+                attribute2DescriptionGUID);
+
+        properties.add(property);
+
+
+        typeDefPatch.setPropertyDefinitions(properties);
+        return typeDefPatch;
+    }
+
+
+    /**
+     * Deprecate clashing properties and add new ones to replace them.
+     * @return the type def patch
+     * @see #updateSoftwareServerPlatformEntity()
+     */
+    private TypeDefPatch updateCohortMemberEntity()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "CohortMember";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "version";
+        final String attribute1Description     = "Deprecated attribute. Use the protocolVersion attribute to define the version number of the protocol supported by the cohort registry.";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                attribute1Description,
+                attribute1DescriptionGUID);
+        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
+
+        properties.add(property);
+
+        final String attribute2Name            = "protocolVersion";
+        final String attribute2Description     = "Version number of the protocol supported by the cohort registry.";
+        final String attribute2DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                attribute2Description,
+                attribute2DescriptionGUID);
+
+        properties.add(property);
+
+
+        typeDefPatch.setPropertyDefinitions(properties);
+        return typeDefPatch;
+    }
+
+
+    /**
+     * Deprecate clashing properties and add new ones to replace them.
+     * @return the type def patch
+     * @see #updateSoftwareServerPlatformEntity()
+     */
+    private TypeDefPatch updateImplementationSnippetEntity()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "ImplementationSnippet";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "version";
+        final String attribute1Description     = "Deprecated attribute. Use the snippetVersion attribute to define the version number of the snippet.";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                attribute1Description,
+                attribute1DescriptionGUID);
+        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
+
+        properties.add(property);
+
+        final String attribute2Name            = "snippetVersion";
+        final String attribute2Description     = "Version number of the snippet.";
+        final String attribute2DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                attribute2Description,
+                attribute2DescriptionGUID);
+
+        properties.add(property);
+
+
+        typeDefPatch.setPropertyDefinitions(properties);
+        return typeDefPatch;
+    }
+
+
+    /**
+     * Deprecate clashing properties and add new ones to replace them.
+     * @return the type def patch
+     * @see #updateSoftwareServerPlatformEntity()
+     */
+    private TypeDefPatch updatePolicyAdministrationPointClassification()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "PolicyAdministrationPoint";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "type";
+        final String attribute1Description     = "Deprecated attribute. Use the pointType attribute to describe type information about the policy administration point.";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                attribute1Description,
+                attribute1DescriptionGUID);
+        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
+
+        properties.add(property);
+
+        final String attribute2Name            = "pointType";
+        final String attribute2Description     = "Descriptive type information about the policy administration point.";
+        final String attribute2DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                attribute2Description,
+                attribute2DescriptionGUID);
+
+        properties.add(property);
+
+
+        typeDefPatch.setPropertyDefinitions(properties);
+        return typeDefPatch;
+    }
+
+
+    /**
+     * Deprecate clashing properties and add new ones to replace them.
+     * @return the type def patch
+     * @see #updateSoftwareServerPlatformEntity()
+     */
+    private TypeDefPatch updatePolicyDecisionPointClassification()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "PolicyDecisionPoint";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "type";
+        final String attribute1Description     = "Deprecated attribute. Use the pointType attribute to describe type information about the policy decision point.";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                attribute1Description,
+                attribute1DescriptionGUID);
+        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
+
+        properties.add(property);
+
+        final String attribute2Name            = "pointType";
+        final String attribute2Description     = "Descriptive type information about the policy decision point.";
+        final String attribute2DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                attribute2Description,
+                attribute2DescriptionGUID);
+
+        properties.add(property);
+
+
+        typeDefPatch.setPropertyDefinitions(properties);
+        return typeDefPatch;
+    }
+
+
+    /**
+     * Deprecate clashing properties and add new ones to replace them.
+     * @return the type def patch
+     * @see #updateSoftwareServerPlatformEntity()
+     */
+    private TypeDefPatch updatePolicyEnforcementPointClassification()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "PolicyEnforcementPoint";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "type";
+        final String attribute1Description     = "Deprecated attribute. Use the pointType attribute to describe type information about the policy enforcement point.";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                attribute1Description,
+                attribute1DescriptionGUID);
+        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
+
+        properties.add(property);
+
+        final String attribute2Name            = "pointType";
+        final String attribute2Description     = "Descriptive type information about the policy enforcement point.";
+        final String attribute2DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                attribute2Description,
+                attribute2DescriptionGUID);
+
+        properties.add(property);
+
+
+        typeDefPatch.setPropertyDefinitions(properties);
+        return typeDefPatch;
+    }
+
+
+    /**
+     * Deprecate clashing properties and add new ones to replace them.
+     * @return the type def patch
+     * @see #updateSoftwareServerPlatformEntity()
+     */
+    private TypeDefPatch updatePolicyInformationPointClassification()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "PolicyInformationPoint";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "type";
+        final String attribute1Description     = "Deprecated attribute. Use the pointType attribute to describe type information about the policy information point.";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                attribute1Description,
+                attribute1DescriptionGUID);
+        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
+
+        properties.add(property);
+
+        final String attribute2Name            = "pointType";
+        final String attribute2Description     = "Descriptive type information about the policy information point.";
+        final String attribute2DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                attribute2Description,
+                attribute2DescriptionGUID);
+
+        properties.add(property);
+
+
+        typeDefPatch.setPropertyDefinitions(properties);
+        return typeDefPatch;
+    }
+
+
+    /**
+     * Deprecate clashing properties and add new ones to replace them.
+     * @return the type def patch
+     * @see #updateSoftwareServerPlatformEntity()
+     */
+    private TypeDefPatch updatePolicyRetrievalPointClassification()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "PolicyRetrievalPoint";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "type";
+        final String attribute1Description     = "Deprecated attribute. Use the pointType attribute to describe type information about the policy retrieval point.";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                attribute1Description,
+                attribute1DescriptionGUID);
+        property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
+
+        properties.add(property);
+
+        final String attribute2Name            = "pointType";
+        final String attribute2Description     = "Descriptive type information about the policy retrieval point.";
+        final String attribute2DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                attribute2Description,
+                attribute2DescriptionGUID);
+
+        properties.add(property);
+
+
+        typeDefPatch.setPropertyDefinitions(properties);
+        return typeDefPatch;
     }
 
 
