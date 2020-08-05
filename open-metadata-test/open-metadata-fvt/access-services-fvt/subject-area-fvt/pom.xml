@@ -221,6 +221,7 @@
                             <includes>
                                 <include>*.config</include>
                                 <include>*.registrystore</include>
+                                <include>**/*-graph-repository/</include>
                             </includes>
                         </fileset>
                         <fileset>
