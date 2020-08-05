@@ -92,7 +92,7 @@ public class AssetLineageRestServices {
                     publisher.publishProcessContext(entityDetail);
                 } else {
                     // only Processes and GlossaryTerms are the types supported for initial load
-                    log.error("Unsupported typeName {} for entity with guid {}. THe context can not be published", typeName, entityDetail.getGUID());
+                    log.error("Unsupported typeName {} for entity with guid {}. he context can not be published", typeName, entityDetail.getGUID());
                 }
             } catch (OCFCheckedExceptionBase | JsonProcessingException ocfCheckedExceptionBase) {
                 log.error("The context for entity guid = {} - type {} can not be published.", entityDetail.getGUID(),

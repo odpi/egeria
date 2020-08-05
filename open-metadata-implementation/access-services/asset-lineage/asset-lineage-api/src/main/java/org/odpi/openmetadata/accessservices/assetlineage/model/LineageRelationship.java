@@ -13,7 +13,7 @@ public class LineageRelationship extends LineageEntity {
     private LineageEntity targetEntity;
 
     /**
-     * Gets the entity for the first end of the relationship
+     * Gets the source entity of the relationship
      *
      * @return the guid
      */
@@ -22,7 +22,7 @@ public class LineageRelationship extends LineageEntity {
     }
 
     /**
-     * Sets the entity for the first end of the relationship
+     * Sets the source entity of the relationship
      *
      * @param sourceEntity the guid
      */
@@ -31,7 +31,7 @@ public class LineageRelationship extends LineageEntity {
     }
 
     /**
-     * Gets the entity for the second end of the relationship
+     * Gets the target entity of the relationship
      *
      * @return the guid
      */
@@ -41,7 +41,7 @@ public class LineageRelationship extends LineageEntity {
 
 
     /**
-     * Sets the entity for the second end of the relationship
+     * Sets the target entity of the relationship
      *
      * @param targetEntity the guid
      */
