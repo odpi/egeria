@@ -44,9 +44,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(new AuthFilter(authService), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new LoggingRequestFilter("/auth/login"), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(new LoginFilter("/auth/login", authenticationManager(), authService),
                         UsernamePasswordAuthenticationFilter.class)
-                ;
+        ;
     }
 
     @Bean
