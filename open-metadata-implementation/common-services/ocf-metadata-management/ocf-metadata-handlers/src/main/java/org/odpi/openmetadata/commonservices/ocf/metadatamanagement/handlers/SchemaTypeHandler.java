@@ -62,23 +62,57 @@ public class SchemaTypeHandler
     }
 
 
-    private void setElementType(String        schemaTypeGUID,
-                                String        schemaTypeName,
-                                SchemaElement bean)
+    /**
+     * Return the valid element header for a new bean.
+     *
+     * @param requestedTypeName specific subtype of the bean (may come from caller)
+     * @param validSuperTypeName type name that is being processed
+     * @param elementOrigin type of origin - if null then set based on externalSourceGUID
+     * @param externalSourceGUID if null then LOCAL_COHORT.
+     * @param externalSourceName name of external source, may be null legitimately
+     * @param methodName calling method
+     * @return Element type
+     * @throws InvalidParameterException type name is invalid
+     */
+    private ElementType getElementType(String        requestedTypeName,
+                                       String        validSuperTypeName,
+                                       ElementOrigin elementOrigin,
+                                       String        externalSourceGUID,
+                                       String        externalSourceName,
+                                       String        methodName) throws InvalidParameterException
+
     {
-        ElementType elementType = new ElementType();
+        ElementType   elementType = new ElementType();
+        ElementOrigin origin      = elementOrigin;
 
+        if (externalSourceGUID == null)
+        {
+            origin = ElementOrigin.LOCAL_COHORT;
+        }
 
-        elementType.setElementOrigin(ElementOrigin.LOCAL_COHORT);
+        if (origin == null)
+        {
+            origin = ElementOrigin.EXTERNAL_SOURCE;
+        }
+
+        String  schemaTypeGUID = invalidParameterHandler.validateTypeName(requestedTypeName,
+                                                                          validSuperTypeName,
+                                                                          serviceName,
+                                                                          methodName,
+                                                                          repositoryHelper);
+        elementType.setElementOrigin(origin);
         elementType.setElementTypeId(schemaTypeGUID);
-        elementType.setElementTypeName(schemaTypeName);
+        elementType.setElementTypeName(requestedTypeName);
+        elementType.setElementHomeMetadataCollectionId(externalSourceGUID);
+        elementType.setElementHomeMetadataCollectionName(externalSourceName);
 
-        bean.setType(elementType);
+        return elementType;
     }
 
 
     /**
      * Return the requested schemaType with the specific type information filled in.
+     * There is no validation of the type name and the bean is assumed to be for the local cohort.
      *
      * @param schemaTypeGUID unique identifier of the required type
      * @param schemaTypeName unique name of the required type
@@ -89,7 +123,13 @@ public class SchemaTypeHandler
     {
         ComplexSchemaType  schemaType = new ComplexSchemaType();
 
-        setElementType(schemaTypeGUID, schemaTypeName, schemaType);
+        ElementType elementType = new ElementType();
+
+        elementType.setElementOrigin(ElementOrigin.LOCAL_COHORT);
+        elementType.setElementTypeId(schemaTypeGUID);
+        elementType.setElementTypeName(schemaTypeName);
+
+        schemaType.setType(elementType);
 
         return schemaType;
     }
@@ -98,17 +138,58 @@ public class SchemaTypeHandler
     /**
      * Return the requested schemaType with the specific type information filled in.
      *
-     * @param schemaTypeGUID unique identifier of the required type
      * @param schemaTypeName unique name of the required type
+     * @param elementOrigin type of origin
+     * @param externalSourceGUID guid of the software server capability entity that represented the external source
+     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param methodName calling method
      * @return new object
+     * @throws InvalidParameterException the type name is invalid for this type of schema
      */
-    public PrimitiveSchemaType getEmptyPrimitiveSchemaType(String     schemaTypeGUID,
-                                                           String     schemaTypeName)
+    public ComplexSchemaType getEmptyComplexSchemaType(String        schemaTypeName,
+                                                       ElementOrigin elementOrigin,
+                                                       String        externalSourceGUID,
+                                                       String        externalSourceName,
+                                                       String        methodName) throws InvalidParameterException
+    {
+        ComplexSchemaType  schemaType = new ComplexSchemaType();
+
+        schemaType.setType(this.getElementType(schemaTypeName,
+                                               SchemaElementMapper.COMPLEX_SCHEMA_TYPE_TYPE_NAME,
+                                               elementOrigin,
+                                               externalSourceGUID,
+                                               externalSourceName,
+                                               methodName));
+
+        return schemaType;
+    }
+
+
+    /**
+     * Return the requested schemaType with the specific type information filled in.
+     *
+     * @param schemaTypeName unique name of the required type
+     * @param elementOrigin type of origin
+     * @param externalSourceGUID guid of the software server capability entity that represented the external source
+     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param methodName calling method
+     * @return new object
+     * @throws InvalidParameterException the type name is invalid for this type of schema
+     */
+    public PrimitiveSchemaType getEmptyPrimitiveSchemaType(String        schemaTypeName,
+                                                           ElementOrigin elementOrigin,
+                                                           String        externalSourceGUID,
+                                                           String        externalSourceName,
+                                                           String        methodName) throws InvalidParameterException
     {
         PrimitiveSchemaType  schemaType = new PrimitiveSchemaType();
 
-        setElementType(schemaTypeGUID, schemaTypeName, schemaType);
-
+        schemaType.setType(this.getElementType(schemaTypeName,
+                                               SchemaElementMapper.PRIMITIVE_SCHEMA_TYPE_TYPE_NAME,
+                                               elementOrigin,
+                                               externalSourceGUID,
+                                               externalSourceName,
+                                               methodName));
         return schemaType;
     }
 
@@ -116,21 +197,36 @@ public class SchemaTypeHandler
     /**
      * Return a schema attribute object with the type set up.
      *
+     * @param schemaTypeName unique name of the required type
+     * @param elementOrigin type of origin
+     * @param externalSourceGUID guid of the software server capability entity that represented the external source
+     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param methodName calling method
      * @return new object
+     * @throws InvalidParameterException the type name is invalid for this type of schema
      */
-    public SchemaAttribute  getEmptySchemaAttribute()
+    public SchemaAttribute  getEmptySchemaAttribute(String        schemaTypeName,
+                                                    ElementOrigin elementOrigin,
+                                                    String        externalSourceGUID,
+                                                    String        externalSourceName,
+                                                    String        methodName) throws InvalidParameterException
     {
         SchemaAttribute   schemaAttribute = new SchemaAttribute();
 
-        setElementType(SchemaElementMapper.SCHEMA_ATTRIBUTE_TYPE_GUID,
-                       SchemaElementMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
-                       schemaAttribute);
+        schemaAttribute.setType(this.getElementType(schemaTypeName,
+                                                    SchemaElementMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                                    elementOrigin,
+                                                    externalSourceGUID,
+                                                    externalSourceName,
+                                                    methodName));
 
         return schemaAttribute;
     }
 
+
     /**
-     * Return a schema attribute object with the type set up.
+     * Return a schema attribute object with the type set up.  This is for columns that are created
+     * in the local cohort only.
      *
      * @return new object
      */
@@ -138,13 +234,16 @@ public class SchemaTypeHandler
     {
         SchemaAttribute   schemaAttribute = new SchemaAttribute();
 
-        setElementType(SchemaElementMapper.TABULAR_COLUMN_TYPE_GUID,
-                       SchemaElementMapper.TABULAR_COLUMN_TYPE_NAME,
-                       schemaAttribute);
+        ElementType elementType = new ElementType();
+
+        elementType.setElementOrigin(ElementOrigin.LOCAL_COHORT);
+        elementType.setElementTypeId(SchemaElementMapper.TABULAR_COLUMN_TYPE_GUID);
+        elementType.setElementTypeName(SchemaElementMapper.TABULAR_COLUMN_TYPE_NAME);
+
+        schemaAttribute.setType(elementType);
 
         return schemaAttribute;
     }
-
 
 
     /**
@@ -532,12 +631,12 @@ public class SchemaTypeHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    private int countSchemaAttributes(String   userId,
-                                      String   schemaElementGUID,
-                                      String   guidParameterName,
-                                      String   methodName) throws InvalidParameterException,
-                                                                  PropertyServerException,
-                                                                  UserNotAuthorizedException
+    int countSchemaAttributes(String   userId,
+                              String   schemaElementGUID,
+                              String   guidParameterName,
+                              String   methodName) throws InvalidParameterException,
+                                                          PropertyServerException,
+                                                          UserNotAuthorizedException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(schemaElementGUID, guidParameterName, methodName);
@@ -761,17 +860,39 @@ public class SchemaTypeHandler
 
         if (schemaAttributeGUID == null)
         {
+            /*
+             * This is a new schema attribute.  The entity is created first and then the relationship to
+             * link it to the requested type.
+             */
             schemaAttributeGUID = addSchemaAttribute(userId, schemaAttribute);
 
-            repositoryHandler.createRelationship(userId,
-                                                 SchemaElementMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
-                                                 schemaTypeGUID,
-                                                 schemaAttributeGUID,
-                                                 null,
-                                                 methodName);
+            if (isLocalCohortInstance(schemaAttribute.getType()))
+            {
+                repositoryHandler.createRelationship(userId,
+                                                     SchemaElementMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
+                                                     schemaTypeGUID,
+                                                     schemaAttributeGUID,
+                                                     null,
+                                                     methodName);
+            }
+            else
+            {
+                repositoryHandler.createExternalRelationship(userId,
+                                                             SchemaElementMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
+                                                             schemaAttribute.getType().getElementHomeMetadataCollectionId(),
+                                                             schemaAttribute.getType().getElementHomeMetadataCollectionName(),
+                                                             schemaTypeGUID,
+                                                             schemaAttributeGUID,
+                                                             null,
+                                                             methodName);
+            }
         }
         else
         {
+            /*
+             * Since the schema already exists, it will be updated directly.  This has no impact on
+             * the relationships to it.
+             */
             updateSchemaAttribute(userId, schemaAttributeGUID, schemaAttribute);
         }
 
@@ -818,62 +939,6 @@ public class SchemaTypeHandler
         }
 
         return schemaAttributeGUID;
-    }
-
-
-
-    /**
-     * Work through the schema attributes from an external source adding or updating the instances
-     *
-     * @param userId calling userId
-     * @param schemaTypeGUID anchor object
-     * @param schemaAttributes list of nested schema attribute objects or null
-     * @param externalSourceGUID unique identifier of the external source
-     * @param externalSourceName unique name of the external source
-     * @param methodName calling method
-     *
-     * @throws InvalidParameterException the bean properties are invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException problem accessing the property server
-     */
-    public void  saveExternalSchemaAttributes(String                userId,
-                                              String                schemaTypeGUID,
-                                              List<SchemaAttribute> schemaAttributes,
-                                              String                externalSourceGUID,
-                                              String                externalSourceName,
-                                              String                methodName) throws InvalidParameterException,
-                                                                                       PropertyServerException,
-                                                                                       UserNotAuthorizedException
-    {
-        if (schemaAttributes != null)
-        {
-            for (SchemaAttribute  schemaAttribute : schemaAttributes)
-            {
-                if (schemaAttribute != null)
-                {
-                    String schemaAttributeGUID = this.findSchemaAttribute(userId, schemaAttribute, methodName);
-
-                    if (schemaAttributeGUID == null)
-                    {
-                        schemaAttributeGUID = addExternalSchemaAttribute(userId, schemaAttribute,externalSourceGUID,externalSourceName);
-
-                        repositoryHandler.createExternalRelationship(userId,
-                                                                     SchemaElementMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
-                                                                     externalSourceGUID,
-                                                                     externalSourceName,
-                                                                     schemaTypeGUID,
-                                                                     schemaAttributeGUID,
-                                                                     null,
-                                                                     methodName);
-                    }
-                    else
-                    {
-                        updateSchemaAttribute(userId, schemaAttributeGUID, schemaAttribute);
-                    }
-
-                }
-            }
-        }
     }
 
 
@@ -976,6 +1041,28 @@ public class SchemaTypeHandler
 
 
     /**
+     * Return a boolean to indicate whether a schema element bean is from/for the local cohort or
+     * it is an external instance. The default is that it is local.
+     *
+     * @param instanceElementType type object from the OCF bean
+     * @return boolean
+     */
+    private boolean isLocalCohortInstance(ElementType  instanceElementType)
+    {
+
+        if (instanceElementType == null)
+        {
+            return true;
+        }
+        else if (instanceElementType.getElementOrigin() == ElementOrigin.LOCAL_COHORT)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Add the schema attribute to the repository.  Notice there is no attempt to process its type.
      *
      * @param userId   calling userId
@@ -994,11 +1081,30 @@ public class SchemaTypeHandler
 
         SchemaAttributeBuilder schemaAttributeBuilder = this.getSchemaAttributeBuilder(schemaAttribute);
 
-        String schemaAttributeGUID = repositoryHandler.createEntity(userId,
-                                                                    this.getSchemaAttributeTypeGUID(schemaAttribute),
-                                                                    this.getSchemaAttributeTypeName(schemaAttribute),
-                                                                    schemaAttributeBuilder.getInstanceProperties(methodName),
-                                                                    methodName);
+        /*
+         * Work out if this is a local cohort schema attribute or external?
+         */
+        ElementType type = schemaAttribute.getType();
+        String      schemaAttributeGUID;
+
+        if (isLocalCohortInstance(type))
+        {
+            schemaAttributeGUID = repositoryHandler.createEntity(userId,
+                                                                 this.getSchemaAttributeTypeGUID(schemaAttribute),
+                                                                 this.getSchemaAttributeTypeName(schemaAttribute),
+                                                                 schemaAttributeBuilder.getInstanceProperties(methodName),
+                                                                 methodName);
+        }
+        else
+        {
+            schemaAttributeGUID = repositoryHandler.createExternalEntity(userId,
+                                                                         this.getSchemaAttributeTypeGUID(schemaAttribute),
+                                                                         this.getSchemaAttributeTypeName(schemaAttribute),
+                                                                         type.getElementHomeMetadataCollectionId(),
+                                                                         type.getElementHomeMetadataCollectionName(),
+                                                                         schemaAttributeBuilder.getInstanceProperties(methodName),
+                                                                         methodName);
+        }
 
         SchemaType schemaType = schemaAttribute.getAttributeType();
 
@@ -1026,12 +1132,26 @@ public class SchemaTypeHandler
                 String schemaTypeGUID = addSchemaType(userId, schemaType);
                 if (schemaTypeGUID != null)
                 {
-                    repositoryHandler.createRelationship(userId,
-                                                         SchemaElementMapper.ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_GUID,
-                                                         schemaAttributeGUID,
-                                                         schemaTypeGUID,
-                                                         null,
-                                                         methodName);
+                    if (isLocalCohortInstance(type))
+                    {
+                        repositoryHandler.createRelationship(userId,
+                                                             SchemaElementMapper.ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_GUID,
+                                                             schemaAttributeGUID,
+                                                             schemaTypeGUID,
+                                                             null,
+                                                             methodName);
+                    }
+                    else
+                    {
+                        repositoryHandler.createExternalRelationship(userId,
+                                                                     SchemaElementMapper.ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_GUID,
+                                                                     type.getElementHomeMetadataCollectionId(),
+                                                                     type.getElementHomeMetadataCollectionName(),
+                                                                     schemaAttributeGUID,
+                                                                     schemaTypeGUID,
+                                                                     null,
+                                                                     methodName);
+                    }
                 }
             }
         }

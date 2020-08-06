@@ -16,7 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/digital-architecture/users/{userId}")
 
-@Tag(name="Digital Architecture OMAS", description="The Digital Architecture OMAS provides APIs for tools and applications managing the design of data structures, software and the IT infrastructure that supports the operations of the organization.", externalDocs=@ExternalDocumentation(description="Digital Architecture Open Metadata Access Service (OMAS)",url="https://egeria.odpi.org/open-metadata-implementation/access-services/digital-architecture/"))
+@Tag(name="Digital Architecture OMAS",
+        description="The Digital Architecture OMAS provides APIs for tools and applications managing the design of data structures, software and the IT infrastructure that supports the operations of the organization.",
+        externalDocs=@ExternalDocumentation(description="Digital Architecture Open Metadata Access Service (OMAS)",
+                url="https://egeria.odpi.org/open-metadata-implementation/access-services/digital-architecture/"))
 
 public class DigitalArchitectureResource
 {

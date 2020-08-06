@@ -19,7 +19,7 @@ import '../token-ajax.js';
 * InheritanceDiagram implements a web component for drawing an Entity inheritance diagram
 *
 * This component renders a set of inheritance trees (drawn with the roots to the left)
-* that contain Egeria entity types. Each tree is collapsible and expandabla to hide/
+* that contain Egeria entity types. Each tree is collapsible and expandable to hide/
 * show the children of a node. It is possible to click on a type to 'select'
 * it - meaning that type becomes the focus type. The focus type is highlighted.
 *

@@ -16,6 +16,9 @@ Collections help to group related REST API calls together.
 In order to run these, you should have a set of environment variables configured as detailed in the next section
 ("Environment variables").
 
+Egeria by default uses https:// requests with a self-signed certificate. Any PostMan users therefore will need to
+go into settings->general and turn off 'SSL certificate verification' or requests will fail.
+
 If interested, you can also [learn more about Postman Collections](https://learning.getpostman.com/docs/postman/collections/intro-to-collections/)
 in general.
 
@@ -76,7 +79,7 @@ one to be able to quickly change between different environments you have running
 Note that many of the variables are optional, depending on your particular configuration. The mandatory variables are
 the following:
 
-- `baseURL`: the base URL of your Egeria OMAG Server Platform, including the 'http://' prefix
+- `baseURL`: the base URL of your Egeria OMAG Server Platform, including the 'https://' prefix
 - `user`: the user name of the user carrying out operations within the Egeria OMAG Server Platform
 - `server`: the name of the server within the Platform in which to carry out operations
 - `cohort`: the name of the cohort with which the server should interact

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.*;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.OmasObject;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SystemAttributes;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.IconSummary;
 import org.slf4j.Logger;
@@ -28,7 +29,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class Node implements Serializable {
+public class Node implements Serializable, OmasObject {
     private static final Logger log = LoggerFactory.getLogger(Node.class);
     private static final String className = Node.class.getName();
     protected NodeType nodeType = NodeType.Unknown;
@@ -114,7 +115,7 @@ public class Node implements Serializable {
      * @param classifications list of classifications to set on the Node.
      */
     public void setClassifications(List<Classification> classifications) {
-        this.classifications=classifications;
+        this.classifications = classifications;
     }
     /**
      * icon summary
@@ -202,14 +203,13 @@ public class Node implements Serializable {
 
         Node node = (Node) o;
 
-        if (name != null ? !name.equals(node.name) : node.name != null) return false;
-        if (qualifiedName != null ? !qualifiedName.equals(node.qualifiedName) : node.qualifiedName != null)
-            return false;
-        if (description != null ? !description.equals(node.description) : node.description != null) return false;
-        if (effectiveFromTime != null ?!effectiveFromTime.equals(node.effectiveFromTime) : node.effectiveFromTime !=null) return false;
-        if (effectiveToTime != null ?!effectiveToTime.equals(node.effectiveToTime) : node.effectiveToTime !=null) return false;
+        if (!Objects.equals(name, node.name)) return false;
+        if (!Objects.equals(qualifiedName, node.qualifiedName)) return false;
+        if (!Objects.equals(description, node.description)) return false;
+        if (!Objects.equals(effectiveFromTime, node.effectiveFromTime)) return false;
+        if (!Objects.equals(effectiveToTime, node.effectiveToTime)) return false;
         //TODO deal with icon set properly
-        return  (icons != null ? !icons.equals(node.icons) : node.icons != null)== false;
+        return Objects.equals(icons, node.icons);
 
     }
 

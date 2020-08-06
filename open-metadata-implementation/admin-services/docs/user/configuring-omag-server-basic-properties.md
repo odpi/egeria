@@ -30,8 +30,11 @@ admin services API:
 * **localServerUserId** - UserId to use for server initiated REST calls. The default is "OMAGServer".
 
 * **localServerPassword** - Password to use for server initiated REST calls. The default is null.
+ This means that only the userId is sent in the HTTP header.
 
 * **maxPageSize** - the maximum page size that can be set on requests to the server. The default value is 1000.
+  A value of zero means unlimited page size.  Although supported, the zero value is not recommended
+  because it provides not protection from a large request denial of service attack.
 
 The sections that follow cover how to set up these values.
 

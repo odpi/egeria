@@ -1,0 +1,275 @@
+{
+	"info": {
+		"_postman_id": "4d5c0ea0-1d23-43cb-8435-d943c1fc411f",
+		"name": "Egeria-platform-services",
+		"description": "This collection supports the REST API operations from the platform services.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get Server Origin",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/open-metadata/platform-services/users/{{user}}/server-platform/origin",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"open-metadata",
+						"platform-services",
+						"users",
+						"{{user}}",
+						"server-platform",
+						"origin"
+					]
+				},
+				"description": "Query the originator and version of this server platform."
+			},
+			"response": []
+		},
+		{
+			"name": "Get registered access services",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/open-metadata/platform-services/users/{{user}}/server-platform/registered-services/access-services",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"open-metadata",
+						"platform-services",
+						"users",
+						"{{user}}",
+						"server-platform",
+						"registered-services",
+						"access-services"
+					]
+				},
+				"description": "Retrieve the list of Open Metadata Access Services (OMASs) that are supported by this OMAG Server Platform."
+			},
+			"response": []
+		},
+		{
+			"name": "Get registered view services",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/open-metadata/platform-services/users/{{user}}/server-platform/registered-services/view-services",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"open-metadata",
+						"platform-services",
+						"users",
+						"{{user}}",
+						"server-platform",
+						"registered-services",
+						"view-services"
+					]
+				},
+				"description": "Retrieve the list of Open Metadata View Services (OMVSs) that are supported by this OMAG Server Platform."
+			},
+			"response": []
+		},
+		{
+			"name": "Get registered governance services",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/open-metadata/platform-services/users/{{user}}/server-platform/registered-services/governance-services",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"open-metadata",
+						"platform-services",
+						"users",
+						"{{user}}",
+						"server-platform",
+						"registered-services",
+						"governance-services"
+					]
+				},
+				"description": "Retrieve the list of governance services that are supported by this OMAG Server Platform."
+			},
+			"response": []
+		},
+		{
+			"name": "Get registered common services",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/open-metadata/platform-services/users/{{user}}/server-platform/registered-services/common-services",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"open-metadata",
+						"platform-services",
+						"users",
+						"{{user}}",
+						"server-platform",
+						"registered-services",
+						"common-services"
+					]
+				},
+				"description": "Retrieve the list of common services that are supported by this OMAG Server Platform."
+			},
+			"response": []
+		},
+		{
+			"name": "Get all registered services",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/open-metadata/platform-services/users/{{user}}/server-platform/registered-services",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"open-metadata",
+						"platform-services",
+						"users",
+						"{{user}}",
+						"server-platform",
+						"registered-services"
+					]
+				},
+				"description": "Retrieve the list of services that are supported by this OMAG Server Platform."
+			},
+			"response": []
+		},
+		{
+			"name": "Get all known servers",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/open-metadata/platform-services/users/{{user}}/server-platform/servers",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"open-metadata",
+						"platform-services",
+						"users",
+						"{{user}}",
+						"server-platform",
+						"servers"
+					]
+				},
+				"description": "Retrieve the list of servers that have run, are are still running on this OMAG Server Platform."
+			},
+			"response": []
+		},
+		{
+			"name": "Get all active servers",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/open-metadata/platform-services/users/{{user}}/server-platform/servers/active",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"open-metadata",
+						"platform-services",
+						"users",
+						"{{user}}",
+						"server-platform",
+						"servers",
+						"active"
+					]
+				},
+				"description": "Retrieve the list of servers that are are running on this OMAG Server Platform."
+			},
+			"response": []
+		},
+		{
+			"name": "Query if a specific server is known",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/open-metadata/platform-services/users/{{user}}/server-platform/servers/{{server}}/is-known",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"open-metadata",
+						"platform-services",
+						"users",
+						"{{user}}",
+						"server-platform",
+						"servers",
+						"{{server}}",
+						"is-known"
+					]
+				},
+				"description": "Retrieve a boolean that indicates whether a specific servers is known to this OMAG Server Platform."
+			},
+			"response": []
+		},
+		{
+			"name": "Query the status of a specific server",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/open-metadata/platform-services/users/{{user}}/server-platform/servers/{{server}}/status",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"open-metadata",
+						"platform-services",
+						"users",
+						"{{user}}",
+						"server-platform",
+						"servers",
+						"{{server}}",
+						"status"
+					]
+				},
+				"description": "Retrieve the status of a specific server for this OMAG Server Platform."
+			},
+			"response": []
+		},
+		{
+			"name": "Query the active services of a specific server",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL}}/open-metadata/platform-services/users/{{user}}/server-platform/servers/{{server}}/services",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"open-metadata",
+						"platform-services",
+						"users",
+						"{{user}}",
+						"server-platform",
+						"servers",
+						"{{server}}",
+						"services"
+					]
+				},
+				"description": "Retrieve the list of services that have been requested inside of a specific server running on this OMAG Server Platform."
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

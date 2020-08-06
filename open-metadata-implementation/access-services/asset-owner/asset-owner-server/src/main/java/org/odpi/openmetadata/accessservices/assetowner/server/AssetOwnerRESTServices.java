@@ -345,6 +345,7 @@ public class AssetOwnerRESTServices
                                                   String            schemaTypeGUID,
                                                   NullRequestBody   requestBody)
     {
+        // todo
         return null;
     }
 
@@ -367,6 +368,7 @@ public class AssetOwnerRESTServices
                                                     String          assetGUID,
                                                     NullRequestBody requestBody)
     {
+        // todo
         return null;
     }
 
@@ -389,6 +391,7 @@ public class AssetOwnerRESTServices
                                                String          assetGUID,
                                                NullRequestBody requestBody)
     {
+        // todo
         return null;
     }
 
@@ -705,6 +708,7 @@ public class AssetOwnerRESTServices
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
+    @SuppressWarnings(value = "unused")
     public VoidResponse  addSemanticAssignment(String          serverName,
                                                String          userId,
                                                String          assetGUID,
@@ -754,6 +758,7 @@ public class AssetOwnerRESTServices
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
+    @SuppressWarnings(value = "unused")
     public VoidResponse  addSemanticAssignment(String          serverName,
                                                String          userId,
                                                String          assetGUID,
@@ -805,6 +810,7 @@ public class AssetOwnerRESTServices
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
+    @SuppressWarnings(value = "unused")
     public VoidResponse  removeSemanticAssignment(String          serverName,
                                                   String          userId,
                                                   String          assetGUID,
@@ -855,6 +861,7 @@ public class AssetOwnerRESTServices
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
+    @SuppressWarnings(value = "unused")
     public VoidResponse  removeSemanticAssignment(String          serverName,
                                                   String          userId,
                                                   String          assetGUID,
@@ -1215,6 +1222,7 @@ public class AssetOwnerRESTServices
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
+    @SuppressWarnings(value = "unused")
     public VoidResponse  removeSecurityTags(String                serverName,
                                             String                userId,
                                             String                assetGUID,
@@ -1260,6 +1268,7 @@ public class AssetOwnerRESTServices
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
+    @SuppressWarnings(value = "unused")
     public VoidResponse  removeSecurityTags(String                serverName,
                                             String                userId,
                                             String                assetGUID,
@@ -1578,6 +1587,7 @@ public class AssetOwnerRESTServices
      *  PropertyServerException problem accessing property server or
      *  UserNotAuthorizedException security access problem
      */
+    @SuppressWarnings(value = "unused")
     public VoidResponse deleteAsset(String          serverName,
                                     String          userId,
                                     String          assetGUID,

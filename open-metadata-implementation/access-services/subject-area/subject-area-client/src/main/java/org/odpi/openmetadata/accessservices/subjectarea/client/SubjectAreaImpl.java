@@ -2,11 +2,20 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.client;
 
-import org.odpi.openmetadata.accessservices.subjectarea.*;
+import org.odpi.openmetadata.accessservices.subjectarea.SubjectArea;
+import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.SubjectAreaNode;
+import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.categories.SubjectAreaCategory;
+import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.glossaries.SubjectAreaGlossary;
+import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.projects.SubjectAreaProject;
+import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.terms.SubjectAreaTerm;
+import org.odpi.openmetadata.accessservices.subjectarea.client.relationships.SubjectAreaGraph;
+import org.odpi.openmetadata.accessservices.subjectarea.client.relationships.SubjectAreaGraphClient;
+import org.odpi.openmetadata.accessservices.subjectarea.client.relationships.SubjectAreaLine;
+import org.odpi.openmetadata.accessservices.subjectarea.client.relationships.SubjectAreaRelationship;
+import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.accessservices.subjectarea.validators.InputValidator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 
 
 /**
@@ -14,17 +23,14 @@ import org.slf4j.LoggerFactory;
  * This interface provides glossary authoring interfaces for subject area experts.
  */
 public class SubjectAreaImpl implements SubjectArea {
-    private static final Logger log = LoggerFactory.getLogger(SubjectAreaImpl.class);
-
     private static final String className = SubjectAreaImpl.class.getName();
-    static final String SUBJECT_AREA_BASE_URL = "/servers/%s/open-metadata/access-services/subject-area/users/%s/";
 
-    private final SubjectAreaTermImpl termAPI;
-    private final SubjectAreaCategoryImpl categoryAPI;
-    private final SubjectAreaGlossaryImpl glossaryAPI;
-    private final SubjectAreaProjectImpl projectAPI;
-    public final SubjectAreaRelationshipImpl relationshipAPI;
-    public final SubjectAreaGraphImpl graphAPI;
+    private final SubjectAreaTerm termAPI;
+    private final SubjectAreaCategory categoryAPI;
+    private final SubjectAreaGlossary glossaryAPI;
+    private final SubjectAreaProject projectAPI;
+    public final SubjectAreaRelationship relationshipAPI;
+    public final SubjectAreaGraph graphAPI;
     public final String serverName;
     public final String omasServerUrl;
 
@@ -39,12 +45,34 @@ public class SubjectAreaImpl implements SubjectArea {
         String methodName = "SubjectAreaImpl";
         InputValidator.validateRemoteServerNameNotNull(className, methodName, serverName);
         InputValidator.validateRemoteServerURLNotNull(className, methodName, omasServerURL);
-        this.glossaryAPI = new SubjectAreaGlossaryImpl(omasServerURL, serverName);
-        this.termAPI = new SubjectAreaTermImpl(omasServerURL, serverName);
-        this.categoryAPI = new SubjectAreaCategoryImpl(omasServerURL, serverName);
-        this.relationshipAPI = new SubjectAreaRelationshipImpl(omasServerURL, serverName);
-        this.graphAPI = new SubjectAreaGraphImpl(omasServerURL, serverName);
-        this.projectAPI = new SubjectAreaProjectImpl(omasServerURL, serverName);
+        try {
+            SubjectAreaRestClient client = new SubjectAreaRestClient(serverName, omasServerURL);
+            SubjectAreaNode subjectAreaNode = new SubjectAreaNode(client);
+            SubjectAreaLine subjectAreaLine = new SubjectAreaLine(client);
+            SubjectAreaGraph subjectAreaGraph = new SubjectAreaGraphClient(client);
+
+            this.glossaryAPI = subjectAreaNode;
+            this.termAPI =  subjectAreaNode;
+            this.categoryAPI = subjectAreaNode;
+            this.relationshipAPI = subjectAreaLine;
+            this.graphAPI = subjectAreaGraph;
+            this.projectAPI = subjectAreaNode;
+        } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException e) {
+            String parameterName = "serverName or omasServerURL";
+            String parameterValue = "unknown";
+            if (serverName == null ||  "".equals(serverName)) {
+                parameterName = "serverName";
+                parameterValue = serverName;
+            }
+            if (omasServerURL == null || "".equals(omasServerURL)) {
+                parameterName = "omasServerURL";
+                parameterValue = omasServerURL;
+            }
+            ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.SUBJECT_AREA_FAILED_TO_INITIALISE.getMessageDefinition();
+            messageDefinition.setMessageParameters(parameterName, parameterValue);
+            throw new InvalidParameterException(messageDefinition, className, methodName, e, parameterName, parameterValue);
+        }
+
         this.serverName = serverName;
         this.omasServerUrl = omasServerURL;
     }

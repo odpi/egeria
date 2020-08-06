@@ -100,8 +100,29 @@ public enum KafkaOpenMetadataTopicConnectorAuditCode implements AuditLogMessageS
              OMRSAuditLogRecordSeverity.ERROR,
              "Property {0} is missing from the Kafka Event Bus configuration",
              "The system is unable to connect to the event bus.",
-             "Add the missing property to the event bus properties in the server configuration.")
+             "Add the missing property to the event bus properties in the server configuration."),
 
+    SERVICE_FAILED_INITIALIZING( "OCF-KAFKA-TOPIC-CONNECTOR-00014 ",
+              OMRSAuditLogRecordSeverity.ERROR,
+             "Connecting to bootstrap Apache Kafka Broker {0}}",
+             "The local server has failed to started up the Apache Kafka connector, Kafka Broker is unavailable",
+             "Ensure Kafka is running and restart the local Egeria Server"),
+
+    KAFKA_CONNECTION_RETRY( "OCF-KAFKA-TOPIC_CONNECTOR-00015",
+              OMRSAuditLogRecordSeverity.STARTUP,
+             "The local server is attempting to connect to Kafka, attempt {0}",
+             "Ensure Kafka is available",
+             "Ensure the Kafka Cluster has started"),
+    UNEXPECTED_SHUTDOWN_EXCEPTION( "OCF-KAFKA-TOPIC_CONNECTOR-00016",
+            OMRSAuditLogRecordSeverity.SHUTDOWN,
+            "An unexpected error was encountered while closing the kafka topic connector",
+            "Check Egeria and Kafka Error Logs",
+            "Ensure the server has shutdown cleanly"),
+    EXCEPTION_COMMITING_OFFSETS("OCF-KAFKA-TOPIC_CONNECTOR-00017",
+            OMRSAuditLogRecordSeverity.SHUTDOWN,
+            "An unexpected error was encountered while commitimg consumed messages",
+            "Check Egeria and Kafka Error Logs",
+            "Ensure the server has shutdown cleanly")
     ;
 
     private AuditLogMessageDefinition messageDefinition;

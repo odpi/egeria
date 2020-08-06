@@ -6,7 +6,11 @@ import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.janusgraph.core.JanusGraph;
 import org.janusgraph.core.PropertyKey;
-import org.janusgraph.core.schema.*;
+import org.janusgraph.core.schema.ConsistencyModifier;
+import org.janusgraph.core.schema.JanusGraphIndex;
+import org.janusgraph.core.schema.JanusGraphManagement;
+import org.janusgraph.core.schema.SchemaAction;
+import org.janusgraph.core.schema.SchemaStatus;
 import org.janusgraph.graphdb.database.management.ManagementSystem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,13 +30,23 @@ public class IndexingFactory {
      * @param propertyKeyName - the property name that is stored in the graph
      * @param unique - if the propery name is unique or not
      * @param graph - graph instance to create the indexes
+     * @param type - type
      */
     protected void createCompositeIndexForProperty(String propertyName,
                                                    String propertyKeyName,
                                                    boolean unique,
                                                    JanusGraph graph,
                                                    Class type) {
-        String indexName = "vertexIndexComposite" + propertyKeyName;
+
+        String indexName = null;
+        if(Vertex.class.equals(type)){
+            indexName = "vertexIndexComposite" + propertyKeyName;
+        }
+        else if (Edge.class.equals(type)){
+            indexName = "edgeIndexComposite" + propertyKeyName;
+
+        }
+
         log.info("INDEX to be created {}", indexName);
         this.graph = graph;
         checkIndex(indexName,propertyName,propertyKeyName,unique,type);

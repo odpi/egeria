@@ -44,7 +44,7 @@ public class OMAGServerPlatformActiveResource
      * @return list of service descriptions
      */
     @GetMapping(path = "/registered-services/access-services")
-    @Operation( summary = "Get access services",
+    @Operation( summary = "Get registered access services",
                 description="Retrieve a list of access services registered on this platform",
                 responses = {
                     @ApiResponse(responseCode = "200",description="list of service descriptions",
@@ -71,7 +71,7 @@ public class OMAGServerPlatformActiveResource
      */
     @GetMapping(path = "/registered-services/view-services")
 
-    @Operation( summary = "Get view services",
+    @Operation( summary = "Get registered view services",
             description="Retrieve a list of view services registered on this platform",
             responses = {
                     @ApiResponse(responseCode = "200",description="list of service descriptions",
@@ -96,7 +96,7 @@ public class OMAGServerPlatformActiveResource
      * @return list of service descriptions
      */
     @GetMapping(path = "/registered-services/governance-services")
-    @Operation( summary = "Get governance services",
+    @Operation( summary = "Get registered governance services",
             description="Retrieve a list of governance services registered on this platform",
             responses = {
                     @ApiResponse(responseCode = "200",description="list of service descriptions",
@@ -121,7 +121,7 @@ public class OMAGServerPlatformActiveResource
      * @return list of service descriptions
      */
     @GetMapping(path = "/registered-services/common-services")
-    @Operation( summary = "Get common services",
+    @Operation( summary = "Get registered common services",
             description="Retrieve a list of common services registered on this platform",
             responses = {
                     @ApiResponse(responseCode = "200",description="list of service descriptions",
@@ -146,7 +146,7 @@ public class OMAGServerPlatformActiveResource
      * @return list of service descriptions
      */
     @GetMapping(path = "/registered-services")
-    @Operation( summary = "Get all services",
+    @Operation( summary = "Get all registered services",
             description="Retrieve a list of all services registered on this platform",
             responses = {
                     @ApiResponse(responseCode = "200",description="list of service descriptions",
@@ -196,7 +196,7 @@ public class OMAGServerPlatformActiveResource
      * @return list of OMAG server names
      */
     @GetMapping(path = "/servers")
-    @Operation( summary = "Get list of run servers",
+    @Operation( summary = "Get list of known servers",
             description="Return the list of servers that have run or are running on this platform",
             responses = {
                     @ApiResponse(responseCode = "200",description="list of servers",

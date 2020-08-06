@@ -363,6 +363,13 @@ public enum OMAGAdminAuditCode implements AuditLogMessageSet
                                  "This is an internal error.  The access service is not using a valid connector provider.",
                                  "Raise an issue on Egeria's GitHub and work with the Egeria community to resolve."),
 
+    PUBLISH_ZONES("OMAG-ADMIN-0213",
+                  OMRSAuditLogRecordSeverity.STARTUP,
+                  "The {0} Open Metadata Access Service (OMAS) is using the following governance zones as a publish value for completed Assets: {1}",
+                  "The access service was passed a list of governance zones in the PublishZones property of the access services options " +
+                          "and will use it to set the zones for an asset that is published from this access service.",
+                  "Verify that this is the intended value for this service (null means that the published " +
+                          "asset will be visible in all zones."),
 
     ;
 

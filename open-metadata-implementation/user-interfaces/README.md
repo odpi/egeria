@@ -6,8 +6,8 @@
 # Open Metadata User Interface
 
 Egeria provides a basic user interface (UI() to demonstrate the power of the open
-metadata and governance capabilities.  They are fully functional as
-far as the standards go, and could be used by a small company.  However,
+metadata and governance capabilities. They are fully functional as
+far as the standards go, and could be used by a small company. However,
 it is likely that commercial offerings will offer a richer user experience,
 particularly for a larger organization.
 
@@ -17,7 +17,7 @@ experience of open metadata.
 
 * [ui-chassis](ui-chassis) the user interface platform.
 
-* [repository-explorer](./ui-chassis-spring/docs/RepositoryExplorer) provides a repository explorer interface.
+* [repository-explorer](ui-chassis/ui-chassis-spring/docs/RepositoryExplorer) provides a repository explorer interface.
 
 ----
 Return to [open-metadata-implementation](..).

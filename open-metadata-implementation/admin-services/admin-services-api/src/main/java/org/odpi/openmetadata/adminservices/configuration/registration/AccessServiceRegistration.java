@@ -38,14 +38,14 @@ public class AccessServiceRegistration implements Serializable
      * @param accessServiceOperationalStatus default initial operational status for the access service
      * @param accessServiceAdminClassName  name of AccessServiceAdmin implementation class for the access service
      */
-    public AccessServiceRegistration(int                            accessServiceCode,
-                                     String                         accessServiceName,
-                                     String                         accessServiceFullName,
-                                     String                         accessServiceURLMarker,
-                                     String                         accessServiceDescription,
-                                     String                         accessServiceWiki,
+    public AccessServiceRegistration(int                      accessServiceCode,
+                                     String                   accessServiceName,
+                                     String                   accessServiceFullName,
+                                     String                   accessServiceURLMarker,
+                                     String                   accessServiceDescription,
+                                     String                   accessServiceWiki,
                                      ServiceOperationalStatus accessServiceOperationalStatus,
-                                     String                         accessServiceAdminClassName)
+                                     String                   accessServiceAdminClassName)
     {
         this.accessServiceCode = accessServiceCode;
         this.accessServiceName = accessServiceName;
@@ -65,9 +65,9 @@ public class AccessServiceRegistration implements Serializable
      * @param accessServiceOperationalStatus default initial operational status for the access service
      * @param accessServiceAdminClassName  name of AccessServiceAdmin implementation class for the access service
      */
-    public AccessServiceRegistration(AccessServiceDescription       accessServiceDescription,
+    public AccessServiceRegistration(AccessServiceDescription accessServiceDescription,
                                      ServiceOperationalStatus accessServiceOperationalStatus,
-                                     String                         accessServiceAdminClassName)
+                                     String                   accessServiceAdminClassName)
     {
         this(accessServiceDescription.getAccessServiceCode(),
              accessServiceDescription.getAccessServiceName(),

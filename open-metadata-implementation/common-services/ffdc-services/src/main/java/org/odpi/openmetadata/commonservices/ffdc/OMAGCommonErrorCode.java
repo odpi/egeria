@@ -137,14 +137,26 @@ public enum OMAGCommonErrorCode implements ExceptionMessageSet
               "Correct the code in the caller to provide the search string."),
 
     CANNOT_DELETE_ELEMENT_IN_USE(400, "OMAG-COMMON-400-023",
-                       "Method {0} of service {1} is unable to delete {2} identified by {3} because it is still in use.",
-                       "The system is unable to process the request because it may cause other processing to fail.",
-                       "Ensure the element is no longer in use before retrying the operation."),
+              "Method {0} of service {1} is unable to delete {2} identified by {3} because it is still in use.",
+              "The system is unable to process the request because it may cause other processing to fail.",
+              "Ensure the element is no longer in use before retrying the operation."),
 
     NULL_CONNECTOR_TYPE_PARAMETER(400, "OMAG-COMMON-400-024",
              "The connection object passed on the {0} parameter of the {1} operation has a null connector type",
              "The system is unable to process the request without knowing the type of the connector that the connection object is requesting.",
              "Correct the code in the caller to provide the connector type embedded in the connection."),
+
+    WRONG_METADATA_COLLECTION_FOR_UPDATE(400, "OMAG-COMMON-400-025",
+              "Method {0} of service {1} is not able to update instance {2} of type {3} as part of {4} metadata collection named {5} " +
+                      "(GUID {6}) because this instance actually belongs to {7} metadata collection name {8} (GUID {9})",
+              "The system is unable to process the request because it belongs to a metadata collection that this request is not permitted to update.",
+              "The ability to update an instance in a metadata collection is determined by the type of collection. Some APIs" +
+                        "support the updating of metadata instances owned by a repository in the local cohort, whilst " +
+                        "other APIs support the updating of metadata instances from external metadata collections. If the API " +
+                        "supports the management of instances from an external metadata collection, the supplied " +
+                        "metadata collection name and gUID must match that of the instance.  None of these " +
+                        "situations is true in this case.  Use the values in this message to determine the type of API " +
+                        "and metadata collection values necessary to make the request successful."),
 
     INSTANCE_WRONG_TYPE_FOR_GUID(404, "OMAG-COMMON-404-001",
                                  "The {0} method has retrieved an instance for unique identifier (guid) {1} which is of type {2} rather than type {3}",

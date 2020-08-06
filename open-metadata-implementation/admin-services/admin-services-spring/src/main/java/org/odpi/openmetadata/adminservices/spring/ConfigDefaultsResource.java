@@ -20,7 +20,11 @@ import java.util.Map;
 @RestController
 @RequestMapping("/open-metadata/admin-services/users/{userId}/servers/{serverName}")
 
-@Tag(name="Administration Services", description="The administration services support the configuration of the open metadata and governance services within the OMAG Server Platform This configuration determines which of the open metadata and governance services are active.", externalDocs=@ExternalDocumentation(description="Administration Services",url="https://egeria.odpi.org/open-metadata-implementation/admin-services/"))
+@Tag(name="Administration Services - Server Configuration", description="The server configuration administration services support the configuration" +
+        " of the open metadata and governance services within an OMAG Server. This configuration determines which of the Open Metadata and " +
+        "Governance (OMAG) services are active.",
+        externalDocs=@ExternalDocumentation(description="Further information",
+                url="https://egeria.odpi.org/open-metadata-implementation/admin-services/docs/user/configuring-an-omag-server.html"))
 
 public class ConfigDefaultsResource
 {
@@ -31,7 +35,7 @@ public class ConfigDefaultsResource
      * this server's REST interfaces.  It is a value that is sent to other servers to allow
      * them to call this server.
      *
-     * The default value is "localhost:8080".
+     * The default value is "localhost:9443".
      *
      * ServerURLRoot is used as a default value during the configuration of the server's subsystems.
      * If it is updated after a subsystem is configured then the new value is ignored.
@@ -58,7 +62,7 @@ public class ConfigDefaultsResource
      * this server's REST interfaces.  It is a value that is sent to other servers to allow
      * them to call this server.
      *
-     * The default value is "http://localhost:8080".
+     * The default value is "https://localhost:9443".
      *
      * ServerRootURL is used as a default value during the configuration of the server's subsystems.
      * If it is updated after a subsystem is configured then the new value is ignored.
@@ -123,5 +127,23 @@ public class ConfigDefaultsResource
                                               @PathVariable String serverName)
     {
         return adminAPI.getEventBus(userId, serverName);
+    }
+
+
+    /**
+     * Delete the current configuration for the event bus.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName local server name.
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGConfigurationErrorException it is too late to configure the event bus - other configuration already exists or
+     * OMAGInvalidParameterException invalid serverName parameter.
+     */
+    @DeleteMapping(path = "/event-bus")
+    public VoidResponse deleteEventBus(@PathVariable String userId,
+                                                 @PathVariable String serverName)
+    {
+        return adminAPI.deleteEventBus(userId, serverName);
     }
 }

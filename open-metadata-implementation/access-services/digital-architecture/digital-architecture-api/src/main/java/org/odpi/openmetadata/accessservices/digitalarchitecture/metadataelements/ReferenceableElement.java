@@ -3,14 +3,23 @@
 
 package org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.properties.ReferenceableProperties;
 
 import java.io.Serializable;
 import java.util.Objects;
 
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
+
 /**
  * ReferenceableElement contains the properties and header for a referenceable entity retrieved from the metadata repository.
  */
+@JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class ReferenceableElement extends ReferenceableProperties implements MetadataElement,
                                                                              Serializable
 {

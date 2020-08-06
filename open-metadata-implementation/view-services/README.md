@@ -22,6 +22,23 @@ and used by Asset Owner's to improve the findability and understandability
 of their assets by linking their asset's structure to relevant parts of
 the subject area definition.
 
+* **[rex-view](rex-view)** - explorer interface to inspect instances across a cohort of repositories.
+
+  The Repository Explorer (Rex) OMVS is for user interfaces that support enterprise architects
+who need to inspect, navigate or explore the instance data stored in a repository or a cohort of 
+repositories. It enables the retrieval of instance data (entities and relationships) and exploration 
+of the graph of instances connected to those entities. This enables the user to construct a graph 
+(as a diagram) to visualize the details and connectivity of a group of instances of interest to the 
+user.
+
+* **[tex-view](tex-view)** - explorer interface to inspect types across a cohort of repositories.
+
+  The Type Explorer (Tex) OMVS is for user interfaces that support enterprise architects
+who need to inspect, navigate or explore the open metadata types supported by a repository or a cohort of 
+repositories. It enables the retrieval of type data (relating to entities, relationships and classifications)
+and exploration of the graphs of entity type inheritance and the supported combinations of entity and
+relationship types.
+
 
 ## Inside an OMVS
 
@@ -38,7 +55,7 @@ remote server called 'Server1' is:
    "localServerId":"a8e40a02-a95a-4dce-a5ba-8d4f68298ec9",
    "localServerName":"viewserver",
    "localServerType":"View Server",
-   "localServerURL":"http://localhost:8085",
+   "localServerURL":"https://localhost:9448",
    "localServerUserId":"OMAGServer",
    "maxPageSize":1000,
    "viewServicesConfig":[ 
@@ -48,7 +65,7 @@ remote server called 'Server1' is:
          "viewServiceFullName":"Glossary Author",
          "viewServiceAdminClass":"org.odpi.openmetadata.viewservices.glossaryauthor.admin.GlossaryAuthorViewAdmin",
          "viewServiceOperationalStatus":"ENABLED",
-         "omagserverPlatformRootURL":"http://localhost:8080",
+         "omagserverPlatformRootURL":"https://localhost:9443",
          "omagserverName":"Server1"
       }
    ],

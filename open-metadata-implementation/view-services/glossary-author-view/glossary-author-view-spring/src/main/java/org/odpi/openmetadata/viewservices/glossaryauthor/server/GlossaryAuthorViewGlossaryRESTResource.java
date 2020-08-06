@@ -5,14 +5,16 @@ package org.odpi.openmetadata.viewservices.glossaryauthor.server;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.viewservices.glossaryauthor.services.GlossaryAuthorViewGlossaryRESTServices;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+
+import static org.odpi.openmetadata.viewservices.glossaryauthor.services.BaseGlossaryAuthorView.PAGE_OFFSET_DEFAULT_VALUE;
+import static org.odpi.openmetadata.viewservices.glossaryauthor.services.BaseGlossaryAuthorView.PAGE_SIZE_DEFAULT_VALUE;
 
 /**
  * The GlossaryAuthorRESTServicesInstance provides the org.odpi.openmetadata.viewservices.glossaryauthor.server  implementation of the Glossary Author Open Metadata
@@ -48,6 +50,7 @@ public class GlossaryAuthorViewGlossaryRESTResource {
      * </ul>
      *
      * @param serverName       name of the local server.
+     * @param userId           userid
      * @param suppliedGlossary Glossary to create.
      * @return response, when successful contains the created glossary.
      * when not successful the following Exception responses can occur
@@ -61,8 +64,9 @@ public class GlossaryAuthorViewGlossaryRESTResource {
      * </ul>
      */
     @PostMapping()
-    public SubjectAreaOMASAPIResponse createGlossary(@PathVariable String serverName, @PathVariable String userId,
-                                                     @RequestBody Glossary suppliedGlossary) {
+    public SubjectAreaOMASAPIResponse<Glossary> createGlossary(@PathVariable String serverName,
+                                                               @PathVariable String userId,
+                                                               @RequestBody Glossary suppliedGlossary) {
         return restAPI.createGlossary(serverName, userId, suppliedGlossary);
 
     }
@@ -71,6 +75,7 @@ public class GlossaryAuthorViewGlossaryRESTResource {
      * Get a glossary.
      *
      * @param serverName local UI server name
+     * @param userId     userid
      * @param guid       guid of the glossary to get
      * @return response which when successful contains the glossary with the requested guid
      * when not successful the following Exception responses can occur
@@ -84,7 +89,9 @@ public class GlossaryAuthorViewGlossaryRESTResource {
      * </ul>
      */
     @GetMapping(path = "/{guid}")
-    public SubjectAreaOMASAPIResponse getGlossary(@PathVariable String serverName, @PathVariable String userId, @PathVariable String guid) {
+    public SubjectAreaOMASAPIResponse<Glossary> getGlossary(@PathVariable String serverName,
+                                                            @PathVariable String userId,
+                                                            @PathVariable String guid) {
         return restAPI.getGlossary(serverName, userId, guid);
 
     }
@@ -93,6 +100,7 @@ public class GlossaryAuthorViewGlossaryRESTResource {
      * Find Glossary
      *
      * @param serverName         local UI server name
+     * @param userId             userid
      * @param searchCriteria     String expression matching Glossary property values .
      * @param asOfTime           the glossaries returned as they were at this time. null indicates at the current time.
      * @param offset             the starting element number for this set of results.  This is used when retrieving elements
@@ -111,15 +119,14 @@ public class GlossaryAuthorViewGlossaryRESTResource {
      * </ul>
      */
     @GetMapping()
-    public SubjectAreaOMASAPIResponse findGlossary(
-            @PathVariable String serverName, @PathVariable String userId,
-            @RequestParam(value = "searchCriteria", required = false) String searchCriteria,
-            @RequestParam(value = "asOfTime", required = false) Date asOfTime,
-            @RequestParam(value = "offset", required = false) Integer offset,
-            @RequestParam(value = "pageSize", required = false) Integer pageSize,
-            @RequestParam(value = "sequencingOrder", required = false) SequencingOrder sequencingOrder,
-            @RequestParam(value = "SequencingProperty", required = false) String sequencingProperty
-                                                  ) {
+    public SubjectAreaOMASAPIResponse<Glossary> findGlossary(@PathVariable String serverName, @PathVariable String userId,
+                                                             @RequestParam(value = "searchCriteria", required = false) String searchCriteria,
+                                                             @RequestParam(value = "asOfTime", required = false) Date asOfTime,
+                                                             @RequestParam(value = "offset", required = false, defaultValue = PAGE_OFFSET_DEFAULT_VALUE) Integer offset,
+                                                             @RequestParam(value = "pageSize", required = false, defaultValue = PAGE_SIZE_DEFAULT_VALUE) Integer pageSize,
+                                                             @RequestParam(value = "sequencingOrder", required = false) SequencingOrder sequencingOrder,
+                                                             @RequestParam(value = "sequencingProperty", required = false) String sequencingProperty
+    ) {
         return restAPI.findGlossary(serverName, userId, asOfTime, searchCriteria, offset, pageSize, sequencingOrder, sequencingProperty);
     }
 
@@ -127,6 +134,7 @@ public class GlossaryAuthorViewGlossaryRESTResource {
      * Get Glossary relationships
      *
      * @param serverName         local UI server name
+     * @param userId             userid
      * @param guid               guid of the glossary to get
      * @param asOfTime           the relationships returned as they were at this time. null indicates at the current time. If specified, the date is in milliseconds since 1970-01-01 00:00:00.
      * @param offset             the starting element number for this set of results.  This is used when retrieving elements
@@ -145,25 +153,15 @@ public class GlossaryAuthorViewGlossaryRESTResource {
      * </ul>
      */
     @GetMapping(path = "/{guid}/relationships")
-    public SubjectAreaOMASAPIResponse getGlossaryRelationships(
-            @PathVariable String serverName, @PathVariable String userId,
-            @PathVariable String guid,
-            @RequestParam(value = "asOfTime", required = false) Date asOfTime,
-            @RequestParam(value = "offset", required = false) Integer offset,
-            @RequestParam(value = "pageSize", required = false) Integer pageSize,
-            @RequestParam(value = "sequencingOrder", required = false) SequencingOrder sequencingOrder,
-            @RequestParam(value = "SequencingProperty", required = false) String sequencingProperty
-
-                                                              ) {
-        return restAPI.getGlossaryRelationships(serverName,
-                                                userId,
-                                                guid,
-                                                asOfTime,
-                                                offset,
-                                                pageSize,
-                                                sequencingOrder,
-                                                sequencingProperty);
-
+    public SubjectAreaOMASAPIResponse<Line> getGlossaryRelationships(@PathVariable String serverName, @PathVariable String userId,
+                                                                     @PathVariable String guid,
+                                                                     @RequestParam(value = "asOfTime", required = false) Date asOfTime,
+                                                                     @RequestParam(value = "offset", required = false, defaultValue = PAGE_OFFSET_DEFAULT_VALUE) Integer offset,
+                                                                     @RequestParam(value = "pageSize", required = false, defaultValue = PAGE_SIZE_DEFAULT_VALUE) Integer pageSize,
+                                                                     @RequestParam(value = "sequencingOrder", required = false) SequencingOrder sequencingOrder,
+                                                                     @RequestParam(value = "sequencingProperty", required = false) String sequencingProperty
+    ) {
+        return restAPI.getGlossaryRelationships(serverName, userId, guid, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
     }
 
     /**
@@ -176,6 +174,7 @@ public class GlossaryAuthorViewGlossaryRESTResource {
      * Status is not updated using this call.
      *
      * @param serverName       local UI server name
+     * @param userId           userid
      * @param guid             guid of the glossary to update
      * @param suppliedGlossary glossary to update
      * @param isReplace        flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
@@ -190,11 +189,11 @@ public class GlossaryAuthorViewGlossaryRESTResource {
      * </ul>
      */
     @PutMapping(path = "/{guid}")
-    public SubjectAreaOMASAPIResponse updateGlossary(
+    public SubjectAreaOMASAPIResponse<Glossary> updateGlossary(
             @PathVariable String serverName, @PathVariable String userId,
             @PathVariable String guid,
             @RequestBody Glossary suppliedGlossary,
-            @RequestParam(value = "isReplace", required = false) Boolean isReplace) {
+            @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace) {
 
         return restAPI.updateGlossary(serverName, userId, guid, suppliedGlossary, isReplace);
 
@@ -215,6 +214,7 @@ public class GlossaryAuthorViewGlossaryRESTResource {
      * when not successful the following Exceptions can occur
      *
      * @param serverName local UI server name
+     * @param userId     userid
      * @param guid       guid of the glossary to be deleted.
      * @param isPurge    true indicates a hard delete, false is a soft delete.
      * @return a void response
@@ -226,14 +226,15 @@ public class GlossaryAuthorViewGlossaryRESTResource {
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the glossary was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the glossary was not purged</li>
+     * <li> EntityNotPurgedException               a hard delete was issued but the glossary was not purged</li>
      * </ul>
      */
     @DeleteMapping(path = "/{guid}")
-    public SubjectAreaOMASAPIResponse deleteGlossary(@PathVariable String serverName, @PathVariable String userId,
-                                                     @PathVariable String guid,
-                                                     @RequestParam(value = "isPurge", required = false) Boolean isPurge,
-                                                     HttpServletRequest request) {
+    public SubjectAreaOMASAPIResponse<Glossary> deleteGlossary(@PathVariable String serverName,
+                                                               @PathVariable String userId,
+                                                               @PathVariable String guid,
+                                                               @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge
+                                                     ) {
         return restAPI.deleteGlossary(serverName, userId, guid, isPurge);
     }
 
@@ -243,6 +244,7 @@ public class GlossaryAuthorViewGlossaryRESTResource {
      * Restore allows the deleted Glossary to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
      *
      * @param serverName local UI server name
+     * @param userId     userid
      * @param guid       guid of the glossary to restore
      * @return response which when successful contains the restored glossary
      * when not successful the following Exception responses can occur
@@ -255,9 +257,9 @@ public class GlossaryAuthorViewGlossaryRESTResource {
      * </ul>
      */
     @PostMapping(path = "/{guid}")
-    public SubjectAreaOMASAPIResponse restoreGlossary(@PathVariable String serverName, @PathVariable String userId,
-                                                      @PathVariable String guid,
-                                                      HttpServletRequest request) {
+    public SubjectAreaOMASAPIResponse<Glossary> restoreGlossary(@PathVariable String serverName,
+                                                                @PathVariable String userId,
+                                                                @PathVariable String guid) {
         return restAPI.restoreGlossary(serverName, userId, guid);
 
     }

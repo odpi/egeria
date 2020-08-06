@@ -39,6 +39,7 @@ public abstract class SchemaElement extends Referenceable
     protected boolean isDeprecated = false;
     protected String  displayName = null;
     protected String  description = null;
+    protected String  anchorGUID = null;
 
     /**
      * Default constructor
@@ -50,15 +51,20 @@ public abstract class SchemaElement extends Referenceable
 
 
     /**
-     * Copy/clone Constructor - the parentAsset is passed separately to the template because it is also
-     * likely to be being cloned in the same operation and we want the definitions clone to point to the
-     * asset clone and not the original asset.
+     * Copy/clone Constructor.
      *
      * @param template template object to copy.
      */
     public SchemaElement(SchemaElement template)
     {
         super(template);
+
+        if (template != null)
+        {
+            isDeprecated = template.isDeprecated();
+            displayName = template.getDisplayName();
+            description = template.getDescription();
+        }
     }
 
 
@@ -126,6 +132,28 @@ public abstract class SchemaElement extends Referenceable
 
 
     /**
+     * Return the unique identifier of the asset that this schema is ultimately connected to.
+     *
+     * @return string guid
+     */
+    public String getAnchorGUID()
+    {
+        return anchorGUID;
+    }
+
+
+    /**
+     * Set up the unique identifier of the asset that this schema is ultimately connected to.
+     *
+     * @param anchorGUID string guid
+     */
+    public void setAnchorGUID(String anchorGUID)
+    {
+        this.anchorGUID = anchorGUID;
+    }
+
+
+    /**
      * Return a clone of this schema element.  This method is needed because schema element
      * is abstract.
      *
@@ -143,16 +171,18 @@ public abstract class SchemaElement extends Referenceable
     public String toString()
     {
         return "SchemaElement{" +
-                "displayName='" + displayName + '\'' +
+                "isDeprecated=" + isDeprecated +
+                ", displayName='" + displayName + '\'' +
                 ", description='" + description + '\'' +
-                ", qualifiedName='" + qualifiedName + '\'' +
-                ", additionalProperties=" + additionalProperties +
-                ", meanings=" + meanings +
-                ", type=" + type +
-                ", guid='" + guid + '\'' +
-                ", url='" + url + '\'' +
-                ", classifications=" + classifications +
-                ", extendedProperties=" + extendedProperties +
+                ", anchorGUID='" + anchorGUID + '\'' +
+                ", qualifiedName='" + getQualifiedName() + '\'' +
+                ", additionalProperties=" + getAdditionalProperties() +
+                ", meanings=" + getMeanings() +
+                ", type=" + getType() +
+                ", GUID='" + getGUID() + '\'' +
+                ", URL='" + getURL() + '\'' +
+                ", classifications=" + getClassifications() +
+                ", extendedProperties=" + getExtendedProperties() +
                 '}';
     }
 }

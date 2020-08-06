@@ -2,70 +2,67 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
-import  '@polymer/paper-progress/paper-progress';
+import '@polymer/paper-progress/paper-progress';
+import '@polymer/paper-dialog/paper-dialog';
+import './props-table';
+import './legend';
+import '../asset-catalog/asset-tools';
 import '../shared-styles.js';
+import {mixinBehaviors} from "@polymer/polymer/lib/legacy/class";
+import '@polymer/iron-flex-layout/iron-flex-layout-classes.js'
 
-class VisGraph extends PolymerElement {
+import {ItemViewBehavior} from "./item";
+
+class VisGraph extends mixinBehaviors([ItemViewBehavior], PolymerElement) {
   static get template() {
     return html`
-      <style include="shared-styles">
-        <style>
+      <style include="shared-styles iron-flex iron-flex-alignment">
           :host {
-            display: block;
-            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            --iron-icon-width:16px;
+            --iron-icon-height:16px;
           }
           
-          #vis_container {
-            width: 100%;
-            height: 100%;
+          vaadin-app-layout, #vis_container, .vis-network  {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
           }
           
-          .flex-center-align {
-            @apply(--layout-horizontal);
-            @apply(--layout-center-center);
+          div.vis-network canvas {
+             flex-grow: 1;
+             height: fit-content;
           }
           
-          .nodeContent {
-            position: relative;
-            border: 1px solid lightgray;
-            /*width: 30%;*/
-            height: 100%;
-            padding: 10px;
+          paper-dialog.vis-dialog {
+            position: fixed;
+            top: 116px;
+            right: 16px;
+            width: 600px;
+            height: 400px;
+            overflow: auto;
           }
-          
-          div.vis-tooltip {
-            position: absolute;
-            visibility: hidden;
-            padding: 5px;
-            white-space: nowrap;
-            font-family: verdana;
-            font-size: 14px;
-            color: #000000;
-            background-color: #f5f4ed;
-            -moz-border-radius: 3px;
-            -webkit-border-radius: 3px;
-            border-radius: 3px;
-            border: 1px solid #808074;
-            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
-            pointer-events: none;
-            z-index: 5;
+          .legendDisplay {
+            width : 215px;
         }
-          
-          
         </style>
         
-        <div id="vis_container">
-          <div class="vis-network" tabindex="900" style="position: relative; overflow: hidden; touch-action: pan-y; 
-                  user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); 
-              width: 100%; height: 100%;">
-              <canvas style="position: relative; touch-action: none; user-select: none; -webkit-user-drag: none; 
-                      -webkit-tap-highlight-color: rgba(0, 0, 0, 0); 
-                       width="600" height="400"></canvas>
-                       
-               <div class="vis-tooltip" style="left: 239px; top: 119px; visibility: hidden; box-sizing: border-box;"><div style="text-align:center;">test</div></div>
-          </div>
-         
+        <div class = "layout horizontal displayLength">
+            <div id="vis_container"></div>            
+            <legend-div class = "legendDisplay" groups = [[groups]] hidden = "[[hideLegend]]" data = "{{data.nodes}}"> </legend-div>
         </div>
+        
+        <paper-dialog id="visDialog" class = "vis-dialog">
+          <div>
+            <asset-tools guid="[[node.id]]" style="display: inline-flex"></asset-tools>
+            <paper-button dialog-confirm style="float: right">Close</paper-button>
+          </div>
+          <props-table  items="[[_attributes(node.properties)]]"  
+                        title="[[node.type]]: [[node.displayName]]" 
+                        with-row-stripes ></props-table>
+        </paper-dialog>
      
     `;
   }
@@ -82,71 +79,47 @@ class VisGraph extends PolymerElement {
         value: {
           nodes: {
             shape: 'box',
-            margin: 10
+            margin: 10,
+            font: { multi: 'html' }
           },
           edges: {
-            width: 1,
             smooth: {
-              type: 'continuous'
+              type: 'cubicBezier',
+              forceDirection: 'horizontal',
+              roundness: 0.8
             },
             arrows:'to'
           },
-          interaction: {
-            tooltipDelay: 200,
-            hideEdgesOnDrag: true
-          },
-          layout: {
-            hierarchical: {
-              enabled: true,
-              levelSeparation: 300,
-              direction: 'RL'
-            }
-          },
+          interaction: { type : Object },
+          layout: { type : Object },
           physics: false,
-          groups: {
-
-          }
+          groups: { type : Object }
         }
       },
 
-      width: {
-        type: String,
-        value: '100%',
-        observer: '_widthChanged'
-      },
-      height: {
-        type: String,
-        value: '100%',
-        observer: '_heightChanged'
-      },
       data: {
-        nodes: {type: vis.DataSet},
-        edges: {type: vis.DataSet}
+        nodes: {},
+        edges: {}
       },
       interaction: {
-        tooltipDelay: 200,
+        // tooltipDelay: 200,
         selectable: true,
-        hover: true
+        hover: false
+    },
+      groups: {
+          type: Object
       }
     };
   }
 
-  attached() {
-    this.$.vis_container.style.height = this.height;
-    this.$.vis_container.style.width = this.width;
-  }
 
   setData(data) {
-    console.log('data: ' + data);
-    if(this.data === null || this.data === undefined )
-       this.data = {
-          nodes: {
-            type: vis.DataSet
-          },
-          edges: {
-            type: vis.DataSet
-          }
-        };
+    if(this.data === null || this.data === undefined ) {
+      this.data = {
+        nodes: {},
+        edges: {}
+      };
+    }
 
     this.data.nodes = data.nodes;
     this.data.edges = data.edges;
@@ -156,13 +129,16 @@ class VisGraph extends PolymerElement {
     this.network = new vis.Network(container, data, this.options);
     var thisElement = this;
     this.network.on('click', function(params) {
-      thisElement.handleSelectNode(params);
+       thisElement.handleSelectNode(this.getNodeAt(params.pointer.DOM));
     });
-    this.network.fit();
-    //this.network.stabilize();
+    this.network.stabilize();
   }
 
-  networkChanged(newNetwork) {
+toggleLegend() {
+    this.hideLegend = !this.hideLegend;
+}
+
+networkChanged(newNetwork) {
     if (!newNetwork) {
       return;
     }
@@ -176,8 +152,8 @@ class VisGraph extends PolymerElement {
 
   importNodesAndEdges(nodes, edges) {
     var data = {
-      nodes: new vis.DataSet(nodes),
-      edges: new vis.DataSet(edges)
+      nodes: nodes,
+      edges: edges
     };
     this.setData(data);
   }
@@ -191,32 +167,16 @@ class VisGraph extends PolymerElement {
     this.network.setOptions = this.options;
   }
 
-  handleSelectNode(params) {
-    var eventDetail = {};
-    // if (params.nodes.length > 0) {
-    //   eventDetail.selectedNode = params.nodes[0];
-    //   eventDetail.pointer = params.pointer;
-    //   var nodeContent = this.data.nodes.get(params.nodes[0]);
-    //   this.$.node_content.innerHTML = JSON.stringify(nodeContent, undefined, 3);
-    //   // this.fire('node-selected', eventDetail);
-    //   // this.network.fit();
-    // }
-  }
-
-  _widthChanged(value) {
-    if (this.$.vis_container === null) {
-      console.log('vis container is null');
-      return false;
+  handleSelectNode(nodeId) {
+    if(nodeId){
+      for (var i = 0; i < this.data.nodes.length; i++) {
+        if(this.data.nodes[i].id === nodeId){
+          this.node = this.data.nodes[i];
+          break;
+        }
+      }
+      this.$.visDialog.open();
     }
-    this.$.vis_container.style.width = value;
-  }
-
-  _heightChanged(value) {
-    if (this.$.vis_container === null) {
-      console.log('vis container is null');
-      return false;
-    }
-    this.$.vis_container.style.height = value;
   }
 
   _graphChanged(value) {

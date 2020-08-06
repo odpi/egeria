@@ -89,5 +89,8 @@ so that there is at least one for each access service and most will
 support both of the patterns described above.
 
 ----
+Return the the [Governance Server Types](governance-server-types.md)
+
+----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 Copyright Contributors to the ODPi Egeria project.

@@ -50,6 +50,29 @@ public class GlossaryTermServiceTest extends GlossaryViewOmasBaseTest{
     }
 
     @Test
+    public void getAllTerms() throws Exception{
+        when(repositoryHandler.getEntitiesByType(eq(USER_ID), eq(TERM_TYPE_GUID),
+                anyInt(), anyInt(), eq("getAllTerms"))).thenReturn(terms);
+
+        GlossaryViewEntityDetailResponse response = underTest.getAllTerms(USER_ID, SERVER_NAME, 0, 10);
+
+        assertEquals(5, response.getResult().size());
+
+        assertGlossaryTermProperties(terms.get(0), (GlossaryTerm) response.getResult().get(0));
+        assertGlossaryTermProperties(terms.get(1), (GlossaryTerm) response.getResult().get(1));
+        assertGlossaryTermProperties(terms.get(2), (GlossaryTerm) response.getResult().get(2));
+        assertGlossaryTermProperties(terms.get(3), (GlossaryTerm) response.getResult().get(3));
+        assertGlossaryTermProperties(terms.get(4), (GlossaryTerm) response.getResult().get(4));
+
+        assertTrue(isEffective.test(response.getResult().get(0)));
+        assertTrue(isEffective.test(response.getResult().get(1)));
+        assertTrue(isEffective.test(response.getResult().get(2)));
+        assertTrue(isEffective.test(response.getResult().get(3)));
+        assertTrue(isEffective.test(response.getResult().get(4)));
+
+    }
+
+    @Test
     public void getTermsViaTermAnchorRelationships() throws Exception{
         when(repositoryHandler.getEntitiesForRelationshipType(eq(USER_ID), eq(glossaries.get(0).getGUID()), eq(TERM_TYPE_NAME),
                 eq(TERM_ANCHOR_RELATIONSHIP_GUID), eq(TERM_ANCHOR_RELATIONSHIP_NAME), anyInt(), anyInt(),

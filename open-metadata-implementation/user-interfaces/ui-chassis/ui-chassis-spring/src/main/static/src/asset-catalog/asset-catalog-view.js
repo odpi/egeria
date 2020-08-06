@@ -11,8 +11,8 @@ class AssetCatalogView extends PolymerElement {
       <style include="shared-styles">
        :host {
           display: block;
-          margin: 0 24px;
-          min-height: calc(100vh - 85px);
+          margin:var(--egeria-view-margin);
+          min-height: var(--egeria-view-min-height);
         }
          #useCases {
             color: var(--egeria-primary-color);
@@ -26,19 +26,19 @@ class AssetCatalogView extends PolymerElement {
       <dom-if if="[[ _tabsVisible(routeData) ]]" > 
         <app-route route="{{tail}}" pattern="/:guid" data="{{routeTailData}}" "></app-route>
         <template> 
-        <vaadin-tabs id ="useCases" selected="0" >
-          <vaadin-tab value="ultimateSource">
-            <a href="[[rootPath]]#/asset-catalog/view/[[routeTailData.guid]]" tabindex="-1" rel="noopener"> 
-                Details
-            </a>
-          </vaadin-tab>
-          <vaadin-tab value="endToEnd">
-            <a href="[[rootPath]]#/asset-catalog/context/[[routeTailData.guid]]" tabindex="-1"  rel="noopener"> 
-                Context
-            </a>
-          </vaadin-tab>
-          
-        </vaadin-tabs>
+            <vaadin-tabs id="useCases" selected="[[ _getUseCase(routeData.usecase) ]]">
+              <vaadin-tab value="[[ usecases.0 ]]">
+                <a href="[[rootPath]]#/asset-catalog/view/[[routeTailData.guid]]" tabindex="-1" rel="noopener"> 
+                    Details
+                </a>
+              </vaadin-tab>
+              <vaadin-tab value="[[ usecases.1 ]]">
+                <a href="[[rootPath]]#/asset-catalog/context/[[routeTailData.guid]]" tabindex="-1"  rel="noopener"> 
+                    Context
+                </a>
+              </vaadin-tab>
+              
+            </vaadin-tabs>
         </template>
       </dom-if>
       
@@ -50,10 +50,22 @@ class AssetCatalogView extends PolymerElement {
     `;
     }
 
+    static get properties() {
+        return {
+            usecases: {
+                type: Array,
+                value: ['view', 'context']
+            }
+        }
+    }
+
     static get observers() {
         return [
             '_routeChanged(route)'
         ];
+    }
+    _getUseCase(usecase){
+        return this.usecases.indexOf(usecase);
     }
 
     _tabsVisible(routeData){

@@ -635,11 +635,80 @@ public class OMAGServerAdminServices
 
 
     /**
+     * Delete the current configuration for the event bus.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName local server name.
+     * @return void  or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGConfigurationErrorException it is too late to configure the event bus - other configuration already exists or
+     * OMAGInvalidParameterException invalid serverName parameter.
+     */
+    public VoidResponse deleteEventBus(String userId, String serverName)
+    {
+        final String methodName = "deleteEventBus";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            /*
+             * Validate and set up the userName and server name.
+             */
+            errorHandler.validateServerName(serverName, methodName);
+            errorHandler.validateUserId(userId, serverName, methodName);
+
+            /*
+             * Retrieve the existing configuration.
+             */
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+
+            if (configStore != null)
+            {
+                List<String>  configAuditTrail          = serverConfig.getAuditTrail();
+
+                if (configAuditTrail == null)
+                {
+                    configAuditTrail = new ArrayList<>();
+                }
+
+                configAuditTrail.add(new Date().toString() + " " + userId + " deleted configuration for default event bus.");
+
+                serverConfig.setAuditTrail(configAuditTrail);
+                serverConfig.setEventBusConfig(null);
+
+                /*
+                 * Save the config away
+                 */
+                configStore.saveServerConfig(serverName, methodName, serverConfig);
+            }
+        }
+        catch (OMAGInvalidParameterException error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+    /**
      * Set up the root URL for this server that is used to construct full URL paths to calls for
      * this server's REST interfaces that is used by other members of the cohorts that this server
      * connects to.
      *
-     * The default value is "localhost:8080".
+     * The default value is "localhost:9443".
      *
      * ServerURLRoot is used during the configuration of the local repository.  If called
      * after the local repository is configured, it has no effect.
@@ -719,7 +788,7 @@ public class OMAGServerAdminServices
      * this server's REST interfaces that is used by other members of the cohorts that this server
      * connects to.
      *
-     * The default value is "localhost:8080".
+     * The default value is "localhost:9443".
      *
      * ServerURLRoot is used during the configuration of the local repository.  If called
      * after the local repository is configured, it has no effect.
@@ -806,6 +875,7 @@ public class OMAGServerAdminServices
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or null userId parameter.
      */
+    @SuppressWarnings(value = "unused")
     public VoidResponse setDefaultAuditLog(String          userId,
                                            String          serverName,
                                            NullRequestBody requestBody)
@@ -1158,6 +1228,7 @@ public class OMAGServerAdminServices
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or localRepositoryMode parameter.
      */
+    @SuppressWarnings(value = "unused")
     public VoidResponse setInMemLocalRepository(String          userId,
                                                 String          serverName,
                                                 NullRequestBody requestBody)
@@ -1352,6 +1423,7 @@ public class OMAGServerAdminServices
         {
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
+            errorHandler.validateConnection(connection, serverName, methodName);
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
@@ -1471,6 +1543,7 @@ public class OMAGServerAdminServices
         {
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
+            errorHandler.validateConnection(connection, serverName, methodName);
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
@@ -2029,6 +2102,7 @@ public class OMAGServerAdminServices
         {
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
+            errorHandler.validateConnection(auditLogDestination, serverName, methodName);
 
             if (auditLogDestination != null)
             {
@@ -2119,8 +2193,16 @@ public class OMAGServerAdminServices
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
 
+            if (auditLogDestinations != null)
+            {
+                for (Connection connection : auditLogDestinations)
+                {
+                    errorHandler.validateConnection(connection, serverName, methodName);
+                }
+            }
+
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
-            List<String>  configAuditTrail  = serverConfig.getAuditTrail();
+            List<String> configAuditTrail = serverConfig.getAuditTrail();
 
             if (configAuditTrail == null)
             {
@@ -2149,7 +2231,7 @@ public class OMAGServerAdminServices
             }
             else if (auditLogDestinations != null)
             {
-                OMRSConfigurationFactory configurationFactory     = new OMRSConfigurationFactory();
+                OMRSConfigurationFactory configurationFactory = new OMRSConfigurationFactory();
 
                 repositoryServicesConfig = configurationFactory.getDefaultRepositoryServicesConfig();
                 repositoryServicesConfig.setAuditLogConnections(auditLogDestinations);

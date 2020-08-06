@@ -4,11 +4,8 @@ import { PolymerElement, html } from '@polymer/polymer';
 import {mixinBehaviors} from '@polymer/polymer/lib/legacy/class.js';
 import { ItemViewBehavior} from '../common/item';
 import '@polymer/paper-listbox/paper-listbox.js';
-import '@polymer/paper-item/paper-item.js';
-import '@polymer/paper-item/paper-item-body';
-import '@polymer/paper-styles/paper-styles';
-import '@vaadin/vaadin-icons/vaadin-icons';
-import '@polymer/app-layout/app-grid/app-grid-style';
+import '@polymer/paper-styles/paper-styles.js';
+import '@polymer/app-layout/app-grid/app-grid-style.js';
 
 import '../shared-styles.js';
 import '../common/props-table';
@@ -86,13 +83,13 @@ class AssetDetailsView extends mixinBehaviors([ItemViewBehavior], PolymerElement
 
     static get observers() {
         return [
-            '_routeChanged(routeData.guid)'
+            '_routeChanged(route)'
         ];
     }
 
     _routeChanged(guid) {
-        if (this.route.prefix === '/asset-catalog/view') {
-            this.$.tokenAjaxDetails.url = '/api/assets/' + guid;
+        if ( this.route && this.route.prefix === '/asset-catalog/view') {
+            this.$.tokenAjaxDetails.url = '/api/assets/' + this.routeData.guid;
             this.$.tokenAjaxDetails._go();
         }
     }

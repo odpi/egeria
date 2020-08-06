@@ -8,7 +8,7 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
 
 /**
  * The DataPrivacyErrorCode is used to define first failure data capture (FFDC) for errors that occur when working with
- * the Data Platform OMAS Services.  It is used in conjunction with both Checked and Runtime (unchecked) exceptions.
+ * the Data Privacy OMAS Services.  It is used in conjunction with both Checked and Runtime (unchecked) exceptions.
  *
  * The 5 fields in the enum are:
  * <ul>

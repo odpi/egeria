@@ -407,7 +407,7 @@ public class RepositoryErrorHandler
      * Throw an exception if multiple relationships are returned when not expected.
      *
      * @param name  requested name for the entity
-     * @param nameParameterName  name of hte parameter
+     * @param nameParameterName  name of the parameter
      * @param entityTypeName  name of the entity's type
      * @param returnedEntities list of entities returned
      * @param methodName  name of the method making the call
@@ -512,12 +512,13 @@ public class RepositoryErrorHandler
                                                 InstanceProperties properties,
                                                 String             methodName) throws PropertyServerException
     {
+        String propertiesAsString = properties != null ? properties.toString() : "";
         throw new PropertyServerException(RepositoryHandlerErrorCode.NULL_ENTITY_RETURNED_FOR_CLASSIFICATION.getMessageDefinition(methodName,
                                                                                                                                   serverName,
                                                                                                                                   entityGUID,
                                                                                                                                   classificationTypeName,
                                                                                                                                   classificationTypeGUID,
-                                                                                                                                  properties.toString()),
+                                                                                                                                  propertiesAsString),
                                           this.getClass().getName(),
                                           methodName);
     }
