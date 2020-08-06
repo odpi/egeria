@@ -72,13 +72,15 @@ class Legend extends mixinBehaviors([IronFitBehavior], PolymerElement) {
         for (var i = 0; i < data.length; i++) {
 
             if (uniqueObjects[data[i].group] === undefined) {
-                let groupColor = this.groups[data[i].group].color;
-                if(groupColor === undefined) groupColor = egeriaColor;
-                uniqueObjects[data[i].group] = {
-                    group: data[i].group,
+                let currentNode = data[i];
+                let {icon, groupColor} = this.getIconAndColor(currentNode, egeriaColor);
+
+
+                uniqueObjects[currentNode.group] = {
+                    group: currentNode.group,
                     appearances: 1,
                     color: groupColor,
-                    shape: this.groups[data[i].group].icon
+                    shape: icon
                 }
             } else {
                 uniqueObjects[data[i].group].appearances = uniqueObjects[data[i].group].appearances + 1;
@@ -86,6 +88,22 @@ class Legend extends mixinBehaviors([IronFitBehavior], PolymerElement) {
         }
 
         this.legendNodes = Object.values(uniqueObjects);
+    }
+
+    getIconAndColor(currentNode, egeriaColor) {
+        let icon;
+        let groupColor;
+        if (this.groups[currentNode.group] === undefined) {
+            icon = undefined;
+            groupColor = egeriaColor
+        } else {
+            icon = this.groups[currentNode.group].icon;
+            groupColor = this.groups[currentNode.group].color
+            if (groupColor === undefined) {
+                groupColor = egeriaColor;
+            }
+        }
+        return {icon, groupColor};
     }
 }
 

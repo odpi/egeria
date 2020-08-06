@@ -378,7 +378,7 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
         try {
             List<EntityDetail> entityDetails = oMRSAPIHelper.callGetEntitiesForRelationshipEnd1(
                     methodName, userId, guid, PROJECT_TYPE_NAME, PROJECT_SCOPE_RELATIONSHIP_NAME);
-            List<Term> terms = convertOrmsToOmas(entityDetails, TermMapper.class);
+            List<Term> terms = convertOmrsToOmas(entityDetails, TermMapper.class);
             response.addAllResults(terms);
         } catch (PropertyServerException | SubjectAreaCheckedException | UserNotAuthorizedException e) {
             response.setExceptionInfo(e, className);
