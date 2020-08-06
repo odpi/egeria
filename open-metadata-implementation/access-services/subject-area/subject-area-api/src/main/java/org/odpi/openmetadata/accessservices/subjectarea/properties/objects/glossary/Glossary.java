@@ -28,7 +28,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 )
 @JsonSubTypes({
         @JsonSubTypes.Type(value = Taxonomy.class, name = "Taxonomy"),
-        @JsonSubTypes.Type(value = CanonicalTaxonomy.class, name = "CanonicalTaxonomy"),
         @JsonSubTypes.Type(value = CanonicalGlossary.class, name = "CanonicalGlossary")
 })
 public class Glossary extends Node {
