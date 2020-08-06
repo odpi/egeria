@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.analyticsmodeling.server;
 
 import java.util.List;
 
+import org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.AnalyticsModelingErrorCode;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.exceptions.AnalyticsModelingCheckedException;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.model.ResponseContainerDatabase;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.model.ResponseContainerDatabaseSchema;
@@ -19,6 +20,7 @@ import org.odpi.openmetadata.adminservices.configuration.registration.AccessServ
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
+import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
 import org.slf4j.LoggerFactory;
 
 /**
@@ -26,11 +28,19 @@ import org.slf4j.LoggerFactory;
  */
 public class AnalyticsModelingRestServices {
 
-	AnalyticsModelingInstanceHandler instanceHandler = new AnalyticsModelingInstanceHandler();
+	private AnalyticsModelingInstanceHandler instanceHandler = new AnalyticsModelingInstanceHandler();
 
 	private static RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(AnalyticsModelingRestServices.class),
 			AccessServiceDescription.ANALYTICS_MODELING_OMAS.getAccessServiceFullName());
 	private RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
+	
+	public RESTExceptionHandler getExceptionHandler() {
+		return restExceptionHandler;
+	}
+
+	public AnalyticsModelingInstanceHandler getHandler() {
+		return instanceHandler;
+	}
 
 	/**
 	 * Get databases available on the server for the user.
@@ -49,7 +59,7 @@ public class AnalyticsModelingRestServices {
 
 		try {
 			DatabasesResponse response = new DatabasesResponse();
-			List<ResponseContainerDatabase> databases = instanceHandler
+			List<ResponseContainerDatabase> databases = getHandler()
 					.getDatabaseContextHandler(serverName, userId, methodName).getDatabases(startFrom, pageSize);
 			response.setDatabasesList(databases);
 			ret = response;
@@ -80,7 +90,7 @@ public class AnalyticsModelingRestServices {
 
 		try {
 			SchemasResponse response = new SchemasResponse();
-			List<ResponseContainerDatabaseSchema> databasesSchemas = instanceHandler
+			List<ResponseContainerDatabaseSchema> databasesSchemas = getHandler()
 					.getDatabaseContextHandler(serverName, userId, methodName)
 					.getDatabaseSchemas(dataSourceGuid, startFrom, pageSize);
 			
@@ -88,6 +98,8 @@ public class AnalyticsModelingRestServices {
 			ret = response;
 		} catch (AnalyticsModelingCheckedException e) {
 			ret = handleErrorResponse(e, methodName);
+		} catch (InvalidParameterException e) {
+			ret = handleInvalidParameterResponse(e, methodName);
 		}
 
 		restCallLogger.logRESTCallReturn(token, ret.toString());
@@ -111,12 +123,14 @@ public class AnalyticsModelingRestServices {
 
 		try {
 			SchemaTablesResponse response = new SchemaTablesResponse();
-			ResponseContainerSchemaTables tables = instanceHandler
+			ResponseContainerSchemaTables tables = getHandler()
 					.getDatabaseContextHandler(serverName, userId, methodName).getSchemaTables(databaseGuid, schema);
 			response.setTableList(tables);
 			ret = response;
 		} catch (AnalyticsModelingCheckedException e) {
 			ret = handleErrorResponse(e, methodName);
+		} catch (InvalidParameterException e) {
+			ret = handleInvalidParameterResponse(e, methodName);
 		}
 		restCallLogger.logRESTCallReturn(token, ret.toString());
 		return ret;
@@ -142,12 +156,14 @@ public class AnalyticsModelingRestServices {
 		try {
 
 			ModuleResponse response = new ModuleResponse();
-			ResponseContainerModule module = instanceHandler.getDatabaseContextHandler(serverName, userId, "getModule")
+			ResponseContainerModule module = getHandler().getDatabaseContextHandler(serverName, userId, "getModule")
 					.getModule(databaseGuid, catalog, schema);
 			response.setModule(module);
 			ret = response;
 		} catch (AnalyticsModelingCheckedException e) {
 			ret = handleErrorResponse(e, "getModule");
+		} catch (InvalidParameterException e) {
+			ret = handleInvalidParameterResponse(e, methodName);
 		}
 		
 		restCallLogger.logRESTCallReturn(token, ret.toString());
@@ -162,7 +178,18 @@ public class AnalyticsModelingRestServices {
 	 */
 	private AnalyticsModelingOMASAPIResponse handleErrorResponse(AnalyticsModelingCheckedException error, String methodName) {
 		AnalyticsModelingOMASAPIResponse ret = new ErrorResponse(error);
-		restExceptionHandler.captureThrowable(ret, error, methodName);
+		getExceptionHandler().captureThrowable(ret, error, methodName);
+		return ret;
+	}
+	
+	private AnalyticsModelingOMASAPIResponse handleInvalidParameterResponse(InvalidParameterException e, String methodName)	{
+		AnalyticsModelingCheckedException error = new AnalyticsModelingCheckedException(
+				AnalyticsModelingErrorCode.INVALID_REQUEST_PARAMER.getMessageDefinition(e.getParameterName()),
+				this.getClass().getSimpleName(),
+				methodName,
+				e);
+		AnalyticsModelingOMASAPIResponse ret = new ErrorResponse(error);
+		getExceptionHandler().captureThrowable(ret, error, methodName);
 		return ret;
 	}
 }

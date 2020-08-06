@@ -5,15 +5,18 @@ import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 import '@polymer/paper-progress/paper-progress';
 import '@polymer/paper-dialog/paper-dialog';
 import './props-table';
+import './legend';
 import '../asset-catalog/asset-tools';
 import '../shared-styles.js';
 import {mixinBehaviors} from "@polymer/polymer/lib/legacy/class";
+import '@polymer/iron-flex-layout/iron-flex-layout-classes.js'
+
 import {ItemViewBehavior} from "./item";
 
-class VisGraph  extends mixinBehaviors([ItemViewBehavior], PolymerElement) {
+class VisGraph extends mixinBehaviors([ItemViewBehavior], PolymerElement) {
   static get template() {
     return html`
-      <style include="shared-styles">
+      <style include="shared-styles iron-flex iron-flex-alignment">
           :host {
             display: flex;
             flex-direction: column;
@@ -41,11 +44,25 @@ class VisGraph  extends mixinBehaviors([ItemViewBehavior], PolymerElement) {
             height: 400px;
             overflow: auto;
           }
-          
+          #legend{
+            z-index: 10;
+            padding: 20px;
+            overflow: auto;
+            min-width: 100px;
+            min-height: 100px;
+          }
         </style>
-        <div  id="vis_container"></div>
         
-        <paper-dialog id="visDialog" class="vis-dialog">
+        <div id="visLayout" class = "layout horizontal displayLength" style="flex-grow: 1">
+            <div id="vis_container"></div>            
+            <legend-div id="legend" groups = [[groups]] hidden = "[[hideLegend]]" data = "{{data.nodes}}"
+            vertical-align="top"
+            horizontal-align="right"
+            auto-fit-on-attach
+            ></legend-div>
+        </div>
+        
+        <paper-dialog id="visDialog" class = "vis-dialog">
           <div>
             <asset-tools guid="[[node.id]]" style="display: inline-flex"></asset-tools>
             <paper-button dialog-confirm style="float: right">Close</paper-button>
@@ -96,6 +113,9 @@ class VisGraph  extends mixinBehaviors([ItemViewBehavior], PolymerElement) {
         // tooltipDelay: 200,
         selectable: true,
         hover: false
+    },
+      groups: {
+          type: Object
       }
     };
   }
@@ -122,7 +142,11 @@ class VisGraph  extends mixinBehaviors([ItemViewBehavior], PolymerElement) {
     this.network.stabilize();
   }
 
-  networkChanged(newNetwork) {
+toggleLegend() {
+    this.hideLegend = !this.hideLegend;
+}
+
+networkChanged(newNetwork) {
     if (!newNetwork) {
       return;
     }

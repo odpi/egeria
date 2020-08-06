@@ -92,11 +92,12 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
                 </vaadin-list-box>  
               </template>
             </vaadin-select>
+            <paper-button id = "closeLegendButton" on-tap="toggleLegend">Toggle legend</paper-button>
         </div>
     </div>
 
     <div id="container">
-        <vis-graph id="visgraph" data=[[graphData]]></vis-graph>
+        <vis-graph id="visgraph" groups=[[groups]] data=[[graphData]]></vis-graph>
     </div>
     `;
   }
@@ -135,7 +136,7 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
                 value: {
                     hierarchical: {
                         enabled: true,
-                        levelSeparation: 300,
+                        levelSeparation: 250,
                         direction: 'LR'
                     }
                 }
@@ -144,29 +145,37 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
                 type: Object,
                 value: {
                     GlossaryTerm: {
-                        color: '#f0e442'
-
+                        icon: 'vaadin:records'
                     },
                     Column: {
-                        color: '#009e73'
+                        icon: 'vaadin:grid-h'
                     },
                     RelationalColumn: {
-                        color: '#73c0ee'
+                        icon: 'vaadin:road-branches'
                     },
                     TabularColumn: {
-                        color: '#cc79a7'
+                        icon: 'vaadin:tab'
                     },
                     RelationalTable: {
-                        color: '#50c67a'
+                        icon: 'vaadin:table'
                     },
                     Process: {
-                        color: '#ffff00'
+                        icon: 'vaadin:file-process'
                     },
                     subProcess: {
-                        color: '#ffff00'
+                        icon: 'vaadin:cogs'
                     },
                     condensedNode: {
-                        color: '#faa43a'
+                        icon: 'vaadin:cogs'
+                    },
+                    GlossaryCategory : {
+                        icon: 'vaadin:ticket'
+                    },
+                    DataFile : {
+                        icon: 'vaadin:file'
+                    },
+                    AssetZoneMembership : {
+                        icon: 'vaadin:handshake'
                     }
                 }
             }
@@ -217,8 +226,8 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
                 };
             }
         }
+        const egeriaColor = getComputedStyle(this).getPropertyValue('--egeria-primary-color');
         for (var i = 0; i < data.nodes.length; i++) {
-            const egeriaColor = getComputedStyle(this).getPropertyValue('--egeria-primary-color');
             let displayName;
             if(data.nodes[i].properties && data.nodes[i].properties!==null && data.nodes[i].properties!==undefined ){
                 data.nodes[i].properties = this._parseProperties(data.nodes[i].properties);
@@ -230,18 +239,26 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
             }
             data.nodes[i].displayName = data.nodes[i].label;
             data.nodes[i].type = data.nodes[i].group;
-
             data.nodes[i].label = '<b>'+data.nodes[i].label+'</b>';
-            data.nodes[i].label += ' \n\n Type : ' + this._camelCaseToSentence(data.nodes[i].group);
+            data.nodes[i].label += ' \n\n' + this._camelCaseToSentence(data.nodes[i].group);
             if (displayName != null) {
-
                 data.nodes[i].label += ' \n\n From : ' + displayName;
             }
             if (data.nodes[i].id === this.routeData.guid){
-                data.nodes[i].group='';
-                data.nodes[i].color=egeriaColor;
-                data.nodes[i].font= {color:'white'};
-                data.nodes[i].shape= 'circle';
+                data.nodes[i].group ='QueryNode';
+                data.nodes[i].color = {
+                    background:'white',
+                    border:egeriaColor,
+                    highlight:{background:egeriaColor,border:'#a7a7a7'},
+                    hover:{background:'white',border:'#a7a7a7'}
+                };
+            }else{
+                data.nodes[i].color = {
+                    background:'white',
+                    border:'#a7a6a6',
+                    highlight:{background:egeriaColor,border:'#a7a7a7'},
+                    hover:{background:'white',border:'#a7a7a7'}
+                };
             }
         }
         if (!this._hideIncludeGlossaryTerms(this.routeData.usecase) && this.$.glossaryTermMenu.value === "false" ) {
@@ -344,6 +361,10 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
             this._sourceAndDestination(this.routeData.guid, includeProcesses);
             break;
     }
+    }
+
+    toggleLegend() {
+        this.$$('vis-graph').toggleLegend();
     }
 
     _getUseCase(usecase){
