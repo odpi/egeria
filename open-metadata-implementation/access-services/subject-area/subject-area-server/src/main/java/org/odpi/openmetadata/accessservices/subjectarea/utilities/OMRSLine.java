@@ -155,9 +155,6 @@ public class OMRSLine extends Line implements Serializable {
         return name;
     }
 
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
-    }
     public String getEntity1Name() {
         return entity1Name;
     }

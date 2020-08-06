@@ -17,13 +17,13 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 
 import javax.net.ssl.*;
 import java.nio.charset.StandardCharsets;
 import java.security.KeyManagementException;
-import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.X509Certificate;
 import java.util.Arrays;
@@ -45,7 +45,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
     /**
      * Default constructor
      */
-    public SpringRESTClientConnector() throws NoSuchAlgorithmException, KeyStoreException, KeyManagementException
+    public SpringRESTClientConnector() throws NoSuchAlgorithmException, KeyManagementException
     {
         super();
 
@@ -75,7 +75,15 @@ public class SpringRESTClientConnector extends RESTClientConnector
         /* Ensure that the REST template always uses UTF-8 */
         List<HttpMessageConverter<?>> converters = restTemplate.getMessageConverters();
         converters.removeIf(httpMessageConverter -> httpMessageConverter instanceof StringHttpMessageConverter);
-        converters.add(0, new StringHttpMessageConverter(StandardCharsets.UTF_8));
+        converters.removeIf(httpMessageConverter -> httpMessageConverter instanceof MappingJackson2HttpMessageConverter);
+
+        MappingJackson2HttpMessageConverter jackson2HttpMessageConverter = new MappingJackson2HttpMessageConverter();
+        jackson2HttpMessageConverter.setDefaultCharset(StandardCharsets.UTF_8);
+        StringHttpMessageConverter stringHttpMessageConverter = new StringHttpMessageConverter(StandardCharsets.UTF_8);
+
+        converters.add(jackson2HttpMessageConverter);
+        converters.add(stringHttpMessageConverter);
+        restTemplate.setMessageConverters(converters);
     }
 
     /**
@@ -119,11 +127,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
      * @param sslSession ssl ession
      * @return boolean result
      */
-    private static final HostnameVerifier bypassVerifier = new HostnameVerifier() {
-        public boolean verify(String hostname, SSLSession sslSession) {
-            return true;
-        }
-    };
+    private static final HostnameVerifier bypassVerifier = (hostname, sslSession) -> true;
 
     /**
      * Initialize the connector.
