@@ -287,16 +287,17 @@ public class OpenMetadataTypesArchive
         final String attribute1Name            = "type";
         final String attribute1Description     = "Deprecated attribute. Use the platformType attribute to describe the type of software server platform.";
         final String attribute1DescriptionGUID = null;
+        final String attribute1ReplacedBy      = "platformType";
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                 attribute1Description,
                 attribute1DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-
+        property.setReplacedByAttribute(attribute1ReplacedBy);
         properties.add(property);
 
         final String attribute2Name            = "platformType";
-        final String attribute2Description     = "Type of software server platform.";
+        final String attribute2Description     = "Type of implemented or deployed software server platform.";
         final String attribute2DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
@@ -308,12 +309,13 @@ public class OpenMetadataTypesArchive
         final String attribute3Name            = "version";
         final String attribute3Description     = "Deprecated attribute. Use the platformVersion attribute to define the version number of software server platform.";
         final String attribute3DescriptionGUID = null;
+        final String attribute3ReplacedBy      = "platformVersion";
 
         property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
                 attribute3Description,
                 attribute3DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-
+        property.setReplacedByAttribute(attribute3ReplacedBy);
         properties.add(property);
 
         final String attribute4Name            = "platformVersion";
@@ -358,16 +360,17 @@ public class OpenMetadataTypesArchive
         final String attribute1Name            = "type";
         final String attribute1Description     = "Deprecated attribute. Use the serverType attribute to describe the type of software server.";
         final String attribute1DescriptionGUID = null;
+        final String attribute1ReplacedBy      = "serverType";
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                 attribute1Description,
                 attribute1DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-
+        property.setReplacedByAttribute(attribute1ReplacedBy);
         properties.add(property);
 
         final String attribute2Name            = "serverType";
-        final String attribute2Description     = "Type of software server.";
+        final String attribute2Description     = "Type of implemented or deployed software server.";
         final String attribute2DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
@@ -379,12 +382,13 @@ public class OpenMetadataTypesArchive
         final String attribute3Name            = "version";
         final String attribute3Description     = "Deprecated attribute. Use the serverVersion attribute to define the version number of software server.";
         final String attribute3DescriptionGUID = null;
+        final String attribute3ReplacedBy      = "serverVersion";
 
         property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
                 attribute3Description,
                 attribute3DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-
+        property.setReplacedByAttribute(attribute3ReplacedBy);
         properties.add(property);
 
         final String attribute4Name            = "serverVersion";
@@ -429,16 +433,17 @@ public class OpenMetadataTypesArchive
         final String attribute1Name            = "type";
         final String attribute1Description     = "Deprecated attribute. Use the capabilityType attribute to describe the type of software server capability.";
         final String attribute1DescriptionGUID = null;
+        final String attribute1ReplacedBy      = "capabilityType";
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                 attribute1Description,
                 attribute1DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-
+        property.setReplacedByAttribute(attribute1ReplacedBy);
         properties.add(property);
 
         final String attribute2Name            = "capabilityType";
-        final String attribute2Description     = "Type of the software server capability.";
+        final String attribute2Description     = "Type of implemented or deployed software server capability.";
         final String attribute2DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
@@ -450,12 +455,13 @@ public class OpenMetadataTypesArchive
         final String attribute3Name            = "version";
         final String attribute3Description     = "Deprecated attribute. Use the capabilityVersion attribute to define the version number of software server capability.";
         final String attribute3DescriptionGUID = null;
+        final String attribute3ReplacedBy      = "capabilityVersion";
 
         property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
                 attribute3Description,
                 attribute3DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-
+        property.setReplacedByAttribute(attribute3ReplacedBy);
         properties.add(property);
 
         final String attribute4Name            = "capabilityVersion";
@@ -500,16 +506,17 @@ public class OpenMetadataTypesArchive
         final String attribute1Name            = "type";
         final String attribute1Description     = "Deprecated attribute. Use the platformType attribute to describe the type of cloud platform.";
         final String attribute1DescriptionGUID = null;
+        final String attribute1ReplacedBy      = "platformType";
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                 attribute1Description,
                 attribute1DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-
+        property.setReplacedByAttribute(attribute1ReplacedBy);
         properties.add(property);
 
         final String attribute2Name            = "platformType";
-        final String attribute2Description     = "Type of cloud platform.";
+        final String attribute2Description     = "Type of implemented or deployed cloud platform.";
         final String attribute2DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
@@ -550,12 +557,13 @@ public class OpenMetadataTypesArchive
         final String attribute1Name            = "type";
         final String attribute1Description     = "Deprecated attribute. Use the tenantType attribute to describe the type of cloud tenant.";
         final String attribute1DescriptionGUID = null;
+        final String attribute1ReplacedBy      = "tenantType";
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                 attribute1Description,
                 attribute1DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-
+        property.setReplacedByAttribute(attribute1ReplacedBy);
         properties.add(property);
 
         final String attribute2Name            = "tenantType";
@@ -600,12 +608,13 @@ public class OpenMetadataTypesArchive
         final String attribute1Name            = "type";
         final String attribute1Description     = "Deprecated attribute. Use the serviceType attribute to describe the type of cloud service.";
         final String attribute1DescriptionGUID = null;
+        final String attribute1ReplacedBy      = "serviceType";
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                 attribute1Description,
                 attribute1DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-
+        property.setReplacedByAttribute(attribute1ReplacedBy);
         properties.add(property);
 
         final String attribute2Name            = "serviceType";
@@ -650,13 +659,14 @@ public class OpenMetadataTypesArchive
         final String attribute1Name            = "type";
         final String attribute1Description     = "Deprecated attribute. Use the commentType attribute to describe the type of comment.";
         final String attribute1DescriptionGUID = null;
+        final String attribute1ReplacedBy      = "commentType";
 
         property = archiveHelper.getEnumTypeDefAttribute("CommentType",
                 attribute1Name,
                 attribute1Description,
                 attribute1DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-
+        property.setReplacedByAttribute(attribute1ReplacedBy);
         properties.add(property);
 
         final String attribute2Name            = "commentType";
@@ -702,16 +712,17 @@ public class OpenMetadataTypesArchive
         final String attribute1Name            = "type";
         final String attribute1Description     = "Deprecated attribute. Use the storeType attribute to describe the type of graph store.";
         final String attribute1DescriptionGUID = null;
+        final String attribute1ReplacedBy      = "storeType";
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                 attribute1Description,
                 attribute1DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-
+        property.setReplacedByAttribute(attribute1ReplacedBy);
         properties.add(property);
 
         final String attribute2Name            = "storeType";
-        final String attribute2Description     = "Type of graph store.";
+        final String attribute2Description     = "Type of implemented or deployed graph store.";
         final String attribute2DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
@@ -752,16 +763,17 @@ public class OpenMetadataTypesArchive
         final String attribute1Name            = "type";
         final String attribute1Description     = "Deprecated attribute. Use the fileType attribute to describe the type of log file.";
         final String attribute1DescriptionGUID = null;
+        final String attribute1ReplacedBy      = "fileType";
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                 attribute1Description,
                 attribute1DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-
+        property.setReplacedByAttribute(attribute1ReplacedBy);
         properties.add(property);
 
         final String attribute2Name            = "fileType";
-        final String attribute2Description     = "Type of log file.";
+        final String attribute2Description     = "Type of implemented or deployed log file.";
         final String attribute2DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
@@ -802,16 +814,17 @@ public class OpenMetadataTypesArchive
         final String attribute1Name            = "type";
         final String attribute1Description     = "Deprecated attribute. Use the databaseType attribute to describe the type of database.";
         final String attribute1DescriptionGUID = null;
+        final String attribute1ReplacedBy      = "databaseType";
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                 attribute1Description,
                 attribute1DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-
+        property.setReplacedByAttribute(attribute1ReplacedBy);
         properties.add(property);
 
         final String attribute2Name            = "databaseType";
-        final String attribute2Description     = "Type of database.";
+        final String attribute2Description     = "Type of implemented or deployed database.";
         final String attribute2DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
@@ -823,12 +836,13 @@ public class OpenMetadataTypesArchive
         final String attribute3Name            = "version";
         final String attribute3Description     = "Deprecated attribute. Use the databaseVersion attribute to define the version number of database.";
         final String attribute3DescriptionGUID = null;
+        final String attribute3ReplacedBy      = "databaseVersion";
 
         property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
                 attribute3Description,
                 attribute3DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-
+        property.setReplacedByAttribute(attribute3ReplacedBy);
         properties.add(property);
 
         final String attribute4Name            = "databaseVersion";
@@ -873,16 +887,17 @@ public class OpenMetadataTypesArchive
         final String attribute1Name            = "type";
         final String attribute1Description     = "Deprecated attribute. Use the serverType attribute to describe the type of database server.";
         final String attribute1DescriptionGUID = null;
+        final String attribute1ReplacedBy      = "serverType";
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                 attribute1Description,
                 attribute1DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-
+        property.setReplacedByAttribute(attribute1ReplacedBy);
         properties.add(property);
 
         final String attribute2Name            = "serverType";
-        final String attribute2Description     = "Type of database server.";
+        final String attribute2Description     = "Type of implemented or deployed database server.";
         final String attribute2DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
@@ -894,12 +909,13 @@ public class OpenMetadataTypesArchive
         final String attribute3Name            = "version";
         final String attribute3Description     = "Deprecated attribute. Use the softwareVersion attribute to define the version number of database server software.";
         final String attribute3DescriptionGUID = null;
+        final String attribute3ReplacedBy      = "softwareVersion";
 
         property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
                 attribute3Description,
                 attribute3DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-
+        property.setReplacedByAttribute(attribute3ReplacedBy);
         properties.add(property);
 
         final String attribute4Name            = "softwareVersion";
@@ -944,16 +960,17 @@ public class OpenMetadataTypesArchive
         final String attribute1Name            = "type";
         final String attribute1Description     = "Deprecated attribute. Use the repositoryType attribute to describe the type of metadata repository.";
         final String attribute1DescriptionGUID = null;
+        final String attribute1ReplacedBy      = "repositoryType";
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                 attribute1Description,
                 attribute1DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-
+        property.setReplacedByAttribute(attribute1ReplacedBy);
         properties.add(property);
 
         final String attribute2Name            = "repositoryType";
-        final String attribute2Description     = "Type of metadata repository.";
+        final String attribute2Description     = "Type of implemented or deployed metadata repository.";
         final String attribute2DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
@@ -994,16 +1011,17 @@ public class OpenMetadataTypesArchive
         final String attribute1Name            = "type";
         final String attribute1Description     = "Deprecated attribute. Use the serverType attribute to describe the type of metadata server.";
         final String attribute1DescriptionGUID = null;
+        final String attribute1ReplacedBy      = "serverType";
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                 attribute1Description,
                 attribute1DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-
+        property.setReplacedByAttribute(attribute1ReplacedBy);
         properties.add(property);
 
         final String attribute2Name            = "serverType";
-        final String attribute2Description     = "Type of metadata server.";
+        final String attribute2Description     = "Type of implemented or deployed metadata server.";
         final String attribute2DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
@@ -1044,16 +1062,17 @@ public class OpenMetadataTypesArchive
         final String attribute1Name            = "type";
         final String attribute1Description     = "Deprecated attribute. Use the proxyType attribute to describe the type of repository proxy.";
         final String attribute1DescriptionGUID = null;
+        final String attribute1ReplacedBy      = "proxyType";
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                 attribute1Description,
                 attribute1DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-
+        property.setReplacedByAttribute(attribute1ReplacedBy);
         properties.add(property);
 
         final String attribute2Name            = "proxyType";
-        final String attribute2Description     = "Type of repository proxy.";
+        final String attribute2Description     = "Type of implemented or deployed repository proxy.";
         final String attribute2DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
@@ -1094,17 +1113,18 @@ public class OpenMetadataTypesArchive
         final String attribute1Name            = "type";
         final String attribute1Description     = "Deprecated attribute. Use the capabilityType attribute to describe the type of business capability.";
         final String attribute1DescriptionGUID = null;
+        final String attribute1ReplacedBy      = "capabilityType";
 
         property = archiveHelper.getEnumTypeDefAttribute("BusinessCapabilityType",
                 attribute1Name,
                 attribute1Description,
                 attribute1DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-
+        property.setReplacedByAttribute(attribute1ReplacedBy);
         properties.add(property);
 
         final String attribute2Name            = "capabilityType";
-        final String attribute2Description     = "Type of business capability.";
+        final String attribute2Description     = "Type of implemented or deployed business capability.";
         final String attribute2DescriptionGUID = null;
 
         property = archiveHelper.getEnumTypeDefAttribute("BusinessCapabilityType",
@@ -1146,12 +1166,13 @@ public class OpenMetadataTypesArchive
         final String attribute1Name            = "createTime";
         final String attribute1Description     = "Deprecated attribute. Use the storeCreateTime attribute to describe the creation time of the data store.";
         final String attribute1DescriptionGUID = null;
+        final String attribute1ReplacedBy      = "storeCreateTime";
 
         property = archiveHelper.getDateTypeDefAttribute(attribute1Name,
                 attribute1Description,
                 attribute1DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-
+        property.setReplacedByAttribute(attribute1ReplacedBy);
         properties.add(property);
 
         final String attribute2Name            = "storeCreateTime";
@@ -1167,12 +1188,13 @@ public class OpenMetadataTypesArchive
         final String attribute3Name            = "modifiedTime";
         final String attribute3Description     = "Deprecated attribute. Use the storeUpdateTime attribute to define the last known modification time of the data store.";
         final String attribute3DescriptionGUID = null;
+        final String attribute3ReplacedBy      = "storeUpdateTime";
 
         property = archiveHelper.getDateTypeDefAttribute(attribute3Name,
                 attribute3Description,
                 attribute3DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-
+        property.setReplacedByAttribute(attribute3ReplacedBy);
         properties.add(property);
 
         final String attribute4Name            = "storeUpdateTime";
@@ -1217,12 +1239,13 @@ public class OpenMetadataTypesArchive
         final String attribute1Name            = "createTime";
         final String attribute1Description     = "Deprecated attribute. Use the sourceCreateTime attribute to describe when the data source was created.";
         final String attribute1DescriptionGUID = null;
+        final String attribute1ReplacedBy      = "sourceCreateTime";
 
         property = archiveHelper.getDateTypeDefAttribute(attribute1Name,
                 attribute1Description,
                 attribute1DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-
+        property.setReplacedByAttribute(attribute1ReplacedBy);
         properties.add(property);
 
         final String attribute2Name            = "sourceCreateTime";
@@ -1238,12 +1261,13 @@ public class OpenMetadataTypesArchive
         final String attribute3Name            = "modifiedTime";
         final String attribute3Description     = "Deprecated attribute. Use the sourceUpdateTime attribute to describe when the data source was last modified.";
         final String attribute3DescriptionGUID = null;
+        final String attribute3ReplacedBy      = "sourceUpdateTime";
 
         property = archiveHelper.getDateTypeDefAttribute(attribute3Name,
                 attribute3Description,
                 attribute3DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-
+        property.setReplacedByAttribute(attribute3ReplacedBy);
         properties.add(property);
 
         final String attribute4Name            = "sourceUpdateTime";
@@ -1288,12 +1312,13 @@ public class OpenMetadataTypesArchive
         final String attribute1Name            = "metadataCollectionId";
         final String attribute1Description     = "Deprecated attribute. Use the accessedMetadataCollectionId attribute to define the unique identifier for the metadata collection accessed through this enterprise access layer.";
         final String attribute1DescriptionGUID = null;
+        final String attribute1ReplacedBy      = "accessedMetadataCollectionId";
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                 attribute1Description,
                 attribute1DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-
+        property.setReplacedByAttribute(attribute1ReplacedBy);
         properties.add(property);
 
         final String attribute2Name            = "accessedMetadataCollectionId";
@@ -1338,12 +1363,13 @@ public class OpenMetadataTypesArchive
         final String attribute1Name            = "metadataCollectionId";
         final String attribute1Description     = "Deprecated attribute. Use the managedMetadataCollectionId attribute to define the unique identifier for the metadata collection managed in the local repository.";
         final String attribute1DescriptionGUID = null;
+        final String attribute1ReplacedBy      = "managedMetadataCollectionId";
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                 attribute1Description,
                 attribute1DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-
+        property.setReplacedByAttribute(attribute1ReplacedBy);
         properties.add(property);
 
         final String attribute2Name            = "managedMetadataCollectionId";
@@ -1388,12 +1414,13 @@ public class OpenMetadataTypesArchive
         final String attribute1Name            = "version";
         final String attribute1Description     = "Deprecated attribute. Use the referenceVersion attribute to define the version number of the external reference.";
         final String attribute1DescriptionGUID = null;
+        final String attribute1ReplacedBy      = "referenceVersion";
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                 attribute1Description,
                 attribute1DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-
+        property.setReplacedByAttribute(attribute1ReplacedBy);
         properties.add(property);
 
         final String attribute2Name            = "referenceVersion";
@@ -1438,12 +1465,13 @@ public class OpenMetadataTypesArchive
         final String attribute1Name            = "version";
         final String attribute1Description     = "Deprecated attribute. Use the schemaVersion attribute to define the version number of the property facet schema.";
         final String attribute1DescriptionGUID = null;
+        final String attribute1ReplacedBy      = "schemaVersion";
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                 attribute1Description,
                 attribute1DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-
+        property.setReplacedByAttribute(attribute1ReplacedBy);
         properties.add(property);
 
         final String attribute2Name            = "schemaVersion";
@@ -1488,12 +1516,13 @@ public class OpenMetadataTypesArchive
         final String attribute1Name            = "version";
         final String attribute1Description     = "Deprecated attribute. Use the protocolVersion attribute to define the version number of the protocol supported by the cohort registry.";
         final String attribute1DescriptionGUID = null;
+        final String attribute1ReplacedBy      = "protocolVersion";
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                 attribute1Description,
                 attribute1DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-
+        property.setReplacedByAttribute(attribute1ReplacedBy);
         properties.add(property);
 
         final String attribute2Name            = "protocolVersion";
@@ -1538,12 +1567,13 @@ public class OpenMetadataTypesArchive
         final String attribute1Name            = "version";
         final String attribute1Description     = "Deprecated attribute. Use the snippetVersion attribute to define the version number of the snippet.";
         final String attribute1DescriptionGUID = null;
+        final String attribute1ReplacedBy      = "snippetVersion";
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                 attribute1Description,
                 attribute1DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-
+        property.setReplacedByAttribute(attribute1ReplacedBy);
         properties.add(property);
 
         final String attribute2Name            = "snippetVersion";
@@ -1588,12 +1618,13 @@ public class OpenMetadataTypesArchive
         final String attribute1Name            = "type";
         final String attribute1Description     = "Deprecated attribute. Use the pointType attribute to describe type information about the policy administration point.";
         final String attribute1DescriptionGUID = null;
+        final String attribute1ReplacedBy      = "pointType";
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                 attribute1Description,
                 attribute1DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-
+        property.setReplacedByAttribute(attribute1ReplacedBy);
         properties.add(property);
 
         final String attribute2Name            = "pointType";
@@ -1638,12 +1669,13 @@ public class OpenMetadataTypesArchive
         final String attribute1Name            = "type";
         final String attribute1Description     = "Deprecated attribute. Use the pointType attribute to describe type information about the policy decision point.";
         final String attribute1DescriptionGUID = null;
+        final String attribute1ReplacedBy      = "pointType";
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                 attribute1Description,
                 attribute1DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-
+        property.setReplacedByAttribute(attribute1ReplacedBy);
         properties.add(property);
 
         final String attribute2Name            = "pointType";
@@ -1688,12 +1720,13 @@ public class OpenMetadataTypesArchive
         final String attribute1Name            = "type";
         final String attribute1Description     = "Deprecated attribute. Use the pointType attribute to describe type information about the policy enforcement point.";
         final String attribute1DescriptionGUID = null;
+        final String attribute1ReplacedBy      = "pointType";
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                 attribute1Description,
                 attribute1DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-
+        property.setReplacedByAttribute(attribute1ReplacedBy);
         properties.add(property);
 
         final String attribute2Name            = "pointType";
@@ -1738,12 +1771,13 @@ public class OpenMetadataTypesArchive
         final String attribute1Name            = "type";
         final String attribute1Description     = "Deprecated attribute. Use the pointType attribute to describe type information about the policy information point.";
         final String attribute1DescriptionGUID = null;
+        final String attribute1ReplacedBy      = "pointType";
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                 attribute1Description,
                 attribute1DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-
+        property.setReplacedByAttribute(attribute1ReplacedBy);
         properties.add(property);
 
         final String attribute2Name            = "pointType";
@@ -1788,12 +1822,13 @@ public class OpenMetadataTypesArchive
         final String attribute1Name            = "type";
         final String attribute1Description     = "Deprecated attribute. Use the pointType attribute to describe type information about the policy retrieval point.";
         final String attribute1DescriptionGUID = null;
+        final String attribute1ReplacedBy      = "pointType";
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                 attribute1Description,
                 attribute1DescriptionGUID);
         property.setAttributeStatus(TypeDefAttributeStatus.DEPRECATED_ATTRIBUTE);
-
+        property.setReplacedByAttribute(attribute1ReplacedBy);
         properties.add(property);
 
         final String attribute2Name            = "pointType";
