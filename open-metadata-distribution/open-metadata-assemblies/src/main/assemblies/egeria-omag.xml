@@ -127,41 +127,6 @@
             </binaries>
             <!-- TODO: Consider if samples should have sources - or be in another assembly -->
         </moduleSet>
-        <!-- Clients -->
-        <moduleSet>
-            <useAllReactorProjects>true</useAllReactorProjects>
-            <includes>
-                <include>org.odpi.egeria:asset-catalog-client:*</include>
-                <include>org.odpi.egeria:asset-consumer-client:*</include>
-                <include>org.odpi.egeria:asset-owner-client:*</include>
-                <include>org.odpi.egeria:community-profile-client:*</include>
-                <include>org.odpi.egeria:data-engine-client:*</include>
-                <include>org.odpi.egeria:it-infrastructure-client:*</include>
-                <include>org.odpi.egeria:it-infrastructure-client:*</include>
-                <include>org.odpi.egeria:data-manager-client:*</include>
-                <include>org.odpi.egeria:data-privacy-client:*</include>
-                <include>org.odpi.egeria:data-science-client:*</include>
-                <include>org.odpi.egeria:dev-ops-client:*</include>
-                <include>org.odpi.egeria:digital-architecture-client:*</include>
-                <include>org.odpi.egeria:discovery-engine-client:*</include>
-                <include>org.odpi.egeria:governance-engine-client:*</include>
-                <include>org.odpi.egeria:governance-program-client:*</include>
-                <include>org.odpi.egeria:information-view-client:*</include>
-                <include>org.odpi.egeria:project-management-client:*</include>
-                <include>org.odpi.egeria:security-officer-client:*</include>
-                <include>org.odpi.egeria:software-developer-client:*</include>
-                <include>org.odpi.egeria:stewardship-action-client:*</include>
-                <include>org.odpi.egeria:subject-area-client:*</include>
-                <include>org.odpi.egeria:admin-services-client:*</include>
-                <include>org.odpi.egeria:project-management-client:*</include>
-            </includes>
-            <binaries>
-                <outputDirectory>./clients</outputDirectory>
-                <unpack>false</unpack>
-                <includeDependencies>true</includeDependencies>
-            </binaries>
-            <!-- TODO: Consider if samples should have sources - or be in another assembly -->
-        </moduleSet>
         <!-- User Interface -->
         <moduleSet>
             <useAllReactorProjects>true</useAllReactorProjects>
