@@ -85,11 +85,15 @@ public class AssetLineagePublisher {
         String technicalGuid = entityDetail.getGUID();
         AssetContext assetContext = this.assetContextHandler.getAssetContext(serverUserName, entityDetail);
 
-        Map<String, Set<GraphContext>> context = this.glossaryHandler.getGlossaryTerm(technicalGuid, serverUserName, assetContext, this.superTypesRetriever);
+        Map<String, Set<GraphContext>> glossaryContext = this.glossaryHandler.getGlossaryTermContext(technicalGuid, serverUserName, assetContext, this.superTypesRetriever);
         LineageEvent event = new LineageEvent();
-        if (!context.isEmpty()) {
-            event.setAssetContext(context);
+
+
+        if (!glossaryContext.isEmpty()) {
+            // add the whole context - both glossary and asset context
+            event.setAssetContext(glossaryContext);
         } else {
+            // add only the asset context
             event.setAssetContext(assetContext.getNeighbors());
         }
 

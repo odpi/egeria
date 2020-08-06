@@ -473,8 +473,8 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
     @Override
     public void upsertRelationship(LineageRelationship lineageRelationship) {
 
-        LineageEntity firstEnd = lineageRelationship.getFirstEntity();
-        LineageEntity secondEnd = lineageRelationship.getSecondEntity();
+        LineageEntity firstEnd = lineageRelationship.getSourceEntity();
+        LineageEntity secondEnd = lineageRelationship.getTargetEntity();
 
         upsertToGraph(firstEnd, secondEnd, lineageRelationship.getTypeDefName(), lineageRelationship.getGuid());
 
@@ -634,9 +634,9 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
 
             g.inject(properties)
                     .as("properties")
-                    .V(lineageRelationship.getFirstEntity().getGuid())
+                    .V(lineageRelationship.getSourceEntity().getGuid())
                     .outE()
-                    .where(inV().hasId(lineageRelationship.getSecondEntity().getGuid()))
+                    .where(inV().hasId(lineageRelationship.getTargetEntity().getGuid()))
                     .as("edge")
                     .sideEffect(__.select("properties")
                             .unfold()
