@@ -1,12 +1,14 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-import React, { useEffect, useState, useContext} from "react";
+import React, { useEffect, useState, useContext } from "react";
 import NodeSearchView from "./views/NodeSearchView";
 import NodeUpdateView from "./views/NodeUpdateView";
 import NodeCreateView from "./views/NodeCreateView.js";
+import LinesView from "./views/LinesView.js";
 import Add16 from "../../../images/Egeria_add_16";
 import Search16 from "../../../images/Egeria_search_16";
 import Delete16 from "../../../images/Egeria_delete_16";
+import Relationships16 from "../../../images/Egeria_relationships_16";
 import { GlossaryAuthorContext } from "../contexts/GlossaryAuthorContext";
 import useDebounce from "./useDebounce";
 import {
@@ -69,12 +71,15 @@ const NodeController = (props) => {
       } else {
         setResults([]);
       }
+      // if (glossaryAuthorContext.isGettingCurrentNodeLines()) {
+      //   getCurrentNodeLines();
+      // }
     },
     // This is the useEffect input array
     // Our useEffect function will only execute if this value changes ...
     // ... and thanks to our hook it will only change if the original ...
     // value (searchCriteria) hasn't changed for more than 500ms.
-    // If the exactMatch changes then we need to re-issue the search. 
+    // If the exactMatch changes then we need to re-issue the search.
     [debouncedSearchCriteria, exactMatch]
   );
 
@@ -82,6 +87,11 @@ const NodeController = (props) => {
     setErrorMsg("");
     glossaryAuthorContext.doCreatingAction();
   };
+  const onClickRelationships = () => {
+    setErrorMsg("");
+    getCurrentNodeLines();
+  };
+
   const onClickSearch = () => {
     setErrorMsg("");
     glossaryAuthorContext.doSearchingAction();
@@ -125,7 +135,7 @@ const NodeController = (props) => {
         glossaryAuthorContext.doCreatedAction();
       }
     } else {
-      onErrorGet("Error did not get a node from the server");
+      onErrorGetNode("Error did not get a node from the server");
     }
   };
   const onErrorCreate = (msg) => {
@@ -133,16 +143,29 @@ const NodeController = (props) => {
     setErrorMsg(msg);
     setCreatedNode(undefined);
   };
-  const onSuccessfulGet = (json) => {
+  const onSuccessfulGetNode = (json) => {
     if (json.result.length == 1) {
       glossaryAuthorContext.doUpdateSelectedNode(json.result[0]);
     } else {
-      onErrorGet("Error did not get a node from the server");
+      onErrorGetNode("Error did not get a node from the server");
     }
   };
-  const onErrorGet = (msg) => {
-    console.log("Error on Get " + msg);
+  const onErrorGetNode = (msg) => {
+    console.log("Error on Get Node" + msg);
     setErrorMsg(msg);
+    glossaryAuthorContext.doRefreshSearchAction();
+  };
+  const onSuccessfulGetNodeLines = (json) => {
+    if (json.result) {
+      glossaryAuthorContext.doUpdateSelectedNodeLines(json.result);
+    } else {
+      onErrorGetNode("Error did not get node's lines from the server");
+    }
+  };
+  const onErrorGetNodeLines = (msg) => {
+    console.log("Error on Get Node's Lines" + msg);
+    setErrorMsg(msg);
+    // do we need to do this - as the main search table will not have changed
     glossaryAuthorContext.doRefreshSearchAction();
   };
   const onErrorDelete = (msg) => {
@@ -183,7 +206,10 @@ const NodeController = (props) => {
           }
         }
         // If we have a selected node we need to show its row as selected.
-        if (glossaryAuthorContext.selectedNode && (row.id == glossaryAuthorContext.selectedNode.systemAttributes.guid)) {
+        if (
+          glossaryAuthorContext.selectedNode &&
+          row.id == glossaryAuthorContext.selectedNode.systemAttributes.guid
+        ) {
           row.isSelected = true;
         } else {
           row.isSelected = false;
@@ -205,6 +231,13 @@ const NodeController = (props) => {
     }
     glossaryAuthorContext.doSearchedAction();
   };
+  function getCurrentNodeLines() {
+    const guid = glossaryAuthorContext.selectedNode.systemAttributes.guid;
+    const url =
+      glossaryAuthorContext.currentNodeType.url + "/" + guid + "/relationships";
+    console.log("issueGet " + url);
+    issueRestGet(url, onSuccessfulGetNodeLines, onErrorGetNodeLines);
+  }
   const onErrorSearch = (msg) => {
     console.log("Error " + msg);
     setErrorMsg(msg);
@@ -277,16 +310,16 @@ const NodeController = (props) => {
     issueRestCreate(url, body, onSuccessfulCreate, onErrorCreate);
   }
   const onSelectRow = (row) => {
-    console.log("onSelectRow issueRestGet"); 
-    const url = glossaryAuthorContext.currentNodeType.url + "/" +row.id;
+    console.log("onSelectRow issueRestGet");
+    const url = glossaryAuthorContext.currentNodeType.url + "/" + row.id;
     console.log("issueGet " + url);
-    issueRestGet(url, onSuccessfulGet, onErrorGet);
+    issueRestGet(url, onSuccessfulGetNode, onErrorGetNode);
   };
-  const onUpdate = (body) => {
-    console.log("onUpdate");
+  const onNodeUpdate = (body) => {
+    console.log("onNodeUpdate");
     const guid = glossaryAuthorContext.selectedNode.systemAttributes.guid;
     const url = glossaryAuthorContext.currentNodeType.url + "/" + guid;
-    issueRestUpdate(url, body, onSuccessfulUpdate, onErrorUpdate) 
+    issueRestUpdate(url, body, onSuccessfulUpdate, onErrorUpdate);
   };
 
   // issue search using a criteria
@@ -332,6 +365,12 @@ const NodeController = (props) => {
                 <Delete16 onClick={() => issueDelete()} />
               </div>
             )}
+            {glossaryAuthorContext.selectedNode && (
+              <div className="bx--col-lg-1 bx--col-md-1">
+                <Relationships16 onClick={() => onClickRelationships()} />
+              </div>
+            )}
+
             <div style={{ color: "red" }}>{errorMsg}</div>
           </div>
         )}
@@ -361,7 +400,12 @@ const NodeController = (props) => {
               </div>
               {glossaryAuthorContext.selectedNode && (
                 <div className="actions-item">
-                  <NodeUpdateView onUpdate={onUpdate} />
+                  <NodeUpdateView onUpdate={onNodeUpdate} />
+                </div>
+              )}
+              {glossaryAuthorContext.selectedNodeLines && (
+                <div className="actions-item">
+                  <LinesView />
                 </div>
               )}
             </div>
