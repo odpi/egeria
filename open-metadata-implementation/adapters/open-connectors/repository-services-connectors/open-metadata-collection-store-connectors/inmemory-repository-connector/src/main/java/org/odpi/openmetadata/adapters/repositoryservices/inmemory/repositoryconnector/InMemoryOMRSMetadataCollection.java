@@ -13,6 +13,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryValidator;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
+import sun.security.jca.GetInstance;
 
 import java.util.*;
 
@@ -1992,11 +1993,10 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         /*
          * Validation complete - ok to update entity
          */
-
         EntityDetail updatedEntity = repositoryHelper.addClassificationToEntity(repositoryName,
-                                                                                entity,
-                                                                                newClassification,
-                                                                                methodName);
+                                                                                    entity,
+                                                                                    newClassification,
+                                                                                    methodName);
 
         updatedEntity = repositoryHelper.incrementVersion(userId, entity, updatedEntity);
 
