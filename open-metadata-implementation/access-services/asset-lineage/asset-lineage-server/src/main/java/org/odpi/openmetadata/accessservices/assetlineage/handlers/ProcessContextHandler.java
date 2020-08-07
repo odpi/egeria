@@ -72,7 +72,7 @@ public class ProcessContextHandler {
      * Retrieves the full context for a Process
      *
      * @param userId  String - userId of user making request.
-     * @param process the asset that has been created
+     * @param process the process entity for which the context is built
      * @return Map of the relationships between the Entities that are relevant to a Process
      */
     public Map<String, Set<GraphContext>> getProcessContext(String userId, EntityDetail process) throws OCFCheckedExceptionBase {
@@ -131,7 +131,7 @@ public class ProcessContextHandler {
      * Retrieves the relationships of an Entity
      *
      * @param userId           String - userId of user making request.
-     * @param startEntity      parent entity
+     * @param startEntity      the entity for which the relationships are retrieved
      * @param relationshipType type of the relationship
      * @return List of entities that are on the other end of the relationship, empty list if none
      */
@@ -194,7 +194,7 @@ public class ProcessContextHandler {
     private boolean hasRelationshipBasedOnType(List<EntityDetail> entityDetails, String userId) throws OCFCheckedExceptionBase {
         boolean relationshipsExist = false;
         if (checkIfEntityExistWithSpecificType(entityDetails, PORT_ALIAS))
-            relationshipsExist = hasEndRelationship(entityDetails, userId);
+            relationshipsExist = hasLineageRelationships(entityDetails, userId);
 
         if (checkIfEntityExistWithSpecificType(entityDetails, PORT_IMPLEMENTATION))
             relationshipsExist = hasTabularSchemaTypes(entityDetails, userId);
@@ -203,13 +203,13 @@ public class ProcessContextHandler {
     }
 
     /**
-     * Returns if the entities that are passed as an argument in the method have any relationships.
+     * Returns true if the entities that are passed as an argument in the method have any lineage related relationships.
      *
      * @param entityDetails list of entities
      * @param userId        String - userId of user making request.
      * @return boolean true if relationships exist otherwise false.
      */
-    private boolean hasEndRelationship(List<EntityDetail> entityDetails, String userId) throws OCFCheckedExceptionBase {
+    private boolean hasLineageRelationships(List<EntityDetail> entityDetails, String userId) throws OCFCheckedExceptionBase {
         List<EntityDetail> result = new ArrayList<>();
         for (EntityDetail entityDetail : entityDetails) {
             result.addAll(getRelationshipsBetweenEntities(userId, entityDetail,
@@ -254,7 +254,7 @@ public class ProcessContextHandler {
                     immutableProcessRelationshipsTypes.get(entityDetail.getType().getTypeDefName()));
             result.addAll(newListOfEntityDetails);
         }
-        return hasEndRelationship(result, userId);
+        return hasLineageRelationships(result, userId);
     }
 
     /**
