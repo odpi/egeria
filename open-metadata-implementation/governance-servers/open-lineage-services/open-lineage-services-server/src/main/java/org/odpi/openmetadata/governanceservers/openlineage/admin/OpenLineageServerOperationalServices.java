@@ -169,7 +169,7 @@ public class OpenLineageServerOperationalServices {
     private void initializeGraphConnectorDB(OpenLineageGraphConnector connector, OpenLineageServerErrorCode errorCode, OpenLineageServerAuditCode auditCode, String actionDescription) throws OMAGConfigurationErrorException {
         final String methodName = "initializeGraphConnectorDB";
         try {
-            connector.initializeGraphDB();
+            connector.initializeGraphDB(this.auditLog);
         } catch (OCFCheckedExceptionBase e) {
             OCFCheckedExceptionToOMAGConfigurationError(e, auditCode, actionDescription);
         } catch (Exception e) {

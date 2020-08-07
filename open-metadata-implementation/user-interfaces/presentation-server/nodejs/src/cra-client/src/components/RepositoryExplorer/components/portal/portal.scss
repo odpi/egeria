@@ -1,0 +1,36 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
+
+.portal-div {
+  position     : fixed;
+  z-index      : 1001;
+  top          : 300px;
+  left         : 478px; 
+  border-style : solid;
+  border-width : 3px;
+  border-color : black;
+  height       : 500px;
+  width        : 900px; 
+  opacity      : 1.0;
+  padding      : 10px;
+  font-size    : 10px;
+  background   : white;
+  color        : black;
+}
+
+
+.portal-backdrop {
+  position     : fixed;
+  z-index      : 1000; 
+  top          : 0px;
+  left         : 260px;
+  border-style : solid;
+  border-width : 3px;
+  border-color : rgb(72, 205, 209) ;
+  height       : 1450px;
+  width        : 1600px; 
+  opacity      : 0.9;
+  padding      : 10px;
+  font-size    : 10px;
+  background   : rgb(200,200,200);  
+}
