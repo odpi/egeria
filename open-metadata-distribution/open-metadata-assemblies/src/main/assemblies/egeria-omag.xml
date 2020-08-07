@@ -13,7 +13,9 @@
     <baseDirectory>egeria-omag-${open-metadata.version}</baseDirectory>
 
     <!-- Option Include any of our third party dependencies in lib -->
-    <!-- However currently each moduleset below is placing it's OWN dependencies into it's working location-->
+    <!-- In theory each moduleset below should be placing it's OWN dependencies into it's working location-->
+    <!-- However this is currently not working. references to issues below -->
+    <!-- so for now dependencies are added here -->
     <!--dependencySets>
         <dependencySet>
             <useProjectArtifact>false</useProjectArtifact>
@@ -21,10 +23,9 @@
             <outputDirectory>lib</outputDirectory>
             <unpack>false</unpack>
             <excludes>
-                <exclude>org.odpi.egeria:*:*</exclude>
             </excludes>
-        </dependencySet>
-    </dependencySets!-->
+        </dependencySet
+    </dependencySets-->
 
     <!-- IMPORTANT: Also add ANY modules used here to the dependency in the assembly pom -->
     <moduleSets>
@@ -63,7 +64,6 @@
                 <include>org.odpi.egeria:configuration-file-store-connector:*</include>
                 <include>org.odpi.egeria:csv-file-connector:*</include>
                 <include>org.odpi.egeria:data-folder-connector:*</include>
-                <include>org.odpi.egeria:data-platform-services-connector:*</include>
                 <include>org.odpi.egeria:discovery-service-connectors:*</include>
                 <!--include>org.odpi.egeria:gaian-connector:*</include-->
                 <include>org.odpi.egeria:graph-repository-connector:*</include>
@@ -73,12 +73,15 @@
                 <include>org.odpi.egeria:omrs-rest-repository-connector:*</include>
                 <include>org.odpi.egeria:open-lineage-janus-connector:*</include>
                 <include>org.odpi.egeria:open-metadata-archive-file-connector:*</include>
+                <!-- included as we use for the tutorial environment for access control -->
                 <include>org.odpi.egeria:open-metadata-security-samples:*</include>
                 <include>org.odpi.egeria:readonly-repository-connector:*</include>
                 <!--include>org.odpi.egeria:security-officer-tag-connector:*</include-->
                 <include>org.odpi.egeria:spring-rest-client-connector:*</include>
                 <!--include>org.odpi.egeria:ranger-connector:*</include-->
                 <!--include>org.odpi.egeria:view-generator-connectors:*</include-->
+                <!-- pluggable discovery service -->
+                <include>org.odpi.egeria:discovery-service-sample:*</include>
             </includes>
             <binaries>
                 <outputDirectory>./server/lib</outputDirectory>
@@ -102,8 +105,9 @@
             </includes>
             <binaries>
                 <outputDirectory>./utilities</outputDirectory>
+                <attachmentClassifier>jar-with-dependencies</attachmentClassifier>
                 <unpack>false</unpack>
-                <includeDependencies>true</includeDependencies>
+                <includeDependencies>false</includeDependencies>
             </binaries>
         </moduleSet>
         <!-- Samples -->
@@ -121,9 +125,10 @@
                 <include>org.odpi.egeria:open-connector-archives:*</include>
             </includes>
             <binaries>
+                <attachmentClassifier>jar-with-dependencies</attachmentClassifier>
                 <outputDirectory>./samples</outputDirectory>
                 <unpack>false</unpack>
-                <includeDependencies>true</includeDependencies>
+                <includeDependencies>false</includeDependencies>
             </binaries>
             <!-- TODO: Consider if samples should have sources - or be in another assembly -->
         </moduleSet>
@@ -148,9 +153,10 @@
                 <include>org.odpi.egeria:open-metadata-conformance-suite-client:*</include>
             </includes>
             <binaries>
+                <attachmentClassifier>jar-with-dependencies</attachmentClassifier>
                 <outputDirectory>./conformance-suite</outputDirectory>
                 <unpack>false</unpack>
-                <includeDependencies>true</includeDependencies>
+                <includeDependencies>false</includeDependencies>
             </binaries>
         </moduleSet>
         <!-- LICENSE & NOTICE and truststore from top level - this is a custom artifact -->

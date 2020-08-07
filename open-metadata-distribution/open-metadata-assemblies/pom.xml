@@ -278,6 +278,12 @@
             <groupId>org.odpi.egeria</groupId>
             <artifactId>glossary-canonical-model</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>discovery-service-sample</artifactId>
+        </dependency>
+
         <!-- Technically this is a dependency as we consume license/readme files. However parent is always done
         first, and including it will result in build issue. -->
         <!--dependency>

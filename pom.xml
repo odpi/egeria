@@ -2222,6 +2222,11 @@
                 <artifactId>presentation-server</artifactId>
                 <version>${open-metadata.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>discovery-service-sample</artifactId>
+                <version>${open-metadata.version}</version>
+            </dependency>
             <!-- End of POM dependency versions -->
 
             <dependency>
