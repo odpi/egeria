@@ -36,8 +36,7 @@ public class GraphGremlinBase {
      * graph instance will be initialized.
      */
     public GraphTraversalSource openGraph() {
-        log.info("Trying to open the graph");
-//        conf = new PropertiesConfiguration(propFileName);
+        log.debug("Trying to open the graph");
         try
         {
             graph = GraphFactory.open(properties);
@@ -56,7 +55,7 @@ public class GraphGremlinBase {
      * Closes the graph instance.
      */
     public void closeGraph() throws Exception {
-        log.info("closing graph");
+        log.debug("closing graph");
         try {
             if (g != null) {
                 g.close();
