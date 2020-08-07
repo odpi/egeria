@@ -44,17 +44,19 @@ public class AssetLineageRestServices {
     }
 
     /**
-     * Scan the cohort for Glossary Terms available
-     * Publish the context for each Glossary Term on OMAS out Topic
+     * Scan the cohort for available entities of the provided entityType
+     * Publish the context for each entity on the AL OMAS out Topic
      *
      * @param serverName name of server instance to call
      * @param userId     the name of the calling user
-     * @return a list of unique identifiers (guids) of the available Glossary Terms as a response
+     * @param entityType the type of the entity to search for
+     *
+     * @return a list of unique identifiers (guids) of the available entityType as a response
      */
-    public GUIDListResponse initialLoadByEntityType(String serverName, String userId, String entityType) {
+    public GUIDListResponse publishEntities(String serverName, String userId, String entityType) {
         GUIDListResponse response = new GUIDListResponse();
 
-        String methodName = "initialLoadByRelationshipType";
+        String methodName = "publishEntities";
         try {
             AssetContextHandler assetContextHandler = instanceHandler.getAssetContextHandler(userId, serverName, methodName);
             List<EntityDetail> entitiesByTypeName = assetContextHandler.getEntitiesByTypeName(userId, entityType);
@@ -90,10 +92,12 @@ public class AssetLineageRestServices {
                 } else if (PROCESS.equals(typeName)) {
                     publisher.publishProcessContext(entityDetail);
                 } else {
-                    publisher.publishAssetContext(entityDetail);
+                    // only Processes and GlossaryTerms are the types supported for initial load
+                    log.error("Unsupported typeName {} for entity with guid {}. he context can not be published", typeName, entityDetail.getGUID());
                 }
             } catch (OCFCheckedExceptionBase | JsonProcessingException ocfCheckedExceptionBase) {
-                log.error("The context for entity guid = {} - type {} can not be published.", entityDetail.getGUID(), entityDetail.getType().getTypeDefName());
+                log.error("The context for entity guid = {} - type {} can not be published.", entityDetail.getGUID(),
+                        entityDetail.getType().getTypeDefName());
             }
         });
     }
