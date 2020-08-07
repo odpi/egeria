@@ -5,6 +5,7 @@ package org.odpi.openmetadata.governanceservers.openlineage.graph;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageRelationship;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
 
@@ -14,7 +15,7 @@ import java.util.Set;
 public abstract class LineageGraphConnectorBase extends ConnectorBase implements LineageGraph {
 
     @Override
-    public abstract void initializeGraphDB() throws OpenLineageException;
+    public abstract void initializeGraphDB(AuditLog auditLog) throws OpenLineageException;
 
     @Override
     public abstract void storeToGraph(Set<GraphContext> graphContext);

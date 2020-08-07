@@ -12,17 +12,22 @@ import org.janusgraph.core.schema.JanusGraphManagement;
 import org.janusgraph.core.schema.SchemaAction;
 import org.janusgraph.core.schema.SchemaStatus;
 import org.janusgraph.graphdb.database.management.ManagementSystem;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.temporal.ChronoUnit;
 
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.JanusConnectorErrorCode.INDEX_ALREADY_EXISTS;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.JanusConnectorErrorCode.INDEX_NOT_CREATED;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.JanusConnectorErrorCode.INDEX_NOT_ENABLED;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.immutableCorePropertyTypes;
 
 public class IndexingFactory {
 
     private static final Logger log = LoggerFactory.getLogger(IndexingFactory.class);
     private JanusGraph graph;
+    AuditLog auditLog;
     /**
      * Creates the indexes for the properties of vertices.
      *
@@ -46,8 +51,7 @@ public class IndexingFactory {
             indexName = "edgeIndexComposite" + propertyKeyName;
 
         }
-
-        log.info("INDEX to be created {}", indexName);
+        log.debug("INDEX to be created {}", indexName);
         this.graph = graph;
         checkIndex(indexName,propertyName,propertyKeyName,unique,type);
     }
@@ -62,7 +66,10 @@ public class IndexingFactory {
 
         JanusGraphIndex existingIndex = management.getGraphIndex(indexName);
         if (existingIndex != null) {
-            log.info("{} index already exists", indexName);
+            log.debug("{} index already exists", indexName);
+            if (auditLog != null) {
+                auditLog.logMessage(indexName + " index already exists", INDEX_ALREADY_EXISTS.getMessageDefinition());
+            }
             management.rollback();
             return;
         }
@@ -86,6 +93,7 @@ public class IndexingFactory {
         } catch (ClassNotFoundException e) {
             log.error("class not found for property {}", propertyName);
             log.error("NO INDEX created for property {}", propertyName);
+            auditLog.logMessage("class not found for property " + propertyName, INDEX_NOT_CREATED.getMessageDefinition());
             return;
         }
 
@@ -151,6 +159,9 @@ public class IndexingFactory {
             ManagementSystem.awaitGraphIndexStatus(graph, indexName).status(SchemaStatus.ENABLED).timeout(10, ChronoUnit.SECONDS).call();
         } catch (Exception e) {
             log.error("{} caught interrupted exception from awaitGraphIndexStatus ENABLED {}", methodName, e);
+            if (auditLog != null) {
+                auditLog.logMessage("caught interrupted exception from awaitGraphIndexStatus", INDEX_NOT_ENABLED.getMessageDefinition());
+            }
             management.rollback();
         }
     }
