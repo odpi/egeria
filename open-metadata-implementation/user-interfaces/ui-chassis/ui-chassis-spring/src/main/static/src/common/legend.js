@@ -52,11 +52,9 @@ class Legend extends mixinBehaviors([IronFitBehavior], PolymerElement) {
     }
     ready() {
         super.ready();
-        this.addEventListener('dom-change', this.domChanged);
-    }
-
-    domChanged(event) {
-        this.refit();
+        this.addEventListener('dom-change', () => {this.refit()});
+        window.addEventListener('resize', () => {this.refit()});
+        window.addEventListener('scroll', () => {this.refit()});
     }
 
     dataObserver(data, newData) {
