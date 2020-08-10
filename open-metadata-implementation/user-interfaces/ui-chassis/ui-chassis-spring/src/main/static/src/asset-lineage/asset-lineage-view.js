@@ -41,12 +41,11 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
             margin: auto;
         }
     </style>
-    
     <app-route route="{{route}}" pattern="/:usecase/:guid" data="{{routeData}}" tail="{{tail}}"></app-route>
-     
     <token-ajax id="tokenAjax" last-response="{{graphData}}"></token-ajax>
     <token-ajax id="tokenAjaxDetails" last-response="{{item}}" ></token-ajax>
-    <div>
+
+        <div>
         <vaadin-tabs id ="useCases"  selected="[[ _getUseCase(routeData.usecase) ]]" >
           <vaadin-tab value="ultimateSource" >
             <a href="[[rootPath]]#/asset-lineage/ultimateSource/[[routeData.guid]]" tabindex="-1" rel="noopener"> 
@@ -94,25 +93,37 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
             </vaadin-select>
             <paper-button id = "closeLegendButton" on-tap="toggleLegend">Toggle legend</paper-button>
         </div>
-    </div>
-
-    <div id="container">
-        <vis-graph id="visgraph" groups=[[groups]] data=[[graphData]]></vis-graph>
-    </div>
+    </div>       
+   
+    <dom-if if="[[_noGuid(routeData)]]" restamp="true">
+    <template > 
+        <div class="warning" style="display: block; margin: auto">
+            <p>Please use  
+                <a href="[[rootPath]]#/asset-catalog/search" > 
+                        [ Asset Catalog ]
+                </a>
+                to select an asset to view lineage.
+            </p>
+        </div>
+    </template>
+    </dom-if>
+    
+    <div id="container" >
+        <vis-graph id="visgraph" groups=[[groups]] data=[[graphData]] ></vis-graph>
+    </div> 
+       
     `;
   }
 
     ready() {
         super.ready();
-        var thisElement = this;
-        this.$.tokenAjax.addEventListener('error', () =>
-            thisElement.$.visgraph.importNodesAndEdges([],[]));
-        this.$.processMenu.addEventListener('value-changed', () =>
-            this._reload(this.$.useCases.items[this.$.useCases.selected].value, this.$.processMenu.value));
-
-        this.$.glossaryTermMenu.addEventListener('value-changed', () =>
-            this._reload(this.$.useCases.items[this.$.useCases.selected].value, this.$.processMenu.value));
-
+            var thisElement = this;
+            this.$.tokenAjax.addEventListener('error', () =>
+                thisElement.$.visgraph.importNodesAndEdges([], []));
+            this.$.processMenu.addEventListener('value-changed', () =>
+                this._reload(this.$.useCases.items[this.$.useCases.selected].value, this.$.processMenu.value));
+            this.$.glossaryTermMenu.addEventListener('value-changed', () =>
+                this._reload(this.$.useCases.items[this.$.useCases.selected].value, this.$.processMenu.value));
     }
 
     static get properties() {
@@ -182,13 +193,26 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
         }
     }
 
+    _noGuid(routeData){
+        return routeData === undefined
+            || routeData.guid === undefined
+            || routeData.guid === "";
+    }
+
+    _noLineage(routeData){
+        return !this._noGuid(routeData)
+            && this.graphData
+            && this.graphData.nodes
+            && this.graphData.nodes.length == 0;
+    }
+
     connectedCallback() {
         super.connectedCallback();
         this.$.visgraph.options.groups = this.groups;
         this.$.visgraph.options.interaction = this.graphInteraction;
         this.$.visgraph.options.layout = this.graphLayout;
         this.$.visgraph.options.physics = false;
-    }
+        }
 
     static get observers() {
         return [
@@ -197,9 +221,11 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
     }
 
     _routeChanged(route){
-        if (this.route.prefix === '/asset-lineage') {
-            this.$.tokenAjaxDetails.url = '/api/assets/' + this.routeData.guid;
-            this.$.tokenAjaxDetails._go();
+        if ( this.route.prefix === '/asset-lineage' ){
+            if( this.routeData && this.routeData.guid ) {
+                this.$.tokenAjaxDetails.url = '/api/assets/' + this.routeData.guid;
+                this.$.tokenAjaxDetails._go();
+            }
             this._reload(this.routeData.usecase, this.$.processMenu.value);
         }
     }
@@ -225,6 +251,12 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
                     edges: []
                 };
             }
+        }
+        if(data.nodes.length == 0 ){
+            this.dispatchEvent(new CustomEvent('show-modal', {
+                bubbles: true,
+                composed: true,
+                detail: { message: "The graph for this lineage is empty.", level: 'info'}}));
         }
         const egeriaColor = getComputedStyle(this).getPropertyValue('--egeria-primary-color');
         for (var i = 0; i < data.nodes.length; i++) {
@@ -299,12 +331,12 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
     }
 
     _ultimateSource(guid, includeProcesses) {
-    if (includeProcesses === null || includeProcesses === undefined) {
-     includeProcesses  = "true";
-    }
-    this.$.visgraph.options.groups = this.groups;
-    this.$.tokenAjax.url = '/api/lineage/entities/' + guid + '/ultimate-source?includeProcesses=' + includeProcesses;
-    this.$.tokenAjax._go();
+        if (includeProcesses === null || includeProcesses === undefined) {
+         includeProcesses  = "true";
+        }
+        this.$.visgraph.options.groups = this.groups;
+        this.$.tokenAjax.url = '/api/lineage/entities/' + guid + '/ultimate-source?includeProcesses=' + includeProcesses;
+        this.$.tokenAjax._go();
     }
 
     _endToEndLineage(guid, includeProcesses){
@@ -344,24 +376,25 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
     }
 
     _reload(usecase, includeProcesses) {
-    switch (usecase) {
-        case 'ultimateSource':
-            this._ultimateSource(this.routeData.guid, includeProcesses);
-            break;
-        case 'endToEnd':
-            this._endToEndLineage(this.routeData.guid, includeProcesses);
-            break;
-        case 'ultimateDestination':
-            this._ultimateDestination(this.routeData.guid, includeProcesses);
-            break;
-        case 'glossaryLineage':
-            this._glossaryLineage(this.routeData.guid, includeProcesses);
-            break;
-        case 'sourceAndDestination':
-            this._sourceAndDestination(this.routeData.guid, includeProcesses);
-            break;
-    }
-    }
+        if (this.routeData.guid !== undefined && this.routeData.guid !== "")
+            switch (usecase) {
+                case 'ultimateSource':
+                    this._ultimateSource(this.routeData.guid, includeProcesses);
+                    break;
+                case 'endToEnd':
+                    this._endToEndLineage(this.routeData.guid, includeProcesses);
+                    break;
+                case 'ultimateDestination':
+                    this._ultimateDestination(this.routeData.guid, includeProcesses);
+                    break;
+                case 'glossaryLineage':
+                    this._glossaryLineage(this.routeData.guid, includeProcesses);
+                    break;
+                case 'sourceAndDestination':
+                    this._sourceAndDestination(this.routeData.guid, includeProcesses);
+                    break;
+            }
+        }
 
     toggleLegend() {
         this.$$('vis-graph').toggleLegend();
