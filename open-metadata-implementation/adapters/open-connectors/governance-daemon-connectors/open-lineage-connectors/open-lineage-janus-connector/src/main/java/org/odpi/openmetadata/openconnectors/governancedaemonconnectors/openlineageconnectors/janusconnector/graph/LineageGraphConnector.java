@@ -13,6 +13,7 @@ import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageRelationship;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
 import org.odpi.openmetadata.governanceservers.openlineage.graph.LineageGraphConnectorBase;
 import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVerticesAndEdges;
@@ -41,6 +42,9 @@ import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.inV;
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.or;
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.outV;
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.unfold;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.JanusConnectorErrorCode.GRAPH_DISCONNECT_ERROR;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.JanusConnectorErrorCode.GRAPH_TRAVERSAL_EMPTY;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.JanusConnectorErrorCode.PROCESS_MAPPING_ERROR;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.ASSET_SCHEMA_TYPE;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.ATTRIBUTE_FOR_SCHEMA;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.DATA_FILE;
@@ -83,18 +87,19 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
     private LineageGraphConnectorHelper helper;
     private GraphTraversalSource g;
     private GraphFactory graphFactory;
+    private AuditLog auditLog;
 
     /**
      * Instantiates the graph based on the configuration passed.
      */
-    public void initializeGraphDB() throws OpenLineageException {
-
+    public void initializeGraphDB(AuditLog auditLog) throws OpenLineageException {
+        this.auditLog = auditLog;
         try {
             graphFactory = new GraphFactory();
-            this.g = graphFactory.openGraph(connectionProperties.getConnectorType().getConnectorProviderClassName(), connectionProperties);
+            this.g = graphFactory.openGraph(connectionProperties.getConnectorType().getConnectorProviderClassName(), connectionProperties, auditLog);
             if (g == null) {
                 log.error("The graphTraversal is empty connection with the graph is not established");
-                JanusConnectorErrorCode errorCode = JanusConnectorErrorCode.GRAPH_TRAVERSAL_EMPTY;
+                JanusConnectorErrorCode errorCode = GRAPH_TRAVERSAL_EMPTY;
                 String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage("The graphTraversal is empty connection " +
                         "with the graph is not established", "initializeGraphDB", LineageGraphConnector.class.getName());
                 throw new OpenLineageException(500,
@@ -125,6 +130,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
             super.disconnect();
         } catch (Exception e) {
             log.error("Exception while closing lineage graph: ", e);
+            this.auditLog.logException("Exception while closing lineage graph", GRAPH_DISCONNECT_ERROR.getMessageDefinition(), e);
             //TODO: throw ConnectorCheckedException
         }
 
@@ -132,7 +138,6 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
 
     @Override
     public void schedulerTask() {
-
         try {
             List<Vertex> vertices = g.V()
                     .and(__.has(PROPERTY_KEY_LABEL, PROCESS),
@@ -150,6 +155,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
             }
         } catch (Exception e) {
             log.error("Something went wrong when trying to map a process. The error is: ", e);
+            auditLog.logException("Something went wrong when trying to map a process.", PROCESS_MAPPING_ERROR.getMessageDefinition(), e);
             if (graphFactory.isSupportingTransactions()) {
                 g.tx().rollback();
             }

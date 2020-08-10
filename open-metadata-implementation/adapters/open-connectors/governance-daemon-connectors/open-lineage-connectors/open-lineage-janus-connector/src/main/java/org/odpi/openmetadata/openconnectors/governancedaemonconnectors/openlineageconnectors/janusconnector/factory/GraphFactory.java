@@ -14,6 +14,7 @@ import org.apache.tinkerpop.gremlin.structure.io.gryo.GryoMapper;
 import org.janusgraph.core.JanusGraph;
 import org.janusgraph.core.schema.JanusGraphManagement;
 import org.janusgraph.graphdb.tinkerpop.JanusGraphIoRegistry;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.graph.LineageGraphConnectorProvider;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.graph.LineageGraphRemoteConnectorProvider;
@@ -24,7 +25,6 @@ import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlinea
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -51,6 +51,7 @@ public class GraphFactory extends IndexingFactory {
     private Map<String,Object> properties;
     private Cluster cluster;
     private Client client;
+
     private static final String ADD_VERTEX_LABEL_IF_MISSING_FORMAT =
             "if (management.getVertexLabel(\"%s\") == null ) { management.makeVertexLabel(\"%s\").make(); }\n";
     private static final String ADD_EDGE_LABEL_IF_MISSING_FORMAT =
@@ -63,12 +64,13 @@ public class GraphFactory extends IndexingFactory {
      *
      * @param providerClass        - Provider Class name to be used
      * @param connectionProperties - POJO for the configuration used to create the connector.
+     * @param auditLog             - Used for logging errors
      * @return GraphTraversalSource DSL of Gremlin
      *
      * @throws JanusConnectorException if init fails
      */
-    public GraphTraversalSource openGraph(String providerClass,ConnectionProperties connectionProperties) throws JanusConnectorException {
-
+    public GraphTraversalSource openGraph(String providerClass, ConnectionProperties connectionProperties, AuditLog auditLog) throws JanusConnectorException {
+        super.auditLog = auditLog;
         if (providerClass.equals(LineageGraphConnectorProvider.class.getName())) {
           return openEmbeddedGraph(connectionProperties.getConfigurationProperties());
         }
@@ -89,7 +91,7 @@ public class GraphFactory extends IndexingFactory {
      *
      * @throws JanusConnectorException if open fails
      */
-    private GraphTraversalSource openEmbeddedGraph(Map<String,Object> properties) throws JanusConnectorException{
+    private GraphTraversalSource openEmbeddedGraph(Map<String, Object> properties) throws JanusConnectorException{
         final String methodName = "openEmbeddedGraph";
 
         try {
@@ -115,7 +117,7 @@ public class GraphFactory extends IndexingFactory {
      *
      * @throws JanusConnectorException if open fails
      */
-    private GraphTraversalSource openRemoteGraph(Map<String,Object> properties) throws JanusConnectorException{
+    private GraphTraversalSource openRemoteGraph(Map<String, Object> properties) throws JanusConnectorException{
         String methodName = "openRemoteGraph";
         this.supportingTransactions = false;
         this.properties = properties;
@@ -145,7 +147,7 @@ public class GraphFactory extends IndexingFactory {
     private void initializeGraph(JanusGraph janusGraph) throws JanusConnectorException {
 
         final String methodName = "initializeGraph";
-        log.info("Initializing graph. Updating schema, if necessary.");
+        log.debug("Initializing graph. Updating schema, if necessary.");
         try {
             JanusGraphManagement management = janusGraph.openManagement();
 
@@ -175,12 +177,11 @@ public class GraphFactory extends IndexingFactory {
      */
     private void initializeRemoteGraph(Client client) throws JanusConnectorException {
         final String methodName = "initializeRemoteGraph";
-        log.info("Initializing graph remotely. Updating schema, if necessary.");
-
+        log.debug("Initializing graph remotely. Updating schema, if necessary.");
         try {
 
             String createLabels = createLabelsCommand();
-            log.info("Checking labels...");
+            log.debug("Checking labels...");
             client.submit(createLabels);
 
             String indexCommandGuid = createIndexCommand("vertexIndexCompositevertex--guid", PROPERTY_KEY_ENTITY_GUID, true, VERTEX);
@@ -190,7 +191,7 @@ public class GraphFactory extends IndexingFactory {
             String indexCommandEdgeGuid = createIndexCommand("edgeIndexCompositeedge--guid", PROPERTY_KEY_RELATIONSHIP_GUID, false, EDGE);
             String indexCommandEdgeLabel = createIndexCommand("edgeIndexCompositeedge--label", PROPERTY_KEY_RELATIONSHIP_LABEL, false, EDGE);
 
-            log.info("Checking indices...");
+            log.debug("Checking indices...");
             client.submit(indexCommandGuid);
             client.submit(indexCommandLabel);
             client.submit(indexCommandVersion);
