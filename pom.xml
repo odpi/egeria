@@ -175,7 +175,7 @@
         <antlr.version>3.5.2</antlr.version>
         <snappy.version>1.1.7.6</snappy.version>
         <snakeyaml.version>1.26</snakeyaml.version>
-        <springdoc.version>1.4.3</springdoc.version>
+        <springdoc.version>1.4.4</springdoc.version>
         <classgraph.version>4.8.87</classgraph.version>
         <swagger.version>2.1.4</swagger.version>
         <groovy.version>3.0.5</groovy.version>
@@ -213,7 +213,7 @@
         <license-plugin.version>2.0.0</license-plugin.version>
         <springdoc-plugin.version>1.0</springdoc-plugin.version>
         <failsafe-plugin.version>3.0.0-M5</failsafe-plugin.version>
-        <git-commit-plugin.version>4.0.1</git-commit-plugin.version>
+        <git-commit-plugin.version>4.0.2</git-commit-plugin.version>
         <process-exec-plugin.version>0.9</process-exec-plugin.version>
         <groovy-plugin.version>2.1.1</groovy-plugin.version>
 
