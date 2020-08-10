@@ -91,11 +91,6 @@ public enum OpenLineageServerErrorCode {
             "An error occured while disconnecting the In-topic connector",
             "Please verify that the Open Lineage Services have shut down properly."),
 
-    NODE_NOT_FOUND(404, "OPEN-LINEAGE-SERVICES-404-001 ",
-            "Error retrieving queried node.",
-            "The queried node was not found in the lineage graph.",
-            "Please verify the queried GUID."),
-
     GRAPH_INITIALIZATION_ERROR(500, "OPEN-LINEAGE-SERVICES-500-001 ",
             "The graph database could not be initialized for open metadata repository {0}.",
             "The system was unable to initialize.",
