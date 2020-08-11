@@ -67,8 +67,7 @@ class Legend extends mixinBehaviors([IronFitBehavior], PolymerElement) {
     static get properties() {
         return {
             data: {
-                type: Object,
-                observer: 'dataObserver'
+                type: Object
             },
             title: String,
             groups: {
@@ -91,11 +90,6 @@ class Legend extends mixinBehaviors([IronFitBehavior], PolymerElement) {
     _toggle(){
         this.visible = !this.visible;
     }
-    dataObserver (data, newData) {
-        console.log(data)
-        console.log(newData)
-    }
-
 }
 
 window.customElements.define('legend-div', Legend);
