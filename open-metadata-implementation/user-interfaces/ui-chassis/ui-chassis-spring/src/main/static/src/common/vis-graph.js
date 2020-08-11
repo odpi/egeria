@@ -53,9 +53,11 @@ class VisGraph extends mixinBehaviors([ItemViewBehavior], PolymerElement) {
           }
         </style>
         
+      <token-ajax id="tokenAjaxDetails" last-response="{{item}}" ></token-ajax>
+
         <div id="visLayout" class = "layout horizontal displayLength" style="flex-grow: 1">
             <div id="vis_container"></div>            
-            <legend-div id="legend" groups = [[groups]] hidden = "[[hideLegend]]" data = "{{data.nodes}}"
+            <legend-div id="legend" groups = [[groups]] hidden = "[[hideLegend]]" data = "{{legendNodes}}"
             vertical-align="top"
             horizontal-align="right"
             auto-fit-on-attach
@@ -67,11 +69,12 @@ class VisGraph extends mixinBehaviors([ItemViewBehavior], PolymerElement) {
             <asset-tools guid="[[node.id]]" style="display: inline-flex"></asset-tools>
             <paper-button dialog-confirm style="float: right">Close</paper-button>
           </div>
-          <props-table  items="[[_attributes(node.properties)]]"  
+          <props-table  items="[[_attributes(node.properties)]]"   
                         title="[[node.type]]: [[node.displayName]]" 
-                        with-row-stripes ></props-table>
+                        with-row-stripes>
+          </props-table>
+          <props-table items="[[_attributes(item.type)]]" title="Type" with-row-stripes ></props-table>
         </paper-dialog>
-     
     `;
   }
 
@@ -116,7 +119,14 @@ class VisGraph extends mixinBehaviors([ItemViewBehavior], PolymerElement) {
     },
       groups: {
           type: Object
-      }
+      },
+      legendNodes : {
+        type: Object
+      },
+      /*detailsResponse : {
+        type: Object
+
+      }*/
     };
   }
 
@@ -128,6 +138,8 @@ class VisGraph extends mixinBehaviors([ItemViewBehavior], PolymerElement) {
         edges: {}
       };
     }
+
+    this.determineLegendData(data.nodes)
 
     this.data.nodes = data.nodes;
     this.data.edges = data.edges;
@@ -177,13 +189,27 @@ networkChanged(newNetwork) {
 
   handleSelectNode(nodeId) {
     if(nodeId){
+
+      console.log("doing le did")
+      console.log(nodeId)
       for (var i = 0; i < this.data.nodes.length; i++) {
-        if(this.data.nodes[i].id === nodeId){
+        if(this.data.nodes[i].id === nodeId) {
           this.node = this.data.nodes[i];
           break;
         }
       }
+
+
+      this.$.tokenAjaxDetails.url = '/api/assets/' + nodeId;
+      this.$.tokenAjaxDetails._go();
+
+      console.log("I hva done ze did")
+
+      // console.log(item);
+
+      // this.$.detailsDialog.open();
       this.$.visDialog.open();
+
     }
   }
 
@@ -202,7 +228,50 @@ networkChanged(newNetwork) {
     }
     this.setOptions(value);
   }
+  determineLegendData(data) {
 
+    this.legendNodes = [];
+    var uniqueObjects = {}
+    if (this.groups == null) {
+      return;
+    }
+    const egeriaColor = getComputedStyle(this).getPropertyValue('--egeria-primary-color');
+    for (var i = 0; i < data.length; i++) {
+
+      if (uniqueObjects[data[i].group] === undefined) {
+        let currentNode = data[i];
+        let {icon, groupColor} = this.getIconAndColor(currentNode, egeriaColor);
+
+
+        uniqueObjects[currentNode.group] = {
+          group: currentNode.group,
+          appearances: 1,
+          color: groupColor,
+          shape: icon
+        }
+      } else {
+        uniqueObjects[data[i].group].appearances = uniqueObjects[data[i].group].appearances + 1;
+      }
+    }
+
+    this.legendNodes = Object.values(uniqueObjects);
+  }
+
+  getIconAndColor(currentNode, egeriaColor) {
+    let icon;
+    let groupColor;
+    if (this.groups[currentNode.group] === undefined) {
+      icon = undefined;
+      groupColor = egeriaColor
+    } else {
+      icon = this.groups[currentNode.group].icon;
+      groupColor = this.groups[currentNode.group].color
+      if (groupColor === undefined) {
+        groupColor = egeriaColor;
+      }
+    }
+    return {icon, groupColor};
+  }
 }
 
 window.customElements.define('vis-graph', VisGraph);
