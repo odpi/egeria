@@ -66,7 +66,7 @@ class VisGraph extends mixinBehaviors([ItemViewBehavior], PolymerElement) {
         <paper-dialog id="visDialog" class = "vis-dialog">
           <div>
             <a dialog-confirm style="float: right" title="close">
-             <iron-icon icon="icons:close" style="transform: rotate(180deg)"></iron-icon>
+             <iron-icon icon="icons:close" style="width: 24px;height: 24px;"></iron-icon>
             </a>
           </div>
           <asset-tools guid="[[node.id]]" style="display: inline-flex"></asset-tools>
