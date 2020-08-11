@@ -48,7 +48,7 @@ class VisGraph extends mixinBehaviors([ItemViewBehavior], PolymerElement) {
           }
         </style>
         
-      <token-ajax id="tokenAjaxDetails" last-response="{{item}}" ></token-ajax>
+      <token-ajax id="tokenAjaxDetails" last-response="{{typeDetails}}" ></token-ajax>
 
         <div id="visLayout" class = "layout horizontal displayLength" style="flex-grow: 1">
             <div id="vis_container"></div>            
@@ -73,7 +73,7 @@ class VisGraph extends mixinBehaviors([ItemViewBehavior], PolymerElement) {
                         title="[[node.type]]: [[node.displayName]]" 
                         with-row-stripes>
           </props-table>
-          <props-table items="[[_attributes(item.type)]]" title="Type" with-row-stripes ></props-table>
+          <props-table items="[[_attributes(typeDetails.type)]]" title="Type" with-row-stripes ></props-table>
         </paper-dialog>
     `;
   }
