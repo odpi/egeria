@@ -11,6 +11,7 @@ import '@vaadin/vaadin-select/vaadin-select.js';
 import '@vaadin/vaadin-dropdown-menu/vaadin-dropdown-menu.js';
 import '@vaadin/vaadin-item/vaadin-item.js';
 import '@vaadin/vaadin-list-box/vaadin-list-box.js';
+import '@polymer/paper-toggle-button/paper-toggle-button.js';
 import {mixinBehaviors} from "@polymer/polymer/lib/legacy/class";
 import {ItemViewBehavior} from "../common/item";
 
@@ -74,14 +75,7 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
           </vaadin-tab>
         </vaadin-tabs>
         <div> 
-            <vaadin-select id="processMenu" value="true" >
-              <template>
-                <vaadin-list-box>
-                  <vaadin-item value="true" selected>With ETL Jobs</vaadin-item>
-                  <vaadin-item value="false">Without ETL Jobs</vaadin-item>
-                </vaadin-list-box>
-                </template>
-            </vaadin-select>
+            <paper-toggle-button id="processToggle" checked>ETL Jobs</paper-toggle-button>
             <vaadin-select id="glossaryTermMenu" value="true" 
                 hidden = "[[_hideIncludeGlossaryTerms(routeData.usecase)]]" >
               <template>
@@ -119,10 +113,11 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
             var thisElement = this;
             this.$.tokenAjax.addEventListener('error', () =>
                 thisElement.$.visgraph.importNodesAndEdges([], []));
-            this.$.processMenu.addEventListener('value-changed', () =>
-                this._reload(this.$.useCases.items[this.$.useCases.selected].value, this.$.processMenu.value));
+
+            this.$.processToggle.addEventListener('change', () =>
+                this._reload(this.$.useCases.items[this.$.useCases.selected].value, this.$.processToggle.checked));
             this.$.glossaryTermMenu.addEventListener('value-changed', () =>
-                this._reload(this.$.useCases.items[this.$.useCases.selected].value, this.$.processMenu.value));
+                this._reload(this.$.useCases.items[this.$.useCases.selected].value, this.$.processToggle.value));
     }
 
     static get properties() {
@@ -225,7 +220,7 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
                 this.$.tokenAjaxDetails.url = '/api/assets/' + this.routeData.guid;
                 this.$.tokenAjaxDetails._go();
             }
-            this._reload(this.routeData.usecase, this.$.processMenu.value);
+            this._reload(this.routeData.usecase, this.$.processToggle.checked);
         }
     }
 
