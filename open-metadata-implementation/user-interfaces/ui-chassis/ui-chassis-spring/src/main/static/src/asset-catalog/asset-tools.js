@@ -16,7 +16,6 @@ class AssetTools extends PolymerElement {
         :host {
           display: block;
           padding: 10px 24px;
-          --asset-tools-li-padding: 5px; 
         }
         ul#menu {
             margin: 0;
@@ -24,11 +23,7 @@ class AssetTools extends PolymerElement {
         }
         ul#menu li {
           display:inline-block;
-          /*padding: var( --asset-tools-li-padding , 10px);*/
         }
-        /*ul#menu li:hover {*/
-        /*    background-color: var(--app-background-color);*/
-        /*}*/
         iron-icon {
          --iron-icon-fill-color: var(--egeria-button-ink-color);
         }
