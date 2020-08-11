@@ -91,7 +91,6 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
                 </vaadin-list-box>  
               </template>
             </vaadin-select>
-            <paper-button id = "closeLegendButton" on-tap="toggleLegend">Toggle legend</paper-button>
         </div>
     </div>       
    
@@ -256,7 +255,7 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
             this.dispatchEvent(new CustomEvent('show-modal', {
                 bubbles: true,
                 composed: true,
-                detail: { message: "The graph for this lineage is empty.", level: 'info'}}));
+                detail: { message: "No lineage information available", level: 'info'}}));
         }
         const egeriaColor = getComputedStyle(this).getPropertyValue('--egeria-primary-color');
         for (var i = 0; i < data.nodes.length; i++) {
@@ -395,10 +394,6 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
                     break;
             }
         }
-
-    toggleLegend() {
-        this.$$('vis-graph').toggleLegend();
-    }
 
     _getUseCase(usecase){
         return this.usecases.indexOf(usecase);

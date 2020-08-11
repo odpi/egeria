@@ -44,18 +44,15 @@ class VisGraph extends mixinBehaviors([ItemViewBehavior], PolymerElement) {
           }
           #legend{
             z-index: 10;
-            padding: 20px;
             overflow: auto;
-            min-width: 100px;
-            min-height: 100px;
           }
         </style>
         
         <div id="visLayout" class = "layout horizontal displayLength" style="flex-grow: 1">
             <div id="vis_container"></div>            
             <legend-div id="legend" 
-                groups = [[groups]] 
-                hidden = "[[hideLegend]]" 
+                groups = "[[groups]]"
+                visible = "[[!hideLegend]]" 
                 data = "[[data.nodes]]"
                 vertical-align="top"
                 horizontal-align="right"
