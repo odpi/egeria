@@ -127,11 +127,7 @@ class VisGraph extends mixinBehaviors([ItemViewBehavior], PolymerElement) {
       },
       legendNodes : {
         type: Object
-      },
-      /*detailsResponse : {
-        type: Object
-
-      }*/
+      }
     };
   }
 
@@ -194,8 +190,6 @@ networkChanged(newNetwork) {
 
   handleSelectNode(nodeId) {
     if(nodeId){
-
-      console.log(nodeId)
       for (var i = 0; i < this.data.nodes.length; i++) {
         if(this.data.nodes[i].id === nodeId) {
           this.node = this.data.nodes[i];
