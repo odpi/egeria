@@ -41,6 +41,10 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
             width: fit-content;
             margin: auto;
         }
+        ul#menu, ul#menu li {
+            padding-left: 0;
+            margin-right: 16px;
+        }
     </style>
     <app-route route="{{route}}" pattern="/:usecase/:guid" data="{{routeData}}" tail="{{tail}}"></app-route>
     <token-ajax id="tokenAjax" last-response="{{graphData}}"></token-ajax>
@@ -74,18 +78,20 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
             </a>
           </vaadin-tab>
         </vaadin-tabs>
-        <div> 
-            <paper-toggle-button id="processToggle" checked>ETL Jobs</paper-toggle-button>
-            <vaadin-select id="glossaryTermMenu" value="true" 
-                hidden = "[[_hideIncludeGlossaryTerms(routeData.usecase)]]" >
-              <template>
-                <vaadin-list-box>
-                  <vaadin-item value="true" selected>With Glossary Term</vaadin-item>
-                  <vaadin-item value="false">Without Glossary Term</vaadin-item>
-                </vaadin-list-box>  
-              </template>
-            </vaadin-select>
-        </div>
+        <ul id="menu"> 
+            <li> 
+                <paper-toggle-button id="processToggle" checked>
+                    ETL Jobs
+                </paper-toggle-button>
+            </li>
+            <li> 
+                <paper-toggle-button id="glossaryTermToggle" checked disabled>
+                    Glossary Terms
+                </paper-toggle-button>
+            </li>
+         </ul>
+           
+        
     </div>       
    
     <dom-if if="[[_noGuid(routeData)]]" restamp="true">
@@ -116,7 +122,7 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
 
             this.$.processToggle.addEventListener('change', () =>
                 this._reload(this.$.useCases.items[this.$.useCases.selected].value, this.$.processToggle.checked));
-            this.$.glossaryTermMenu.addEventListener('value-changed', () =>
+            this.$.glossaryTermToggle.addEventListener('changed', () =>
                 this._reload(this.$.useCases.items[this.$.useCases.selected].value, this.$.processToggle.value));
     }
 
