@@ -48,7 +48,7 @@ class VisGraph extends mixinBehaviors([ItemViewBehavior], PolymerElement) {
           }
         </style>
         
-      <token-ajax id="tokenAjaxDetails" last-response="{{typeDetails}}" ></token-ajax>
+      <token-ajax id="tokenAjaxDetails" last-response="{{typeDetails}}" _handleErrorResponse = "{{handleError()}}"></token-ajax>
 
         <div id="visLayout" class = "layout horizontal displayLength" style="flex-grow: 1">
             <div id="vis_container"></div>            
@@ -73,7 +73,12 @@ class VisGraph extends mixinBehaviors([ItemViewBehavior], PolymerElement) {
                         title="[[node.type]]: [[node.displayName]]" 
                         with-row-stripes>
           </props-table>
-          <props-table items="[[_attributes(typeDetails.type)]]" title="Type" with-row-stripes ></props-table>
+
+         <template is ="dom-if" if = "[[typeDetails.type]]">
+            <props-table items="[[_attributes(typeDetails.type)]]" title="Type" with-row-stripes ></props-table>
+         </template>
+         <div></div>
+         
         </paper-dialog>
     `;
   }
@@ -190,7 +195,6 @@ networkChanged(newNetwork) {
   handleSelectNode(nodeId) {
     if(nodeId){
 
-      console.log("doing le did")
       console.log(nodeId)
       for (var i = 0; i < this.data.nodes.length; i++) {
         if(this.data.nodes[i].id === nodeId) {
@@ -198,18 +202,15 @@ networkChanged(newNetwork) {
           break;
         }
       }
-
-
-      this.$.tokenAjaxDetails.url = '/api/assets/' + nodeId;
-      this.$.tokenAjaxDetails._go();
-
-      console.log("I hva done ze did")
-
-      // console.log(item);
-
-      // this.$.detailsDialog.open();
+      if (this.node.group !== "subProcess") {
+        this.$.tokenAjaxDetails.url = '/api/assets/' + nodeId;
+        this.$.tokenAjaxDetails._go();
+      } else {
+        this.typeDetails = {
+          type : undefined
+        }
+      }
       this.$.visDialog.open();
-
     }
   }
 
