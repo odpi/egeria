@@ -40,8 +40,6 @@ class VisGraph extends mixinBehaviors([ItemViewBehavior], PolymerElement) {
             position: fixed;
             top: 116px;
             right: 16px;
-            width: 600px;
-            height: 400px;
             overflow: auto;
           }
           #legend{
@@ -67,9 +65,11 @@ class VisGraph extends mixinBehaviors([ItemViewBehavior], PolymerElement) {
         
         <paper-dialog id="visDialog" class = "vis-dialog">
           <div>
-            <asset-tools guid="[[node.id]]" style="display: inline-flex"></asset-tools>
-            <paper-button dialog-confirm style="float: right">Close</paper-button>
+            <a dialog-confirm style="float: right" title="close">
+             <iron-icon icon="icons:close" style="width: 24px;height: 24px;"></iron-icon>
+            </a>
           </div>
+          <asset-tools guid="[[node.id]]" style="display: inline-flex"></asset-tools>
           <props-table  items="[[_attributes(node.properties)]]"  
                         title="[[node.type]]: [[node.displayName]]" 
                         with-row-stripes ></props-table>
