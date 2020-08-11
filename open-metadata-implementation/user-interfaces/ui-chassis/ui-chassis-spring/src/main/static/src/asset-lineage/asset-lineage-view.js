@@ -255,7 +255,7 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
             this.dispatchEvent(new CustomEvent('show-modal', {
                 bubbles: true,
                 composed: true,
-                detail: { message: "The graph for this lineage is empty.", level: 'info'}}));
+                detail: { message: "No lineage information available", level: 'info'}}));
         }
         const egeriaColor = getComputedStyle(this).getPropertyValue('--egeria-primary-color');
         for (var i = 0; i < data.nodes.length; i++) {
