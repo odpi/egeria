@@ -91,7 +91,6 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
                 </vaadin-list-box>  
               </template>
             </vaadin-select>
-            <paper-button id = "closeLegendButton" on-tap="toggleLegend">Toggle legend</paper-button>
         </div>
     </div>       
    
@@ -395,10 +394,6 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
                     break;
             }
         }
-
-    toggleLegend() {
-        this.$$('vis-graph').toggleLegend();
-    }
 
     _getUseCase(usecase){
         return this.usecases.indexOf(usecase);
