@@ -44,14 +44,25 @@ class VisGraph extends mixinBehaviors([ItemViewBehavior], PolymerElement) {
             height: 400px;
             overflow: auto;
           }
-          .legendDisplay {
-            width : 215px;
-        }
+          #legend{
+            z-index: 10;
+            padding: 20px;
+            overflow: auto;
+            min-width: 100px;
+            min-height: 100px;
+          }
         </style>
         
-        <div class = "layout horizontal displayLength">
+        <div id="visLayout" class = "layout horizontal displayLength" style="flex-grow: 1">
             <div id="vis_container"></div>            
-            <legend-div class = "legendDisplay" groups = [[groups]] hidden = "[[hideLegend]]" data = "{{data.nodes}}"> </legend-div>
+            <legend-div id="legend" 
+                groups = [[groups]] 
+                hidden = "[[hideLegend]]" 
+                data = "[[data.nodes]]"
+                vertical-align="top"
+                horizontal-align="right"
+                auto-fit-on-attach
+            ></legend-div>
         </div>
         
         <paper-dialog id="visDialog" class = "vis-dialog">

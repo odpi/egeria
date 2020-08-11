@@ -23,7 +23,6 @@ const Login = () => {
   const [errorMsg, setErrorMsg] = useState();
   let history = useHistory();
 
-  // }
   const handleOnClick = e => {
     console.log("login handleClick(()");
     e.preventDefault();
