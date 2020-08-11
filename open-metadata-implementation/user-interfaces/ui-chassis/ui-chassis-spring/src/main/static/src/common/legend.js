@@ -18,11 +18,31 @@ class Legend extends mixinBehaviors([IronFitBehavior], PolymerElement) {
       <style include="shared-styles">  
           :host { 
             background: rgba(var(--egeria-primary-color-rgb),0.1);
+            margin-bottom: 15px;
             padding: 20px 10px;
+            max-height: none;
+            display: flex;
+            flex-grow: 1;
+            flex-flow: column;
+            flex-direction: column;
+            height: 100%;
+            ;
+          }
+          
+          #legend-container {
+            padding: 20px;
           }
           
       </style>
+      
       <slot></slot>
+      <dom-if if="[[visible]]"> 
+        <template> 
+         <div>
+          <iron-icon icon="vaadin:angle-right" on-tap="_toggle"></iron-icon>
+         </div>
+         <div id="legend-container">
+           <dom-repeat items="[[data]]"> 
         <div id="legend-container">
            <dom-repeat items="[[data]]"> 
             <template> 
@@ -32,6 +52,16 @@ class Legend extends mixinBehaviors([IronFitBehavior], PolymerElement) {
             </template>
            </dom-repeat>
         </div>
+        </template>
+      </dom-if>
+      <dom-if if="[[!visible]]"> 
+        <template> 
+         <div>
+          <iron-icon icon="vaadin:angle-left" on-tap="_toggle"></iron-icon>
+         </div>
+        </template>
+      </dom-if>
+       
     `;
     }
 
@@ -44,16 +74,23 @@ class Legend extends mixinBehaviors([IronFitBehavior], PolymerElement) {
             title: String,
             groups: {
                 type: Object
+            },
+            visible: {
+                type: Boolean,
+                value: false
             }
         }
     }
+
     ready() {
         super.ready();
-        this.addEventListener('dom-change', this.domChanged);
+        this.addEventListener('dom-change', () => {this.refit()});
+        window.addEventListener('resize', () => {this.refit()});
+        window.addEventListener('scroll', () => {this.refit()});
     }
 
-    domChanged(event) {
-        this.refit();
+    _toggle(){
+        this.visible = !this.visible;
     }
     dataObserver (data, newData) {
         console.log(data)
