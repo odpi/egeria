@@ -53,6 +53,7 @@
     "@polymer/paper-spinner": "^3.0.1",
     "@polymer/paper-styles": "^3.0.1",
     "@polymer/paper-toast": "^3.0.1",
+    "@polymer/paper-toggle-button": "^3.0.1",
     "@polymer/polymer": "^3.4.1",
     "@vaadin/vaadin": "^15.0.0",
     "@vaadin/vaadin-button": "^2.2.0",
