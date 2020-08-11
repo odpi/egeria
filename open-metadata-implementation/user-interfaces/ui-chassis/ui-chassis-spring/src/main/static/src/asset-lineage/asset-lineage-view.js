@@ -7,8 +7,6 @@ import '../common/vis-graph.js';
 import '@vaadin/vaadin-radio-button/vaadin-radio-button.js';
 import '@vaadin/vaadin-radio-button/vaadin-radio-group.js';
 import '@vaadin/vaadin-tabs/vaadin-tabs.js';
-import '@vaadin/vaadin-select/vaadin-select.js';
-import '@vaadin/vaadin-dropdown-menu/vaadin-dropdown-menu.js';
 import '@vaadin/vaadin-item/vaadin-item.js';
 import '@vaadin/vaadin-list-box/vaadin-list-box.js';
 import '@polymer/paper-toggle-button/paper-toggle-button.js';
@@ -90,8 +88,6 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
                 </paper-toggle-button>
             </li>
          </ul>
-           
-        
     </div>       
    
     <dom-if if="[[_noGuid(routeData)]]" restamp="true">
