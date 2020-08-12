@@ -17,13 +17,7 @@ class AssetTools extends PolymerElement {
           display: block;
           padding: 10px 24px;
         }
-        ul#menu {
-            margin: 0;
-            padding: 0;
-        }
-        ul#menu li {
-          display:inline-block;
-        }
+        
         iron-icon {
          --iron-icon-fill-color: var(--egeria-button-ink-color);
         }
@@ -33,7 +27,10 @@ class AssetTools extends PolymerElement {
         paper-button:hover {
           filter: brightness(110%);
         }
-       
+       ul#menu {
+            margin: 0;
+            padding: 0;
+        }
       </style>
     <token-ajax id="tokenAjaxSettings" last-response="{{omas}}" url="/api/omas/settings" auto></token-ajax>
         <ul id="menu"> 

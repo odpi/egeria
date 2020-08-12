@@ -1138,6 +1138,7 @@ class GraphOMRSMetadataStore {
             existingClassifierEdgesByName.put(existingClassification.getName(), classifierEdge);
         }
         // Now perform 1:1 synch - i) eliminate unnecessary classifications, then ii) update/add the desired classifications
+        Set<String> namesToRemoveSet = new HashSet();
         Iterator<String> existingNamesIterator = existingClassificationVerticesByName.keySet().iterator();
         while (existingNamesIterator.hasNext()) {
             String existingName = existingNamesIterator.next();
@@ -1146,11 +1147,15 @@ class GraphOMRSMetadataStore {
                 log.debug("{} entity remove classification: {}", methodName, existingName);
                 Vertex classificationVertex = existingClassificationVerticesByName.get(existingName);
                 classificationVertex.remove();
-                existingClassificationVerticesByName.remove(existingName);
+                namesToRemoveSet.add(existingName);
                 Edge classifierEdge = existingClassifierEdgesByName.get(existingName);
                 classifierEdge.remove();
                 existingClassifierEdgesByName.remove(existingName);
             }
+        }
+        // remove from the map - needs to be done outside the previous loop to prevent a ConcurrentModificationExcpetion
+        for (String name: namesToRemoveSet) {
+            existingClassificationVerticesByName.remove(name);
         }
         // update/add the desired classifications
         Iterator<String> entityClassificationsNameIterator = entityClassificationsByName.keySet().iterator();
