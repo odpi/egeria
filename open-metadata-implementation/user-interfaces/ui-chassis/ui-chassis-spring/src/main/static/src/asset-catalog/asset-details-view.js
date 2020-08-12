@@ -53,7 +53,7 @@ class AssetDetailsView extends mixinBehaviors([ItemViewBehavior], PolymerElement
           <props-table items="[[_attributes(item)]]"  title="Attributes" with-row-stripes ></props-table>
           
           <dom-if if="[[_hasKeys(item.additionalProperties)]]"> 
-            <template> 
+            <template>
                 <props-table items="[[_attributes(item.additionalProperties)]]" title="Additional Properties" with-row-stripes ></props-table>
             </template>
           </dom-if>
