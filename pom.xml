@@ -134,7 +134,7 @@
         <jackson.databind.version>2.10.0</jackson.databind.version>
         <kafka.version>2.6.0</kafka.version>
         <janus.version>0.5.2</janus.version>
-        <gremlin.version>3.4.7</gremlin.version>
+        <gremlin.version>3.4.8</gremlin.version>
         <netty.version>4.1.51.Final</netty.version>
         <spring-boot.version>2.3.2.RELEASE</spring-boot.version>
         <spring.version>5.2.8.RELEASE</spring.version>
@@ -176,7 +176,7 @@
         <antlr.version>3.5.2</antlr.version>
         <snappy.version>1.1.7.6</snappy.version>
         <snakeyaml.version>1.26</snakeyaml.version>
-        <springdoc.version>1.4.3</springdoc.version>
+        <springdoc.version>1.4.4</springdoc.version>
         <classgraph.version>4.8.87</classgraph.version>
         <swagger.version>2.1.4</swagger.version>
         <groovy.version>3.0.5</groovy.version>
@@ -216,7 +216,7 @@
         <springdoc-plugin.version>1.0</springdoc-plugin.version>
         <build-helper.version>3.2.0</build-helper.version>
         <failsafe-plugin.version>3.0.0-M5</failsafe-plugin.version>
-        <git-commit-plugin.version>4.0.1</git-commit-plugin.version>
+        <git-commit-plugin.version>4.0.2</git-commit-plugin.version>
         <process-exec-plugin.version>0.9</process-exec-plugin.version>
         <groovy-plugin.version>2.1.1</groovy-plugin.version>
 
