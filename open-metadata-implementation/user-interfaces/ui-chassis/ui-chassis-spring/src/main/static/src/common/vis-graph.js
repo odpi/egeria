@@ -40,24 +40,19 @@ class VisGraph extends mixinBehaviors([ItemViewBehavior], PolymerElement) {
             position: fixed;
             top: 116px;
             right: 16px;
-            width: 600px;
-            height: 400px;
             overflow: auto;
           }
           #legend{
             z-index: 10;
-            padding: 20px;
             overflow: auto;
-            min-width: 100px;
-            min-height: 100px;
           }
         </style>
         
         <div id="visLayout" class = "layout horizontal displayLength" style="flex-grow: 1">
             <div id="vis_container"></div>            
             <legend-div id="legend" 
-                groups = [[groups]] 
-                hidden = "[[hideLegend]]" 
+                groups = "[[groups]]"
+                visible = "[[!hideLegend]]" 
                 data = "[[data.nodes]]"
                 vertical-align="top"
                 horizontal-align="right"
@@ -67,9 +62,11 @@ class VisGraph extends mixinBehaviors([ItemViewBehavior], PolymerElement) {
         
         <paper-dialog id="visDialog" class = "vis-dialog">
           <div>
-            <asset-tools guid="[[node.id]]" style="display: inline-flex"></asset-tools>
-            <paper-button dialog-confirm style="float: right">Close</paper-button>
+            <a dialog-confirm style="float: right" title="close">
+             <iron-icon icon="icons:close" style="width: 24px;height: 24px;"></iron-icon>
+            </a>
           </div>
+          <asset-tools guid="[[node.id]]" style="display: inline-flex"></asset-tools>
           <props-table  items="[[_attributes(node.properties)]]"  
                         title="[[node.type]]: [[node.displayName]]" 
                         with-row-stripes ></props-table>
