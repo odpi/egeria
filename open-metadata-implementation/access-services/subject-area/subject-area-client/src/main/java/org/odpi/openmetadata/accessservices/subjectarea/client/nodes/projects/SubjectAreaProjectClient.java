@@ -12,6 +12,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.core.ResolvableType;
 
 import java.util.List;
 
@@ -34,9 +35,8 @@ public class SubjectAreaProjectClient extends AbstractSubjectAreaNode<Project> {
         final String urlTemplate = BASE_URL + "/%s/terms";
         final String methodInfo = getMethodInfo("getProjectTerms");
 
-        ParameterizedTypeReference<SubjectAreaOMASAPIResponse<Term>> type =
-                new ParameterizedTypeReference<SubjectAreaOMASAPIResponse<Term>>() {};
-
+        ResolvableType resolvableType = ResolvableType.forClassWithGenerics(SubjectAreaOMASAPIResponse.class, Term.class);
+        ParameterizedTypeReference<SubjectAreaOMASAPIResponse<Term>> type = ParameterizedTypeReference.forType(resolvableType.getType());
         SubjectAreaOMASAPIResponse<Term> response = client.findRESTCall(userId, guid, methodInfo, urlTemplate, type, EMPTY_FIND_REQUEST);
         return response.getResult();
     }

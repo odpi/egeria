@@ -11,6 +11,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.OmasObject;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SystemAttributes;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 
@@ -25,6 +26,29 @@ import java.util.Map;
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        property = "class",
+        defaultImpl = Line.class,
+        visible = true
+)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = HasA.class),
+        @JsonSubTypes.Type(value = RelatedTerm.class),
+        @JsonSubTypes.Type(value = Synonym.class),
+        @JsonSubTypes.Type(value = Antonym.class),
+        @JsonSubTypes.Type(value = PreferredTerm.class),
+        @JsonSubTypes.Type(value = ReplacementTerm.class),
+        @JsonSubTypes.Type(value = Translation.class),
+        @JsonSubTypes.Type(value = IsA.class),
+        @JsonSubTypes.Type(value = ValidValue.class),
+        @JsonSubTypes.Type(value = UsedInContext.class),
+        @JsonSubTypes.Type(value = IsATypeOf.class),
+        @JsonSubTypes.Type(value = TypedBy.class),
+        @JsonSubTypes.Type(value = TermAnchor.class),
+        @JsonSubTypes.Type(value = CategoryAnchor.class),
+        @JsonSubTypes.Type(value = Categorization.class),
+})
 public class Line implements Serializable, OmasObject {
     protected static final long serialVersionUID = 1L;
     private SystemAttributes systemAttributes = null;
@@ -141,10 +165,6 @@ public class Line implements Serializable, OmasObject {
 
     public String getName() {
         return name;
-    }
-
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
     }
 
     /**
