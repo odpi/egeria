@@ -117,7 +117,11 @@ public class SpringRESTClientConnector extends RESTClientConnector
      * @param sslSession ssl ession
      * @return boolean result
      */
-    private static final HostnameVerifier bypassVerifier = (hostname, sslSession) -> true;
+    private static final HostnameVerifier bypassVerifier = new HostnameVerifier() {
+        public boolean verify(String hostname, SSLSession sslSession) {
+            return true;
+        }
+    };
 
     /**
      * Initialize the connector.
