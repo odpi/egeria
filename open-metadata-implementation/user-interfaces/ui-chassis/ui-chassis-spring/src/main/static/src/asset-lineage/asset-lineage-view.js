@@ -83,7 +83,7 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
                 </paper-toggle-button>
             </li>
             <li> 
-                <paper-toggle-button id="glossaryTermToggle" checked disabled>
+                <paper-toggle-button id="glossaryTermToggle" disabled>
                     Glossary Terms
                 </paper-toggle-button>
             </li>
