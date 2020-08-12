@@ -15,7 +15,8 @@ import javax.net.ssl.X509TrustManager
 // Retrieve configuration - with defaults to aid in local testing (using default ports)
 user=properties["user"] ?: "garygeeke";
 baseURL=properties["baseURL"] ?: "https://localhost:9443";
-server=properties["server"] ?: "server1";
+serverMem=properties["servermem"] ?: "serverinmem";
+serverGraph=properties["servergraph"] ?: "servergraph";
 retries=properties["retries"] ?: 12;
 delay=properties["delay"] ?: 10;
 
@@ -75,9 +76,11 @@ while (!connected && i>0)
     }
 }
 
+// -- Inmemory
+
 // --- Configure the platform - any errors here and we exit
-System.out.println("=== Configuring server: " + server + " ===");
-post1 = new URL(baseURL + "/open-metadata/admin-services/users/" + user + "/servers/" + server + "/local-repository/mode/in-memory-repository" ).openConnection()
+System.out.println("=== Configuring server: " + serverMem + " ===");
+post1 = new URL(baseURL + "/open-metadata/admin-services/users/" + user + "/servers/" + serverMem + "/local-repository/mode/in-memory-repository" ).openConnection()
 post1.setRequestMethod("POST")
 post1.setRequestProperty("Content-Type", "application/json")
 postRC1 = post1.getResponseCode();
@@ -87,8 +90,8 @@ if(postRC1.equals(200)) {
 }
 
 // --- Enable Subject Area OMAS - any errors here and we exit
-System.out.println("=== Enabling Subject Area OMAS: " + server + " ===");
-post2 = new URL(baseURL + "/open-metadata/admin-services/users/" + user + "/servers/" + server + "/access-services/subject-area" ).openConnection()
+System.out.println("=== Enabling Subject Area OMAS: " + serverMem + " ===");
+post2 = new URL(baseURL + "/open-metadata/admin-services/users/" + user + "/servers/" + serverMem + "/access-services/subject-area" ).openConnection()
 post2.setRequestMethod("POST")
 post2.setRequestProperty("Content-Type", "application/json")
 postRC2 = post2.getResponseCode();
@@ -99,14 +102,49 @@ if(postRC2.equals(200)) {
 
 
 // --- Launch the server - any errors here and we exit
-System.out.println("=== Starting server: " + server + " ===");
-post3 = new URL(baseURL + "/open-metadata/admin-services/users/" + user + "/servers/" + server + "/instance" ).openConnection()
+System.out.println("=== Starting server: " + serverMem + " ===");
+post3 = new URL(baseURL + "/open-metadata/admin-services/users/" + user + "/servers/" + serverMem + "/instance" ).openConnection()
 post3.setRequestMethod("POST")
 post3.setRequestProperty("Content-Type", "application/json")
 postRC3 = post3.getResponseCode();
 println(postRC3);
 if(postRC3.equals(200)) {
     println(post3.getInputStream().getText());
+}
+
+// -- Graph
+// --- Configure the platform - any errors here and we exit
+System.out.println("=== Configuring server: " + serverGraph + " ===");
+post1g = new URL(baseURL + "/open-metadata/admin-services/users/" + user + "/servers/" + serverGraph + "/local-repository/mode/local-graph-repository" ).openConnection()
+post1g.setRequestMethod("POST")
+post1g.setRequestProperty("Content-Type", "application/json")
+postRC1g = post1g.getResponseCode();
+println(postRC1g);
+if(postRC1g.equals(200)) {
+    println(post1g.getInputStream().getText());
+}
+
+// --- Enable Subject Area OMAS - any errors here and we exit
+System.out.println("=== Enabling Subject Area OMAS: " + serverGraph + " ===");
+post2g = new URL(baseURL + "/open-metadata/admin-services/users/" + user + "/servers/" + serverGraph + "/access-services/subject-area" ).openConnection()
+post2g.setRequestMethod("POST")
+post2g.setRequestProperty("Content-Type", "application/json")
+postRC2g = post2.getResponseCode();
+println(postRC2g);
+if(postRC2g.equals(200)) {
+    println(post2g.getInputStream().getText());
+}
+
+
+// --- Launch the server - any errors here and we exit
+System.out.println("=== Starting server: " + serverGraph + " ===");
+post3g = new URL(baseURL + "/open-metadata/admin-services/users/" + user + "/servers/" + serverGraph + "/instance" ).openConnection()
+post3g.setRequestMethod("POST")
+post3g.setRequestProperty("Content-Type", "application/json")
+postRC3g = post3.getResponseCode();
+println(postRC3g);
+if(postRC3g.equals(200)) {
+    println(post3g.getInputStream().getText());
 }
 
 // --- We're done
