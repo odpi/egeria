@@ -129,8 +129,6 @@ class TokenAjax extends PolymerElement {
                     composed: true,
                     detail: {greeted: "Bye!", status: status}}));
             }else{
-                console.log('Error Response:');
-                console.log(resp);
                 this.dispatchEvent(new CustomEvent('error', {
                     bubbles: true,
                     composed: true,
