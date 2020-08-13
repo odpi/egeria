@@ -6,6 +6,7 @@ import NodeUpdateView from "./views/NodeUpdateView";
 import NodeCreateView from "./views/NodeCreateView.js";
 import LinesView from "./views/LinesView.js";
 import Add16 from "../../../images/Egeria_add_16";
+import Edit16 from "../../../images/Egeria_edit_16";
 import Search16 from "../../../images/Egeria_search_16";
 import Delete16 from "../../../images/Egeria_delete_16";
 import Relationships16 from "../../../images/Egeria_relationships_16";
@@ -96,6 +97,10 @@ const NodeController = (props) => {
     setErrorMsg("");
     glossaryAuthorContext.doSearchingAction();
   };
+  const onClickEdit = () => {
+    setErrorMsg("");
+    glossaryAuthorContext.doUpdatingAction();
+  };
   const onExactMatch = (flag) => {
     setExactMatch(flag);
     // // Set isSearching state
@@ -126,14 +131,7 @@ const NodeController = (props) => {
     if (json.result.length == 1) {
       const node = json.result[0];
       setCreatedNode(node);
-      if (glossaryAuthorContext.isEdittingMyGlossary()) {
-        glossaryAuthorContext.doCreatedMyGlossary(node);
-      } else if (glossaryAuthorContext.isEdittingMyProject()) {
-        glossaryAuthorContext.doCreatedMyProject(node);
-      } else {
-        // future: consider passing the created node to save in context.
-        glossaryAuthorContext.doCreatedAction();
-      }
+      glossaryAuthorContext.doCreatedAction(node);
     } else {
       onErrorGetNode("Error did not get a node from the server");
     }
@@ -145,7 +143,7 @@ const NodeController = (props) => {
   };
   const onSuccessfulGetNode = (json) => {
     if (json.result.length == 1) {
-      glossaryAuthorContext.doUpdateSelectedNode(json.result[0]);
+      glossaryAuthorContext.doSelectedNode(json.result[0]);
     } else {
       onErrorGetNode("Error did not get a node from the server");
     }
@@ -253,22 +251,6 @@ const NodeController = (props) => {
   function refreshSearchResults() {
     let selectedInResults = false;
     if (results && results.length > 0) {
-      // there seems to be an issue when paginationOptions in the pagination handler
-      // then calling this function, the first time paginationOptions is undefined.
-      // A circumvention is to pass the page and page size as parameters and use them if they are set.
-      // let pageSize;
-      // let page;
-      // if (passedPage) {
-      //   page = passedPage;
-      // } else {
-      //   page = paginationOptions.page;
-      // }
-      // if (passedPageSize) {
-      //   pageSize = passedPageSize;
-      // } else {
-      //   pageSize = paginationOptions.pageSize;
-      // }
-
       // if page = 1 and pageSize 10, searchTableRowsStart = 1
       // if page = 2 and pageSize 10, searchTableRowsStart = 11
       // if page = 2 and pageSize 10 and results.length = 15, searchTableRowsStart = 11 , searchTableRowsSize = 5
@@ -300,7 +282,7 @@ const NodeController = (props) => {
     }
     // we have selectedNode but it is not in the search results - we must have deleted it.
     if (!selectedInResults) {
-      glossaryAuthorContext.doUpdateSelectedNode(undefined);
+      glossaryAuthorContext.doSelectedNode(undefined);
     }
   }
   // issue the create rest call for the supplied body
@@ -315,6 +297,10 @@ const NodeController = (props) => {
     console.log("issueGet " + url);
     issueRestGet(url, onSuccessfulGetNode, onErrorGetNode);
   };
+  // const onNodeUpdating = (guid) => {
+  //   const url = glossaryAuthorContext.currentNodeType.url + "/" + guid;
+  //   issueRestGet(url, onSuccessfulGetNode, onErrorGetNode);
+  // }
   const onNodeUpdate = (body) => {
     console.log("onNodeUpdate");
     const guid = glossaryAuthorContext.selectedNode.systemAttributes.guid;
@@ -352,39 +338,41 @@ const NodeController = (props) => {
   } else {
     return (
       <div>
-        {glossaryAuthorContext.isSetupComplete() && (
-          <div className="bx--row">
-            <div className="bx--col-lg-1 bx--col-md-1">
-              <Add16 kind="primary" onClick={() => onClickAdd()} />
-            </div>
-            <div className="bx--col-lg-1 bx--col-md-1">
-              <Search16 onClick={() => onClickSearch()} />
-            </div>
-            {glossaryAuthorContext.selectedNode && (
-              <div className="bx--col-lg-1 bx--col-md-1">
-                <Delete16 onClick={() => issueDelete()} />
-              </div>
-            )}
-            {glossaryAuthorContext.selectedNode && (
-              <div className="bx--col-lg-1 bx--col-md-1">
-                <Relationships16 onClick={() => onClickRelationships()} />
-              </div>
-            )}
-
-            <div style={{ color: "red" }}>{errorMsg}</div>
-          </div>
-        )}
+        {/* {(glossaryAuthorContext.isSetupComplete() || glossaryAuthorContext.isEdittingGlossary ||  glossaryAuthorContext.isEdittingProject)  && ( */}
         <div className="bx--row">
-          {glossaryAuthorContext.isCreatingOperation() && (
+          <div className="bx--col-lg-1 bx--col-md-1">
+            <Add16 kind="primary" onClick={() => onClickAdd()} />
+          </div>
+          <div className="bx--col-lg-1 bx--col-md-1">
+            <Search16 onClick={() => onClickSearch()} />
+          </div>
+          {glossaryAuthorContext.selectedNode && (
+            <div className="bx--col-lg-1 bx--col-md-1">
+              <Delete16 onClick={() => issueDelete()} />
+            </div>
+          )}
+          {glossaryAuthorContext.selectedNode && (
+            <div className="bx--col-lg-1 bx--col-md-1">
+              <Edit16 onClick={() => onClickEdit()} />
+            </div>
+          )}
+          {glossaryAuthorContext.selectedNode && (
+            <div className="bx--col-lg-1 bx--col-md-1">
+              <Relationships16 onClick={() => onClickRelationships()} />
+            </div>
+          )}
+
+          <div style={{ color: "red" }}>{errorMsg}</div>
+        </div>
+        <div className="bx--row">
+          {glossaryAuthorContext.showCreatingNodeComponent() && (
             <NodeCreateView issueCreate={issueCreate} />
           )}
-          {glossaryAuthorContext.isCreatedOperation() && (
+          {glossaryAuthorContext.showCreatedNodeComponent() && (
             <NodeCreateView createdNode={createdNode} />
           )}
-
-          {(glossaryAuthorContext.isSearchingOperation() ||
-            glossaryAuthorContext.isSearchedOperation()) && (
-            <div className="actions-container">
+          <div className="actions-container">
+            {glossaryAuthorContext.showSearchComponent() && (
               <div className="actions-item">
                 <NodeSearchView
                   tableKey={searchTableKey}
@@ -398,19 +386,18 @@ const NodeController = (props) => {
                   onSearchCriteria={onSearchCriteria}
                 />
               </div>
-              {glossaryAuthorContext.selectedNode && (
-                <div className="actions-item">
-                  <NodeUpdateView onUpdate={onNodeUpdate} />
-                </div>
-              )}
-              {glossaryAuthorContext.selectedNodeLines && (
-                <div className="actions-item">
-                  <LinesView />
-                </div>
-              )}
-            </div>
-          )}
-          {glossaryAuthorContext.isUndefinedOperation() && <NodeCreateView />}
+            )}
+            {glossaryAuthorContext.showUpdateComponent() && (
+              <div className="actions-item">
+                <NodeUpdateView onUpdate={onNodeUpdate} />
+              </div>
+            )}
+            {glossaryAuthorContext.selectedNodeLines && (
+              <div className="actions-item">
+                <LinesView />
+              </div>
+            )}
+          </div>
         </div>
       </div>
     );

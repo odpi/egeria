@@ -13,7 +13,7 @@ const MyNodeView = props => {
   if (typeKey == "glossary") {
     return (
       <span>
-        <Button kind="primary" onClick={() => glossaryAuthorContext.doCreatingMyGlossary()}>
+        <Button kind="primary" onClick={() => glossaryAuthorContext.doSettingMyGlossary()}>
           {glossaryAuthorContext.myGlossary ? glossaryAuthorContext.myGlossary.name : "None"}
         </Button>
       </span>
@@ -21,7 +21,7 @@ const MyNodeView = props => {
   } else if (typeKey == "project") {
     return (
       <span>
-       <Button kind="primary" onClick={() => glossaryAuthorContext.doCreatingMyProject()}>
+       <Button kind="primary" onClick={() => glossaryAuthorContext.doSettingMyProject()}>
           {glossaryAuthorContext.myProject ? glossaryAuthorContext.myProject.name : "None"}
         </Button>
       </span>
