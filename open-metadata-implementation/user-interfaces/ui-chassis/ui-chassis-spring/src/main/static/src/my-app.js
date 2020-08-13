@@ -57,8 +57,8 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
           background-color: var(--egeria-primary-color);
         };
         app-header paper-icon-button {
-          --paper-icon-button-ink-color: white;
-          --iron-icon-fill-color: white;
+          --paper-icon-button-ink-color: var(--egeria-button-ink-color);
+          --iron-icon-fill-color: var(--egeria-button-ink-color);
         };
         .drawer-list a {
           display: block;
