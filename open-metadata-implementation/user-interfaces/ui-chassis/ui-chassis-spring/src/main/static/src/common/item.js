@@ -41,6 +41,9 @@ export const ItemViewBehavior = {
 
     _attributes(obj){
         var arr = [];
+        if (obj === undefined) {
+            return arr;
+        }
         Object.keys(obj).forEach(
             (key)=> {
                 var value = obj[key];

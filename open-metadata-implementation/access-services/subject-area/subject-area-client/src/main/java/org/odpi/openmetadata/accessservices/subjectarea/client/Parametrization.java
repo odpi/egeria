@@ -4,9 +4,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.client;
 
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.springframework.core.ParameterizedTypeReference;
-
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
+import org.springframework.core.ResolvableType;
 
 /**
  * @param <T> The type of the parameterized class whose objects will be returned in responses.
@@ -23,29 +21,7 @@ public interface Parametrization<T> {
      * with the necessary universal type to use universal queries in RestTemplate used in SpringRESTClientConnector.
      * */
     default ParameterizedTypeReference<SubjectAreaOMASAPIResponse<T>> getParametrizedType() {
-        ParameterizedType parameterizedType = new ParameterizedType() {
-
-            @Override
-            public Type[] getActualTypeArguments() {
-                return new Type[]{type()};
-            }
-
-            @Override
-            public Type getRawType() {
-                return SubjectAreaOMASAPIResponse.class;
-            }
-
-            @Override
-            public Type getOwnerType() {
-                return null;
-            }
-        };
-
-        return new ParameterizedTypeReference<SubjectAreaOMASAPIResponse<T>>() {
-            @Override
-            public Type getType() {
-                return parameterizedType;
-            }
-        };
+        ResolvableType resolvableType = ResolvableType.forClassWithGenerics(SubjectAreaOMASAPIResponse.class, type());
+        return ParameterizedTypeReference.forType(resolvableType.getType());
     }
 }

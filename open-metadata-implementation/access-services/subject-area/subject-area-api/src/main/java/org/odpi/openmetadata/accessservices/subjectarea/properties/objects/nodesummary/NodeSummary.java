@@ -7,8 +7,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.NodeType;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -26,10 +24,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-
 public class NodeSummary implements Serializable {
-    private static final Logger log = LoggerFactory.getLogger(NodeSummary.class);
-    private static final String className = NodeSummary.class.getName();
     protected NodeType type = NodeType.Unknown;
     protected String relationshipType = null;
     private String name = null;
@@ -216,7 +211,7 @@ public class NodeSummary implements Serializable {
             sb = new StringBuilder();
         }
 
-        sb.append("Nodesummary{");
+        sb.append("NodeSummary{");
         if (name != null) {
             sb.append("name='").append(name).append('\'');
         }
