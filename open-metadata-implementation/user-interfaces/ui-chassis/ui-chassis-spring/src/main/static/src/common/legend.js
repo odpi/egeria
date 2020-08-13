@@ -42,7 +42,9 @@ class Legend extends mixinBehaviors([IronFitBehavior], PolymerElement) {
           <iron-icon icon="vaadin:angle-right" on-tap="_toggle" title="Close"></iron-icon>
          </a>
          <div id="legend-container">
-           <dom-repeat items="[[legendNodes]]"> 
+           <dom-repeat items="[[data]]"> 
+        <div id="legend-container">
+           <dom-repeat items="[[data]]"> 
             <template> 
                 <p> 
                     <iron-icon style = "fill: {{item.color}};" icon="{{item.shape}}"></iron-icon> {{item.group}} {{item.appearances}}
@@ -64,12 +66,8 @@ class Legend extends mixinBehaviors([IronFitBehavior], PolymerElement) {
 
     static get properties() {
         return {
-            legendNodes: {
-                type: Object
-            },
             data: {
-                type: Object,
-                observer: 'dataObserver'
+                type: Object
             },
             title: String,
             groups: {
@@ -91,53 +89,6 @@ class Legend extends mixinBehaviors([IronFitBehavior], PolymerElement) {
 
     _toggle(){
         this.visible = !this.visible;
-    }
-
-    dataObserver(data, newData) {
-        if (data == null && newData != null) {
-            data = newData;
-        }
-        this.legendNodes = [];
-        var uniqueObjects = {}
-        if (this.groups == null) {
-            return;
-        }
-        const egeriaColor = getComputedStyle(this).getPropertyValue('--egeria-primary-color');
-        for (var i = 0; i < data.length; i++) {
-
-            if (uniqueObjects[data[i].group] === undefined) {
-                let currentNode = data[i];
-                let {icon, groupColor} = this.getIconAndColor(currentNode, egeriaColor);
-
-
-                uniqueObjects[currentNode.group] = {
-                    group: currentNode.group,
-                    appearances: 1,
-                    color: groupColor,
-                    shape: icon
-                }
-            } else {
-                uniqueObjects[data[i].group].appearances = uniqueObjects[data[i].group].appearances + 1;
-            }
-        }
-
-        this.legendNodes = Object.values(uniqueObjects);
-    }
-
-    getIconAndColor(currentNode, egeriaColor) {
-        let icon;
-        let groupColor;
-        if (this.groups[currentNode.group] === undefined) {
-            icon = undefined;
-            groupColor = egeriaColor
-        } else {
-            icon = this.groups[currentNode.group].icon;
-            groupColor = this.groups[currentNode.group].color
-            if (groupColor === undefined) {
-                groupColor = egeriaColor;
-            }
-        }
-        return {icon, groupColor};
     }
 }
 
