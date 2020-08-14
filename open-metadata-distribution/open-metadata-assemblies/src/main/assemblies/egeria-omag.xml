@@ -38,6 +38,7 @@
             </includes>
             <!-- Choose the binaries (ie jars) to includes - in this case keeping as a jar -->
             <binaries>
+                <outputFileNameMapping>${artifact.artifactId}-${artifact.baseVersion}${dashClassifier?}.${artifact.extension}</outputFileNameMapping>
                 <outputDirectory>./server</outputDirectory>
                 <unpack>false</unpack>
                 <!-- For most jars we'd include dependencies, but the chassis is already a large springboot application which includes all it needs -->
@@ -84,6 +85,7 @@
                 <include>org.odpi.egeria:discovery-service-sample:*</include>
             </includes>
             <binaries>
+                <outputFileNameMapping>${artifact.artifactId}-${artifact.baseVersion}${dashClassifier?}.${artifact.extension}</outputFileNameMapping>
                 <outputDirectory>./server/lib</outputDirectory>
                 <unpack>false</unpack>
                 <!-- Assemblies can pull in dependencies via a built in mechanism -we don't need all these uber jars -->
@@ -104,6 +106,7 @@
                 <include>org.odpi.egeria:open-connector-archives:*</include>
             </includes>
             <binaries>
+                <outputFileNameMapping>${artifact.artifactId}-${artifact.baseVersion}${dashClassifier?}.${artifact.extension}</outputFileNameMapping>
                 <outputDirectory>./utilities</outputDirectory>
                 <attachmentClassifier>jar-with-dependencies</attachmentClassifier>
                 <unpack>false</unpack>
@@ -125,6 +128,7 @@
                 <include>org.odpi.egeria:open-connector-archives:*</include>
             </includes>
             <binaries>
+                <outputFileNameMapping>${artifact.artifactId}-${artifact.baseVersion}${dashClassifier?}.${artifact.extension}</outputFileNameMapping>
                 <attachmentClassifier>jar-with-dependencies</attachmentClassifier>
                 <outputDirectory>./samples</outputDirectory>
                 <unpack>false</unpack>
@@ -140,6 +144,7 @@
             </includes>
             <!-- Choose the binaries (ie jars) to includes - in this case keeping as a jar -->
             <binaries>
+                <outputFileNameMapping>${artifact.artifactId}-${artifact.baseVersion}${dashClassifier?}.${artifact.extension}</outputFileNameMapping>
                 <outputDirectory>./user-interface</outputDirectory>
                 <unpack>false</unpack>
                 <!-- For most jars we'd include dependencies, but the chassis is already a large springboot application which includes all it needs -->
@@ -153,6 +158,7 @@
                 <include>org.odpi.egeria:open-metadata-conformance-suite-client:*</include>
             </includes>
             <binaries>
+                <outputFileNameMapping>${artifact.artifactId}-${artifact.baseVersion}${dashClassifier?}.${artifact.extension}</outputFileNameMapping>
                 <attachmentClassifier>jar-with-dependencies</attachmentClassifier>
                 <outputDirectory>./conformance-suite</outputDirectory>
                 <unpack>false</unpack>
