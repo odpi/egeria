@@ -30,6 +30,7 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.NODE_LABEL_SUB_PROCESS;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_ENTITY_GUID;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_ENTITY_NODE_ID;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_PROCESS_GUID;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_VALUE_NODE_ID_CONDENSED_DESTINATION;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_VALUE_NODE_ID_CONDENSED_SOURCE;
 
@@ -246,14 +247,14 @@ public class LineageGraphConnectorHelperTest {
     }
 
     private static void addColumnLineageData(GraphTraversalSource g) {
-        Vertex c11 = getVertex(g, TABULAR_COLUMN, "c11", "cz11");
-        Vertex c12 = getVertex(g, TABULAR_COLUMN, "c12", "cz12");
-        Vertex c21 = getVertex(g, TABULAR_COLUMN, "c21", "cz21");
-        Vertex c22 = getVertex(g, TABULAR_COLUMN, "c22", "cz22");
-        Vertex c31 = getVertex(g, TABULAR_COLUMN, "c31", "cz31");
-        Vertex c32 = getVertex(g, TABULAR_COLUMN, "c32", "cz32");
-        Vertex c41 = getVertex(g, TABULAR_COLUMN, "c41", "cz41");
-        Vertex c42 = getVertex(g, TABULAR_COLUMN, "c42", "cz42");
+        Vertex c11 = getVertex(g, TABULAR_COLUMN, "c11", "c11");
+        Vertex c12 = getVertex(g, TABULAR_COLUMN, "c12", "c12");
+        Vertex c21 = getVertex(g, TABULAR_COLUMN, "c21", "c21");
+        Vertex c22 = getVertex(g, TABULAR_COLUMN, "c22", "c22");
+        Vertex c31 = getVertex(g, TABULAR_COLUMN, "c31", "c31");
+        Vertex c32 = getVertex(g, TABULAR_COLUMN, "c32", "c32");
+        Vertex c41 = getVertex(g, TABULAR_COLUMN, "c41", "c41");
+        Vertex c42 = getVertex(g, TABULAR_COLUMN, "c42", "c42");
 
         Vertex p1 = getVertex(g, NODE_LABEL_SUB_PROCESS, "p1", "p1");
         Vertex p2 = getVertex(g, NODE_LABEL_SUB_PROCESS, "p2", "p2");
@@ -304,7 +305,19 @@ public class LineageGraphConnectorHelperTest {
     }
 
     private static Vertex getVertex(GraphTraversalSource g, String nodeType, String guid, String nodeId) {
-        return g.addV(nodeType).property(PROPERTY_KEY_ENTITY_GUID, guid).property(PROPERTY_KEY_ENTITY_NODE_ID, nodeId).next();
+        Vertex vertex;
+        if (NODE_LABEL_SUB_PROCESS.equals(nodeType)) {
+            vertex = g.addV(nodeType).property(PROPERTY_KEY_ENTITY_GUID, guid)
+                    .property(PROPERTY_KEY_PROCESS_GUID, guid)
+                    .property(PROPERTY_KEY_ENTITY_NODE_ID, nodeId)
+                    .next();
+
+        } else {
+            vertex = g.addV(nodeType).property(PROPERTY_KEY_ENTITY_GUID, guid)
+                    .property(PROPERTY_KEY_ENTITY_NODE_ID, nodeId)
+                    .next();
+        }
+        return vertex;
     }
 
 }
