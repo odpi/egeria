@@ -4,6 +4,7 @@ import React, { useContext } from "react";
 import { GlossaryAuthorContext } from "../../contexts/GlossaryAuthorContext";
 import { FormGroup } from "carbon-components-react";
 import Info16 from "@carbon/icons-react/lib/information/16";
+import Close16 from "../../../../images/Egeria_close_16";
 
 function LinesView(props) {
   console.log("LinesView");
@@ -15,20 +16,29 @@ function LinesView(props) {
     alert("Got " + e.target.id);
     e.preventDefault();
   };
+  const handleOnClose = (e) => {
+    console.log("LinesView handleOnClose");
+    e.preventDefault();
+    props.onClose();
+  };
+
   const onClickNode = (e) => {
     console.log("onClickNode");
     e.preventDefault();
   };
   return (
     <div>
+        <div className="close-title">
+        <Close16 onClick={handleOnClose}/>
+      </div>
       <FormGroup>
         <div>
           <h4>
             Lines for{" "}
             {glossaryAuthorContext.currentNodeType
               ? glossaryAuthorContext.currentNodeType.typeName
-              : ""}{" "}
-            {glossaryAuthorContext.selectedNode.name}
+              : ""}
+           
             <Info16 />
           </h4>
         </div>
