@@ -288,10 +288,14 @@ public class LineageGraphConnectorHelper {
             lineageVertex.setDisplayName("undefined");
         }
 
-
         if (originalVertex.property(PROPERTY_KEY_ENTITY_GUID).isPresent()) {
             String guid = originalVertex.property(PROPERTY_KEY_ENTITY_GUID).value().toString();
             lineageVertex.setGuid(guid);
+        }
+        if (NODE_LABEL_SUB_PROCESS.equals(nodeType) && originalVertex.property((PROPERTY_KEY_PROCESS_GUID)).isPresent()) {
+            lineageVertex.setGuid(originalVertex.property((PROPERTY_KEY_PROCESS_GUID)).value().toString());
+            lineageVertex.setNodeID(originalVertex.property((PROPERTY_KEY_PROCESS_GUID)).value().toString());
+
         }
         Map<String, String> properties = retrieveProperties(originalVertex);
         lineageVertex.setProperties(properties);
@@ -301,7 +305,7 @@ public class LineageGraphConnectorHelper {
     private String getNodeID(Vertex vertex) {
         String nodeID;
         if (vertex.label().equalsIgnoreCase(NODE_LABEL_SUB_PROCESS)) {
-            nodeID = vertex.property(PROPERTY_KEY_ENTITY_NODE_ID).value().toString();
+            nodeID = vertex.property(PROPERTY_KEY_PROCESS_GUID).value().toString();
         } else {
             nodeID = vertex.property(PROPERTY_KEY_ENTITY_GUID).value().toString();
         }
