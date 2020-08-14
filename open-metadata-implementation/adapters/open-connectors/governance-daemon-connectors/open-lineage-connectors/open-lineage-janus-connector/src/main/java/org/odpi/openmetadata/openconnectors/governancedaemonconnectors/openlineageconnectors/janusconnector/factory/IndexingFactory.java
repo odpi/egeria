@@ -51,11 +51,7 @@ public class IndexingFactory {
             indexName = "edgeIndexComposite" + propertyKeyName;
 
         }
-
         log.debug("INDEX to be created {}", indexName);
-        if (auditLog != null) {
-            auditLog.logMessage("index to be created" + indexName, INDEX_ALREADY_EXISTS.getMessageDefinition());
-        }
         this.graph = graph;
         checkIndex(indexName,propertyName,propertyKeyName,unique,type);
     }

@@ -125,15 +125,10 @@ abstract public class EntityDetailMapper<N extends Node> implements INodeMapper<
                         while (iter.hasNext()) {
                             String mapkey = iter.next();
                             PrimitivePropertyValue primitivePropertyMapValue = (PrimitivePropertyValue) instancePropertyForMap.getPropertyValue(mapkey);
-                            String mapvalue =  primitivePropertyMapValue.getPrimitiveValue().toString();
+                            String mapvalue = primitivePropertyMapValue.getPrimitiveValue().toString();
                             actualMap.put(mapkey, mapvalue);
                         }
                         node.setAdditionalProperties(actualMap);
-                    } if (!mapMapToNode(node, propertyName, instancePropertyForMap)) {
-                        if (null==node.getAdditionalProperties())  {
-                            node.setAdditionalProperties(new HashMap<String, String>());
-                        }
-                        node.getAdditionalProperties().put(propertyName,mapPropertyValue.valueAsString());
                     }
                     break;
                 case ARRAY:
@@ -165,17 +160,6 @@ abstract public class EntityDetailMapper<N extends Node> implements INodeMapper<
      * @return true if it was a property we were expecting , otherwise false;
      */
     protected boolean mapEnumToNode(N node, String propertyName, EnumPropertyValue enumPropertyValue) {
-        return false;
-    }
-    /**
-     * Map an omrs entityDetail map property to a Subject Area Node property.
-     * The child class is expected to override this method if the type has map properties
-     * @param node the node to be updated
-     * @param propertyName the omrs property name
-     * @param instancePropertyForMap the omrs map property value
-     * @return true if it was a property we were expecting , otherwise false;
-     */
-    protected boolean mapMapToNode(N node, String propertyName, InstanceProperties instancePropertyForMap) {
         return false;
     }
 

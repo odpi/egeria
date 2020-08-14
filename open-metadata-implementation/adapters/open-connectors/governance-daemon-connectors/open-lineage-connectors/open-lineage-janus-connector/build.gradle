@@ -7,6 +7,7 @@
 dependencies {
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
     implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
+    implementation project(':open-metadata-implementation:repository-services:repository-services-apis')
     implementation 'org.janusgraph:janusgraph-core:0.5.2'
     implementation 'org.janusgraph:janusgraph-driver:0.5.2'
     implementation 'org.apache.tinkerpop:gremlin-core:3.4.7'
