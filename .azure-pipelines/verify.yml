@@ -36,6 +36,7 @@ stages:
               goals: 'clean deploy'
               options: >-
                   --batch-mode
+                  -X
                   -e
                   -s .m2/settings.xml
                   -Dstream=$(System.PullRequest.TargetBranch)
