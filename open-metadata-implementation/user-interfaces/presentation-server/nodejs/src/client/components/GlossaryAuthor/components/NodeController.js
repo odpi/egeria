@@ -331,9 +331,7 @@ const NodeController = (props) => {
     issueRestGet(url, onSuccessfulSearch, onErrorSearch);
   }
   function issueDelete() {
-    // setIssuedDelete(true);
-    const guid = glossaryAuthorContext.selectedNode.systemAttributes.guid;
-    const url = glossaryAuthorContext.currentNodeType.url + "/" + guid;
+    const url = glossaryAuthorContext.currentNodeType.url + "/" + currentNodeGuid;
     issueRestDelete(url, onSuccessfulDelete, onErrorDelete);
   }
   <div style={{ color: "red" }}>{errorMsg}</div>;
