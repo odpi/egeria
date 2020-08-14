@@ -309,7 +309,6 @@ const NodeController = (props) => {
     issueRestUpdate(url, body, onSuccessfulUpdate, onErrorUpdate);
   };
   const onUpdateClose = () => {
-    setCurrentNodeGuid(undefined);
     glossaryAuthorContext.doResetSelectedAction();
   };
 
