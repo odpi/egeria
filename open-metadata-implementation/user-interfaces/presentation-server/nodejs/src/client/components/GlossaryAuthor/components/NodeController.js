@@ -37,6 +37,8 @@ const NodeController = (props) => {
   // const [paginationOptions, setPaginationOptions] = useState();
   const [createdNode, setCreatedNode] = useState();
 
+  const [currentNodeGuid, setCurrentNodeGuid] = useState();
+
   // State for search status (whether there is a pending API request)
   const [isSearching, setIsSearching] = useState(false);
   // const [refresh, setRefresh] = useState(false);
@@ -72,9 +74,6 @@ const NodeController = (props) => {
       } else {
         setResults([]);
       }
-      // if (glossaryAuthorContext.isGettingCurrentNodeLines()) {
-      //   getCurrentNodeLines();
-      // }
     },
     // This is the useEffect input array
     // Our useEffect function will only execute if this value changes ...
@@ -99,13 +98,10 @@ const NodeController = (props) => {
   };
   const onClickEdit = () => {
     setErrorMsg("");
-    glossaryAuthorContext.doUpdatingAction();
+    getCurrentNode();
   };
   const onExactMatch = (flag) => {
     setExactMatch(flag);
-    // // Set isSearching state
-    // setIsSearching(true);
-    // issueSearch(debouncedSearchCriteria);
   };
   const onSearchCriteria = (criteria) => {
     console.log("onSearchCriteria " + criteria);
@@ -132,6 +128,7 @@ const NodeController = (props) => {
       const node = json.result[0];
       setCreatedNode(node);
       glossaryAuthorContext.doCreatedAction(node);
+      setCurrentNodeGuid(undefined);
     } else {
       onErrorGetNode("Error did not get a node from the server");
     }
@@ -140,6 +137,7 @@ const NodeController = (props) => {
     console.log("Error on Get " + msg);
     setErrorMsg(msg);
     setCreatedNode(undefined);
+    setCurrentNodeGuid(undefined);
   };
   const onSuccessfulGetNode = (json) => {
     if (json.result.length == 1) {
@@ -155,7 +153,7 @@ const NodeController = (props) => {
   };
   const onSuccessfulGetNodeLines = (json) => {
     if (json.result) {
-      glossaryAuthorContext.doUpdateSelectedNodeLines(json.result);
+      glossaryAuthorContext.doUpdateNodeLines(json.result);
     } else {
       onErrorGetNode("Error did not get node's lines from the server");
     }
@@ -169,16 +167,21 @@ const NodeController = (props) => {
   const onErrorDelete = (msg) => {
     console.log("Error on delete " + msg);
     setErrorMsg(msg);
+    setCurrentNodeGuid(undefined);
     issueSearch(debouncedSearchCriteria);
   };
   const onSuccessfulDelete = () => {
+    setCurrentNodeGuid(undefined);
     issueSearch(debouncedSearchCriteria);
   };
   const onSuccessfulUpdate = () => {
+    glossaryAuthorContext.doResetSelectedAction();
     issueSearch(debouncedSearchCriteria);
   };
   const onErrorUpdate = (msg) => {
+    glossaryAuthorContext.doResetSelectedAction();
     console.log("Error on update " + msg);
+    setCurrentNodeGuid(undefined);
     setErrorMsg(msg);
     issueSearch(debouncedSearchCriteria);
   };
@@ -204,10 +207,7 @@ const NodeController = (props) => {
           }
         }
         // If we have a selected node we need to show its row as selected.
-        if (
-          glossaryAuthorContext.selectedNode &&
-          row.id == glossaryAuthorContext.selectedNode.systemAttributes.guid
-        ) {
+        if (row.id == currentNodeGuid) {
           row.isSelected = true;
         } else {
           row.isSelected = false;
@@ -230,11 +230,16 @@ const NodeController = (props) => {
     glossaryAuthorContext.doSearchedAction();
   };
   function getCurrentNodeLines() {
-    const guid = glossaryAuthorContext.selectedNode.systemAttributes.guid;
     const url =
-      glossaryAuthorContext.currentNodeType.url + "/" + guid + "/relationships";
+      glossaryAuthorContext.currentNodeType.url + "/" + currentNodeGuid + "/relationships";
     console.log("issueGet " + url);
     issueRestGet(url, onSuccessfulGetNodeLines, onErrorGetNodeLines);
+  }
+  function getCurrentNode() {
+    const url =
+      glossaryAuthorContext.currentNodeType.url + "/" + currentNodeGuid;
+    console.log("issueGet " + url);
+    issueRestGet(url, onSuccessfulGetNode, onErrorGetNode);
   }
   const onErrorSearch = (msg) => {
     console.log("Error " + msg);
@@ -282,7 +287,8 @@ const NodeController = (props) => {
     }
     // we have selectedNode but it is not in the search results - we must have deleted it.
     if (!selectedInResults) {
-      glossaryAuthorContext.doSelectedNode(undefined);
+      setCurrentNodeGuid(undefined);
+      glossaryAuthorContext.doResetSelectedAction();
     }
   }
   // issue the create rest call for the supplied body
@@ -292,20 +298,19 @@ const NodeController = (props) => {
     issueRestCreate(url, body, onSuccessfulCreate, onErrorCreate);
   }
   const onSelectRow = (row) => {
-    console.log("onSelectRow issueRestGet");
-    const url = glossaryAuthorContext.currentNodeType.url + "/" + row.id;
-    console.log("issueGet " + url);
-    issueRestGet(url, onSuccessfulGetNode, onErrorGetNode);
+    console.log("onSelectRow");
+    setCurrentNodeGuid(row.id);
+    glossaryAuthorContext.doResetSelectedAction();
   };
-  // const onNodeUpdating = (guid) => {
-  //   const url = glossaryAuthorContext.currentNodeType.url + "/" + guid;
-  //   issueRestGet(url, onSuccessfulGetNode, onErrorGetNode);
-  // }
   const onNodeUpdate = (body) => {
     console.log("onNodeUpdate");
     const guid = glossaryAuthorContext.selectedNode.systemAttributes.guid;
     const url = glossaryAuthorContext.currentNodeType.url + "/" + guid;
     issueRestUpdate(url, body, onSuccessfulUpdate, onErrorUpdate);
+  };
+  const onUpdateClose = () => {
+    setCurrentNodeGuid(undefined);
+    glossaryAuthorContext.doResetSelectedAction();
   };
 
   // issue search using a criteria
@@ -346,17 +351,17 @@ const NodeController = (props) => {
           <div className="bx--col-lg-1 bx--col-md-1">
             <Search16 onClick={() => onClickSearch()} />
           </div>
-          {glossaryAuthorContext.selectedNode && (
+          {currentNodeGuid && (
             <div className="bx--col-lg-1 bx--col-md-1">
               <Delete16 onClick={() => issueDelete()} />
             </div>
           )}
-          {glossaryAuthorContext.selectedNode && (
+          {currentNodeGuid && (
             <div className="bx--col-lg-1 bx--col-md-1">
               <Edit16 onClick={() => onClickEdit()} />
             </div>
           )}
-          {glossaryAuthorContext.selectedNode && (
+          {currentNodeGuid && (
             <div className="bx--col-lg-1 bx--col-md-1">
               <Relationships16 onClick={() => onClickRelationships()} />
             </div>
@@ -387,14 +392,17 @@ const NodeController = (props) => {
                 />
               </div>
             )}
-            {glossaryAuthorContext.showUpdateComponent() && (
+            {glossaryAuthorContext.selectedNode && (
               <div className="actions-item">
-                <NodeUpdateView onUpdate={onNodeUpdate} />
+                <NodeUpdateView
+                  onUpdate={onNodeUpdate}
+                  onClose={onUpdateClose}
+                />
               </div>
             )}
             {glossaryAuthorContext.selectedNodeLines && (
               <div className="actions-item">
-                <LinesView />
+                <LinesView onClose={onUpdateClose} />
               </div>
             )}
           </div>

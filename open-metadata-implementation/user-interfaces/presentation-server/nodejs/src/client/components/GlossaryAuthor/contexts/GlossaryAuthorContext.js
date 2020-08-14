@@ -33,6 +33,8 @@ const GlossaryAuthorContextProvider = (props) => {
     UPDATE_NODE: Symbol("updateNode"),
     UPDATE_CANCELLED: Symbol("update cancelled"),
     UPDATE_NODE_LINES: Symbol("updateNodeLines"),
+    UPDATE_NODELINES_CANCELLED: Symbol("updateNodeLines cancelled"),
+    RESET_SELECTED: Symbol("reset selected"),
     RESET: Symbol("reset"),
   };
   Object.freeze(Types);
@@ -73,7 +75,6 @@ const GlossaryAuthorContextProvider = (props) => {
     myProjectState, // SETTING, SET
     operation, // this is a more granular state
     currentNodeType, // current node type
-    showUpdateComponentFlag, // whether to show the update component
     selectedNode, // selected Node
     selectedNodeLines, // Lines associated with the selected node
   } = state;
@@ -98,7 +99,6 @@ const GlossaryAuthorContextProvider = (props) => {
           selectedNode: undefined,
           selectedNodeLines: undefined,
           myGlossaryState: myStates.SETTING,
-          showUpdateComponentFlag: false,
         };
       }
       case Types.SETTING_MY_PROJECT.toString(): {
@@ -108,7 +108,6 @@ const GlossaryAuthorContextProvider = (props) => {
           currentNodeType: projectNodeType,
           selectedNode: undefined,
           selectedNodeLines: undefined,
-          showUpdateComponentFlag: false,
         };
       }
 
@@ -117,7 +116,8 @@ const GlossaryAuthorContextProvider = (props) => {
         return {
           ...state,
           operation: Operations.CREATING,
-          showUpdateComponentFlag: false,
+          selectedNodeLines: undefined,
+          selectedNode: undefined
         };
       case Types.CREATED.toString(): {
         console.log("Types.CREATED");
@@ -146,7 +146,8 @@ const GlossaryAuthorContextProvider = (props) => {
           myProjectState: newMyProjectState,
           myGlossary: newMyGlossary,
           myProject: newMyProject,
-          showUpdateComponentFlag: false,
+          selectedNodeLines: undefined,
+          selectedNode: undefined
         };
       }
       case Types.NODE_SELECTED.toString(): {
@@ -177,6 +178,7 @@ const GlossaryAuthorContextProvider = (props) => {
           myGlossary: newMyGlossary,
           myProject: newMyProject,
           selectedNode: newSelectedNode,
+          selectedNodeLines: undefined,
         };
       }
       case Types.SEARCHING.toString():
@@ -185,25 +187,25 @@ const GlossaryAuthorContextProvider = (props) => {
           operation: Operations.SEARCHING,
           selectedNode: undefined,
           selectedNodeLines: undefined,
-          showUpdateComponentFlag: false,
         };
       case Types.SEARCHED.toString():
         return {
           ...state,
           operation: Operations.SEARCHED,
-          showUpdateComponentFlag: false,
+          selectedNodeLines: undefined,
         };
       case Types.REFRESH.toString():
         return {
           ...state,
           operation: Operations.REFRESH,
-          showUpdateComponentFlag: false,
+          selectedNodeLines: undefined,
+          selectedNode: undefined,
         };
       case Types.DELETING.toString():
         return {
           ...state,
           operation: Operations.DELETING,
-          showUpdateComponentFlag: false,
+          selectedNodeLines: undefined,
         };
       case Types.SET_CURRENT_NODE_TYPE.toString(): {
         let nodeType;
@@ -220,25 +222,37 @@ const GlossaryAuthorContextProvider = (props) => {
         return {
           ...state,
           currentNodeType: nodeType,
-          showUpdateComponentFlag: false,
+          selectedNodeLines: undefined,
         };
       }
-
       case Types.UPDATING_NODE.toString():
         return {
           ...state,
-          showUpdateComponentFlag: true,
+          selectedNodeLines: undefined,
         };
-
       case Types.UPDATE_NODE_LINES.toString():
         return {
           ...state,
           selectedNodeLines: action.payload, // payload is the selected Node Lines
+          selectedNode: undefined
+        };
+      case Types.UPDATE_NODELINES_CANCELLED.toString():
+        return {
+          ...state,
+          selectedNodeLines: undefined,
+          selectedNode: undefined
         };
       case Types.UPDATE_CANCELLED.toString():
         return {
           ...state,
-          showUpdateComponentFlag: false,
+          selectedNodeLines: undefined,
+          selectedNode: undefined
+        };
+      case Types.RESET_SELECTED.toString():
+        return {
+          ...state,
+          selectedNodeLines: undefined,
+          selectedNode: undefined
         };
       case Types.RESET.toString():
         return initialiseState();
@@ -283,20 +297,6 @@ const GlossaryAuthorContextProvider = (props) => {
       myGlossaryState && myGlossaryState.toString() == myStates.SET.toString()
     );
   };
-  /**
-   * Update My Glossary to the provided value.
-   */
-  // const doCreatedMyGlossary = (glossary) => {
-  //   console.log("doCreatedMyGlossary " + glossary.name);
-  //   dispatch({ type: Types.CREATED_MY_GLOSSARY, payload: glossary });
-  // };
-  // /**
-  //  * Update My Project to the provided value.
-  //  */
-  // const doCreatedMyProject = (project) => {
-  //   console.log("doCreatedMyProject" + project.name);
-  //   dispatch({ type: Types.CREATED_MY_PROJECT, payload: project });
-  // };
 
   const doCreatingAction = () => {
     console.log("doCreatingAction");
@@ -312,21 +312,29 @@ const GlossaryAuthorContextProvider = (props) => {
     dispatch({ type: Types.SEARCHING });
   };
   const doSearchedAction = () => {
-    console.log("setActionSearchedState");
+    console.log("doSearchedAction");
     dispatch({ type: Types.SEARCHED });
   };
   const doRefreshSearchAction = () => {
-    console.log("setRefreshSearchAction");
+    console.log("doRefreshSearchAction");
     dispatch({ type: Types.REFRESH });
   };
   const doCancelUpdate = () => {
-    console.log("setRefreshSearchAction");
+    console.log("doCancelUpdate");
     dispatch({ type: Types.UPDATE_CANCELLED });
+  };
+  const doCancelUpdateNodeLines = () => {
+    console.log(" doCancelUpdateNodeLines");
+    dispatch({ type: Types.UPDATE_NODELINES_CANCELLED });
   };
 
   const doDeletingAction = () => {
     console.log("setDeletingAction");
     dispatch({ type: Types.DELETING });
+  };
+  const doResetSelectedAction = () => {
+    console.log("doResetSelectedAction");
+    dispatch({ type: Types.RESET_SELECTED });
   };
 
   const doSetNodeType = (key) => {
@@ -389,9 +397,6 @@ const GlossaryAuthorContextProvider = (props) => {
     }
     return show;
   };
-  const showUpdateComponent = () => {
-    return showUpdateComponentFlag;
-  };
   const showCreatingNodeComponent = () => {
     let show = false;
     if (operation) {
@@ -422,7 +427,6 @@ const GlossaryAuthorContextProvider = (props) => {
         selectedNodeLines,
         myProject,
         myGlossary,
-
         // do methods requesting actions
         doSetNodeType,
         doSettingMyGlossary,
@@ -436,11 +440,12 @@ const GlossaryAuthorContextProvider = (props) => {
         doDeletingAction,
         doSelectedNode,
         doUpdateNodeLines,
+        doCancelUpdateNodeLines,
         doUpdatingAction,
         doUpdateNodeAction,
+        doResetSelectedAction,
         // show methods interrogate whether a component should be shown
         showSearchComponent,
-        showUpdateComponent,
         showCreatingNodeComponent,
         showCreatedNodeComponent,
         // is methods interrogate state
