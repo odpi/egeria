@@ -193,6 +193,7 @@ const GlossaryAuthorContextProvider = (props) => {
           ...state,
           operation: Operations.SEARCHED,
           selectedNodeLines: undefined,
+          selectedNode: undefined
         };
       case Types.REFRESH.toString():
         return {
