@@ -103,7 +103,7 @@
                             <!-- check doesn't support SSL, so we can't use this yet. Maybe when PR addressed -->
                             <!-- healthcheckUrl>https://localhost:${fvt.serverport}/open-metadata/platform-services/users/${fvt.user}/server-platform/origin</healthcheckUrl-->
                             <waitAfterLaunch>${fvt.maxwait}</waitAfterLaunch>
-                            <processLogFile>${project.build.testOutputDirectory}/egeria.log</processLogFile>
+                            <!--processLogFile>${project.build.testOutputDirectory}/egeria.log</processLogFile-->
                             <arguments>
                                 <argument>java</argument>
                                 <argument>-Dserver.port=${fvt.serverport}</argument>
