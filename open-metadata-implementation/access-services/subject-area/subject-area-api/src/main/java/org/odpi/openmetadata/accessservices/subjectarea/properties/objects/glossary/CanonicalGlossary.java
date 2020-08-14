@@ -14,7 +14,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class CanonicalGlossary extends Glossary {
-    String scope = null;
+    private String scope = null;
     public CanonicalGlossary() {
         nodeType = NodeType.CanonicalGlossary;
     }

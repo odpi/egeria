@@ -23,7 +23,6 @@ import org.springframework.web.util.DefaultUriBuilderFactory;
 import javax.net.ssl.*;
 import java.nio.charset.StandardCharsets;
 import java.security.KeyManagementException;
-import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.X509Certificate;
 import java.util.Arrays;
@@ -45,7 +44,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
     /**
      * Default constructor
      */
-    public SpringRESTClientConnector() throws NoSuchAlgorithmException, KeyStoreException, KeyManagementException
+    public SpringRESTClientConnector() throws NoSuchAlgorithmException, KeyManagementException
     {
         super();
 

@@ -50,6 +50,7 @@ public class RunAllFVT
         SubjectAreaDefinitionCategoryFVT.runIt(url,serverName,userId);
         GraphFVT.runIt(url,serverName,userId);
         EffectiveDatesFVT.runIt(url,serverName,userId);
+        CheckSerializationFVT.runIt(url, serverName, userId);
 
         int finalGlossaryCount = GlossaryFVT.getGlossaryCount(url,serverName,userId);
         int finalTermCount = TermFVT.getTermCount(url,serverName,userId);
