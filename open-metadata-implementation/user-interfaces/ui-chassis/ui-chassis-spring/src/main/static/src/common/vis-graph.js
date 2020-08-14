@@ -196,14 +196,8 @@ networkChanged(newNetwork) {
           break;
         }
       }
-      if (this.node.group !== "subProcess") {
-        this.$.tokenAjaxDetails.url = '/api/assets/' + nodeId;
-        this.$.tokenAjaxDetails._go();
-      } else {
-        this.typeDetails = {
-          type : undefined
-        }
-      }
+      this.$.tokenAjaxDetails.url = '/api/assets/' + nodeId;
+      this.$.tokenAjaxDetails._go();
       this.$.visDialog.open();
     }
   }
