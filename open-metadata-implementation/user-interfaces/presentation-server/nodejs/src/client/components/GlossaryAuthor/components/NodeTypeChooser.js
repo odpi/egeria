@@ -20,28 +20,27 @@ const NodeTypeChooser = () => {
   };
   return (
     <div>
-      {/* case one nothing set no editing being attempted  */}
-      {glossaryAuthorContext.myGlossary === undefined &&
-        !glossaryAuthorContext.isEdittingMyGlossary() &&
-       (
-          <div>
-            Current Glossary needs to be set; as authored content will
-            be stored there.
-          </div>
-        )}
-      {/* case two nothing set, editting my project  */}
+
+      {/* case one nothing editting my project  */}
       { glossaryAuthorContext.isEdittingMyProject() && (
           <div>
-            Creating Current Project.
+            Setting Current Project. Create or Search and Select. 
           </div>
         )}
-      {/* case three nothing set, editting my glossary  */}
-      { glossaryAuthorContext.myGlossary &&
+      {/* case two nothing set no editing being attempted  */}
+      { 
         glossaryAuthorContext.isEdittingMyGlossary() && (
           <div>
-            Creating Current Glossary.
+            Setting Current Glossary. Create or Search and Select. 
           </div>
         )}
+        {!glossaryAuthorContext.isEdittingMyGlossary() && 
+          !glossaryAuthorContext.myGlossary &&
+      (
+         <div>
+          Current glossary needs to be set. 
+         </div>
+       )}
       {glossaryAuthorContext.isSetupComplete() && (
           <div>
             <div>Choose what to author:</div>
