@@ -16,7 +16,7 @@ public class SubjectAreaGlossaryClient extends AbstractSubjectAreaNode<Glossary>
 
 
     @Override
-    public Class<Glossary> type() {
+    public Class<Glossary> resultType() {
         return Glossary.class;
     }
 }

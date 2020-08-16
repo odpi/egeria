@@ -9,6 +9,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.commo
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Node;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GenericResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -35,8 +36,8 @@ public abstract class AbstractSubjectAreaNode<E extends Node> extends AbstractSu
         final String methodInfo = getMethodInfo("getRelationships");
 
         ResolvableType resolvableType = ResolvableType.forClassWithGenerics(SubjectAreaOMASAPIResponse.class, Line.class);
-        ParameterizedTypeReference<SubjectAreaOMASAPIResponse<Line>> type = ParameterizedTypeReference.forType(resolvableType.getType());
-        SubjectAreaOMASAPIResponse<Line> response = client.findRESTCall(userId, guid, methodInfo, urlTemplate, type, findRequest);
+        ParameterizedTypeReference<GenericResponse<Line>> type = ParameterizedTypeReference.forType(resolvableType.getType());
+        GenericResponse<Line> response = client.findRESTCall(userId, guid, methodInfo, urlTemplate, type, findRequest);
         return response.getResult();
     }
 }

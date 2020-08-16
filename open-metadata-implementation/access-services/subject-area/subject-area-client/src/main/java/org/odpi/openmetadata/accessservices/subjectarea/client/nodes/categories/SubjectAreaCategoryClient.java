@@ -15,7 +15,7 @@ public class SubjectAreaCategoryClient extends AbstractSubjectAreaNode<Category>
     }
 
     @Override
-    public Class<Category> type() {
+    public Class<Category> resultType() {
         return Category.class;
     }
 }

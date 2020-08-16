@@ -2,13 +2,14 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.client.relationships;
 
-import org.odpi.openmetadata.accessservices.subjectarea.client.Parametrization;
+import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GenericResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.Parametrization;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaRestClient;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.NeighborhoodHistoricalFindRequest;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Graph;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineType;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.NodeType;
-import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.utils.QueryBuilder;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -26,8 +27,13 @@ public class SubjectAreaGraphClient implements SubjectAreaGraph, Parametrization
     }
 
     @Override
-    public Class<Graph> type() {
+    public Class<Graph> resultType() {
         return Graph.class;
+    }
+
+    @Override
+    public Class<? extends GenericResponse> responseType() {
+        return SubjectAreaOMASAPIResponse.class;
     }
 
     @Override
@@ -38,7 +44,7 @@ public class SubjectAreaGraphClient implements SubjectAreaGraph, Parametrization
         final String methodName = "getGraph";;
 
         String urlTemplate = BASE_URL + "/%s" + createGraphQuery(request).toString();
-        SubjectAreaOMASAPIResponse<Graph> response = client.getByIdRESTCall(userId, guid, methodName, getParametrizedType(), urlTemplate);
+        GenericResponse<Graph> response = client.getByIdRESTCall(userId, guid, methodName, getParametrizedType(), urlTemplate);
         return response.getHead();
     }
 

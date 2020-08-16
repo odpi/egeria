@@ -49,7 +49,7 @@ public class SubjectAreaNode implements SubjectAreaCategory, SubjectAreaTerm, Su
                     ctor.setAccessible(true);
                     final AbstractSubjectAreaNode newInstance =
                             (AbstractSubjectAreaNode) ctor.newInstance(subjectAreaRestClient);
-                    cache.put(newInstance.type(), newInstance);
+                    cache.put(newInstance.resultType(), newInstance);
                 }
             } catch (NoSuchMethodException
                     | IllegalAccessException

@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.subjectarea.responses;
 
 import com.fasterxml.jackson.annotation.*;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GenericResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 
@@ -20,26 +21,23 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class SubjectAreaOMASAPIResponse<R> extends FFDCResponseBase {
+@JsonIgnoreProperties(ignoreUnknown = true, value = {"head"})
+public class SubjectAreaOMASAPIResponse<R> extends FFDCResponseBase implements GenericResponse<R> {
     @JsonProperty("result")
     @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "class", visible = true)
     private List<R> result = new ArrayList<>();
 
-    /**
-     * Add several results for the response
-     * @param entities collection with results
-     * */
-    public void addAllResults(Collection<? extends R> entities) {
-        this.result.addAll(entities);
+    @JsonCreator
+    public SubjectAreaOMASAPIResponse() { /* default constructor */ }
+
+    @Override
+    public void addAllResults(Collection<? extends R> results) {
+        this.result.addAll(results);
     }
 
-    /**
-     * Add single result for the response
-     * @param entity - one result
-     * */
-    public void addResult(R entity){
-        this.result.add(entity);
+    @Override
+    public void addResult(R result){
+        this.result.add(result);
     }
 
     /**
@@ -58,26 +56,7 @@ public class SubjectAreaOMASAPIResponse<R> extends FFDCResponseBase {
         super.setExceptionProperties(e.getRelatedProperties());
     }
 
-    /**
-     * Get head element from result array.
-     * Needed when we know for sure that the answer is single object
-     *
-     * @return result
-     **/
-    @JsonIgnore
-    public R getHead() {
-        if (!result.isEmpty()) {
-            return getResult().get(0);
-        }
-
-        return null;
-    }
-
-    /**
-     * Get all results of the response
-     *
-     * @return results
-     **/
+    @Override
     public List<R> getResult() {
         return new ArrayList<>(result);
     }

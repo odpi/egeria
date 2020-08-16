@@ -59,7 +59,7 @@ public class SubjectAreaLine implements SubjectAreaRelationship {
                     ctor.setAccessible(true);
                     final AbstractSubjectAreaRelationship newInstance =
                             (AbstractSubjectAreaRelationship) ctor.newInstance(subjectAreaRestClient);
-                    cache.put(newInstance.type(), newInstance);
+                    cache.put(newInstance.resultType(), newInstance);
                 }
             } catch (NoSuchMethodException
                     | IllegalAccessException
@@ -180,7 +180,7 @@ public class SubjectAreaLine implements SubjectAreaRelationship {
         }
 
         @Override
-        public Class<CategoryHierarchyLink> type() {
+        public Class<CategoryHierarchyLink> resultType() {
             return CategoryHierarchyLink.class;
         }
     }
@@ -192,7 +192,7 @@ public class SubjectAreaLine implements SubjectAreaRelationship {
         }
 
         @Override
-        public Class<TermAnchor> type() {
+        public Class<TermAnchor> resultType() {
             return TermAnchor.class;
         }
     }
@@ -203,7 +203,7 @@ public class SubjectAreaLine implements SubjectAreaRelationship {
         }
 
         @Override
-        public Class<RelatedTerm> type() {
+        public Class<RelatedTerm> resultType() {
             return RelatedTerm.class;
         }
     }
@@ -214,7 +214,7 @@ public class SubjectAreaLine implements SubjectAreaRelationship {
         }
 
         @Override
-        public Class<HasA> type() {
+        public Class<HasA> resultType() {
             return HasA.class;
         }
     }
@@ -225,7 +225,7 @@ public class SubjectAreaLine implements SubjectAreaRelationship {
         }
 
         @Override
-        public Class<Synonym> type() {
+        public Class<Synonym> resultType() {
             return Synonym.class;
         }
     }
@@ -236,7 +236,7 @@ public class SubjectAreaLine implements SubjectAreaRelationship {
         }
 
         @Override
-        public Class<Antonym> type() {
+        public Class<Antonym> resultType() {
             return Antonym.class;
         }
     }
@@ -247,7 +247,7 @@ public class SubjectAreaLine implements SubjectAreaRelationship {
         }
 
         @Override
-        public Class<CategoryAnchor> type() {
+        public Class<CategoryAnchor> resultType() {
             return CategoryAnchor.class;
         }
     }
@@ -258,7 +258,7 @@ public class SubjectAreaLine implements SubjectAreaRelationship {
         }
 
         @Override
-        public Class<Categorization> type() {
+        public Class<Categorization> resultType() {
             return Categorization.class;
         }
     }
@@ -269,7 +269,7 @@ public class SubjectAreaLine implements SubjectAreaRelationship {
         }
 
         @Override
-        public Class<Translation> type() {
+        public Class<Translation> resultType() {
             return Translation.class;
         }
     }
@@ -280,7 +280,7 @@ public class SubjectAreaLine implements SubjectAreaRelationship {
         }
 
         @Override
-        public Class<UsedInContext> type() {
+        public Class<UsedInContext> resultType() {
             return UsedInContext.class;
         }
     }
@@ -291,7 +291,7 @@ public class SubjectAreaLine implements SubjectAreaRelationship {
         }
 
         @Override
-        public Class<PreferredTerm> type() {
+        public Class<PreferredTerm> resultType() {
             return PreferredTerm.class;
         }
     }
@@ -302,7 +302,7 @@ public class SubjectAreaLine implements SubjectAreaRelationship {
         }
 
         @Override
-        public Class<ValidValue> type() {
+        public Class<ValidValue> resultType() {
             return ValidValue.class;
         }
     }
@@ -313,7 +313,7 @@ public class SubjectAreaLine implements SubjectAreaRelationship {
         }
 
         @Override
-        public Class<ReplacementTerm> type() {
+        public Class<ReplacementTerm> resultType() {
             return ReplacementTerm.class;
         }
     }
@@ -324,7 +324,7 @@ public class SubjectAreaLine implements SubjectAreaRelationship {
         }
 
         @Override
-        public Class<SemanticAssignment> type() {
+        public Class<SemanticAssignment> resultType() {
             return SemanticAssignment.class;
         }
     }
@@ -335,7 +335,7 @@ public class SubjectAreaLine implements SubjectAreaRelationship {
         }
 
         @Override
-        public Class<TypedBy> type() {
+        public Class<TypedBy> resultType() {
             return TypedBy.class;
         }
     }
@@ -346,7 +346,7 @@ public class SubjectAreaLine implements SubjectAreaRelationship {
         }
 
         @Override
-        public Class<IsA> type() {
+        public Class<IsA> resultType() {
             return IsA.class;
         }
     }
@@ -357,7 +357,7 @@ public class SubjectAreaLine implements SubjectAreaRelationship {
         }
 
         @Override
-        public Class<IsATypeOf> type() {
+        public Class<IsATypeOf> resultType() {
             return IsATypeOf.class;
         }
     }
@@ -368,7 +368,7 @@ public class SubjectAreaLine implements SubjectAreaRelationship {
         }
 
         @Override
-        public Class<ProjectScope> type() {
+        public Class<ProjectScope> resultType() {
             return ProjectScope.class;
         }
     }

@@ -15,7 +15,7 @@ public class SubjectAreaDefinitionClient extends AbstractSubjectAreaNode<Subject
     }
 
     @Override
-    public Class<SubjectAreaDefinition> type() {
+    public Class<SubjectAreaDefinition> resultType() {
         return SubjectAreaDefinition.class;
     }
 }

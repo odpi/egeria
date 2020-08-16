@@ -8,6 +8,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.SubjectArea
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.project.Project;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GenericResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -24,7 +25,7 @@ public class SubjectAreaProjectClient extends AbstractSubjectAreaNode<Project> {
     }
 
     @Override
-    public Class<Project> type() {
+    public Class<Project> resultType() {
         return Project.class;
     }
 
@@ -36,8 +37,8 @@ public class SubjectAreaProjectClient extends AbstractSubjectAreaNode<Project> {
         final String methodInfo = getMethodInfo("getProjectTerms");
 
         ResolvableType resolvableType = ResolvableType.forClassWithGenerics(SubjectAreaOMASAPIResponse.class, Term.class);
-        ParameterizedTypeReference<SubjectAreaOMASAPIResponse<Term>> type = ParameterizedTypeReference.forType(resolvableType.getType());
-        SubjectAreaOMASAPIResponse<Term> response = client.findRESTCall(userId, guid, methodInfo, urlTemplate, type, EMPTY_FIND_REQUEST);
+        ParameterizedTypeReference<GenericResponse<Term>> type = ParameterizedTypeReference.forType(resolvableType.getType());
+        GenericResponse<Term> response = client.findRESTCall(userId, guid, methodInfo, urlTemplate, type, EMPTY_FIND_REQUEST);
         return response.getResult();
     }
 }
