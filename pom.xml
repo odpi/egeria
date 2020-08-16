@@ -136,7 +136,7 @@
         <janus.version>0.5.2</janus.version>
         <gremlin.version>3.4.8</gremlin.version>
         <netty.version>4.1.51.Final</netty.version>
-        <spring-boot.version>2.3.2.RELEASE</spring-boot.version>
+        <spring-boot.version>2.3.3.RELEASE</spring-boot.version>
         <spring.version>5.2.8.RELEASE</spring.version>
         <spring-security.version>5.3.4.RELEASE</spring-security.version>
         <spring-data.version>2.3.3.RELEASE</spring-data.version>
@@ -159,6 +159,7 @@
         <ranger.version>1.2.0</ranger.version>
         <plexus.version>3.3.0</plexus.version>
         <quartz.version>2.3.2</quartz.version>
+        <lucene.version>8.4.1</lucene.version>
         <lucene-analyzers-common.version>8.6.0</lucene-analyzers-common.version>
         <guava.version>29.0-jre</guava.version>
         <tink.version>1.4.0</tink.version>
@@ -179,9 +180,10 @@
         <classgraph.version>4.8.87</classgraph.version>
         <swagger.version>2.1.4</swagger.version>
         <groovy.version>3.0.5</groovy.version>
-        <micrometer-registry-prometheus.version>1.5.3</micrometer-registry-prometheus.version>
+        <micrometer-registry-prometheus.version>1.5.4</micrometer-registry-prometheus.version>
         <jcl-over-slf4j.version>1.7.30</jcl-over-slf4j.version>
         <reflections.version>0.9.12</reflections.version>
+        <HdrHistogram.version>2.1.12</HdrHistogram.version>
         <javassist.version>3.27.0-GA</javassist.version>
 
         <!-- Versions of plugins -->
@@ -212,6 +214,7 @@
         <nexus-staging-maven-plugin>1.6.8</nexus-staging-maven-plugin>
         <license-plugin.version>2.0.0</license-plugin.version>
         <springdoc-plugin.version>1.0</springdoc-plugin.version>
+        <build-helper.version>3.2.0</build-helper.version>
         <failsafe-plugin.version>3.0.0-M5</failsafe-plugin.version>
         <git-commit-plugin.version>4.0.2</git-commit-plugin.version>
         <process-exec-plugin.version>0.9</process-exec-plugin.version>
@@ -411,6 +414,20 @@
             </dependency>
 
             <dependency>
+                <groupId>org.apache.tinkerpop</groupId>
+                <artifactId>gremlin-driver</artifactId>
+                <scope>compile</scope>
+                <version>${gremlin.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.tinkerpop</groupId>
+                <artifactId>tinkergraph-gremlin</artifactId>
+                <scope>compile</scope>
+                <version>${gremlin.version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>org.apache.tomcat.embed</groupId>
                 <artifactId>tomcat-embed-core</artifactId>
                 <scope>compile</scope>
@@ -455,7 +472,35 @@
                 <groupId>org.apache.lucene</groupId>
                 <artifactId>lucene-analyzers-common</artifactId>
                 <scope>compile</scope>
-                <version>${lucene-analyzers-common.version}</version>
+                <version>${lucene.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.lucene</groupId>
+                <artifactId>lucene-core</artifactId>
+                <scope>compile</scope>
+                <version>${lucene.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.lucene</groupId>
+                <artifactId>lucene-spatial</artifactId>
+                <scope>compile</scope>
+                <version>${lucene.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.lucene</groupId>
+                <artifactId>lucene-spatial-extras</artifactId>
+                <scope>compile</scope>
+                <version>${lucene.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.lucene</groupId>
+                <artifactId>lucene-queryparser</artifactId>
+                <scope>compile</scope>
+                <version>${lucene.version}</version>
             </dependency>
 
             <dependency>
@@ -2088,12 +2133,110 @@
                 <version>${open-metadata.version}</version>
             </dependency>
 
+
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
-                <artifactId>open-metadata-assemblies</artifactId>
+                <artifactId>server-chassis-spring</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>open-lineage-janus-connector</artifactId>
+                <version>${open-metadata.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>open-connector-archives</artifactId>
+                <version>${open-metadata.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>asset-create-avro-sample</artifactId>
+                <version>${open-metadata.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>asset-create-csv-sample</artifactId>
+                <version>${open-metadata.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>asset-reader-avro-sample</artifactId>
+                <version>${open-metadata.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>asset-reader-csv-sample</artifactId>
+                <version>${open-metadata.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>governance-leadership-sample</artifactId>
+                <version>${open-metadata.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>governance-zone-create-sample</artifactId>
+                <version>${open-metadata.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>subject-area-definition-sample</artifactId>
+                <version>${open-metadata.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>ui-chassis-spring</artifactId>
+                <version>${open-metadata.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>open-metadata-conformance-suite-client</artifactId>
+                <version>${open-metadata.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>egeria</artifactId>
+                <version>${open-metadata.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>admin-services-config-metadata-server-sample</artifactId>
+                <version>${open-metadata.version}</version>
+            </dependency>
+            <!-- Main distribution of egeria -->
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>open-metadata-assemblies</artifactId>
+                <version>${open-metadata.version}</version>
+                <type>pom</type>
+                <classifier>distribution</classifier>
+            </dependency>
+            <!-- used for demo environment -->
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>open-metadata-assemblies</artifactId>
+                <version>${open-metadata.version}</version>
+                <classifier>deploy</classifier>
+                <type>pom</type>
+            </dependency>
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>open-metadata-labs</artifactId>
+                <version>${open-metadata.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>presentation-server</artifactId>
+                <version>${open-metadata.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>discovery-service-sample</artifactId>
+                <version>${open-metadata.version}</version>
+            </dependency>
+            <!-- End of POM dependency versions -->
 
             <dependency>
                 <groupId>org.slf4j</groupId>
@@ -2424,6 +2567,12 @@
                 <version>${javassist.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.hdrhistogram</groupId>
+                <artifactId>HdrHistogram</artifactId>
+                <version>${HdrHistogram.version}</version>
+            </dependency>
+
         </dependencies>
 
     </dependencyManagement>
@@ -2649,6 +2798,12 @@
                     <groupId>org.springdoc</groupId>
                     <artifactId>springdoc-openapi-maven-plugin</artifactId>
                     <version>${springdoc-plugin.version}</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>build-helper-maven-plugin</artifactId>
+                    <version>${build-helper.version}</version>
                 </plugin>
 
                 <plugin>
@@ -2950,6 +3105,7 @@
                     </execution>
                 </executions>
             </plugin>
+
 
         </plugins>
     </build>

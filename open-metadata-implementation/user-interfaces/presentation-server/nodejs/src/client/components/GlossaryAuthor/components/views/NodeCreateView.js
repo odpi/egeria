@@ -29,18 +29,8 @@ function NodeCreateView(props) {
 
   const glossaryAuthorContext = useContext(GlossaryAuthorContext);
   console.log("NodeCreateView glossaryAuthorContext", glossaryAuthorContext);
-
-  // const [errorMsg, setErrorMsg] = useState();
   const [createBody, setCreateBody] = useState({});
-  // const [createdNode, setcreatedNode] = useState(undefined);
 
-  // useEffect(() => {
-    // Update the document title using the browser API
-    // if (
-    //   glossaryAuthorContext.authoringOperation == 1 
-    // )
-      // setcreatedNode(undefined);
-  // });
   /**
    * If there was an error the button has a class added to it to cause it to shake. After the animation ends, we need to remove the class.
    * @param {*} e end anomation event

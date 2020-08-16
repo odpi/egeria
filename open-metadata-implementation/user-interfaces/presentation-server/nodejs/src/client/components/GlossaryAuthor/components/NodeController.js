@@ -6,6 +6,7 @@ import NodeUpdateView from "./views/NodeUpdateView";
 import NodeCreateView from "./views/NodeCreateView.js";
 import LinesView from "./views/LinesView.js";
 import Add16 from "../../../images/Egeria_add_16";
+import Edit16 from "../../../images/Egeria_edit_16";
 import Search16 from "../../../images/Egeria_search_16";
 import Delete16 from "../../../images/Egeria_delete_16";
 import Relationships16 from "../../../images/Egeria_relationships_16";
@@ -35,6 +36,8 @@ const NodeController = (props) => {
   const [results, setResults] = useState([]);
   // const [paginationOptions, setPaginationOptions] = useState();
   const [createdNode, setCreatedNode] = useState();
+
+  const [currentNodeGuid, setCurrentNodeGuid] = useState();
 
   // State for search status (whether there is a pending API request)
   const [isSearching, setIsSearching] = useState(false);
@@ -71,9 +74,6 @@ const NodeController = (props) => {
       } else {
         setResults([]);
       }
-      // if (glossaryAuthorContext.isGettingCurrentNodeLines()) {
-      //   getCurrentNodeLines();
-      // }
     },
     // This is the useEffect input array
     // Our useEffect function will only execute if this value changes ...
@@ -96,11 +96,12 @@ const NodeController = (props) => {
     setErrorMsg("");
     glossaryAuthorContext.doSearchingAction();
   };
+  const onClickEdit = () => {
+    setErrorMsg("");
+    getCurrentNode();
+  };
   const onExactMatch = (flag) => {
     setExactMatch(flag);
-    // // Set isSearching state
-    // setIsSearching(true);
-    // issueSearch(debouncedSearchCriteria);
   };
   const onSearchCriteria = (criteria) => {
     console.log("onSearchCriteria " + criteria);
@@ -126,14 +127,8 @@ const NodeController = (props) => {
     if (json.result.length == 1) {
       const node = json.result[0];
       setCreatedNode(node);
-      if (glossaryAuthorContext.isEdittingMyGlossary()) {
-        glossaryAuthorContext.doCreatedMyGlossary(node);
-      } else if (glossaryAuthorContext.isEdittingMyProject()) {
-        glossaryAuthorContext.doCreatedMyProject(node);
-      } else {
-        // future: consider passing the created node to save in context.
-        glossaryAuthorContext.doCreatedAction();
-      }
+      glossaryAuthorContext.doCreatedAction(node);
+      setCurrentNodeGuid(undefined);
     } else {
       onErrorGetNode("Error did not get a node from the server");
     }
@@ -142,10 +137,11 @@ const NodeController = (props) => {
     console.log("Error on Get " + msg);
     setErrorMsg(msg);
     setCreatedNode(undefined);
+    setCurrentNodeGuid(undefined);
   };
   const onSuccessfulGetNode = (json) => {
     if (json.result.length == 1) {
-      glossaryAuthorContext.doUpdateSelectedNode(json.result[0]);
+      glossaryAuthorContext.doSelectedNode(json.result[0]);
     } else {
       onErrorGetNode("Error did not get a node from the server");
     }
@@ -157,7 +153,7 @@ const NodeController = (props) => {
   };
   const onSuccessfulGetNodeLines = (json) => {
     if (json.result) {
-      glossaryAuthorContext.doUpdateSelectedNodeLines(json.result);
+      glossaryAuthorContext.doUpdateNodeLines(json.result);
     } else {
       onErrorGetNode("Error did not get node's lines from the server");
     }
@@ -171,16 +167,21 @@ const NodeController = (props) => {
   const onErrorDelete = (msg) => {
     console.log("Error on delete " + msg);
     setErrorMsg(msg);
+    setCurrentNodeGuid(undefined);
     issueSearch(debouncedSearchCriteria);
   };
   const onSuccessfulDelete = () => {
+    setCurrentNodeGuid(undefined);
     issueSearch(debouncedSearchCriteria);
   };
   const onSuccessfulUpdate = () => {
+    glossaryAuthorContext.doResetSelectedAction();
     issueSearch(debouncedSearchCriteria);
   };
   const onErrorUpdate = (msg) => {
+    glossaryAuthorContext.doResetSelectedAction();
     console.log("Error on update " + msg);
+    setCurrentNodeGuid(undefined);
     setErrorMsg(msg);
     issueSearch(debouncedSearchCriteria);
   };
@@ -206,10 +207,7 @@ const NodeController = (props) => {
           }
         }
         // If we have a selected node we need to show its row as selected.
-        if (
-          glossaryAuthorContext.selectedNode &&
-          row.id == glossaryAuthorContext.selectedNode.systemAttributes.guid
-        ) {
+        if (row.id == currentNodeGuid) {
           row.isSelected = true;
         } else {
           row.isSelected = false;
@@ -232,11 +230,16 @@ const NodeController = (props) => {
     glossaryAuthorContext.doSearchedAction();
   };
   function getCurrentNodeLines() {
-    const guid = glossaryAuthorContext.selectedNode.systemAttributes.guid;
     const url =
-      glossaryAuthorContext.currentNodeType.url + "/" + guid + "/relationships";
+      glossaryAuthorContext.currentNodeType.url + "/" + currentNodeGuid + "/relationships";
     console.log("issueGet " + url);
     issueRestGet(url, onSuccessfulGetNodeLines, onErrorGetNodeLines);
+  }
+  function getCurrentNode() {
+    const url =
+      glossaryAuthorContext.currentNodeType.url + "/" + currentNodeGuid;
+    console.log("issueGet " + url);
+    issueRestGet(url, onSuccessfulGetNode, onErrorGetNode);
   }
   const onErrorSearch = (msg) => {
     console.log("Error " + msg);
@@ -253,22 +256,6 @@ const NodeController = (props) => {
   function refreshSearchResults() {
     let selectedInResults = false;
     if (results && results.length > 0) {
-      // there seems to be an issue when paginationOptions in the pagination handler
-      // then calling this function, the first time paginationOptions is undefined.
-      // A circumvention is to pass the page and page size as parameters and use them if they are set.
-      // let pageSize;
-      // let page;
-      // if (passedPage) {
-      //   page = passedPage;
-      // } else {
-      //   page = paginationOptions.page;
-      // }
-      // if (passedPageSize) {
-      //   pageSize = passedPageSize;
-      // } else {
-      //   pageSize = paginationOptions.pageSize;
-      // }
-
       // if page = 1 and pageSize 10, searchTableRowsStart = 1
       // if page = 2 and pageSize 10, searchTableRowsStart = 11
       // if page = 2 and pageSize 10 and results.length = 15, searchTableRowsStart = 11 , searchTableRowsSize = 5
@@ -300,7 +287,8 @@ const NodeController = (props) => {
     }
     // we have selectedNode but it is not in the search results - we must have deleted it.
     if (!selectedInResults) {
-      glossaryAuthorContext.doUpdateSelectedNode(undefined);
+      setCurrentNodeGuid(undefined);
+      glossaryAuthorContext.doResetSelectedAction();
     }
   }
   // issue the create rest call for the supplied body
@@ -310,16 +298,18 @@ const NodeController = (props) => {
     issueRestCreate(url, body, onSuccessfulCreate, onErrorCreate);
   }
   const onSelectRow = (row) => {
-    console.log("onSelectRow issueRestGet");
-    const url = glossaryAuthorContext.currentNodeType.url + "/" + row.id;
-    console.log("issueGet " + url);
-    issueRestGet(url, onSuccessfulGetNode, onErrorGetNode);
+    console.log("onSelectRow");
+    setCurrentNodeGuid(row.id);
+    glossaryAuthorContext.doResetSelectedAction();
   };
   const onNodeUpdate = (body) => {
     console.log("onNodeUpdate");
     const guid = glossaryAuthorContext.selectedNode.systemAttributes.guid;
     const url = glossaryAuthorContext.currentNodeType.url + "/" + guid;
     issueRestUpdate(url, body, onSuccessfulUpdate, onErrorUpdate);
+  };
+  const onUpdateClose = () => {
+    glossaryAuthorContext.doResetSelectedAction();
   };
 
   // issue search using a criteria
@@ -340,9 +330,7 @@ const NodeController = (props) => {
     issueRestGet(url, onSuccessfulSearch, onErrorSearch);
   }
   function issueDelete() {
-    // setIssuedDelete(true);
-    const guid = glossaryAuthorContext.selectedNode.systemAttributes.guid;
-    const url = glossaryAuthorContext.currentNodeType.url + "/" + guid;
+    const url = glossaryAuthorContext.currentNodeType.url + "/" + currentNodeGuid;
     issueRestDelete(url, onSuccessfulDelete, onErrorDelete);
   }
   <div style={{ color: "red" }}>{errorMsg}</div>;
@@ -352,39 +340,41 @@ const NodeController = (props) => {
   } else {
     return (
       <div>
-        {glossaryAuthorContext.isSetupComplete() && (
-          <div className="bx--row">
-            <div className="bx--col-lg-1 bx--col-md-1">
-              <Add16 kind="primary" onClick={() => onClickAdd()} />
-            </div>
-            <div className="bx--col-lg-1 bx--col-md-1">
-              <Search16 onClick={() => onClickSearch()} />
-            </div>
-            {glossaryAuthorContext.selectedNode && (
-              <div className="bx--col-lg-1 bx--col-md-1">
-                <Delete16 onClick={() => issueDelete()} />
-              </div>
-            )}
-            {glossaryAuthorContext.selectedNode && (
-              <div className="bx--col-lg-1 bx--col-md-1">
-                <Relationships16 onClick={() => onClickRelationships()} />
-              </div>
-            )}
-
-            <div style={{ color: "red" }}>{errorMsg}</div>
-          </div>
-        )}
+        {/* {(glossaryAuthorContext.isSetupComplete() || glossaryAuthorContext.isEdittingGlossary ||  glossaryAuthorContext.isEdittingProject)  && ( */}
         <div className="bx--row">
-          {glossaryAuthorContext.isCreatingOperation() && (
+          <div className="bx--col-lg-1 bx--col-md-1">
+            <Add16 kind="primary" onClick={() => onClickAdd()} />
+          </div>
+          <div className="bx--col-lg-1 bx--col-md-1">
+            <Search16 onClick={() => onClickSearch()} />
+          </div>
+          {currentNodeGuid && (
+            <div className="bx--col-lg-1 bx--col-md-1">
+              <Delete16 onClick={() => issueDelete()} />
+            </div>
+          )}
+          {currentNodeGuid && (
+            <div className="bx--col-lg-1 bx--col-md-1">
+              <Edit16 onClick={() => onClickEdit()} />
+            </div>
+          )}
+          {currentNodeGuid && (
+            <div className="bx--col-lg-1 bx--col-md-1">
+              <Relationships16 onClick={() => onClickRelationships()} />
+            </div>
+          )}
+
+          <div style={{ color: "red" }}>{errorMsg}</div>
+        </div>
+        <div className="bx--row">
+          {glossaryAuthorContext.showCreatingNodeComponent() && (
             <NodeCreateView issueCreate={issueCreate} />
           )}
-          {glossaryAuthorContext.isCreatedOperation() && (
+          {glossaryAuthorContext.showCreatedNodeComponent() && (
             <NodeCreateView createdNode={createdNode} />
           )}
-
-          {(glossaryAuthorContext.isSearchingOperation() ||
-            glossaryAuthorContext.isSearchedOperation()) && (
-            <div className="actions-container">
+          <div className="actions-container">
+            {glossaryAuthorContext.showSearchComponent() && (
               <div className="actions-item">
                 <NodeSearchView
                   tableKey={searchTableKey}
@@ -398,19 +388,21 @@ const NodeController = (props) => {
                   onSearchCriteria={onSearchCriteria}
                 />
               </div>
-              {glossaryAuthorContext.selectedNode && (
-                <div className="actions-item">
-                  <NodeUpdateView onUpdate={onNodeUpdate} />
-                </div>
-              )}
-              {glossaryAuthorContext.selectedNodeLines && (
-                <div className="actions-item">
-                  <LinesView />
-                </div>
-              )}
-            </div>
-          )}
-          {glossaryAuthorContext.isUndefinedOperation() && <NodeCreateView />}
+            )}
+            {glossaryAuthorContext.selectedNode && (
+              <div className="actions-item">
+                <NodeUpdateView
+                  onUpdate={onNodeUpdate}
+                  onClose={onUpdateClose}
+                />
+              </div>
+            )}
+            {glossaryAuthorContext.selectedNodeLines && (
+              <div className="actions-item">
+                <LinesView onClose={onUpdateClose} />
+              </div>
+            )}
+          </div>
         </div>
       </div>
     );
