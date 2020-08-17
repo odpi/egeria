@@ -120,6 +120,11 @@
   background-color: dimgray;
 }
 
+.close-title {
+  display: flex;
+  justify-content: flex-end;
+}
+
 
 
 @keyframes shake {

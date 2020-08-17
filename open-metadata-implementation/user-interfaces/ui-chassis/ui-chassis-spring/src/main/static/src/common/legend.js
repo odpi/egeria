@@ -38,8 +38,8 @@ class Legend extends mixinBehaviors([IronFitBehavior], PolymerElement) {
       <slot></slot>
       <dom-if if="[[visible]]"> 
         <template> 
-         <a on-tap="_toggle"  title="Open legend">
-          <iron-icon icon="vaadin:angle-right" on-tap="_toggle" title="Close"></iron-icon>
+         <a on-tap="_toggle"  title="Close legend">
+          <iron-icon icon="vaadin:angle-right" on-tap="_toggle"></iron-icon>
          </a>
         <div id="legend-container">
            <dom-repeat items="[[data]]"> 
@@ -54,7 +54,7 @@ class Legend extends mixinBehaviors([IronFitBehavior], PolymerElement) {
       </dom-if>
       <dom-if if="[[!visible]]"> 
         <template> 
-         <a on-tap="_toggle"  title="Open legend">
+         <a on-tap="_toggle"  title="Show legend">
           <iron-icon icon="vaadin:angle-left"></iron-icon>
          </a>
         </template>
