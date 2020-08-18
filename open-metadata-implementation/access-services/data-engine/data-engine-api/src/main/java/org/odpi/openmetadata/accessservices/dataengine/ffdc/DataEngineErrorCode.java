@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.dataengine.ffdc;
 
 
-import java.text.MessageFormat;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 
 /**
  * The DataEngineErrorCode is used to define first failure data capture (FFDC) for errors that occur when working with
@@ -67,11 +67,10 @@ public enum DataEngineErrorCode {
             "The system is unable to create a new ProcessHierarchy relation.",
             "Correct the code in the caller to provide the correct port qualified name.");
 
-    private int httpErrorCode;
-    private String errorMessageId;
-    private String errorMessage;
-    private String systemAction;
-    private String userAction;
+    private static final long serialVersionUID = 1L;
+
+    private ExceptionMessageDefinition messageDefinition;
+
 
     /**
      * The constructor for DataEngineErrorCode expects to be passed one of the enumeration rows defined in
@@ -81,77 +80,36 @@ public enum DataEngineErrorCode {
      * <p>
      * This will expand out to the 5 parameters shown below.
      *
-     * @param newHTTPErrorCode  - error code to use over REST calls
-     * @param newErrorMessageId - unique Id for the message
-     * @param newErrorMessage   - text for the message
-     * @param newSystemAction   - description of the action taken by the system when the error condition happened
-     * @param newUserAction     - instructions for resolving the error
+     * @param httpErrorCode  error code to use over REST calls
+     * @param errorMessageId unique Id for the message
+     * @param errorMessage   text for the message
+     * @param systemAction   description of the action taken by the system when the error condition happened
+     * @param userAction     instructions for resolving the error
      */
-    DataEngineErrorCode(int newHTTPErrorCode, String newErrorMessageId, String newErrorMessage, String newSystemAction,
-                        String newUserAction) {
-        this.httpErrorCode = newHTTPErrorCode;
-        this.errorMessageId = newErrorMessageId;
-        this.errorMessage = newErrorMessage;
-        this.systemAction = newSystemAction;
-        this.userAction = newUserAction;
+    DataEngineErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction) {
+        this.messageDefinition = new ExceptionMessageDefinition(httpErrorCode, errorMessageId, errorMessage, systemAction, userAction);
     }
 
     /**
-     * Returns the error message with the placeholders filled out with the supplied parameters.
+     * Retrieve a message definition object for an exception.  This method is used when there are no message inserts.
      *
-     * @param params - strings that plug into the placeholders in the errorMessage
-     *
-     * @return errorMessage (formatted with supplied parameters)
+     * @return message definition object.
      */
-    public String getFormattedErrorMessage(String... params) {
-        MessageFormat mf = new MessageFormat(errorMessage);
-        return mf.format(params);
+    public ExceptionMessageDefinition getMessageDefinition() {
+        return messageDefinition;
     }
+
 
     /**
-     * Returns the numeric code that can be used in a REST response.
+     * Retrieve a message definition object for an exception.  This method is used when there are values to be inserted into the message.
      *
-     * @return int
+     * @param params array of parameters (all strings).  They are inserted into the message according to the numbering in the message text.
+     * @return message definition object.
      */
-    public int getHttpErrorCode() {
-        return httpErrorCode;
-    }
+    public ExceptionMessageDefinition getMessageDefinition(String... params) {
+        messageDefinition.setMessageParameters(params);
 
-    /**
-     * Returns the unique error message identifier of the error.
-     *
-     * @return String
-     */
-    public String getErrorMessageId() {
-        return errorMessageId;
+        return messageDefinition;
     }
-
-    /**
-     * Returns the un-formatted error message.
-     *
-     * @return String
-     */
-    public String getErrorMessage() {
-        return errorMessage;
-    }
-
-    /**
-     * Returns the action taken by the system when the error occurred.
-     *
-     * @return String
-     */
-    public String getSystemAction() {
-        return systemAction;
-    }
-
-    /**
-     * Returns the proposed action for a user to take when encountering the error.
-     *
-     * @return String
-     */
-    public String getUserAction() {
-        return userAction;
-    }
-
 }
 

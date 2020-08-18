@@ -6,10 +6,9 @@ package org.odpi.openmetadata.accessservices.dataengine.server.listeners;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.accessservices.dataengine.event.DataEngineEventHeader;
-import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
+import org.odpi.openmetadata.accessservices.dataengine.server.auditlog.DataEngineAuditCode;
 import org.odpi.openmetadata.accessservices.dataengine.server.processors.DataEngineEventProcessor;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +20,7 @@ import org.slf4j.LoggerFactory;
 public class DataEngineInTopicListener implements OpenMetadataTopicListener {
     private static final Logger log = LoggerFactory.getLogger(DataEngineInTopicListener.class);
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-    private final OMRSAuditLog auditLog;
+    private final AuditLog auditLog;
     private DataEngineEventProcessor dataEngineEventProcessor;
 
     /**
@@ -31,7 +30,7 @@ public class DataEngineInTopicListener implements OpenMetadataTopicListener {
      * @param auditLog                 audit log
      * @param dataEngineEventProcessor the event processor for Data Engine OMAS
      */
-    public DataEngineInTopicListener(OMRSAuditLog auditLog, DataEngineEventProcessor dataEngineEventProcessor) {
+    public DataEngineInTopicListener(AuditLog auditLog, DataEngineEventProcessor dataEngineEventProcessor) {
         this.auditLog = auditLog;
         this.dataEngineEventProcessor = dataEngineEventProcessor;
     }
@@ -82,10 +81,10 @@ public class DataEngineInTopicListener implements OpenMetadataTopicListener {
                 }
             } catch (JsonProcessingException e) {
                 log.debug("Exception processing event from in Data Engine In Topic", e);
-                DataEngineErrorCode errorCode = DataEngineErrorCode.PROCESS_EVENT_EXCEPTION;
-                auditLog.logException("process Data Engine inTopic Event", errorCode.getErrorMessageId(), OMRSAuditLogRecordSeverity.EXCEPTION,
-                        errorCode.getFormattedErrorMessage(dataEngineEvent, e.getMessage()), e.getMessage(), errorCode.getSystemAction(),
-                        errorCode.getUserAction(), e);
+
+                auditLog.logException("process Data Engine inTopic Event",
+                        DataEngineAuditCode.PROCESS_EVENT_EXCEPTION.getMessageDefinition(e.getMessage()), e);
+
             }
         }
     }

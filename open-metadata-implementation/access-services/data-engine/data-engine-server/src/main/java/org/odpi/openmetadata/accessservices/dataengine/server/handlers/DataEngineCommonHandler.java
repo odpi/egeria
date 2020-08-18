@@ -251,10 +251,9 @@ public class DataEngineCommonHandler {
         repositoryHandler.removeEntity(userId, entityGUID, entityTypeDef.getGUID(), entityTypeDef.getName(), null, null, methodName);
     }
 
-    protected void throwInvalidParameterException(DataEngineErrorCode errorCode, String methodName, String... params) throws InvalidParameterException {
-        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(params);
+    protected void throwInvalidParameterException(DataEngineErrorCode errorCode, String methodName, String parameterName, String... params) throws
+                                                                                                                                            InvalidParameterException {
 
-        throw new InvalidParameterException(errorCode.getHttpErrorCode(), this.getClass().getName(), methodName, errorMessage,
-                errorCode.getSystemAction(), errorCode.getUserAction(), SchemaTypePropertiesMapper.GUID_PROPERTY_NAME);
+        throw new InvalidParameterException(errorCode.getMessageDefinition(params), this.getClass().getName(), methodName, parameterName);
     }
 }
