@@ -99,6 +99,7 @@ public class AssetLineageAdmin extends AccessServiceAdmin {
                         omrsTopicConnector,
                         omrsTopicListener,
                         auditLog);
+                this.instance.setAssetLineagePublisher(omrsTopicListener.getPublisher());
             }
 
             auditCode = AssetLineageAuditCode.SERVICE_INITIALIZED;

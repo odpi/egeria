@@ -21,7 +21,9 @@ import java.util.List;
 public interface DataEngineClient {
 
     /**
-     * Create or update the process, with all the ports, schema types and corresponding relationships
+     * Create or update the process, with all the ports, schema types and corresponding relationships except for
+     * process hierarchy relationships - when using this method process hierarchy relationships should not be included
+     * but sent through the separate endpoint specific for process hierarchies.
      *
      * @param userId  the name of the calling user
      * @param process the process bean
@@ -32,6 +34,7 @@ public interface DataEngineClient {
      * invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
+     * @see #createOrUpdateProcesses(String, List)
      */
     String createOrUpdateProcess(String userId, Process process) throws InvalidParameterException,
                                                                         PropertyServerException,
@@ -39,7 +42,8 @@ public interface DataEngineClient {
 
 
     /**
-     * Create or update the processes, with all the ports, schema types and corresponding relationships
+     * Create or update the processes, with all the ports, schema types and corresponding relationships including
+     * process hierarchy relationships.
      *
      * @param userId    the name of the calling user
      * @param processes list of processes

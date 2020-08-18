@@ -1,0 +1,61 @@
+---
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the ODPi Egeria project.
+
+- name: prep server url base
+  set_fact:
+    server_base_url: "{{ admin_omag_server_config[config.key].url }}/open-metadata/admin-services/users/{{ admin_omag_server_config[config.key].user }}/servers/{{ config.key }}"
+
+- name: make sure server is reachable
+  wait_for:
+    host: "{{ app_host }}"
+    port: "{{ app_port }}"
+    state: started         
+    delay: 0               
+    timeout: 30    
+    
+- name:  "{{ config.key }} configure repository-proxy connecton"
+  uri:
+    url: "{{ server_base_url }}/local-repository/mode/{{ config.value.mode }}/connection"
+    method: POST
+    headers:
+      Content-Type: application/json
+    body_format: json
+    body:
+      class: Connection
+      connectorType: 
+        class: ConnectorType
+        connectorProviderClassName: org.odpi.egeria.connectors.ibm.igc.repositoryconnector.IGCOMRSRepositoryConnectorProvider
+      endpoint:
+        class: Endpoint
+        address: "{{ config.value.endpoint_address }}"
+        protocol: "{{ config.value.endpoint_protocol }}"
+      userId: "{{ config.value.user_id }}"
+      clearPassword: "{{ config.value.clear_password }}"
+      configurationProperties:
+        defaultZones: "{{ config.value.configuration_default_zones }}"
+    validate_certs: no
+  when: config.value.mode == "repository-proxy"
+
+- name: "{{ config.key }} configure reposotory event mapper"
+  uri:
+    url: "{{ server_base_url }}/local-repository/event-mapper-details?connectorProvider={{ config.value.event_mapper_provider }}&eventSource={{ config.value.event_mapper_source }}"
+    method: POST
+  when: config.value.mode == "repository-proxy"
+
+- name: "{{ config.key }} configure local-graph-repository"
+  uri:
+    url: "{{ server_base_url }}/local-repository/mode/local-graph-repository"
+    method: POST
+    headers:
+      Content-Type: application/json
+  when: config.value.mode == "local-graph-repository"
+
+- name: "{{ config.key }} configure in-memory-repository"
+  uri:
+    url: "{{ server_base_url }}/local-repository/mode/in-memory-repository"
+    method: POST
+    headers:
+      Content-Type: application/json
+  when: config.value.mode == "in-memory-repository"
+

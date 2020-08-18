@@ -6,6 +6,7 @@
 
 dependencies {
     implementation project(':open-metadata-implementation:access-services:asset-lineage:asset-lineage-server')
+    implementation project(':open-metadata-implementation:common-services:ffdc-services')
     implementation 'org.springframework:spring-web:5.2.7.RELEASE'
     implementation 'io.swagger.core.v3:swagger-annotations:2.1.3'
 }
