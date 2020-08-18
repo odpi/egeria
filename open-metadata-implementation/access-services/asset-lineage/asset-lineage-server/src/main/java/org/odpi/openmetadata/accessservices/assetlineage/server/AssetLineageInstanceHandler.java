@@ -6,6 +6,7 @@ import org.odpi.openmetadata.accessservices.assetlineage.handlers.AssetContextHa
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.ClassificationHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.GlossaryHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.ProcessContextHandler;
+import org.odpi.openmetadata.accessservices.assetlineage.outtopic.AssetLineagePublisher;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OCFOMASServiceInstanceHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -94,6 +95,26 @@ public class AssetLineageInstanceHandler extends OCFOMASServiceInstanceHandler {
         AssetLineageServicesInstance instance = (AssetLineageServicesInstance) super.getServerServiceInstance(userId, serverName, serviceOperationName);
         if (instance != null)
             return instance.getClassificationHandler();
+        return null;
+    }
+
+    /**
+     * Retrieve the Asset Lineage Publisher available for the existing Asset Lineage OMAS OMRS Topic registred
+     *
+     * @param userId               the user id
+     * @param serverName           the server name
+     * @param serviceOperationName the service operation name
+     * @return the asset lineage publisher
+     * @throws InvalidParameterException  the invalid parameter exception
+     * @throws UserNotAuthorizedException the user not authorized exception
+     * @throws PropertyServerException    the property server exception
+     */
+    public AssetLineagePublisher getAssetLineagePublisher(String userId, String serverName, String serviceOperationName)
+            throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+
+        AssetLineageServicesInstance instance = (AssetLineageServicesInstance) super.getServerServiceInstance(userId, serverName, serviceOperationName);
+        if (instance != null)
+            return instance.getAssetLineagePublisher();
         return null;
     }
 }

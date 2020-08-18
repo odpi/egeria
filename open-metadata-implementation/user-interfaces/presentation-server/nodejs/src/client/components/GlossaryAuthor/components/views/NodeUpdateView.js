@@ -20,6 +20,7 @@ import {
 
 import { GlossaryAuthorContext } from "../../contexts/GlossaryAuthorContext";
 import Info16 from "@carbon/icons-react/lib/information/16";
+import Close16 from "../../../../images/Egeria_close_16";
 
 function NodeUpdateView(props) {
   console.log("NodeUpdateView");
@@ -36,6 +37,12 @@ function NodeUpdateView(props) {
    */
   const handleOnAnimationEnd = (e) => {
     document.getElementById("NodeUpdateViewButton").classList.remove("shaker");
+  };
+
+  const handleOnClose = (e) => {
+    console.log("GlossaryAuthor connectivity handleClick(()");
+    e.preventDefault();
+    glossaryAuthorContext.doCancelUpdate();
   };
 
   const handleUpdate = (e) => {
@@ -93,7 +100,10 @@ function NodeUpdateView(props) {
     },
   ];
   return (
-    <div>
+    <div> 
+      <div className="close-title">
+        <Close16 onClick={handleOnClose}/>
+      </div>
       <FormGroup>
         <div>
           <h4>
@@ -181,7 +191,7 @@ function NodeUpdateView(props) {
             </div>
           </AccordionItem>
         </Accordion>
-    
+
         <div className="bx--form-item">
           <button
             id="NodeUpdateViewButton"
