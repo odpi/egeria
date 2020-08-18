@@ -6,7 +6,7 @@ package org.odpi.openmetadata.accessservices.assetlineage.server;
 import org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineageErrorCode;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.AssetContextHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.ClassificationHandler;
-import org.odpi.openmetadata.accessservices.assetlineage.handlers.GlossaryHandler;
+import org.odpi.openmetadata.accessservices.assetlineage.handlers.GlossaryContextHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.ProcessContextHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.outtopic.AssetLineagePublisher;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
@@ -23,7 +23,7 @@ import java.util.List;
  */
 public class AssetLineageServicesInstance extends OCFOMASServiceInstance {
     private static AccessServiceDescription myDescription = AccessServiceDescription.ASSET_LINEAGE_OMAS;
-    private GlossaryHandler glossaryHandler;
+    private GlossaryContextHandler glossaryContextHandler;
     private AssetContextHandler assetContextHandler;
     private ProcessContextHandler processContextHandler;
     private ClassificationHandler classificationHandler;
@@ -54,12 +54,6 @@ public class AssetLineageServicesInstance extends OCFOMASServiceInstance {
         super.supportedZones = supportedZones;
 
         if (repositoryHandler != null) {
-            glossaryHandler = new GlossaryHandler(
-                    invalidParameterHandler,
-                    repositoryHelper,
-                    repositoryHandler,
-                    lineageClassificationTypes);
-
             assetContextHandler = new AssetContextHandler(
                     invalidParameterHandler,
                     repositoryHelper,
@@ -73,6 +67,13 @@ public class AssetLineageServicesInstance extends OCFOMASServiceInstance {
                     repositoryHandler,
                     assetContextHandler,
                     supportedZones,
+                    lineageClassificationTypes);
+
+            glossaryContextHandler = new GlossaryContextHandler(
+                    invalidParameterHandler,
+                    repositoryHelper,
+                    repositoryHandler,
+                    assetContextHandler,
                     lineageClassificationTypes);
 
             classificationHandler = new ClassificationHandler(
@@ -98,8 +99,8 @@ public class AssetLineageServicesInstance extends OCFOMASServiceInstance {
      *
      * @return glossary handler
      */
-    GlossaryHandler getGlossaryHandler() {
-        return glossaryHandler;
+    GlossaryContextHandler getGlossaryContextHandler() {
+        return glossaryContextHandler;
     }
 
 

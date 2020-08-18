@@ -139,6 +139,13 @@ public class HandlerHelper {
         }
     }
 
+    public EntityDetail getEntityDetails(String userId, String entityDetailGUID, String entityTypeName) throws OCFCheckedExceptionBase {
+        String methodName = "getEntityDetails";
+
+        return repositoryHandler.getEntityByGUID(userId, entityDetailGUID, GUID_PARAMETER, entityTypeName, methodName);
+    }
+
+
     /**
      * Adds entities and relationships for the process Context structure
      *
