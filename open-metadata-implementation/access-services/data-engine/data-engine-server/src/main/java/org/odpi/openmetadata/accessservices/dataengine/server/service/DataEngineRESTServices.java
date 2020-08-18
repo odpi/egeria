@@ -481,10 +481,13 @@ public class DataEngineRESTServices {
                 dataEngineSchemaTypeHandler.addLineageMappingRelationship(userId, lineageMapping.getSourceAttribute(),
                         lineageMapping.getTargetAttribute(), externalSourceName);
             } catch (InvalidParameterException error) {
+                log.error("Exception while adding lineage mapping: " + lineageMapping.toString(), error.toString());
                 restExceptionHandler.captureInvalidParameterException(response, error);
             } catch (PropertyServerException error) {
+                log.error("Exception while adding lineage mapping: " + lineageMapping.toString(), error.toString());
                 restExceptionHandler.capturePropertyServerException(response, error);
             } catch (UserNotAuthorizedException error) {
+                log.error("Exception while adding lineage mapping: " + lineageMapping.toString(), error.toString());
                 restExceptionHandler.captureUserNotAuthorizedException(response, error);
             }
         });
@@ -744,10 +747,13 @@ public class DataEngineRESTServices {
 
             response.setGUID(processGUID);
         } catch (InvalidParameterException error) {
+            log.error("Exception while creating process: " + qualifiedName, error.toString());
             restExceptionHandler.captureInvalidParameterException(response, error);
         } catch (PropertyServerException error) {
+            log.error("Exception while creating process: " + qualifiedName, error.toString());
             restExceptionHandler.capturePropertyServerException(response, error);
         } catch (UserNotAuthorizedException error) {
+            log.error("Exception while creating process: " + qualifiedName, error.toString());
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
         }
 
@@ -793,10 +799,13 @@ public class DataEngineRESTServices {
                         processHandler.createOrUpdateProcessHierarchyRelationship(userId, parentProcess, processGUID, externalSourceName);
                     }
                 } catch (InvalidParameterException error) {
+                    log.error("Exception while creating process: " + process.getQualifiedName(), error.toString());
                     restExceptionHandler.captureInvalidParameterException(response, error);
                 } catch (PropertyServerException error) {
+                    log.error("Exception while creating process: " + process.getQualifiedName(), error.toString());
                     restExceptionHandler.capturePropertyServerException(response, error);
                 } catch (UserNotAuthorizedException error) {
+                    log.error("Exception while creating process: " + process.getQualifiedName(), error.toString());
                     restExceptionHandler.captureUserNotAuthorizedException(response, error);
                 }
             }

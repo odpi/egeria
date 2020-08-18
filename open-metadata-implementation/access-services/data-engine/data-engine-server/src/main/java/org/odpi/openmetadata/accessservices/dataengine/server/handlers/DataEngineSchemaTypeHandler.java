@@ -175,6 +175,7 @@ public class DataEngineSchemaTypeHandler {
                                                                                 UserNotAuthorizedException,
                                                                                 PropertyServerException {
         final String methodName = "addLineageMappingRelationship";
+        final String parameterName = "qualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(sourceSchemaAttributeQualifiedName, PortPropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, methodName);
@@ -184,12 +185,12 @@ public class DataEngineSchemaTypeHandler {
         Optional<EntityDetail> targetSchemaAttributeEntity = findSchemaAttributeEntity(userId, targetSchemaAttributeQualifiedName);
 
         if (!sourceSchemaAttributeEntity.isPresent()) {
-            dataEngineCommonHandler.throwInvalidParameterException(DataEngineErrorCode.SCHEMA_ATTRIBUTE_NOT_FOUND, methodName,
+            dataEngineCommonHandler.throwInvalidParameterException(DataEngineErrorCode.SCHEMA_ATTRIBUTE_NOT_FOUND, methodName, parameterName,
                     sourceSchemaAttributeQualifiedName);
             return;
         }
         if (!targetSchemaAttributeEntity.isPresent()) {
-            dataEngineCommonHandler.throwInvalidParameterException(DataEngineErrorCode.SCHEMA_ATTRIBUTE_NOT_FOUND, methodName,
+            dataEngineCommonHandler.throwInvalidParameterException(DataEngineErrorCode.SCHEMA_ATTRIBUTE_NOT_FOUND, methodName, parameterName,
                     targetSchemaAttributeQualifiedName);
             return;
         }
@@ -240,14 +241,16 @@ public class DataEngineSchemaTypeHandler {
     public void addAnchorGUID(String userId, Attribute attribute, String processGUID) throws InvalidParameterException, UserNotAuthorizedException,
                                                                                              PropertyServerException {
         final String methodName = "addAnchorGUID";
-
-        SchemaAttribute schemaAttribute = createTabularColumn(attribute);
-        schemaAttribute.setAnchorGUID(processGUID);
+        final String parameterName = "qualifiedName";
 
         Optional<EntityDetail> schemaAttributeEntity = findSchemaAttributeEntity(userId, attribute.getQualifiedName());
         if (!schemaAttributeEntity.isPresent()) {
-            dataEngineCommonHandler.throwInvalidParameterException(DataEngineErrorCode.SCHEMA_ATTRIBUTE_NOT_FOUND, methodName);
+            dataEngineCommonHandler.throwInvalidParameterException(DataEngineErrorCode.SCHEMA_ATTRIBUTE_NOT_FOUND, methodName, parameterName,
+                    attribute.getQualifiedName());
         } else {
+            SchemaAttribute schemaAttribute = createTabularColumn(attribute);
+            schemaAttribute.setAnchorGUID(processGUID);
+
             schemaTypeHandler.updateSchemaAttribute(userId, schemaAttributeEntity.get().getGUID(), schemaAttribute);
         }
     }
