@@ -34,9 +34,8 @@ import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineag
  */
 public class AssetLineageRestServices {
 
-    private static AssetLineageInstanceHandler instanceHandler = new AssetLineageInstanceHandler();
     private static final Logger log = LoggerFactory.getLogger(AssetLineageRestServices.class);
-
+    private static AssetLineageInstanceHandler instanceHandler = new AssetLineageInstanceHandler();
     private final RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
 
     /**
@@ -53,7 +52,6 @@ public class AssetLineageRestServices {
      * @param serverName name of server instance to call
      * @param userId     the name of the calling user
      * @param entityType the type of the entity to search for
-     *
      * @return a list of unique identifiers (guids) of the available entityType as a response
      */
     public GUIDListResponse publishEntities(String serverName, String userId, String entityType) {
@@ -89,23 +87,22 @@ public class AssetLineageRestServices {
 
     private List<String> publishEntitiesContext(String typeName, List<EntityDetail> entitiesByType, AssetLineagePublisher publisher) {
         List<String> publishedGUIDs = new ArrayList<>();
-        for(EntityDetail entityDetail :  entitiesByType){
-                    try {
-                        if (GLOSSARY_TERM.equals(typeName)) {
-                            Map<String, Set<GraphContext>> context = publisher.publishGlossaryContext(entityDetail);
-                            collectGUID(publishedGUIDs, entityDetail, context);
-                        }
-                        else if (PROCESS.equals(typeName)) {
-                            Map<String, Set<GraphContext>> context =  publisher.publishProcessContext(entityDetail);
-                            collectGUID(publishedGUIDs, entityDetail, context);
-                        } else {
-                            // only Processes and GlossaryTerms are the types supported for initial load
-                            log.error("Unsupported typeName {} for entity with guid {}. The context can not be published", typeName, entityDetail.getGUID());
-                        }
-                    } catch (OCFCheckedExceptionBase | JsonProcessingException ocfCheckedExceptionBase) {
-                        ocfCheckedExceptionBase.printStackTrace();
-                    }
+        for (EntityDetail entityDetail : entitiesByType) {
+            try {
+                if (GLOSSARY_TERM.equals(typeName)) {
+                    Map<String, Set<GraphContext>> context = publisher.publishGlossaryContext(entityDetail);
+                    collectGUID(publishedGUIDs, entityDetail, context);
+                } else if (PROCESS.equals(typeName)) {
+                    Map<String, Set<GraphContext>> context = publisher.publishProcessContext(entityDetail);
+                    collectGUID(publishedGUIDs, entityDetail, context);
+                } else {
+                    // only Processes and GlossaryTerms are the types supported for initial load
+                    log.error("Unsupported typeName {} for entity with guid {}. The context can not be published", typeName, entityDetail.getGUID());
                 }
+            } catch (OCFCheckedExceptionBase | JsonProcessingException ocfCheckedExceptionBase) {
+                ocfCheckedExceptionBase.printStackTrace();
+            }
+        }
 
         return publishedGUIDs;
     }

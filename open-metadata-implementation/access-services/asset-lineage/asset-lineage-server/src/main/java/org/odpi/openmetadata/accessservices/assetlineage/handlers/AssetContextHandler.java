@@ -52,10 +52,11 @@ public class AssetContextHandler {
     private AssetContext graph;
 
     /**
-     * @param invalidParameterHandler handler for invalid parameters
-     * @param repositoryHelper        helper used by the converters
-     * @param repositoryHandler       handler for calling the repository services
-     * @param supportedZones          configurable list of zones that Asset Lineage is allowed to retrieve Assets from
+     * @param invalidParameterHandler    handler for invalid parameters
+     * @param repositoryHelper           helper used by the converters
+     * @param repositoryHandler          handler for calling the repository services
+     * @param supportedZones             configurable list of zones that Asset Lineage is allowed to retrieve Assets from
+     * @param lineageClassificationTypes lineage classification list
      */
     public AssetContextHandler(InvalidParameterHandler invalidParameterHandler,
                                OMRSRepositoryHelper repositoryHelper,

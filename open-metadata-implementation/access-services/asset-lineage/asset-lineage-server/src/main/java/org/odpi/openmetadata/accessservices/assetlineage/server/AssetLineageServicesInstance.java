@@ -131,12 +131,12 @@ public class AssetLineageServicesInstance extends OCFOMASServiceInstance {
         return classificationHandler;
     }
 
-    public void setAssetLineagePublisher(AssetLineagePublisher assetLineagePublisher) {
-        this.assetLineagePublisher = assetLineagePublisher;
-    }
-
     public AssetLineagePublisher getAssetLineagePublisher() {
         return assetLineagePublisher;
+    }
+
+    public void setAssetLineagePublisher(AssetLineagePublisher assetLineagePublisher) {
+        this.assetLineagePublisher = assetLineagePublisher;
     }
 }
 

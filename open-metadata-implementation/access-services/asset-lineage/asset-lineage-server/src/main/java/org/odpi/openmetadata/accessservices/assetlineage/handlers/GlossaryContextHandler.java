@@ -50,10 +50,27 @@ public class GlossaryContextHandler {
         this.assetContextHandler = assetContextHandler;
     }
 
+    /**
+     * Returns the Glossary Term entity details based on the GlossaryTerm GUID
+     *
+     * @param userId           String - userId of user making request.
+     * @param glossaryTermGUID the glossary term GUID
+     * @return the entity details for a glossary term based on the glossary term guid
+     * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
+     */
     public EntityDetail getGlossaryTermDetails(String userId, String glossaryTermGUID) throws OCFCheckedExceptionBase {
         return handlerHelper.getEntityDetails(userId, glossaryTermGUID, GLOSSARY_TERM);
     }
 
+    /**
+     * Returns the context for a Glossary Term.
+     * This context contains the full description for the Schema Elements that have a Semantic Assigment to the GlossaryTerm
+     *
+     * @param userId       String - userId of user making request.
+     * @param glossaryTerm the glossary term entity for which the context is built
+     * @return a map that contains the Glossary Term relationships and context
+     * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
+     */
     public Map<String, Set<GraphContext>> buildGlossaryTermContext(String userId,
                                                                    EntityDetail glossaryTerm) throws OCFCheckedExceptionBase {
         String methodName = "buildGlossaryTermContext";
@@ -75,11 +92,11 @@ public class GlossaryContextHandler {
 
     private void addSchemaElementsContext(String userId, EntityDetail glossaryTerm, AssetContext glossaryContext, List<Relationship> semanticAssignments) throws OCFCheckedExceptionBase {
         Set<EntityDetail> schemaElements = addSemanticAssignmentToContext(userId, glossaryTerm, glossaryContext, semanticAssignments);
-        for(EntityDetail schemaElement : schemaElements) {
+        for (EntityDetail schemaElement : schemaElements) {
             AssetContext schemaElementContext = assetContextHandler.getAssetContext(userId, schemaElement);
             glossaryContext.getGraphContexts().addAll(schemaElementContext.getGraphContexts());
 
-            schemaElementContext.getNeighbors().forEach((k,v) -> mergeGraphNeighbors(glossaryContext, k, v));
+            schemaElementContext.getNeighbors().forEach((k, v) -> mergeGraphNeighbors(glossaryContext, k, v));
         }
     }
 
@@ -94,7 +111,8 @@ public class GlossaryContextHandler {
 
     /**
      * Add semantic assignments for an asset to the Context structure
-     *  @param userId              userId
+     *
+     * @param userId              userId
      * @param assetContext        context of the asset
      * @param semanticAssignments array of the semantic assignments
      * @return a set of schema elements assigned to the Glossary Term

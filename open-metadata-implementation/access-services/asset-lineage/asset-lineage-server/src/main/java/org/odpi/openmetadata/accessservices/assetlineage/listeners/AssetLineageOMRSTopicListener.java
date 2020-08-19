@@ -249,7 +249,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
 
         String relationshipType = relationship.getType().getTypeDefName();
 
-        if( SEMANTIC_ASSIGNMENT.equals(relationshipType)){
+        if (SEMANTIC_ASSIGNMENT.equals(relationshipType)) {
             String glossaryTermGUID = relationship.getEntityTwoProxy().getGUID();
             publisher.publishGlossaryContext(glossaryTermGUID);
         } else if (!(PROCESS_HIERARCHY.equals(relationshipType))) {

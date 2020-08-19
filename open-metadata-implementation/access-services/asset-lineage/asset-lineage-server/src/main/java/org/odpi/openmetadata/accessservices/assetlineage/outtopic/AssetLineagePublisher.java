@@ -61,15 +61,17 @@ public class AssetLineagePublisher {
     }
 
     /**
-     * Takes the context for a Process and publishes the event to the Cohort
+     * Takes the context for a Process and publishes the event to the output topic
      *
      * @param entityDetail entity to get context
+     * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
+     * @throws JsonProcessingException exception parsing the event json
      */
     public Map<String, Set<GraphContext>> publishProcessContext(EntityDetail entityDetail) throws OCFCheckedExceptionBase, JsonProcessingException {
         Map<String, Set<GraphContext>> processContext = processContextHandler.getProcessContext(serverUserName, entityDetail);
 
         if (MapUtils.isEmpty(processContext)) {
-            log.debug("No context was found for the entity {} ", entityDetail.getGUID());
+            log.debug("Context not found for the entity {} ", entityDetail.getGUID());
             return Collections.emptyMap();
         }
 
@@ -77,16 +79,30 @@ public class AssetLineagePublisher {
         return processContext;
     }
 
+    /**
+     * Build the context for a Glossary Term based on the glossary term GUID and publishes the event to the out topic
+     *
+     * @param glossaryTermGUID glossary term GUID to get context
+     * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
+     * @throws JsonProcessingException exception parsing the event json
+     */
     public void publishGlossaryContext(String glossaryTermGUID) throws OCFCheckedExceptionBase, JsonProcessingException {
-       EntityDetail entityDetail =  glossaryHandler.getGlossaryTermDetails(serverUserName, glossaryTermGUID);
-       publishGlossaryContext(entityDetail);
+        EntityDetail entityDetail = glossaryHandler.getGlossaryTermDetails(serverUserName, glossaryTermGUID);
+        publishGlossaryContext(entityDetail);
     }
 
-    public  Map<String, Set<GraphContext>> publishGlossaryContext(EntityDetail entityDetail) throws OCFCheckedExceptionBase, JsonProcessingException {
+    /***
+     * Build the context for a Glossary Term and publishes the event to the out topic
+     * @param entityDetail glossary term to get context
+     * @return the Glossary Term context
+     * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
+     * @throws JsonProcessingException exception parsing the event json
+     */
+    public Map<String, Set<GraphContext>> publishGlossaryContext(EntityDetail entityDetail) throws OCFCheckedExceptionBase, JsonProcessingException {
         Map<String, Set<GraphContext>> context = glossaryHandler.buildGlossaryTermContext(serverUserName, entityDetail);
 
         if (MapUtils.isEmpty(context)) {
-            log.debug("No context were found for the entity {} ", entityDetail.getGUID());
+            log.debug("Context not found for the entity {} ", entityDetail.getGUID());
             return Collections.emptyMap();
         }
 
@@ -94,12 +110,18 @@ public class AssetLineagePublisher {
         return context;
     }
 
+    /**
+     * @param entityDetail          entity to get context
+     * @param assetLineageEventType event type to get published
+     * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
+     * @throws JsonProcessingException exception parsing the event json
+     */
     public void publishClassificationContext(EntityDetail entityDetail, AssetLineageEventType assetLineageEventType)
             throws OCFCheckedExceptionBase, JsonProcessingException {
         Map<String, Set<GraphContext>> classificationContext = classificationHandler.buildClassificationContext(entityDetail);
 
         if (MapUtils.isEmpty(classificationContext)) {
-            log.debug("No lineage classifications were found for the entity {} ", entityDetail.getGUID());
+            log.debug("Lineage classifications not found for the entity {} ", entityDetail.getGUID());
             return;
         }
 
@@ -129,6 +151,8 @@ public class AssetLineagePublisher {
      * Output a new asset event.
      *
      * @param event event to send
+     * @throws ConnectorCheckedException unable to send the event due to connectivity issue
+     * @throws JsonProcessingException   exception parsing the event json
      */
     public void publishEvent(AssetLineageEventHeader event) throws JsonProcessingException, ConnectorCheckedException {
         if (outTopicConnector == null)
