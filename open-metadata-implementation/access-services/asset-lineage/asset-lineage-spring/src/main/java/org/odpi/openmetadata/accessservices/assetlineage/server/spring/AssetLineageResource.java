@@ -26,7 +26,6 @@ public class AssetLineageResource {
      * @param serverName name of server instance to call
      * @param userId     the name of the calling user
      * @param entityType the name of the relationship type
-     *
      * @return a list of unique identifiers (guids) of the available entities with the given type provided as a response
      */
     @GetMapping(path = "/publish-entities/{entityType}")

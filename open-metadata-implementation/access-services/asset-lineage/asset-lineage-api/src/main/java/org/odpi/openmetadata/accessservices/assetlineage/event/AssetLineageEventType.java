@@ -23,7 +23,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public enum AssetLineageEventType implements Serializable {
 
     PROCESS_CONTEXT_EVENT(0, "ProcessContextEvent", "Has the full context for a Process"),
-    TECHNICAL_ELEMENT_CONTEXT_EVENT(1, "TechnicalElementContextEvent", "Has the full context for a technical element"),
+    GLOSSARY_TERM_CONTEXT_EVENT(1, "GlossaryTermContextEvent", "Has the full context for a Glossary Term including the context of schema elements"),
     CLASSIFICATION_CONTEXT_EVENT(2, "ClassificationContextEvent", "Has the full context for a classified element"),
     UPDATE_ENTITY_EVENT(3, "UpdateEvent", "Has the entity that is being updated"),
     DELETE_ENTITY_EVENT(4, "DeleteEvent", "Has the entity to be deleted"),

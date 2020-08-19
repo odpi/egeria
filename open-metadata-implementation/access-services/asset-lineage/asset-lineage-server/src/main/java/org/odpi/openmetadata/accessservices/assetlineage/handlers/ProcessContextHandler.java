@@ -165,7 +165,7 @@ public class ProcessContextHandler {
      * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
      */
     private void addContextForTabularColumns(String userId, EntityDetail entity) throws OCFCheckedExceptionBase {
-        Set<String> superTypes = superTypesRetriever.getSuperTypes(entity.getType().getTypeDefName());
+        Set<String> superTypes = superTypesRetriever.getSuperTypes(userId, entity.getType().getTypeDefName());
 
         if (superTypes.contains(TABULAR_COLUMN)) {
             AssetContext assetContext = assetContextHandler.getAssetContext(userId, entity);

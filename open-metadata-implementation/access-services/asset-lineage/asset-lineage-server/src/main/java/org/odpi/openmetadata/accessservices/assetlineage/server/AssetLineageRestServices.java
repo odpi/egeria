@@ -5,7 +5,9 @@ package org.odpi.openmetadata.accessservices.assetlineage.server;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.MapUtils;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.AssetContextHandler;
+import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.outtopic.AssetLineagePublisher;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
@@ -14,12 +16,13 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceHeader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
+import java.util.Set;
 
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.GLOSSARY_TERM;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PROCESS;
@@ -31,9 +34,8 @@ import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineag
  */
 public class AssetLineageRestServices {
 
-    private static AssetLineageInstanceHandler instanceHandler = new AssetLineageInstanceHandler();
     private static final Logger log = LoggerFactory.getLogger(AssetLineageRestServices.class);
-
+    private static AssetLineageInstanceHandler instanceHandler = new AssetLineageInstanceHandler();
     private final RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
 
     /**
@@ -50,7 +52,6 @@ public class AssetLineageRestServices {
      * @param serverName name of server instance to call
      * @param userId     the name of the calling user
      * @param entityType the type of the entity to search for
-     *
      * @return a list of unique identifiers (guids) of the available entityType as a response
      */
     public GUIDListResponse publishEntities(String serverName, String userId, String entityType) {
@@ -70,9 +71,9 @@ public class AssetLineageRestServices {
                         "The context event for {} could not be published on the Asset Lineage OMAS Out Topic.", entityType);
                 return response;
             }
-            publishEntitiesContext(entityType, entitiesByTypeName, publisher);
+            List<String> publishedEntitiesContext = publishEntitiesContext(entityType, entitiesByTypeName, publisher);
 
-            response.setGUIDs(entitiesByTypeName.stream().map(InstanceHeader::getGUID).collect(Collectors.toList()));
+            response.setGUIDs(publishedEntitiesContext);
         } catch (InvalidParameterException e) {
             restExceptionHandler.captureInvalidParameterException(response, e);
         } catch (UserNotAuthorizedException e) {
@@ -84,21 +85,31 @@ public class AssetLineageRestServices {
         return response;
     }
 
-    private void publishEntitiesContext(String typeName, List<EntityDetail> entitiesByType, AssetLineagePublisher publisher) {
-        entitiesByType.forEach(entityDetail -> {
+    private List<String> publishEntitiesContext(String typeName, List<EntityDetail> entitiesByType, AssetLineagePublisher publisher) {
+        List<String> publishedGUIDs = new ArrayList<>();
+        for (EntityDetail entityDetail : entitiesByType) {
             try {
                 if (GLOSSARY_TERM.equals(typeName)) {
-                    publisher.publishGlossaryContext(entityDetail);
+                    Map<String, Set<GraphContext>> context = publisher.publishGlossaryContext(entityDetail);
+                    collectGUID(publishedGUIDs, entityDetail, context);
                 } else if (PROCESS.equals(typeName)) {
-                    publisher.publishProcessContext(entityDetail);
+                    Map<String, Set<GraphContext>> context = publisher.publishProcessContext(entityDetail);
+                    collectGUID(publishedGUIDs, entityDetail, context);
                 } else {
                     // only Processes and GlossaryTerms are the types supported for initial load
-                    log.error("Unsupported typeName {} for entity with guid {}. he context can not be published", typeName, entityDetail.getGUID());
+                    log.error("Unsupported typeName {} for entity with guid {}. The context can not be published", typeName, entityDetail.getGUID());
                 }
             } catch (OCFCheckedExceptionBase | JsonProcessingException ocfCheckedExceptionBase) {
-                log.error("The context for entity guid = {} - type {} can not be published.", entityDetail.getGUID(),
-                        entityDetail.getType().getTypeDefName());
+                ocfCheckedExceptionBase.printStackTrace();
             }
-        });
+        }
+
+        return publishedGUIDs;
+    }
+
+    private void collectGUID(List<String> publishedGUIDs, EntityDetail entityDetail, Map<String, Set<GraphContext>> context) {
+        if (MapUtils.isNotEmpty(context)) {
+            publishedGUIDs.add(entityDetail.getGUID());
+        }
     }
 }
