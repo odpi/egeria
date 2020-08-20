@@ -43,10 +43,10 @@ import './rex-styles.js';
 
 /**
  *
- * TypeExplorerView is the top level web component for the Type Explorer UI component.
+ * RepositoryExplorerView is the top level web component for the Repository Explorer UI component.
  * It implements the controller component of the design.
- * It is responsible for creating the ConnectionManager, TypeManager components
- * It is responsible for creating the FocusManager, DiagramManager and DetailsPanel components
+ * It is responsible for creating the ConnectionManager, TypeManager, InstanceRetriever,
+ * FilterManager, GraphControls and DetailsManager components.
  */
 
 class RepositoryExplorerView extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
@@ -469,7 +469,7 @@ class RepositoryExplorerView extends mixinBehaviors([AppLocalizeBehavior], Polym
 
         /*
          *  Because diagram-manager is dynamically creating a custom element (network-diagram) prior to us
-         *  completing this top level ready function, the diagram manager needs to set the i-r for the i-d
+         *  completing this top level ready function, the diagram manager needs to set the i-r for the d-m
          *  and cannot have done so until now....
          */
         this.theDiagramManager.setInstanceRetriever(this.theInstanceRetriever);
@@ -505,8 +505,6 @@ class RepositoryExplorerView extends mixinBehaviors([AppLocalizeBehavior], Polym
         });
 
         this.addEventListener('types-not-loaded', function (e) {
-            // Generate an alert for the error condition
-            //alert( "Event :" + 'types-not-loaded' + ' from ' + e.detail.source);
             this.$.rexConnectionManager.inEvtTypesNotLoaded();
         });
 

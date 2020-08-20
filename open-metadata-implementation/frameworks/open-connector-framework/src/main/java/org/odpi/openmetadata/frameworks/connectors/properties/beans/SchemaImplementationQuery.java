@@ -13,10 +13,11 @@ public class SchemaImplementationQuery extends PropertyBase
 {
     private static final long     serialVersionUID = 1L;
 
-    protected int             queryId            = 0;
-    protected String          query              = null;
-    protected String          queryType          = null;
-    protected SchemaAttribute queryTargetElement = null;
+    private String queryId         = null;
+    private String query           = null;
+    private String queryType       = null;
+    private String queryTargetGUID = null;
+
 
 
     /**
@@ -42,12 +43,7 @@ public class SchemaImplementationQuery extends PropertyBase
             queryId = template.getQueryId();
             query = template.getQuery();
             queryType = template.getQueryType();
-
-            SchemaAttribute templateQueryTargetElement = template.getQueryTargetElement();
-            if (templateQueryTargetElement != null)
-            {
-                queryTargetElement = new SchemaAttribute(templateQueryTargetElement);
-            }
+            queryTargetGUID = template.getQueryTargetGUID();
         }
     }
 
@@ -56,18 +52,18 @@ public class SchemaImplementationQuery extends PropertyBase
      * Return the query id - this is used to identify where the results of this query should be plugged into
      * the other queries or the formula for the parent derived schema element.
      *
-     * @return int query identifier
+     * @return String query identifier
      */
-    public int getQueryId() { return queryId; }
+    public String getQueryId() { return queryId; }
 
 
     /**
      * Set up the query id - this is used to identify where the results of this query should be plugged into
      * the other queries or the formula for the parent derived schema element.
      *
-     * @param queryId int query identifier
+     * @param queryId String query identifier
      */
-    public void setQueryId(int queryId)
+    public void setQueryId(String queryId)
     {
         this.queryId = queryId;
     }
@@ -114,33 +110,24 @@ public class SchemaImplementationQuery extends PropertyBase
 
 
     /**
-     * Return the SchemaAttribute that describes the type of the data source that will be queried to get the
-     * derived value.
+     * Return the unique identifier that describes the data source that will be queried to get part of the derived value.
      *
-     * @return SchemaAttribute object
+     * @return string guid
      */
-    public SchemaAttribute getQueryTargetElement()
+    public String getQueryTargetGUID()
     {
-        if (queryTargetElement == null)
-        {
-            return queryTargetElement;
-        }
-        else
-        {
-            return new SchemaAttribute(queryTargetElement);
-        }
+        return queryTargetGUID;
     }
 
 
     /**
-     * Set up the SchemaAttribute that describes the type of the data source that will be queried to get the
-     * derived value.
+     * Set up the unique identifier that describes the data source that will be queried to get part of the derived value.
      *
-     * @param queryTargetElement SchemaAttribute object
+     * @param queryTargetGUID string guid
      */
-    public void setQueryTargetElement(SchemaAttribute queryTargetElement)
+    public void setQueryTargetGUID(String queryTargetGUID)
     {
-        this.queryTargetElement = queryTargetElement;
+        this.queryTargetGUID = queryTargetGUID;
     }
 
 
@@ -156,7 +143,7 @@ public class SchemaImplementationQuery extends PropertyBase
                 "queryId=" + queryId +
                 ", query='" + query + '\'' +
                 ", queryType='" + queryType + '\'' +
-                ", queryTargetElement=" + queryTargetElement +
+                ", queryTargetGUID=" + queryTargetGUID +
                 '}';
     }
 
@@ -179,10 +166,10 @@ public class SchemaImplementationQuery extends PropertyBase
             return false;
         }
         SchemaImplementationQuery that = (SchemaImplementationQuery) objectToCompare;
-        return getQueryId() == that.getQueryId() &&
+        return Objects.equals(getQueryId(), that.getQueryId()) &&
                 Objects.equals(getQuery(), that.getQuery()) &&
                 Objects.equals(getQueryType(), that.getQueryType()) &&
-                Objects.equals(getQueryTargetElement(), that.getQueryTargetElement());
+                Objects.equals(getQueryTargetGUID(), that.getQueryTargetGUID());
     }
 
 
@@ -194,6 +181,6 @@ public class SchemaImplementationQuery extends PropertyBase
     @Override
     public int hashCode()
     {
-        return Objects.hash(getQueryId(), getQuery(), getQueryType(), getQueryTargetElement());
+        return Objects.hash(getQueryId(), getQuery(), getQueryType(), getQueryTargetGUID());
     }
 }

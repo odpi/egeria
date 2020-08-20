@@ -2,101 +2,81 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.viewservices.glossaryauthor.handlers;
 
-import org.odpi.openmetadata.accessservices.subjectarea.SubjectAreaCategory;
-import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.*;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.categories.SubjectAreaCategory;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
-import java.util.Date;
 import java.util.List;
 
 /**
  * The category handler is initialised with a SubjectAreaCategory, that contains the server the call should be sent to.
  * The handler exposes methods for category functionality for the glossary author view
  */
-public class CategoryHandler
-{
-    private static final Logger log = LoggerFactory.getLogger(CategoryHandler.class);
-
+public class CategoryHandler {
     private SubjectAreaCategory subjectAreaCategory;
 
     /**
      * Constructor for the CategoryHandler
+     *
      * @param subjectAreaCategory The SubjectAreaDefinition Open Metadata Access Service (OMAS) API for categories. This is the same as the
-     *                           The Glossary author Open Metadata View Service (OMVS) API for categories.
+     *                            The Glossary author Open Metadata View Service (OMVS) API for categories.
      */
     public CategoryHandler(SubjectAreaCategory subjectAreaCategory) {
-      this.subjectAreaCategory =subjectAreaCategory;
+        this.subjectAreaCategory = subjectAreaCategory;
     }
+
     /**
      * Create a Category
-     * @param userId  userId under which the request is performed
+     *
+     * @param userId           userId under which the request is performed
      * @param suppliedCategory Category to create
      * @return the created category.
-     *
+     * <p>
      * Exceptions returned by the server
-     * @throws UserNotAuthorizedException  the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws ClassificationException Error processing a classification
-     * @throws FunctionNotSupportedException   Function not supported
-     * @throws UnrecognizedGUIDException Unrecognised GUID
-     *
-     * Client library Exceptions
-     * @throws MetadataServerUncontactableException Unable to contact the server
-     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException            one of the parameters is null or invalid.
+     * @throws PropertyServerException              property server exception
      */
-    public Category createCategory(String userId, Category suppliedCategory) throws MetadataServerUncontactableException, ClassificationException, FunctionNotSupportedException, UnexpectedResponseException, InvalidParameterException, UserNotAuthorizedException, UnrecognizedGUIDException {
-        return subjectAreaCategory.createCategory(userId, suppliedCategory);
+    public Category createCategory(String userId, Category suppliedCategory) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        return subjectAreaCategory.category().create(userId, suppliedCategory);
     }
 
     /**
      * Get a category by guid.
+     *
      * @param userId userId under which the request is performed
-     * @param guid guid of the category to get
+     * @param guid   guid of the category to get
      * @return the requested category.
-     *
+     * <p>
      * Exceptions returned by the server
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws FunctionNotSupportedException   Function not supported
-     * @throws UnrecognizedGUIDException unrecognised GUID
-     *
-     * Client library Exceptions
-     * @throws MetadataServerUncontactableException Unable to contact the server
-     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException            one of the parameters is null or invalid.
+     * @throws PropertyServerException              property server exception
      */
-    public Category getCategoryByGuid(String userId, String guid) throws MetadataServerUncontactableException, FunctionNotSupportedException, UnexpectedResponseException, InvalidParameterException, UserNotAuthorizedException, UnrecognizedGUIDException {
-        return subjectAreaCategory.getCategoryByGuid(userId, guid);
+    public Category getCategoryByGuid(String userId, String guid) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+        return subjectAreaCategory.category().getByGUID(userId, guid);
     }
+
     /**
      * Find Category
      *
-     * @param userId unique identifier for requesting user, under which the request is performed
-     * @param searchCriteria String expression matching Category property values (this does not include the CategorySummary content).
-     * @param asOfTime the relationships returned as they were at this time. null indicates at the current time.
-     * @param offset  the starting element number for this set of results.  This is used when retrieving elements
-     *                 beyond the first page of results. Zero means the results start from the first element.
-     * @param pageSize the maximum number of elements that can be returned on this request.
-     *                 0 means there is no limit to the page size
-     * @param sequencingOrder the sequencing order for the results.
-     * @param sequencingProperty the name of the property that should be used to sequence the results.
+     * @param userId             unique identifier for requesting user, under which the request is performed
+     * @param findRequest        {@link FindRequest}
      * @return A list of Categorys meeting the search Criteria
-     *
+     * <p>
      * Exceptions returned by the server
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws FunctionNotSupportedException   Function not supported
-     *
-     * Client library Exceptions
-     * @throws MetadataServerUncontactableException Unable to contact the server
-     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException            one of the parameters is null or invalid.
+     * @throws PropertyServerException              property server exception
      */
-    public List<Category> findCategory(String userId, String searchCriteria, Date asOfTime, int offset, int pageSize, SequencingOrder sequencingOrder, String sequencingProperty) throws MetadataServerUncontactableException, FunctionNotSupportedException, UnexpectedResponseException, InvalidParameterException, UserNotAuthorizedException {
-        return subjectAreaCategory.findCategory(userId, searchCriteria, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
+    public List<Category> findCategory(String userId, FindRequest findRequest) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+        return subjectAreaCategory.category().find(userId, findRequest);
     }
+
     /**
      * Replace a Category. This means to override all the existing attributes with the supplied attributes.
      * <p>
@@ -107,18 +87,16 @@ public class CategoryHandler
      * @param guid             guid of the category to update
      * @param suppliedCategory category to be updated
      * @return replaced category
-     *
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws FunctionNotSupportedException        Function not supported
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     *
-     * Client library Exceptions
-     * @throws MetadataServerUncontactableException Unable to contact the server
-     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     * @throws PropertyServerException              property server exception
      */
-    public Category replaceCategory(String userId, String guid, Category suppliedCategory) throws UnexpectedResponseException, FunctionNotSupportedException, MetadataServerUncontactableException, InvalidParameterException, UserNotAuthorizedException {
-        return subjectAreaCategory.replaceCategory(userId, guid, suppliedCategory);
+    public Category replaceCategory(String userId, String guid, Category suppliedCategory) throws InvalidParameterException,
+                                                                                                  UserNotAuthorizedException,
+                                                                                                  PropertyServerException {
+        return subjectAreaCategory.category().replace(userId, guid, suppliedCategory);
     }
+
     /**
      * Update a Category. This means to update the category with any non-null attributes from the supplied category.
      * <p>
@@ -131,113 +109,84 @@ public class CategoryHandler
      * @return a response which when successful contains the updated category
      * when not successful the following Exceptions can occur
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws FunctionNotSupportedException        Function not supported
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     *
-     * Client library Exceptions
-     * @throws MetadataServerUncontactableException Unable to contact the server
-     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     * @throws PropertyServerException              property server exception
      */
-    public Category updateCategory(String userId, String guid, Category suppliedCategory) throws UnexpectedResponseException, FunctionNotSupportedException, MetadataServerUncontactableException, InvalidParameterException, UserNotAuthorizedException {
-        return subjectAreaCategory.updateCategory(userId, guid, suppliedCategory);
+    public Category updateCategory(String userId, String guid, Category suppliedCategory) throws InvalidParameterException,
+                                                                                                 UserNotAuthorizedException,
+                                                                                                 PropertyServerException {
+        return subjectAreaCategory.category().update(userId, guid, suppliedCategory);
     }
+
     /**
      * Delete a Category instance
-     *
+     * <p>
      * A delete (also known as a soft delete) means that the category instance will exist in a deleted state in the repository after the delete operation. This means
      * that it is possible to undo the delete.
      *
      * @param userId userId under which the request is performed
-     * @param guid guid of the category to be deleted.
-     * @return the deleted category
+     * @param guid   guid of the category to be deleted.
      * Exceptions returned by the server
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
-     * @throws EntityNotDeletedException      a soft delete was issued but the relationship was not deleted.
-     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
-     * Client library Exceptions
-     * @throws MetadataServerUncontactableException Unable to contact the server
-     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     * @throws PropertyServerException              property server exception
      */
-    public Category deleteCategory(String userId, String guid) throws  MetadataServerUncontactableException,UnrecognizedGUIDException, FunctionNotSupportedException, UnexpectedResponseException, EntityNotDeletedException, InvalidParameterException, UserNotAuthorizedException {
-        return subjectAreaCategory.deleteCategory(userId,guid);
+    public void deleteCategory(String userId, String guid) throws InvalidParameterException,
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException {
+        subjectAreaCategory.category().delete(userId, guid);
     }
+
     /**
      * Purge a Category instance
-     *
+     * <p>
      * A purge means that the category will not exist after the operation.
      *
      * @param userId userId under which the request is performed
-     * @param guid guid of the category to be deleted.
-     *
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws GUIDNotPurgedException a hard delete was issued but the category was not purged
-     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
-     * @throws FunctionNotSupportedException   Function not supported
-     * Client library Exceptions
-     * @throws MetadataServerUncontactableException Unable to contact the server
-     * @throws UnexpectedResponseException an unexpected response was returned from the server     */
-    public void purgeCategory(String userId, String guid) throws MetadataServerUncontactableException, UnrecognizedGUIDException, GUIDNotPurgedException, UnexpectedResponseException, FunctionNotSupportedException, InvalidParameterException, UserNotAuthorizedException {
-        subjectAreaCategory.purgeCategory(userId,guid);
+     * @param guid   guid of the category to be deleted.
+     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException            one of the parameters is null or invalid.
+     * @throws PropertyServerException              property server exception
+     */
+    public void purgeCategory(String userId, String guid) throws InvalidParameterException,
+                                                                 UserNotAuthorizedException,
+                                                                 PropertyServerException {
+        subjectAreaCategory.category().purge(userId, guid);
     }
+
     /**
      * Restore a Category
-     *
+     * <p>
      * Restore allows the deleted Category to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
-     * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       guid of the category to restore
+     *
+     * @param userId unique identifier for requesting user, under which the request is performed
+     * @param guid   guid of the category to restore
      * @return the restored category
-     * @throws UnrecognizedGUIDException the supplied guid was not recognised
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws FunctionNotSupportedException   Function not supported this indicates that a soft delete was issued but the repository does not support it.
-     * Client library Exceptions
-     * @throws MetadataServerUncontactableException Unable to contact the server
-     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException            one of the parameters is null or invalid.
+     * @throws PropertyServerException              property server exception
      */
-    public Category restoreCategory(String userId, String guid) throws MetadataServerUncontactableException, UnrecognizedGUIDException, FunctionNotSupportedException, UnexpectedResponseException, InvalidParameterException, UserNotAuthorizedException {
-        return subjectAreaCategory.restoreCategory(userId, guid);
+    public Category restoreCategory(String userId, String guid) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException {
+        return subjectAreaCategory.category().restore(userId, guid);
     }
+
     /**
      * Get Category relationships
      *
-     * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the category to get
-     * @param asOfTime the relationships returned as they were at this time. null indicates at the current time.
-     * @param offset  the starting element number for this set of results.  This is used when retrieving elements
-     *                 beyond the first page of results. Zero means the results start from the first element.
-     * @param pageSize the maximum number of elements that can be returned on this request.
-     *                 0 means there is not limit to the page size
-     * @param sequencingOrder the sequencing order for the results.
-     * @param sequencingProperty the name of the property that should be used to sequence the results.
+     * @param userId             unique identifier for requesting user, under which the request is performed
+     * @param guid               guid of the category to get
+     * @param findRequest        {@link FindRequest}
      * @return the relationships associated with the requested Category guid
-     *
+     * <p>
      * Exceptions returned by the server
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws FunctionNotSupportedException   Function not supported
-     *
-     * Client library Exceptions
-     * @throws MetadataServerUncontactableException Unable to contact the server
-     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException            one of the parameters is null or invalid.
+     * @throws PropertyServerException              property server exception
      */
-    public List<Line> getCategoryRelationships(String userId,
-                                    String guid,
-                                    Date asOfTime,
-                                    int offset,
-                                    int pageSize,
-                                    SequencingOrder sequencingOrder,
-                                    String sequencingProperty) throws
-            MetadataServerUncontactableException,
-            UserNotAuthorizedException,
-            InvalidParameterException,
-            FunctionNotSupportedException,
-            UnexpectedResponseException {
-        return subjectAreaCategory.getCategoryRelationships(userId, guid, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
+    public List<Line> getCategoryRelationships(String userId, String guid, FindRequest findRequest) throws UserNotAuthorizedException, InvalidParameterException, PropertyServerException {
+        return subjectAreaCategory.category().getRelationships(userId, guid, findRequest);
 
     }
-
 }

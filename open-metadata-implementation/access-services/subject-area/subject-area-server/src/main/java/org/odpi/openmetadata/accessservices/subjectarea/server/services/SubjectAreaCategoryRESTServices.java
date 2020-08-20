@@ -3,15 +3,13 @@
 package org.odpi.openmetadata.accessservices.subjectarea.server.services;
 
 import org.odpi.openmetadata.accessservices.subjectarea.handlers.SubjectAreaCategoryHandler;
-import org.odpi.openmetadata.accessservices.subjectarea.handlers.SubjectAreaGlossaryHandler;
+import org.odpi.openmetadata.accessservices.subjectarea.handlers.SubjectAreaTermHandler;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.SubjectAreaDefinition;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.NodeType;
-import org.odpi.openmetadata.accessservices.subjectarea.responses.CategoryResponse;
-import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaDefinitionResponse;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
-import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.ExceptionMapper;
-import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,25 +21,16 @@ import java.util.Date;
  * Access Service (OMAS).  This interface provides glossary authoring interfaces for subject area experts.
  */
 
-public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServicesInstance
-{
-    private static final Logger log = LoggerFactory.getLogger(SubjectAreaCategoryRESTServices.class);
-
-    private static final String className = SubjectAreaCategoryRESTServices.class.getName();
-    static private SubjectAreaInstanceHandler instanceHandler = new SubjectAreaInstanceHandler();
-
-
+public class SubjectAreaCategoryRESTServices extends SubjectAreaRESTServicesInstance {
+    private static final String className = SubjectAreaTermHandler.class.getName();
+    private static final Logger log = LoggerFactory.getLogger(SubjectAreaTermHandler.class);
+    private static final SubjectAreaInstanceHandler instanceHandler = new SubjectAreaInstanceHandler();
 
     /**
      * Default constructor
      */
     public SubjectAreaCategoryRESTServices() {
         //SubjectAreaRESTServicesInstance registers this omas.
-    }
-
-    public SubjectAreaCategoryRESTServices(OMRSAPIHelper oMRSAPIHelper)
-    {
-        this.oMRSAPIHelper=oMRSAPIHelper;
     }
 
     /**
@@ -76,21 +65,17 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServicesIns
      * </ul>
      */
 
-    public SubjectAreaOMASAPIResponse createCategory(String serverName, String userId, Category suppliedCategory)
-    {
+    public SubjectAreaOMASAPIResponse<Category> createCategory(String serverName, String userId, Category suppliedCategory) {
         final String methodName = "createCategory";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId);
         }
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
         try {
             SubjectAreaCategoryHandler categoryHandler = instanceHandler.getSubjectAreaCategoryHandler(userId, serverName, methodName);
-            SubjectAreaGlossaryHandler glossaryHandler = instanceHandler.getSubjectAreaGlossaryHandler(userId, serverName, methodName);
-
-            response = categoryHandler.createCategory(glossaryHandler, userId, suppliedCategory);
-
-        } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase e) {
-            response = ExceptionMapper.getResponseFromOCFCheckedExceptionBase(e);
+            response = categoryHandler.createCategory(userId, suppliedCategory);
+        } catch (OCFCheckedExceptionBase e) {
+            response.setExceptionInfo(e, className);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
@@ -112,34 +97,21 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServicesIns
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised
      * </ul>
      */
-
-    public SubjectAreaOMASAPIResponse getCategory( String serverName, String userId, String guid)
-    {
+    public SubjectAreaOMASAPIResponse<Category> getCategory(String serverName, String userId, String guid) {
         final String methodName = "getCategoryByGuid";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
         try {
             SubjectAreaCategoryHandler handler = instanceHandler.getSubjectAreaCategoryHandler(userId, serverName, methodName);
-            response = handler.getCategory(userId, guid);
+            response = handler.getCategoryByGuid(userId, guid);
 
-        } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase e) {
-            response = ExceptionMapper.getResponseFromOCFCheckedExceptionBase(e);
+        } catch (OCFCheckedExceptionBase e) {
+            response.setExceptionInfo(e, className);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
-        }
-        return response;
-    }
-
-    protected SubjectAreaOMASAPIResponse getResponse(Category gotCategory) {
-        SubjectAreaOMASAPIResponse response;
-        if (gotCategory.getNodeType()==NodeType.SubjectAreaDefinition) {
-            SubjectAreaDefinition subjectAreaDefinition = (SubjectAreaDefinition)gotCategory;
-            response = new SubjectAreaDefinitionResponse(subjectAreaDefinition);
-        } else {
-            response = new CategoryResponse(gotCategory);
         }
         return response;
     }
@@ -166,24 +138,32 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServicesIns
 
      * </ul>
      */
-    public  SubjectAreaOMASAPIResponse findCategory(String serverName, String userId,
-                                                    String searchCriteria,
-                                                    Date asOfTime,
-                                                    Integer offset,
-                                                    Integer pageSize,
-                                                    org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder,
-                                                    String sequencingProperty) {
+    public SubjectAreaOMASAPIResponse<Category> findCategory(String serverName,
+                                                             String userId,
+                                                             String searchCriteria,
+                                                             Date asOfTime,
+                                                             Integer offset,
+                                                             Integer pageSize,
+                                                             SequencingOrder sequencingOrder,
+                                                             String sequencingProperty) {
 
         final String methodName = "findCategory";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId);
         }
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
         try {
             SubjectAreaCategoryHandler handler = instanceHandler.getSubjectAreaCategoryHandler(userId, serverName, methodName);
-            response = handler.findCategory(userId, searchCriteria, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
-        } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase e) {
-            response = ExceptionMapper.getResponseFromOCFCheckedExceptionBase(e);
+            FindRequest findRequest = new FindRequest();
+            findRequest.setSearchCriteria(searchCriteria);
+            findRequest.setAsOfTime(asOfTime);
+            findRequest.setOffset(offset);
+            findRequest.setPageSize(pageSize);
+            findRequest.setSequencingOrder(sequencingOrder);
+            findRequest.setSequencingProperty(sequencingProperty);
+            response = handler.findCategory(userId, findRequest);
+        } catch (OCFCheckedExceptionBase e) {
+            response.setExceptionInfo(e, className);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
@@ -191,12 +171,13 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServicesIns
 
         return response;
     }
-    /*
+
+    /**
      * Get Category relationships
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the term to get
+     * @param guid   guid of the category to get
      * @param asOfTime the relationships returned as they were at this time. null indicates at the current time. If specified, the date is in milliseconds since 1970-01-01 00:00:00.
      * @param offset  the starting element number for this set of results.  This is used when retrieving elements
      *                 beyond the first page of results. Zero means the results start from the first element.
@@ -204,7 +185,7 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServicesIns
      *                 0 means there is not limit to the page size
      * @param sequencingOrder the sequencing order for the results.
      * @param sequencingProperty the name of the property that should be used to sequence the results.
-     * @return the relationships associated with the requested Category guid
+     * @return the relationships associated with the requested Category userId
      *
      * when not successful the following Exception responses can occur
      * <ul>
@@ -213,31 +194,33 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServicesIns
      * <li> FunctionNotSupportedException   Function not supported.</li>
      * </ul>
      */
-
-    public  SubjectAreaOMASAPIResponse getCategoryRelationships(String serverName, String userId,String guid,
-                                                                Date asOfTime,
-                                                                Integer offset,
-                                                                Integer pageSize,
-                                                                org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder,
-                                                                String sequencingProperty
+    public SubjectAreaOMASAPIResponse<Line> getCategoryRelationships(String serverName,
+                                                                     String userId,
+                                                                     String guid,
+                                                                     Date asOfTime,
+                                                                     Integer offset,
+                                                                     Integer pageSize,
+                                                                     SequencingOrder sequencingOrder,
+                                                                     String sequencingProperty
     ) {
 
-            String methodName = "getCategoryRelationships";
+        final String methodName = "getCategoryRelationships";
+
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Line> response = new SubjectAreaOMASAPIResponse<>();
         try {
             SubjectAreaCategoryHandler handler = instanceHandler.getSubjectAreaCategoryHandler(userId, serverName, methodName);
-            response = handler.getCategoryRelationships(userId,
-                                                    guid,
-                                                    asOfTime,
-                                                    offset,
-                                                    pageSize,
-                                                    sequencingOrder,
-                                                    sequencingProperty);
-        } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase e) {
-            response = ExceptionMapper.getResponseFromOCFCheckedExceptionBase(e);
+            FindRequest findRequest = new FindRequest();
+            findRequest.setAsOfTime(asOfTime);
+            findRequest.setOffset(offset);
+            findRequest.setPageSize(pageSize);
+            findRequest.setSequencingOrder(sequencingOrder);
+            findRequest.setSequencingProperty(sequencingProperty);
+            response = handler.getCategoryRelationships(userId, guid, findRequest);
+        } catch (OCFCheckedExceptionBase e) {
+            response.setExceptionInfo(e, className);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
@@ -266,17 +249,17 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServicesIns
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse updateCategory(String serverName, String userId, String guid, Category suppliedCategory, boolean isReplace) {
+    public SubjectAreaOMASAPIResponse<Category> updateCategory(String serverName, String userId, String guid, Category suppliedCategory, boolean isReplace) {
         final String methodName = "updateCategory";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
         try {
             SubjectAreaCategoryHandler handler = instanceHandler.getSubjectAreaCategoryHandler(userId, serverName, methodName);
             response = handler.updateCategory(userId, guid, suppliedCategory, isReplace);
-        } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase e) {
-            response = ExceptionMapper.getResponseFromOCFCheckedExceptionBase(e);
+        } catch (OCFCheckedExceptionBase e) {
+            response.setExceptionInfo(e, className);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
@@ -308,26 +291,27 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServicesIns
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the category was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the category was not purged</li>
+     * <li> EntityNotPurgedException               a hard delete was issued but the category was not purged</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse deleteCategory(String serverName, String userId, String guid, Boolean isPurge) {
+    public SubjectAreaOMASAPIResponse<Category> deleteCategory(String serverName, String userId, String guid, Boolean isPurge) {
         final String methodName = "deleteCategory";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
         try {
             SubjectAreaCategoryHandler handler = instanceHandler.getSubjectAreaCategoryHandler(userId, serverName, methodName);
             response = handler.deleteCategory(userId, guid, isPurge);
-        } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase e) {
-            response = ExceptionMapper.getResponseFromOCFCheckedExceptionBase(e);
+        } catch (OCFCheckedExceptionBase e) {
+            response.setExceptionInfo(e, className);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
         }
         return response;
     }
+
     /**
      * Restore a Category or a SubjectAreaDefinition
      *
@@ -345,18 +329,17 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServicesIns
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse restoreCategory(String serverName, String userId, String guid)
-    {
+    public SubjectAreaOMASAPIResponse<Category> restoreCategory(String serverName, String userId, String guid) {
         final String methodName = "restoreCategory";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
         try {
             SubjectAreaCategoryHandler handler = instanceHandler.getSubjectAreaCategoryHandler(userId, serverName, methodName);
             response = handler.restoreCategory(userId, guid);
-        } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase e) {
-            response = ExceptionMapper.getResponseFromOCFCheckedExceptionBase(e);
+        } catch (OCFCheckedExceptionBase e) {
+            response.setExceptionInfo(e, className);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);

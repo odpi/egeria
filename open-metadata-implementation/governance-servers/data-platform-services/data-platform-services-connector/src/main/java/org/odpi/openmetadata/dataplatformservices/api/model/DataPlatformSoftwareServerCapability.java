@@ -2,15 +2,15 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.dataplatformservices.api.model;
 
-import org.odpi.openmetadata.accessservices.dataplatform.properties.DataPlatformProperties;
+import org.odpi.openmetadata.accessservices.dataplatform.properties.DataPlatform;
 
 /**
  * The type Data platform software server capability.
  */
 public class DataPlatformSoftwareServerCapability {
 
-    private String                 userId;
-    private DataPlatformProperties dataPlatformProperties;
+    private String       userId;
+    private DataPlatform dataPlatformProperties;
 
     /**
      * Gets user id.
@@ -35,7 +35,7 @@ public class DataPlatformSoftwareServerCapability {
      *
      * @return the software server capability
      */
-    public DataPlatformProperties getDataPlatformProperties() {
+    public DataPlatform getDataPlatformProperties() {
         return dataPlatformProperties;
     }
 
@@ -44,7 +44,7 @@ public class DataPlatformSoftwareServerCapability {
      *
      * @param dataPlatformProperties the software server capability
      */
-    public void setDataPlatformProperties(DataPlatformProperties dataPlatformProperties) {
+    public void setDataPlatformProperties(DataPlatform dataPlatformProperties) {
         this.dataPlatformProperties = dataPlatformProperties;
     }
 

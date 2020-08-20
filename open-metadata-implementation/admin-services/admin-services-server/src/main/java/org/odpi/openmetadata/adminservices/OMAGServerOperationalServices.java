@@ -654,10 +654,11 @@ public class OMAGServerOperationalServices
             for (AccessServiceConfig  accessServiceConfig : accessServiceConfigList)
             {
                 /*
-                 * Connected Asset OMAS has been removed but may be present in some older configuration documents.  It is skipped over if
-                 * present.
+                 * Connected Asset OMAS and Data Platform OMAS have been removed but may be present in some older configuration documents.
+                 * The are skipped over if present.
                  */
-                if ((accessServiceConfig != null) && (accessServiceConfig.getAccessServiceId() != AccessServiceDescription.CONNECTED_ASSET_OMAS.getAccessServiceCode()))
+                if ((accessServiceConfig != null) && (accessServiceConfig.getAccessServiceId() != AccessServiceDescription.CONNECTED_ASSET_OMAS.getAccessServiceCode())
+                                                  && (accessServiceConfig.getAccessServiceId() != AccessServiceDescription.DATA_PLATFORM_OMAS.getAccessServiceCode()))
                 {
                     configuredAccessServiceCount ++;
 
@@ -1570,6 +1571,63 @@ public class OMAGServerOperationalServices
             OMRSOperationalServices         repositoryServicesInstance = instance.getOperationalRepositoryServices();
 
             repositoryServicesInstance.addOpenMetadataArchive(newOpenMetadataArchive, fileName);
+        }
+        catch (InvalidParameterException error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (OMAGInvalidParameterException error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Add a new open metadata archive to running repository.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param connection connection to access the open metadata archive file.
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or connection parameter.
+     */
+    public VoidResponse addOpenMetadataArchiveFile(String     userId,
+                                                   String     serverName,
+                                                   Connection connection)
+    {
+        final String methodName = "addOpenMetadataArchiveFile";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            errorHandler.validateServerName(serverName, methodName);
+            errorHandler.validateUserId(userId, serverName, methodName);
+            errorHandler.validateConnection(connection, serverName, methodName);
+
+            OMAGOperationalServicesInstance instance = instanceHandler.getServerServiceInstance(userId, serverName, methodName);
+            OMRSOperationalServices         repositoryServicesInstance = instance.getOperationalRepositoryServices();
+
+            repositoryServicesInstance.addOpenMetadataArchive(connection, methodName);
         }
         catch (InvalidParameterException error)
         {

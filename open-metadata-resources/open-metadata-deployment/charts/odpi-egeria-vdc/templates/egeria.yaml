@@ -19,8 +19,8 @@ metadata:
 spec:
   type: {{ .Values.service.type }}
   ports:
-    - port: 8080
-      targetPort: 8080
+    - port: 9443
+      targetPort: 9443
       nodePort: {{ .Values.service.nodeport.egeria }}
   selector:
     app.kubernetes.io/name: {{ include "myapp.name" . }}
@@ -64,11 +64,11 @@ spec:
                   :{{ .Values.image.egeria.tag | default .Values.egeria.version }}"
           imagePullPolicy: {{ .Values.image.egeria.pullPolicy | default .Values.imageDefaults.pullPolicy }}
           ports:
-            - containerPort: 8080
+            - containerPort: 9443
             - containerPort: 5005
           readinessProbe:
             tcpSocket:
-              port: 8080
+              port: 9443
             initialDelaySeconds: 10
             periodSeconds: 10
             failureThreshold: 6

@@ -20,7 +20,7 @@
     <parent>
         <artifactId>subject-area</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>1.8-SNAPSHOT</version>
+        <version>2.2-SNAPSHOT</version>
     </parent>
 
     <name>Subject Area OMAS with Spring</name>
@@ -38,6 +38,11 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>subject-area-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>repository-services-apis</artifactId>
         </dependency>
 
         <dependency>

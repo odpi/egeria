@@ -2,19 +2,14 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.server.mappers.graph;
 
-import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.NodeType;
 import org.odpi.openmetadata.opentypes.OpenMetadataTypesArchiveAccessor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
  * Static mapping methods to map between the node type and the Entity Type
  */
 public class NodeTypeMapper {
-    private static final Logger log = LoggerFactory.getLogger( NodeTypeMapper.class);
-    private static final String className = NodeTypeMapper.class.getName();
 
     /**
      * Map nodeType to entity type guid.
@@ -30,9 +25,8 @@ public class NodeTypeMapper {
      * </ul>
      * @param nodeType nodeType this is the type of node that is exposed in the nodetype API
      * @return entity Type guid.
-     * @throws InvalidParameterException one of the parameters is null or invalid.
      */
-    static public String  mapNodeTypeToEntityTypeGuid(NodeType nodeType) throws InvalidParameterException {
+    static public String  mapNodeTypeToEntityTypeGuid(NodeType nodeType) {
         String entityTypeName = nodeType.name();
         if (nodeType.name().equals("Term") ||nodeType.name().equals("Activity")) {
             entityTypeName = "GlossaryTerm";

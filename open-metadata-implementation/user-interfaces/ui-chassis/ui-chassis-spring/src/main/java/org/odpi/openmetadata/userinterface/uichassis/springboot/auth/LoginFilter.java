@@ -4,9 +4,7 @@ package org.odpi.openmetadata.userinterface.uichassis.springboot.auth;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -35,15 +33,22 @@ public class LoginFilter extends AbstractAuthenticationProcessingFilter {
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
             throws AuthenticationException {
 
-        return getAuthenticationManager()
-                .authenticate(new UsernamePasswordAuthenticationToken(
-                        request.getParameter("username"), request.getParameter("password")));
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        Authentication authentication =  getAuthenticationManager()
+                .authenticate(new UsernamePasswordAuthenticationToken( username, password));
+
+        if(authentication.getAuthorities().isEmpty()){
+            throw new InsufficientAuthenticationException("NO authorities for the user: " + authentication.getPrincipal().toString());
+        }
+        return authentication;
     }
 
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
                                               AuthenticationException failed) throws IOException, ServletException {
         super.unsuccessfulAuthentication(request, response, failed);
+        log.info("Unsuccessful Authentication");
         if(failed instanceof BadCredentialsException){
             log.warn("Bad credentials UNSUCCESSFUL AUTHENTICATION for user: {}", request.getParameter("username"));
         }else{
@@ -54,6 +59,7 @@ public class LoginFilter extends AbstractAuthenticationProcessingFilter {
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response,
                                             FilterChain chain, Authentication authentication)  {
+        log.info("Successful Authentication");
         authenticationService.addAuthentication(request, response, authentication);
         SecurityContextHolder.getContext().setAuthentication(authentication);
 

@@ -26,6 +26,9 @@ with what they do.  It also supports **collections** of requests.
 We use Postman collections in tutorials to illustrate the
 calls and save you typing in the full URLs (which can be quite long :).
 
+Egeria by default uses https:// requests with a self-signed certificate. Any PostMan users therefore will need to
+go into settings->general and turn off 'SSL certificate verification' or requests will fail.
+
 Postman is a [free download](https://www.getpostman.com/) with optional enterprise licenses
 for teams.
 

@@ -22,23 +22,21 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
         property = "class",
-        defaultImpl = Glossary.class
+        defaultImpl = Glossary.class,
+        visible = true
 )
-@JsonSubTypes(
-        {
-                @JsonSubTypes.Type(value = Taxonomy.class, name = "Taxonomy"),
-                @JsonSubTypes.Type(value = CanonicalTaxonomy.class, name = "CanonicalTaxonomy"),
-                @JsonSubTypes.Type(value = CanonicalGlossary.class, name = "CanonicalGlossary")
-        })
-
-public class Glossary extends Node{
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = Taxonomy.class, name = "Taxonomy"),
+        @JsonSubTypes.Type(value = CanonicalGlossary.class, name = "CanonicalGlossary")
+})
+public class Glossary extends Node {
     public Glossary() {
         nodeType = NodeType.Glossary;
     }
-    String usage =null;
-    String language =null;
+
+    private String usage = null;
+    private String language = null;
 
     /**
      * Guidance on the usage of this glossary content.
@@ -111,8 +109,7 @@ public class Glossary extends Node{
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        if (!(this.equals((Node)o))) return false;
-        return  true;
+        return this.equals(o);
     }
 
     @Override

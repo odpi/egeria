@@ -1,0 +1,780 @@
+{
+  "identifier" : "AdventureWorks2014.Person",
+  "version" : "9.0",
+  "dataSource" : [ {
+    "schema" : "Person",
+    "catalog" : "AdventureWorks2014",
+    "name" : "AdventureWorks2014.Person",
+    "table" : [ {
+      "name" : "Address",
+      "tableItem" : [ {
+        "column" : {
+          "name" : "AddressID",
+          "vendorType" : "int identity",
+          "nullable" : false,
+          "datatype" : "INTEGER"
+        }
+      }, {
+        "column" : {
+          "name" : "AddressLine1",
+          "vendorType" : "nvarchar",
+          "nullable" : false,
+          "datatype" : "NVARCHAR(60)"
+        }
+      }, {
+        "column" : {
+          "name" : "AddressLine2",
+          "vendorType" : "nvarchar",
+          "nullable" : true,
+          "datatype" : "NVARCHAR(60)"
+        }
+      }, {
+        "column" : {
+          "name" : "City",
+          "vendorType" : "nvarchar",
+          "nullable" : false,
+          "datatype" : "NVARCHAR(30)"
+        }
+      }, {
+        "column" : {
+          "name" : "StateProvinceID",
+          "vendorType" : "int",
+          "nullable" : false,
+          "datatype" : "INTEGER"
+        }
+      }, {
+        "column" : {
+          "name" : "PostalCode",
+          "vendorType" : "nvarchar",
+          "nullable" : false,
+          "datatype" : "NVARCHAR(15)"
+        }
+      }, {
+        "column" : {
+          "name" : "SpatialLocation",
+          "vendorType" : "geography",
+          "nullable" : true,
+          "datatype" : "VARBINARY(2147483647)"
+        }
+      }, {
+        "column" : {
+          "name" : "rowguid",
+          "vendorType" : "uniqueidentifier",
+          "nullable" : false,
+          "datatype" : "CHAR(36)"
+        }
+      }, {
+        "column" : {
+          "name" : "ModifiedDate",
+          "vendorType" : "datetime",
+          "nullable" : false,
+          "datatype" : "TIMESTAMP"
+        }
+      } ],
+      "foreignKey" : [ {
+        "name" : "FK_Address_StateProvince_StateProvinceID",
+        "fkColumn" : [ {
+          "pkColumn" : "StateProvinceID",
+          "pkCatalog" : "AdventureWorks2014",
+          "pkSchema" : "Person",
+          "pkTable" : "StateProvince",
+          "columnName" : "StateProvinceID"
+        } ]
+      } ],
+      "primaryKey" : [ {
+        "name" : "PK_Address_AddressID",
+        "keyedColumn" : [ "AddressID" ]
+      } ]
+    }, {
+      "name" : "AddressType",
+      "tableItem" : [ {
+        "column" : {
+          "name" : "AddressTypeID",
+          "vendorType" : "int identity",
+          "nullable" : false,
+          "datatype" : "INTEGER"
+        }
+      }, {
+        "column" : {
+          "name" : "rowguid",
+          "vendorType" : "uniqueidentifier",
+          "nullable" : false,
+          "datatype" : "CHAR(36)"
+        }
+      }, {
+        "column" : {
+          "name" : "ModifiedDate",
+          "vendorType" : "datetime",
+          "nullable" : false,
+          "datatype" : "TIMESTAMP"
+        }
+      } ],
+      "primaryKey" : [ {
+        "name" : "PK_AddressType_AddressTypeID",
+        "keyedColumn" : [ "AddressTypeID" ]
+      } ]
+    }, {
+      "name" : "BusinessEntity",
+      "tableItem" : [ {
+        "column" : {
+          "name" : "BusinessEntityID",
+          "vendorType" : "int identity",
+          "nullable" : false,
+          "datatype" : "INTEGER"
+        }
+      }, {
+        "column" : {
+          "name" : "rowguid",
+          "vendorType" : "uniqueidentifier",
+          "nullable" : false,
+          "datatype" : "CHAR(36)"
+        }
+      }, {
+        "column" : {
+          "name" : "ModifiedDate",
+          "vendorType" : "datetime",
+          "nullable" : false,
+          "datatype" : "TIMESTAMP"
+        }
+      } ],
+      "primaryKey" : [ {
+        "name" : "PK_BusinessEntity_BusinessEntityID",
+        "keyedColumn" : [ "BusinessEntityID" ]
+      } ]
+    }, {
+      "name" : "BusinessEntityAddress",
+      "tableItem" : [ {
+        "column" : {
+          "name" : "BusinessEntityID",
+          "vendorType" : "int",
+          "nullable" : false,
+          "datatype" : "INTEGER"
+        }
+      }, {
+        "column" : {
+          "name" : "AddressID",
+          "vendorType" : "int",
+          "nullable" : false,
+          "datatype" : "INTEGER"
+        }
+      }, {
+        "column" : {
+          "name" : "AddressTypeID",
+          "vendorType" : "int",
+          "nullable" : false,
+          "datatype" : "INTEGER"
+        }
+      }, {
+        "column" : {
+          "name" : "rowguid",
+          "vendorType" : "uniqueidentifier",
+          "nullable" : false,
+          "datatype" : "CHAR(36)"
+        }
+      }, {
+        "column" : {
+          "name" : "ModifiedDate",
+          "vendorType" : "datetime",
+          "nullable" : false,
+          "datatype" : "TIMESTAMP"
+        }
+      } ],
+      "foreignKey" : [ {
+        "name" : "FK_BusinessEntityAddress_Address_AddressID",
+        "fkColumn" : [ {
+          "pkColumn" : "AddressID",
+          "pkCatalog" : "AdventureWorks2014",
+          "pkSchema" : "Person",
+          "pkTable" : "Address",
+          "columnName" : "AddressID"
+        } ]
+      }, {
+        "name" : "FK_BusinessEntityAddress_AddressType_AddressTypeID",
+        "fkColumn" : [ {
+          "pkColumn" : "AddressTypeID",
+          "pkCatalog" : "AdventureWorks2014",
+          "pkSchema" : "Person",
+          "pkTable" : "AddressType",
+          "columnName" : "AddressTypeID"
+        } ]
+      }, {
+        "name" : "FK_BusinessEntityAddress_BusinessEntity_BusinessEntityID",
+        "fkColumn" : [ {
+          "pkColumn" : "BusinessEntityID",
+          "pkCatalog" : "AdventureWorks2014",
+          "pkSchema" : "Person",
+          "pkTable" : "BusinessEntity",
+          "columnName" : "BusinessEntityID"
+        } ]
+      } ],
+      "primaryKey" : [ {
+        "name" : "PK_BusinessEntityAddress_BusinessEntityID_AddressID_AddressTypeID",
+        "keyedColumn" : [ "BusinessEntityID", "AddressID", "AddressTypeID" ]
+      } ]
+    }, {
+      "name" : "BusinessEntityContact",
+      "tableItem" : [ {
+        "column" : {
+          "name" : "BusinessEntityID",
+          "vendorType" : "int",
+          "nullable" : false,
+          "datatype" : "INTEGER"
+        }
+      }, {
+        "column" : {
+          "name" : "PersonID",
+          "vendorType" : "int",
+          "nullable" : false,
+          "datatype" : "INTEGER"
+        }
+      }, {
+        "column" : {
+          "name" : "ContactTypeID",
+          "vendorType" : "int",
+          "nullable" : false,
+          "datatype" : "INTEGER"
+        }
+      }, {
+        "column" : {
+          "name" : "rowguid",
+          "vendorType" : "uniqueidentifier",
+          "nullable" : false,
+          "datatype" : "CHAR(36)"
+        }
+      }, {
+        "column" : {
+          "name" : "ModifiedDate",
+          "vendorType" : "datetime",
+          "nullable" : false,
+          "datatype" : "TIMESTAMP"
+        }
+      } ],
+      "foreignKey" : [ {
+        "name" : "FK_BusinessEntityContact_BusinessEntity_BusinessEntityID",
+        "fkColumn" : [ {
+          "pkColumn" : "BusinessEntityID",
+          "pkCatalog" : "AdventureWorks2014",
+          "pkSchema" : "Person",
+          "pkTable" : "BusinessEntity",
+          "columnName" : "BusinessEntityID"
+        } ]
+      }, {
+        "name" : "FK_BusinessEntityContact_ContactType_ContactTypeID",
+        "fkColumn" : [ {
+          "pkColumn" : "ContactTypeID",
+          "pkCatalog" : "AdventureWorks2014",
+          "pkSchema" : "Person",
+          "pkTable" : "ContactType",
+          "columnName" : "ContactTypeID"
+        } ]
+      }, {
+        "name" : "FK_BusinessEntityContact_Person_PersonID",
+        "fkColumn" : [ {
+          "pkColumn" : "BusinessEntityID",
+          "pkCatalog" : "AdventureWorks2014",
+          "pkSchema" : "Person",
+          "pkTable" : "Person",
+          "columnName" : "PersonID"
+        } ]
+      } ],
+      "primaryKey" : [ {
+        "name" : "PK_BusinessEntityContact_BusinessEntityID_PersonID_ContactTypeID",
+        "keyedColumn" : [ "BusinessEntityID", "PersonID", "ContactTypeID" ]
+      } ]
+    }, {
+      "name" : "ContactType",
+      "tableItem" : [ {
+        "column" : {
+          "name" : "ContactTypeID",
+          "vendorType" : "int identity",
+          "nullable" : false,
+          "datatype" : "INTEGER"
+        }
+      }, {
+        "column" : {
+          "name" : "ModifiedDate",
+          "vendorType" : "datetime",
+          "nullable" : false,
+          "datatype" : "TIMESTAMP"
+        }
+      } ],
+      "primaryKey" : [ {
+        "name" : "PK_ContactType_ContactTypeID",
+        "keyedColumn" : [ "ContactTypeID" ]
+      } ]
+    }, {
+      "name" : "CountryRegion",
+      "tableItem" : [ {
+        "column" : {
+          "name" : "CountryRegionCode",
+          "vendorType" : "nvarchar",
+          "nullable" : false,
+          "datatype" : "NVARCHAR(3)"
+        }
+      }, {
+        "column" : {
+          "name" : "ModifiedDate",
+          "vendorType" : "datetime",
+          "nullable" : false,
+          "datatype" : "TIMESTAMP"
+        }
+      } ],
+      "primaryKey" : [ {
+        "name" : "PK_CountryRegion_CountryRegionCode",
+        "keyedColumn" : [ "CountryRegionCode" ]
+      } ]
+    }, {
+      "name" : "EmailAddress",
+      "tableItem" : [ {
+        "column" : {
+          "name" : "BusinessEntityID",
+          "vendorType" : "int",
+          "nullable" : false,
+          "datatype" : "INTEGER"
+        }
+      }, {
+        "column" : {
+          "name" : "EmailAddressID",
+          "vendorType" : "int identity",
+          "nullable" : false,
+          "datatype" : "INTEGER"
+        }
+      }, {
+        "column" : {
+          "name" : "EmailAddress",
+          "vendorType" : "nvarchar",
+          "nullable" : true,
+          "datatype" : "NVARCHAR(50)"
+        }
+      }, {
+        "column" : {
+          "name" : "rowguid",
+          "vendorType" : "uniqueidentifier",
+          "nullable" : false,
+          "datatype" : "CHAR(36)"
+        }
+      }, {
+        "column" : {
+          "name" : "ModifiedDate",
+          "vendorType" : "datetime",
+          "nullable" : false,
+          "datatype" : "TIMESTAMP"
+        }
+      } ],
+      "foreignKey" : [ {
+        "name" : "FK_EmailAddress_Person_BusinessEntityID",
+        "fkColumn" : [ {
+          "pkColumn" : "BusinessEntityID",
+          "pkCatalog" : "AdventureWorks2014",
+          "pkSchema" : "Person",
+          "pkTable" : "Person",
+          "columnName" : "BusinessEntityID"
+        } ]
+      } ],
+      "primaryKey" : [ {
+        "name" : "PK_EmailAddress_BusinessEntityID_EmailAddressID",
+        "keyedColumn" : [ "BusinessEntityID", "EmailAddressID" ]
+      } ]
+    }, {
+      "name" : "Password",
+      "tableItem" : [ {
+        "column" : {
+          "name" : "BusinessEntityID",
+          "vendorType" : "int",
+          "nullable" : false,
+          "datatype" : "INTEGER"
+        }
+      }, {
+        "column" : {
+          "name" : "PasswordHash",
+          "vendorType" : "varchar",
+          "nullable" : false,
+          "datatype" : "VARCHAR(128)"
+        }
+      }, {
+        "column" : {
+          "name" : "PasswordSalt",
+          "vendorType" : "varchar",
+          "nullable" : false,
+          "datatype" : "VARCHAR(10)"
+        }
+      }, {
+        "column" : {
+          "name" : "rowguid",
+          "vendorType" : "uniqueidentifier",
+          "nullable" : false,
+          "datatype" : "CHAR(36)"
+        }
+      }, {
+        "column" : {
+          "name" : "ModifiedDate",
+          "vendorType" : "datetime",
+          "nullable" : false,
+          "datatype" : "TIMESTAMP"
+        }
+      } ],
+      "foreignKey" : [ {
+        "name" : "FK_Password_Person_BusinessEntityID",
+        "fkColumn" : [ {
+          "pkColumn" : "BusinessEntityID",
+          "pkCatalog" : "AdventureWorks2014",
+          "pkSchema" : "Person",
+          "pkTable" : "Person",
+          "columnName" : "BusinessEntityID"
+        } ]
+      } ],
+      "primaryKey" : [ {
+        "name" : "PK_Password_BusinessEntityID",
+        "keyedColumn" : [ "BusinessEntityID" ]
+      } ]
+    }, {
+      "name" : "Person",
+      "tableItem" : [ {
+        "column" : {
+          "name" : "BusinessEntityID",
+          "vendorType" : "int",
+          "nullable" : false,
+          "datatype" : "INTEGER"
+        }
+      }, {
+        "column" : {
+          "name" : "PersonType",
+          "vendorType" : "nchar",
+          "nullable" : false,
+          "datatype" : "NCHAR(2)"
+        }
+      }, {
+        "column" : {
+          "name" : "Title",
+          "vendorType" : "nvarchar",
+          "nullable" : true,
+          "datatype" : "NVARCHAR(8)"
+        }
+      }, {
+        "column" : {
+          "name" : "Suffix",
+          "vendorType" : "nvarchar",
+          "nullable" : true,
+          "datatype" : "NVARCHAR(10)"
+        }
+      }, {
+        "column" : {
+          "name" : "EmailPromotion",
+          "vendorType" : "int",
+          "nullable" : false,
+          "datatype" : "INTEGER"
+        }
+      }, {
+        "column" : {
+          "name" : "AdditionalContactInfo",
+          "vendorType" : "xml",
+          "nullable" : true,
+          "datatype" : "SQLXML"
+        }
+      }, {
+        "column" : {
+          "name" : "Demographics",
+          "vendorType" : "xml",
+          "nullable" : true,
+          "datatype" : "SQLXML"
+        }
+      }, {
+        "column" : {
+          "name" : "rowguid",
+          "vendorType" : "uniqueidentifier",
+          "nullable" : false,
+          "datatype" : "CHAR(36)"
+        }
+      }, {
+        "column" : {
+          "name" : "ModifiedDate",
+          "vendorType" : "datetime",
+          "nullable" : false,
+          "datatype" : "TIMESTAMP"
+        }
+      } ],
+      "foreignKey" : [ {
+        "name" : "FK_Person_BusinessEntity_BusinessEntityID",
+        "fkColumn" : [ {
+          "pkColumn" : "BusinessEntityID",
+          "pkCatalog" : "AdventureWorks2014",
+          "pkSchema" : "Person",
+          "pkTable" : "BusinessEntity",
+          "columnName" : "BusinessEntityID"
+        } ]
+      } ],
+      "primaryKey" : [ {
+        "name" : "PK_Person_BusinessEntityID",
+        "keyedColumn" : [ "BusinessEntityID" ]
+      } ]
+    }, {
+      "name" : "PersonPhone",
+      "tableItem" : [ {
+        "column" : {
+          "name" : "BusinessEntityID",
+          "vendorType" : "int",
+          "nullable" : false,
+          "datatype" : "INTEGER"
+        }
+      }, {
+        "column" : {
+          "name" : "PhoneNumberTypeID",
+          "vendorType" : "int",
+          "nullable" : false,
+          "datatype" : "INTEGER"
+        }
+      }, {
+        "column" : {
+          "name" : "ModifiedDate",
+          "vendorType" : "datetime",
+          "nullable" : false,
+          "datatype" : "TIMESTAMP"
+        }
+      } ],
+      "foreignKey" : [ {
+        "name" : "FK_PersonPhone_Person_BusinessEntityID",
+        "fkColumn" : [ {
+          "pkColumn" : "BusinessEntityID",
+          "pkCatalog" : "AdventureWorks2014",
+          "pkSchema" : "Person",
+          "pkTable" : "Person",
+          "columnName" : "BusinessEntityID"
+        } ]
+      }, {
+        "name" : "FK_PersonPhone_PhoneNumberType_PhoneNumberTypeID",
+        "fkColumn" : [ {
+          "pkColumn" : "PhoneNumberTypeID",
+          "pkCatalog" : "AdventureWorks2014",
+          "pkSchema" : "Person",
+          "pkTable" : "PhoneNumberType",
+          "columnName" : "PhoneNumberTypeID"
+        } ]
+      } ],
+      "primaryKey" : [ {
+        "name" : "PK_PersonPhone_BusinessEntityID_PhoneNumber_PhoneNumberTypeID",
+        "keyedColumn" : [ "BusinessEntityID", "PhoneNumber", "PhoneNumberTypeID" ]
+      } ]
+    }, {
+      "name" : "PhoneNumberType",
+      "tableItem" : [ {
+        "column" : {
+          "name" : "PhoneNumberTypeID",
+          "vendorType" : "int identity",
+          "nullable" : false,
+          "datatype" : "INTEGER"
+        }
+      }, {
+        "column" : {
+          "name" : "ModifiedDate",
+          "vendorType" : "datetime",
+          "nullable" : false,
+          "datatype" : "TIMESTAMP"
+        }
+      } ],
+      "primaryKey" : [ {
+        "name" : "PK_PhoneNumberType_PhoneNumberTypeID",
+        "keyedColumn" : [ "PhoneNumberTypeID" ]
+      } ]
+    }, {
+      "name" : "StateProvince",
+      "tableItem" : [ {
+        "column" : {
+          "name" : "StateProvinceID",
+          "vendorType" : "int identity",
+          "nullable" : false,
+          "datatype" : "INTEGER"
+        }
+      }, {
+        "column" : {
+          "name" : "StateProvinceCode",
+          "vendorType" : "nchar",
+          "nullable" : false,
+          "datatype" : "NCHAR(3)"
+        }
+      }, {
+        "column" : {
+          "name" : "CountryRegionCode",
+          "vendorType" : "nvarchar",
+          "nullable" : false,
+          "datatype" : "NVARCHAR(3)"
+        }
+      }, {
+        "column" : {
+          "name" : "TerritoryID",
+          "vendorType" : "int",
+          "nullable" : false,
+          "datatype" : "INTEGER"
+        }
+      }, {
+        "column" : {
+          "name" : "rowguid",
+          "vendorType" : "uniqueidentifier",
+          "nullable" : false,
+          "datatype" : "CHAR(36)"
+        }
+      }, {
+        "column" : {
+          "name" : "ModifiedDate",
+          "vendorType" : "datetime",
+          "nullable" : false,
+          "datatype" : "TIMESTAMP"
+        }
+      } ],
+      "foreignKey" : [ {
+        "name" : "FK_StateProvince_CountryRegion_CountryRegionCode",
+        "fkColumn" : [ {
+          "pkColumn" : "CountryRegionCode",
+          "pkCatalog" : "AdventureWorks2014",
+          "pkSchema" : "Person",
+          "pkTable" : "CountryRegion",
+          "columnName" : "CountryRegionCode"
+        } ]
+      }, {
+        "name" : "FK_StateProvince_SalesTerritory_TerritoryID",
+        "fkColumn" : [ {
+          "pkColumn" : "TerritoryID",
+          "pkCatalog" : "AdventureWorks2014",
+          "pkSchema" : "Sales",
+          "pkTable" : "SalesTerritory",
+          "columnName" : "TerritoryID"
+        } ]
+      } ],
+      "primaryKey" : [ {
+        "name" : "PK_StateProvince_StateProvinceID",
+        "keyedColumn" : [ "StateProvinceID" ]
+      } ]
+    }, {
+      "name" : "vAdditionalContactInfo",
+      "tableItem" : [ {
+        "column" : {
+          "name" : "BusinessEntityID",
+          "vendorType" : "int",
+          "nullable" : false,
+          "datatype" : "INTEGER"
+        }
+      }, {
+        "column" : {
+          "name" : "TelephoneNumber",
+          "vendorType" : "nvarchar",
+          "nullable" : true,
+          "datatype" : "NVARCHAR(50)"
+        }
+      }, {
+        "column" : {
+          "name" : "TelephoneSpecialInstructions",
+          "vendorType" : "nvarchar",
+          "nullable" : true,
+          "datatype" : "NCLOB"
+        }
+      }, {
+        "column" : {
+          "name" : "Street",
+          "vendorType" : "nvarchar",
+          "nullable" : true,
+          "datatype" : "NVARCHAR(50)"
+        }
+      }, {
+        "column" : {
+          "name" : "City",
+          "vendorType" : "nvarchar",
+          "nullable" : true,
+          "datatype" : "NVARCHAR(50)"
+        }
+      }, {
+        "column" : {
+          "name" : "StateProvince",
+          "vendorType" : "nvarchar",
+          "nullable" : true,
+          "datatype" : "NVARCHAR(50)"
+        }
+      }, {
+        "column" : {
+          "name" : "PostalCode",
+          "vendorType" : "nvarchar",
+          "nullable" : true,
+          "datatype" : "NVARCHAR(50)"
+        }
+      }, {
+        "column" : {
+          "name" : "CountryRegion",
+          "vendorType" : "nvarchar",
+          "nullable" : true,
+          "datatype" : "NVARCHAR(50)"
+        }
+      }, {
+        "column" : {
+          "name" : "HomeAddressSpecialInstructions",
+          "vendorType" : "nvarchar",
+          "nullable" : true,
+          "datatype" : "NCLOB"
+        }
+      }, {
+        "column" : {
+          "name" : "EMailAddress",
+          "vendorType" : "nvarchar",
+          "nullable" : true,
+          "datatype" : "NVARCHAR(128)"
+        }
+      }, {
+        "column" : {
+          "name" : "EMailSpecialInstructions",
+          "vendorType" : "nvarchar",
+          "nullable" : true,
+          "datatype" : "NCLOB"
+        }
+      }, {
+        "column" : {
+          "name" : "EMailTelephoneNumber",
+          "vendorType" : "nvarchar",
+          "nullable" : true,
+          "datatype" : "NVARCHAR(50)"
+        }
+      }, {
+        "column" : {
+          "name" : "rowguid",
+          "vendorType" : "uniqueidentifier",
+          "nullable" : false,
+          "datatype" : "CHAR(36)"
+        }
+      }, {
+        "column" : {
+          "name" : "ModifiedDate",
+          "vendorType" : "datetime",
+          "nullable" : false,
+          "datatype" : "TIMESTAMP"
+        }
+      } ]
+    }, {
+      "name" : "vStateProvinceCountryRegion",
+      "tableItem" : [ {
+        "column" : {
+          "name" : "StateProvinceID",
+          "vendorType" : "int",
+          "nullable" : false,
+          "datatype" : "INTEGER"
+        }
+      }, {
+        "column" : {
+          "name" : "StateProvinceCode",
+          "vendorType" : "nchar",
+          "nullable" : false,
+          "datatype" : "NCHAR(3)"
+        }
+      }, {
+        "column" : {
+          "name" : "TerritoryID",
+          "vendorType" : "int",
+          "nullable" : false,
+          "datatype" : "INTEGER"
+        }
+      }, {
+        "column" : {
+          "name" : "CountryRegionCode",
+          "vendorType" : "nvarchar",
+          "nullable" : false,
+          "datatype" : "NVARCHAR(3)"
+        }
+      } ]
+    } ]
+  } ]
+}

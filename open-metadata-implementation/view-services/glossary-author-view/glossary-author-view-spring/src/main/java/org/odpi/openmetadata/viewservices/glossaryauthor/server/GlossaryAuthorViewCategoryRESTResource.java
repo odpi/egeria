@@ -3,17 +3,19 @@
 package org.odpi.openmetadata.viewservices.glossaryauthor.server;
 
 
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder;
+import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.viewservices.glossaryauthor.services.GlossaryAuthorViewCategoryRESTServices;
 import org.springframework.web.bind.annotation.*;
 
-import io.swagger.v3.oas.annotations.ExternalDocumentation;
-import io.swagger.v3.oas.annotations.tags.Tag;
-
-import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+
+import static org.odpi.openmetadata.viewservices.glossaryauthor.services.BaseGlossaryAuthorView.PAGE_OFFSET_DEFAULT_VALUE;
+import static org.odpi.openmetadata.viewservices.glossaryauthor.services.BaseGlossaryAuthorView.PAGE_SIZE_DEFAULT_VALUE;
 
 /**
  * The GlossaryAuthorRESTServicesInstance provides the org.odpi.openmetadata.viewervices.glossaryauthor.server implementation of the Glossary Author Open Metadata
@@ -23,7 +25,7 @@ import java.util.Date;
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/view-services/glossary-author/users/{userId}/categories")
 
-@Tag(name="Glossary Author OMVS", description="Develop a definition of a subject area by authoring glossaries, including terms for use by a user interface.", externalDocs=@ExternalDocumentation(description="Glossary Author View Services (OMVS)",url="https://egeria.odpi.org/open-metadata-implementation/view-services/glossary-author-view/"))
+@Tag(name = "Glossary Author OMVS", description = "Develop a definition of a subject area by authoring glossaries, including terms for use by a user interface.", externalDocs = @ExternalDocumentation(description = "Glossary Author View Services (OMVS)", url = "https://egeria.odpi.org/open-metadata-implementation/view-services/glossary-author-view/"))
 
 public class GlossaryAuthorViewCategoryRESTResource {
 
@@ -40,10 +42,11 @@ public class GlossaryAuthorViewCategoryRESTResource {
     /**
      * Create a Category.
      * <p>
-     * Categorys with the same name can be confusing. Best practise is to create categories that have unique names.
+     * Categories with the same name can be confusing. Best practise is to create categories that have unique names.
      * This Create call does not police that Category names are unique. So it is possible to create categories with the same name as each other.
      *
-     * @param serverName   name of the local server.
+     * @param serverName       name of the local server.
+     * @param userId           userid
      * @param suppliedCategory Category to create.
      * @return response, when successful contains the created category.
      * when not successful the following Exception responses can occur
@@ -56,9 +59,9 @@ public class GlossaryAuthorViewCategoryRESTResource {
      * <li> StatusNotSupportedException          A status value is not supported.</li>
      * </ul>
      */
-    @PostMapping()
-    public SubjectAreaOMASAPIResponse createCategory(@PathVariable String serverName, @PathVariable String userId,
-                                                 @RequestBody Category suppliedCategory) {
+    @PostMapping
+    public SubjectAreaOMASAPIResponse<Category> createCategory(@PathVariable String serverName, @PathVariable String userId,
+                                                               @RequestBody Category suppliedCategory) {
         return restAPI.createCategory(serverName, userId, suppliedCategory);
 
     }
@@ -67,6 +70,7 @@ public class GlossaryAuthorViewCategoryRESTResource {
      * Get a category.
      *
      * @param serverName local UI server name
+     * @param userId     userid
      * @param guid       guid of the category to get
      * @return response which when successful contains the category with the requested guid
      * when not successful the following Exception responses can occur
@@ -75,12 +79,13 @@ public class GlossaryAuthorViewCategoryRESTResource {
      * <li> MetadataServerUncontactableException  not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException one of the parameters is null or invalid.</li>
      * <li> UnrecognizedGUIDException the supplied guid was not recognised</li>
-     * <li> UnrecognizedGUIDException the supplied guid was not recognised</li>
      * <li> FunctionNotSupportedException   Function not supported</li>
      * </ul>
      */
     @GetMapping(path = "/{guid}")
-    public SubjectAreaOMASAPIResponse getCategory(@PathVariable String serverName, @PathVariable String userId, @PathVariable String guid) {
+    public SubjectAreaOMASAPIResponse<Category> getCategory(@PathVariable String serverName,
+                                                            @PathVariable String userId,
+                                                            @PathVariable String guid) {
         return restAPI.getCategory(serverName, userId, guid);
 
     }
@@ -89,6 +94,7 @@ public class GlossaryAuthorViewCategoryRESTResource {
      * Find Category
      *
      * @param serverName         local UI server name
+     * @param userId             userid
      * @param searchCriteria     String expression matching Category property values .
      * @param asOfTime           the categories returned as they were at this time. null indicates at the current time.
      * @param offset             the starting element number for this set of results.  This is used when retrieving elements
@@ -101,21 +107,19 @@ public class GlossaryAuthorViewCategoryRESTResource {
      *
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    @GetMapping()
-    public SubjectAreaOMASAPIResponse findCategory(
-            @PathVariable String serverName, @PathVariable String userId,
-            @RequestParam(value = "searchCriteria", required = false) String searchCriteria,
-            @RequestParam(value = "asOfTime", required = false) Date asOfTime,
-            @RequestParam(value = "offset", required = false) Integer offset,
-            @RequestParam(value = "pageSize", required = false) Integer pageSize,
-            @RequestParam(value = "sequencingOrder", required = false) SequencingOrder sequencingOrder,
-            @RequestParam(value = "sequencingProperty", required = false) String sequencingProperty
-                                              ) {
+    @GetMapping
+    public SubjectAreaOMASAPIResponse<Category> findCategory(@PathVariable String serverName, @PathVariable String userId,
+                                                             @RequestParam(value = "searchCriteria", required = false) String searchCriteria,
+                                                             @RequestParam(value = "asOfTime", required = false) Date asOfTime,
+                                                             @RequestParam(value = "offset", required = false, defaultValue = PAGE_OFFSET_DEFAULT_VALUE) Integer offset,
+                                                             @RequestParam(value = "pageSize", required = false, defaultValue = PAGE_SIZE_DEFAULT_VALUE) Integer pageSize,
+                                                             @RequestParam(value = "sequencingOrder", required = false) SequencingOrder sequencingOrder,
+                                                             @RequestParam(value = "sequencingProperty", required = false) String sequencingProperty
+    ) {
         return restAPI.findCategory(serverName, userId, asOfTime, searchCriteria, offset, pageSize, sequencingOrder, sequencingProperty);
     }
 
@@ -123,6 +127,7 @@ public class GlossaryAuthorViewCategoryRESTResource {
      * Get Category relationships
      *
      * @param serverName         local UI server name
+     * @param userId             userid
      * @param guid               guid of the category to get
      * @param asOfTime           the relationships returned as they were at this time. null indicates at the current time. If specified, the date is in milliseconds since 1970-01-01 00:00:00.
      * @param offset             the starting element number for this set of results.  This is used when retrieving elements
@@ -134,32 +139,21 @@ public class GlossaryAuthorViewCategoryRESTResource {
      * @return a response which when successful contains the category relationships
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @GetMapping(path = "/{guid}/relationships")
-    public SubjectAreaOMASAPIResponse getCategoryRelationships(
-            @PathVariable String serverName, @PathVariable String userId,
-            @PathVariable String guid,
-            @RequestParam(value = "asOfTime", required = false) Date asOfTime,
-            @RequestParam(value = "offset", required = false) Integer offset,
-            @RequestParam(value = "pageSize", required = false) Integer pageSize,
-            @RequestParam(value = "sequencingOrder", required = false) SequencingOrder sequencingOrder,
-            @RequestParam(value = "sequencingProperty", required = false) String sequencingProperty
-
-                                                          ) {
-        return restAPI.getCategoryRelationships(serverName,
-                                            userId,
-                                            guid,
-                                            asOfTime,
-                                            offset,
-                                            pageSize,
-                                            sequencingOrder,
-                                            sequencingProperty);
-
+    public SubjectAreaOMASAPIResponse<Line> getCategoryRelationships(@PathVariable String serverName, @PathVariable String userId,
+                                                                     @PathVariable String guid,
+                                                                     @RequestParam(value = "asOfTime", required = false) Date asOfTime,
+                                                                     @RequestParam(value = "offset", required = false, defaultValue = PAGE_OFFSET_DEFAULT_VALUE) Integer offset,
+                                                                     @RequestParam(value = "pageSize", required = false, defaultValue = PAGE_SIZE_DEFAULT_VALUE) Integer pageSize,
+                                                                     @RequestParam(value = "sequencingOrder", required = false) SequencingOrder sequencingOrder,
+                                                                     @RequestParam(value = "sequencingProperty", required = false) String sequencingProperty
+    ) {
+        return restAPI.getCategoryRelationships(serverName, userId, guid, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
     }
 
     /**
@@ -167,26 +161,26 @@ public class GlossaryAuthorViewCategoryRESTResource {
      * <p>
      * Status is not updated using this call.
      *
-     * @param serverName   local UI server name
-     * @param guid         guid of the category to update
+     * @param serverName       local UI server name
+     * @param userId           userid
+     * @param guid             guid of the category to update
      * @param suppliedCategory category to update
-     * @param isReplace    flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
+     * @param isReplace        flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return a response which when successful contains the updated category
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @PutMapping(path = "/{guid}")
-    public SubjectAreaOMASAPIResponse updateCategory(
-            @PathVariable String serverName, @PathVariable String userId,
+    public SubjectAreaOMASAPIResponse<Category> updateCategory(
+            @PathVariable String serverName,
+            @PathVariable String userId,
             @PathVariable String guid,
             @RequestBody Category suppliedCategory,
-            @RequestParam(value = "isReplace", required = false) Boolean isReplace) {
+            @RequestParam(value = "isReplace", required = false, defaultValue = "false") Boolean isReplace) {
 
         return restAPI.updateCategory(serverName, userId, guid, suppliedCategory, isReplace);
 
@@ -207,25 +201,22 @@ public class GlossaryAuthorViewCategoryRESTResource {
      * when not successful the following Exceptions can occur
      *
      * @param serverName local UI server name
+     * @param userId     userid
      * @param guid       guid of the category to be deleted.
      * @param isPurge    true indicates a hard delete, false is a soft delete.
      * @return a void response
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
-     * <li> EntityNotDeletedException            a soft delete was issued but the category was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the category was not purged</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @DeleteMapping(path = "/{guid}")
-    public SubjectAreaOMASAPIResponse deleteCategory(@PathVariable String serverName, @PathVariable String userId,
-                                                 @PathVariable String guid,
-                                                 @RequestParam(value = "isPurge", required = false) Boolean isPurge,
-                                                 HttpServletRequest request) {
+    public SubjectAreaOMASAPIResponse<Category> deleteCategory(@PathVariable String serverName,
+                                                               @PathVariable String userId,
+                                                               @PathVariable String guid,
+                                                               @RequestParam(value = "isPurge", required = false, defaultValue = "false") Boolean isPurge) {
         return restAPI.deleteCategory(serverName, userId, guid, isPurge);
     }
 
@@ -235,21 +226,20 @@ public class GlossaryAuthorViewCategoryRESTResource {
      * Restore allows the deleted Category to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
      *
      * @param serverName local UI server name
+     * @param userId     userid
      * @param guid       guid of the category to restore
      * @return response which when successful contains the restored category
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     @PostMapping(path = "/{guid}")
-    public SubjectAreaOMASAPIResponse restoreCategory(@PathVariable String serverName, @PathVariable String userId,
-                                                  @PathVariable String guid,
-                                                  HttpServletRequest request) {
+    public SubjectAreaOMASAPIResponse<Category> restoreCategory(@PathVariable String serverName,
+                                                                @PathVariable String userId,
+                                                                @PathVariable String guid) {
         return restAPI.restoreCategory(serverName, userId, guid);
 
     }

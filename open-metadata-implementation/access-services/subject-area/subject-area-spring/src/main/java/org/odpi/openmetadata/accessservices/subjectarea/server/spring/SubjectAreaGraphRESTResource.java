@@ -6,9 +6,9 @@ package org.odpi.openmetadata.accessservices.subjectarea.server.spring;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.StatusFilter;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Graph;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.server.services.SubjectAreaGraphRESTServices;
-import org.odpi.openmetadata.accessservices.subjectarea.server.services.SubjectAreaRESTServicesInstance;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -20,11 +20,8 @@ import java.util.Date;
  */
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/subject-area")
-
 @Tag(name="Subject Area OMAS", description="The Subject Area OMAS supports subject matter experts who are documenting their knowledge about a particular subject. This includes glossary terms, reference data, validation rules.", externalDocs=@ExternalDocumentation(description="Subject Area Open Metadata Access Service (OMAS)",url="https://egeria.odpi.org/open-metadata-implementation/access-services/subject-area/"))
-
-public class SubjectAreaGraphRESTResource extends SubjectAreaRESTServicesInstance
-{
+public class SubjectAreaGraphRESTResource {
     private SubjectAreaGraphRESTServices restAPI = new SubjectAreaGraphRESTServices();
     /**
      * Default constructor
@@ -62,14 +59,14 @@ public class SubjectAreaGraphRESTResource extends SubjectAreaRESTServicesInstanc
      * </ul>
      */
     @GetMapping( path = "/users/{userId}/nodes/{guid}")
-    public  SubjectAreaOMASAPIResponse getGraph(@PathVariable String serverName,
-                                                @PathVariable String userId,
-                                                @PathVariable String guid,
-                                                @RequestParam(value = "asOfTime", required=false) Date asOfTime,
-                                                @RequestParam(value = "nodeFilter", required=false)String nodeFilterStr,
-                                                @RequestParam(value = "lineFilter", required=false)String lineFilterStr,
-                                                @RequestParam(value = "statusFilter", required=false)StatusFilter statusFilter,   // may need to extend this for controlled terms
-                                                @RequestParam(value = "level", required=false) Integer level ) {
+    public SubjectAreaOMASAPIResponse<Graph> getGraph(@PathVariable String serverName,
+                                                      @PathVariable String userId,
+                                                      @PathVariable String guid,
+                                                      @RequestParam(value = "asOfTime", required=false) Date asOfTime,
+                                                      @RequestParam(value = "nodeFilter", required=false)String nodeFilterStr,
+                                                      @RequestParam(value = "lineFilter", required=false)String lineFilterStr,
+                                                      @RequestParam(value = "statusFilter", required=false)StatusFilter statusFilter,   // may need to extend this for controlled terms
+                                                      @RequestParam(value = "level", required=false) Integer level ) {
 
         return restAPI.getGraph(serverName,userId,guid,asOfTime,nodeFilterStr,lineFilterStr,statusFilter,level);
     }

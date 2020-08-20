@@ -7,11 +7,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.NodeType;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 import java.util.Set;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -25,10 +24,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-
 public class NodeSummary implements Serializable {
-    private static final Logger log = LoggerFactory.getLogger(NodeSummary.class);
-    private static final String className = NodeSummary.class.getName();
     protected NodeType type = NodeType.Unknown;
     protected String relationshipType = null;
     private String name = null;
@@ -43,6 +39,7 @@ public class NodeSummary implements Serializable {
 
     /**
      * Type of the other end of this relationship
+     *
      * @return the type
      */
     public NodeType getType() {
@@ -55,6 +52,7 @@ public class NodeSummary implements Serializable {
 
     /**
      * the type of the relationship
+     *
      * @return relationship type
      */
     public String getRelationshipType() {
@@ -67,6 +65,7 @@ public class NodeSummary implements Serializable {
 
     /**
      * The name of the node
+     *
      * @return name
      */
     public String getName() {
@@ -79,6 +78,7 @@ public class NodeSummary implements Serializable {
 
     /**
      * The qualified name of the node.
+     *
      * @return qualified name
      */
     public String getQualifiedName() {
@@ -91,6 +91,7 @@ public class NodeSummary implements Serializable {
 
     /**
      * icons
+     *
      * @return set of icon summaries
      */
     public Set<IconSummary> getIcons() {
@@ -103,6 +104,7 @@ public class NodeSummary implements Serializable {
 
     /**
      * A unique identifier for a node
+     *
      * @return guid
      */
     public String getGuid() {
@@ -112,51 +114,65 @@ public class NodeSummary implements Serializable {
     public void setGuid(String guid) {
         this.guid = guid;
     }
+
     /**
      * get the date effective from which this node is effective
+     *
      * @return Date date effective from which this node is effective
      */
     public Date getFromEffectivityTime() {
         return fromEffectivityTime;
     }
+
     /**
      * set the date from which this node is effective
+     *
      * @param fromEffectivityTime date from which this node is effective
      */
     public void setFromEffectivityTime(Date fromEffectivityTime) {
         this.fromEffectivityTime = fromEffectivityTime;
     }
+
     /**
      * get the date to which this node is effective
+     *
      * @return Date to which this node is effective
      */
 
     public Date getToEffectivityTime() {
         return toEffectivityTime;
     }
+
     /**
      * set the date to which this node is effective
+     *
      * @param toEffectivityTime date to which this node is effective
      */
     public void setToEffectivityTime(Date toEffectivityTime) {
         this.toEffectivityTime = toEffectivityTime;
     }
+
     /**
      * The unique identifier of the associated Line (relationship)
+     *
      * @return relationship guid
      */
     public String getRelationshipguid() {
         return relationshipguid;
     }
+
     /**
      * The set the unique identifier of the associated Line (relationship)
+     *
      * @param relationshipguid relationship guid
      */
     public void setRelationshipguid(String relationshipguid) {
         this.relationshipguid = relationshipguid;
     }
+
     /**
      * get when date from which the relationship is effective
+     *
      * @return Date date from which the relationship is effective
      */
     public Date getFromRelationshipEffectivityTime() {
@@ -165,6 +181,7 @@ public class NodeSummary implements Serializable {
 
     /**
      * set date from which the relationship is effective
+     *
      * @param fromRelationshipEffectivityTime date from which the relationship is effective
      */
     public void setFromRelationshipEffectivityTime(Date fromRelationshipEffectivityTime) {
@@ -173,25 +190,28 @@ public class NodeSummary implements Serializable {
 
     /**
      * get date from which the relationship is effective
+     *
      * @return date from which the relationship is effective
      */
     public Date getToRelationshipEffectivityTime() {
         return toRelationshipEffectivityTime;
     }
+
     /**
      * set date to which the relationship is effective
+     *
      * @param toRelationshipEffectivityTime date to which the relationship is effective
      */
     public void setToRelationshipEffectivityTime(Date toRelationshipEffectivityTime) {
         this.toRelationshipEffectivityTime = toRelationshipEffectivityTime;
     }
 
-    public StringBuilder toString(StringBuilder sb) {
+    public String toString(StringBuilder sb) {
         if (sb == null) {
             sb = new StringBuilder();
         }
 
-        sb.append("Nodesummary{");
+        sb.append("NodeSummary{");
         if (name != null) {
             sb.append("name='").append(name).append('\'');
         }
@@ -202,21 +222,21 @@ public class NodeSummary implements Serializable {
         if (guid != null) {
             sb.append(", guid='").append(guid).append('\'');
         }
-        if (fromEffectivityTime !=null) {
+        if (fromEffectivityTime != null) {
             sb.append(", fromEffectivityTime='").append(fromEffectivityTime.getTime()).append('\'');
         }
-        if (toEffectivityTime !=null) {
+        if (toEffectivityTime != null) {
             sb.append(", toEffectivityTime='").append(toEffectivityTime.getTime()).append('\'');
         }
 
         sb.append('}');
 
-        return sb;
+        return sb.toString();
     }
 
     @Override
     public String toString() {
-        return toString(new StringBuilder()).toString();
+        return toString(new StringBuilder());
     }
 
 
@@ -227,13 +247,11 @@ public class NodeSummary implements Serializable {
 
         NodeSummary node = (NodeSummary) o;
 
-        if (name != null ? !name.equals(node.name) : node.name != null) return false;
-        if (fromEffectivityTime != null ? !fromEffectivityTime.equals(node.fromEffectivityTime) : node.fromEffectivityTime != null) return false;
-        if (toEffectivityTime != null ? !toEffectivityTime.equals(node.toEffectivityTime) : node.toEffectivityTime != null) return false;
-        if (qualifiedName != null ? !qualifiedName.equals(node.qualifiedName) : node.qualifiedName != null)
-            return false;
+        if (!Objects.equals(name, node.name)) return false;
+        if (!Objects.equals(fromEffectivityTime, node.fromEffectivityTime)) return false;
+        if (!Objects.equals(toEffectivityTime, node.toEffectivityTime)) return false;
         //TODO Icons
-        return true;
+        return Objects.equals(qualifiedName, node.qualifiedName);
     }
 
     @Override
@@ -250,5 +268,4 @@ public class NodeSummary implements Serializable {
     // allow child classes to process classifications
     protected void processClassification(Classification classification) {
     }
-
 }

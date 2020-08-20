@@ -9,43 +9,44 @@ import java.util.Objects;
  */
 public class LineageRelationship extends LineageEntity {
 
-    private String firstEndGUID;
-    private String secondEndGUID;
+    private LineageEntity sourceEntity;
+    private LineageEntity targetEntity;
 
     /**
-     * Gets the guid for the first end of the relationship
+     * Gets the source entity of the relationship
      *
      * @return the guid
      */
-    public String getFirstEndGUID() {
-        return firstEndGUID;
+    public LineageEntity getSourceEntity() {
+        return sourceEntity;
     }
 
     /**
-     * Sets guid for the second end of the relationship
+     * Sets the source entity of the relationship
      *
-     * @param firstEndGUID the guid
+     * @param sourceEntity the guid
      */
-    public void setFirstEndGUID(String firstEndGUID) {
-        this.firstEndGUID = firstEndGUID;
+    public void setSourceEntity(LineageEntity sourceEntity) {
+        this.sourceEntity = sourceEntity;
     }
 
     /**
-     * Gets the guid for the first end of the relationship
+     * Gets the target entity of the relationship
      *
      * @return the guid
      */
-    public String getSecondEndGUID() {
-        return secondEndGUID;
+    public LineageEntity getTargetEntity() {
+        return targetEntity;
     }
 
+
     /**
-     * Sets guid for the second end of the relationship
+     * Sets the target entity of the relationship
      *
-     * @param secondEndGUID the guid
+     * @param targetEntity the guid
      */
-    public void setSecondEndGUID(String secondEndGUID) {
-        this.secondEndGUID = secondEndGUID;
+    public void setTargetEntity(LineageEntity targetEntity) {
+        this.targetEntity = targetEntity;
     }
 
     @Override
@@ -54,20 +55,20 @@ public class LineageRelationship extends LineageEntity {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         LineageRelationship that = (LineageRelationship) o;
-        return Objects.equals(firstEndGUID, that.firstEndGUID) &&
-                Objects.equals(secondEndGUID, that.secondEndGUID);
+        return Objects.equals(sourceEntity, that.sourceEntity) &&
+                Objects.equals(targetEntity, that.targetEntity);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), firstEndGUID, secondEndGUID);
+        return Objects.hash(super.hashCode(), sourceEntity, targetEntity);
     }
 
     @Override
     public String toString() {
         return "LineageRelationship{" +
-                "firstEndGUID='" + firstEndGUID + '\'' +
-                ", secondEndGUID='" + secondEndGUID + '\'' +
+                "firstEntity=" + sourceEntity +
+                ", secondEntity=" + targetEntity +
                 '}';
     }
 }

@@ -51,7 +51,8 @@ public class SoftwareServerCapabilityConverter extends ReferenceableConverter
     /**
      * Request the bean is extracted from the repository objects
      *
-     * @return output bean
+     * @param bean bean to update
+     * @return updated bean
      */
     protected SoftwareServerCapability updateBean(SoftwareServerCapability bean)
     {

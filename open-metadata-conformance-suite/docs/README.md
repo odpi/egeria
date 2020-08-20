@@ -38,7 +38,7 @@ etc](../../open-metadata-implementation/admin-services/docs/user/README.md).  Be
 configure the repository workbench within it by POSTing to:
 
 ```
-POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cts/conformance-suite-workbenches/repository-workbench/repositories
+POST https://localhost:9443/open-metadata/admin-services/users/garygeeke/servers/cts/conformance-suite-workbenches/repository-workbench/repositories
 ```
 
 with a repository workbench configuration like the following:
@@ -60,6 +60,9 @@ tests.
 An example collection of configuration calls for Postman can be found in
 [Egeria-CTS-RepositoryWorkbench](../../open-metadata-resources/open-metadata-samples/postman-rest-samples/collection/Egeria-CTS-RepositoryWorkbench.postman_collection.json).
 
+Egeria by default uses https:// requests with a self-signed certificate. Any PostMan users therefore will need to
+go into settings->general and turn off 'SSL certificate verification' or requests will fail.
+ 
 The OMAG Server also supports a REST API for querying the results of running
 the conformance suite tests.  These commands include:
 
@@ -77,11 +80,11 @@ The client also outputs a summary of the test run.
 The example below is for an unsuccessful run:
 
 ```
-$ OpenMetadataConformanceTestReport cSuiteServer http://localhost:8081
+$ OpenMetadataConformanceTestReport cSuiteServer https://localhost:9444
 =======================================
  Open Metadata Conformance Test Report 
 =======================================
- ... contacting conformance suite server: cSuiteServer (http://localhost:8081)
+ ... contacting conformance suite server: cSuiteServer (https://localhost:9444)
 Conformance report from server:  cSuiteServer
 
 Number of tests: 847
@@ -97,11 +100,11 @@ Process finished with exit code 1
 This output is an example of a successful run:
 
 ```
-$ OpenMetadataConformanceTestReport cSuiteServer http://localhost:8081
+$ OpenMetadataConformanceTestReport cSuiteServer https://localhost:9444
 =======================================
  Open Metadata Conformance Test Report 
 =======================================
- ... contacting conformance suite server: cSuiteServer (http://localhost:8081)
+ ... contacting conformance suite server: cSuiteServer (https://localhost:9444)
 Conformance report from server:  cSuiteServer
 
 Number of tests: 848

@@ -724,7 +724,7 @@ class NeighbourhoodDiagram extends PolymerElement {
 
     locateEntityLabelX(d, width, height) {
         var x;
-        x = (d.x-width/2)*.05 ; // + (0.2*Math.abs(d.y - height/2) > Math.abs(d.x - width/2) ? (width/2 - d.x)*.5 : 0);
+        x = (d.x-width/2)*.05;
         return x;
     }
 
@@ -737,7 +737,7 @@ class NeighbourhoodDiagram extends PolymerElement {
 
     locateEntityLabelY(d, width, height) {
         var y;
-        y = (d.y-height/2)*.05 ; // + (0.1*Math.abs(d.y - height/2) > Math.abs(d.x - width/2) ? (d.y-height/2)*.04 : 0);  // was dy*.15+...
+        y = (d.y-height/2)*.05;
         return y;
     }
 

@@ -14,6 +14,9 @@ Prerequisites:
 
 - [local-integration-tests.postman_environment.json](local-integration-tests.postman_environment.json) - the environment used for running the tests locally
 
+- Egeria by default uses https:// requests with a self-signed certificate. Any PostMan users therefore will need to
+ go into settings->general and turn off 'SSL certificate verification' or requests will fail.
+ 
 Each step is sequentially numbered so that they can be executed in-order as part of a Postman "Runner", if desired.
 
 ----

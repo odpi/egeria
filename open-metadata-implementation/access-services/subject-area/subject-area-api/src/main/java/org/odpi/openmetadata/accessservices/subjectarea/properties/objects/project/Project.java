@@ -10,6 +10,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.IconSummary;
 
 import java.util.Date;
+import java.util.Objects;
 import java.util.Set;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -18,28 +19,24 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 /**
  * Glossary object
  */
-
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
         property = "class",
-        defaultImpl = Project.class
+        defaultImpl = Project.class,
+        visible = true
 )
-@JsonSubTypes(
-        {
-                @JsonSubTypes.Type(value = GlossaryProject.class, name = "GlossaryProject")
-        })
-
+@JsonSubTypes({ @JsonSubTypes.Type(value = GlossaryProject.class, name = "GlossaryProject") })
 public class Project extends Node{
     public Project() {
         nodeType = NodeType.Project;
     }
 
-    Date startDate=null;
-    Date plannedEndDate=null;
-    String status=null;
+    private Date startDate = null;
+    private Date plannedEndDate = null;
+    private String status = null;
 
     public Date getStartDate() {
         return startDate;
@@ -65,11 +62,11 @@ public class Project extends Node{
         this.status = status;
     }
 
-    @Override
     /**
      * The icons associated with this glossary.
      * @return the url of the icon.
      */
+    @Override
     public Set<IconSummary> getIcons() {
         return super.getIcons();
     }
@@ -102,18 +99,17 @@ public class Project extends Node{
 
         return sb;
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
         Project project = (Project) o;
-        if (!(this.equals((Node)o))) return false;
-        if (startDate != null ? !startDate.equals(project.startDate) :project.startDate != null) return false;
-        if (plannedEndDate != null ? !plannedEndDate.equals(project.plannedEndDate) :project.plannedEndDate != null) return false;
-        if (status != null ? !status.equals(project.status) :project.status != null) return false;
-
-        return  true;
+        if (!(this.equals(o))) return false;
+        if (!Objects.equals(startDate, project.startDate)) return false;
+        if (!Objects.equals(plannedEndDate, project.plannedEndDate)) return false;
+        return Objects.equals(status, project.status);
     }
 
     @Override

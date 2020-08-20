@@ -52,13 +52,13 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
         app-drawer-layout:not([narrow]) [drawer-toggle] {
           display: none;
         };
-        app-header {
+        app-toolbar {
           color: #fff;
           background-color: var(--egeria-primary-color);
         };
         app-header paper-icon-button {
-          --paper-icon-button-ink-color: white;
-          --iron-icon-fill-color: white;
+          --paper-icon-button-ink-color: var(--egeria-button-ink-color);
+          --iron-icon-fill-color: var(--egeria-button-ink-color);
         };
         .drawer-list a {
           display: block;
@@ -132,9 +132,16 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
       <app-location route="{{route}}" url-space-regex="^[[rootPath]]" use-hash-as-path query-params="{{queryParams}}"></app-location>
 
       <app-route route="{{route}}" pattern="/:page" data="{{routeData}}" tail="{{tail}}"></app-route>
-       
-      <toast-feedback duration="0"></toast-feedback> 
-       
+        
+        <toast-feedback></toast-feedback> 
+        
+        <paper-dialog id="modal" modal>
+          <p>[[modalMessage]]</p>
+          <div class="buttons">
+            <paper-button dialog-confirm autofocus>OK</paper-button>
+          </div>
+        </paper-dialog>
+        
         <template is="dom-if" if="[[!token]]"  restamp="true">
             <login-view id="loginView" token="{{token}}"></login-view>
         </template>
@@ -149,7 +156,6 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
                     <div name="asset-catalog" language="[[language]]"><a href="[[rootPath]]#/asset-catalog/search">Asset Catalog</a></div>
                     <div name="glossary" language="[[language]]"><a href="[[rootPath]]#/glossary">Glossary View</a></div>
                     <div name="asset-lineage"><a href="[[rootPath]]#/asset-lineage">Asset Lineage</a></div>
-                    <div name="subject-area"><a href="[[rootPath]]#/subject-area">Subject Area</a></div>
                     <div name="type-explorer"><a href="[[rootPath]]#/type-explorer">Type Explorer</a></div>
                     <div name="repository-explorer"><a href="[[rootPath]]#/repository-explorer">Repository Explorer</a></div>
                     <div name="about"><a href="[[rootPath]]#/about">About</a></div>
@@ -158,9 +164,8 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
                 </app-drawer>
     
                 <!-- Main content-->
-                <app-header-layout>
-        
-                  <app-header slot="header" condenses="" reveals="" effects="waterfall">
+                <app-header-layout>    
+                  <app-header slot="header" condenses fixed effects="waterfall">
                     <app-toolbar>
                       <paper-icon-button on-tap="_toggleDrawer" id="toggle" icon="menu"></paper-icon-button>
                       <template is="dom-if" if="[[narrow]]" >
@@ -178,16 +183,15 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
                       </div>
                       <div style="float: right"><user-options></user-options></div>
                     </app-toolbar>
+                    <div class="breadcrumb">
+                        <bread-crumb id="breadcrumb" items="[[crumbs]]"></bread-crumb>
+                    </div>
                   </app-header>
-                  <div class="breadcrumb">
-                     <bread-crumb id="breadcrumb" items="[[crumbs]]"></bread-crumb>
-                  </div>
                   
                   <iron-pages selected="[[page]]" attr-for-selected="name" role="main">
                     <asset-view language="[[language]]" name="asset-catalog" route="[[tail]]"></asset-view>
                     <glossary-view language="[[language]]" name="glossary" route="[[tail]]"></glossary-view>
                     <about-view language="[[language]]" name="about"></about-view>
-                    <subject-area-component language="[[language]]" name="subject-area"></subject-area-component>
                     <asset-lineage-view language="[[language]]" name="asset-lineage"  route="[[tail]]"></asset-lineage-view>
                     <type-explorer-view language="[[language]]" name="type-explorer"></type-explorer-view>
                     <repository-explorer-view language="[[language]]" name="repository-explorer"  route="[[tail]]"></repository-explorer-view>
@@ -211,14 +215,13 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
             },
             token: {
                 type: Object,
-                notify: true,
-                observer: '_tokenChanged'
+                notify: true
             },
             routeData: Object,
             pages: {
                 type: Array,
                 value: [
-                    'asset-catalog', 'subject-area', 'asset-lineage',
+                    'asset-catalog', 'asset-lineage',
                     'type-explorer', 'repository-explorer', 'about',
                     'glossary']
             },
@@ -236,7 +239,6 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
                     'home': {label: 'Home', href: '/#'},
                     'asset-catalog': {label: 'Asset Catalog', href: "/asset-catalog/search"},
                     'glossary': {label: 'Glossary', href: "/glossary"},
-                    'subject-area': {label: 'Subject Area', href: "/subject-area"},
                     'asset-lineage': {label: 'Asset Lineage', href: "/asset-lineage"},
                     'type-explorer': {label: 'Type Explorer', href: "/type-explorer"},
                     'repository-explorer': {label: 'Repository Explorer', href: "/repository-explorer"},
@@ -262,6 +264,7 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
         super.ready();
         this.addEventListener('logout', this._onLogout);
         this.addEventListener('open-page', this._onPageChanged);
+        this.addEventListener('show-modal', this._onShowModal);
         this.addEventListener('set-title', this._onSetTitle);
         this.addEventListener('push-crumb', this._onPushCrumb);
     }
@@ -287,6 +290,11 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
         var crumbs = [].concat(this.crumbs);
         crumbs.push( event.detail );
         this.crumbs = crumbs;
+    }
+
+    _onShowModal(event) {
+        this.modalMessage = event.detail.message;
+        this.$.modal.open();
     }
 
     _updateBreadcrumb(page) {
@@ -333,7 +341,6 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
     }
 
     _onLogout(event) {
-        console.log('removing token:');
         //TODO invalidate token from server
         console.log('LOGOUT: removing token...');
         this.token = null;
@@ -343,10 +350,6 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
         return typeof this.token !== "undefined" && this.token != null;
     }
 
-    _tokenChanged(newValue, oldValue) {
-        console.debug('token changed from: '+ oldValue +' \nto new value: ' + newValue)
-    }
-
     _pageChanged(page) {
         // Import the page component on demand.
         //
@@ -354,9 +357,6 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
         // statement, so break it up.
         console.log(page);
         switch (page) {
-            case 'subject-area':
-                import('./subject-area/subject-area-component.js');
-                break;
             case 'asset-lineage':
                 import('./asset-lineage/asset-lineage-view.js');
                 break;

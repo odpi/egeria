@@ -19,6 +19,7 @@ class BreadCrumb extends ElementMixin(ThemableMixin(PolymerElement)){
           display: none;
         }
        .breadcrumbs {
+          display: flex;
           padding: 2px 24px;
         }
       </style>
