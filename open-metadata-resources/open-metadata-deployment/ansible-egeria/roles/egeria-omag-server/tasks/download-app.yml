@@ -1,0 +1,70 @@
+---
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the ODPi Egeria project.
+
+- name: set app download flag
+  set_fact:
+    app_is_downloaded:
+    local_source: "{{ atr_artifactory_base is search('file://') }}"
+
+- name: Create working folder
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ app_user }}"
+    group: "{{ app_group }}"
+    mode: '0750'
+  with_items:
+    - "{{ app_work_dir }}"
+    - "{{ app_config_dir }}"
+    - "{{ app_libs_dir }}"
+    - "{{ app_tmp_dir }}"
+    - "{{ app_logs_dir }}"
+    - "{{ app_data_dir }}"
+    - "{{ app_keystore_dir }}"
+
+- name: upload local artifact
+  copy:
+    owner: "{{ app_user }}"
+    group: "{{ app_group }}"
+    mode: '0440'  
+    dest: "{{ app_full_path }}"
+    src: "{{ atr_download_url | urlsplit('path') }}"
+    force: "{{ app_force_replace | default('no', true) }}"    
+  register: app_is_downloaded
+  when: local_source
+  notify:
+    - systemctl daemon-reload app
+    - restart app service
+
+- name: debug app_is_downloaded
+  debug: var=app_is_downloaded
+
+- name: download application {{ app_name }} from artifactory
+  get_url:
+    url: "{{ atr_download_url }}"
+    owner: "{{ app_user }}"
+    group: "{{ app_group }}"
+    mode: '0440'
+    timeout: "{{ atr_download_timeout }}"
+    headers: "{{ atr_get_url_headers_str if ansible_version.full is version('2.6', '<') else atr_get_url_headers_dict }}"
+    validate_certs: "{{ atr_validate_certs }}"
+    tmp_dest: "{{ app_work_dir }}/tmp"
+    dest: "{{ app_full_path }}"
+    force: "{{ app_force_replace | default('no', true) }}"
+  register: app_is_downloaded
+  when: not local_source
+  notify:
+    - systemctl daemon-reload app
+    - restart app service
+    
+- name: cleanup old versions of {{ app_name }}
+  shell: "find {{ app_work_dir }}/ -maxdepth 1 -type f -name \"{{ atr_name ~ '*' ~ atr_type }}\" ! -name \"{{ atr_full_name }}\" -print -delete"
+  register: app_cleanup
+  # when: app_is_downloaded.changed
+
+- name: debug of cleanup old versions of {{ app_name }}
+  debug: var=app_cleanup.stdout
+  when: "app_cleanup.stdout is defined"
+  tags:
+    - egeria-debug

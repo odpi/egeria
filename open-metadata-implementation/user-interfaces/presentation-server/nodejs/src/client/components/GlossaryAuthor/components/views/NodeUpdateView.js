@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 import {
   Accordion,
   AccordionItem,
@@ -15,11 +15,12 @@ import {
   TableCell,
   TableHeader,
   TableBody,
-  TextInput
+  TextInput,
 } from "carbon-components-react";
 
 import { GlossaryAuthorContext } from "../../contexts/GlossaryAuthorContext";
 import Info16 from "@carbon/icons-react/lib/information/16";
+import Close16 from "../../../../images/Egeria_close_16";
 
 function NodeUpdateView(props) {
   console.log("NodeUpdateView");
@@ -36,6 +37,12 @@ function NodeUpdateView(props) {
    */
   const handleOnAnimationEnd = (e) => {
     document.getElementById("NodeUpdateViewButton").classList.remove("shaker");
+  };
+
+  const handleOnClose = (e) => {
+    console.log("GlossaryAuthor connectivity handleClick(()");
+    e.preventDefault();
+    glossaryAuthorContext.doCancelUpdate();
   };
 
   const handleUpdate = (e) => {
@@ -93,7 +100,10 @@ function NodeUpdateView(props) {
     },
   ];
   return (
-    <div>
+    <div> 
+      <div className="close-title">
+        <Close16 onClick={handleOnClose}/>
+      </div>
       <FormGroup>
         <div>
           <h4>
@@ -104,25 +114,26 @@ function NodeUpdateView(props) {
             <Info16 />
           </h4>
         </div>
-        {glossaryAuthorContext.selectedNode && glossaryAuthorContext.currentNodeType.attributes.map((item) => {
-          return (
-            <div className="bx--form-item" key={item.key}>
-              <label htmlFor={createLabelId(item.key)} className="bx--label">
-                {item.label} <Info16 />
-              </label>
-              <TextInput
-                id={createLabelId(item.key)}
-                type="text"
-                className="bx--text-input"
-                 defaultValue={glossaryAuthorContext.selectedNode[item.key]}
-                 key={glossaryAuthorContext.selectedNode[item.key]}
-                //value={glossaryAuthorContext.selectedNode[item.key]?glossaryAuthorContext.selectedNode[item.key]:""}
-                onChange={(e) => setAttribute(item, e.target.value)}
-                placeholder={item.label}
-              />
-            </div>
-          );
-        })}
+        {glossaryAuthorContext.selectedNode &&
+          glossaryAuthorContext.currentNodeType.attributes.map((item) => {
+            return (
+              <div className="bx--form-item" key={item.key}>
+                <label htmlFor={createLabelId(item.key)} className="bx--label">
+                  {item.label} <Info16 />
+                </label>
+                <TextInput
+                  id={createLabelId(item.key)}
+                  type="text"
+                  className="bx--text-input"
+                  defaultValue={glossaryAuthorContext.selectedNode[item.key]}
+                  key={glossaryAuthorContext.selectedNode[item.key]}
+                  //value={glossaryAuthorContext.selectedNode[item.key]?glossaryAuthorContext.selectedNode[item.key]:""}
+                  onChange={(e) => setAttribute(item, e.target.value)}
+                  placeholder={item.label}
+                />
+              </div>
+            );
+          })}
 
         <Accordion>
           <AccordionItem title="Effectivity">
@@ -155,7 +166,10 @@ function NodeUpdateView(props) {
                       <TableHead>
                         <TableRow>
                           {headers.map((header) => (
-                            <TableHeader key={header.key}  {...getHeaderProps({ header })} >
+                            <TableHeader
+                              key={header.key}
+                              {...getHeaderProps({ header })}
+                            >
                               {header.header}
                             </TableHeader>
                           ))}

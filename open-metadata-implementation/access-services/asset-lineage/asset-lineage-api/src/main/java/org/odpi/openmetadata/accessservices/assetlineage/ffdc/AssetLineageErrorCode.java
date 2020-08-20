@@ -57,10 +57,6 @@ public enum AssetLineageErrorCode {
             "The system was unable to perform the classification mapping request.",
             "Correct the caller's code and retry the request.");
 
-    public int getHTTPErrorCode() {
-        return httpErrorCode;
-    }
-
     private static final Logger log = LoggerFactory.getLogger(AssetLineageErrorCode.class);
     private int httpErrorCode;
     private String errorMessageId;
@@ -81,6 +77,10 @@ public enum AssetLineageErrorCode {
         this.errorMessage = newErrorMessage;
         this.systemAction = newSystemAction;
         this.userAction = newUserAction;
+    }
+
+    public int getHTTPErrorCode() {
+        return httpErrorCode;
     }
 
     public String getErrorMessageId() {
