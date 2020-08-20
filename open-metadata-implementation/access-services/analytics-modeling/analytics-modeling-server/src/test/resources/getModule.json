@@ -1,6 +1,6 @@
 {
   "attributes" : {
-    "module" : {
+    "physicalDefinition" : {
       "identifier" : "GOSALES.dbo",
       "version" : "9.0",
       "dataSource" : [ {
