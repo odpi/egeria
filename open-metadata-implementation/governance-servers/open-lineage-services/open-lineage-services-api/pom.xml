@@ -47,6 +47,12 @@
             <groupId>org.odpi.egeria</groupId>
             <artifactId>asset-lineage-api</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>audit-log-framework</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>ffdc-services</artifactId>
