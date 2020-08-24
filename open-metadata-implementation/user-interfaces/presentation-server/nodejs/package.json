@@ -1,7 +1,7 @@
 {
   "name": "presentation-server",
   "version": "1.0.0",
-  "description": "Egeria multitentant presentation server.",
+  "description": "Egeria Presentation Server.",
   "main": "src/server/index.js",
   "scripts": {
     "build:dev": "webpack --mode development --devtool inline-source-map",
@@ -15,7 +15,7 @@
     "dev": "webpack-dev-server --open"
   },
   "author": "David Radley",
-  "license": "ISC",
+  "license": "Apache-2.0",
   "dependencies": {
     "@carbon/elements": "^10.14.0",
     "@carbon/grid": "^10.12.0",
