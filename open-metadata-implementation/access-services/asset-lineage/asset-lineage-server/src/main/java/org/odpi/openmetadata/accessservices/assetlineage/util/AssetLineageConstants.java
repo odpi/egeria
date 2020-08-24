@@ -18,7 +18,7 @@ public final class AssetLineageConstants {
     public static final String REFERENCEABLE = "Referenceable";
     public static final String GUID_PARAMETER = "guid";
     public static final String VALUE_FOR_ACTIVE = "Active";
-    public static final String SCHEMA_ELEMENT = "SchemaElement";
+    public static final String GLOSSARY_CATEGORY = "GlossaryCategory";
     public static final String GLOSSARY_TERM = "GlossaryTerm";
     public static final String NESTED_SCHEMA_ATTRIBUTE = "NestedSchemaAttribute";
     //Area 5 Types
@@ -42,6 +42,7 @@ public final class AssetLineageConstants {
     public static final String CONNECTION_ENDPOINT = "ConnectionEndpoint";
     public static final String DATA_CONTENT_FOR_DATA_SET = "DataContentForDataSet";
     public static final String SEMANTIC_ASSIGNMENT = "SemanticAssignment";
+    public static final String TERM_CATEGORIZATION = "TermCategorization";
     public static final String PORT_DELEGATION = "PortDelegation";
     public static final String PROCESS_PORT = "ProcessPort";
     public static final String LINEAGE_MAPPING = "LineageMapping";
@@ -56,7 +57,8 @@ public final class AssetLineageConstants {
     public static final String CLASSIFICATION_NAME_ASSET_OWNERSHIP = "AssetOwnership";
     public static final ImmutableList<String> immutableValidLineageRelationshipTypes = ImmutableList.copyOf(Arrays.asList(
             ATTRIBUTE_FOR_SCHEMA, ASSET_SCHEMA_TYPE, CONNECTION_TO_ASSET, CONNECTION_ENDPOINT, DATA_CONTENT_FOR_DATA_SET,
-            SEMANTIC_ASSIGNMENT, PORT_DELEGATION, PROCESS_PORT, LINEAGE_MAPPING, PORT_SCHEMA, NESTED_FILE, FOLDER_HIERARCHY, PROCESS_HIERARCHY));
+            SEMANTIC_ASSIGNMENT, PORT_DELEGATION, PROCESS_PORT, LINEAGE_MAPPING, PORT_SCHEMA, NESTED_FILE, FOLDER_HIERARCHY,
+            PROCESS_HIERARCHY, TERM_CATEGORIZATION));
     private static final List<String> defaultLineageClassifications = new ArrayList<>();
     public static final ImmutableList<String> immutableDefaultLineageClassifications = ImmutableList.copyOf(defaultLineageClassifications);
     // Map of entities to relationship types
@@ -81,6 +83,7 @@ public final class AssetLineageConstants {
 
     static {
         validLineageEntityEvents.add(GLOSSARY_TERM);
+        validLineageEntityEvents.add(GLOSSARY_CATEGORY);
         validLineageEntityEvents.add(TABULAR_COLUMN);
         validLineageEntityEvents.add(RELATIONAL_COLUMN);
         validLineageEntityEvents.add(RELATIONAL_TABLE);
