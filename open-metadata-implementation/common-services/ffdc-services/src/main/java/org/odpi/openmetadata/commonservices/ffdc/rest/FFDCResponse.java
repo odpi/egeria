@@ -28,7 +28,7 @@ public interface FFDCResponse {
     String getExceptionCausedBy();
 
     /**
-     * Return the description of the activity in progress when the exception occurred.
+     * Return the description of the action in progress when the exception occurred.
      *
      * @return string description
      */

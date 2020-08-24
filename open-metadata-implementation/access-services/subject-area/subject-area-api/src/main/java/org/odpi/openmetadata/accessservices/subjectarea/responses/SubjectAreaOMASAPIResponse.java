@@ -25,7 +25,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class SubjectAreaOMASAPIResponse<R> extends FFDCResponseBase implements GenericResponse<R> {
     @JsonProperty("result")
     @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "class", visible = true)
-    private List<R> result = new ArrayList<>();
+    private final List<R> result = new ArrayList<>();
 
     @JsonCreator
     public SubjectAreaOMASAPIResponse() { /* default constructor */ }

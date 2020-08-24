@@ -7,7 +7,7 @@ import org.springframework.core.ResolvableType;
 
 /**
  * @param <Result> The type of the parameterized class whose objects will be returned in responses.
- * The purpose of this interface is to enable capturing and passing a generic type. */
+ * The purpose of this interface is to enable capturing and passing a generic result. */
 public interface Parametrization<Result> {
     /**
      * @return class type for Result
