@@ -1,4 +1,5 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
+<!-- Copyright Contributors to the ODPi Egeria project 2020. -->
 
 
 The **Repository Explorer (Rex)** can help you explore and visualize the metadata in a repository.
