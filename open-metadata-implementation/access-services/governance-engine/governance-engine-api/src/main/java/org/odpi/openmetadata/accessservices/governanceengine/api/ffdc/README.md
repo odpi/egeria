@@ -29,3 +29,8 @@ embedded in the GovernanceEngine OMAS exception.
 
 Both constructors take the values from the GovernanceEngineErrorCode
 enum to define the cause and resolution.
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.
