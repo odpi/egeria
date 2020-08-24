@@ -36,11 +36,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.janusgraph</groupId>
-            <artifactId>janusgraph-driver</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>org.apache.tinkerpop</groupId>
             <artifactId>gremlin-core</artifactId>
         </dependency>
@@ -91,17 +86,36 @@
         </dependency>
 
 
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <scope>test</scope>
+        </dependency>
+
         <!-- berkeley & lucene aren't compile dependencies, so need exception for maven dependency plugin -->
         <dependency>
             <groupId>org.janusgraph</groupId>
             <artifactId>janusgraph-berkeleyje</artifactId>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.janusgraph/janusgraph-inmemory -->
+        <dependency>
+            <groupId>org.janusgraph</groupId>
+            <artifactId>janusgraph-inmemory</artifactId>
+            <scope>test</scope>
+        </dependency>
 
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>audit-log-framework</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>repository-services-apis</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.janusgraph</groupId>
             <artifactId>janusgraph-lucene</artifactId>
         </dependency>
-
 
         <dependency>
             <groupId>org.mockito</groupId>
@@ -118,6 +132,26 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.janusgraph</groupId>
+            <artifactId>janusgraph-driver</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.tinkerpop</groupId>
+            <artifactId>gremlin-driver</artifactId>
         </dependency>
 
     </dependencies>
@@ -145,27 +179,10 @@
                                 </ignoredUnusedDeclaredDependency>
                                 <ignoredUnusedDeclaredDependency>org.janusgraph:janusgraph-lucene:*
                                 </ignoredUnusedDeclaredDependency>
+                                <ignoredUnusedDeclaredDependency>org.janusgraph:janusgraph-inmemory:*
+                                </ignoredUnusedDeclaredDependency>
                             </ignoredUnusedDeclaredDependencies>
                         </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <configuration>
-                    <descriptorRefs>
-                        <descriptorRef>jar-with-dependencies</descriptorRef>
-                    </descriptorRefs>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>assemble-all</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
                     </execution>
                 </executions>
             </plugin>

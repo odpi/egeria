@@ -7,8 +7,7 @@ package org.odpi.openmetadata.accessservices.assetlineage.ffdc.exception;
  * NewInstanceException is thrown if the access service is not able to register a new instance
  * of itself in its instance map.
  */
-public class NewInstanceException extends AssetLineageException
-{
+public class NewInstanceException extends AssetLineageException {
     /**
      * This is the typical constructor used for creating a NewInstanceException.
      *

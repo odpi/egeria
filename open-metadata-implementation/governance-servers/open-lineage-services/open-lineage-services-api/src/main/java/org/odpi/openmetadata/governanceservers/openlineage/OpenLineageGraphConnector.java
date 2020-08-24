@@ -2,8 +2,11 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.openlineage;
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
+import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
+import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse;
 
 public interface OpenLineageGraphConnector {
 
@@ -25,6 +28,8 @@ public interface OpenLineageGraphConnector {
      * Initialize the connectors
      * @throws OpenLineageException
      */
-    void initializeGraphDB() throws OpenLineageException;
+    void initializeGraphDB(AuditLog auditLog) throws OpenLineageException;
+
+    LineageResponse lineage(Scope scope, String guid, String displayNameMustContain, boolean includeProcesses) throws OpenLineageException;
 
 }
