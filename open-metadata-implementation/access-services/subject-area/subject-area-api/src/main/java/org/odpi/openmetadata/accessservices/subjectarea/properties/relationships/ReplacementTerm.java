@@ -67,9 +67,6 @@ public class ReplacementTerm extends Line {
     private static final java.util.Set<String> ATTRIBUTE_NAMES_SET = new HashSet<>(Arrays.asList(ATTRIBUTE_NAMES_SET_VALUES));
     private static final java.util.Set<String> ENUM_NAMES_SET = new HashSet<>(Arrays.asList(ENUM_NAMES_SET_VALUES));
     private static final java.util.Set<String> MAP_NAMES_SET = new HashSet<>(Arrays.asList(MAP_NAMES_SET_VALUES));
-    private String replacedTermGuid;
-    private String replacementTermGuid;
-
 
     public ReplacementTerm() {
         initialise();
@@ -80,13 +77,10 @@ public class ReplacementTerm extends Line {
         // set the LineType if this is a LineType enum value.
         try {
             lineType = LineType.valueOf(name);
+            setLineEnds();
         } catch (IllegalArgumentException e) {
             lineType = LineType.Unknown;
         }
-        entity1Name = "replacedTerms";
-        entity1Type = "GlossaryTerm";
-        entity2Name = "replacementTerms";
-        entity2Type = "GlossaryTerm";
         typeDefGuid = "3bac5f35-328b-4bbd-bfc9-3b3c9ba5e0ed";
     }
 
@@ -97,39 +91,7 @@ public class ReplacementTerm extends Line {
 
     public ReplacementTerm(Relationship omrsRelationship) {
         super(omrsRelationship);
-        name = "ReplacementTerm";
-        // set the LineType if this is a LineType enum value.
-        try {
-            lineType = LineType.valueOf(name);
-        } catch (IllegalArgumentException e) {
-            lineType = LineType.Unknown;
-        }
-    }
-
-    /**
-     * {@literal Get the guid of replaced Term. }
-     *
-     * @return {@code String }
-     */
-    public String getReplacedTermGuid() {
-        return replacedTermGuid;
-    }
-
-    public void setReplacedTermGuid(String replacedTermGuid) {
-        this.replacedTermGuid = replacedTermGuid;
-    }
-
-    /**
-     * {@literal Get the guid of replacement Term. }
-     *
-     * @return {@code String }
-     */
-    public String getReplacementTermGuid() {
-        return replacementTermGuid;
-    }
-
-    public void setReplacementTermGuid(String replacementTermGuid) {
-        this.replacementTermGuid = replacementTermGuid;
+        initialise();
     }
 
     InstanceProperties obtainInstanceProperties() {

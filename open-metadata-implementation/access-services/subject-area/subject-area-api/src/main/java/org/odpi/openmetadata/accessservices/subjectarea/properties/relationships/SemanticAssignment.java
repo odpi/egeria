@@ -69,8 +69,6 @@ public class SemanticAssignment extends Line {
     private static final java.util.Set<String> ATTRIBUTE_NAMES_SET =new HashSet<>(Arrays.asList(ATTRIBUTE_NAMES_SET_VALUES));
     private static final java.util.Set<String> ENUM_NAMES_SET =new HashSet<>(Arrays.asList(ENUM_NAMES_SET_VALUES));
     private static final java.util.Set<String> MAP_NAMES_SET =new HashSet<>(Arrays.asList(MAP_NAMES_SET_VALUES));
-    private String assignedElementGuid;
-    private String termGuid;
 
 
     public SemanticAssignment() {
@@ -82,13 +80,10 @@ public class SemanticAssignment extends Line {
         // set the LineType if this is a LineType enum value.
         try {
             lineType = LineType.valueOf(name);
+            setLineEnds();
         } catch (IllegalArgumentException e) {
             lineType = LineType.Unknown;
         }
-        entity1Name = "assignedElements";
-        entity1Type = "Referenceable";
-        entity2Name = "meaning";
-        entity2Type = "GlossaryTerm";
         typeDefGuid = "e6670973-645f-441a-bec7-6f5570345b92";
     }
 
@@ -99,39 +94,7 @@ public class SemanticAssignment extends Line {
 
     public SemanticAssignment(Relationship omrsRelationship) {
         super(omrsRelationship);
-        name = "SemanticAssignment";
-        // set the LineType if this is a LineType enum value.
-        try {
-            lineType = LineType.valueOf(name);
-        } catch (IllegalArgumentException e) {
-            lineType = LineType.Unknown;
-        }
-    }
-
-    /**
-     * {@literal Get the guid of an assigned element, such as an asset or schema element, that is given meaning by the associated Term.}
-     *
-     * @return {@code String }
-     */
-    public String getAssignedElementGuid() {
-        return assignedElementGuid;
-    }
-
-    public void setAssignedElementGuid(String assignedElementGuid) {
-        this.assignedElementGuid = assignedElementGuid;
-    }
-
-    /**
-     * {@literal Get the guid of Term that gives meaning to the assigned element. }
-     *
-     * @return {@code String }
-     */
-    public String getTermGuid() {
-        return termGuid;
-    }
-
-    public void setTermGuid(String termGuid) {
-        this.termGuid = termGuid;
+       initialise();
     }
 
     InstanceProperties obtainInstanceProperties() {

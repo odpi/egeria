@@ -67,9 +67,6 @@ public class UsedInContext extends Line {
     private static final java.util.Set<String> ATTRIBUTE_NAMES_SET = new HashSet<>(Arrays.asList(ATTRIBUTE_NAMES_SET_VALUES));
     private static final java.util.Set<String> ENUM_NAMES_SET = new HashSet<>(Arrays.asList(ENUM_NAMES_SET_VALUES));
     private static final java.util.Set<String> MAP_NAMES_SET = new HashSet<>(Arrays.asList(MAP_NAMES_SET_VALUES));
-    private String termInContextGuid;
-    private String contextGuid;
-
 
     public UsedInContext() {
         initialise();
@@ -80,13 +77,10 @@ public class UsedInContext extends Line {
         // set the LineType if this is a LineType enum value.
         try {
             lineType = LineType.valueOf(name);
+            setLineEnds();
         } catch (IllegalArgumentException e) {
             lineType = LineType.Unknown;
         }
-        entity1Name = "contextRelevantTerms";
-        entity1Type = "GlossaryTerm";
-        entity2Name = "usedInContexts";
-        entity2Type = "GlossaryTerm";
         typeDefGuid = "2dc524d2-e29f-4186-9081-72ea956c75de";
     }
 
@@ -97,39 +91,7 @@ public class UsedInContext extends Line {
 
     public UsedInContext(Relationship omrsRelationship) {
         super(omrsRelationship);
-        name = "UsedInContext";
-        // set the LineType if this is a LineType enum value.
-        try {
-            lineType = LineType.valueOf(name);
-        } catch (IllegalArgumentException e) {
-            lineType = LineType.Unknown;
-        }
-    }
-
-    /**
-     * {@literal Get the guid of Term that is valid to use in the associated context. }
-     *
-     * @return {@code String }
-     */
-    public String getTermInContextGuid() {
-        return termInContextGuid;
-    }
-
-    public void setTermInContextGuid(String termInContextGuid) {
-        this.termInContextGuid = termInContextGuid;
-    }
-
-    /**
-     * {@literal Get the guid of context. }
-     *
-     * @return {@code String }
-     */
-    public String getContextGuid() {
-        return contextGuid;
-    }
-
-    public void setContextGuid(String contextGuid) {
-        this.contextGuid = contextGuid;
+        initialise();
     }
 
     InstanceProperties obtainInstanceProperties() {

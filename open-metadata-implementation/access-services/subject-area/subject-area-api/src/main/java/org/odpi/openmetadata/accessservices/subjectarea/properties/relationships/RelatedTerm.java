@@ -71,9 +71,6 @@ public class RelatedTerm extends Line {
     private static final java.util.Set<String> ATTRIBUTE_NAMES_SET = new HashSet<>(Arrays.asList(ATTRIBUTE_NAMES_SET_VALUES));
     private static final java.util.Set<String> ENUM_NAMES_SET = new HashSet<>(Arrays.asList(ENUM_NAMES_SET_VALUES));
     private static final java.util.Set<String> MAP_NAMES_SET = new HashSet<>(Arrays.asList(MAP_NAMES_SET_VALUES));
-    private String relatedTerm1Guid;
-    private String relatedTerm2Guid;
-
 
     public RelatedTerm() {
         initialise();
@@ -85,14 +82,11 @@ public class RelatedTerm extends Line {
         // set the LineType if this is a LineType enum value.
         try {
             lineType = LineType.valueOf(name);
+            setLineEnds();
         }
         catch (IllegalArgumentException e) {
             lineType = LineType.Unknown;
         }
-        entity1Name = "seeAlso";
-        entity1Type = "GlossaryTerm";
-        entity2Name = "seeAlso";
-        entity2Type = "GlossaryTerm";
         typeDefGuid = "b1161696-e563-4cf9-9fd9-c0c76e47d063";
     }
 
@@ -103,40 +97,7 @@ public class RelatedTerm extends Line {
 
     public RelatedTerm(Relationship omrsRelationship) {
         super(omrsRelationship);
-        name = "RelatedTerm";
-        // set the LineType if this is a LineType enum value.
-        try {
-            lineType = LineType.valueOf(name);
-        }
-        catch (IllegalArgumentException e) {
-            lineType = LineType.Unknown;
-        }
-    }
-    /**
-     * {@literal Get the guid of related term at end 1 of the relationship. }
-     * @return {@code String }
-     */
-    public String getRelatedTerm1Guid()
-    {
-        return relatedTerm1Guid;
-    }
-
-    public void setRelatedTerm1Guid(String relatedTerm1Guid)
-    {
-        this.relatedTerm1Guid = relatedTerm1Guid;
-    }
-    /**
-     * {@literal Get the guid of related term at end 2 of the relationship. }
-     * @return {@code String }
-     */
-    public String getRelatedTerm2Guid()
-    {
-        return relatedTerm2Guid;
-    }
-
-    public void setRelatedTerm2Guid(String relatedTerm2Guid)
-    {
-        this.relatedTerm2Guid = relatedTerm2Guid;
+        initialise();
     }
 
     InstanceProperties obtainInstanceProperties() {

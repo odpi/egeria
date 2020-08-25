@@ -67,8 +67,6 @@ public class Translation extends Line {
     private static final java.util.Set<String> ATTRIBUTE_NAMES_SET = new HashSet<>(Arrays.asList(ATTRIBUTE_NAMES_SET_VALUES));
     private static final java.util.Set<String> ENUM_NAMES_SET = new HashSet<>(Arrays.asList(ENUM_NAMES_SET_VALUES));
     private static final java.util.Set<String> MAP_NAMES_SET = new HashSet<>(Arrays.asList(MAP_NAMES_SET_VALUES));
-    private String translation1Guid;
-    private String translation2Guid;
 
 
     public Translation() {
@@ -80,13 +78,10 @@ public class Translation extends Line {
         // set the LineType if this is a LineType enum value.
         try {
             lineType = LineType.valueOf(name);
+            setLineEnds();
         } catch (IllegalArgumentException e) {
             lineType = LineType.Unknown;
         }
-        entity1Name = "translations";
-        entity1Type = "GlossaryTerm";
-        entity2Name = "translations";
-        entity2Type = "GlossaryTerm";
         typeDefGuid = "6ae42e95-efc5-4256-bfa8-801140a29d2a";
     }
 
@@ -97,39 +92,7 @@ public class Translation extends Line {
 
     public Translation(Relationship omrsRelationship) {
         super(omrsRelationship);
-        name = "Translation";
-        // set the LineType if this is a LineType enum value.
-        try {
-            lineType = LineType.valueOf(name);
-        } catch (IllegalArgumentException e) {
-            lineType = LineType.Unknown;
-        }
-    }
-
-    /**
-     * {@literal Get the guid of natural language translation at end 1. }
-     *
-     * @return {@code String }
-     */
-    public String getTranslation1Guid() {
-        return translation1Guid;
-    }
-
-    public void setTranslation1Guid(String translation1Guid) {
-        this.translation1Guid = translation1Guid;
-    }
-
-    /**
-     * {@literal Get the guid of natural language translation at end 2. }
-     *
-     * @return {@code String }
-     */
-    public String getTranslation2Guid() {
-        return translation2Guid;
-    }
-
-    public void setTranslation2Guid(String translation2Guid) {
-        this.translation2Guid = translation2Guid;
+        initialise();
     }
 
     InstanceProperties obtainInstanceProperties() {

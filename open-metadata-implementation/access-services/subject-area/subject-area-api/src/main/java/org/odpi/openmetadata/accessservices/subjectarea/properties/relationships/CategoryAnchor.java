@@ -62,9 +62,6 @@ public class CategoryAnchor extends Line {
     private static final java.util.Set<String> ATTRIBUTE_NAMES_SET = new HashSet<>(Arrays.asList(ATTRIBUTE_NAMES_SET_VALUES));
     private static final java.util.Set<String> ENUM_NAMES_SET = new HashSet<>(Arrays.asList(ENUM_NAMES_SET_VALUES));
     private static final java.util.Set<String> MAP_NAMES_SET = new HashSet<>(Arrays.asList(MAP_NAMES_SET_VALUES));
-    private String categoryGuid;
-    private String glossaryGuid;
-
 
     public CategoryAnchor() {
         initialise();
@@ -75,13 +72,11 @@ public class CategoryAnchor extends Line {
         // set the LineType if this is a LineType enum value.
         try {
             lineType = LineType.valueOf(name);
+            setLineEnds();
         } catch (IllegalArgumentException e) {
             lineType = LineType.Unknown;
         }
-        entity1Name = "anchor";
-        entity1Type = "Glossary";
-        entity2Name = "categories";
-        entity2Type = "GlossaryCategory";
+
         typeDefGuid = "c628938e-815e-47db-8d1c-59bb2e84e028";
     }
 
@@ -92,13 +87,7 @@ public class CategoryAnchor extends Line {
 
     public CategoryAnchor(Relationship omrsRelationship) {
         super(omrsRelationship);
-        name = "CategoryAnchor";
-        // set the LineType if this is a LineType enum value.
-        try {
-            lineType = LineType.valueOf(name);
-        } catch (IllegalArgumentException e) {
-            lineType = LineType.Unknown;
-        }
+        initialise();
     }
 
     InstanceProperties obtainInstanceProperties() {
@@ -114,22 +103,6 @@ public class CategoryAnchor extends Line {
             log.debug("<== Method: " + methodName);
         }
         return instanceProperties;
-    }
-
-    public String getCategoryGuid() {
-        return categoryGuid;
-    }
-
-    public void setCategoryGuid(String categoryGuid) {
-        this.categoryGuid = categoryGuid;
-    }
-
-    public String getGlossaryGuid() {
-        return glossaryGuid;
-    }
-
-    public void setGlossaryGuid(String glossaryGuid) {
-        this.glossaryGuid = glossaryGuid;
     }
 
     @Override

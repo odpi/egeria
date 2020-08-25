@@ -25,7 +25,7 @@ public class LineTypeMapper {
      */
     static public String  mapLineTypeToRelationshipTypeGuid(LineType lineType) {
         String relationshipTypeName = lineType.name();
-        if (lineType.equals(LineType.Hasa)) {
+        if (lineType.equals(LineType.HasA)) {
             relationshipTypeName ="TermHASARelationship";
         } else if (lineType.equals(LineType.Isa)) {
             relationshipTypeName ="ISARelationship";

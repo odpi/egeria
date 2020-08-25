@@ -33,14 +33,14 @@ public abstract class LineMapper<L extends Line> implements ILineMapper<L> {
         if (proxy1 != null) {
             String guid1 = proxy1.getGUID();
             if (guid1 != null) {
-                setEnd1GuidInLine(line, guid1);
+                line.getEnd1().setNodeGuid(guid1);
             }
         }
         EntityProxy proxy2 = relationship.getEntityTwoProxy();
         if (proxy2 != null) {
             String guid2 = proxy2.getGUID();
             if (guid2 != null) {
-                setEnd2GuidInLine(line, guid2);
+                line.getEnd1().setNodeGuid(guid2);
             }
         }
 
@@ -104,22 +104,6 @@ public abstract class LineMapper<L extends Line> implements ILineMapper<L> {
     }
 
     /**
-     * Pass the guid of the EntityProxy for end 1 to the Line ,so it can store it appropriately
-     *
-     * @param line line to update
-     * @param guid guid to add into the Line
-     */
-    protected abstract void setEnd1GuidInLine(L line, String guid);
-
-    /**
-     * Pass the guid of the EntityProxy for end 2 to the Line ,so it can store it appropriately
-     *
-     * @param line line to update
-     * @param guid guid to add into the Line
-     */
-    protected abstract void setEnd2GuidInLine(L line, String guid);
-
-    /**
      * Map the instance properties to the Line
      * This method should be overridden by subclasses to map the properties to the Line.
      *
@@ -151,8 +135,8 @@ public abstract class LineMapper<L extends Line> implements ILineMapper<L> {
         InstanceProperties instanceProperties = new InstanceProperties();
         relationship.setProperties(instanceProperties);
         mapLineToInstanceProperties(line, instanceProperties);
-        String proxy1Guid = getProxy1Guid(line);
-        String proxy2Guid = getProxy2Guid(line);
+        String proxy1Guid = line.getEnd1().getNodeGuid();
+        String proxy2Guid = line.getEnd2().getNodeGuid();
 
         EntityProxy proxy1 = new EntityProxy();
         proxy1.setGUID(proxy1Guid);
@@ -192,26 +176,6 @@ public abstract class LineMapper<L extends Line> implements ILineMapper<L> {
     @Override
     public String getTypeDefGuid() {
         return omrsapiHelper.getTypeDefGUID(getTypeName());
-    }
-
-    /**
-     * Get proxy 1 guid
-     *
-     * @param line for this Line
-     * @return proxy 1 guid
-     */
-    protected String getProxy1Guid(L line) {
-        return null;
-    }
-
-    /**
-     * Get proxy 2 guid
-     *
-     * @param line for this Line
-     * @return proxy 2 guid
-     */
-    protected String getProxy2Guid(L line) {
-        return null;
     }
 
     /**

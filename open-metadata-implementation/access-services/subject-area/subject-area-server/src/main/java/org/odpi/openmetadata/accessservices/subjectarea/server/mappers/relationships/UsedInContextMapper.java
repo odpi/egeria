@@ -91,30 +91,6 @@ public class UsedInContextMapper extends LineMapper<UsedInContext> {
         return foundProperty;
     }
 
-    /**
-     * Get proxy1 guid.
-     * The proxy has omrs type GlossaryTerm
-     *
-     * @param usedInContext line
-     * @return guid for entity proxy 1
-     */
-    @Override
-    protected String getProxy1Guid(UsedInContext usedInContext) {
-        return usedInContext.getContextGuid();
-    }
-
-    /**
-     * Get proxy2 guid
-     * The proxy has omrs type GlossaryTerm
-     *
-     * @param usedInContext for this Line
-     * @return guid for entity proxy 2
-     */
-    @Override
-    protected String getProxy2Guid(UsedInContext usedInContext) {
-        return usedInContext.getTermInContextGuid();
-    }
-
     @Override
     public String getTypeName() {
         return USED_IN_CONTEXT;
@@ -123,16 +99,6 @@ public class UsedInContextMapper extends LineMapper<UsedInContext> {
     @Override
     protected UsedInContext getLineInstance() {
         return new UsedInContext();
-    }
-
-    @Override
-    protected void setEnd1GuidInLine(UsedInContext usedInContext, String guid) {
-        usedInContext.setContextGuid(guid);
-    }
-
-    @Override
-    protected void setEnd2GuidInLine(UsedInContext usedInContext, String guid) {
-        usedInContext.setTermInContextGuid(guid);
     }
 
 }

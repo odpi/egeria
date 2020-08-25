@@ -67,8 +67,6 @@ public class ValidValue extends Line {
     private static final java.util.Set<String> ATTRIBUTE_NAMES_SET = new HashSet<>(Arrays.asList(ATTRIBUTE_NAMES_SET_VALUES));
     private static final java.util.Set<String> ENUM_NAMES_SET = new HashSet<>(Arrays.asList(ENUM_NAMES_SET_VALUES));
     private static final java.util.Set<String> MAP_NAMES_SET = new HashSet<>(Arrays.asList(MAP_NAMES_SET_VALUES));
-    private String termGuid;
-    private String validValueGuid;
 
     public ValidValue() {
         initialise();
@@ -82,10 +80,6 @@ public class ValidValue extends Line {
         } catch (IllegalArgumentException e) {
             lineType = LineType.Unknown;
         }
-        entity1Name = "validValueFor";
-        entity1Type = "GlossaryTerm";
-        entity2Name = "validValues";
-        entity2Type = "GlossaryTerm";
         typeDefGuid = "707a156b-e579-4482-89a5-de5889da1971";
     }
 
@@ -96,39 +90,7 @@ public class ValidValue extends Line {
 
     public ValidValue(Relationship omrsRelationship) {
         super(omrsRelationship);
-        name = "ValidValue";
-        // set the LineType if this is a LineType enum value.
-        try {
-            lineType = LineType.valueOf(name);
-        } catch (IllegalArgumentException e) {
-            lineType = LineType.Unknown;
-        }
-    }
-
-    /**
-     * {@literal Get the guid of the Term that the valid value is of. }
-     *
-     * @return {@code String }
-     */
-    public String getTermGuid() {
-        return termGuid;
-    }
-
-    public void setTermGuid(String termGuid) {
-        this.termGuid = termGuid;
-    }
-
-    /**
-     * {@literal Get the guid of Term that defines the valid Value. }
-     *
-     * @return {@code String }
-     */
-    public String getValidValueGuid() {
-        return validValueGuid;
-    }
-
-    public void setValidValueGuid(String validValueGuid) {
-        this.validValueGuid = validValueGuid;
+        initialise();
     }
 
     InstanceProperties obtainInstanceProperties() {
