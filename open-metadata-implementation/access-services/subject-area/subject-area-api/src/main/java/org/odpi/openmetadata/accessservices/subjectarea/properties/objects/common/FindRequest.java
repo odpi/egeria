@@ -25,7 +25,7 @@ public class FindRequest
     private String               sequencingProperty   = null;
     private SequencingOrder      sequencingOrder      = null;
     private int                  offset               = 0;
-    private int                  pageSize             = 0;
+    private int                  pageSize             = 1000;  // default page size
     private Date                 asOfTime;
     /**
      * Default constructor
@@ -127,7 +127,6 @@ public class FindRequest
 
     /**
      * Return the maximum number of elements that can be returned on this request.
-     *0 means there is not limit to the page size
      * @return page size
      */
     public int getPageSize()
