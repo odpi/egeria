@@ -43,3 +43,8 @@ In this example:
 - If building on MacOS, the OSX credential store is not supported for docker logins (which is needed to push an image
     to the repo). To workaround this remove the line `"credsStore": "osxkeychain",` from `~/.docker/config.json` and
     reissue `docker login`. See https://github.com/spotify/dockerfile-maven/issues/273 for further information.
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.
