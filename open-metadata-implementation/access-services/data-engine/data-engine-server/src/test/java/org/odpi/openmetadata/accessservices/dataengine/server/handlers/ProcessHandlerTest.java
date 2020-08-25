@@ -160,7 +160,7 @@ class ProcessHandlerTest {
         processHandler.updateProcess(USER, mockedOriginalProcessEntity, getProcess());
 
         verify(assetHandler, times(1)).reclassifyAsset(any(), originalProcessCaptor.capture(),
-                any(), any(), any(), any());
+                any(), any(), any(), any(), any());
         verify(dataEngineCommonHandler, times(1)).updateEntity(USER, PROCESS_GUID, null, ProcessPropertiesMapper.PROCESS_TYPE_NAME);
     }
 
@@ -179,7 +179,7 @@ class ProcessHandlerTest {
         processHandler.updateProcess(USER, mockedOriginalProcessEntity, getProcess());
 
         verify(assetHandler, times(1)).reclassifyAsset(any(), originalProcessCaptor.capture(),
-                any(), any(), any(), any());
+                any(), any(), any(), any(), any());
         verify(dataEngineCommonHandler, times(0)).updateEntity(USER, PROCESS_GUID, null, ProcessPropertiesMapper.PROCESS_TYPE_NAME);
     }
 

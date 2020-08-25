@@ -147,8 +147,9 @@ public class DataEngineCommonHandler {
     /**
      * Find out if the entity is already stored in the repository. It uses the fully qualified name to retrieve the entity
      *
-     * @param userId        the name of the calling user
-     * @param qualifiedName the qualifiedName name of the entity to be searched
+     * @param userId         the name of the calling user
+     * @param qualifiedName  the qualifiedName name of the entity to be searched
+     * @param entityTypeName the type name of the entity
      *
      * @return optional with entity details if found, empty optional if not found
      *
