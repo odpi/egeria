@@ -38,14 +38,6 @@ the types of [Egeria OMAG Servers](../../admin-services/docs/concepts/omag-serve
  * Developers can specify the environment variable(s) in a .env file, by copying [.env_sample](nodejs/.env_sample) to a file
  called .env in the same folder and amend the values as required.
  * Once the .env file is in place, build and start the server using `npm start`. Use other npm parameters as specified in [package.json](nodejs/package.json).  
-
-## FOR NEW DEVELOPMENT (as of 8/2/2020)
- * Currently, the UI is not optimized to run in development mode. Developers must rebuild the static files every time a change is made.
- * Because of this, work is currently underway to remake the client with Create React App. This will be done iteratively, and updates posted here.
- * Old client code will be maintained until the cutover is complete, so developers can run the traditional way if desired.
- * The new client is maintained in the cra-client directory.
- * Set up your environment by running `yarn`.
- * Enter `http://localhost:3000/` to access the new UI in development mode.
  
 ## Access UI using the browser. 
  * Enter 'https://localhost:8091/<tenant-name>/' on the UI to access the tenanted UI (<tenant-name> is the serverName used by the presentation server). The Ui will prompt for a login; some of the 
@@ -54,6 +46,15 @@ the types of [Egeria OMAG Servers](../../admin-services/docs/concepts/omag-serve
   then the browser url to use to login is `https://localhost:8091/aaa`. All browser requests for this tenant will be issued using urls starting
   `https://localhost:8091/aaa`. 
     
+## FOR NEW DEVELOPMENT (as of 8/25/2020)
+ * Currently, the UI is not optimized to run in development mode. Developers must rebuild the static files every time a change is made.
+ * Because of this, work is currently underway to remake the client with Create React App. This will be done iteratively, and updates posted here.
+ * Old client code will be maintained until the cutover is complete, so developers can run the traditional way if desired.
+ * The new client is maintained in the cra-client directory.
+ * The new server is maintained in the cra-server directory.
+ * Set up your environment by running `npm install` in both cra-client and cra-server.
+ * Start the new UI by navigating into the cra-server directory, then running `npm start`.
+ * Enter `http://localhost:3000/` to access the new UI in development mode.
   
 
 ----
