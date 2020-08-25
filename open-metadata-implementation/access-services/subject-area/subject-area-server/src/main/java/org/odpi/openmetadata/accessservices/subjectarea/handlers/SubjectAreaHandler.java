@@ -48,6 +48,7 @@ public abstract class SubjectAreaHandler {
     protected static final String PROJECT_SCOPE_RELATIONSHIP_NAME = "ProjectScope";
     protected static final String CATEGORY_ANCHOR_RELATIONSHIP_NAME = "CategoryAnchor";
     protected static final String CATEGORY_HIERARCHY_LINK_RELATIONSHIP_NAME ="CategoryHierarchyLink";
+    protected static final String TERM_CATEGORIZATION_RELATIONSHIP_NAME ="TermCategorization";
 
     protected final MappersFactory mappersFactory;
     protected final OMRSAPIHelper oMRSAPIHelper;
@@ -109,13 +110,28 @@ public abstract class SubjectAreaHandler {
             entityDetails = oMRSAPIHelper.findEntitiesByPropertyValue(methodName, userId, typeEntityName, findRequest);
         }
         if (entityDetails != null) {
-            INodeMapper<T> iNodeMapper = mappersFactory.get(mapperClass);
-            foundEntities = new ArrayList<>();
-            for (EntityDetail entityDetail : entityDetails) {
-                foundEntities.add(iNodeMapper.map(entityDetail));
-            }
+            foundEntities = convertOmrsToOmas(entityDetails, mapperClass);
         }
         return foundEntities;
+    }
+
+    public <T extends Node> SubjectAreaOMASAPIResponse<T> getRelatedEntities(String methodName,
+                                                                             String userId,
+                                                                             String guid,
+                                                                             String relationshipTypeName,
+                                                                             Class<? extends INodeMapper<T>> mapperClass) {
+        SubjectAreaOMASAPIResponse<T> response = new SubjectAreaOMASAPIResponse<>();
+        try {
+            final INodeMapper<T> mapper = mappersFactory.get(mapperClass);
+            final List<EntityDetail> entityDetails = oMRSAPIHelper.callGetEntitiesForRelationshipEnd1(
+                    methodName, userId, guid, mapper.getTypeName(), relationshipTypeName);
+            for (EntityDetail entityDetail : entityDetails) {
+                response.addResult(mapper.map(entityDetail));
+            }
+        } catch (UserNotAuthorizedException | SubjectAreaCheckedException | PropertyServerException e) {
+            response.setExceptionInfo(e, className);
+        }
+        return response;
     }
 
     /**

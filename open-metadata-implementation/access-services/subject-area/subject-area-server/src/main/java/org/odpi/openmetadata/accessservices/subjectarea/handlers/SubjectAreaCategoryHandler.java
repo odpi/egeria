@@ -10,10 +10,12 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.commo
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.NodeType;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.GlossarySummary;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.CategoryAnchor;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.CategoryHierarchyLink;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.entities.CategoryMapper;
+import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.entities.TermMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.relationships.CategoryAnchorMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.relationships.CategoryHierarchyLinkMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
@@ -72,12 +74,8 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
-     * <li> ClassificationException              Error processing a classification</li>
-     * <li> StatusNotSupportedException          A status value is not supported</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     public SubjectAreaOMASAPIResponse<Category> createCategory(String userId, Category suppliedCategory) {
@@ -140,13 +138,11 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
      * @return response which when successful contains the category with the requested guid
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata repository service.
-     * <li> InvalidParameterException            one of the parameters is null or invalid.
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-
     public SubjectAreaOMASAPIResponse<Category> getCategoryByGuid(String userId, String guid) {
         final String methodName = "getCategory";
         SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
@@ -172,12 +168,10 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
      * @param userId             unique identifier for requesting user, under which the request is performed
      * @param findRequest        {@link FindRequest}
      * @return A list of Glossaries meeting the search Criteria
-     *
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     *
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     public SubjectAreaOMASAPIResponse<Category> findCategory(String userId, FindRequest findRequest) {
@@ -260,12 +254,11 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
      *
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UserNotAuthorizedException the requesting user is not authorized to issue this request.</li>
-     * <li> InvalidParameterException one of the parameters is null or invalid.</li>
-     * <li> FunctionNotSupportedException   Function not supported.</li>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-
     public SubjectAreaOMASAPIResponse<Line> getCategoryRelationships(String userId, String guid, FindRequest findRequest) {
         String restAPIName = "getCategoryRelationships";
         return getAllRelationshipsForEntity(restAPIName, userId, guid, findRequest);
@@ -283,11 +276,9 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
      * @return a response which when successful contains the updated category
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     public SubjectAreaOMASAPIResponse<Category> updateCategory(String userId, String guid, Category suppliedCategory, boolean isReplace) {
@@ -365,11 +356,9 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
      * @return a void response
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * <li> EntityNotDeletedException            a soft delete was issued but the category was not deleted.</li>
      * <li> EntityNotPurgedException               a hard delete was issued but the category was not purged</li>
      * </ul>
@@ -402,11 +391,9 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
      * @return response which when successful contains the restored category
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     public SubjectAreaOMASAPIResponse<Category> restoreCategory(String userId, String guid) {
@@ -421,5 +408,23 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
         }
 
         return response;
+    }
+
+    /**
+     * Get Category terms
+     *
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the category to get terms
+     * @return A list of terms for the category
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
+     * </ul>
+     * */
+    public SubjectAreaOMASAPIResponse<Term> getCategoryTerms(String userId, String guid) {
+        final String methodName = "getCategoryTerms";
+        return getRelatedEntities(methodName, userId, guid, TERM_CATEGORIZATION_RELATIONSHIP_NAME, TermMapper.class);
     }
 }
