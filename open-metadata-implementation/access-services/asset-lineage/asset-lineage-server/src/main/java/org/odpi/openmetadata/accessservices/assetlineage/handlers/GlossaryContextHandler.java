@@ -83,7 +83,7 @@ public class GlossaryContextHandler {
 
         List<Relationship> semanticAssignments = getSemanticAssignments(userId, glossaryTermGUID, GLOSSARY_TERM);
         List<Relationship> termCategorization = getTermCategorizations(userId, glossaryTermGUID, GLOSSARY_TERM);
-        if (CollectionUtils.isEmpty(semanticAssignments) && CollectionUtils.isNotEmpty(termCategorization)) {
+        if (CollectionUtils.isEmpty(semanticAssignments) && CollectionUtils.isEmpty(termCategorization)) {
             return null;
         }
 
