@@ -65,8 +65,6 @@ public class TypedBy extends Line {
     private static final java.util.Set<String> ATTRIBUTE_NAMES_SET = new HashSet<>(Arrays.asList(ATTRIBUTE_NAMES_SET_VALUES));
     private static final java.util.Set<String> ENUM_NAMES_SET = new HashSet<>(Arrays.asList(ENUM_NAMES_SET_VALUES));
     private static final java.util.Set<String> MAP_NAMES_SET = new HashSet<>(Arrays.asList(MAP_NAMES_SET_VALUES));
-    private String attributeGuid;
-    private String typeGuid;
 
     public TypedBy() {
         initialise();
@@ -77,13 +75,11 @@ public class TypedBy extends Line {
         // set the LineType if this is a LineType enum value.
         try {
             lineType = LineType.valueOf(name);
+            setLineEnds();
         } catch (IllegalArgumentException e) {
             lineType = LineType.Unknown;
         }
-        entity1Name = "attributesTypedBy";
-        entity1Type = "GlossaryTerm";
-        entity2Name = "types";
-        entity2Type = "GlossaryTerm";
+
         typeDefGuid = "669e8aa4-c671-4ee7-8d03-f37d09b9d006";
     }
 
@@ -94,39 +90,7 @@ public class TypedBy extends Line {
 
     public TypedBy(Relationship omrsRelationship) {
         super(omrsRelationship);
-        name = "TypedBy";
-        // set the LineType if this is a LineType enum value.
-        try {
-            lineType = LineType.valueOf(name);
-        } catch (IllegalArgumentException e) {
-            lineType = LineType.Unknown;
-        }
-    }
-
-    /**
-     * {@literal Get the guid of spine attribute. }
-     *
-     * @return {@code String }
-     */
-    public String getAttributeGuid() {
-        return attributeGuid;
-    }
-
-    public void setAttributeGuid(String attributeGuid) {
-        this.attributeGuid = attributeGuid;
-    }
-
-    /**
-     * {@literal Get the guid of type associated with the spine attribute. }
-     *
-     * @return {@code String }
-     */
-    public String getTypeGuid() {
-        return typeGuid;
-    }
-
-    public void setTypeGuid(String typeGuid) {
-        this.typeGuid = typeGuid;
+        initialise();
     }
 
     InstanceProperties obtainInstanceProperties() {

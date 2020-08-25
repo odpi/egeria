@@ -18,30 +18,6 @@ public class CategoryAnchorMapper extends LineMapper<CategoryAnchor> {
         super(omrsapiHelper);
     }
 
-    /**
-     * Get proxy1 guid.
-     * The proxy has omrs type Glossary
-     *
-     * @param categoryAnchor line
-     * @return guid for entity proxy 1
-     */
-    @Override
-    protected String getProxy1Guid(CategoryAnchor categoryAnchor) {
-        return categoryAnchor.getGlossaryGuid();
-    }
-
-    /**
-     * Get proxy2 guid
-     * The proxy has omrs type GlossaryCategory
-     *
-     * @param categoryAnchor for this Line
-     * @return guid for entity proxy 2
-     */
-    @Override
-    protected String getProxy2Guid(CategoryAnchor categoryAnchor) {
-        return categoryAnchor.getCategoryGuid();
-    }
-
     @Override
     public String getTypeName() {
         return CATEGORY_ANCHOR;
@@ -52,13 +28,4 @@ public class CategoryAnchorMapper extends LineMapper<CategoryAnchor> {
         return new CategoryAnchor();
     }
 
-    @Override
-    protected void setEnd1GuidInLine(CategoryAnchor categoryAnchor, String guid) {
-        categoryAnchor.setGlossaryGuid(guid);
-    }
-
-    @Override
-    protected void setEnd2GuidInLine(CategoryAnchor categoryAnchor, String guid) {
-        categoryAnchor.setCategoryGuid(guid);
-    }
 }

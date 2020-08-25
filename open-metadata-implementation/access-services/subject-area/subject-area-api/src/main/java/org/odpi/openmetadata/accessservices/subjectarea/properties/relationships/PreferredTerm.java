@@ -67,9 +67,6 @@ public class PreferredTerm extends Line {
     private static final java.util.Set<String> ATTRIBUTE_NAMES_SET = new HashSet<>(Arrays.asList(ATTRIBUTE_NAMES_SET_VALUES));
     private static final java.util.Set<String> ENUM_NAMES_SET = new HashSet<>(Arrays.asList(ENUM_NAMES_SET_VALUES));
     private static final java.util.Set<String> MAP_NAMES_SET = new HashSet<>(Arrays.asList(MAP_NAMES_SET_VALUES));
-    private String alternateTermGuid;
-    private String preferredTermGuid;
-
 
     public PreferredTerm() {
         initialise();
@@ -80,13 +77,10 @@ public class PreferredTerm extends Line {
         // set the LineType if this is a LineType enum value.
         try {
             lineType = LineType.valueOf(name);
+            setLineEnds();
         } catch (IllegalArgumentException e) {
             lineType = LineType.Unknown;
         }
-        entity1Name = "alternateTerms";
-        entity1Type = "GlossaryTerm";
-        entity2Name = "preferredTerms";
-        entity2Type = "GlossaryTerm";
         typeDefGuid = "8ac8f9de-9cdd-4103-8a33-4cb204b78c2a";
     }
 
@@ -97,39 +91,7 @@ public class PreferredTerm extends Line {
 
     public PreferredTerm(Relationship omrsRelationship) {
         super(omrsRelationship);
-        name = "PreferredTerm";
-        // set the LineType if this is a LineType enum value.
-        try {
-            lineType = LineType.valueOf(name);
-        } catch (IllegalArgumentException e) {
-            lineType = LineType.Unknown;
-        }
-    }
-
-    /**
-     * {@literal Get the guid of the alternate Term. }
-     *
-     * @return {@code String }
-     */
-    public String getAlternateTermGuid() {
-        return alternateTermGuid;
-    }
-
-    public void setAlternateTermGuid(String alternateTermGuid) {
-        this.alternateTermGuid = alternateTermGuid;
-    }
-
-    /**
-     * {@literal Get the guid of the preferred Term. }
-     *
-     * @return {@code String }
-     */
-    public String getPreferredTermGuid() {
-        return preferredTermGuid;
-    }
-
-    public void setPreferredTermGuid(String preferredTermGuid) {
-        this.preferredTermGuid = preferredTermGuid;
+      initialise();
     }
 
     InstanceProperties obtainInstanceProperties() {

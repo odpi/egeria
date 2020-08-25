@@ -155,19 +155,14 @@ public class SubjectAreaUtils {
     /**
      * Get glossary guid from anchors
      *
-     * @param anchor - {@link TermAnchor} or {@link CategoryAnchor}
+     * @param line - {@link TermAnchor} or {@link CategoryAnchor}
      * @return glossaryGuid
      * */
-    public static String getGlossaryGuidFromAnchor(Line anchor) {
+    public static String getGlossaryGuidFromAnchor(Line line) {
         String glossaryGuid = null;
-        if (anchor instanceof  TermAnchor) {
-            glossaryGuid = ((TermAnchor) anchor).getGlossaryGuid();
+        if (line instanceof  TermAnchor || line instanceof CategoryAnchor) {
+            glossaryGuid = line.getEnd1().getNodeGuid();
         }
-
-        if (anchor instanceof CategoryAnchor) {
-            glossaryGuid = ((CategoryAnchor) anchor).getGlossaryGuid();
-        }
-
         return glossaryGuid;
     }
 

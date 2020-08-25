@@ -70,9 +70,6 @@ public class LibraryCategoryReference extends Line {
     private static final java.util.Set<String> ATTRIBUTE_NAMES_SET = new HashSet<>(Arrays.asList(ATTRIBUTE_NAMES_SET_VALUES));
     private static final java.util.Set<String> ENUM_NAMES_SET = new HashSet<>(Arrays.asList(ENUM_NAMES_SET_VALUES));
     private static final java.util.Set<String> MAP_NAMES_SET = new HashSet<>(Arrays.asList(MAP_NAMES_SET_VALUES));
-    private String entity1Guid;
-    private String entity2Guid;
-
 
     public LibraryCategoryReference() {
         initialise();
@@ -83,14 +80,10 @@ public class LibraryCategoryReference extends Line {
         // set the LineType if this is a LineType enum value.
         try {
             lineType = LineType.valueOf(name);
+            setLineEnds();
         } catch (IllegalArgumentException e) {
             lineType = LineType.Unknown;
         }
-        entity1Name = "localCategories";
-        entity1Type = "GlossaryCategory";
-        entity2Name = "externalGlossaryCategories";
-        entity2Type = "ExternalGlossaryLink";
-        typeDefGuid = "3da21cc9-3cdc-4d87-89b5-c501740f00b2";
     }
 
     public LibraryCategoryReference(Line template) {
@@ -100,13 +93,7 @@ public class LibraryCategoryReference extends Line {
 
     public LibraryCategoryReference(Relationship omrsRelationship) {
         super(omrsRelationship);
-        name = "LibraryCategoryReference";
-        // set the LineType if this is a LineType enum value.
-        try {
-            lineType = LineType.valueOf(name);
-        } catch (IllegalArgumentException e) {
-            lineType = LineType.Unknown;
-        }
+        initialise();
     }
 
     InstanceProperties obtainInstanceProperties() {

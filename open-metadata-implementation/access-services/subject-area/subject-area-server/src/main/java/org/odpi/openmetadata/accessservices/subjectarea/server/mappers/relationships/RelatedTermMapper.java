@@ -95,30 +95,6 @@ public class RelatedTermMapper extends LineMapper<RelatedTerm> {
         return foundProperty;
     }
 
-    /**
-     * Get proxy1 guid.
-     * The proxy has omrs type GlossaryTerm
-     *
-     * @param relatedTerm line
-     * @return guid for entity proxy 1
-     */
-    @Override
-    protected String getProxy1Guid(RelatedTerm relatedTerm) {
-        return relatedTerm.getRelatedTerm1Guid();
-    }
-
-    /**
-     * Get proxy2 guid
-     * The proxy has omrs type GlossaryTerm
-     *
-     * @param relatedTerm for this Line
-     * @return guid for entity proxy 2
-     */
-    @Override
-    protected String getProxy2Guid(RelatedTerm relatedTerm) {
-        return relatedTerm.getRelatedTerm2Guid();
-    }
-
     @Override
     public String getTypeName() {
         return RELATED_TERM;
@@ -127,15 +103,5 @@ public class RelatedTermMapper extends LineMapper<RelatedTerm> {
     @Override
     protected RelatedTerm getLineInstance() {
         return new RelatedTerm();
-    }
-
-    @Override
-    protected void setEnd1GuidInLine(RelatedTerm relatedTerm, String guid) {
-        relatedTerm.setRelatedTerm1Guid(guid);
-    }
-
-    @Override
-    protected void setEnd2GuidInLine(RelatedTerm relatedTerm, String guid) {
-        relatedTerm.setRelatedTerm2Guid(guid);
     }
 }

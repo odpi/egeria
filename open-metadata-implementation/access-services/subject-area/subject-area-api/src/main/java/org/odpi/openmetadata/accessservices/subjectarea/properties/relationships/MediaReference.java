@@ -66,9 +66,6 @@ public class MediaReference extends Line {
     private static final java.util.Set<String> ATTRIBUTE_NAMES_SET = new HashSet<>(Arrays.asList(ATTRIBUTE_NAMES_SET_VALUES));
     private static final java.util.Set<String> ENUM_NAMES_SET = new HashSet<>(Arrays.asList(ENUM_NAMES_SET_VALUES));
     private static final java.util.Set<String> MAP_NAMES_SET = new HashSet<>(Arrays.asList(MAP_NAMES_SET_VALUES));
-    private String entity1Guid;
-    private String entity2Guid;
-
 
     public MediaReference() {
         initialise();
@@ -79,13 +76,10 @@ public class MediaReference extends Line {
         // set the LineType if this is a LineType enum value.
         try {
             lineType = LineType.valueOf(name);
+            setLineEnds();
         } catch (IllegalArgumentException e) {
             lineType = LineType.Unknown;
         }
-        entity1Name = "consumingItem";
-        entity1Type = "Referenceable";
-        entity2Name = "relatedMedia";
-        entity2Type = "RelatedMedia";
         typeDefGuid = "1353400f-b0ab-4ab9-ab09-3045dd8a7140";
     }
 
@@ -96,13 +90,7 @@ public class MediaReference extends Line {
 
     public MediaReference(Relationship omrsRelationship) {
         super(omrsRelationship);
-        name = "MediaReference";
-        // set the LineType if this is a LineType enum value.
-        try {
-            lineType = LineType.valueOf(name);
-        } catch (IllegalArgumentException e) {
-            lineType = LineType.Unknown;
-        }
+        initialise();
     }
 
     InstanceProperties obtainInstanceProperties() {

@@ -67,9 +67,6 @@ public class IsA extends Line {
     private static final java.util.Set<String> ATTRIBUTE_NAMES_SET = new HashSet<>(Arrays.asList(ATTRIBUTE_NAMES_SET_VALUES));
     private static final java.util.Set<String> ENUM_NAMES_SET = new HashSet<>(Arrays.asList(ENUM_NAMES_SET_VALUES));
     private static final java.util.Set<String> MAP_NAMES_SET = new HashSet<>(Arrays.asList(MAP_NAMES_SET_VALUES));
-    private String specialisedTermGuid;
-    private String termGuid;
-
 
     public IsA() {
         initialise();
@@ -80,13 +77,10 @@ public class IsA extends Line {
         // set the LineType if this is a LineType enum value.
         try {
             lineType = LineType.valueOf(name);
+            setLineEnds();
         } catch (IllegalArgumentException e) {
             lineType = LineType.Unknown;
         }
-        entity1Name = "classifies";
-        entity1Type = "GlossaryTerm";
-        entity2Name = "isA";
-        entity2Type = "GlossaryTerm";
         typeDefGuid = "50fab7c7-68bc-452f-b8eb-ec76829cac85";
     }
 
@@ -99,37 +93,7 @@ public class IsA extends Line {
         super(omrsRelationship);
         name = "Isa";
         // set the LineType if this is a LineType enum value.
-        try {
-            lineType = LineType.valueOf(name);
-        } catch (IllegalArgumentException e) {
-            lineType = LineType.Unknown;
-        }
-    }
-
-    /**
-     * {@literal Get the guid of the more specialised Term. }
-     *
-     * @return {@code String }
-     */
-    public String getSpecialisedTermGuid() {
-        return specialisedTermGuid;
-    }
-
-    public void setSpecialisedTermGuid(String specialisedTermGuid) {
-        this.specialisedTermGuid = specialisedTermGuid;
-    }
-
-    /**
-     * {@literal Get the guid of the more general Term. }
-     *
-     * @return {@code String }
-     */
-    public String getTermGuid() {
-        return termGuid;
-    }
-
-    public void setTermGuid(String termGuid) {
-        this.termGuid = termGuid;
+        initialise();
     }
 
     InstanceProperties obtainInstanceProperties() {

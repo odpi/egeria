@@ -68,8 +68,6 @@ public class Categorization extends Line {
     private static final java.util.Set<String> ATTRIBUTE_NAMES_SET = new HashSet<>(Arrays.asList(ATTRIBUTE_NAMES_SET_VALUES));
     private static final java.util.Set<String> ENUM_NAMES_SET = new HashSet<>(Arrays.asList(ENUM_NAMES_SET_VALUES));
     private static final java.util.Set<String> MAP_NAMES_SET = new HashSet<>(Arrays.asList(MAP_NAMES_SET_VALUES));
-    private String categoryGuid;
-    private String termGuid;
 
 
     public Categorization() {
@@ -81,13 +79,10 @@ public class Categorization extends Line {
         // set the LineType if this is a LineType enum value.
         try {
             lineType = LineType.valueOf(name);
+            setLineEnds();
         } catch (IllegalArgumentException e) {
             lineType = LineType.Unknown;
         }
-        entity1Name = "categories";
-        entity1Type = "GlossaryCategory";
-        entity2Name = "terms";
-        entity2Type = "GlossaryTerm";
         typeDefGuid = "696a81f5-ac60-46c7-b9fd-6979a1e7ad27";
     }
 
@@ -98,13 +93,7 @@ public class Categorization extends Line {
 
     public Categorization(Relationship omrsRelationship) {
         super(omrsRelationship);
-        name = "TermCategorizationRelationship";
-        // set the LineType if this is a LineType enum value.
-        try {
-            lineType = LineType.valueOf(name);
-        } catch (IllegalArgumentException e) {
-            lineType = LineType.Unknown;
-        }
+        initialise();
     }
 
     InstanceProperties obtainInstanceProperties() {
@@ -133,22 +122,6 @@ public class Categorization extends Line {
             log.debug("<== Method: " + methodName);
         }
         return instanceProperties;
-    }
-
-    public String getCategoryGuid() {
-        return categoryGuid;
-    }
-
-    public void setCategoryGuid(String categoryGuid) {
-        this.categoryGuid = categoryGuid;
-    }
-
-    public String getTermGuid() {
-        return termGuid;
-    }
-
-    public void setTermGuid(String termGuid) {
-        this.termGuid = termGuid;
     }
 
     private String description;

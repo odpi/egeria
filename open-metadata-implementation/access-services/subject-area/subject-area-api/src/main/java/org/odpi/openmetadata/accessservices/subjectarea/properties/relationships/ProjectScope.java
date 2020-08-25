@@ -67,14 +67,11 @@ public class ProjectScope extends Line {
         // set the LineType if this is a LineType enum value.
         try {
             lineType = LineType.valueOf(name);
+            setLineEnds();
         } catch (IllegalArgumentException e) {
             lineType = LineType.Unknown;
         }
 
-        entity1Name = "impactingProjects";
-        entity1Type = "Project";
-        entity2Name = "projectScope";
-        entity2Type = "Referencable";
         typeDefGuid = "bc63ac45-b4d0-4fba-b583-92859de77dd8";
     }
 
@@ -85,13 +82,7 @@ public class ProjectScope extends Line {
 
     public ProjectScope(Relationship omrsRelationship) {
         super(omrsRelationship);
-        name = "ProjectScope";
-        // set the LineType if this is a LineType enum value.
-        try {
-            lineType = LineType.valueOf(name);
-        } catch (IllegalArgumentException e) {
-            lineType = LineType.Unknown;
-        }
+        initialise();
     }
 
     public String getProjectGuid() {

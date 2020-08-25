@@ -62,8 +62,6 @@ public class Leadership extends Line {
     private static final java.util.Set<String> ATTRIBUTE_NAMES_SET = new HashSet<>(Arrays.asList(ATTRIBUTE_NAMES_SET_VALUES));
     private static final java.util.Set<String> ENUM_NAMES_SET = new HashSet<>(Arrays.asList(ENUM_NAMES_SET_VALUES));
     private static final java.util.Set<String> MAP_NAMES_SET = new HashSet<>(Arrays.asList(MAP_NAMES_SET_VALUES));
-    private String entity1Guid;
-    private String entity2Guid;
 
 
     public Leadership() {
@@ -75,13 +73,10 @@ public class Leadership extends Line {
         // set the LineType if this is a LineType enum value.
         try {
             lineType = LineType.valueOf(name);
+            setLineEnds();
         } catch (IllegalArgumentException e) {
             lineType = LineType.Unknown;
         }
-        entity1Name = "leads";
-        entity1Type = "ActorProfile";
-        entity2Name = "follows";
-        entity2Type = "ActorProfile";
         typeDefGuid = "5ebc4fb2-b62a-4269-8f18-e9237a2119ca";
     }
 
@@ -92,13 +87,7 @@ public class Leadership extends Line {
 
     public Leadership(Relationship omrsRelationship) {
         super(omrsRelationship);
-        name = "Leadership";
-        // set the LineType if this is a LineType enum value.
-        try {
-            lineType = LineType.valueOf(name);
-        } catch (IllegalArgumentException e) {
-            lineType = LineType.Unknown;
-        }
+        initialise();
     }
 
     InstanceProperties obtainInstanceProperties() {

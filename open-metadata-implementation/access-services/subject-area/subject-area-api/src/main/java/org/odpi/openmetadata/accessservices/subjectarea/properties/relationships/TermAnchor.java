@@ -62,9 +62,6 @@ public class TermAnchor extends Line {
     private static final java.util.Set<String> ATTRIBUTE_NAMES_SET = new HashSet<>(Arrays.asList(ATTRIBUTE_NAMES_SET_VALUES));
     private static final java.util.Set<String> ENUM_NAMES_SET = new HashSet<>(Arrays.asList(ENUM_NAMES_SET_VALUES));
     private static final java.util.Set<String> MAP_NAMES_SET = new HashSet<>(Arrays.asList(MAP_NAMES_SET_VALUES));
-    private String termGuid;
-    private String glossaryGuid;
-
 
     public TermAnchor() {
         initialise();
@@ -75,13 +72,10 @@ public class TermAnchor extends Line {
         // set the LineType if this is a LineType enum value.
         try {
             lineType = LineType.valueOf(name);
+            setLineEnds();
         } catch (IllegalArgumentException e) {
             lineType = LineType.Unknown;
         }
-        entity1Name = "anchor";
-        entity1Type = "Glossary";
-        entity2Name = "terms";
-        entity2Type = "GlossaryTerm";
         typeDefGuid = "1d43d661-bdc7-4a91-a996-3239b8f82e56";
     }
 
@@ -99,22 +93,6 @@ public class TermAnchor extends Line {
         } catch (IllegalArgumentException e) {
             lineType = LineType.Unknown;
         }
-    }
-
-    public String getTermGuid() {
-        return termGuid;
-    }
-
-    public void setTermGuid(String termGuid) {
-        this.termGuid = termGuid;
-    }
-
-    public String getGlossaryGuid() {
-        return glossaryGuid;
-    }
-
-    public void setGlossaryGuid(String glossaryGuid) {
-        this.glossaryGuid = glossaryGuid;
     }
 
     InstanceProperties obtainInstanceProperties() {

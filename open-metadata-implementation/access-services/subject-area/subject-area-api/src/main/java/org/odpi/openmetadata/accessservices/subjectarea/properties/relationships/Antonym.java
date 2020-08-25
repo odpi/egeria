@@ -77,16 +77,11 @@ public class Antonym extends Line {
         // set the LineType if this is a LineType enum value.
         try {
             lineType = LineType.valueOf(name);
+            setLineEnds();
         }
         catch (IllegalArgumentException e) {
             lineType = LineType.Unknown;
         }
-        // save the below information to help map to OMRS.
-         entity1Name = "antonyms";
-         entity1Type = "GlossaryTerm";
-         entity2Name = "antonyms";
-         entity2Type = "GlossaryTerm";
-         typeDefGuid = "ea5e126a-a8fa-4a43-bcfa-309a98aa0185";
     }
 
     public Antonym(Line template) {
@@ -96,16 +91,7 @@ public class Antonym extends Line {
 
     public Antonym(Relationship omrsRelationship) {
         super(omrsRelationship);
-        name = "Antonym";
-        // set the LineType if this is a LineType enum value.
-        try {
-            lineType = LineType.valueOf(name);
-        }
-        catch (IllegalArgumentException e) {
-            lineType = LineType.Unknown;
-        }
-        this.antonym1Guid = omrsRelationship.getEntityOneProxy().getGUID();
-        this.antonym2Guid = omrsRelationship.getEntityTwoProxy().getGUID();
+        initialise();
     }
     /**
      * {@literal Get the guid of Antonym at end 2 of the relationship. }

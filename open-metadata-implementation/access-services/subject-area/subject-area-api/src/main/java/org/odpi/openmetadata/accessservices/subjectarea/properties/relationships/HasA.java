@@ -3,6 +3,8 @@
 // This is a generated file - do not edit - changes should be made to the templates amd/or generator to generate this file with changes.
 
 package org.odpi.openmetadata.accessservices.subjectarea.properties.relationships;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineEnd;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipEndCardinality;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -29,6 +31,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph
 public class HasA extends Line {
     private static final Logger log = LoggerFactory.getLogger(HasA.class);
     private static final String className = HasA.class.getName();
+
 
     private static final String[] PROPERTY_NAMES_SET_VALUES = new String[] {
             "description",
@@ -62,9 +65,6 @@ public class HasA extends Line {
     private static final java.util.Set<String> ATTRIBUTE_NAMES_SET = new HashSet<>(Arrays.asList(ATTRIBUTE_NAMES_SET_VALUES));
     private static final java.util.Set<String> ENUM_NAMES_SET = new HashSet<>(Arrays.asList(ENUM_NAMES_SET_VALUES));
     private static final java.util.Set<String> MAP_NAMES_SET = new HashSet<>(Arrays.asList(MAP_NAMES_SET_VALUES));
-    private String owningTermGuid;
-    private String ownedTermGuid;
-
 
     public HasA() {
         initialise();
@@ -72,18 +72,15 @@ public class HasA extends Line {
 
     private void initialise()
     {
-        name = "Hasa";
+        name = "HasA";
         // set the LineType if this is a LineType enum value.
         try {
             lineType = LineType.valueOf(name);
+            setLineEnds();
         }
         catch (IllegalArgumentException e) {
             lineType = LineType.Unknown;
         }
-        entity1Name = "objects";
-        entity1Type = "GlossaryTerm";
-        entity2Name = "attributes";
-        entity2Type = "GlossaryTerm";
         typeDefGuid = "d67f16d1-5348-419e-ba38-b0bb6fe4ad6c";
     }
 
@@ -94,41 +91,9 @@ public class HasA extends Line {
 
     public HasA(Relationship omrsRelationship) {
         super(omrsRelationship);
-        name = "Hasa";
-        // set the LineType if this is a LineType enum value.
-        try {
-            lineType = LineType.valueOf(name);
-        }
-        catch (IllegalArgumentException e) {
-            lineType = LineType.Unknown;
-        }
-    }
-    /**
-     * {@literal Get the guid of owning spine object. }
-     * @return {@code String }
-     */
-    public String getOwningTermGuid()
-    {
-        return owningTermGuid;
+        initialise();
     }
 
-    public void setOwningTermGuid(String owningTermGuid)
-    {
-        this.owningTermGuid = owningTermGuid;
-    }
-    /**
-     * {@literal Get the guid of owned spine attribute. }
-     * @return {@code String }
-     */
-    public String getOwnedTermGuid()
-    {
-        return ownedTermGuid;
-    }
-
-    public void setOwnedTermGuid(String ownedTermGuid)
-    {
-        this.ownedTermGuid = ownedTermGuid;
-    }
 
     InstanceProperties obtainInstanceProperties() {
         final String methodName = "obtainInstanceProperties";

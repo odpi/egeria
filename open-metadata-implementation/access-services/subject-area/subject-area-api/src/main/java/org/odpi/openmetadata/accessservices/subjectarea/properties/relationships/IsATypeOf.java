@@ -65,9 +65,6 @@ public class IsATypeOf extends Line {
     private static final java.util.Set<String> ATTRIBUTE_NAMES_SET = new HashSet<>(Arrays.asList(ATTRIBUTE_NAMES_SET_VALUES));
     private static final java.util.Set<String> ENUM_NAMES_SET = new HashSet<>(Arrays.asList(ENUM_NAMES_SET_VALUES));
     private static final java.util.Set<String> MAP_NAMES_SET = new HashSet<>(Arrays.asList(MAP_NAMES_SET_VALUES));
-    private String superTypeGuid;
-    private String subTypeGuid;
-
 
     public IsATypeOf() {
         initialise();
@@ -78,13 +75,10 @@ public class IsATypeOf extends Line {
         // set the LineType if this is a LineType enum value.
         try {
             lineType = LineType.valueOf(name);
+            setLineEnds();
         } catch (IllegalArgumentException e) {
             lineType = LineType.Unknown;
         }
-        entity1Name = "supertypes";
-        entity1Type = "GlossaryTerm";
-        entity2Name = "subtypes";
-        entity2Type = "GlossaryTerm";
         typeDefGuid = "d5d588c3-46c9-420c-adff-6031802a7e51";
     }
 
@@ -95,39 +89,7 @@ public class IsATypeOf extends Line {
 
     public IsATypeOf(Relationship omrsRelationship) {
         super(omrsRelationship);
-        name = "IsaTypeOf";
-        // set the LineType if this is a LineType enum value.
-        try {
-            lineType = LineType.valueOf(name);
-        } catch (IllegalArgumentException e) {
-            lineType = LineType.Unknown;
-        }
-    }
-
-    /**
-     * {@literal Get the guid of type associated with the super type spine object - this is the spine object that is inherited from. }
-     *
-     * @return {@code String }
-     */
-    public String getSuperTypeGuid() {
-        return superTypeGuid;
-    }
-
-    public void setSuperTypeGuid(String superTypeGuid) {
-        this.superTypeGuid = superTypeGuid;
-    }
-
-    /**
-     * {@literal Get the guid of type associated with the sub type spine object - this is the spine object that inherits (specialises). }
-     *
-     * @return {@code String }
-     */
-    public String getSubTypeGuid() {
-        return subTypeGuid;
-    }
-
-    public void setSubTypeGuid(String subTypeGuid) {
-        this.subTypeGuid = subTypeGuid;
+        initialise();
     }
 
     InstanceProperties obtainInstanceProperties() {

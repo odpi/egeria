@@ -62,9 +62,6 @@ public class CategoryHierarchyLink extends Line {
     private static final java.util.Set<String> ATTRIBUTE_NAMES_SET = new HashSet<>(Arrays.asList(ATTRIBUTE_NAMES_SET_VALUES));
     private static final java.util.Set<String> ENUM_NAMES_SET = new HashSet<>(Arrays.asList(ENUM_NAMES_SET_VALUES));
     private static final java.util.Set<String> MAP_NAMES_SET = new HashSet<>(Arrays.asList(MAP_NAMES_SET_VALUES));
-    private String superCategoryGuid;
-    private String subCategoryGuid;
-
 
     public CategoryHierarchyLink() {
         initialise();
@@ -75,13 +72,10 @@ public class CategoryHierarchyLink extends Line {
         // set the LineType if this is a LineType enum value.
         try {
             lineType = LineType.valueOf(name);
+            setLineEnds();
         } catch (IllegalArgumentException e) {
             lineType = LineType.Unknown;
         }
-        entity1Name = "superCategory";
-        entity1Type = "GlossaryCategory";
-        entity2Name = "subcategories";
-        entity2Type = "GlossaryCategory";
         typeDefGuid = "71e4b6fb-3412-4193-aff3-a16eccd87e8e";
     }
 
@@ -92,13 +86,7 @@ public class CategoryHierarchyLink extends Line {
 
     public CategoryHierarchyLink(Relationship omrsRelationship) {
         super(omrsRelationship);
-        name = "CategoryHierarchyLink";
-        // set the LineType if this is a LineType enum value.
-        try {
-            lineType = LineType.valueOf(name);
-        } catch (IllegalArgumentException e) {
-            lineType = LineType.Unknown;
-        }
+       initialise();
     }
 
     InstanceProperties obtainInstanceProperties() {
@@ -114,22 +102,6 @@ public class CategoryHierarchyLink extends Line {
             log.debug("<== Method: " + methodName);
         }
         return instanceProperties;
-    }
-
-    public String getSuperCategoryGuid() {
-        return superCategoryGuid;
-    }
-
-    public void setSuperCategoryGuid(String superCategoryGuid) {
-        this.superCategoryGuid = superCategoryGuid;
-    }
-
-    public String getSubCategoryGuid() {
-        return subCategoryGuid;
-    }
-
-    public void setSubCategoryGuid(String subCategoryGuid) {
-        this.subCategoryGuid = subCategoryGuid;
     }
 
     @Override
