@@ -6,7 +6,7 @@
 # repomode: supported values are in-memory-repository & local-graph-repository
 # version: This is used for egeria images rather than 'tag' above, which is only used for other images
 egeria:
-  version: "2.2-SNAPSHOT"
+  version: "2.3-SNAPSHOT"
   repomode: local-graph-repository
   user: myuser
   cohort: coco
