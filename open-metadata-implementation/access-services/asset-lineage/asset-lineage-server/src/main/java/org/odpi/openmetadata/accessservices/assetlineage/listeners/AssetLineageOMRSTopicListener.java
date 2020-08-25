@@ -251,21 +251,27 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
     }
 
     private void processNewRelationshipEvent(Relationship relationship) throws OCFCheckedExceptionBase, JsonProcessingException {
-        log.debug(PROCESSING_RELATIONSHIP_DEBUG_MESSAGE, AssetLineageEventType.NEW_RELATIONSHIP_EVENT.getEventTypeName(), relationship.getGUID());
-
         if (!(immutableValidLineageEntityEvents.contains(relationship.getEntityOneProxy().getType().getTypeDefName())
                 || immutableValidLineageEntityEvents.contains(relationship.getEntityTwoProxy().getType().getTypeDefName()))) {
             return;
         }
+        log.debug(PROCESSING_RELATIONSHIP_DEBUG_MESSAGE, AssetLineageEventType.NEW_RELATIONSHIP_EVENT.getEventTypeName(), relationship.getGUID());
 
         String relationshipType = relationship.getType().getTypeDefName();
 
-        if (SEMANTIC_ASSIGNMENT.equals(relationshipType) || TERM_CATEGORIZATION.equals(relationshipType)) {
-            String glossaryTermGUID = relationship.getEntityTwoProxy().getGUID();
-            publisher.publishGlossaryContext(glossaryTermGUID);
-        } else if (PROCESS_HIERARCHY.equals(relationshipType)) {
-            publisher.publishLineageRelationshipEvent(converter.createLineageRelationship(relationship),
-                    AssetLineageEventType.NEW_RELATIONSHIP_EVENT);
+        switch (relationshipType) {
+            case SEMANTIC_ASSIGNMENT:
+            case TERM_CATEGORIZATION:
+                String glossaryTermGUID = relationship.getEntityTwoProxy().getGUID();
+                publisher.publishGlossaryContext(glossaryTermGUID);
+                break;
+            case PROCESS_HIERARCHY:
+                publisher.publishLineageRelationshipEvent(converter.createLineageRelationship(relationship),
+                        AssetLineageEventType.NEW_RELATIONSHIP_EVENT);
+                break;
+            default:
+                log.debug("Asset Lineage OMAS is ignoring the event concerning relationship {}", relationshipType);
+                break;
         }
     }
 
