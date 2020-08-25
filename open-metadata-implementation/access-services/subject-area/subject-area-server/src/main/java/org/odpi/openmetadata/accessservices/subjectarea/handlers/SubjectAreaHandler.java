@@ -125,8 +125,10 @@ public abstract class SubjectAreaHandler {
             final INodeMapper<T> mapper = mappersFactory.get(mapperClass);
             final List<EntityDetail> entityDetails = oMRSAPIHelper.callGetEntitiesForRelationshipEnd1(
                     methodName, userId, guid, mapper.getTypeName(), relationshipTypeName);
-            for (EntityDetail entityDetail : entityDetails) {
-                response.addResult(mapper.map(entityDetail));
+            if (entityDetails != null) {
+                for (EntityDetail entityDetail : entityDetails) {
+                    response.addResult(mapper.map(entityDetail));
+                }
             }
         } catch (UserNotAuthorizedException | SubjectAreaCheckedException | PropertyServerException e) {
             response.setExceptionInfo(e, className);

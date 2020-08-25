@@ -255,8 +255,8 @@ public class SubjectAreaCategoryRESTResource {
      * */
     @GetMapping(path = "/users/{userId}/categories/{guid}/terms")
     public SubjectAreaOMASAPIResponse<Term> getCategoryTerms(@PathVariable String serverName,
-                                                                 @PathVariable String userId,
-                                                                 @PathVariable String guid) {
+                                                             @PathVariable String userId,
+                                                             @PathVariable String guid) {
         return restAPI.getCategoryTerms(serverName, userId, guid);
     }
 }
