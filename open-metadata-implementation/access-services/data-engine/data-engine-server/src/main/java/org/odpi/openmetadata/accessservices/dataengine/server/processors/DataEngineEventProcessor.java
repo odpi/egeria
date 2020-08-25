@@ -199,7 +199,6 @@ public class DataEngineEventProcessor {
         // extra validation needed because the FFDCResponseBase object captures the potential exceptions
         // thrown during a parallel processing
         if (response.getRelatedHTTPCode() != HttpStatus.OK.value()) {
-
             throw new DataEngineException(DataEngineErrorCode.DATA_ENGINE_EXCEPTION.getMessageDefinition(methodName), this.getClass().getName(),
                     methodName);
 

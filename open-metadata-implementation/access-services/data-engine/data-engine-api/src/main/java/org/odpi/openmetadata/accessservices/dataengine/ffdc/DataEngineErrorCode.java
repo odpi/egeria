@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.dataengine.ffdc;
 
 
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet;
 
 /**
  * The DataEngineErrorCode is used to define first failure data capture (FFDC) for errors that occur when working with
@@ -25,7 +26,7 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDef
  * </ul>
  */
 
-public enum DataEngineErrorCode {
+public enum DataEngineErrorCode implements ExceptionMessageSet {
     OMRS_NOT_INITIALIZED(404, "OMAS-DATA-ENGINE-404-001 ",
             "The open metadata repository services are not initialized for server {0}",
             "The system is unable to connect to the open metadata property server.",

@@ -57,6 +57,7 @@ public class DataEngineSchemaTypeHandler {
      * @param invalidParameterHandler       handler for managing parameter errors
      * @param repositoryHandler             manages calls to the repository services
      * @param repositoryHelper              provides utilities for manipulating the repository services objects
+     * @param schemaTypeHandler             handler for managing schema elements in the metadata repositories
      * @param dataEngineRegistrationHandler provides calls for retrieving external data engine guid
      * @param dataEngineCommonHandler       provides utilities for manipulating entities
      */
@@ -312,9 +313,10 @@ public class DataEngineSchemaTypeHandler {
     private EntityDetail buildSchemaTypeEntityDetail(String schemaTypeGUID, SchemaType schemaType) throws InvalidParameterException {
         String methodName = "buildSchemaTypeEntityDetail";
 
-        SchemaTypeBuilder builder = new ComplexSchemaTypeBuilder(schemaType.getQualifiedName(), schemaType.getDisplayName(),
-                schemaType.getVersionNumber(), schemaType.getAuthor(), schemaType.getUsage(), schemaType.getEncodingStandard(),
-                schemaType.getAdditionalProperties(), schemaType.getExtendedProperties(), repositoryHelper, serviceName, serverName);
+        SchemaTypeBuilder builder = new SchemaTypeBuilder(SchemaElementMapper.COMPLEX_SCHEMA_TYPE_TYPE_NAME, schemaType.getQualifiedName(),
+                schemaType.getDisplayName(), schemaType.getDescription(), schemaType.getVersionNumber(), false, schemaType.getAuthor(),
+                schemaType.getUsage(), schemaType.getEncodingStandard(), schemaType.getNamespace(), schemaType.getAdditionalProperties(),
+                schemaType.getExtendedProperties(), repositoryHelper, serviceName, serverName);
 
         return dataEngineCommonHandler.buildEntityDetail(schemaTypeGUID, builder.getInstanceProperties(methodName));
     }

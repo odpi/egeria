@@ -315,7 +315,7 @@ public class DataEngineRESTServices {
                                                                                                                                           UserNotAuthorizedException {
         final String methodName = "createOrUpdatePortAliasWithDelegation";
 
-        log.debug(DEBUG_MESSAGE_METHOD, methodName);
+        log.debug(DEBUG_MESSAGE_METHOD_DETAILS, methodName, portAlias);
 
         PortHandler portHandler = instanceHandler.getPortHandler(userId, serverName, methodName);
 
@@ -503,7 +503,7 @@ public class DataEngineRESTServices {
     public ProcessListResponse createOrUpdateProcesses(String userId, String serverName, List<Process> processes, String externalSourceName) {
         final String methodName = "createOrUpdateProcesses";
 
-        log.debug(DEBUG_MESSAGE_METHOD, methodName);
+        log.debug(DEBUG_MESSAGE_METHOD_DETAILS, methodName, processes);
 
         Predicate<? super Process> hasPortImplementationsPredicate = process -> CollectionUtils.isNotEmpty(process.getPortImplementations());
         Map<Boolean, List<Process>> partitionedProcesses = processes.parallelStream().collect(partitioningBy(hasPortImplementationsPredicate));
@@ -546,6 +546,7 @@ public class DataEngineRESTServices {
      *
      * @param serverName          name of server instance to call
      * @param userId              the name of the calling user
+     * @param processGuid         the guid of the process
      * @param portListRequestBody list of port qualified names
      *
      * @return the unique identifier (guid) of the updated process entity
