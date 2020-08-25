@@ -1,4 +1,5 @@
-<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- SPDX-License-Identifier: CC-BY-4.0 -->
+<!-- Copyright Contributors to the ODPi Egeria project 2020. -->
   
 # Virtual Data Connector (VDC) Demo
   
@@ -158,3 +159,8 @@ Figure 8 summarizes the whole end-to-end flow.
 
 ![Figure 8:](vdc-end-to-end-flows-8.png)
 > Figure 8: End to end flow
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.
