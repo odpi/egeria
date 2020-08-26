@@ -12,7 +12,7 @@ import org.odpi.openmetadata.accessservices.assetlineage.outtopic.AssetLineagePu
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OCFOMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
 import java.util.List;
@@ -42,7 +42,7 @@ public class AssetLineageServicesInstance extends OCFOMASServiceInstance {
     public AssetLineageServicesInstance(OMRSRepositoryConnector repositoryConnector,
                                         List<String> supportedZones,
                                         List<String> lineageClassificationTypes,
-                                        String localServerUserId, OMRSAuditLog auditLog) throws NewInstanceException {
+                                        String localServerUserId, AuditLog auditLog) throws NewInstanceException {
         super(myDescription.getAccessServiceFullName(),
                 repositoryConnector,
                 auditLog,
