@@ -4,7 +4,7 @@ package org.odpi.openmetadata.accessservices.assetlineage.server;
 
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.AssetContextHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.ClassificationHandler;
-import org.odpi.openmetadata.accessservices.assetlineage.handlers.GlossaryHandler;
+import org.odpi.openmetadata.accessservices.assetlineage.handlers.GlossaryContextHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.ProcessContextHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.outtopic.AssetLineagePublisher;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
@@ -42,11 +42,11 @@ public class AssetLineageInstanceHandler extends OCFOMASServiceInstanceHandler {
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException    error in the requested server
      */
-    public GlossaryHandler getGlossaryHandler(String userId, String serverName, String serviceOperationName)
+    public GlossaryContextHandler getGlossaryHandler(String userId, String serverName, String serviceOperationName)
             throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         AssetLineageServicesInstance instance = (AssetLineageServicesInstance) super.getServerServiceInstance(userId, serverName, serviceOperationName);
         if (instance != null)
-            return instance.getGlossaryHandler();
+            return instance.getGlossaryContextHandler();
         return null;
     }
 
@@ -69,6 +69,17 @@ public class AssetLineageInstanceHandler extends OCFOMASServiceInstanceHandler {
         return null;
     }
 
+    /**
+     * Retrieve the specific handler for processes
+     *
+     * @param userId               calling user
+     * @param serverName           name of the server tied to the request
+     * @param serviceOperationName name of the calling operation
+     * @return handler for processes
+     * @throws InvalidParameterException  no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException    error in the requested server
+     */
     public ProcessContextHandler getProcessHandler(String userId, String serverName, String serviceOperationName)
             throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
 

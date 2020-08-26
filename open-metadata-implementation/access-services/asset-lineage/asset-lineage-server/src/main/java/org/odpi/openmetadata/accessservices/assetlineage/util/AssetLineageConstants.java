@@ -13,25 +13,19 @@ import java.util.Map;
 
 public final class AssetLineageConstants {
 
-    private AssetLineageConstants() {
-    }
-
     public static final String LINEAGE_CLASSIFICATION_TYPES_KEY = "LineageClassificationTypes";
     public static final String ASSET_LINEAGE_OMAS = "AssetLineageOmas";
     public static final String REFERENCEABLE = "Referenceable";
     public static final String GUID_PARAMETER = "guid";
     public static final String VALUE_FOR_ACTIVE = "Active";
-
     public static final String SCHEMA_ELEMENT = "SchemaElement";
     public static final String GLOSSARY_TERM = "GlossaryTerm";
     public static final String NESTED_SCHEMA_ATTRIBUTE = "NestedSchemaAttribute";
-
     //Area 5 Types
     public static final String RELATIONAL_COLUMN = "RelationalColumn";
     public static final String RELATIONAL_TABLE = "RelationalTable";
     public static final String DATABASE = "Database";
     public static final String FILE_FOLDER = "FileFolder";
-
     public static final String PROCESS = "Process";
     public static final String PORT_ALIAS = "PortAlias";
     public static final String PORT_IMPLEMENTATION = "PortImplementation";
@@ -40,7 +34,6 @@ public final class AssetLineageConstants {
     public static final String DATA_FILE = "DataFile";
     public static final String CONNECTION = "Connection";
     public static final String SCHEMA_ATTRIBUTE = "SchemaAttribute";
-
     //Relationships Type
     public static final String ATTRIBUTE_FOR_SCHEMA = "AttributeForSchema";
     public static final String COMPLEX_SCHEMA_TYPE = "ComplexSchemaType";
@@ -57,13 +50,20 @@ public final class AssetLineageConstants {
     public static final String FOLDER_HIERARCHY = "FolderHierarchy";
     public static final String PROCESS_HIERARCHY = "ProcessHierarchy";
     public static final String CLASSIFICATION = "Classification";
-
     public static final String CLASSIFICATION_NAME_CONFIDENTIALITY = "Confidentiality";
     public static final String CLASSIFICATION_NAME_ASSET_ZONE_MEMBERSHIP = "AssetZoneMembership";
     public static final String CLASSIFICATION_NAME_SUBJECT_AREA = "SubjectArea";
     public static final String CLASSIFICATION_NAME_ASSET_OWNERSHIP = "AssetOwnership";
-
+    public static final ImmutableList<String> immutableValidLineageRelationshipTypes = ImmutableList.copyOf(Arrays.asList(
+            ATTRIBUTE_FOR_SCHEMA, ASSET_SCHEMA_TYPE, CONNECTION_TO_ASSET, CONNECTION_ENDPOINT, DATA_CONTENT_FOR_DATA_SET,
+            SEMANTIC_ASSIGNMENT, PORT_DELEGATION, PROCESS_PORT, LINEAGE_MAPPING, PORT_SCHEMA, NESTED_FILE, FOLDER_HIERARCHY, PROCESS_HIERARCHY));
     private static final List<String> defaultLineageClassifications = new ArrayList<>();
+    public static final ImmutableList<String> immutableDefaultLineageClassifications = ImmutableList.copyOf(defaultLineageClassifications);
+    // Map of entities to relationship types
+    private static final Map<String, String> processRelationshipsTypes = new HashMap<>();
+    public static final ImmutableMap<String, String> immutableProcessRelationshipsTypes = ImmutableMap.copyOf(processRelationshipsTypes);
+    private static final List<String> validLineageEntityEvents = new ArrayList<>();
+    public static final ImmutableList<String> immutableValidLineageEntityEvents = ImmutableList.copyOf(validLineageEntityEvents);
 
     static {
         defaultLineageClassifications.add(CLASSIFICATION_NAME_CONFIDENTIALITY);
@@ -72,21 +72,12 @@ public final class AssetLineageConstants {
         defaultLineageClassifications.add(CLASSIFICATION_NAME_ASSET_OWNERSHIP);
     }
 
-    public static final ImmutableList<String> immutableDefaultLineageClassifications = ImmutableList.copyOf(defaultLineageClassifications);
-
-    // Map of entities to relationship types
-    private static final Map<String, String> processRelationshipsTypes = new HashMap<>();
-
     static {
         processRelationshipsTypes.put(PORT_ALIAS, PORT_DELEGATION);
         processRelationshipsTypes.put(PORT_IMPLEMENTATION, PORT_SCHEMA);
         processRelationshipsTypes.put(TABULAR_SCHEMA_TYPE, ATTRIBUTE_FOR_SCHEMA);
         processRelationshipsTypes.put(SCHEMA_ATTRIBUTE, LINEAGE_MAPPING);
     }
-
-    public static final ImmutableMap<String, String> immutableProcessRelationshipsTypes = ImmutableMap.copyOf(processRelationshipsTypes);
-
-    private static final List<String> validLineageEntityEvents = new ArrayList<>();
 
     static {
         validLineageEntityEvents.add(GLOSSARY_TERM);
@@ -97,9 +88,6 @@ public final class AssetLineageConstants {
         validLineageEntityEvents.add(PROCESS);
     }
 
-    public static final ImmutableList<String> immutableValidLineageEntityEvents = ImmutableList.copyOf(validLineageEntityEvents);
-
-    public static final ImmutableList<String> immutableValidLineageRelationshipTypes = ImmutableList.copyOf(Arrays.asList(
-            ATTRIBUTE_FOR_SCHEMA, ASSET_SCHEMA_TYPE, CONNECTION_TO_ASSET, CONNECTION_ENDPOINT, DATA_CONTENT_FOR_DATA_SET,
-            SEMANTIC_ASSIGNMENT, PORT_DELEGATION, PROCESS_PORT, LINEAGE_MAPPING, PORT_SCHEMA, NESTED_FILE, FOLDER_HIERARCHY, PROCESS_HIERARCHY));
+    private AssetLineageConstants() {
+    }
 }

@@ -139,6 +139,13 @@ public class HandlerHelper {
         }
     }
 
+    public EntityDetail getEntityDetails(String userId, String entityDetailGUID, String entityTypeName) throws OCFCheckedExceptionBase {
+        String methodName = "getEntityDetails";
+
+        return repositoryHandler.getEntityByGUID(userId, entityDetailGUID, GUID_PARAMETER, entityTypeName, methodName);
+    }
+
+
     /**
      * Adds entities and relationships for the process Context structure
      *
@@ -213,8 +220,8 @@ public class HandlerHelper {
     /**
      * Adds the classification context to the asset context.
      *
-     * @param assetContext  the context of the asset that is to be updated
-     * @param entity the entity with its classifications
+     * @param assetContext the context of the asset that is to be updated
+     * @param entity       the entity with its classifications
      */
     public void addLineageClassificationToContext(EntityDetail entity, AssetContext assetContext) {
         List<Classification> classifications = filterLineageClassifications(entity.getClassifications());
@@ -223,6 +230,12 @@ public class HandlerHelper {
         }
     }
 
+    /**
+     * Extract the lineage classifications from the list of classifications assigned
+     *
+     * @param classifications the list of available classifications
+     * @return a list of lineage classifications
+     */
     public List<Classification> filterLineageClassifications(List<Classification> classifications) {
         if (CollectionUtils.isEmpty(classifications)) {
             return Collections.emptyList();
