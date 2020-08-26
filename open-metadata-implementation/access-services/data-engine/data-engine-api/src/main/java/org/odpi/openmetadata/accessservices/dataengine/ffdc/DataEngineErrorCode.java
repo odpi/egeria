@@ -32,8 +32,8 @@ public enum DataEngineErrorCode implements ExceptionMessageSet {
             "The system is unable to connect to the open metadata property server.",
             "Check that the server initialized correctly.  " +
                     "Correct any errors discovered and retry the request when the open metadata services are available."),
-    INVALID_PORT_TYPE(400, "OMAS-DATA-ENGINE-400-001 ",
-            "The port type passed for the {0} is invalid, or different from {1}",
+    INVALID_PORT_TYPE(400, "OMAS-DATA-ENGINE-400-001",
+            "The port type passed for the entity with qualifiedName {0} is invalid, or different from expected type {1}",
             "The system is unable to create a new PortDelegation relation without equal types between the ports.",
             "Correct the code in the caller to provide the correct port type."),
     PROCESS_EVENT_EXCEPTION(400, "OMAS-DATA-ENGINE-400-002",
@@ -44,11 +44,11 @@ public enum DataEngineErrorCode implements ExceptionMessageSet {
             "Exception while processing the data engine event {0}",
             "The system is unable to process the event.",
             "Verify the topic configuration or the event schema."),
-    SCHEMA_ATTRIBUTE_NOT_FOUND(400, "OMAS-DATA-ENGINE-400-005 ",
+    SCHEMA_ATTRIBUTE_NOT_FOUND(400, "OMAS-DATA-ENGINE-400-005",
             "SchemaAttribute with qualifiedName {0} was not found",
             "The system is unable to create a new LineageMapping relation.",
             "Correct the code in the caller to provide the correct schema attribute qualified name."),
-    PORT_NOT_FOUND(400, "OMAS-DATA-ENGINE-400-006 ",
+    PORT_NOT_FOUND(400, "OMAS-DATA-ENGINE-400-006",
             "Port with qualifiedName {0} was not found",
             "The system is unable to create a new PortDelegation relation.",
             "Correct the code in the caller to provide the correct port qualified name."),
@@ -59,7 +59,7 @@ public enum DataEngineErrorCode implements ExceptionMessageSet {
                                  "Review previous error messages to determine the precise error in the " +
                                  "start up configuration. " +
                                  "Correct the configuration and reconnect the server to the cohort. "),
-    PROCESS_NOT_FOUND(400, "OMAS-DATA-ENGINE-400-008 ",
+    PROCESS_NOT_FOUND(400, "OMAS-DATA-ENGINE-400-008",
             "Process with qualifiedName {0} was not found",
             "The system is unable to create a new ProcessHierarchy relation.",
             "Correct the code in the caller to provide the correct port qualified name.");
