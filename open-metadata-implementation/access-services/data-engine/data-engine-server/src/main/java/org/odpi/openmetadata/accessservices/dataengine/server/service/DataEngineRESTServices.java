@@ -62,7 +62,6 @@ import static java.util.stream.Collectors.partitioningBy;
 public class DataEngineRESTServices {
 
     private static final Logger log = LoggerFactory.getLogger(DataEngineRESTServices.class);
-    private static final String DEBUG_MESSAGE_METHOD = "Calling method: {}";
     private static final String DEBUG_MESSAGE_METHOD_DETAILS = "Calling method {} for entity: {}";
     private static final String DEBUG_MESSAGE_METHOD_RETURN = "Returning from method: {} with response: {}";
     public static final String EXCEPTION_WHILE_ADDING_LINEAGE_MAPPING = "Exception while adding lineage mapping {} : {}";
@@ -85,8 +84,6 @@ public class DataEngineRESTServices {
     public GUIDResponse createExternalDataEngine(String serverName, String userId,
                                                  DataEngineRegistrationRequestBody requestBody) {
         final String methodName = "createExternalDataEngine";
-
-        log.debug(DEBUG_MESSAGE_METHOD, methodName);
 
         GUIDResponse response = new GUIDResponse();
 
@@ -123,7 +120,7 @@ public class DataEngineRESTServices {
     public GUIDResponse getExternalDataEngineByQualifiedName(String serverName, String userId, String qualifiedName) {
         final String methodName = "getExternalDataEngineByQualifiedName";
 
-        log.debug(DEBUG_MESSAGE_METHOD, methodName);
+        log.debug(DEBUG_MESSAGE_METHOD_DETAILS, methodName, qualifiedName);
 
         GUIDResponse response = new GUIDResponse();
 
@@ -157,8 +154,6 @@ public class DataEngineRESTServices {
     public GUIDResponse createOrUpdateSchemaType(String userId, String serverName, SchemaTypeRequestBody schemaTypeRequestBody) {
         final String methodName = "createOrUpdateSchemaType";
 
-        log.debug(DEBUG_MESSAGE_METHOD, methodName);
-
         GUIDResponse response = new GUIDResponse();
 
         try {
@@ -180,8 +175,6 @@ public class DataEngineRESTServices {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
         }
 
-        log.debug(DEBUG_MESSAGE_METHOD_RETURN, methodName, response);
-
         return response;
     }
 
@@ -197,8 +190,6 @@ public class DataEngineRESTServices {
     public GUIDResponse createOrUpdatePortImplementation(String userId, String serverName,
                                                          PortImplementationRequestBody portImplementationRequestBody) {
         final String methodName = "createOrUpdatePortImplementation";
-
-        log.debug(DEBUG_MESSAGE_METHOD, methodName);
 
         GUIDResponse response = new GUIDResponse();
         try {
@@ -220,8 +211,6 @@ public class DataEngineRESTServices {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
         }
 
-        log.debug(DEBUG_MESSAGE_METHOD_RETURN, methodName, response);
-
         return response;
     }
 
@@ -236,8 +225,6 @@ public class DataEngineRESTServices {
      */
     public GUIDResponse createOrUpdatePortAlias(String userId, String serverName, PortAliasRequestBody portAliasRequestBody) {
         final String methodName = "createOrUpdatePortAliasWithDelegation";
-
-        log.debug(DEBUG_MESSAGE_METHOD, methodName);
 
         GUIDResponse response = new GUIDResponse();
 
@@ -258,8 +245,6 @@ public class DataEngineRESTServices {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
         }
 
-        log.debug(DEBUG_MESSAGE_METHOD_RETURN, methodName, response);
-
         return response;
     }
 
@@ -275,8 +260,6 @@ public class DataEngineRESTServices {
     public ProcessListResponse createOrUpdateProcesses(String userId, String serverName, ProcessesRequestBody processesRequestBody) {
         final String methodName = "createOrUpdateProcesses";
 
-        log.debug(DEBUG_MESSAGE_METHOD, methodName);
-
         ProcessListResponse response = new ProcessListResponse();
 
         try {
@@ -289,8 +272,6 @@ public class DataEngineRESTServices {
         } catch (InvalidParameterException error) {
             restExceptionHandler.captureInvalidParameterException(response, error);
         }
-
-        log.debug(DEBUG_MESSAGE_METHOD_RETURN, methodName, response);
 
         return response;
     }
@@ -403,6 +384,8 @@ public class DataEngineRESTServices {
                                                                                                                                 PropertyServerException,
                                                                                                                                 UserNotAuthorizedException {
         final String methodName = "createExternalDataEngine";
+
+        log.debug(DEBUG_MESSAGE_METHOD_DETAILS, methodName, softwareServerCapability);
 
         if (softwareServerCapability == null) {
             return null;
@@ -554,8 +537,6 @@ public class DataEngineRESTServices {
     public GUIDResponse addPortsToProcess(String userId, String serverName, String processGuid, PortListRequestBody portListRequestBody) {
         final String methodName = "addPortsToProcess";
 
-        log.debug(DEBUG_MESSAGE_METHOD, methodName);
-
         GUIDResponse response = new GUIDResponse();
 
         try {
@@ -592,8 +573,6 @@ public class DataEngineRESTServices {
      */
     public VoidResponse addLineageMappings(String userId, String serverName, LineageMappingsRequestBody lineageMappingsRequestBody) {
         final String methodName = "addLineageMappings";
-
-        log.debug(DEBUG_MESSAGE_METHOD, methodName);
 
         VoidResponse response = new VoidResponse();
         try {
@@ -800,7 +779,7 @@ public class DataEngineRESTServices {
                         processHandler.createOrUpdateProcessHierarchyRelationship(userId, parentProcess, processGUID, externalSourceName);
                     }
                 } catch (InvalidParameterException error) {
-                    log.error(EXCEPTION_WHILE_CREATING_PROCESS_HIERARCHY, process.getQualifiedName(), error);
+                    log.error(EXCEPTION_WHILE_CREATING_PROCESS_HIERARCHY, process.getQualifiedName(), error.toString());
                     restExceptionHandler.captureInvalidParameterException(response, error);
                 } catch (PropertyServerException error) {
                     log.error(EXCEPTION_WHILE_CREATING_PROCESS_HIERARCHY, process.getQualifiedName(), error.toString());

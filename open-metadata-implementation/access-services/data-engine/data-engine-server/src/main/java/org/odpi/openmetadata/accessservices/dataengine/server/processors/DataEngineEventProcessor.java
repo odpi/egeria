@@ -15,6 +15,7 @@ import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
 import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineException;
 import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessListResponse;
 import org.odpi.openmetadata.accessservices.dataengine.server.admin.DataEngineServicesInstance;
+import org.odpi.openmetadata.accessservices.dataengine.server.auditlog.DataEngineAuditCode;
 import org.odpi.openmetadata.accessservices.dataengine.server.service.DataEngineRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
@@ -186,13 +187,9 @@ public class DataEngineEventProcessor {
     }
 
     private void logException(String dataEngineEvent, String methodName, Exception e) {
-        log.debug("Exception in processing {} from in Data Engine In Topic: {}", methodName, e);
-        //TODO update along with the implementation for processing events
+        log.debug("Exception in processing {} from in Data Engine In Topic: {}", dataEngineEvent, e);
 
-//        DataEngineErrorCode errorCode = DataEngineErrorCode.PARSE_EVENT_EXCEPTION;
-//        auditLog.logException(methodName, errorCode.getErrorMessageId(), OMRSAuditLogRecordSeverity.EXCEPTION,
-//                errorCode.getFormattedErrorMessage(dataEngineEvent, e.getMessage()), e.getMessage(), errorCode.getSystemAction(),
-//                errorCode.getUserAction(), e);
+        auditLog.logException(methodName, DataEngineAuditCode.PARSE_EVENT_EXCEPTION.getMessageDefinition(dataEngineEvent, e.toString()), e);
     }
 
     private void validateResponse(FFDCResponseBase response, String dataEngineEvent, String methodName) throws DataEngineException {

@@ -59,8 +59,12 @@ public enum DataEngineAuditCode {
                     "error message: {2}",
             "The access service detected an error during the start up of the out topic.  Its services are not available for the server.",
             "Review the error message and any other reported failures to determine the cause of the problem.  Check the status of the event " +
-                    "bus.  Once this is resolved, restart the server.");
-
+                    "bus.  Once this is resolved, restart the server."),
+    PARSE_EVENT_EXCEPTION("OMAS- DATA-ENGINE-0007",
+            OMRSAuditLogRecordSeverity.EXCEPTION,
+            "The data engine event {0} could not be parsed. Error: {1}",
+            "The system is unable to process the event.",
+            "Verify the topic configuration or the event schema.");
     private AuditLogMessageDefinition messageDefinition;
 
     /**
@@ -96,6 +100,7 @@ public enum DataEngineAuditCode {
      * Retrieve a message definition object for logging.  This method is used when there are values to be inserted into the message.
      *
      * @param params array of parameters (all strings).  They are inserted into the message according to the numbering in the message text.
+     *
      * @return message definition object.
      */
     public AuditLogMessageDefinition getMessageDefinition(String... params) {
