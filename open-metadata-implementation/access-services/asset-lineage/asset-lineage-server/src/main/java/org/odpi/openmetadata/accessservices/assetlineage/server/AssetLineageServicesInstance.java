@@ -49,8 +49,6 @@ public class AssetLineageServicesInstance extends OCFOMASServiceInstance {
                 localServerUserId,
                 repositoryConnector.getMaxPageSize());
 
-        final String methodName = "AssetLineageServicesInstance";
-
         super.supportedZones = supportedZones;
 
         if (repositoryHandler != null) {
@@ -82,15 +80,10 @@ public class AssetLineageServicesInstance extends OCFOMASServiceInstance {
                     repositoryHelper);
 
         } else {
-            AssetLineageErrorCode errorCode = AssetLineageErrorCode.OMRS_NOT_INITIALIZED;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
-
-            throw new NewInstanceException(errorCode.getHTTPErrorCode(),
+            String methodName = "AssetLineageServicesInstance";
+            throw new NewInstanceException(AssetLineageErrorCode.OMRS_NOT_INITIALIZED.getMessageDefinition(methodName),
                     this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction());
+                    methodName);
         }
     }
 
