@@ -178,11 +178,6 @@ public class SubjectAreaLine implements SubjectAreaRelationship {
         protected SubjectAreaCategoryHierarchyLinkClient(SubjectAreaRestClient subjectAreaRestClient) {
             super(subjectAreaRestClient, CATEGORY_HIERARCHY_LINK);
         }
-
-        @Override
-        public Class<CategoryHierarchyLink> resultType() {
-            return CategoryHierarchyLink.class;
-        }
     }
 
     @SubjectAreaLineClient
@@ -190,21 +185,11 @@ public class SubjectAreaLine implements SubjectAreaRelationship {
         protected SubjectAreaTermAnchorClient(SubjectAreaRestClient subjectAreaRestClient) {
             super(subjectAreaRestClient, TERM_ANCHOR);
         }
-
-        @Override
-        public Class<TermAnchor> resultType() {
-            return TermAnchor.class;
-        }
     }
     @SubjectAreaLineClient
     static class SubjectAreaRelatedTermClient extends AbstractSubjectAreaRelationship<RelatedTerm> {
         protected SubjectAreaRelatedTermClient(SubjectAreaRestClient subjectAreaRestClient) {
             super(subjectAreaRestClient, RELATED_TERM);
-        }
-
-        @Override
-        public Class<RelatedTerm> resultType() {
-            return RelatedTerm.class;
         }
     }
     @SubjectAreaLineClient
@@ -212,21 +197,11 @@ public class SubjectAreaLine implements SubjectAreaRelationship {
         protected SubjectAreaHasaClient(SubjectAreaRestClient subjectAreaRestClient) {
             super(subjectAreaRestClient, HASA);
         }
-
-        @Override
-        public Class<HasA> resultType() {
-            return HasA.class;
-        }
     }
     @SubjectAreaLineClient
     static class SubjectAreaSynonymClient extends AbstractSubjectAreaRelationship<Synonym> {
         protected SubjectAreaSynonymClient(SubjectAreaRestClient subjectAreaRestClient) {
             super(subjectAreaRestClient, SYNONYM);
-        }
-
-        @Override
-        public Class<Synonym> resultType() {
-            return Synonym.class;
         }
     }
     @SubjectAreaLineClient
@@ -234,21 +209,11 @@ public class SubjectAreaLine implements SubjectAreaRelationship {
         protected SubjectAreaAntonymClient(SubjectAreaRestClient subjectAreaRestClient) {
             super(subjectAreaRestClient, ANTONYM);
         }
-
-        @Override
-        public Class<Antonym> resultType() {
-            return Antonym.class;
-        }
     }
     @SubjectAreaLineClient
     static class SubjectAreaCategoryAnchorClient extends AbstractSubjectAreaRelationship<CategoryAnchor> {
         protected SubjectAreaCategoryAnchorClient(SubjectAreaRestClient subjectAreaRestClient) {
             super(subjectAreaRestClient, CATEGORY_ANCHOR);
-        }
-
-        @Override
-        public Class<CategoryAnchor> resultType() {
-            return CategoryAnchor.class;
         }
     }
     @SubjectAreaLineClient
@@ -256,21 +221,11 @@ public class SubjectAreaLine implements SubjectAreaRelationship {
         protected SubjectAreaCategorizationClient(SubjectAreaRestClient subjectAreaRestClient) {
             super(subjectAreaRestClient, TERM_CATEGORIZATION);
         }
-
-        @Override
-        public Class<Categorization> resultType() {
-            return Categorization.class;
-        }
     }
     @SubjectAreaLineClient
     static class SubjectAreaTranslationClient extends AbstractSubjectAreaRelationship<Translation> {
         protected SubjectAreaTranslationClient(SubjectAreaRestClient subjectAreaRestClient) {
             super(subjectAreaRestClient, TRANSLATION);
-        }
-
-        @Override
-        public Class<Translation> resultType() {
-            return Translation.class;
         }
     }
     @SubjectAreaLineClient
@@ -278,21 +233,11 @@ public class SubjectAreaLine implements SubjectAreaRelationship {
         protected SubjectAreaUsedInContextClient(SubjectAreaRestClient subjectAreaRestClient) {
             super(subjectAreaRestClient, USED_IN_CONTEXT);
         }
-
-        @Override
-        public Class<UsedInContext> resultType() {
-            return UsedInContext.class;
-        }
     }
     @SubjectAreaLineClient
     static class SubjectAreaPreferredTermClient extends AbstractSubjectAreaRelationship<PreferredTerm> {
         protected SubjectAreaPreferredTermClient(SubjectAreaRestClient subjectAreaRestClient) {
             super(subjectAreaRestClient, PREFERRED_TERM);
-        }
-
-        @Override
-        public Class<PreferredTerm> resultType() {
-            return PreferredTerm.class;
         }
     }
     @SubjectAreaLineClient
@@ -300,21 +245,11 @@ public class SubjectAreaLine implements SubjectAreaRelationship {
         protected SubjectAreaValidValueClient(SubjectAreaRestClient subjectAreaRestClient) {
             super(subjectAreaRestClient, VALID_VALUE);
         }
-
-        @Override
-        public Class<ValidValue> resultType() {
-            return ValidValue.class;
-        }
     }
     @SubjectAreaLineClient
     static class SubjectAreaReplacementTermClient extends AbstractSubjectAreaRelationship<ReplacementTerm> {
         protected SubjectAreaReplacementTermClient(SubjectAreaRestClient subjectAreaRestClient) {
             super(subjectAreaRestClient, REPLACEMENT_TERM);
-        }
-
-        @Override
-        public Class<ReplacementTerm> resultType() {
-            return ReplacementTerm.class;
         }
     }
     @SubjectAreaLineClient
@@ -322,21 +257,11 @@ public class SubjectAreaLine implements SubjectAreaRelationship {
         protected SubjectAreaSemanticAssignmentClient(SubjectAreaRestClient subjectAreaRestClient) {
             super(subjectAreaRestClient, SEMANTIC_ASSIGNMENT);
         }
-
-        @Override
-        public Class<SemanticAssignment> resultType() {
-            return SemanticAssignment.class;
-        }
     }
     @SubjectAreaLineClient
     static class SubjectAreaTypedByClient extends AbstractSubjectAreaRelationship<TypedBy> {
         protected SubjectAreaTypedByClient(SubjectAreaRestClient subjectAreaRestClient) {
             super(subjectAreaRestClient, TYPED_BY);
-        }
-
-        @Override
-        public Class<TypedBy> resultType() {
-            return TypedBy.class;
         }
     }
     @SubjectAreaLineClient
@@ -344,32 +269,17 @@ public class SubjectAreaLine implements SubjectAreaRelationship {
         protected SubjectAreaIsaClient(SubjectAreaRestClient subjectAreaRestClient) {
             super(subjectAreaRestClient, IS_A);
         }
-
-        @Override
-        public Class<IsA> resultType() {
-            return IsA.class;
-        }
     }
     @SubjectAreaLineClient
     static class SubjectAreaIsaTypeOfClient extends AbstractSubjectAreaRelationship<IsATypeOf> {
         protected SubjectAreaIsaTypeOfClient(SubjectAreaRestClient subjectAreaRestClient) {
             super(subjectAreaRestClient, IS_A_TYPE_OF);
         }
-
-        @Override
-        public Class<IsATypeOf> resultType() {
-            return IsATypeOf.class;
-        }
     }
     @SubjectAreaLineClient
     static class SubjectAreaProjectScopeClient extends AbstractSubjectAreaRelationship<ProjectScope> {
         protected SubjectAreaProjectScopeClient(SubjectAreaRestClient subjectAreaRestClient) {
             super(subjectAreaRestClient, PROJECT_SCOPE);
-        }
-
-        @Override
-        public Class<ProjectScope> resultType() {
-            return ProjectScope.class;
         }
     }
 

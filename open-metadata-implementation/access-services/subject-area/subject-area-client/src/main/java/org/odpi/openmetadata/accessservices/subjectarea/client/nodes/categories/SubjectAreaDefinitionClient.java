@@ -13,9 +13,4 @@ public class SubjectAreaDefinitionClient extends AbstractSubjectAreaNode<Subject
     public SubjectAreaDefinitionClient(SubjectAreaRestClient client) {
         super(client, SUBJECT_AREA_BASE_URL + "categories");
     }
-
-    @Override
-    public Class<SubjectAreaDefinition> resultType() {
-        return SubjectAreaDefinition.class;
-    }
 }

@@ -4,7 +4,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.client.relationships;
 
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GenericResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.Parametrization;
+import org.odpi.openmetadata.commonservices.ffdc.rest.ResponseParameterization;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaRestClient;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.NeighborhoodHistoricalFindRequest;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Graph;
@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 
 import static org.odpi.openmetadata.accessservices.subjectarea.client.AbstractSubjectArea.SUBJECT_AREA_BASE_URL;
 
-public class SubjectAreaGraphClient implements SubjectAreaGraph, Parametrization<Graph> {
+public class SubjectAreaGraphClient implements SubjectAreaGraph, ResponseParameterization<Graph> {
     private static final String BASE_URL = SUBJECT_AREA_BASE_URL + "nodes";
     protected final SubjectAreaRestClient client;
     public SubjectAreaGraphClient(SubjectAreaRestClient client) {
@@ -44,7 +44,7 @@ public class SubjectAreaGraphClient implements SubjectAreaGraph, Parametrization
         final String methodName = "getGraph";;
 
         String urlTemplate = BASE_URL + "/%s" + createGraphQuery(request).toString();
-        GenericResponse<Graph> response = client.getByIdRESTCall(userId, guid, methodName, getParametrizedType(), urlTemplate);
+        GenericResponse<Graph> response = client.getByIdRESTCall(userId, guid, methodName, getParameterizedType(), urlTemplate);
         return response.getHead();
     }
 

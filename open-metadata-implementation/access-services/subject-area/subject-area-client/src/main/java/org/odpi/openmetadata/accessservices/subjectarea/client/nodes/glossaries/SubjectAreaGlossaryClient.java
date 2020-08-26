@@ -13,10 +13,4 @@ public class SubjectAreaGlossaryClient extends AbstractSubjectAreaNode<Glossary>
     {
         super(client, SUBJECT_AREA_BASE_URL + "glossaries");
     }
-
-
-    @Override
-    public Class<Glossary> resultType() {
-        return Glossary.class;
-    }
 }

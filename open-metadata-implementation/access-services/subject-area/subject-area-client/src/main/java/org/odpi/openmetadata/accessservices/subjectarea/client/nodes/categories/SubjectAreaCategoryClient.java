@@ -13,9 +13,4 @@ public class SubjectAreaCategoryClient extends AbstractSubjectAreaNode<Category>
     {
         super(client, SUBJECT_AREA_BASE_URL + "categories");
     }
-
-    @Override
-    public Class<Category> resultType() {
-        return Category.class;
-    }
 }

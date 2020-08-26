@@ -24,11 +24,6 @@ public class SubjectAreaProjectClient extends AbstractSubjectAreaNode<Project> {
         super(client, SUBJECT_AREA_BASE_URL + "projects");
     }
 
-    @Override
-    public Class<Project> resultType() {
-        return Project.class;
-    }
-
     public List<Term> getProjectTerms(String userId, String guid) throws PropertyServerException,
                                                                          UserNotAuthorizedException,
                                                                          InvalidParameterException

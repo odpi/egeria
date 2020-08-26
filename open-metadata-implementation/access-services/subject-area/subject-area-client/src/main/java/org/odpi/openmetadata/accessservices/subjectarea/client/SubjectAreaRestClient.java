@@ -7,7 +7,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.utils.QueryBuilder;
 import org.odpi.openmetadata.accessservices.subjectarea.utils.QueryUtils;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GenericResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient;
-import org.odpi.openmetadata.commonservices.ffdc.rest.Parametrization;
+import org.odpi.openmetadata.commonservices.ffdc.rest.ResponseParameterization;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -60,7 +60,7 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
      * @param userId      unique identifier for requesting user, under which the request is performed
      * @param methodName  name of the method being called.
      * @param type class of the response for generic object. Descried using {@link ParameterizedTypeReference}
-     *             An example can be seen here {@link Parametrization#getParametrizedType()}
+     *             An example can be seen here {@link ResponseParameterization#getParameterizedType()}
      * @param urnTemplate  template of the URN for the REST API call with place-holders for the parameters.
      * @param requestBody request body for the request.
      *
@@ -98,7 +98,7 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
      * @param guid        unique identifier of the update object
      * @param methodName  name of the method being called.
      * @param type class of the response for generic object. Descried using {@link ParameterizedTypeReference}
-     *             An example can be seen here {@link Parametrization#getParametrizedType()}
+     *             An example can be seen here {@link ResponseParameterization#getParameterizedType()}
      * @param urnTemplate  template of the URN for the REST API call with place-holders for the parameters.
      * @param requestBody request body for the request.
      *
@@ -137,7 +137,7 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
      * @param guid        unique identifier of the received object
      * @param methodName  name of the method being called.
      * @param type class of the response for generic object. Descried using {@link ParameterizedTypeReference}
-     *             An example can be seen here {@link Parametrization#getParametrizedType()}
+     *             An example can be seen here {@link ResponseParameterization#getParameterizedType()}
      * @param urnTemplate  template of the URN for the REST API call with place-holders for the parameters.
 
      * @return GenericResponse with T result
@@ -174,7 +174,7 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
      * @param methodName  name of the method being called.
      * @param urnTemplate  template of the URN for the REST API call with place-holders for the parameters.
      * @param type class of the response for generic object. Descried using {@link ParameterizedTypeReference}
-     *             An example can be seen here {@link Parametrization#getParametrizedType()}
+     *             An example can be seen here {@link ResponseParameterization#getParameterizedType()}
      * @param findRequest {@link FindRequest}
      *
      * @return GenericResponse with T results
@@ -213,7 +213,7 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
      * @param methodName  name of the method being called.
      * @param urnTemplate  template of the URN for the REST API call with place-holders for the parameters.
      * @param type class of the response for generic object. Descried using {@link ParameterizedTypeReference}
-     *             An example can be seen here {@link Parametrization#getParametrizedType()}
+     *             An example can be seen here {@link ResponseParameterization#getParameterizedType()}
      * @param findRequest {@link FindRequest}
      *
      * @return GenericResponse with T results
@@ -242,7 +242,7 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
      * @param guid        unique identifier of the delete object
      * @param methodName  name of the method being called.
      * @param type class of the response for generic object. Descried using {@link ParameterizedTypeReference}
-     *             An example can be seen here {@link Parametrization#getParametrizedType()}
+     *             An example can be seen here {@link ResponseParameterization#getParameterizedType()}
      * @param urnTemplate  template of the URN for the REST API call with place-holders for the parameters.
      *
      * @return GenericResponse with T result
@@ -279,7 +279,7 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
      * @param guid        unique identifier of the restore object
      * @param methodName  name of the method being called.
      * @param type class of the response for generic object. Descried using {@link ParameterizedTypeReference}
-     *             An example can be seen here {@link Parametrization#getParametrizedType()}
+     *             An example can be seen here {@link ResponseParameterization#getParameterizedType()}
      * @param urnTemplate  template of the URN for the REST API call with place-holders for the parameters.
      *
      * @return GenericResponse with T result

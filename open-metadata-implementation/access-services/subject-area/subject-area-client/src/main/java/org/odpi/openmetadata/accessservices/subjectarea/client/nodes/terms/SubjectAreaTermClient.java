@@ -13,9 +13,4 @@ public class SubjectAreaTermClient extends AbstractSubjectAreaNode<Term> {
     {
         super(client, SUBJECT_AREA_BASE_URL + "terms");
     }
-
-    @Override
-    public Class<Term> resultType() {
-        return Term.class;
-    }
 }
