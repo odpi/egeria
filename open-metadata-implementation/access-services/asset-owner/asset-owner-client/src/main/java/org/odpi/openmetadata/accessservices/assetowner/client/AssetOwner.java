@@ -41,7 +41,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
                                                                     AssetDecommissioningInterface
 
 {
-    AssetOwnerRESTClient restClient;               /* Initialized in constructor */
+    protected AssetOwnerRESTClient restClient;               /* Initialized in constructor */
 
     private static final String  serviceURLName = "asset-owner";
 
