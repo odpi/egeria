@@ -104,8 +104,10 @@ public class AssetLineageInstanceHandler extends OCFOMASServiceInstanceHandler {
             throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
 
         AssetLineageServicesInstance instance = (AssetLineageServicesInstance) super.getServerServiceInstance(userId, serverName, serviceOperationName);
-        if (instance != null)
+        if (instance != null) {
             return instance.getClassificationHandler();
+        }
+
         return null;
     }
 
@@ -127,6 +129,7 @@ public class AssetLineageInstanceHandler extends OCFOMASServiceInstanceHandler {
         if (instance != null) {
             return instance.getAssetLineagePublisher();
         }
+
         return null;
     }
 }

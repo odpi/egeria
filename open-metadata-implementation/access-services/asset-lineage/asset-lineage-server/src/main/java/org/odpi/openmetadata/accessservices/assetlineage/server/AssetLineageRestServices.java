@@ -66,6 +66,7 @@ public class AssetLineageRestServices {
             if (CollectionUtils.isEmpty(entitiesByTypeName)) {
                 return response;
             }
+            log.debug("Asset Lineage OMAS found {} entities with type {}", entitiesByTypeName.size(), entityType);
 
             AssetLineagePublisher publisher = instanceHandler.getAssetLineagePublisher(userId, serverName, methodName);
             if (publisher == null) {
@@ -73,8 +74,8 @@ public class AssetLineageRestServices {
                         "The context event for {} could not be published on the Asset Lineage OMAS Out Topic.", entityType);
                 return response;
             }
-            List<String> publishedEntitiesContext = publishEntitiesContext(entitiesByTypeName, publisher);
 
+            List<String> publishedEntitiesContext = publishEntitiesContext(entitiesByTypeName, publisher);
             response.setGUIDs(publishedEntitiesContext);
         } catch (InvalidParameterException e) {
             restExceptionHandler.captureInvalidParameterException(response, e);
@@ -91,11 +92,13 @@ public class AssetLineageRestServices {
 
     private List<String> publishEntitiesContext(List<EntityDetail> entitiesByType, AssetLineagePublisher publisher) throws JsonProcessingException, OCFCheckedExceptionBase {
         List<String> publishedGUIDs = new ArrayList<>();
+        log.debug("Asset Lineage OMAS is publishing entities context");
 
         for (EntityDetail entityDetail : entitiesByType) {
             publishedGUIDs.add(publishEntityContext(publisher, entityDetail));
         }
 
+        log.debug("Asset Lineage OMAS published entities context");
         CollectionUtils.filter(publishedGUIDs, PredicateUtils.notNullPredicate());
         return publishedGUIDs;
     }
