@@ -108,20 +108,18 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
      * @param instanceEvent event to unpack
      */
     public void processInstanceEvent(OMRSInstanceEvent instanceEvent) {
-        log.debug("Processing instance event" + instanceEvent);
-
         if (instanceEvent == null) {
-            log.debug("Null instance event - Asset Lineage OMAS is ignoring the event");
+            return;
+        }
+
+        OMRSEventOriginator instanceEventOriginator = instanceEvent.getEventOriginator();
+        if (instanceEventOriginator == null) {
             return;
         }
 
         OMRSInstanceEventType instanceEventType = instanceEvent.getInstanceEventType();
-        OMRSEventOriginator instanceEventOriginator = instanceEvent.getEventOriginator();
         EntityDetail entityDetail = instanceEvent.getEntity();
         Relationship relationship = instanceEvent.getRelationship();
-
-        if (instanceEventOriginator == null)
-            return;
 
         try {
             switch (instanceEventType) {
@@ -165,14 +163,13 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
 
     private void processNewEntity(EntityDetail entityDetail) throws OCFCheckedExceptionBase, JsonProcessingException {
         String typeDefName = entityDetail.getType().getTypeDefName();
-        if (!immutableValidLineageEntityEvents.contains(typeDefName))
+        if (!PROCESS.equals(typeDefName)) {
             return;
+        }
 
         log.debug(PROCESSING_ENTITY_DETAIL_DEBUG_MESSAGE, "newEntity", entityDetail.getGUID());
 
-        if (PROCESS.equals(typeDefName)) {
-            publisher.publishProcessContext(entityDetail);
-        }
+        publisher.publishProcessContext(entityDetail);
     }
 
     private void processUpdatedEntity(EntityDetail entityDetail, EntityDetail originalEntity) throws OCFCheckedExceptionBase, JsonProcessingException {
@@ -187,12 +184,6 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
         } else {
             publishEntityEvent(entityDetail, AssetLineageEventType.UPDATE_ENTITY_EVENT);
         }
-    }
-
-    private boolean isProcessStatusChangedToActive(EntityDetail entityDetail, EntityDetail originalEntity) {
-        return entityDetail.getType().getTypeDefName().equals(PROCESS) &&
-                !originalEntity.getStatus().getName().equals(entityDetail.getStatus().getName())
-                && entityDetail.getStatus().getName().equals(VALUE_FOR_ACTIVE);
     }
 
     private void processDeletedEntity(EntityDetail entityDetail) throws ConnectorCheckedException, JsonProcessingException, UserNotAuthorizedException, PropertyServerException {
@@ -248,7 +239,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
     private void publishEntityEvent(EntityDetail entityDetail, AssetLineageEventType lineageEventType)
             throws JsonProcessingException, ConnectorCheckedException, UserNotAuthorizedException, PropertyServerException {
         if (publisher.isEntityEligibleForPublishing(entityDetail)) {
-            publisher.publishEntityEvent(converter.createLineageEntity(entityDetail), lineageEventType);
+            publisher.publishLineageEntityEvent(converter.createLineageEntity(entityDetail), lineageEventType);
         }
     }
 
@@ -257,52 +248,60 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
                 || immutableValidLineageEntityEvents.contains(relationship.getEntityTwoProxy().getType().getTypeDefName()))) {
             return;
         }
-        log.debug(PROCESSING_RELATIONSHIP_DEBUG_MESSAGE, AssetLineageEventType.NEW_RELATIONSHIP_EVENT.getEventTypeName(), relationship.getGUID());
 
         String relationshipType = relationship.getType().getTypeDefName();
 
         switch (relationshipType) {
             case SEMANTIC_ASSIGNMENT:
             case TERM_CATEGORIZATION:
+                log.debug(PROCESSING_RELATIONSHIP_DEBUG_MESSAGE, AssetLineageEventType.NEW_RELATIONSHIP_EVENT.getEventTypeName(), relationship.getGUID());
                 String glossaryTermGUID = relationship.getEntityTwoProxy().getGUID();
                 publisher.publishGlossaryContext(glossaryTermGUID);
                 break;
             case PROCESS_HIERARCHY:
+                log.debug(PROCESSING_RELATIONSHIP_DEBUG_MESSAGE, AssetLineageEventType.NEW_RELATIONSHIP_EVENT.getEventTypeName(), relationship.getGUID());
                 publisher.publishLineageRelationshipEvent(converter.createLineageRelationship(relationship),
                         AssetLineageEventType.NEW_RELATIONSHIP_EVENT);
                 break;
             default:
-                log.debug("Asset Lineage OMAS is ignoring the event concerning relationship {}", relationshipType);
                 break;
         }
     }
 
     private void processUpdatedRelationshipEvent(Relationship relationship) throws OCFCheckedExceptionBase, JsonProcessingException {
-        log.debug(PROCESSING_RELATIONSHIP_DEBUG_MESSAGE, AssetLineageEventType.UPDATE_RELATIONSHIP_EVENT.getEventTypeName(), relationship.getGUID());
         if (!immutableValidLineageRelationshipTypes.contains(relationship.getType().getTypeDefName())) {
             return;
         }
+
         if (!(immutableValidLineageEntityEvents.contains(relationship.getEntityOneProxy().getType().getTypeDefName())
                 || immutableValidLineageEntityEvents.contains(relationship.getEntityTwoProxy().getType().getTypeDefName()))) {
             return;
         }
+
+        log.debug(PROCESSING_RELATIONSHIP_DEBUG_MESSAGE, AssetLineageEventType.UPDATE_RELATIONSHIP_EVENT.getEventTypeName(), relationship.getGUID());
 
         publisher.publishLineageRelationshipEvent(converter.createLineageRelationship(relationship), AssetLineageEventType.UPDATE_RELATIONSHIP_EVENT);
     }
 
     private void processDeletedRelationshipEvent(Relationship relationship) throws OCFCheckedExceptionBase, JsonProcessingException {
-        log.debug(PROCESSING_RELATIONSHIP_DEBUG_MESSAGE, AssetLineageEventType.DELETE_RELATIONSHIP_EVENT.getEventTypeName(), relationship.getGUID());
-
         if (!immutableValidLineageRelationshipTypes.contains(relationship.getType().getTypeDefName())) {
             return;
         }
+
         if (!(immutableValidLineageEntityEvents.contains(relationship.getEntityOneProxy().getType().getTypeDefName())
                 || immutableValidLineageEntityEvents.contains(relationship.getEntityTwoProxy().getType().getTypeDefName()))) {
             return;
         }
 
-        publisher.publishLineageRelationshipEvent(converter.createLineageRelationship(relationship), AssetLineageEventType.DELETE_RELATIONSHIP_EVENT);
+        log.debug(PROCESSING_RELATIONSHIP_DEBUG_MESSAGE, AssetLineageEventType.DELETE_RELATIONSHIP_EVENT.getEventTypeName(), relationship.getGUID());
 
+        publisher.publishLineageRelationshipEvent(converter.createLineageRelationship(relationship), AssetLineageEventType.DELETE_RELATIONSHIP_EVENT);
+    }
+
+    private boolean isProcessStatusChangedToActive(EntityDetail entityDetail, EntityDetail originalEntity) {
+        return entityDetail.getType().getTypeDefName().equals(PROCESS) &&
+                !originalEntity.getStatus().getName().equals(entityDetail.getStatus().getName())
+                && entityDetail.getStatus().getName().equals(VALUE_FOR_ACTIVE);
     }
 
     private boolean anyLineageClassificationsLeft(EntityDetail entityDetail) {
