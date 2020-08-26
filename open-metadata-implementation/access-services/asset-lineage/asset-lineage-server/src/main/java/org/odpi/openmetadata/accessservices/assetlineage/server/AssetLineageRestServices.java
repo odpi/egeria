@@ -6,6 +6,7 @@ package org.odpi.openmetadata.accessservices.assetlineage.server;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
+import org.apache.commons.collections4.PredicateUtils;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.AssetContextHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.outtopic.AssetLineagePublisher;
@@ -20,6 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -71,7 +73,7 @@ public class AssetLineageRestServices {
                         "The context event for {} could not be published on the Asset Lineage OMAS Out Topic.", entityType);
                 return response;
             }
-            List<String> publishedEntitiesContext = publishEntitiesContext(entityType, entitiesByTypeName, publisher);
+            List<String> publishedEntitiesContext = publishEntitiesContext(entitiesByTypeName, publisher);
 
             response.setGUIDs(publishedEntitiesContext);
         } catch (InvalidParameterException e) {
@@ -80,36 +82,47 @@ public class AssetLineageRestServices {
             restExceptionHandler.captureUserNotAuthorizedException(response, e);
         } catch (PropertyServerException e) {
             restExceptionHandler.capturePropertyServerException(response, e);
+        } catch (OCFCheckedExceptionBase | JsonProcessingException e) {
+            restExceptionHandler.captureThrowable(response, e, methodName);
         }
 
         return response;
     }
 
-    private List<String> publishEntitiesContext(String typeName, List<EntityDetail> entitiesByType, AssetLineagePublisher publisher) {
+    private List<String> publishEntitiesContext(List<EntityDetail> entitiesByType, AssetLineagePublisher publisher) throws JsonProcessingException, OCFCheckedExceptionBase {
         List<String> publishedGUIDs = new ArrayList<>();
+
         for (EntityDetail entityDetail : entitiesByType) {
-            try {
-                if (GLOSSARY_TERM.equals(typeName)) {
-                    Map<String, Set<GraphContext>> context = publisher.publishGlossaryContext(entityDetail);
-                    collectGUID(publishedGUIDs, entityDetail, context);
-                } else if (PROCESS.equals(typeName)) {
-                    Map<String, Set<GraphContext>> context = publisher.publishProcessContext(entityDetail);
-                    collectGUID(publishedGUIDs, entityDetail, context);
-                } else {
-                    // only Processes and GlossaryTerms are the types supported for initial load
-                    log.error("Unsupported typeName {} for entity with guid {}. The context can not be published", typeName, entityDetail.getGUID());
-                }
-            } catch (OCFCheckedExceptionBase | JsonProcessingException ocfCheckedExceptionBase) {
-                ocfCheckedExceptionBase.printStackTrace();
-            }
+            publishedGUIDs.add(publishEntityContext(publisher, entityDetail));
         }
 
+        CollectionUtils.filter(publishedGUIDs, PredicateUtils.notNullPredicate());
         return publishedGUIDs;
     }
 
-    private void collectGUID(List<String> publishedGUIDs, EntityDetail entityDetail, Map<String, Set<GraphContext>> context) {
-        if (MapUtils.isNotEmpty(context)) {
-            publishedGUIDs.add(entityDetail.getGUID());
+    private String publishEntityContext(AssetLineagePublisher publisher,
+                                        EntityDetail entityDetail) throws OCFCheckedExceptionBase, JsonProcessingException {
+        String typeName = entityDetail.getType().getTypeDefName();
+        Map<String, Set<GraphContext>> context = new HashMap<>();
+
+        switch (typeName) {
+            case GLOSSARY_TERM: {
+                context = publisher.publishGlossaryContext(entityDetail);
+                break;
+            }
+            case PROCESS: {
+                publisher.publishProcessContext(entityDetail);
+                break;
+            }
+            default:
+                log.error("Unsupported typeName {} for entity with guid {}. The context can not be published",
+                        typeName, entityDetail.getGUID());
+                break;
         }
+
+        if (MapUtils.isNotEmpty(context)) {
+            return entityDetail.getGUID();
+        }
+        return null;
     }
 }
