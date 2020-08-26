@@ -1,4 +1,5 @@
-<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- SPDX-License-Identifier: CC-BY-4.0 -->
+<!-- Copyright Contributors to the ODPi Egeria project 2020. -->
 
 The ui chassis provides the base server framework to host the open metadata
 services in the UI Server Platform.  

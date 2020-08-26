@@ -1,4 +1,4 @@
-<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
@@ -1623,3 +1623,8 @@ Please refer to [this section](#resolving-heroku-deployment-errors).
 ## Something Missing?
 
 If you have ideas for more “How To” recipes that should be on this page, [let us know](https://github.com/facebookincubator/create-react-app/issues) or [contribute some!](https://github.com/facebookincubator/create-react-app/edit/master/packages/react-scripts/template/README.md)
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.
