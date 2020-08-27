@@ -74,6 +74,7 @@ public class ReplacementTerm extends Line {
 
     private void initialise() {
         name = "ReplacementTerm";
+        typeDefGuid = "3bac5f35-328b-4bbd-bfc9-3b3c9ba5e0ed";
         // set the LineType if this is a LineType enum value.
         try {
             lineType = LineType.valueOf(name);
@@ -81,7 +82,7 @@ public class ReplacementTerm extends Line {
         } catch (IllegalArgumentException e) {
             lineType = LineType.Unknown;
         }
-        typeDefGuid = "3bac5f35-328b-4bbd-bfc9-3b3c9ba5e0ed";
+
     }
 
     public ReplacementTerm(Line template) {

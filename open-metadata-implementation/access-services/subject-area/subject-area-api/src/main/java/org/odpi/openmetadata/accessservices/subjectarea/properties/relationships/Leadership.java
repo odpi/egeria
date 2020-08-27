@@ -70,6 +70,7 @@ public class Leadership extends Line {
 
     private void initialise() {
         name = "Leadership";
+        typeDefGuid = "5ebc4fb2-b62a-4269-8f18-e9237a2119ca";
         // set the LineType if this is a LineType enum value.
         try {
             lineType = LineType.valueOf(name);
@@ -77,7 +78,7 @@ public class Leadership extends Line {
         } catch (IllegalArgumentException e) {
             lineType = LineType.Unknown;
         }
-        typeDefGuid = "5ebc4fb2-b62a-4269-8f18-e9237a2119ca";
+
     }
 
     public Leadership(Line template) {

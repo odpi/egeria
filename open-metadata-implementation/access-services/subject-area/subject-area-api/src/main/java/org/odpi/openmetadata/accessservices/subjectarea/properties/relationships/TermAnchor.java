@@ -69,6 +69,7 @@ public class TermAnchor extends Line {
 
     private void initialise() {
         name = "TermAnchor";
+        typeDefGuid = "1d43d661-bdc7-4a91-a996-3239b8f82e56";
         // set the LineType if this is a LineType enum value.
         try {
             lineType = LineType.valueOf(name);
@@ -76,7 +77,6 @@ public class TermAnchor extends Line {
         } catch (IllegalArgumentException e) {
             lineType = LineType.Unknown;
         }
-        typeDefGuid = "1d43d661-bdc7-4a91-a996-3239b8f82e56";
     }
 
     public TermAnchor(Line template) {

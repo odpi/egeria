@@ -69,6 +69,7 @@ public class CategoryAnchor extends Line {
 
     private void initialise() {
         name = "CategoryAnchor";
+        typeDefGuid = "c628938e-815e-47db-8d1c-59bb2e84e028";
         // set the LineType if this is a LineType enum value.
         try {
             lineType = LineType.valueOf(name);
@@ -77,7 +78,7 @@ public class CategoryAnchor extends Line {
             lineType = LineType.Unknown;
         }
 
-        typeDefGuid = "c628938e-815e-47db-8d1c-59bb2e84e028";
+
     }
 
     public CategoryAnchor(Line template) {

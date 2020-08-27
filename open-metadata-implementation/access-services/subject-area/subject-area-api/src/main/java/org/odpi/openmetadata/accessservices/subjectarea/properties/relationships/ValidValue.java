@@ -74,13 +74,14 @@ public class ValidValue extends Line {
 
     private void initialise() {
         name = "ValidValue";
+        typeDefGuid = "707a156b-e579-4482-89a5-de5889da1971";
         // set the LineType if this is a LineType enum value.
         try {
             lineType = LineType.valueOf(name);
+            setLineEnds();
         } catch (IllegalArgumentException e) {
             lineType = LineType.Unknown;
         }
-        typeDefGuid = "707a156b-e579-4482-89a5-de5889da1971";
     }
 
     public ValidValue(Line template) {

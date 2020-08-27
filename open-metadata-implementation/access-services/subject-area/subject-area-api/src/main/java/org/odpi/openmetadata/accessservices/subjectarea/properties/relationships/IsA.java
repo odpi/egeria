@@ -74,6 +74,7 @@ public class IsA extends Line {
 
     private void initialise() {
         name = "Isa";
+        typeDefGuid = "50fab7c7-68bc-452f-b8eb-ec76829cac85";
         // set the LineType if this is a LineType enum value.
         try {
             lineType = LineType.valueOf(name);
@@ -81,7 +82,6 @@ public class IsA extends Line {
         } catch (IllegalArgumentException e) {
             lineType = LineType.Unknown;
         }
-        typeDefGuid = "50fab7c7-68bc-452f-b8eb-ec76829cac85";
     }
 
     public IsA(Line template) {

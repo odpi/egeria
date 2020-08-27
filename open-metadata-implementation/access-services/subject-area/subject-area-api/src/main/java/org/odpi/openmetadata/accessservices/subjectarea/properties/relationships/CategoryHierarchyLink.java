@@ -69,6 +69,7 @@ public class CategoryHierarchyLink extends Line {
 
     private void initialise() {
         name = "CategoryHierarchyLink";
+        typeDefGuid = "71e4b6fb-3412-4193-aff3-a16eccd87e8e";
         // set the LineType if this is a LineType enum value.
         try {
             lineType = LineType.valueOf(name);
@@ -76,7 +77,6 @@ public class CategoryHierarchyLink extends Line {
         } catch (IllegalArgumentException e) {
             lineType = LineType.Unknown;
         }
-        typeDefGuid = "71e4b6fb-3412-4193-aff3-a16eccd87e8e";
     }
 
     public CategoryHierarchyLink(Line template) {

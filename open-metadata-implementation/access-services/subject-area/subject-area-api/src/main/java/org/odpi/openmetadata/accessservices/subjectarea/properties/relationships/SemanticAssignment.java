@@ -77,6 +77,7 @@ public class SemanticAssignment extends Line {
 
     private void initialise() {
         name = "SemanticAssignment";
+        typeDefGuid = "e6670973-645f-441a-bec7-6f5570345b92";
         // set the LineType if this is a LineType enum value.
         try {
             lineType = LineType.valueOf(name);
@@ -84,7 +85,6 @@ public class SemanticAssignment extends Line {
         } catch (IllegalArgumentException e) {
             lineType = LineType.Unknown;
         }
-        typeDefGuid = "e6670973-645f-441a-bec7-6f5570345b92";
     }
 
     public SemanticAssignment(Line template) {

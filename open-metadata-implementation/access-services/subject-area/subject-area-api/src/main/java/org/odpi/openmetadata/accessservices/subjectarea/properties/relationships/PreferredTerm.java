@@ -74,6 +74,7 @@ public class PreferredTerm extends Line {
 
     private void initialise() {
         name = "PreferredTerm";
+        typeDefGuid = "8ac8f9de-9cdd-4103-8a33-4cb204b78c2a";
         // set the LineType if this is a LineType enum value.
         try {
             lineType = LineType.valueOf(name);
@@ -81,7 +82,6 @@ public class PreferredTerm extends Line {
         } catch (IllegalArgumentException e) {
             lineType = LineType.Unknown;
         }
-        typeDefGuid = "8ac8f9de-9cdd-4103-8a33-4cb204b78c2a";
     }
 
     public PreferredTerm(Line template) {
