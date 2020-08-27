@@ -12,3 +12,8 @@ There are the following spring resources defined:
 
 * AssetCatalogRelationshipResource - supports the services that retrieve the details about a specific relationship.
 
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

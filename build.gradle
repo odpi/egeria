@@ -39,7 +39,7 @@ plugins {
 allprojects {
 
     group = 'org.odpi.egeria'
-    version = '2.2-SNAPSHOT'
+    version = '2.3-SNAPSHOT'
 
 
     // This enforces version checking but is slow to process 
@@ -84,7 +84,7 @@ subprojects {
     //TODO: Migrate to native gradle dependency project - but for now this keeps us in-sync with maven
     dependencyManagement {
          imports {
-              mavenBom 'org.odpi.egeria:egeria:2.2-SNAPSHOT'
+              mavenBom 'org.odpi.egeria:egeria:2.3-SNAPSHOT'
          }
     }
 

@@ -1,4 +1,5 @@
-<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- SPDX-License-Identifier: CC-BY-4.0 -->
+<!-- Copyright Contributors to the ODPi Egeria project 2020. -->
 
 # Overview of the Repository Connector Interface
 
@@ -15,3 +16,8 @@ In the case of the OMRS Connector, the asset being accessed is a metadata reposi
 
 ![Figure 1: Additional OMRSMetadataCollectionConnector interface](omrs-repository-connector-interface.png)
 > Figure 1: Additional OMRSMetadataCollectionConnector interface
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.
