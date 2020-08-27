@@ -14,10 +14,13 @@ import org.odpi.openmetadata.accessservices.assetlineage.handlers.Classification
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.GlossaryContextHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.ProcessContextHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GraphContext;
+import org.odpi.openmetadata.accessservices.assetlineage.model.LineageEntity;
 import org.odpi.openmetadata.accessservices.assetlineage.model.LineageRelationship;
 import org.odpi.openmetadata.accessservices.assetlineage.server.AssetLineageInstanceHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.slf4j.Logger;
@@ -26,6 +29,9 @@ import org.slf4j.LoggerFactory;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
+
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.GLOSSARY_CATEGORY;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.GLOSSARY_TERM;
 
 /**
  * AssetLineagePublisher is the connector responsible for publishing lineage context information about
@@ -67,7 +73,8 @@ public class AssetLineagePublisher {
      * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
      * @throws JsonProcessingException exception parsing the event json
      */
-    public Map<String, Set<GraphContext>> publishProcessContext(EntityDetail entityDetail) throws OCFCheckedExceptionBase, JsonProcessingException {
+    public Map<String, Set<GraphContext>> publishProcessContext(EntityDetail entityDetail)
+            throws OCFCheckedExceptionBase, JsonProcessingException {
         Map<String, Set<GraphContext>> processContext = processContextHandler.getProcessContext(serverUserName, entityDetail);
 
         if (MapUtils.isEmpty(processContext)) {
@@ -98,7 +105,8 @@ public class AssetLineagePublisher {
      * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
      * @throws JsonProcessingException exception parsing the event json
      */
-    public Map<String, Set<GraphContext>> publishGlossaryContext(EntityDetail entityDetail) throws OCFCheckedExceptionBase, JsonProcessingException {
+    public Map<String, Set<GraphContext>> publishGlossaryContext(EntityDetail entityDetail)
+            throws OCFCheckedExceptionBase, JsonProcessingException {
         Map<String, Set<GraphContext>> context = glossaryHandler.buildGlossaryTermContext(serverUserName, entityDetail);
 
         if (MapUtils.isEmpty(context)) {
@@ -163,6 +171,42 @@ public class AssetLineagePublisher {
         log.debug("Asset Lineage OMAS has published an event of type {} ", event.getAssetLineageEventType());
     }
 
+    /**
+     * Publish lineage entity event
+     *
+     * @param lineageEntity    - lineage entity
+     * @param lineageEventType - lineage event type
+     * @throws ConnectorCheckedException unable to send the event due to connectivity issue
+     * @throws JsonProcessingException   exception parsing the event json
+     */
+    public void publishEntityEvent(LineageEntity lineageEntity,
+                                   AssetLineageEventType lineageEventType) throws ConnectorCheckedException, JsonProcessingException {
+        LineageEvent event = new LineageEvent();
+
+        event.setLineageEntity(lineageEntity);
+        event.setAssetLineageEventType(lineageEventType);
+
+        publishEvent(event);
+    }
+
+    /**
+     * Checks if the entity is eligible to be send in a lineage event.
+     * The GlossaryTerm and GlossaryCategory entities are send out if has SemanticAssignment and/or TermCategorization relationships
+     *
+     * @param entityDetail entity to be checked
+     * @return true if the entity has the lineage relationships created
+     * @throws UserNotAuthorizedException security access problem
+     * @throws PropertyServerException    problem accessing property server
+     */
+    public boolean isEntityEligibleForPublishing(EntityDetail entityDetail) throws UserNotAuthorizedException, PropertyServerException {
+        String typeDefName = entityDetail.getType().getTypeDefName();
+        if (typeDefName.equals(GLOSSARY_CATEGORY) || typeDefName.equals(GLOSSARY_TERM)) {
+            return glossaryHandler.hasGlossaryTermLineageRelationships(serverUserName, entityDetail);
+        }
+
+        return true;
+    }
+
     private void publishLineageEvent(Map<String, Set<GraphContext>> context,
                                      AssetLineageEventType processContextEvent) throws JsonProcessingException, ConnectorCheckedException {
         LineageEvent event = new LineageEvent();
@@ -172,5 +216,6 @@ public class AssetLineagePublisher {
 
         publishEvent(event);
     }
+
 }
 

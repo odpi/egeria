@@ -6,11 +6,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import org.apache.commons.collections4.CollectionUtils;
 import org.odpi.openmetadata.accessservices.assetlineage.auditlog.AssetLineageAuditCode;
 import org.odpi.openmetadata.accessservices.assetlineage.event.AssetLineageEventType;
-import org.odpi.openmetadata.accessservices.assetlineage.event.LineageEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.outtopic.AssetLineagePublisher;
 import org.odpi.openmetadata.accessservices.assetlineage.util.Converter;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListener;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
@@ -32,6 +33,7 @@ import java.util.stream.Collectors;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PROCESS;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PROCESS_HIERARCHY;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.SEMANTIC_ASSIGNMENT;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.TERM_CATEGORIZATION;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.VALUE_FOR_ACTIVE;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.immutableValidLineageEntityEvents;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.immutableValidLineageRelationshipTypes;
@@ -181,10 +183,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
         if (isProcessStatusChangedToActive(entityDetail, originalEntity)) {
             publisher.publishProcessContext(entityDetail);
         } else {
-            LineageEvent event = new LineageEvent();
-            event.setLineageEntity(converter.createLineageEntity(entityDetail));
-            event.setAssetLineageEventType(AssetLineageEventType.UPDATE_ENTITY_EVENT);
-            publisher.publishEvent(event);
+            publishEntityEvent(entityDetail, AssetLineageEventType.UPDATE_ENTITY_EVENT);
         }
     }
 
@@ -194,12 +193,13 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
                 && entityDetail.getStatus().getName().equals(VALUE_FOR_ACTIVE);
     }
 
-    private void processDeletedEntity(EntityDetail entityDetail) throws ConnectorCheckedException, JsonProcessingException {
+    private void processDeletedEntity(EntityDetail entityDetail) throws ConnectorCheckedException, JsonProcessingException, UserNotAuthorizedException, PropertyServerException {
+        if (!immutableValidLineageEntityEvents.contains(entityDetail.getType().getTypeDefName())) {
+            return;
+        }
+
         log.debug(PROCESSING_ENTITY_DETAIL_DEBUG_MESSAGE, "deletedEntity", entityDetail.getGUID());
-        LineageEvent event = new LineageEvent();
-        event.setLineageEntity(converter.createLineageEntity(entityDetail));
-        event.setAssetLineageEventType(AssetLineageEventType.DELETE_ENTITY_EVENT);
-        publisher.publishEvent(event);
+        publishEntityEvent(entityDetail, AssetLineageEventType.DELETE_ENTITY_EVENT);
     }
 
     private void processClassifiedEntityEvent(EntityDetail entityDetail) throws OCFCheckedExceptionBase, JsonProcessingException {
@@ -208,6 +208,10 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
 
         if (!anyLineageClassificationsLeft(entityDetail))
             return;
+
+        if (!publisher.isEntityEligibleForPublishing(entityDetail)) {
+            return;
+        }
 
         log.debug(PROCESSING_ENTITY_DETAIL_DEBUG_MESSAGE, "classifiedEntity", entityDetail.getGUID());
         publisher.publishClassificationContext(entityDetail, AssetLineageEventType.CLASSIFICATION_CONTEXT_EVENT);
@@ -225,35 +229,49 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
     }
 
     private void processDeclassifiedEntityEvent(EntityDetail entityDetail) throws OCFCheckedExceptionBase, JsonProcessingException {
-        if (!immutableValidLineageEntityEvents.contains(entityDetail.getType().getTypeDefName()))
+        if (!immutableValidLineageEntityEvents.contains(entityDetail.getType().getTypeDefName())) {
             return;
+        }
+
         log.debug(PROCESSING_ENTITY_DETAIL_DEBUG_MESSAGE, "declassifiedEntity", entityDetail.getGUID());
+
         if (anyLineageClassificationsLeft(entityDetail)) {
             publisher.publishClassificationContext(entityDetail, AssetLineageEventType.DECLASSIFIED_ENTITY_EVENT);
             return;
         }
         //The last relevant lineage classification has been removed from the entity
-        LineageEvent event = new LineageEvent();
-        event.setLineageEntity(converter.createLineageEntity(entityDetail));
-        event.setAssetLineageEventType(AssetLineageEventType.DECLASSIFIED_ENTITY_EVENT);
-        publisher.publishEvent(event);
+        publishEntityEvent(entityDetail, AssetLineageEventType.DECLASSIFIED_ENTITY_EVENT);
+    }
+
+    private void publishEntityEvent(EntityDetail entityDetail, AssetLineageEventType lineageEventType)
+            throws JsonProcessingException, ConnectorCheckedException, UserNotAuthorizedException, PropertyServerException {
+        if (publisher.isEntityEligibleForPublishing(entityDetail)) {
+            publisher.publishEntityEvent(converter.createLineageEntity(entityDetail), lineageEventType);
+        }
     }
 
     private void processNewRelationshipEvent(Relationship relationship) throws OCFCheckedExceptionBase, JsonProcessingException {
-        log.debug(PROCESSING_RELATIONSHIP_DEBUG_MESSAGE, AssetLineageEventType.NEW_RELATIONSHIP_EVENT.getEventTypeName(), relationship.getGUID());
-
         if (!(immutableValidLineageEntityEvents.contains(relationship.getEntityOneProxy().getType().getTypeDefName())
                 || immutableValidLineageEntityEvents.contains(relationship.getEntityTwoProxy().getType().getTypeDefName()))) {
             return;
         }
+        log.debug(PROCESSING_RELATIONSHIP_DEBUG_MESSAGE, AssetLineageEventType.NEW_RELATIONSHIP_EVENT.getEventTypeName(), relationship.getGUID());
 
         String relationshipType = relationship.getType().getTypeDefName();
 
-        if (SEMANTIC_ASSIGNMENT.equals(relationshipType)) {
-            String glossaryTermGUID = relationship.getEntityTwoProxy().getGUID();
-            publisher.publishGlossaryContext(glossaryTermGUID);
-        } else if (!(PROCESS_HIERARCHY.equals(relationshipType))) {
-            publisher.publishLineageRelationshipEvent(converter.createLineageRelationship(relationship), AssetLineageEventType.NEW_RELATIONSHIP_EVENT);
+        switch (relationshipType) {
+            case SEMANTIC_ASSIGNMENT:
+            case TERM_CATEGORIZATION:
+                String glossaryTermGUID = relationship.getEntityTwoProxy().getGUID();
+                publisher.publishGlossaryContext(glossaryTermGUID);
+                break;
+            case PROCESS_HIERARCHY:
+                publisher.publishLineageRelationshipEvent(converter.createLineageRelationship(relationship),
+                        AssetLineageEventType.NEW_RELATIONSHIP_EVENT);
+                break;
+            default:
+                log.debug("Asset Lineage OMAS is ignoring the event concerning relationship {}", relationshipType);
+                break;
         }
     }
 
