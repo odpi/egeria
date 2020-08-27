@@ -126,7 +126,7 @@
         <junit.jupiter.version>5.6.2</junit.jupiter.version>
         <junit.version>4.13</junit.version>
         <surefire.plugin.version>3.0.0-M4</surefire.plugin.version>
-        <mockito.version>3.5.6</mockito.version>
+        <mockito.version>3.5.7</mockito.version>
         <testng.version>7.3.0</testng.version>
         <slf4j.version>1.7.30</slf4j.version>
         <logback.version>1.2.3</logback.version>
@@ -177,7 +177,7 @@
         <snappy.version>1.1.7.7</snappy.version>
         <snakeyaml.version>1.26</snakeyaml.version>
         <springdoc.version>1.4.4</springdoc.version>
-        <classgraph.version>4.8.88</classgraph.version>
+        <classgraph.version>4.8.89</classgraph.version>
         <swagger.version>2.1.4</swagger.version>
         <groovy.version>3.0.5</groovy.version>
         <micrometer-registry-prometheus.version>1.5.4</micrometer-registry-prometheus.version>
