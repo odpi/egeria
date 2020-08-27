@@ -31,11 +31,6 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>open-metadata-types</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
             <artifactId>repository-services-apis</artifactId>
         </dependency>
 

@@ -1,26 +1,19 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.*;
-
-import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
-import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
-
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.OmasObject;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SystemAttributes;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.*;
-import org.odpi.openmetadata.opentypes.OpenMetadataTypesArchiveAccessor;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipDef;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipEndDef;
 
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Map;
+
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 
 /**
@@ -92,35 +85,44 @@ public class Line implements Serializable, OmasObject {
         this.setLineEnds();
     }
     protected void setLineEnds() {
-        OpenMetadataTypesArchiveAccessor archiveAccessor = OpenMetadataTypesArchiveAccessor.getInstance();
-
-        RelationshipDef relationshipDef =archiveAccessor.getRelationshipDefByGuid(this.typeDefGuid);
-        RelationshipEndDef endDef1 = relationshipDef.getEndDef1();
-        RelationshipEndDef endDef2 = relationshipDef.getEndDef2();
-
-        String end1TypeName = endDef1.getEntityType().getName();
-        String end2TypeName = endDef2.getEntityType().getName();
+//        OpenMetadataTypesArchiveAccessor archiveAccessor = OpenMetadataTypesArchiveAccessor.getInstance();
+//
+//        RelationshipDef relationshipDef =archiveAccessor.getRelationshipDefByGuid(this.typeDefGuid);
+//        RelationshipEndDef endDef1 = relationshipDef.getEndDef1();
+//        RelationshipEndDef endDef2 = relationshipDef.getEndDef2();
+//
+//        String end1TypeName = endDef1.getEntityType().getName();
+//        String end2TypeName = endDef2.getEntityType().getName();
         // Maybe consider subtypes here? We cannot use the Repositoryhelper isTypeOf because Line is used client side
         // which does not have access to the repository helper.
-        if (end1TypeName.equals("GlossaryTerm")) {
-            end1TypeName = "Term";
-        }
-        if (end2TypeName.equals("GlossaryTerm")) {
-            end2TypeName = "Term";
-        }
+//        if (end1TypeName.equals("GlossaryTerm")) {
+//            end1TypeName = "Term";
+//        }
+//        if (end2TypeName.equals("GlossaryTerm")) {
+//            end2TypeName = "Term";
+//        }
+//        getLineEnd1();
+//        getLineEnd1();
+//
+//        LineEnd lineEnd1 = new LineEnd(getEnd1TypeName(),
+//                                       getEnd1AttributeName(),
+//                                       getEnd1AttributeDescription(),
+//                                       endDef1.getAttributeCardinality()
+//                                       );
+//        LineEnd lineEnd2 = new LineEnd(end2TypeName,
+//                                       endDef2.getAttributeName(),
+//                                       endDef2.getAttributeDescription(),
+//                                       endDef2.getAttributeCardinality()
+//                                       );
+        setEnd1(getLineEnd1());
+        setEnd2(getLineEnd2());
+    }
 
-        LineEnd lineEnd1 = new LineEnd(end1TypeName,
-                                       endDef1.getAttributeName(),
-                                       endDef1.getAttributeDescription(),
-                                       endDef1.getAttributeCardinality()
-                                       );
-        LineEnd lineEnd2 = new LineEnd(end2TypeName,
-                                       endDef2.getAttributeName(),
-                                       endDef2.getAttributeDescription(),
-                                       endDef2.getAttributeCardinality()
-                                       );
-        setEnd1(lineEnd1);
-        setEnd2(lineEnd2);
+    protected LineEnd getLineEnd1() {
+       return null;
+    }
+    protected LineEnd getLineEnd2() {
+        return null;
     }
 
     /**

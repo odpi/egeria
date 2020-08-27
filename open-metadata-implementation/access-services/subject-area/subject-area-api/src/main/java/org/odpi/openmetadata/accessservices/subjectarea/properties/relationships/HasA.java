@@ -9,8 +9,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.TermRelationshipStatus;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineEnd;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipEndCardinality;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -66,7 +68,28 @@ public class HasA extends Line {
     private static final java.util.Set<String> ATTRIBUTE_NAMES_SET = new HashSet<>(Arrays.asList(ATTRIBUTE_NAMES_SET_VALUES));
     private static final java.util.Set<String> ENUM_NAMES_SET = new HashSet<>(Arrays.asList(ENUM_NAMES_SET_VALUES));
     private static final java.util.Set<String> MAP_NAMES_SET = new HashSet<>(Arrays.asList(MAP_NAMES_SET_VALUES));
-
+    private String end1TypeName;
+    private String end1AttributeName;
+    private String end1AttributeDescription;
+    private RelationshipEndCardinality end1Cardinality;
+    private String end2TypeName;
+    private String end2AttributeName;
+    private String end2AttributeDescription;
+    private RelationshipEndCardinality end2Cardinality;
+    @Override
+    protected LineEnd getLineEnd1() {
+        return new LineEnd(this.end1TypeName,
+                           this.end1AttributeName,
+                           this.end1AttributeDescription,
+                           this.end1Cardinality);
+    }
+    @Override
+    protected LineEnd getLineEnd2() {
+        return new LineEnd(this.end2TypeName,
+                           this.end2AttributeName,
+                           this.end2AttributeDescription,
+                           this.end2Cardinality);
+    }
     public HasA() {
         initialise();
     }
