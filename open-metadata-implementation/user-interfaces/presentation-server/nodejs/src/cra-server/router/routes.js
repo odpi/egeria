@@ -21,6 +21,8 @@ router.get('/', (req, res) => {
  */
 router.post("/login", function (req, res, next) {
   console.log("/login");
+  // get passport instance from app
+  const passport = (req.app.get('passport'));
   passport.authenticate("local", function (err, user, next) {
     if (err) {
       return next(err);
@@ -70,7 +72,8 @@ router.post("/servers/*", (req, res) => {
   console.log("/servers/* post called " + incomingUrl);
   const body = req.body;
   console.log("Got body:", body);
-  if (validateURL(incomingUrl)) {
+  const servers = (req.app.get('servers'));
+  if (validateURL(incomingUrl, servers)) {
     const instance = getAxiosInstance(incomingUrl);
     instance
       .post("", body)
@@ -102,7 +105,8 @@ router.put("/servers/*", (req, res) => {
   console.log("/servers/* put called " + incomingUrl);
   const body = req.body;
   console.log("Got body:", body);
-  if (validateURL(incomingUrl)) {
+  const servers = (req.app.get('servers'));
+  if (validateURL(incomingUrl, servers)) {
     const instance = getAxiosInstance(incomingUrl);
     instance
       .put("", body)
@@ -132,7 +136,8 @@ router.put("/servers/*", (req, res) => {
 router.delete("/servers/*", (req, res) => {
   const incomingUrl = req.url;
   console.log("/servers/* delete called " + incomingUrl);
-  if (validateURL(incomingUrl)) {
+  const servers = (req.app.get('servers'));
+  if (validateURL(incomingUrl, servers)) {
     const instance = getAxiosInstance(incomingUrl);
     instance
       .delete()
@@ -162,7 +167,8 @@ router.delete("/servers/*", (req, res) => {
 router.get("/servers/*", (req, res) => {
   const url = req.url;
   console.log("/servers/* get called " + url);
-  if (validateURL(url)) {
+  const servers = (req.app.get('servers'));
+  if (validateURL(url, servers)) {
     const instance = getAxiosInstance(url);
     instance
       .get()

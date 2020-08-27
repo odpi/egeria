@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
-const validateURL = (url) => {
+const validateURL = (url, servers) => {
   const urlArray = url.split("/");
   let isValid = true;
   if (url.length < 5) {

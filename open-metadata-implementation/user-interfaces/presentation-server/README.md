@@ -54,7 +54,8 @@ the types of [Egeria OMAG Servers](../../admin-services/docs/concepts/omag-serve
  * The new server is maintained in the cra-server directory.
  * Set up your environment by running `npm install` in both cra-client and cra-server.
  * Start the new UI by navigating into the cra-server directory, then running `npm start`.
- * Enter `http://localhost:3000/` to access the new UI in development mode.
+ * Enter `https://localhost:3000/` to access the new UI in development mode.
+ * Due to https, was only able to get it running properly using Firefox browser (no Chrome) Make sure to create a `.env` in cra-client that follows the example of `.env_sample`.
   
 
 ----

@@ -4,11 +4,12 @@ const express = require('express');
 const fs = require("fs");
 const session = require("express-session");
 const bodyParser = require("body-parser");
-const passport = require("passport");
+let passport = require("passport");
 const https = require("https");
 const app = express();
+require("dotenv").config();
 
-// const getServerInfoFromEnv = require('./functions/getServerInfoFromEnv');
+const getServerInfoFromEnv = require('./functions/getServerInfoFromEnv');
 const serverNameMiddleWare = require('./functions/serverNameMiddleware');
 const passportConfiguration = require('./functions/passportConfiguration');
 const loggedIn = require('./functions/loggedIn');
@@ -29,7 +30,8 @@ const options = {
 app.set('key', key);
 app.set('cert', cert);
 
-// const servers = getServerInfoFromEnv();
+const servers = getServerInfoFromEnv();
+app.set('servers', servers);
 
 // This middleware method takes off the first segment which is the serverName and puts it into a query parameter
 app.use((req, res, next) => serverNameMiddleWare(req, res, next));
@@ -43,14 +45,22 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // passport configuration
-passportConfiguration(passport);
+passport = passportConfiguration(passport);
+// make initialized object available to routes
+app.set('passport', passport)
 
-// organize routes in another file
-app.use('/', router);
+if (env === 'development') {
+  // use React proxy routing
+  // organize routes in another file
+  app.use('/', router);
+} else {
+  // use Web Server routing for production build
 
-// app.use("*", loggedIn, (req, res) => {
-//   res.sendFile(joinedPath);
-// });
+  // app.use(express.static(`${__dirname}/client/build`));
+  app.use(express.static(path.join(__dirname, '../cra-client/build')));
+  // app.all('*', (req, res, next) => res.sendFile(`${__dirname}/client/build/index.html`));
+  app.all('*', (req, res, next) => res.sendFile(path.join(__dirname, '../cra-client/build/index.html')));
+}
 
 // create the https server
 https.createServer(options, app).listen(PORT, () => {

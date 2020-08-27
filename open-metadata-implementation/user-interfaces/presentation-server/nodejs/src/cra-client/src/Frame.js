@@ -10,6 +10,7 @@ import { Link, Route, Switch } from "react-router-dom";
 import Egeriawhite110 from "./images/Egeria_logo_white_110";
 import EgeriaGlossAuth32 from "./images/Egeria_glossary_author_32";
 import Home from "./components/Home";
+import Login from "./auth/login";
 import GlossaryAuthor from "./components/GlossaryAuthor/GlossaryAuthor";
 import RepositoryExplorer from "./components/RepositoryExplorer/RepositoryExplorer";
 import TypeExplorer from "./components/TypeExplorer/TypeExplorer";
@@ -37,6 +38,10 @@ export default function Frame(props) {
   const rexUrl = identificationContext.getBrowserURL("repository-explorer");
   const typeUrl = identificationContext.getBrowserURL("type-explorer");
   const serverUrl = identificationContext.getBrowserURL("server-author");
+
+  // force users to login if userId does not exist
+  const currentURL = window.location.href.slice(window.location.href.lastIndexOf('/') + 1);
+  if (!identificationContext.userId) return <Login currentURL={currentURL}/>
 
   return (
     <div className="container">

@@ -31,7 +31,7 @@
   },
   "author": "Jacob Madsen",
   "license": "ISC",
-  "proxy": "http://localhost:8091/",
+  "proxy": "https://localhost:8091",
   "browserslist": {
     "production": [
       ">0.2%",

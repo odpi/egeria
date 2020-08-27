@@ -3,10 +3,11 @@
 const LocalStrategy = require("passport-local").Strategy;
 const db = require("../db");
 
+
 const passportConfiguration = (passport) => {
 
   /**
-   * Middleware to configure Passport t use Local strategy 
+   * Middleware to configure Passport to use Local strategy 
    */
   passport.use(
     new LocalStrategy(function (username, password, cb) {
@@ -50,6 +51,8 @@ const passportConfiguration = (passport) => {
       cb(null, user);
     });
   });
+
+  return passport;
 
 }
 
