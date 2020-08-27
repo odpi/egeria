@@ -8,6 +8,7 @@ dependencies {
     implementation 'org.slf4j:slf4j-api:1.7.30'
     implementation 'com.fasterxml.jackson.core:jackson-annotations:2.11.1'
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
+    implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
 
 }
 
