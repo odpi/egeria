@@ -50,8 +50,8 @@ public class ProcessListResponse extends GUIDListResponse {
     @Override
     public String toString() {
         return "ProcessListResponse{" +
-                "guids=" + getGUIDs() +
-                "failedGUIDs=" + failedGUIDs +
+                "GUIDs=" + getGUIDs() +
+                ", failedGUIDs=" + failedGUIDs +
                 '}';
     }
 }
