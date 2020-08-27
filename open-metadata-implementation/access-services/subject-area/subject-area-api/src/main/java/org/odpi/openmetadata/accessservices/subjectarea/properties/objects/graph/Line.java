@@ -100,7 +100,8 @@ public class Line implements Serializable, OmasObject {
 
         String end1TypeName = endDef1.getEntityType().getName();
         String end2TypeName = endDef2.getEntityType().getName();
-        // TODO subclasses -
+        // Maybe consider subtypes here? We cannot use the Repositoryhelper isTypeOf because Line is used client side
+        // which does not have access to the repository helper.
         if (end1TypeName.equals("GlossaryTerm")) {
             end1TypeName = "Term";
         }
