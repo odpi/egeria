@@ -177,7 +177,7 @@
         <snappy.version>1.1.7.7</snappy.version>
         <snakeyaml.version>1.26</snakeyaml.version>
         <springdoc.version>1.4.4</springdoc.version>
-        <classgraph.version>4.8.88</classgraph.version>
+        <classgraph.version>4.8.89</classgraph.version>
         <swagger.version>2.1.4</swagger.version>
         <groovy.version>3.0.5</groovy.version>
         <micrometer-registry-prometheus.version>1.5.4</micrometer-registry-prometheus.version>
