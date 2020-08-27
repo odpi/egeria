@@ -77,6 +77,7 @@ public class LibraryTermReference extends Line {
 
     private void initialise() {
         name = "LibraryTermReference";
+        typeDefGuid = "38c346e4-ddd2-42ef-b4aa-55d53c078d22";
         // set the LineType if this is a LineType enum value.
         try {
             lineType = LineType.valueOf(name);
@@ -84,7 +85,6 @@ public class LibraryTermReference extends Line {
         } catch (IllegalArgumentException e) {
             lineType = LineType.Unknown;
         }
-        typeDefGuid = "38c346e4-ddd2-42ef-b4aa-55d53c078d22";
     }
 
     public LibraryTermReference(Line template) {

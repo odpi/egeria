@@ -64,8 +64,6 @@ public class Antonym extends Line {
     private static final java.util.Set<String> ATTRIBUTE_NAMES_SET = new HashSet<>(Arrays.asList(ATTRIBUTE_NAMES_SET_VALUES));
     private static final java.util.Set<String> ENUM_NAMES_SET = new HashSet<>(Arrays.asList(ENUM_NAMES_SET_VALUES));
     private static final java.util.Set<String> MAP_NAMES_SET = new HashSet<>(Arrays.asList(MAP_NAMES_SET_VALUES));
-    private String antonym1Guid = null;
-    private String antonym2Guid = null;
 
     public Antonym() {
         initialise();
@@ -74,6 +72,7 @@ public class Antonym extends Line {
     private void initialise()
     {
         name = "Antonym";
+        typeDefGuid = "ea5e126a-a8fa-4a43-bcfa-309a98aa0185";
         // set the LineType if this is a LineType enum value.
         try {
             lineType = LineType.valueOf(name);
@@ -93,34 +92,6 @@ public class Antonym extends Line {
         super(omrsRelationship);
         initialise();
     }
-    /**
-     * {@literal Get the guid of Antonym at end 2 of the relationship. }
-     * @return {@code String }
-     */
-    public String getAntonym1Guid()
-    {
-        return antonym1Guid;
-    }
-
-    public void setAntonym1Guid(String antonym1Guid)
-    {
-        this.antonym1Guid = antonym1Guid;
-    }
-    /**
-     * {@literal Get the guid of Antonym at end 2 of the relationship. }
-     * @return {@code String }
-     */
-
-    public String getAntonym2Guid()
-    {
-        return antonym2Guid;
-    }
-
-    public void setAntonym2Guid(String antonym2Guid)
-    {
-        this.antonym2Guid = antonym2Guid;
-    }
-
 
     private String description;
     /**

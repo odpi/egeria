@@ -76,6 +76,7 @@ public class Categorization extends Line {
 
     private void initialise() {
         name = "TermCategorization";
+        typeDefGuid = "696a81f5-ac60-46c7-b9fd-6979a1e7ad27";
         // set the LineType if this is a LineType enum value.
         try {
             lineType = LineType.valueOf(name);
@@ -83,7 +84,7 @@ public class Categorization extends Line {
         } catch (IllegalArgumentException e) {
             lineType = LineType.Unknown;
         }
-        typeDefGuid = "696a81f5-ac60-46c7-b9fd-6979a1e7ad27";
+
     }
 
     public Categorization(Line template) {

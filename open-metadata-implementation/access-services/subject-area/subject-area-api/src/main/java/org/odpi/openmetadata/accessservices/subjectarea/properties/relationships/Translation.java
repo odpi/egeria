@@ -75,6 +75,7 @@ public class Translation extends Line {
 
     private void initialise() {
         name = "Translation";
+        typeDefGuid = "6ae42e95-efc5-4256-bfa8-801140a29d2a";
         // set the LineType if this is a LineType enum value.
         try {
             lineType = LineType.valueOf(name);
@@ -82,7 +83,6 @@ public class Translation extends Line {
         } catch (IllegalArgumentException e) {
             lineType = LineType.Unknown;
         }
-        typeDefGuid = "6ae42e95-efc5-4256-bfa8-801140a29d2a";
     }
 
     public Translation(Line template) {

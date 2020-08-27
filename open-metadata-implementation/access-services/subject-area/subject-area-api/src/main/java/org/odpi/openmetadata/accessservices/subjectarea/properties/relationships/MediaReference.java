@@ -73,6 +73,7 @@ public class MediaReference extends Line {
 
     private void initialise() {
         name = "MediaReference";
+        typeDefGuid = "1353400f-b0ab-4ab9-ab09-3045dd8a7140";
         // set the LineType if this is a LineType enum value.
         try {
             lineType = LineType.valueOf(name);
@@ -80,7 +81,7 @@ public class MediaReference extends Line {
         } catch (IllegalArgumentException e) {
             lineType = LineType.Unknown;
         }
-        typeDefGuid = "1353400f-b0ab-4ab9-ab09-3045dd8a7140";
+
     }
 
     public MediaReference(Line template) {

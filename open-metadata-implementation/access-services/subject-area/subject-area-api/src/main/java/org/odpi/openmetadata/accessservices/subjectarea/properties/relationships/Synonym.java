@@ -75,6 +75,7 @@ public class Synonym extends Line {
 
     private void initialise() {
         name = "Synonym";
+        typeDefGuid = "74f4094d-dba2-4ad9-874e-d422b69947e2";
         // set the LineType if this is a LineType enum value.
         try {
             lineType = LineType.valueOf(name);
@@ -82,7 +83,7 @@ public class Synonym extends Line {
         } catch (IllegalArgumentException e) {
             lineType = LineType.Unknown;
         }
-        typeDefGuid = "74f4094d-dba2-4ad9-874e-d422b69947e2";
+
     }
 
     public Synonym(Line template) {

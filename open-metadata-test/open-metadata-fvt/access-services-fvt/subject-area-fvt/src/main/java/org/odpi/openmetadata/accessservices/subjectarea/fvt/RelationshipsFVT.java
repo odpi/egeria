@@ -1000,12 +1000,7 @@ public class RelationshipsFVT {
         if (!updatedAntonym.getSteward().equals(createdAntonym.getSteward())) {
             throw new SubjectAreaFVTCheckedException("ERROR: Antonym update steward not as expected");
         }
-        if (!updatedAntonym.getAntonym1Guid().equals(createdAntonym.getAntonym1Guid())) {
-            throw new SubjectAreaFVTCheckedException("ERROR: Antonym update end 1 not as expected");
-        }
-        if (!updatedAntonym.getAntonym2Guid().equals(createdAntonym.getAntonym2Guid())) {
-            throw new SubjectAreaFVTCheckedException("ERROR: Antonym update end 2 not as expected");
-        }
+        FVTUtils.checkEnds(updatedAntonym,createdAntonym,"Antonym","update");
         System.out.println("Updated Antonym " + createdAntonym);
         Antonym replaceAntonym = new Antonym();
         replaceAntonym.setDescription("ddd3");
@@ -1024,14 +1019,8 @@ public class RelationshipsFVT {
         if (replacedAntonym.getSteward() != null) {
             throw new SubjectAreaFVTCheckedException("ERROR: Antonym replace steward not as expected");
         }
-        if (!replacedAntonym.getAntonym1Guid().equals(createdAntonym.getAntonym1Guid())) {
-            throw new SubjectAreaFVTCheckedException("ERROR: Antonym replace end 1 not as expected");
-        }
-        if (!replacedAntonym.getAntonym2Guid().equals(createdAntonym.getAntonym2Guid())) {
-            throw new SubjectAreaFVTCheckedException("ERROR: Antonym replace end 2 not as expected");
-        }
+        FVTUtils.checkEnds(updatedAntonym,createdAntonym,"Antonym","replace");
         System.out.println("Replaced Antonym " + createdAntonym);
-
 
         subjectAreaRelationship.antonym().delete(this.userId, guid);
         //FVTUtils.validateLine(gotAntonym);
@@ -1052,8 +1041,8 @@ public class RelationshipsFVT {
         antonym.setExpression("Ex");
         antonym.setSource("source");
         antonym.setSteward("Stew");
-        antonym.setAntonym1Guid(term1.getSystemAttributes().getGUID());
-        antonym.setAntonym2Guid(term2.getSystemAttributes().getGUID());
+        antonym.getEnd1().setNodeGuid(term1.getSystemAttributes().getGUID());
+        antonym.getEnd2().setNodeGuid(term2.getSystemAttributes().getGUID());
         Antonym createdAntonym = subjectAreaRelationship.antonym().create(this.userId, antonym);
         FVTUtils.validateLine(createdAntonym);
         FVTUtils.checkEnds(antonym, createdAntonym, "Antonym", "create");
@@ -1264,8 +1253,8 @@ public class RelationshipsFVT {
 
     public Categorization createTermCategorization(Term term, Category category) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, SubjectAreaFVTCheckedException {
         Categorization termCategorization = new Categorization();
-        termCategorization.getEnd1().setNodeGuid(term.getSystemAttributes().getGUID());
-        termCategorization.getEnd2().setNodeGuid(category.getSystemAttributes().getGUID());
+        termCategorization.getEnd1().setNodeGuid(category.getSystemAttributes().getGUID());
+        termCategorization.getEnd2().setNodeGuid(term.getSystemAttributes().getGUID());
         Categorization createdTermCategorization = subjectAreaRelationship.termCategorization().create(this.userId, termCategorization);
         FVTUtils.validateLine(createdTermCategorization);
         FVTUtils.checkEnds(termCategorization, createdTermCategorization, "TermCategorizationRelationship", "create");
@@ -1293,12 +1282,8 @@ public class RelationshipsFVT {
             throw new SubjectAreaFVTCheckedException("ERROR: Project scope  update scopeDescription not as expected");
         }
 
-        if (!updatedProjectScope.getProjectGuid().equals(createdProjectScope.getProjectGuid())) {
-            throw new SubjectAreaFVTCheckedException("ERROR: Project scope update project end not as expected");
-        }
-        if (!updatedProjectScope.getNodeGuid().equals(createdProjectScope.getNodeGuid())) {
-            throw new SubjectAreaFVTCheckedException("ERROR: Project scope update node end not as expected");
-        }
+        FVTUtils.checkEnds(updatedProjectScope,createdProjectScope,"ProjectScope","update");
+
         System.out.println("Updated ProjectScopeRelationship " + createdProjectScope);
         ProjectScope replaceProjectScope = new ProjectScope();
         replaceProjectScope.setDescription("ddd3");
@@ -1307,12 +1292,8 @@ public class RelationshipsFVT {
         if (!replacedProjectScope.getDescription().equals(replaceProjectScope.getDescription())) {
             throw new SubjectAreaFVTCheckedException("ERROR: project scope replace scope description not as expected");
         }
-        if (!replacedProjectScope.getProjectGuid().equals(createdProjectScope.getProjectGuid())) {
-            throw new SubjectAreaFVTCheckedException("ERROR: project scope replace project end not as expected");
-        }
-        if (!replacedProjectScope.getNodeGuid().equals(createdProjectScope.getNodeGuid())) {
-            throw new SubjectAreaFVTCheckedException("ERROR: project scope replace node end not as expected");
-        }
+        FVTUtils.checkEnds(replacedProjectScope,createdProjectScope,"ProjectScope","replace");
+
         System.out.println("Replaced ProjectScopeRelationship " + createdProjectScope);
         subjectAreaRelationship.projectScope().delete(this.userId, guid);
         //FVTUtils.validateLine(gotProjectScopeRelationship);
@@ -1330,8 +1311,8 @@ public class RelationshipsFVT {
 
     private ProjectScope createProjectScope(Project project, Term term) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, SubjectAreaFVTCheckedException {
         ProjectScope projectScope = new ProjectScope();
-        projectScope.setNodeGuid(term.getSystemAttributes().getGUID());
-        projectScope.setProjectGuid(project.getSystemAttributes().getGUID());
+        projectScope.getEnd1().setNodeGuid(project.getSystemAttributes().getGUID());
+        projectScope.getEnd2().setNodeGuid(term.getSystemAttributes().getGUID());
         ProjectScope createdProjectScope = subjectAreaRelationship.projectScope().create(this.userId, projectScope);
         FVTUtils.validateLine(createdProjectScope);
         System.out.println("CreatedProjectScopeRelationship " + createdProjectScope);

@@ -72,6 +72,7 @@ public class TypedBy extends Line {
 
     private void initialise() {
         name = "TypedBy";
+        typeDefGuid = "669e8aa4-c671-4ee7-8d03-f37d09b9d006";
         // set the LineType if this is a LineType enum value.
         try {
             lineType = LineType.valueOf(name);
@@ -79,8 +80,6 @@ public class TypedBy extends Line {
         } catch (IllegalArgumentException e) {
             lineType = LineType.Unknown;
         }
-
-        typeDefGuid = "669e8aa4-c671-4ee7-8d03-f37d09b9d006";
     }
 
     public TypedBy(Line template) {

@@ -54,9 +54,6 @@ public class ProjectScope extends Line {
     private static final Set<String> ATTRIBUTE_NAMES_SET = new HashSet<>(Arrays.asList(ATTRIBUTE_NAMES_SET_VALUES));
     private static final Set<String> ENUM_NAMES_SET = new HashSet<>(Arrays.asList(ENUM_NAMES_SET_VALUES));
     private static final Set<String> MAP_NAMES_SET = new HashSet<>(Arrays.asList(MAP_NAMES_SET_VALUES));
-    private String projectGuid;
-    private String nodeGuid;
-
 
     public ProjectScope() {
         initialise();
@@ -64,6 +61,7 @@ public class ProjectScope extends Line {
 
     private void initialise() {
         name = "ProjectScope";
+        typeDefGuid = "bc63ac45-b4d0-4fba-b583-92859de77dd8";
         // set the LineType if this is a LineType enum value.
         try {
             lineType = LineType.valueOf(name);
@@ -72,7 +70,7 @@ public class ProjectScope extends Line {
             lineType = LineType.Unknown;
         }
 
-        typeDefGuid = "bc63ac45-b4d0-4fba-b583-92859de77dd8";
+
     }
 
     public ProjectScope(Line template) {
@@ -83,22 +81,6 @@ public class ProjectScope extends Line {
     public ProjectScope(Relationship omrsRelationship) {
         super(omrsRelationship);
         initialise();
-    }
-
-    public String getProjectGuid() {
-        return projectGuid;
-    }
-
-    public void setProjectGuid(String projectGuid) {
-        this.projectGuid = projectGuid;
-    }
-
-    public String getNodeGuid() {
-        return nodeGuid;
-    }
-
-    public void setNodeGuid(String nodeGuid) {
-        this.nodeGuid = nodeGuid;
     }
 
     @Override

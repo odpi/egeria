@@ -60,7 +60,9 @@ public class Line implements Serializable, OmasObject {
     private Map<String, String> additionalProperties;
     protected String typeDefGuid;
     protected LineType lineType;
+    // this is the line name
     protected String name;
+    protected String openTypeName;
     protected LineEnd end1;
     protected LineEnd end2;
 
@@ -91,7 +93,8 @@ public class Line implements Serializable, OmasObject {
     }
     protected void setLineEnds() {
         OpenMetadataTypesArchiveAccessor archiveAccessor = OpenMetadataTypesArchiveAccessor.getInstance();
-        RelationshipDef relationshipDef =archiveAccessor.getRelationshipDefByName(this.name);
+
+        RelationshipDef relationshipDef =archiveAccessor.getRelationshipDefByGuid(this.typeDefGuid);
         RelationshipEndDef endDef1 = relationshipDef.getEndDef1();
         RelationshipEndDef endDef2 = relationshipDef.getEndDef2();
 

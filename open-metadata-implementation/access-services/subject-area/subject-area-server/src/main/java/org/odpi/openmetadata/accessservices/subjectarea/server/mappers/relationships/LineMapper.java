@@ -40,7 +40,7 @@ public abstract class LineMapper<L extends Line> implements ILineMapper<L> {
         if (proxy2 != null) {
             String guid2 = proxy2.getGUID();
             if (guid2 != null) {
-                line.getEnd1().setNodeGuid(guid2);
+                line.getEnd2().setNodeGuid(guid2);
             }
         }
 

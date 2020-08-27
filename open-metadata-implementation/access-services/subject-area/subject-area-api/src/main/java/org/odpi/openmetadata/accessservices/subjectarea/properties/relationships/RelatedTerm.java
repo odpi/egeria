@@ -79,6 +79,7 @@ public class RelatedTerm extends Line {
     private void initialise()
     {
         name = "RelatedTerm";
+        typeDefGuid = "b1161696-e563-4cf9-9fd9-c0c76e47d063";
         // set the LineType if this is a LineType enum value.
         try {
             lineType = LineType.valueOf(name);
@@ -87,7 +88,7 @@ public class RelatedTerm extends Line {
         catch (IllegalArgumentException e) {
             lineType = LineType.Unknown;
         }
-        typeDefGuid = "b1161696-e563-4cf9-9fd9-c0c76e47d063";
+
     }
 
     public RelatedTerm(Line template) {

@@ -74,6 +74,7 @@ public class UsedInContext extends Line {
 
     private void initialise() {
         name = "UsedInContext";
+        typeDefGuid = "2dc524d2-e29f-4186-9081-72ea956c75de";
         // set the LineType if this is a LineType enum value.
         try {
             lineType = LineType.valueOf(name);
@@ -81,7 +82,6 @@ public class UsedInContext extends Line {
         } catch (IllegalArgumentException e) {
             lineType = LineType.Unknown;
         }
-        typeDefGuid = "2dc524d2-e29f-4186-9081-72ea956c75de";
     }
 
     public UsedInContext(Line template) {
