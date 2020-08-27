@@ -1,4 +1,7 @@
-Receiving Information View OMAS(IV OMAS) Events using Java
+<!-- SPDX-License-Identifier: CC-BY-4.0 -->
+<!-- Copyright Contributors to the ODPi Egeria project 2020. -->
+
+# Receiving Information View OMAS(IV OMAS) Events using Java
 
 
 Information View OMAS listens to 2 topics:
