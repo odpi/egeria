@@ -181,7 +181,7 @@ public class OpenLineageGraphValidation {
     private void validateProcess(Process process){
         Vertex processAsVertex = g.V().has(VERTEX_QUALIFIED_NAME, process.getQualifiedName()).has(PROPERTY_KEY_LABEL, PROCESS).next();
 
-        assert processAsVertex != null : "Process not found by qualified name " + process;
+        assert processAsVertex != null : "Process not found by qualified name " + process.getQualifiedName();
 
         boolean processIsOutput = g.V(processAsVertex.id()).in(TABLE_DATA_FLOW)
                 .or(__.has(PROPERTY_KEY_LABEL, RELATIONAL_TABLE),
@@ -197,7 +197,8 @@ public class OpenLineageGraphValidation {
         long noOfSubprocesses = g.V(processAsVertex.id()).in("includedIn").count().next();
         List<Vertex> subprocesses = g.V(processAsVertex.id()).in("includedIn").next((int)noOfSubprocesses);
 
-        assert process.getNoOfProcesses() == noOfSubprocesses : "Expected number of subprocesses are different than actual";
+        assert process.getNoOfProcesses() == noOfSubprocesses : "Expected number of subprocesses " + process.getNoOfProcesses()
+                + " are different than actual " + noOfSubprocesses;
 
         for (Vertex subprocess : subprocesses) {
             boolean subprocessIsOutput = g.V(subprocess.id()).in(COLUMN_DATA_FLOW)
@@ -207,8 +208,8 @@ public class OpenLineageGraphValidation {
                     .or(__.has(PROPERTY_KEY_LABEL, TABULAR_COLUMN),
                         __.has(PROPERTY_KEY_LABEL, RELATIONAL_COLUMN)).hasNext();
 
-            assert subprocessIsInput && subprocessIsOutput : "Missing connection: " + (subprocessIsOutput? "" : "(subprocess is not output) " )
-                    + (subprocessIsInput? "" : "(subprocess is not input)");
+            assert subprocessIsInput && subprocessIsOutput : "Missing connection: " + (subprocessIsOutput? "" :
+                    "(subprocess is not output) " ) + (subprocessIsInput? "" : "(subprocess is not input)");
         }
 
         log.debug("Validated process with qualifiedName " + process.getQualifiedName());
@@ -225,13 +226,14 @@ public class OpenLineageGraphValidation {
         boolean tableIsOutput = g.V(tableVertex.id()).in(TABLE_DATA_FLOW).has(PROPERTY_KEY_LABEL, PROCESS).hasNext();
 
         if( tableIsInput && !tableIsOutput ){
-            assert processHasOutput(tableVertex.id()) : "Process missing output";
+            assert processHasOutput(tableVertex.id()) : "Table is not input for process. Required to be only input";
         }
         if( !tableIsInput && tableIsOutput ){
-            assert processHasInput(tableVertex.id()) : "Process missing input";
+            assert processHasInput(tableVertex.id()) : "Table is not output for process. Required to be only output";
         }
         if(tableIsInput && tableIsOutput){
-            assert processHasOutput(tableVertex.id()) && processHasInput(tableVertex.id()) : "Process missing input and output" ;
+            assert processHasOutput(tableVertex.id()) && processHasInput(tableVertex.id()) :
+                    "Table is not input and output for processes. Required to be both" ;
         }
 
         log.debug("Validated table with qualifiedName " + table.getQualifiedName());
@@ -254,7 +256,7 @@ public class OpenLineageGraphValidation {
                 .or(__.has(PROPERTY_KEY_LABEL, RELATIONAL_COLUMN),
                         __.has(PROPERTY_KEY_LABEL, TABULAR_COLUMN)).next();
 
-        assert columnAsVertex != null : "Column not found by qualifiedName " + column;
+        assert columnAsVertex != null : "Column not found by qualifiedName " + column.getQualifiedName();
 
         if( !g.V(columnAsVertex.id()).has(PROPERTY_KEY_LABEL, TABULAR_COLUMN).in(ATTRIBUTE_FOR_SCHEMA)
                 .in("AssetSchemaType").hasLabel(DATA_FILE).hasNext() ){
@@ -265,7 +267,7 @@ public class OpenLineageGraphValidation {
         boolean isInput = g.V(columnAsVertex.id()).out(COLUMN_DATA_FLOW).hasLabel("subProcess").hasNext();
         boolean isOutput = g.V(columnAsVertex.id()).in(COLUMN_DATA_FLOW).hasLabel("subProcess").hasNext();
 
-        assert isInput || isOutput : "Column missing input and output";
+        assert isInput || isOutput : "Column missing input and output. Required to have at least one of them";
 
         log.debug("Validated column with qualifiedName " + column.getQualifiedName());
     }
