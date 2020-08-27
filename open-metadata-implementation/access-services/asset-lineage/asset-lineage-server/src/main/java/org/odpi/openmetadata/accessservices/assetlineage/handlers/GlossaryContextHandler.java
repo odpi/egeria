@@ -22,6 +22,7 @@ import java.util.Set;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.GLOSSARY_TERM;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.GUID_PARAMETER;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.SEMANTIC_ASSIGNMENT;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.TERM_CATEGORIZATION;
 
 /**
  * The glossary handler provide methods to provide business glossary terms for lineage.
@@ -75,23 +76,33 @@ public class GlossaryContextHandler {
                                                                    EntityDetail glossaryTerm) throws OCFCheckedExceptionBase {
         String methodName = "buildGlossaryTermContext";
 
-        invalidParameterHandler.validateGUID(glossaryTerm.getGUID(), GUID_PARAMETER, methodName);
+        String glossaryTermGUID = glossaryTerm.getGUID();
+        invalidParameterHandler.validateGUID(glossaryTermGUID, GUID_PARAMETER, methodName);
 
         AssetContext glossaryContext = new AssetContext();
 
-        List<Relationship> semanticAssignments = getSemanticAssignments(userId, glossaryTerm.getGUID(), glossaryTerm.getType().getTypeDefName(), methodName);
-        if (CollectionUtils.isEmpty(semanticAssignments)) {
+        List<Relationship> semanticAssignments = getSemanticAssignments(userId, glossaryTermGUID, GLOSSARY_TERM);
+        List<Relationship> termCategorization = getTermCategorizations(userId, glossaryTermGUID, GLOSSARY_TERM);
+        if (CollectionUtils.isEmpty(semanticAssignments) && CollectionUtils.isEmpty(termCategorization)) {
             return null;
         }
 
         handlerHelper.addLineageClassificationToContext(glossaryTerm, glossaryContext);
         addSchemaElementsContext(userId, glossaryTerm, glossaryContext, semanticAssignments);
+        addGlossaryCategories(userId, glossaryTerm, glossaryContext, termCategorization);
 
         return glossaryContext.getNeighbors();
     }
 
-    private void addSchemaElementsContext(String userId, EntityDetail glossaryTerm, AssetContext glossaryContext, List<Relationship> semanticAssignments) throws OCFCheckedExceptionBase {
-        Set<EntityDetail> schemaElements = addSemanticAssignmentToContext(userId, glossaryTerm, glossaryContext, semanticAssignments);
+    private void addSchemaElementsContext(String userId,
+                                          EntityDetail glossaryTerm,
+                                          AssetContext glossaryContext,
+                                          List<Relationship> semanticAssignments) throws OCFCheckedExceptionBase {
+        if (CollectionUtils.isEmpty(semanticAssignments)) {
+            return;
+        }
+
+        Set<EntityDetail> schemaElements = addGlossaryTermRelationshipsToContext(userId, glossaryTerm, glossaryContext, semanticAssignments);
         for (EntityDetail schemaElement : schemaElements) {
             AssetContext schemaElementContext = assetContextHandler.getAssetContext(userId, schemaElement);
             glossaryContext.getGraphContexts().addAll(schemaElementContext.getGraphContexts());
@@ -100,6 +111,17 @@ public class GlossaryContextHandler {
         }
     }
 
+
+    private void addGlossaryCategories(String userId,
+                                       EntityDetail glossaryTerm,
+                                       AssetContext glossaryContext,
+                                       List<Relationship> termCategorization) throws OCFCheckedExceptionBase {
+        if (CollectionUtils.isEmpty(termCategorization)) {
+            return;
+        }
+
+        addGlossaryTermRelationshipsToContext(userId, glossaryTerm, glossaryContext, termCategorization);
+    }
 
     private void mergeGraphNeighbors(AssetContext glossaryContext, String k, Set<GraphContext> v) {
         if (glossaryContext.getNeighbors().containsKey(k)) {
@@ -112,30 +134,62 @@ public class GlossaryContextHandler {
     /**
      * Add semantic assignments for an asset to the Context structure
      *
-     * @param userId              userId
-     * @param assetContext        context of the asset
-     * @param semanticAssignments array of the semantic assignments
+     * @param userId        userId
+     * @param assetContext  context of the asset
+     * @param relationships array of the semantic assignments
      * @return a set of schema elements assigned to the Glossary Term
      */
-    private Set<EntityDetail> addSemanticAssignmentToContext(String userId, EntityDetail glossaryTerm, AssetContext assetContext, List<Relationship> semanticAssignments) throws OCFCheckedExceptionBase {
-        Set<EntityDetail> schemaElements = new HashSet<>();
+    private Set<EntityDetail> addGlossaryTermRelationshipsToContext(String userId,
+                                                                    EntityDetail glossaryTerm,
+                                                                    AssetContext assetContext,
+                                                                    List<Relationship> relationships) throws OCFCheckedExceptionBase {
+        Set<EntityDetail> endEntityDetails = new HashSet<>();
 
-        for (Relationship relationship : semanticAssignments) {
+        for (Relationship relationship : relationships) {
             EntityDetail entityDetail = handlerHelper.buildGraphEdgeByRelationship(userId, glossaryTerm, relationship, assetContext);
-            schemaElements.add(entityDetail);
+            endEntityDetails.add(entityDetail);
         }
 
-        return schemaElements;
+        return endEntityDetails;
     }
 
-    private List<Relationship> getSemanticAssignments(String userId, String glossaryTermGUID, String typeDefName, String methodName) throws UserNotAuthorizedException, PropertyServerException {
-        String typeGuid = handlerHelper.getTypeByName(userId, SEMANTIC_ASSIGNMENT);
+    private List<Relationship> getSemanticAssignments(String userId,
+                                                      String entityTypeGUID,
+                                                      String entityTypeName) throws UserNotAuthorizedException, PropertyServerException {
+        return getRelationshipsByTypeGUID(userId, entityTypeGUID, entityTypeName, SEMANTIC_ASSIGNMENT);
+    }
+
+    private List<Relationship> getTermCategorizations(String userId,
+                                                      String entityTypeGUID,
+                                                      String entityTypeName) throws UserNotAuthorizedException, PropertyServerException {
+        return getRelationshipsByTypeGUID(userId, entityTypeGUID, entityTypeName, TERM_CATEGORIZATION);
+    }
+
+    private List<Relationship> getRelationshipsByTypeGUID(String userId,
+                                                          String entityTypeGUID,
+                                                          String entityTypeName,
+                                                          String relationshipTypeName) throws UserNotAuthorizedException, PropertyServerException {
+        String methodName = "getRelationshipsByTypeGUID";
+        String relationshipTypeGUID = handlerHelper.getTypeByName(userId, TERM_CATEGORIZATION);
 
         return repositoryHandler.getRelationshipsByType(userId,
-                glossaryTermGUID,
-                typeDefName,
-                typeGuid,
-                SEMANTIC_ASSIGNMENT,
+                entityTypeGUID,
+                entityTypeName,
+                relationshipTypeGUID,
+                relationshipTypeName,
                 methodName);
+    }
+
+    public boolean hasGlossaryTermLineageRelationships(String userId, EntityDetail entityDetail)
+            throws UserNotAuthorizedException, PropertyServerException {
+        String typeDefName = entityDetail.getType().getTypeDefName();
+        String entityDetailGUID = entityDetail.getGUID();
+
+        List<Relationship> semanticAssignments = getSemanticAssignments(userId, entityDetailGUID, typeDefName);
+        if (CollectionUtils.isNotEmpty(semanticAssignments)) {
+            return true;
+        }
+
+        return CollectionUtils.isNotEmpty(getTermCategorizations(userId, entityDetailGUID, entityDetail.getType().getTypeDefGUID()));
     }
 }
