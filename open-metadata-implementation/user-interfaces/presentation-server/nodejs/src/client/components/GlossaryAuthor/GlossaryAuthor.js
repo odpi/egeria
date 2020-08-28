@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { Accordion, AccordionItem } from "carbon-components-react";
 import getNodeType from "./components/properties/NodeTypes.js";
 import GlossaryAuthorCRUD from "./components/GlossaryAuthorCRUD";
+import GlossaryAuthorNavigation from "./components/GlossaryAuthorNavigation";
 
 export default function GlossaryAuthor() {
   const [connected, setConnected] = useState();
@@ -13,6 +14,7 @@ export default function GlossaryAuthor() {
   const [exceptionErrorMessage, setExceptionErrorMessage] = useState();
   const [systemAction, setSystemAction] = useState();
   const [fullResponse, setFullResponse] = useState();
+  const [task, setTask] = useState("crud");
 
   const nodeType = getNodeType("glossary");
   // Try to connect to the server. The [] means it only runs on mount (rather than every render)
@@ -105,8 +107,9 @@ export default function GlossaryAuthor() {
     }
   };
   const handleTaskChange = (e) => {
-    const value = e.target.value;
-    console.log("handleTaskChange (() " + value);
+    const newTask = e.target.value;
+    console.log("handleTaskChange (() " + newTask);
+    setTask(newTask);
   };
 
   const handleOnClick = (e) => {
@@ -131,7 +134,8 @@ export default function GlossaryAuthor() {
               CRUD
             </option>
           </select>
-          <GlossaryAuthorCRUD />
+          {task == "crud" && <GlossaryAuthorCRUD />}
+          {task == "authoring" && <GlossaryAuthorNavigation />}
         </div>
       )}
       {!connected && (
