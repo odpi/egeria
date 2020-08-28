@@ -4,26 +4,23 @@
 
 package org.odpi.openmetadata.accessservices.subjectarea.properties.relationships;
 
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineEnd;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipEndCardinality;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.TermRelationshipStatus;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineEnd;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineType;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipEndCardinality;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
-
-import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.*;
-
-//omrs
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
-//omrs beans
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineType;
 
 /**
  * Defines the relationship between a spine attribute and its type.
@@ -67,30 +64,56 @@ public class TypedBy extends Line {
     private static final java.util.Set<String> ATTRIBUTE_NAMES_SET = new HashSet<>(Arrays.asList(ATTRIBUTE_NAMES_SET_VALUES));
     private static final java.util.Set<String> ENUM_NAMES_SET = new HashSet<>(Arrays.asList(ENUM_NAMES_SET_VALUES));
     private static final java.util.Set<String> MAP_NAMES_SET = new HashSet<>(Arrays.asList(MAP_NAMES_SET_VALUES));
-    private String end1TypeName;
-    private String end1AttributeName;
-    private String end1AttributeDescription;
-    private RelationshipEndCardinality end1Cardinality;
-    private String end2TypeName;
-    private String end2AttributeName;
-    private String end2AttributeDescription;
-    private RelationshipEndCardinality end2Cardinality;
+
+    private String description = "Defines the relationship between a spine attribute and its type.";
+    /*
+     * Set up end 1.
+     */
+    final String end1NodeType = "Term";
+    final String end1AttributeName = "attributesTypedBy";
+    final String end1AttributeDescription = "Attributes of this type.";
+    final RelationshipEndCardinality end1Cardinality = RelationshipEndCardinality.ANY_NUMBER;
+
+
+    /*
+     * Set up end 2.
+     */
+    final String end2NodeType = "Term";
+    final String end2AttributeName = "types";
+    final String end2AttributeDescription = "Types for this attribute.";
+    final RelationshipEndCardinality end2Cardinality = RelationshipEndCardinality.ANY_NUMBER;
+    private TermRelationshipStatus status;
+    private String steward;
+    private String source;
+
+    public TypedBy() {
+        initialise();
+    }
+
+    public TypedBy(Line template) {
+        super(template);
+        initialise();
+    }
+
+    public TypedBy(Relationship omrsRelationship) {
+        super(omrsRelationship);
+        initialise();
+    }
+
     @Override
     protected LineEnd getLineEnd1() {
-        return new LineEnd(this.end1TypeName,
+        return new LineEnd(this.end1NodeType,
                            this.end1AttributeName,
                            this.end1AttributeDescription,
                            this.end1Cardinality);
     }
+
     @Override
     protected LineEnd getLineEnd2() {
-        return new LineEnd(this.end2TypeName,
+        return new LineEnd(this.end2NodeType,
                            this.end2AttributeName,
                            this.end2AttributeDescription,
                            this.end2Cardinality);
-    }
-    public TypedBy() {
-        initialise();
     }
 
     private void initialise() {
@@ -103,16 +126,6 @@ public class TypedBy extends Line {
         } catch (IllegalArgumentException e) {
             lineType = LineType.Unknown;
         }
-    }
-
-    public TypedBy(Line template) {
-        super(template);
-        initialise();
-    }
-
-    public TypedBy(Relationship omrsRelationship) {
-        super(omrsRelationship);
-        initialise();
     }
 
     InstanceProperties obtainInstanceProperties() {
@@ -151,8 +164,6 @@ public class TypedBy extends Line {
         return instanceProperties;
     }
 
-    private String description;
-
     /**
      * {@literal Description of the relationship. }
      *
@@ -161,12 +172,13 @@ public class TypedBy extends Line {
     public String getDescription() {
         return this.description;
     }
-
+    /**
+     * {@literal Set the description of the relationship. }
+     * @param description {@code String }
+     */
     public void setDescription(String description) {
         this.description = description;
     }
-
-    private TermRelationshipStatus status;
 
     /**
      * {@literal The status of or confidence in the relationship. }
@@ -181,8 +193,6 @@ public class TypedBy extends Line {
         this.status = status;
     }
 
-    private String steward;
-
     /**
      * {@literal Person responsible for the relationship. }
      *
@@ -195,8 +205,6 @@ public class TypedBy extends Line {
     public void setSteward(String steward) {
         this.steward = steward;
     }
-
-    private String source;
 
     /**
      * {@literal Person, organization or automated process that created the relationship. }

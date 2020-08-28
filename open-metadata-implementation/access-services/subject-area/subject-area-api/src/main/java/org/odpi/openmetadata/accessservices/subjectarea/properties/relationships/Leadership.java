@@ -4,34 +4,26 @@
 
 package org.odpi.openmetadata.accessservices.subjectarea.properties.relationships;
 
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineEnd;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipEndCardinality;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineEnd;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineType;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipEndCardinality;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
-//omrs
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
-//omrs beans
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineType;
-
 /**
- * Leadership is a relationship between an entity of type ActorProfile and an entity of type ActorProfile.
- * The ends of the relationship are stored as entity proxies, where there is a 'proxy' name by which the entity type is known.
- * The first entity proxy has leads as the proxy name for entity type ActorProfile.
- * The second entity proxy has follows as the proxy name for entity type ActorProfile.
- * <p>
- * Each entity proxy also stores the entities guid.
- * <p>
- * Relationship identifying leaders and their followers.
+ * Leadership is a relationship between an ActorProfile and another ActorProfile.
+ * It is a relationship identifying leaders and their followers.
  */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -64,31 +56,53 @@ public class Leadership extends Line {
     private static final java.util.Set<String> ATTRIBUTE_NAMES_SET = new HashSet<>(Arrays.asList(ATTRIBUTE_NAMES_SET_VALUES));
     private static final java.util.Set<String> ENUM_NAMES_SET = new HashSet<>(Arrays.asList(ENUM_NAMES_SET_VALUES));
     private static final java.util.Set<String> MAP_NAMES_SET = new HashSet<>(Arrays.asList(MAP_NAMES_SET_VALUES));
-    private String end1TypeName;
-    private String end1AttributeName;
-    private String end1AttributeDescription;
-    private RelationshipEndCardinality end1Cardinality;
-    private String end2TypeName;
-    private String end2AttributeName;
-    private String end2AttributeDescription;
-    private RelationshipEndCardinality end2Cardinality;
+
+    final String description = "Relationship identifying the leaders of teams.";
+
+    /*
+     * Set up end 1.
+     */
+    final String end1NodeType = "TeamLeader";
+    final String end1AttributeName = "teamLeaders";
+    final String end1AttributeDescription = "The leaders of the team.";
+    final RelationshipEndCardinality end1Cardinality = RelationshipEndCardinality.ANY_NUMBER;
+
+    /*
+     * Set up end 2.
+     */
+    final String end2NodeType = "Team";
+    final String end2AttributeName = "leadsTeam";
+    final String end2AttributeDescription = "The team lead by this team leader.";
+    final RelationshipEndCardinality end2Cardinality = RelationshipEndCardinality.AT_MOST_ONE;
+
+    public Leadership() {
+        initialise();
+    }
+
+    public Leadership(Line template) {
+        super(template);
+        initialise();
+    }
+
+    public Leadership(Relationship omrsRelationship) {
+        super(omrsRelationship);
+        initialise();
+    }
+
     @Override
     protected LineEnd getLineEnd1() {
-        return new LineEnd(this.end1TypeName,
+        return new LineEnd(this.end1NodeType,
                            this.end1AttributeName,
                            this.end1AttributeDescription,
                            this.end1Cardinality);
     }
+
     @Override
     protected LineEnd getLineEnd2() {
-        return new LineEnd(this.end2TypeName,
+        return new LineEnd(this.end2NodeType,
                            this.end2AttributeName,
                            this.end2AttributeDescription,
                            this.end2Cardinality);
-    }
-
-    public Leadership() {
-        initialise();
     }
 
     private void initialise() {
@@ -102,16 +116,6 @@ public class Leadership extends Line {
             lineType = LineType.Unknown;
         }
 
-    }
-
-    public Leadership(Line template) {
-        super(template);
-        initialise();
-    }
-
-    public Leadership(Relationship omrsRelationship) {
-        super(omrsRelationship);
-        initialise();
     }
 
     InstanceProperties obtainInstanceProperties() {

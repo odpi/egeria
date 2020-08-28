@@ -139,14 +139,14 @@ public class Line implements Serializable, OmasObject {
         this.systemAttributes.setVersion(omrsRelationship.getVersion());
         setLineEnds();
     }
-
-    public String getTypeDefGuid() {
-        return typeDefGuid;
-    }
-
-    public void setTypeDefGuid(String typeDefGuid) {
-        this.typeDefGuid = typeDefGuid;
-    }
+//
+//    public String getTypeDefGuid() {
+//        return typeDefGuid;
+//    }
+//
+//    public void setTypeDefGuid(String typeDefGuid) {
+//        this.typeDefGuid = typeDefGuid;
+//    }
 
     public LineType getLineType() {
         return lineType;
@@ -244,7 +244,7 @@ public class Line implements Serializable, OmasObject {
         Relationship omrsRelationship = new Relationship();
         InstanceType typeOfRelationship = new InstanceType();
         typeOfRelationship.setTypeDefName(line.getName());
-        typeOfRelationship.setTypeDefGUID(line.getTypeDefGuid());
+//        typeOfRelationship.setTypeDefGUID(line.getTypeDefGuid());
         omrsRelationship.setType(typeOfRelationship);
         SystemAttributes systemAttributes = line.getSystemAttributes();
         if (systemAttributes == null) {
@@ -269,7 +269,7 @@ public class Line implements Serializable, OmasObject {
         }
 
         sb.append("Line{");
-        sb.append("typeDefGuid=").append(typeDefGuid).append(",");
+//        sb.append("typeDefGuid=").append(typeDefGuid).append(",");
         sb.append("lineType=").append(lineType.name()).append(",");
         sb.append("name=").append(name);
         if (this.systemAttributes != null) {
