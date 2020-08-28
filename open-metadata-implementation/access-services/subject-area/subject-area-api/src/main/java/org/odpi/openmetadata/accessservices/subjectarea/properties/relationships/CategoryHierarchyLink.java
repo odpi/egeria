@@ -4,34 +4,25 @@
 
 package org.odpi.openmetadata.accessservices.subjectarea.properties.relationships;
 
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineEnd;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipEndCardinality;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineEnd;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineType;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipEndCardinality;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
-//omrs
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
-//omrs beans
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineType;
-
 /**
- * CategoryHierarchyLink is a relationship between an entity of type GlossaryCategory and an entity of type GlossaryCategory.
- * The ends of the relationship are stored as entity proxies, where there is a 'proxy' name by which the entity type is known.
- * The first entity proxy has superCategory as the proxy name for entity type GlossaryCategory.
- * The second entity proxy has subcategories as the proxy name for entity type GlossaryCategory.
- * <p>
- * Each entity proxy also stores the entities guid.
- * <p>
- * Relationship between two glossary categories used to create nested categories.
+ * CategoryHierarchyLink is a parent child relationship between a Categories; it is used to create nested categories
  */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -64,30 +55,53 @@ public class CategoryHierarchyLink extends Line {
     private static final java.util.Set<String> ATTRIBUTE_NAMES_SET = new HashSet<>(Arrays.asList(ATTRIBUTE_NAMES_SET_VALUES));
     private static final java.util.Set<String> ENUM_NAMES_SET = new HashSet<>(Arrays.asList(ENUM_NAMES_SET_VALUES));
     private static final java.util.Set<String> MAP_NAMES_SET = new HashSet<>(Arrays.asList(MAP_NAMES_SET_VALUES));
-    private String end1TypeName;
-    private String end1AttributeName;
-    private String end1AttributeDescription;
-    private RelationshipEndCardinality end1Cardinality;
-    private String end2TypeName;
-    private String end2AttributeName;
-    private String end2AttributeDescription;
-    private RelationshipEndCardinality end2Cardinality;
+
+    private String description = "Relationship between two glossary categories used to create nested categories.";
+
+    /*
+     * Set up end 1.
+     */
+    final String end1NodeType = "Category";
+    final String end1AttributeName = "superCategory";
+    final String end1AttributeDescription = "Identifies the parent category.";
+    final RelationshipEndCardinality end1Cardinality = RelationshipEndCardinality.AT_MOST_ONE;
+
+    /*
+     * Set up end 2.
+     */
+    final String end2NodeType = "Category";
+    final String end2AttributeName = "subcategories";
+    final String end2AttributeDescription = "Glossary categories nested inside this category.";
+    final RelationshipEndCardinality end2Cardinality = RelationshipEndCardinality.ANY_NUMBER;
+
+    public CategoryHierarchyLink() {
+        initialise();
+    }
+
+    public CategoryHierarchyLink(Line template) {
+        super(template);
+        initialise();
+    }
+
+    public CategoryHierarchyLink(Relationship omrsRelationship) {
+        super(omrsRelationship);
+        initialise();
+    }
+
     @Override
     protected LineEnd getLineEnd1() {
-        return new LineEnd(this.end1TypeName,
+        return new LineEnd(this.end1NodeType,
                            this.end1AttributeName,
                            this.end1AttributeDescription,
                            this.end1Cardinality);
     }
+
     @Override
     protected LineEnd getLineEnd2() {
-        return new LineEnd(this.end2TypeName,
+        return new LineEnd(this.end2NodeType,
                            this.end2AttributeName,
                            this.end2AttributeDescription,
                            this.end2Cardinality);
-    }
-    public CategoryHierarchyLink() {
-        initialise();
     }
 
     private void initialise() {
@@ -100,16 +114,6 @@ public class CategoryHierarchyLink extends Line {
         } catch (IllegalArgumentException e) {
             lineType = LineType.Unknown;
         }
-    }
-
-    public CategoryHierarchyLink(Line template) {
-        super(template);
-        initialise();
-    }
-
-    public CategoryHierarchyLink(Relationship omrsRelationship) {
-        super(omrsRelationship);
-       initialise();
     }
 
     InstanceProperties obtainInstanceProperties() {

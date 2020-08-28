@@ -4,26 +4,23 @@
 
 package org.odpi.openmetadata.accessservices.subjectarea.properties.relationships;
 
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineEnd;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipEndCardinality;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.TermAssignmentStatus;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineEnd;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineType;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipEndCardinality;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
-
-import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.*;
-
-//omrs
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
-//omrs beans
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineType;
 
 /**
  * Links a glossary term to another element such as an asset or schema element to define its meaning.
@@ -67,35 +64,62 @@ public class SemanticAssignment extends Line {
             // Terminate the list
             null
     };
-    private static final java.util.Set<String> PROPERTY_NAMES_SET =new HashSet<>(Arrays.asList(PROPERTY_NAMES_SET_VALUES));
-    private static final java.util.Set<String> ATTRIBUTE_NAMES_SET =new HashSet<>(Arrays.asList(ATTRIBUTE_NAMES_SET_VALUES));
-    private static final java.util.Set<String> ENUM_NAMES_SET =new HashSet<>(Arrays.asList(ENUM_NAMES_SET_VALUES));
-    private static final java.util.Set<String> MAP_NAMES_SET =new HashSet<>(Arrays.asList(MAP_NAMES_SET_VALUES));
-    private String end1TypeName;
-    private String end1AttributeName;
-    private String end1AttributeDescription;
-    private RelationshipEndCardinality end1Cardinality;
-    private String end2TypeName;
-    private String end2AttributeName;
-    private String end2AttributeDescription;
-    private RelationshipEndCardinality end2Cardinality;
+    private static final java.util.Set<String> PROPERTY_NAMES_SET = new HashSet<>(Arrays.asList(PROPERTY_NAMES_SET_VALUES));
+    private static final java.util.Set<String> ATTRIBUTE_NAMES_SET = new HashSet<>(Arrays.asList(ATTRIBUTE_NAMES_SET_VALUES));
+    private static final java.util.Set<String> ENUM_NAMES_SET = new HashSet<>(Arrays.asList(ENUM_NAMES_SET_VALUES));
+    private static final java.util.Set<String> MAP_NAMES_SET = new HashSet<>(Arrays.asList(MAP_NAMES_SET_VALUES));
+
+    private String description = "Links a glossary term to another element such as an asset or schema element to define its meaning.";
+
+    /*
+     * Set up end 1.
+     */
+    final String end1NodeType = "Referenceable";
+    final String end1AttributeName = "assignedElements";
+    final String end1AttributeDescription = "Elements identified as managing data that has the same meaning as this glossary term.";
+    final RelationshipEndCardinality end1Cardinality = RelationshipEndCardinality.ANY_NUMBER;
+
+    /*
+     * Set up end 2.
+     */
+    final String end2NodeType = "Term";
+    final String end2AttributeName = "meaning";
+    final String end2AttributeDescription = "Semantic definition for this element.";
+    final RelationshipEndCardinality end2Cardinality = RelationshipEndCardinality.ANY_NUMBER;
+    private String expression;
+    private TermAssignmentStatus status;
+    private Integer confidence;
+    private String steward;
+    private String source;
+
+    public SemanticAssignment() {
+        initialise();
+    }
+
+    public SemanticAssignment(Line template) {
+        super(template);
+        initialise();
+    }
+
+    public SemanticAssignment(Relationship omrsRelationship) {
+        super(omrsRelationship);
+        initialise();
+    }
+
     @Override
     protected LineEnd getLineEnd1() {
-        return new LineEnd(this.end1TypeName,
+        return new LineEnd(this.end1NodeType,
                            this.end1AttributeName,
                            this.end1AttributeDescription,
                            this.end1Cardinality);
     }
+
     @Override
     protected LineEnd getLineEnd2() {
-        return new LineEnd(this.end2TypeName,
+        return new LineEnd(this.end2NodeType,
                            this.end2AttributeName,
                            this.end2AttributeDescription,
                            this.end2Cardinality);
-    }
-
-    public SemanticAssignment() {
-        initialise();
     }
 
     private void initialise() {
@@ -108,16 +132,6 @@ public class SemanticAssignment extends Line {
         } catch (IllegalArgumentException e) {
             lineType = LineType.Unknown;
         }
-    }
-
-    public SemanticAssignment(Line template) {
-        super(template);
-        initialise();
-    }
-
-    public SemanticAssignment(Relationship omrsRelationship) {
-        super(omrsRelationship);
-       initialise();
     }
 
     InstanceProperties obtainInstanceProperties() {
@@ -159,8 +173,6 @@ public class SemanticAssignment extends Line {
         return instanceProperties;
     }
 
-    private String description;
-
     /**
      * {@literal Description of the relationship. }
      *
@@ -169,12 +181,13 @@ public class SemanticAssignment extends Line {
     public String getDescription() {
         return this.description;
     }
-
+    /**
+     * {@literal Set the description of the relationship. }
+     * @param description {@code String }
+     */
     public void setDescription(String description) {
         this.description = description;
     }
-
-    private String expression;
 
     /**
      * {@literal Expression describing the relationship. }
@@ -189,8 +202,6 @@ public class SemanticAssignment extends Line {
         this.expression = expression;
     }
 
-    private TermAssignmentStatus status;
-
     /**
      * {@literal The status of the relationship. }
      *
@@ -203,8 +214,6 @@ public class SemanticAssignment extends Line {
     public void setStatus(TermAssignmentStatus status) {
         this.status = status;
     }
-
-    private Integer confidence;
 
     /**
      * {@literal Level of confidence in the correctness of the relationship. }
@@ -219,8 +228,6 @@ public class SemanticAssignment extends Line {
         this.confidence = confidence;
     }
 
-    private String steward;
-
     /**
      * {@literal Person responsible for the relationship. }
      *
@@ -233,8 +240,6 @@ public class SemanticAssignment extends Line {
     public void setSteward(String steward) {
         this.steward = steward;
     }
-
-    private String source;
 
     /**
      * {@literal Person, organization or automated process that created the relationship. }

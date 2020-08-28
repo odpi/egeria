@@ -4,34 +4,26 @@
 
 package org.odpi.openmetadata.accessservices.subjectarea.properties.relationships;
 
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineEnd;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipEndCardinality;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineEnd;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineType;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipEndCardinality;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashSet;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
-//omrs
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
-//omrs beans
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineType;
-
 /**
- * LibraryTermReference is a relationship between an entity of type GlossaryTerm and an entity of type ExternalGlossaryLink.
- * The ends of the relationship are stored as entity proxies, where there is a 'proxy' name by which the entity type is known.
- * The first entity proxy has localTerms as the proxy name for entity type GlossaryTerm.
- * The second entity proxy has externalGlossaryTerms as the proxy name for entity type ExternalGlossaryLink.
- * <p>
- * Each entity proxy also stores the entities guid.
- * <p>
- * Links a glossary term to a glossary term in an external glossary.
+ * LibraryTermReference is a relationship between a Term and an ExternalGlossaryLink.
  */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -72,30 +64,58 @@ public class LibraryTermReference extends Line {
     private static final java.util.Set<String> ATTRIBUTE_NAMES_SET = new HashSet<>(Arrays.asList(ATTRIBUTE_NAMES_SET_VALUES));
     private static final java.util.Set<String> ENUM_NAMES_SET = new HashSet<>(Arrays.asList(ENUM_NAMES_SET_VALUES));
     private static final java.util.Set<String> MAP_NAMES_SET = new HashSet<>(Arrays.asList(MAP_NAMES_SET_VALUES));
-    private String end1TypeName;
-    private String end1AttributeName;
-    private String end1AttributeDescription;
-    private RelationshipEndCardinality end1Cardinality;
-    private String end2TypeName;
-    private String end2AttributeName;
-    private String end2AttributeDescription;
-    private RelationshipEndCardinality end2Cardinality;
+
+
+    private String description = "Links a glossary term to a glossary term in an external glossary.";
+
+    /*
+     * Set up end 1.
+     */
+    final String end1NodeType = "Term";
+    final String end1AttributeName = "localTerms";
+    final String end1AttributeDescription = "Related local glossary terms.";
+    final RelationshipEndCardinality end1Cardinality = RelationshipEndCardinality.ANY_NUMBER;
+
+
+    /*
+     * Set up end 2.
+     */
+    final String end2NodeType = "ExternalGlossaryLink";
+    final String end2AttributeName = "externalGlossaryTerms";
+    final String end2AttributeDescription = "Links to related external glossaries.";
+    final RelationshipEndCardinality end2Cardinality = RelationshipEndCardinality.ANY_NUMBER;
+    private String identifier;
+    private String steward;
+    private Date lastVerified;
+
+    public LibraryTermReference() {
+        initialise();
+    }
+
+    public LibraryTermReference(Line template) {
+        super(template);
+        initialise();
+    }
+
+    public LibraryTermReference(Relationship omrsRelationship) {
+        super(omrsRelationship);
+        initialise();
+    }
+
     @Override
     protected LineEnd getLineEnd1() {
-        return new LineEnd(this.end1TypeName,
+        return new LineEnd(this.end1NodeType,
                            this.end1AttributeName,
                            this.end1AttributeDescription,
                            this.end1Cardinality);
     }
+
     @Override
     protected LineEnd getLineEnd2() {
-        return new LineEnd(this.end2TypeName,
+        return new LineEnd(this.end2NodeType,
                            this.end2AttributeName,
                            this.end2AttributeDescription,
                            this.end2Cardinality);
-    }
-    public LibraryTermReference() {
-        initialise();
     }
 
     private void initialise() {
@@ -108,16 +128,6 @@ public class LibraryTermReference extends Line {
         } catch (IllegalArgumentException e) {
             lineType = LineType.Unknown;
         }
-    }
-
-    public LibraryTermReference(Line template) {
-        super(template);
-        initialise();
-    }
-
-    public LibraryTermReference(Relationship omrsRelationship) {
-        super(omrsRelationship);
-        initialise();
     }
 
     InstanceProperties obtainInstanceProperties() {
@@ -151,8 +161,6 @@ public class LibraryTermReference extends Line {
         return instanceProperties;
     }
 
-    private String identifier;
-
     /**
      * {@literal Identifier of the corresponding element from the external glossary. }
      *
@@ -166,8 +174,6 @@ public class LibraryTermReference extends Line {
         this.identifier = identifier;
     }
 
-    private String description;
-
     /**
      * {@literal Description of the corresponding element from the external glossary. }
      *
@@ -176,12 +182,13 @@ public class LibraryTermReference extends Line {
     public String getDescription() {
         return this.description;
     }
-
+    /**
+     * {@literal Set the description of the relationship. }
+     * @param description {@code String }
+     */
     public void setDescription(String description) {
         this.description = description;
     }
-
-    private String steward;
 
     /**
      * {@literal Person who established the link to the external glossary. }
@@ -195,8 +202,6 @@ public class LibraryTermReference extends Line {
     public void setSteward(String steward) {
         this.steward = steward;
     }
-
-    private Date lastVerified;
 
     /**
      * {@literal Date when this reference was last checked. }
