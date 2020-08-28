@@ -45,7 +45,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         @JsonSubTypes.Type(value = CategoryAnchor.class),
         @JsonSubTypes.Type(value = Categorization.class),
 })
-public class Line implements Serializable, OmasObject {
+abstract public class Line implements Serializable, OmasObject {
     protected static final long serialVersionUID = 1L;
     private SystemAttributes systemAttributes = null;
     private Date effectiveFromTime = null;
@@ -55,7 +55,6 @@ public class Line implements Serializable, OmasObject {
     protected LineType lineType;
     // this is the line name
     protected String name;
-    protected String openTypeName;
     protected LineEnd end1;
     protected LineEnd end2;
 
@@ -92,16 +91,12 @@ public class Line implements Serializable, OmasObject {
      * Get line end 1. The child Line sets the appropriate values for its Line end 1
      * @return LineEnd Line end 1
      */
-    protected LineEnd getLineEnd1() {
-       return null;
-    }
+    abstract protected LineEnd getLineEnd1();
     /**
      * Get line end 1. The child Line sets the appropriate values for its Line end 1
      * @return LineEnd Line end 1
      */
-    protected LineEnd getLineEnd2() {
-        return null;
-    }
+    abstract protected LineEnd getLineEnd2();
 
     /**
      * Create a typedRelationship from an omrs relationship
