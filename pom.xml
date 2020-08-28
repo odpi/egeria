@@ -184,6 +184,7 @@
         <jcl-over-slf4j.version>1.7.30</jcl-over-slf4j.version>
         <reflections.version>0.9.12</reflections.version>
         <HdrHistogram.version>2.1.12</HdrHistogram.version>
+        <glassfish.json.version>1.0</glassfish.json.version>
         <javassist.version>3.27.0-GA</javassist.version>
 
         <!-- Versions of plugins -->
@@ -2578,6 +2579,13 @@
                 <groupId>org.hdrhistogram</groupId>
                 <artifactId>HdrHistogram</artifactId>
                 <version>${HdrHistogram.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.glassfish</groupId>
+                <artifactId>javax.json</artifactId>
+                <scope>test</scope>
+                <version>${glassfish.json.version}</version>
             </dependency>
 
         </dependencies>
