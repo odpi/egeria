@@ -88,10 +88,17 @@ public class Line implements Serializable, OmasObject {
         setEnd1(getLineEnd1());
         setEnd2(getLineEnd2());
     }
-
+    /**
+     * Get line end 1. The child Line sets the appropriate values for its Line end 1
+     * @return LineEnd Line end 1
+     */
     protected LineEnd getLineEnd1() {
        return null;
     }
+    /**
+     * Get line end 1. The child Line sets the appropriate values for its Line end 1
+     * @return LineEnd Line end 1
+     */
     protected LineEnd getLineEnd2() {
         return null;
     }
