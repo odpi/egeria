@@ -134,7 +134,7 @@ const NodeController = (props) => {
     }
   };
   const onErrorCreate = (msg) => {
-    console.log("Error on Get " + msg);
+    console.log("Error on Create " + msg);
     setErrorMsg(msg);
     setCreatedNode(undefined);
     setCurrentNodeGuid(undefined);

@@ -46,7 +46,7 @@ export default function GlossaryAuthor() {
         );
         history.pushState({}, null, loginUrl);
         history.go();
-      } else {
+      } else {get
         alert(
           "The Browser does not support history. Please re-login here: " +
             loginUrl
