@@ -3,7 +3,7 @@
 
 FROM node:12-alpine
 
-ARG version=2.2-SNAPSHOT
+ARG version=2.2
 ARG VCS_REF=unknown
 ARG VCS_ORIGIN=unknown
 ARG BUILD_TIME=unknown
