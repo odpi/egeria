@@ -17,11 +17,6 @@ const IdentificationContextProvider = props => {
    * Get the home url for the browser
    */
   const getBrowserURL = pageName => {
-    if (process.env.NODE_ENV === "development") {
-      // if running in development, looks in .env file to find server name
-      const remoteServerName = JSON.parse(process.env[Object.keys(process.env).find(element => element.includes("REACT_APP_EGERIA"))]).remoteServerName;
-      return "/" + remoteServerName + "/" + pageName;
-    }
     return "/" + serverName + "/" + pageName;
   };
   /**

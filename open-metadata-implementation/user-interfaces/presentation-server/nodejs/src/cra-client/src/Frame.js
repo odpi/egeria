@@ -1,9 +1,10 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import Search20 from "@carbon/icons-react/lib/search/20";
 import Notification20 from "@carbon/icons-react/lib/notification/20";
 import AppSwitcher20 from "@carbon/icons-react/lib/app-switcher/20";
+import { Logout32 } from "@carbon/icons-react";
 import HeaderContainer from "carbon-components-react/lib/components/UIShell/HeaderContainer";
 import { Content } from "carbon-components-react/lib/components/UIShell";
 import { Link, Route, Switch } from "react-router-dom";
@@ -41,7 +42,7 @@ export default function Frame(props) {
 
   // force users to login if userId does not exist
   const currentURL = window.location.href.slice(window.location.href.lastIndexOf('/') + 1);
-  if (!identificationContext.userId) return <Login currentURL={currentURL}/>
+  if (!identificationContext.userId) return <Login currentURL={currentURL === 'logout' ? '' : currentURL}/>
 
   return (
     <div className="container">
@@ -61,7 +62,7 @@ export default function Frame(props) {
               </HeaderName>
 
               <HeaderGlobalBar>
-                <HeaderGlobalAction aria-label="Search" onClick={() => {}}>
+                {/* <HeaderGlobalAction aria-label="Search" onClick={() => {}}>
                   <Search20 />
                 </HeaderGlobalAction>
                 <HeaderGlobalAction
@@ -69,12 +70,12 @@ export default function Frame(props) {
                   onClick={() => {}}
                 >
                   <Notification20 />
-                </HeaderGlobalAction>
+                </HeaderGlobalAction> */}
                 <HeaderGlobalAction
-                  aria-label="App Switcher"
-                  onClick={() => {}}
+                  aria-label="Logout"
+                  onClick={() => window.location.href = window.location.href.slice(0, window.location.href.lastIndexOf('/') + 1) + 'logout'}
                 >
-                  <AppSwitcher20 />
+                  <Logout32 />
                 </HeaderGlobalAction>
               </HeaderGlobalBar>
               <SideNav
