@@ -126,7 +126,7 @@
         <junit.jupiter.version>5.6.2</junit.jupiter.version>
         <junit.version>4.13</junit.version>
         <surefire.plugin.version>3.0.0-M4</surefire.plugin.version>
-        <mockito.version>3.5.6</mockito.version>
+        <mockito.version>3.5.7</mockito.version>
         <testng.version>7.3.0</testng.version>
         <slf4j.version>1.7.30</slf4j.version>
         <logback.version>1.2.3</logback.version>
@@ -174,16 +174,17 @@
         <joda.version>2.10.6</joda.version>
         <jackson-asl.version>1.9.13</jackson-asl.version>
         <antlr.version>3.5.2</antlr.version>
-        <snappy.version>1.1.7.6</snappy.version>
+        <snappy.version>1.1.7.7</snappy.version>
         <snakeyaml.version>1.26</snakeyaml.version>
         <springdoc.version>1.4.4</springdoc.version>
-        <classgraph.version>4.8.88</classgraph.version>
+        <classgraph.version>4.8.89</classgraph.version>
         <swagger.version>2.1.4</swagger.version>
         <groovy.version>3.0.5</groovy.version>
         <micrometer-registry-prometheus.version>1.5.4</micrometer-registry-prometheus.version>
         <jcl-over-slf4j.version>1.7.30</jcl-over-slf4j.version>
         <reflections.version>0.9.12</reflections.version>
         <HdrHistogram.version>2.1.12</HdrHistogram.version>
+        <glassfish.json.version>1.0</glassfish.json.version>
         <javassist.version>3.27.0-GA</javassist.version>
 
         <!-- Versions of plugins -->
@@ -2578,6 +2579,13 @@
                 <groupId>org.hdrhistogram</groupId>
                 <artifactId>HdrHistogram</artifactId>
                 <version>${HdrHistogram.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.glassfish</groupId>
+                <artifactId>javax.json</artifactId>
+                <scope>test</scope>
+                <version>${glassfish.json.version}</version>
             </dependency>
 
         </dependencies>
