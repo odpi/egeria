@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 import React, { useContext } from "react";
-import { GlossaryAuthorContext } from "../../contexts/GlossaryAuthorContext";
+import { GlossaryAuthorContext } from "../../contexts/GlossaryAuthorCRUDContext";
 import { FormGroup } from "carbon-components-react";
 import Info16 from "@carbon/icons-react/lib/information/16";
 import Close16 from "../../../../images/Egeria_close_16";

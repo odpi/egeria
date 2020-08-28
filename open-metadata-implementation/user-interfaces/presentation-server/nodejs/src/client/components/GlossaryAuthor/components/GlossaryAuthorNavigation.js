@@ -1,9 +1,13 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 import React, { useState, useEffect } from "react";
+import GlossaryAuthorContext from "./contexts/GlossaryAuthorCRUDContext";
 import { Accordion, AccordionItem } from "carbon-components-react";
 import getNodeType from "./components/properties/NodeTypes.js";
-import GlossaryAuthorCRUD from "./components/GlossaryAuthorCRUD";
+import Egeria_project_32 from "../../images/Egeria_project_32";
+import Egeria_glossary_32 from "../../images/Egeria_glossary_32";
+import MyNodeView from "./components/views/MyNodeView";
+import GlossaryAuthorNodes from "./components/GlossaryAuthorNodes";
 
 export default function GlossaryAuthor() {
   const [connected, setConnected] = useState();
@@ -114,7 +118,21 @@ export default function GlossaryAuthor() {
   return (
     <div>
       {connected && (
-        <GlossaryAuthorCRUD />
+        <GlossaryAuthorContext>
+          <div className='my-container'>
+            <span className='my-item'>
+              Current Glossary
+              <Egeria_glossary_32 />
+              <MyNodeView typeKey="glossary" />
+            </span>
+            <span className='my-item'>
+              Current Project
+              <Egeria_project_32 />
+              <MyNodeView typeKey="project" />
+            </span>
+          </div>
+          <GlossaryAuthorNodes />
+        </GlossaryAuthorContext>
       )}
       {!connected && (
         <div>

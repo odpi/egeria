@@ -10,7 +10,7 @@ import Edit16 from "../../../images/Egeria_edit_16";
 import Search16 from "../../../images/Egeria_search_16";
 import Delete16 from "../../../images/Egeria_delete_16";
 import Relationships16 from "../../../images/Egeria_relationships_16";
-import { GlossaryAuthorContext } from "../contexts/GlossaryAuthorContext";
+import { GlossaryAuthorContext } from "../contexts/GlossaryAuthorCRUDContext";
 import useDebounce from "./useDebounce";
 import {
   issueRestCreate,
