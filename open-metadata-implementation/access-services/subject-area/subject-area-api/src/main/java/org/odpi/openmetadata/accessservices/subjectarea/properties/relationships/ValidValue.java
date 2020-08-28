@@ -4,24 +4,23 @@
 
 package org.odpi.openmetadata.accessservices.subjectarea.properties.relationships;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.TermRelationshipStatus;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineEnd;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineType;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipEndCardinality;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
-
-import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.*;
-
-//omrs
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
-//omrs beans
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineType;
 
 /**
  * Link between glossary terms where one defines one of the data values for the another.
@@ -67,26 +66,30 @@ public class ValidValue extends Line {
     private static final java.util.Set<String> ATTRIBUTE_NAMES_SET = new HashSet<>(Arrays.asList(ATTRIBUTE_NAMES_SET_VALUES));
     private static final java.util.Set<String> ENUM_NAMES_SET = new HashSet<>(Arrays.asList(ENUM_NAMES_SET_VALUES));
     private static final java.util.Set<String> MAP_NAMES_SET = new HashSet<>(Arrays.asList(MAP_NAMES_SET_VALUES));
-    private String termGuid;
-    private String validValueGuid;
+    private String description = "Link between glossary terms where one defines one of the data values for the another.";
+
+    /*
+     * Set up end 1.
+     */
+    final String end1NodeType = "Term";
+    final String end1AttributeName = "validValueFor";
+    final String end1AttributeDescription = "Glossary terms for data items that can be set to this value.";
+    final RelationshipEndCardinality end1Cardinality = RelationshipEndCardinality.ANY_NUMBER;
+
+    /*
+     * Set up end 2.
+     */
+    final String end2NodeType = "Term";
+    final String end2AttributeName = "validValues";
+    final String end2AttributeDescription = "Glossary terms for data values that can be used with data items represented by this glossary term.";
+    final RelationshipEndCardinality end2Cardinality = RelationshipEndCardinality.ANY_NUMBER;
+    private String expression;
+    private TermRelationshipStatus status;
+    private String steward;
+    private String source;
 
     public ValidValue() {
         initialise();
-    }
-
-    private void initialise() {
-        name = "ValidValue";
-        // set the LineType if this is a LineType enum value.
-        try {
-            lineType = LineType.valueOf(name);
-        } catch (IllegalArgumentException e) {
-            lineType = LineType.Unknown;
-        }
-        entity1Name = "validValueFor";
-        entity1Type = "GlossaryTerm";
-        entity2Name = "validValues";
-        entity2Type = "GlossaryTerm";
-        typeDefGuid = "707a156b-e579-4482-89a5-de5889da1971";
     }
 
     public ValidValue(Line template) {
@@ -96,39 +99,35 @@ public class ValidValue extends Line {
 
     public ValidValue(Relationship omrsRelationship) {
         super(omrsRelationship);
+        initialise();
+    }
+
+    @Override
+    protected LineEnd getLineEnd1() {
+        return new LineEnd(this.end1NodeType,
+                           this.end1AttributeName,
+                           this.end1AttributeDescription,
+                           this.end1Cardinality);
+    }
+
+    @Override
+    protected LineEnd getLineEnd2() {
+        return new LineEnd(this.end2NodeType,
+                           this.end2AttributeName,
+                           this.end2AttributeDescription,
+                           this.end2Cardinality);
+    }
+
+    private void initialise() {
         name = "ValidValue";
+        typeDefGuid = "707a156b-e579-4482-89a5-de5889da1971";
         // set the LineType if this is a LineType enum value.
         try {
             lineType = LineType.valueOf(name);
+            setLineEnds();
         } catch (IllegalArgumentException e) {
             lineType = LineType.Unknown;
         }
-    }
-
-    /**
-     * {@literal Get the guid of the Term that the valid value is of. }
-     *
-     * @return {@code String }
-     */
-    public String getTermGuid() {
-        return termGuid;
-    }
-
-    public void setTermGuid(String termGuid) {
-        this.termGuid = termGuid;
-    }
-
-    /**
-     * {@literal Get the guid of Term that defines the valid Value. }
-     *
-     * @return {@code String }
-     */
-    public String getValidValueGuid() {
-        return validValueGuid;
-    }
-
-    public void setValidValueGuid(String validValueGuid) {
-        this.validValueGuid = validValueGuid;
     }
 
     InstanceProperties obtainInstanceProperties() {
@@ -171,8 +170,6 @@ public class ValidValue extends Line {
         return instanceProperties;
     }
 
-    private String description;
-
     /**
      * {@literal Description of the relationship. }
      *
@@ -181,13 +178,13 @@ public class ValidValue extends Line {
     public String getDescription() {
         return this.description;
     }
-
+    /**
+     * {@literal Set the description of the relationship. }
+     * @param description {@code String }
+     */
     public void setDescription(String description) {
         this.description = description;
     }
-
-    private String expression;
-
     /**
      * {@literal An expression that explains the relationship. }
      *
@@ -200,8 +197,6 @@ public class ValidValue extends Line {
     public void setExpression(String expression) {
         this.expression = expression;
     }
-
-    private TermRelationshipStatus status;
 
     /**
      * {@literal The status of or confidence in the relationship. }
@@ -216,8 +211,6 @@ public class ValidValue extends Line {
         this.status = status;
     }
 
-    private String steward;
-
     /**
      * {@literal Person responsible for the relationship. }
      *
@@ -230,8 +223,6 @@ public class ValidValue extends Line {
     public void setSteward(String steward) {
         this.steward = steward;
     }
-
-    private String source;
 
     /**
      * {@literal Person, organization or automated process that created the relationship. }

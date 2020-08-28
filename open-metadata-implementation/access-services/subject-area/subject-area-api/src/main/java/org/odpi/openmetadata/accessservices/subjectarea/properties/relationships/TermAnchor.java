@@ -4,32 +4,26 @@
 
 package org.odpi.openmetadata.accessservices.subjectarea.properties.relationships;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineEnd;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineType;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipEndCardinality;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
-//omrs
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
-//omrs beans
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineType;
-
 /**
- * TermAnchorRelationship is a relationship between an entity of type Glossary and an entity of type GlossaryTerm.
- * The ends of the relationship are stored as entity proxies, where there is a 'proxy' name by which the entity type is known.
- * The first entity proxy has anchor as the proxy name for entity type Glossary.
- * The second entity proxy has terms as the proxy name for entity type GlossaryTerm.
- * <p>
- * Each entity proxy also stores the entities guid.
- * <p>
- * Links a term to its owning glossary.
+ * TermAnchorRelationship is a relationship between a Glossary and a Term.
+ * It links a term to its owning glossary.
  */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -62,27 +56,21 @@ public class TermAnchor extends Line {
     private static final java.util.Set<String> ATTRIBUTE_NAMES_SET = new HashSet<>(Arrays.asList(ATTRIBUTE_NAMES_SET_VALUES));
     private static final java.util.Set<String> ENUM_NAMES_SET = new HashSet<>(Arrays.asList(ENUM_NAMES_SET_VALUES));
     private static final java.util.Set<String> MAP_NAMES_SET = new HashSet<>(Arrays.asList(MAP_NAMES_SET_VALUES));
-    private String termGuid;
-    private String glossaryGuid;
+
+    final String description = "Links a term to its owning glossary.";
+    final String end1NodeType = "Glossary";
+    final String end1AttributeName = "anchor";
+    final String end1AttributeDescription = "Owning glossary.";
+    final RelationshipEndCardinality end1Cardinality = RelationshipEndCardinality.AT_MOST_ONE;
+    final String end2NodeType = "Term";
+    final String end2AttributeName = "terms";
+    final String end2AttributeDescription = "Terms owned by this glossary.";
+    final RelationshipEndCardinality end2Cardinality = RelationshipEndCardinality.ANY_NUMBER;
 
 
     public TermAnchor() {
         initialise();
-    }
 
-    private void initialise() {
-        name = "TermAnchor";
-        // set the LineType if this is a LineType enum value.
-        try {
-            lineType = LineType.valueOf(name);
-        } catch (IllegalArgumentException e) {
-            lineType = LineType.Unknown;
-        }
-        entity1Name = "anchor";
-        entity1Type = "Glossary";
-        entity2Name = "terms";
-        entity2Type = "GlossaryTerm";
-        typeDefGuid = "1d43d661-bdc7-4a91-a996-3239b8f82e56";
     }
 
     public TermAnchor(Line template) {
@@ -92,7 +80,7 @@ public class TermAnchor extends Line {
 
     public TermAnchor(Relationship omrsRelationship) {
         super(omrsRelationship);
-        name = "TermAnchor";
+
         // set the LineType if this is a LineType enum value.
         try {
             lineType = LineType.valueOf(name);
@@ -101,20 +89,32 @@ public class TermAnchor extends Line {
         }
     }
 
-    public String getTermGuid() {
-        return termGuid;
+    @Override
+    protected LineEnd getLineEnd1() {
+        return new LineEnd(this.end1NodeType,
+                           this.end1AttributeName,
+                           this.end1AttributeDescription,
+                           this.end1Cardinality);
     }
 
-    public void setTermGuid(String termGuid) {
-        this.termGuid = termGuid;
+    @Override
+    protected LineEnd getLineEnd2() {
+        return new LineEnd(this.end2NodeType,
+                           this.end2AttributeName,
+                           this.end2AttributeDescription,
+                           this.end2Cardinality);
     }
 
-    public String getGlossaryGuid() {
-        return glossaryGuid;
-    }
-
-    public void setGlossaryGuid(String glossaryGuid) {
-        this.glossaryGuid = glossaryGuid;
+    private void initialise() {
+        name = "TermAnchor";
+        typeDefGuid = "1d43d661-bdc7-4a91-a996-3239b8f82e56";
+        // set the LineType if this is a LineType enum value.
+        try {
+            lineType = LineType.valueOf(name);
+            setLineEnds();
+        } catch (IllegalArgumentException e) {
+            lineType = LineType.Unknown;
+        }
     }
 
     InstanceProperties obtainInstanceProperties() {

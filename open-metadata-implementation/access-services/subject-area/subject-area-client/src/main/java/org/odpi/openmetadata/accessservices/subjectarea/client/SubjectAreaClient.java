@@ -192,6 +192,7 @@ public interface SubjectAreaClient<T> {
      *
      * @param guid    unique identifier of the Glossary Artifact.
      * @param userId  unique identifier for requesting user, under which the request is performed.
+     * @return restored glossary Artifact
      *
      * @throws PropertyServerException    something went wrong with the REST call stack.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.

@@ -99,8 +99,8 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
                 createdTermGuid = oMRSAPIHelper.callOMRSAddEntity(methodName, userId, termEntityDetail);
                 if (createdTermGuid != null) {
                     TermAnchor termAnchor = new TermAnchor();
-                    termAnchor.setGlossaryGuid(glossaryGuid);
-                    termAnchor.setTermGuid(createdTermGuid);
+                    termAnchor.getEnd1().setNodeGuid(glossaryGuid);
+                    termAnchor.getEnd2().setNodeGuid(createdTermGuid);
                     TermAnchorMapper termAnchorMapper = mappersFactory.get(TermAnchorMapper.class);
                     Relationship relationship = termAnchorMapper.map(termAnchor);
                     oMRSAPIHelper.callOMRSAddRelationship(methodName, userId, relationship);
