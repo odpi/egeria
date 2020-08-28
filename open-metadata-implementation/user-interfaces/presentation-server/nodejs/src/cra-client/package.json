@@ -30,7 +30,7 @@
     "eject": "react-scripts eject"
   },
   "author": "Jacob Madsen",
-  "license": "ISC",
+  "license": "Apache-2.0",
   "proxy": "https://localhost:8091",
   "browserslist": {
     "production": [
