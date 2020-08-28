@@ -8,8 +8,10 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineEnd;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineType;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipEndCardinality;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,28 +56,28 @@ public class ProjectScope extends Line {
     private static final Set<String> ATTRIBUTE_NAMES_SET = new HashSet<>(Arrays.asList(ATTRIBUTE_NAMES_SET_VALUES));
     private static final Set<String> ENUM_NAMES_SET = new HashSet<>(Arrays.asList(ENUM_NAMES_SET_VALUES));
     private static final Set<String> MAP_NAMES_SET = new HashSet<>(Arrays.asList(MAP_NAMES_SET_VALUES));
-    private String projectGuid;
-    private String nodeGuid;
 
+    private String description = "The documentation, assets and definitions that are affected by the project.";
+
+    /*
+     * Set up end 1.
+     */
+    final String end1NodeType = "Project";
+    final String end1AttributeName = "impactingProjects";
+    final String end1AttributeDescription = "The projects that are making changes to these elements.";
+    final RelationshipEndCardinality end1Cardinality = RelationshipEndCardinality.ANY_NUMBER;
+
+
+    /*
+     * Set up end 2.
+     */
+    final String end2NodeType = "Referenceable";
+    final String end2AttributeName = "projectScope";
+    final String end2AttributeDescription = "The elements that are being changed by this project.";
+    final RelationshipEndCardinality end2Cardinality = RelationshipEndCardinality.ANY_NUMBER;
 
     public ProjectScope() {
         initialise();
-    }
-
-    private void initialise() {
-        name = "ProjectScope";
-        // set the LineType if this is a LineType enum value.
-        try {
-            lineType = LineType.valueOf(name);
-        } catch (IllegalArgumentException e) {
-            lineType = LineType.Unknown;
-        }
-
-        entity1Name = "impactingProjects";
-        entity1Type = "Project";
-        entity2Name = "projectScope";
-        entity2Type = "Referencable";
-        typeDefGuid = "bc63ac45-b4d0-4fba-b583-92859de77dd8";
     }
 
     public ProjectScope(Line template) {
@@ -85,29 +87,37 @@ public class ProjectScope extends Line {
 
     public ProjectScope(Relationship omrsRelationship) {
         super(omrsRelationship);
+        initialise();
+    }
+
+    @Override
+    protected LineEnd getLineEnd1() {
+        return new LineEnd(this.end1NodeType,
+                           this.end1AttributeName,
+                           this.end1AttributeDescription,
+                           this.end1Cardinality);
+    }
+
+    @Override
+    protected LineEnd getLineEnd2() {
+        return new LineEnd(this.end2NodeType,
+                           this.end2AttributeName,
+                           this.end2AttributeDescription,
+                           this.end2Cardinality);
+    }
+
+    private void initialise() {
         name = "ProjectScope";
+        typeDefGuid = "bc63ac45-b4d0-4fba-b583-92859de77dd8";
         // set the LineType if this is a LineType enum value.
         try {
             lineType = LineType.valueOf(name);
+            setLineEnds();
         } catch (IllegalArgumentException e) {
             lineType = LineType.Unknown;
         }
-    }
 
-    public String getProjectGuid() {
-        return projectGuid;
-    }
 
-    public void setProjectGuid(String projectGuid) {
-        this.projectGuid = projectGuid;
-    }
-
-    public String getNodeGuid() {
-        return nodeGuid;
-    }
-
-    public void setNodeGuid(String nodeGuid) {
-        this.nodeGuid = nodeGuid;
     }
 
     @Override
@@ -127,8 +137,6 @@ public class ProjectScope extends Line {
         return toString(new StringBuilder()).toString();
     }
 
-    private String description;
-
     /**
      * {@literal Description of the scope of the project. }
      *
@@ -137,8 +145,12 @@ public class ProjectScope extends Line {
     public String getDescription() {
         return this.description;
     }
-
+    /**
+     * {@literal Set the description of the relationship. }
+     * @param description {@code String }
+     */
     public void setDescription(String description) {
         this.description = description;
     }
+
 }

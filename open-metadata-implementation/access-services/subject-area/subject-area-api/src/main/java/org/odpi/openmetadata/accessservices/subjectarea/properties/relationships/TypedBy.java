@@ -4,24 +4,23 @@
 
 package org.odpi.openmetadata.accessservices.subjectarea.properties.relationships;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.TermRelationshipStatus;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineEnd;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineType;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipEndCardinality;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
-
-import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.*;
-
-//omrs
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
-//omrs beans
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineType;
 
 /**
  * Defines the relationship between a spine attribute and its type.
@@ -65,26 +64,30 @@ public class TypedBy extends Line {
     private static final java.util.Set<String> ATTRIBUTE_NAMES_SET = new HashSet<>(Arrays.asList(ATTRIBUTE_NAMES_SET_VALUES));
     private static final java.util.Set<String> ENUM_NAMES_SET = new HashSet<>(Arrays.asList(ENUM_NAMES_SET_VALUES));
     private static final java.util.Set<String> MAP_NAMES_SET = new HashSet<>(Arrays.asList(MAP_NAMES_SET_VALUES));
-    private String attributeGuid;
-    private String typeGuid;
+
+    private String description = "Defines the relationship between a spine attribute and its type.";
+    /*
+     * Set up end 1.
+     */
+    final String end1NodeType = "Term";
+    final String end1AttributeName = "attributesTypedBy";
+    final String end1AttributeDescription = "Attributes of this type.";
+    final RelationshipEndCardinality end1Cardinality = RelationshipEndCardinality.ANY_NUMBER;
+
+
+    /*
+     * Set up end 2.
+     */
+    final String end2NodeType = "Term";
+    final String end2AttributeName = "types";
+    final String end2AttributeDescription = "Types for this attribute.";
+    final RelationshipEndCardinality end2Cardinality = RelationshipEndCardinality.ANY_NUMBER;
+    private TermRelationshipStatus status;
+    private String steward;
+    private String source;
 
     public TypedBy() {
         initialise();
-    }
-
-    private void initialise() {
-        name = "TypedBy";
-        // set the LineType if this is a LineType enum value.
-        try {
-            lineType = LineType.valueOf(name);
-        } catch (IllegalArgumentException e) {
-            lineType = LineType.Unknown;
-        }
-        entity1Name = "attributesTypedBy";
-        entity1Type = "GlossaryTerm";
-        entity2Name = "types";
-        entity2Type = "GlossaryTerm";
-        typeDefGuid = "669e8aa4-c671-4ee7-8d03-f37d09b9d006";
     }
 
     public TypedBy(Line template) {
@@ -94,39 +97,35 @@ public class TypedBy extends Line {
 
     public TypedBy(Relationship omrsRelationship) {
         super(omrsRelationship);
+        initialise();
+    }
+
+    @Override
+    protected LineEnd getLineEnd1() {
+        return new LineEnd(this.end1NodeType,
+                           this.end1AttributeName,
+                           this.end1AttributeDescription,
+                           this.end1Cardinality);
+    }
+
+    @Override
+    protected LineEnd getLineEnd2() {
+        return new LineEnd(this.end2NodeType,
+                           this.end2AttributeName,
+                           this.end2AttributeDescription,
+                           this.end2Cardinality);
+    }
+
+    private void initialise() {
         name = "TypedBy";
+        typeDefGuid = "669e8aa4-c671-4ee7-8d03-f37d09b9d006";
         // set the LineType if this is a LineType enum value.
         try {
             lineType = LineType.valueOf(name);
+            setLineEnds();
         } catch (IllegalArgumentException e) {
             lineType = LineType.Unknown;
         }
-    }
-
-    /**
-     * {@literal Get the guid of spine attribute. }
-     *
-     * @return {@code String }
-     */
-    public String getAttributeGuid() {
-        return attributeGuid;
-    }
-
-    public void setAttributeGuid(String attributeGuid) {
-        this.attributeGuid = attributeGuid;
-    }
-
-    /**
-     * {@literal Get the guid of type associated with the spine attribute. }
-     *
-     * @return {@code String }
-     */
-    public String getTypeGuid() {
-        return typeGuid;
-    }
-
-    public void setTypeGuid(String typeGuid) {
-        this.typeGuid = typeGuid;
     }
 
     InstanceProperties obtainInstanceProperties() {
@@ -165,8 +164,6 @@ public class TypedBy extends Line {
         return instanceProperties;
     }
 
-    private String description;
-
     /**
      * {@literal Description of the relationship. }
      *
@@ -175,12 +172,13 @@ public class TypedBy extends Line {
     public String getDescription() {
         return this.description;
     }
-
+    /**
+     * {@literal Set the description of the relationship. }
+     * @param description {@code String }
+     */
     public void setDescription(String description) {
         this.description = description;
     }
-
-    private TermRelationshipStatus status;
 
     /**
      * {@literal The status of or confidence in the relationship. }
@@ -195,8 +193,6 @@ public class TypedBy extends Line {
         this.status = status;
     }
 
-    private String steward;
-
     /**
      * {@literal Person responsible for the relationship. }
      *
@@ -209,8 +205,6 @@ public class TypedBy extends Line {
     public void setSteward(String steward) {
         this.steward = steward;
     }
-
-    private String source;
 
     /**
      * {@literal Person, organization or automated process that created the relationship. }
