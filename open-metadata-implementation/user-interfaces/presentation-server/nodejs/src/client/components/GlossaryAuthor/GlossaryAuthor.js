@@ -104,6 +104,10 @@ export default function GlossaryAuthor() {
         });
     }
   };
+  const handleTaskChange = (e) => {
+    const value = e.target.value;
+    console.log("handleTaskChange (() " + value);
+  };
 
   const handleOnClick = (e) => {
     console.log("GlossaryAuthor connectivity handleClick(()");
@@ -114,7 +118,21 @@ export default function GlossaryAuthor() {
   return (
     <div>
       {connected && (
-        <GlossaryAuthorCRUD />
+        <div>
+          <select
+            id="tasks"
+            float="right"
+            border-bottom-width="3px"
+            onChange={handleTaskChange}
+          >
+            <option value="authoring">Glossary Authoring</option>
+            <option value="search">Search</option>
+            <option selected value="crud">
+              CRUD
+            </option>
+          </select>
+          <GlossaryAuthorCRUD />
+        </div>
       )}
       {!connected && (
         <div>
