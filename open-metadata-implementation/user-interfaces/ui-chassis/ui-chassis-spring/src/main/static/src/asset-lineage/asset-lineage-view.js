@@ -268,24 +268,25 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
             data.nodes[i].displayName = data.nodes[i].label;
             data.nodes[i].type = data.nodes[i].group;
             data.nodes[i].label = '<b>'+data.nodes[i].label+'</b>';
-            data.nodes[i].label += ' \n\n' + this._camelCaseToSentence(data.nodes[i].group);
+            data.nodes[i].groupInfo = this._camelCaseToSentence(data.nodes[i].group);
+
             if (displayName != null) {
-                data.nodes[i].label += ' \n\n From : ' + displayName;
+                data.nodes[i].dispName = 'From : ' + displayName;
             }
-            if (data.nodes[i].id === this.routeData.guid){
-                data.nodes[i].group ='QueryNode';
+            if (data.nodes[i].id === this.routeData.guid) {
+                data.nodes[i].group = 'QueryNode';
                 data.nodes[i].color = {
-                    background:'white',
-                    border:egeriaColor,
-                    highlight:{background:egeriaColor,border:'#a7a7a7'},
-                    hover:{background:'white',border:'#a7a7a7'}
+                    background: 'white',
+                    border: egeriaColor,
+                    highlight: {background: egeriaColor, border: '#a7a7a7'},
+                    hover: {background: 'white', border: '#a7a7a7'}
                 };
-            }else{
+            } else {
                 data.nodes[i].color = {
-                    background:'white',
-                    border:'#a7a6a6',
-                    highlight:{background:egeriaColor,border:'#a7a7a7'},
-                    hover:{background:'white',border:'#a7a7a7'}
+                    background: 'white',
+                    border: '#a7a6a6',
+                    highlight: {background: egeriaColor, border: '#a7a7a7'},
+                    hover: {background: 'white', border: '#a7a7a7'}
                 };
             }
         }
