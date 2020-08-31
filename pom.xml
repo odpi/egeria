@@ -184,7 +184,7 @@
         <jcl-over-slf4j.version>1.7.30</jcl-over-slf4j.version>
         <reflections.version>0.9.12</reflections.version>
         <HdrHistogram.version>2.1.12</HdrHistogram.version>
-        <glassfish.json.version>1.0</glassfish.json.version>
+        <glassfish.json.version>1.1.4</glassfish.json.version>
         <javassist.version>3.27.0-GA</javassist.version>
 
         <!-- Versions of plugins -->
