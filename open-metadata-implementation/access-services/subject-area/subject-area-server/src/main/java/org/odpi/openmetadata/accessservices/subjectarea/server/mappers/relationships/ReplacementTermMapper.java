@@ -91,30 +91,6 @@ public class ReplacementTermMapper extends LineMapper<ReplacementTerm> {
         return foundProperty;
     }
 
-    /**
-     * Get proxy1 guid.
-     * The proxy has omrs type GlossaryTerm
-     *
-     * @param replacementTerm line
-     * @return guid for entity proxy 1
-     */
-    @Override
-    protected String getProxy1Guid(ReplacementTerm replacementTerm) {
-        return replacementTerm.getReplacedTermGuid();
-    }
-
-    /**
-     * Get proxy2 guid
-     * The proxy has omrs type GlossaryTerm
-     *
-     * @param replacementTerm for this Line
-     * @return guid for entity proxy 2
-     */
-    @Override
-    protected String getProxy2Guid(ReplacementTerm replacementTerm) {
-        return replacementTerm.getReplacementTermGuid();
-    }
-
     @Override
     public String getTypeName() {
         return REPLACEMENT_TERM;
@@ -125,13 +101,4 @@ public class ReplacementTermMapper extends LineMapper<ReplacementTerm> {
         return new ReplacementTerm();
     }
 
-    @Override
-    protected void setEnd1GuidInLine(ReplacementTerm replacementTerm, String guid) {
-        replacementTerm.setReplacedTermGuid(guid);
-    }
-
-    @Override
-    protected void setEnd2GuidInLine(ReplacementTerm replacementTerm, String guid) {
-        replacementTerm.setReplacementTermGuid(guid);
-    }
 }

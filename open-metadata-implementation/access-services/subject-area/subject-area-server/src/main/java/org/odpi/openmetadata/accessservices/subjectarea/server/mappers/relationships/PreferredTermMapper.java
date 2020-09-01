@@ -96,30 +96,6 @@ public class PreferredTermMapper extends LineMapper<PreferredTerm> {
         return foundProperty;
     }
 
-    /**
-     * Get proxy1 guid.
-     * The proxy has omrs type GlossaryTerm
-     *
-     * @param preferredTerm line
-     * @return guid for entity proxy 1
-     */
-    @Override
-    protected String getProxy1Guid(PreferredTerm preferredTerm) {
-        return preferredTerm.getAlternateTermGuid();
-    }
-
-    /**
-     * Get proxy2 guid
-     * The proxy has omrs type GlossaryTerm
-     *
-     * @param preferredTerm for this Line
-     * @return guid for entity proxy 2
-     */
-    @Override
-    protected String getProxy2Guid(PreferredTerm preferredTerm) {
-        return preferredTerm.getPreferredTermGuid();
-    }
-
     @Override
     public String getTypeName() {
         return PREFERRED_TERM;
@@ -130,13 +106,4 @@ public class PreferredTermMapper extends LineMapper<PreferredTerm> {
         return new PreferredTerm();
     }
 
-    @Override
-    protected void setEnd1GuidInLine(PreferredTerm preferredTerm, String guid) {
-        preferredTerm.setAlternateTermGuid(guid);
-    }
-
-    @Override
-    protected void setEnd2GuidInLine(PreferredTerm preferredTerm, String guid) {
-        preferredTerm.setPreferredTermGuid(guid);
-    }
 }

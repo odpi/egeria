@@ -4,24 +4,24 @@
 
 package org.odpi.openmetadata.accessservices.subjectarea.properties.relationships;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.TermRelationshipStatus;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineEnd;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineType;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipEndCardinality;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
-import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.*;
-
-//omrs
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
-//omrs beans
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineType;
 
 /**
  * Link between glossary terms that provide different natural language translation of the same concept.
@@ -67,27 +67,32 @@ public class Translation extends Line {
     private static final java.util.Set<String> ATTRIBUTE_NAMES_SET = new HashSet<>(Arrays.asList(ATTRIBUTE_NAMES_SET_VALUES));
     private static final java.util.Set<String> ENUM_NAMES_SET = new HashSet<>(Arrays.asList(ENUM_NAMES_SET_VALUES));
     private static final java.util.Set<String> MAP_NAMES_SET = new HashSet<>(Arrays.asList(MAP_NAMES_SET_VALUES));
-    private String translation1Guid;
-    private String translation2Guid;
 
+
+    private String description = "Link between glossary terms that provide different natural language translation of the same concept.";
+
+    /*
+     * Set up end 1.
+     */
+    final String end1NodeType = "Term";
+    final String end1AttributeName = "translations";
+    final String end1AttributeDescription = "Translations of glossary term.";
+    final RelationshipEndCardinality end1Cardinality = RelationshipEndCardinality.ANY_NUMBER;
+
+    /*
+     * Set up end 2.
+     */
+    final String end2NodeType = "Term";
+    final String end2AttributeName = "translations";
+    final String end2AttributeDescription = "Translations of glossary term.";
+    final RelationshipEndCardinality end2Cardinality = RelationshipEndCardinality.ANY_NUMBER;
+    private String expression;
+    private TermRelationshipStatus status;
+    private String steward;
+    private String source;
 
     public Translation() {
         initialise();
-    }
-
-    private void initialise() {
-        name = "Translation";
-        // set the LineType if this is a LineType enum value.
-        try {
-            lineType = LineType.valueOf(name);
-        } catch (IllegalArgumentException e) {
-            lineType = LineType.Unknown;
-        }
-        entity1Name = "translations";
-        entity1Type = "GlossaryTerm";
-        entity2Name = "translations";
-        entity2Type = "GlossaryTerm";
-        typeDefGuid = "6ae42e95-efc5-4256-bfa8-801140a29d2a";
     }
 
     public Translation(Line template) {
@@ -97,39 +102,35 @@ public class Translation extends Line {
 
     public Translation(Relationship omrsRelationship) {
         super(omrsRelationship);
+        initialise();
+    }
+
+    @Override
+    protected LineEnd getLineEnd1() {
+        return new LineEnd(this.end1NodeType,
+                           this.end1AttributeName,
+                           this.end1AttributeDescription,
+                           this.end1Cardinality);
+    }
+
+    @Override
+    protected LineEnd getLineEnd2() {
+        return new LineEnd(this.end2NodeType,
+                           this.end2AttributeName,
+                           this.end2AttributeDescription,
+                           this.end2Cardinality);
+    }
+
+    private void initialise() {
         name = "Translation";
+        typeDefGuid = "6ae42e95-efc5-4256-bfa8-801140a29d2a";
         // set the LineType if this is a LineType enum value.
         try {
             lineType = LineType.valueOf(name);
+            setLineEnds();
         } catch (IllegalArgumentException e) {
             lineType = LineType.Unknown;
         }
-    }
-
-    /**
-     * {@literal Get the guid of natural language translation at end 1. }
-     *
-     * @return {@code String }
-     */
-    public String getTranslation1Guid() {
-        return translation1Guid;
-    }
-
-    public void setTranslation1Guid(String translation1Guid) {
-        this.translation1Guid = translation1Guid;
-    }
-
-    /**
-     * {@literal Get the guid of natural language translation at end 2. }
-     *
-     * @return {@code String }
-     */
-    public String getTranslation2Guid() {
-        return translation2Guid;
-    }
-
-    public void setTranslation2Guid(String translation2Guid) {
-        this.translation2Guid = translation2Guid;
     }
 
     InstanceProperties obtainInstanceProperties() {
@@ -172,8 +173,6 @@ public class Translation extends Line {
         return instanceProperties;
     }
 
-    private String description;
-
     /**
      * {@literal Description of the relationship. }
      *
@@ -182,12 +181,13 @@ public class Translation extends Line {
     public String getDescription() {
         return this.description;
     }
-
+    /**
+     * {@literal Set the description of the relationship. }
+     * @param description {@code String }
+     */
     public void setDescription(String description) {
         this.description = description;
     }
-
-    private String expression;
 
     /**
      * {@literal An expression that explains the relationship. }
@@ -202,8 +202,6 @@ public class Translation extends Line {
         this.expression = expression;
     }
 
-    private TermRelationshipStatus status;
-
     /**
      * {@literal The status of or confidence in the relationship. }
      *
@@ -217,8 +215,6 @@ public class Translation extends Line {
         this.status = status;
     }
 
-    private String steward;
-
     /**
      * {@literal Person responsible for the relationship. }
      *
@@ -231,8 +227,6 @@ public class Translation extends Line {
     public void setSteward(String steward) {
         this.steward = steward;
     }
-
-    private String source;
 
     /**
      * {@literal Person, organization or automated process that created the relationship. }

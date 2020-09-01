@@ -4,24 +4,24 @@
 
 package org.odpi.openmetadata.accessservices.subjectarea.properties.relationships;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.TermRelationshipStatus;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineEnd;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineType;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipEndCardinality;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
-import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.*;
-
-//omrs
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
-//omrs beans
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineType;
 
 /**
  * Defines an inheritance relationship between two spine objects.
@@ -65,27 +65,30 @@ public class IsATypeOf extends Line {
     private static final java.util.Set<String> ATTRIBUTE_NAMES_SET = new HashSet<>(Arrays.asList(ATTRIBUTE_NAMES_SET_VALUES));
     private static final java.util.Set<String> ENUM_NAMES_SET = new HashSet<>(Arrays.asList(ENUM_NAMES_SET_VALUES));
     private static final java.util.Set<String> MAP_NAMES_SET = new HashSet<>(Arrays.asList(MAP_NAMES_SET_VALUES));
-    private String superTypeGuid;
-    private String subTypeGuid;
 
+    private String description = "Defines an inheritance relationship between two spine objects.";
+
+    /*
+     * Set up end 1.
+     */
+    final String end1NodeType = "Term";
+    final String end1AttributeName = "supertypes";
+    final String end1AttributeDescription = "Supertypes for this object.";
+    final RelationshipEndCardinality end1Cardinality = RelationshipEndCardinality.ANY_NUMBER;
+
+    /*
+     * Set up end 2.
+     */
+    final String end2NodeType = "Term";
+    final String end2AttributeName = "subtypes";
+    final String end2AttributeDescription = "Subtypes for this object.";
+    final RelationshipEndCardinality end2Cardinality = RelationshipEndCardinality.ANY_NUMBER;
+    private TermRelationshipStatus status;
+    private String steward;
+    private String source;
 
     public IsATypeOf() {
         initialise();
-    }
-
-    private void initialise() {
-        name = "IsaTypeOf";
-        // set the LineType if this is a LineType enum value.
-        try {
-            lineType = LineType.valueOf(name);
-        } catch (IllegalArgumentException e) {
-            lineType = LineType.Unknown;
-        }
-        entity1Name = "supertypes";
-        entity1Type = "GlossaryTerm";
-        entity2Name = "subtypes";
-        entity2Type = "GlossaryTerm";
-        typeDefGuid = "d5d588c3-46c9-420c-adff-6031802a7e51";
     }
 
     public IsATypeOf(Line template) {
@@ -95,39 +98,36 @@ public class IsATypeOf extends Line {
 
     public IsATypeOf(Relationship omrsRelationship) {
         super(omrsRelationship);
+        initialise();
+    }
+
+    @Override
+    protected LineEnd getLineEnd1() {
+        return new LineEnd(this.end1NodeType,
+                           this.end1AttributeName,
+                           this.end1AttributeDescription,
+                           this.end1Cardinality);
+    }
+
+    @Override
+    protected LineEnd getLineEnd2() {
+        return new LineEnd(this.end2NodeType,
+                           this.end2AttributeName,
+                           this.end2AttributeDescription,
+                           this.end2Cardinality);
+    }
+
+    private void initialise() {
         name = "IsaTypeOf";
+        typeDefGuid = "d5d588c3-46c9-420c-adff-6031802a7e51";
         // set the LineType if this is a LineType enum value.
         try {
             lineType = LineType.valueOf(name);
+            setLineEnds();
         } catch (IllegalArgumentException e) {
             lineType = LineType.Unknown;
         }
-    }
 
-    /**
-     * {@literal Get the guid of type associated with the super type spine object - this is the spine object that is inherited from. }
-     *
-     * @return {@code String }
-     */
-    public String getSuperTypeGuid() {
-        return superTypeGuid;
-    }
-
-    public void setSuperTypeGuid(String superTypeGuid) {
-        this.superTypeGuid = superTypeGuid;
-    }
-
-    /**
-     * {@literal Get the guid of type associated with the sub type spine object - this is the spine object that inherits (specialises). }
-     *
-     * @return {@code String }
-     */
-    public String getSubTypeGuid() {
-        return subTypeGuid;
-    }
-
-    public void setSubTypeGuid(String subTypeGuid) {
-        this.subTypeGuid = subTypeGuid;
     }
 
     InstanceProperties obtainInstanceProperties() {
@@ -166,8 +166,6 @@ public class IsATypeOf extends Line {
         return instanceProperties;
     }
 
-    private String description;
-
     /**
      * {@literal Description of the relationship. }
      *
@@ -177,11 +175,13 @@ public class IsATypeOf extends Line {
         return this.description;
     }
 
+    /**
+     * {@literal Set the description of the relationship. }
+     * @param description {@code String }
+     */
     public void setDescription(String description) {
         this.description = description;
     }
-
-    private TermRelationshipStatus status;
 
     /**
      * {@literal The status of or confidence in the relationship. }
@@ -196,8 +196,6 @@ public class IsATypeOf extends Line {
         this.status = status;
     }
 
-    private String steward;
-
     /**
      * {@literal Person responsible for the relationship. }
      *
@@ -210,8 +208,6 @@ public class IsATypeOf extends Line {
     public void setSteward(String steward) {
         this.steward = steward;
     }
-
-    private String source;
 
     /**
      * {@literal Person, organization or automated process that created the relationship. }

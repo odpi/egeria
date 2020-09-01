@@ -1,14 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.*;
-
-import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
-import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
-
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.OmasObject;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SystemAttributes;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.*;
@@ -19,9 +12,12 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Map;
 
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
+
 
 /**
- * A relationship between 2 subject area OMAS entities. It is called types as it has named fields for the attributes and references.
+ * A relationship between 2 subject area OMAS Nodes. It is contains named attributes and has 2 Line ends.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -49,7 +45,7 @@ import java.util.Map;
         @JsonSubTypes.Type(value = CategoryAnchor.class),
         @JsonSubTypes.Type(value = Categorization.class),
 })
-public class Line implements Serializable, OmasObject {
+abstract public class Line implements Serializable, OmasObject {
     protected static final long serialVersionUID = 1L;
     private SystemAttributes systemAttributes = null;
     private Date effectiveFromTime = null;
@@ -57,11 +53,11 @@ public class Line implements Serializable, OmasObject {
     private Map<String, String> additionalProperties;
     protected String typeDefGuid;
     protected LineType lineType;
-    protected String entity1Name;
-    protected String entity1Type;
-    protected String entity2Name;
-    protected String entity2Type;
+    // this is the line name
     protected String name;
+    protected LineEnd end1;
+    protected LineEnd end2;
+
 
     /**
      * Default constructor
@@ -75,17 +71,32 @@ public class Line implements Serializable, OmasObject {
         this.setGuid(template.getGuid());
         this.setLineType(template.getLineType());
         this.setAdditionalProperties(template.getAdditionalProperties());
+        this.setLineEnds();
     }
 
     public Line(String name) {
-        this.name = name;
-        this.lineType = LineType.Unknown;
+        this(name,LineType.Unknown);
     }
 
     public Line(String name, LineType lineType) {
         this.name = name;
         this.lineType = lineType;
+        this.setLineEnds();
     }
+    protected void setLineEnds() {
+        setEnd1(getLineEnd1());
+        setEnd2(getLineEnd2());
+    }
+    /**
+     * Get line end 1. The child Line sets the appropriate values for its Line end 1
+     * @return LineEnd Line end 1
+     */
+    abstract protected LineEnd getLineEnd1();
+    /**
+     * Get line end 1. The child Line sets the appropriate values for its Line end 1
+     * @return LineEnd Line end 1
+     */
+    abstract protected LineEnd getLineEnd2();
 
     /**
      * Create a typedRelationship from an omrs relationship
@@ -99,15 +110,7 @@ public class Line implements Serializable, OmasObject {
         this.systemAttributes.setCreatedBy(omrsRelationship.getCreatedBy());
         this.systemAttributes.setUpdatedBy(omrsRelationship.getUpdatedBy());
         this.systemAttributes.setVersion(omrsRelationship.getVersion());
-
-    }
-
-    public String getTypeDefGuid() {
-        return typeDefGuid;
-    }
-
-    public void setTypeDefGuid(String typeDefGuid) {
-        this.typeDefGuid = typeDefGuid;
+        setLineEnds();
     }
 
     public LineType getLineType() {
@@ -180,6 +183,22 @@ public class Line implements Serializable, OmasObject {
         this.additionalProperties = additionalProperties;
     }
 
+    public LineEnd getEnd1() {
+        return end1;
+    }
+
+    public void setEnd1(LineEnd end1) {
+        this.end1 = end1;
+    }
+
+    public LineEnd getEnd2() {
+        return end2;
+    }
+
+    public void setEnd2(LineEnd end2) {
+        this.end2 = end2;
+    }
+
     /**
      * Create an omrs relationship with the basic fields filled in.
      *
@@ -190,7 +209,7 @@ public class Line implements Serializable, OmasObject {
         Relationship omrsRelationship = new Relationship();
         InstanceType typeOfRelationship = new InstanceType();
         typeOfRelationship.setTypeDefName(line.getName());
-        typeOfRelationship.setTypeDefGUID(line.getTypeDefGuid());
+//        typeOfRelationship.setTypeDefGUID(line.getTypeDefGuid());
         omrsRelationship.setType(typeOfRelationship);
         SystemAttributes systemAttributes = line.getSystemAttributes();
         if (systemAttributes == null) {
@@ -215,7 +234,7 @@ public class Line implements Serializable, OmasObject {
         }
 
         sb.append("Line{");
-        sb.append("typeDefGuid=").append(typeDefGuid).append(",");
+//        sb.append("typeDefGuid=").append(typeDefGuid).append(",");
         sb.append("lineType=").append(lineType.name()).append(",");
         sb.append("name=").append(name);
         if (this.systemAttributes != null) {
