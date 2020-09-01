@@ -9,14 +9,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineEnd;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineType;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipEndCardinality;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.Arrays;
-import java.util.HashSet;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -29,122 +22,32 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class MediaReference extends Line {
-    private static final Logger log = LoggerFactory.getLogger(MediaReference.class);
-    private static final String className = MediaReference.class.getName();
-
-    private static final String[] PROPERTY_NAMES_SET_VALUES = new String[]{
-            "mediaId",
-            "description",
-
-            // Terminate the list
-            null
-    };
-    private static final String[] ATTRIBUTE_NAMES_SET_VALUES = new String[]{
-            "mediaId",
-            "description",
-
-            // Terminate the list
-            null
-    };
-    private static final String[] ENUM_NAMES_SET_VALUES = new String[]{
-
-            // Terminate the list
-            null
-    };
-    private static final String[] MAP_NAMES_SET_VALUES = new String[]{
-
-            // Terminate the list
-            null
-    };
-    private static final java.util.Set<String> PROPERTY_NAMES_SET = new HashSet<>(Arrays.asList(PROPERTY_NAMES_SET_VALUES));
-    private static final java.util.Set<String> ATTRIBUTE_NAMES_SET = new HashSet<>(Arrays.asList(ATTRIBUTE_NAMES_SET_VALUES));
-    private static final java.util.Set<String> ENUM_NAMES_SET = new HashSet<>(Arrays.asList(ENUM_NAMES_SET_VALUES));
-    private static final java.util.Set<String> MAP_NAMES_SET = new HashSet<>(Arrays.asList(MAP_NAMES_SET_VALUES));
-
     private String description = "Link to related media such as images, videos and audio.";
 
     /*
      * Set up end 1.
      */
-    final String end1NodeType = "Referenceable";
-    final String end1AttributeName = "consumingItem";
-    final String end1AttributeDescription = "Item that is referencing this work.";
-    final RelationshipEndCardinality end1Cardinality = RelationshipEndCardinality.ANY_NUMBER;
-
+    protected final static String END_1_NODE_TYPE = "Referenceable";
+    protected final static String END_1_ATTRIBUTE_NAME = "consumingItem";
+    protected final static String END_1_ATTRIBUTE_DESCRIPTION = "Item that is referencing this work.";
+    protected final static RelationshipEndCardinality END_1_CARDINALITY = RelationshipEndCardinality.ANY_NUMBER;
+    protected final static LineEnd LINE_END_1 = new LineEnd(END_1_NODE_TYPE,
+            END_1_ATTRIBUTE_NAME, END_1_ATTRIBUTE_DESCRIPTION, END_1_CARDINALITY);
 
     /*
      * Set up end 2.
      */
-    final String end2NodeType = "RelatedMedia";
-    final String end2AttributeName = "relatedMedia";
-    final String end2AttributeDescription = "Link to external media.";
-    final RelationshipEndCardinality end2Cardinality = RelationshipEndCardinality.ANY_NUMBER;
+    protected final static String END_2_NODE_TYPE = "RelatedMedia";
+    protected final static String END_2_ATTRIBUTE_NAME = "relatedMedia";
+    protected final static String END_2_ATTRIBUTE_DESCRIPTION = "Link to external media.";
+    protected final static RelationshipEndCardinality END_2_CARDINALITY = RelationshipEndCardinality.ANY_NUMBER;
+    protected final static LineEnd LINE_END_2 = new LineEnd(END_2_NODE_TYPE,
+            END_2_ATTRIBUTE_NAME, END_2_ATTRIBUTE_DESCRIPTION, END_2_CARDINALITY);
+
     private String mediaId;
 
     public MediaReference() {
-        initialise();
-    }
-
-    public MediaReference(Line template) {
-        super(template);
-        initialise();
-    }
-
-    public MediaReference(Relationship omrsRelationship) {
-        super(omrsRelationship);
-        initialise();
-    }
-
-    @Override
-    protected LineEnd getLineEnd1() {
-        return new LineEnd(this.end1NodeType,
-                           this.end1AttributeName,
-                           this.end1AttributeDescription,
-                           this.end1Cardinality);
-    }
-
-    @Override
-    protected LineEnd getLineEnd2() {
-        return new LineEnd(this.end2NodeType,
-                           this.end2AttributeName,
-                           this.end2AttributeDescription,
-                           this.end2Cardinality);
-    }
-
-    private void initialise() {
-        name = "MediaReference";
-        typeDefGuid = "1353400f-b0ab-4ab9-ab09-3045dd8a7140";
-        // set the LineType if this is a LineType enum value.
-        try {
-            lineType = LineType.valueOf(name);
-            setLineEnds();
-        } catch (IllegalArgumentException e) {
-            lineType = LineType.Unknown;
-        }
-
-    }
-
-    InstanceProperties obtainInstanceProperties() {
-        final String methodName = "obtainInstanceProperties";
-        if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName);
-        }
-        InstanceProperties instanceProperties = new InstanceProperties();
-        EnumPropertyValue enumPropertyValue = null;
-        MapPropertyValue mapPropertyValue = null;
-        PrimitivePropertyValue primitivePropertyValue = null;
-        primitivePropertyValue = new PrimitivePropertyValue();
-        // TODO  description + change null to value
-        primitivePropertyValue.setPrimitiveValue(null);
-        instanceProperties.setProperty("mediaId", primitivePropertyValue);
-        primitivePropertyValue = new PrimitivePropertyValue();
-        // TODO  description + change null to value
-        primitivePropertyValue.setPrimitiveValue(null);
-        instanceProperties.setProperty("description", primitivePropertyValue);
-        if (log.isDebugEnabled()) {
-            log.debug("<== Method: " + methodName);
-        }
-        return instanceProperties;
+        super("MediaReference", "1353400f-b0ab-4ab9-ab09-3045dd8a7140", LINE_END_1, LINE_END_2);
     }
 
     /**
@@ -168,8 +71,10 @@ public class MediaReference extends Line {
     public String getDescription() {
         return this.description;
     }
+
     /**
      * {@literal Set the description of the relationship. }
+     *
      * @param description {@code String }
      */
     public void setDescription(String description) {
