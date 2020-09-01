@@ -29,108 +29,30 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Leadership extends Line {
-    private static final Logger log = LoggerFactory.getLogger(Leadership.class);
-    private static final String className = Leadership.class.getName();
-
-    private static final String[] PROPERTY_NAMES_SET_VALUES = new String[]{
-
-            // Terminate the list
-            null
-    };
-    private static final String[] ATTRIBUTE_NAMES_SET_VALUES = new String[]{
-
-            // Terminate the list
-            null
-    };
-    private static final String[] ENUM_NAMES_SET_VALUES = new String[]{
-
-            // Terminate the list
-            null
-    };
-    private static final String[] MAP_NAMES_SET_VALUES = new String[]{
-
-            // Terminate the list
-            null
-    };
-    private static final java.util.Set<String> PROPERTY_NAMES_SET = new HashSet<>(Arrays.asList(PROPERTY_NAMES_SET_VALUES));
-    private static final java.util.Set<String> ATTRIBUTE_NAMES_SET = new HashSet<>(Arrays.asList(ATTRIBUTE_NAMES_SET_VALUES));
-    private static final java.util.Set<String> ENUM_NAMES_SET = new HashSet<>(Arrays.asList(ENUM_NAMES_SET_VALUES));
-    private static final java.util.Set<String> MAP_NAMES_SET = new HashSet<>(Arrays.asList(MAP_NAMES_SET_VALUES));
-
     final String description = "Relationship identifying the leaders of teams.";
 
     /*
      * Set up end 1.
      */
-    final String end1NodeType = "TeamLeader";
-    final String end1AttributeName = "teamLeaders";
-    final String end1AttributeDescription = "The leaders of the team.";
-    final RelationshipEndCardinality end1Cardinality = RelationshipEndCardinality.ANY_NUMBER;
+    protected final static String END_1_NODE_TYPE = "TeamLeader";
+    protected final static String END_1_ATTRIBUTE_NAME = "teamLeaders";
+    protected final static String END_1_ATTRIBUTE_DESCRIPTION = "The leaders of the team.";
+    protected final static RelationshipEndCardinality END_1_CARDINALITY = RelationshipEndCardinality.ANY_NUMBER;
+    protected final static LineEnd LINE_END_1 = new LineEnd(END_1_NODE_TYPE,
+            END_1_ATTRIBUTE_NAME, END_1_ATTRIBUTE_DESCRIPTION, END_1_CARDINALITY);
 
     /*
      * Set up end 2.
      */
-    final String end2NodeType = "Team";
-    final String end2AttributeName = "leadsTeam";
-    final String end2AttributeDescription = "The team lead by this team leader.";
-    final RelationshipEndCardinality end2Cardinality = RelationshipEndCardinality.AT_MOST_ONE;
+    protected final static String END_2_NODE_TYPE = "Team";
+    protected final static String END_2_ATTRIBUTE_NAME = "leadsTeam";
+    protected final static String END_2_ATTRIBUTE_DESCRIPTION = "The team lead by this team leader.";
+    protected final static RelationshipEndCardinality END_2_CARDINALITY = RelationshipEndCardinality.ANY_NUMBER;
+    protected final static LineEnd LINE_END_2 = new LineEnd(END_2_NODE_TYPE,
+            END_2_ATTRIBUTE_NAME, END_2_ATTRIBUTE_DESCRIPTION, END_2_CARDINALITY);
 
     public Leadership() {
-        initialise();
-    }
-
-    public Leadership(Line template) {
-        super(template);
-        initialise();
-    }
-
-    public Leadership(Relationship omrsRelationship) {
-        super(omrsRelationship);
-        initialise();
-    }
-
-    @Override
-    protected LineEnd getLineEnd1() {
-        return new LineEnd(this.end1NodeType,
-                           this.end1AttributeName,
-                           this.end1AttributeDescription,
-                           this.end1Cardinality);
-    }
-
-    @Override
-    protected LineEnd getLineEnd2() {
-        return new LineEnd(this.end2NodeType,
-                           this.end2AttributeName,
-                           this.end2AttributeDescription,
-                           this.end2Cardinality);
-    }
-
-    private void initialise() {
-        name = "Leadership";
-        typeDefGuid = "5ebc4fb2-b62a-4269-8f18-e9237a2119ca";
-        // set the LineType if this is a LineType enum value.
-        try {
-            lineType = LineType.valueOf(name);
-            setLineEnds();
-        } catch (IllegalArgumentException e) {
-            lineType = LineType.Unknown;
-        }
-
-    }
-
-    InstanceProperties obtainInstanceProperties() {
-        final String methodName = "obtainInstanceProperties";
-        if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName);
-        }
-        InstanceProperties instanceProperties = new InstanceProperties();
-        EnumPropertyValue enumPropertyValue = null;
-        MapPropertyValue mapPropertyValue = null;
-        PrimitivePropertyValue primitivePropertyValue = null;
-        if (log.isDebugEnabled()) {
-            log.debug("<== Method: " + methodName);
-        }
-        return instanceProperties;
+        super("Leadership", "5ebc4fb2-b62a-4269-8f18-e9237a2119ca", LINE_END_1, LINE_END_2);
     }
 
     @Override
