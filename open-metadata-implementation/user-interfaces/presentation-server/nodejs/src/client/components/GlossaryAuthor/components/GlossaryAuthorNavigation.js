@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 import React, { useState, useEffect } from "react";
-import { InfoSection, InfoCard } from "../../Info/Info";
+import { InfoSection, InfoCard, EmptyInfoCard } from "../../Info/Info";
 import GlossaryImage from "../../../images/Egeria_glossary_32";
 import getNodeType from "./properties/NodeTypes.js";
 import { issueRestGet } from "./RestCaller";
@@ -14,6 +14,7 @@ export default function GlossaryAuthorNavigation() {
   const [systemAction, setSystemAction] = useState();
   const [fullResponse, setFullResponse] = useState();
   const [glossaries, setGlossaries] = useState([]);
+  const [emptyCards, setEmptyCards] = useState(new Array(16));
   const nodeType = getNodeType("glossary");
 
   useEffect(() => {
@@ -35,6 +36,7 @@ export default function GlossaryAuthorNavigation() {
   };
   const onSuccessfulSearch = (json) => {
     setGlossaries(json.result);
+    setEmptyCards(new Array(16-json.result.length));
   };
 
   return (
@@ -47,7 +49,9 @@ export default function GlossaryAuthorNavigation() {
             icon={<GlossaryImage />}
           />
         ))}
-      </InfoSection>
+        
+          <EmptyInfoCard/>
+        </InfoSection>
     </div>
   );
 }

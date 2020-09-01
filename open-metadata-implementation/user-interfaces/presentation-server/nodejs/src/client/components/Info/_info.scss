@@ -41,6 +41,44 @@
   }
 }
 
+.empty-info-card {
+  margin: 2px;
+  margin-top: $spacing-09;
+  display: flex;
+  flex-direction: column;
+  margin-top: $spacing-09;
+  
+
+  svg {
+    margin-top: $spacing-09;
+  }
+
+  // top border in only small breakpoints to prevent overrides
+  @include carbon--breakpoint-down(md) {
+    &:not(:nth-child(2)) {
+      border-top: 1px dashed $ui-03;
+      padding-top: $spacing-09;
+    }
+  }
+
+  // left border in just the 2nd column items
+  @include carbon--breakpoint(md) {
+    &:nth-child(odd) {
+      border-left: 1px dashed $ui-03;
+    }
+  }
+
+  // left border in all items
+  @include carbon--breakpoint(lg) {
+    margin-top: 0;
+    border-left: 1px dashed $ui-03;
+
+    svg {
+      margin-top: $layout-06;
+    }
+  }
+}
+
 .info-card__body {
   margin-top: $spacing-06;
   flex-grow: 1;

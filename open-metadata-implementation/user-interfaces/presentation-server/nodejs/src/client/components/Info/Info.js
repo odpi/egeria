@@ -25,6 +25,12 @@ const InfoCard = props => {
     </article>
   );
 };
+const EmptyInfoCard = props => {
+  return (
+    <article className="empty-info-card bx--col-md-4 bx--col-lg-4 bx--col-xlg-3 bx--offset-xlg-1">
+    </article>
+  );
+};
 const LocalInfoCard = props => {
   return (
     <article className="info-card bx--col-md-4 bx--col-lg-4 bx--col-xlg-3 bx--offset-xlg-1">
