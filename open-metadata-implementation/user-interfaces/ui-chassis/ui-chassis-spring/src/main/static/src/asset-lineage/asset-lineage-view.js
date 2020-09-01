@@ -274,7 +274,7 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
                 data.nodes[i].dispName = 'From : ' + displayName;
             }
             if (data.nodes[i].id === this.routeData.guid) {
-                data.nodes[i].group = 'QueryNode';
+                data.nodes[i].isQueridNode = true;
                 data.nodes[i].color = {
                     background: 'white',
                     border: egeriaColor,
