@@ -5,8 +5,6 @@ import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.OmasObject;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SystemAttributes;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.*;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -19,9 +17,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 /**
  * A relationship between 2 subject area OMAS Nodes. It is contains named attributes and has 2 Line ends.
  */
-@JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
+@JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonIgnoreProperties(ignoreUnknown=true)
+@JsonIgnoreProperties(ignoreUnknown = true)
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
         property = "class",
@@ -58,59 +56,26 @@ abstract public class Line implements Serializable, OmasObject {
     protected LineEnd end1;
     protected LineEnd end2;
 
+//    /**
+//     * Default constructor
+//     */
+//    public Line() { }
 
-    /**
-     * Default constructor
-     */
-    public Line() {
-    }
-
-    public Line(Line template) {
-        this.setAdditionalProperties(template.getAdditionalProperties());
-        this.setSystemAttributes(template.getSystemAttributes());
-        this.setGuid(template.getGuid());
-        this.setLineType(template.getLineType());
-        this.setAdditionalProperties(template.getAdditionalProperties());
-        this.setLineEnds();
-    }
-
-    public Line(String name) {
-        this(name,LineType.Unknown);
-    }
-
-    public Line(String name, LineType lineType) {
+    protected Line(String name, String typeDefGuid, LineEnd end1, LineEnd end2) {
+        this.end1 = end1;
+        this.end2 = end2;
         this.name = name;
-        this.lineType = lineType;
-        this.setLineEnds();
+        this.typeDefGuid = typeDefGuid;
+        initialise();
     }
-    protected void setLineEnds() {
-        setEnd1(getLineEnd1());
-        setEnd2(getLineEnd2());
-    }
-    /**
-     * Get line end 1. The child Line sets the appropriate values for its Line end 1
-     * @return LineEnd Line end 1
-     */
-    abstract protected LineEnd getLineEnd1();
-    /**
-     * Get line end 1. The child Line sets the appropriate values for its Line end 1
-     * @return LineEnd Line end 1
-     */
-    abstract protected LineEnd getLineEnd2();
 
-    /**
-     * Create a typedRelationship from an omrs relationship
-     *
-     * @param omrsRelationship omrs relationship
-     */
-    public Line(Relationship omrsRelationship) {
-        this.systemAttributes = new SystemAttributes();
-        this.systemAttributes.setUpdateTime(omrsRelationship.getUpdateTime());
-        this.systemAttributes.setCreateTime(omrsRelationship.getCreateTime());
-        this.systemAttributes.setCreatedBy(omrsRelationship.getCreatedBy());
-        this.systemAttributes.setUpdatedBy(omrsRelationship.getUpdatedBy());
-        this.systemAttributes.setVersion(omrsRelationship.getVersion());
-        setLineEnds();
+    protected void initialise() {
+        // set the LineType if this is a LineType enum value.
+        try {
+            lineType = LineType.valueOf(name);
+        } catch (IllegalArgumentException e) {
+            lineType = LineType.Unknown;
+        }
     }
 
     public LineType getLineType() {
@@ -151,6 +116,10 @@ abstract public class Line implements Serializable, OmasObject {
         return effectiveToTime;
     }
 
+    public void setEffectiveToTime(Date effectiveToTime) {
+        this.effectiveToTime = effectiveToTime;
+    }
+
     public String getGuid() {
         if (this.systemAttributes == null) {
             return null;
@@ -183,6 +152,11 @@ abstract public class Line implements Serializable, OmasObject {
         this.additionalProperties = additionalProperties;
     }
 
+    /**
+     * Get line end 1. The child Line sets the appropriate values for its Line end 1
+     *
+     * @return LineEnd Line end 1
+     */
     public LineEnd getEnd1() {
         return end1;
     }
@@ -191,41 +165,17 @@ abstract public class Line implements Serializable, OmasObject {
         this.end1 = end1;
     }
 
+    /**
+     * Get line end 1. The child Line sets the appropriate values for its Line end 1
+     *
+     * @return LineEnd Line end 1
+     */
     public LineEnd getEnd2() {
         return end2;
     }
 
     public void setEnd2(LineEnd end2) {
         this.end2 = end2;
-    }
-
-    /**
-     * Create an omrs relationship with the basic fields filled in.
-     *
-     * @param line this is a line to create the relationship from
-     * @return Relationship the created omrs relationship
-     */
-    public static Relationship createOmrsRelationship(Line line) {
-        Relationship omrsRelationship = new Relationship();
-        InstanceType typeOfRelationship = new InstanceType();
-        typeOfRelationship.setTypeDefName(line.getName());
-//        typeOfRelationship.setTypeDefGUID(line.getTypeDefGuid());
-        omrsRelationship.setType(typeOfRelationship);
-        SystemAttributes systemAttributes = line.getSystemAttributes();
-        if (systemAttributes == null) {
-            systemAttributes = new SystemAttributes();
-        }
-        omrsRelationship.setCreatedBy(systemAttributes.getCreatedBy());
-        omrsRelationship.setUpdatedBy(systemAttributes.getUpdatedBy());
-        omrsRelationship.setCreateTime(systemAttributes.getCreateTime());
-        omrsRelationship.setUpdateTime(systemAttributes.getUpdateTime());
-        if (systemAttributes.getVersion() == null) {
-            omrsRelationship.setVersion(0L);
-        } else {
-            omrsRelationship.setVersion(systemAttributes.getVersion());
-        }
-        line.setSystemAttributes(systemAttributes);
-        return omrsRelationship;
     }
 
     public StringBuilder toString(StringBuilder sb) {
