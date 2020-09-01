@@ -89,7 +89,8 @@
                 <outputDirectory>./server/lib</outputDirectory>
                 <unpack>false</unpack>
                 <!-- Assemblies can pull in dependencies via a built in mechanism -we don't need all these uber jars -->
-                <includeDependencies>true</includeDependencies>
+                <!-- #3540 - initial fix - the excess dependencies cause problems with server chassis -->
+                <includeDependencies>false</includeDependencies>
                 <excludes>
                     <!-- Not needed, as the build process for each connector does not put this into the main jar artifact -->
                     <!--exclude>*jar-with-dependencies.jar</exclude-->
