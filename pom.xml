@@ -176,7 +176,7 @@
         <antlr.version>3.5.2</antlr.version>
         <snappy.version>1.1.7.7</snappy.version>
         <snakeyaml.version>1.26</snakeyaml.version>
-        <springdoc.version>1.4.4</springdoc.version>
+        <springdoc.version>1.4.6</springdoc.version>
         <classgraph.version>4.8.89</classgraph.version>
         <swagger.version>2.1.4</swagger.version>
         <groovy.version>3.0.5</groovy.version>
@@ -184,7 +184,7 @@
         <jcl-over-slf4j.version>1.7.30</jcl-over-slf4j.version>
         <reflections.version>0.9.12</reflections.version>
         <HdrHistogram.version>2.1.12</HdrHistogram.version>
-        <glassfish.json.version>1.0</glassfish.json.version>
+        <glassfish.json.version>1.1.4</glassfish.json.version>
         <javassist.version>3.27.0-GA</javassist.version>
 
         <!-- Versions of plugins -->
