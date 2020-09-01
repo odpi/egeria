@@ -7,14 +7,8 @@ import getNodeType from "./properties/NodeTypes.js";
 import { issueRestGet } from "./RestCaller";
 
 export default function GlossaryAuthorNavigation() {
-  const [errorMsg, setErrorMsg] = useState();
-  const [exceptionUserAction, setExceptionUserAction] = useState();
-  const [responseCategory, setResponseCategory] = useState();
-  const [exceptionErrorMessage, setExceptionErrorMessage] = useState();
-  const [systemAction, setSystemAction] = useState();
-  const [fullResponse, setFullResponse] = useState();
   const [glossaries, setGlossaries] = useState([]);
-  const [emptyCards, setEmptyCards] = useState(new Array(16));
+  // const [emptyCards, setEmptyCards] = useState(new Array(16));
   const nodeType = getNodeType("glossary");
 
   useEffect(() => {
@@ -36,7 +30,7 @@ export default function GlossaryAuthorNavigation() {
   };
   const onSuccessfulSearch = (json) => {
     setGlossaries(json.result);
-    setEmptyCards(new Array(16-json.result.length));
+    // setEmptyCards(new Array(16-json.result.length));
   };
 
   return (
@@ -49,8 +43,6 @@ export default function GlossaryAuthorNavigation() {
             icon={<GlossaryImage />}
           />
         ))}
-        
-          <EmptyInfoCard/>
         </InfoSection>
     </div>
   );
