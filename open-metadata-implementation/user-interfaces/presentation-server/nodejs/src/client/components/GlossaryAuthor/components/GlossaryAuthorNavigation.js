@@ -1,12 +1,14 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-import React, { useState, useEffect } from "react";
-import { InfoSection, InfoCard, EmptyInfoCard } from "../../Info/Info";
+import React, { useState, useEffect,useContext } from "react";
+import { InfoSection, LocalInfoCard } from "../../Info/Info";
 import GlossaryImage from "../../../images/Egeria_glossary_32";
 import getNodeType from "./properties/NodeTypes.js";
 import { issueRestGet } from "./RestCaller";
+import { IdentificationContext } from "../../../contexts/IdentificationContext";
 
 export default function GlossaryAuthorNavigation() {
+  const identificationContext = useContext(IdentificationContext);
   const [glossaries, setGlossaries] = useState([]);
   // const [emptyCards, setEmptyCards] = useState(new Array(16));
   const nodeType = getNodeType("glossary");
@@ -32,16 +34,20 @@ export default function GlossaryAuthorNavigation() {
     setGlossaries(json.result);
     // setEmptyCards(new Array(16-json.result.length));
   };
-
+  const getGlossaryUrl = (name) => {
+    return identificationContext.getBrowserURL("glossary-author") + "/" + name ;
+    // setEmptyCards(new Array(16-json.result.length));
+  };
   return (
     <div>
       <InfoSection heading="Glossaries" className="landing-page__r3">
         {glossaries.map((glossary) => (
-          <InfoCard
+          <LocalInfoCard
             key={glossary.name}
             heading={glossary.name}
             body={glossary.description}
             icon={<GlossaryImage />}
+            link={getGlossaryUrl(glossary.name)} 
           />
         ))}
         </InfoSection>

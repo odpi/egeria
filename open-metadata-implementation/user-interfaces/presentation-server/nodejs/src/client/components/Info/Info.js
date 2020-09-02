@@ -3,7 +3,7 @@
 import React from "react";
 import Launch32 from "../../images/Launch_32";
 
-const InfoSection = props => (
+const InfoSection = (props) => (
   <div>
     <h3 className="info-section__heading">{props.heading}</h3>
     <section className={`bx--row ${props.className} info-section`}>
@@ -13,33 +13,31 @@ const InfoSection = props => (
   </div>
 );
 
-const InfoCard = props => {
+const InfoCard = (props) => {
   return (
     <article className="info-card bx--col-md-4 bx--col-lg-4 bx--col-xlg-3 bx--offset-xlg-1">
       <h4 className="info-card__heading">{props.heading}</h4>
       <p className="info-card__body">{props.body}</p>
       <div className="info-card__footer">
         {props.icon}
-        <Launch32 link={props.link} external='true' />
+        <Launch32 link={props.link} external="true" />
       </div>
     </article>
   );
 };
-const EmptyInfoCard = props => {
+const EmptyInfoCard = (props) => {
   return (
-    <article className="empty-info-card bx--col-md-4 bx--col-lg-4 bx--col-xlg-3 bx--offset-xlg-1">
-    </article>
+    <article className="empty-info-card bx--col-md-4 bx--col-lg-4 bx--col-xlg-3 bx--offset-xlg-1"></article>
   );
 };
-const LocalInfoCard = props => {
+const LocalInfoCard = (props) => {
   return (
     <article className="info-card bx--col-md-4 bx--col-lg-4 bx--col-xlg-3 bx--offset-xlg-1">
       <h4 className="info-card__heading">{props.heading}</h4>
       <p className="info-card__body">{props.body}</p>
-      <div className="info-card__footer">
-        {props.icon}
-       <Launch32 link={props.link} />
-    
+      <div>
+          {/* <a is not correct as it kills the session - TODO sort this out properly with the router and breadcrumbs */}
+        <a href={props.link}>{props.icon}</a>
       </div>
     </article>
   );
