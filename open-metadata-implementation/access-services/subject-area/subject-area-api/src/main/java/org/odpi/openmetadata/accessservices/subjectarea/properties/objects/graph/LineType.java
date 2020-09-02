@@ -27,7 +27,7 @@ public enum LineType {
     Isa,
     IsaTypeOf,
     RelatedTerm,
-    Hasa,
+    HasA,
     // category category
     LibraryCategoryReference,
     CategoryHierarchyLink,

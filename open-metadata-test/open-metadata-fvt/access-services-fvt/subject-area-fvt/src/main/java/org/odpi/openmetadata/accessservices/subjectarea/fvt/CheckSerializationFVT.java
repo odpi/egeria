@@ -145,43 +145,43 @@ public class CheckSerializationFVT {
 
     private void createHasA(String oneTermGuid, String twoTermGuid) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         HasA hasA = new HasA();
-        hasA.setOwnedTermGuid(oneTermGuid);
-        hasA.setOwningTermGuid(twoTermGuid);
+        hasA.getEnd1().setNodeGuid(oneTermGuid);
+        hasA.getEnd2().setNodeGuid(twoTermGuid);
         subjectAreaRelationship.hasA().create(userId, hasA);
     }
 
     private void createIsA(String oneTermGuid, String twoTermGuid) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         IsA isA = new IsA();
-        isA.setTermGuid(oneTermGuid);
-        isA.setSpecialisedTermGuid(twoTermGuid);
+        isA.getEnd1().setNodeGuid(oneTermGuid);
+        isA.getEnd2().setNodeGuid(twoTermGuid);
         subjectAreaRelationship.isA().create(userId, isA);
     }
 
     private void createRelatedTerm(String oneTermGuid, String twoTermGuid) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         RelatedTerm relatedTerm = new RelatedTerm();
-        relatedTerm.setRelatedTerm1Guid(oneTermGuid);
-        relatedTerm.setRelatedTerm2Guid(twoTermGuid);
+        relatedTerm.getEnd1().setNodeGuid(oneTermGuid);
+        relatedTerm.getEnd2().setNodeGuid(twoTermGuid);
         subjectAreaRelationship.relatedTerm().create(userId, relatedTerm);
     }
 
     private void createTranslation(String oneTermGuid, String twoTermGuid) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         Translation translation = new Translation();
-        translation.setTranslation1Guid(oneTermGuid);
-        translation.setTranslation2Guid(twoTermGuid);
+        translation.getEnd1().setNodeGuid(oneTermGuid);
+        translation.getEnd2().setNodeGuid(twoTermGuid);
         subjectAreaRelationship.translation().create(userId, translation);
     }
 
     private void createPreferredTerm(String oneTermGuid, String twoTermGuid) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         PreferredTerm preferredTerm = new PreferredTerm();
-        preferredTerm.setPreferredTermGuid(oneTermGuid);
-        preferredTerm.setAlternateTermGuid(twoTermGuid);
+        preferredTerm.getEnd1().setNodeGuid(oneTermGuid);
+        preferredTerm.getEnd2().setNodeGuid(twoTermGuid);
         subjectAreaRelationship.preferredTerm().create(userId, preferredTerm);
     }
 
     private void createSynonym(String oneTermGuid, String twoTermGuid) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         Synonym synonym = new Synonym();
-        synonym.setSynonym1Guid(oneTermGuid);
-        synonym.setSynonym2Guid(twoTermGuid);
+        synonym.getEnd1().setNodeGuid(oneTermGuid);
+        synonym.getEnd2().setNodeGuid(twoTermGuid);
         subjectAreaRelationship.synonym().create(userId, synonym);
     }
 }

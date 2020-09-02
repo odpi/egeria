@@ -179,8 +179,8 @@ public class AssetLineagePublisher {
      * @throws ConnectorCheckedException unable to send the event due to connectivity issue
      * @throws JsonProcessingException   exception parsing the event json
      */
-    public void publishEntityEvent(LineageEntity lineageEntity,
-                                   AssetLineageEventType lineageEventType) throws ConnectorCheckedException, JsonProcessingException {
+    public void publishLineageEntityEvent(LineageEntity lineageEntity,
+                                          AssetLineageEventType lineageEventType) throws ConnectorCheckedException, JsonProcessingException {
         LineageEvent event = new LineageEvent();
 
         event.setLineageEntity(lineageEntity);
