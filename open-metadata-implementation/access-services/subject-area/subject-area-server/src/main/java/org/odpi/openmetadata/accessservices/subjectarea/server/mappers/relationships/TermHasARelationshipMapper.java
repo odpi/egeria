@@ -84,30 +84,6 @@ public class TermHasARelationshipMapper extends LineMapper<HasA> {
         return foundProperty;
     }
 
-    /**
-     * Get proxy1 guid.
-     * The proxy has omrs type GlossaryTerm
-     *
-     * @param termHasARelationship line
-     * @return guid for entity proxy 1
-     */
-    @Override
-    protected String getProxy1Guid(HasA termHasARelationship) {
-        return termHasARelationship.getOwningTermGuid();
-    }
-
-    /**
-     * Get proxy2 guid
-     * The proxy has omrs type GlossaryTerm
-     *
-     * @param termHasARelationship for this Line
-     * @return guid for entity proxy 2
-     */
-    @Override
-    protected String getProxy2Guid(HasA termHasARelationship) {
-        return termHasARelationship.getOwnedTermGuid();
-    }
-
     @Override
     public String getTypeName() {
         return TERM_HASA_RELATIONSHIP;
@@ -118,13 +94,4 @@ public class TermHasARelationshipMapper extends LineMapper<HasA> {
         return new HasA();
     }
 
-    @Override
-    protected void setEnd1GuidInLine(HasA termHasARelationship, String guid) {
-        termHasARelationship.setOwningTermGuid(guid);
-    }
-
-    @Override
-    protected void setEnd2GuidInLine(HasA termHasARelationship, String guid) {
-        termHasARelationship.setOwnedTermGuid(guid);
-    }
 }

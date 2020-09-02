@@ -22,7 +22,7 @@ public class SubjectAreaRESTServicesInstance {
     private static final Logger log = LoggerFactory.getLogger(SubjectAreaRESTServicesInstance.class);
 
     public static final String PAGE_OFFSET_DEFAULT_VALUE = "0";
-    public static final String PAGE_SIZE_DEFAULT_VALUE = "0";
+    public static final String PAGE_SIZE_DEFAULT_VALUE = "1000";
 
     // The OMRSAPIHelper allows the junits to mock out the omrs layer
     protected static SubjectAreaInstanceHandler instanceHandler = new SubjectAreaInstanceHandler();

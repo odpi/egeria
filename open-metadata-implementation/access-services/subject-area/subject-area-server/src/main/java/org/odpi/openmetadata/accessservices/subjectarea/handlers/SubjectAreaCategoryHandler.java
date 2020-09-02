@@ -101,8 +101,8 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
                 createdCategoryGuid = oMRSAPIHelper.callOMRSAddEntity(methodName, userId, categoryEntityDetail);
                 if (createdCategoryGuid != null) {
                     CategoryAnchor categoryAnchor = new CategoryAnchor();
-                    categoryAnchor.setGlossaryGuid(glossaryGuid);
-                    categoryAnchor.setCategoryGuid(createdCategoryGuid);
+                    categoryAnchor.getEnd1().setNodeGuid(glossaryGuid);
+                    categoryAnchor.getEnd2().setNodeGuid(createdCategoryGuid);
                     CategoryAnchorMapper anchorMapper = mappersFactory.get(CategoryAnchorMapper.class);
                     Relationship relationship = anchorMapper.map(categoryAnchor);
                     oMRSAPIHelper.callOMRSAddRelationship(methodName, userId, relationship);
@@ -111,8 +111,8 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
                 if (suppliedCategory.getParentCategory() != null && suppliedCategory.getParentCategory().getGuid() != null) {
                     String parentCategoryGuid = suppliedCategory.getParentCategory().getGuid();
                     CategoryHierarchyLink categoryHierarchyLink = new CategoryHierarchyLink();
-                    categoryHierarchyLink.setSuperCategoryGuid(parentCategoryGuid);
-                    categoryHierarchyLink.setSubCategoryGuid(createdCategoryGuid);
+                    categoryHierarchyLink.getEnd1().setNodeGuid(parentCategoryGuid);
+                    categoryHierarchyLink.getEnd2().setNodeGuid(createdCategoryGuid);
                     CategoryHierarchyLinkMapper hierarchyMapper = mappersFactory.get(CategoryHierarchyLinkMapper.class);
                     Relationship relationship = hierarchyMapper.map(categoryHierarchyLink);
                     oMRSAPIHelper.callOMRSAddRelationship(methodName, userId, relationship);

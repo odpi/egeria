@@ -20,30 +20,6 @@ public class ProjectScopeMapper extends LineMapper<ProjectScope> {
         super(omrsapiHelper);
     }
 
-    /**
-     * Get proxy1 guid.
-     * The proxy has omrs type Project
-     *
-     * @param projectScope line
-     * @return guid for entity proxy 1
-     */
-    @Override
-    public String getProxy1Guid(ProjectScope projectScope) {
-        return projectScope.getProjectGuid();
-    }
-
-    /**
-     * Get proxy2 guid
-     * The proxy has an omrs type that is a subtype of Referenceable
-     *
-     * @param projectScope for this Line
-     * @return guid for entity proxy 2
-     */
-    @Override
-    public String getProxy2Guid(ProjectScope projectScope) {
-        return projectScope.getNodeGuid();
-    }
-
     @Override
     public String getTypeName() {
         return PROJECT_SCOPE;
@@ -52,16 +28,6 @@ public class ProjectScopeMapper extends LineMapper<ProjectScope> {
     @Override
     public ProjectScope getLineInstance() {
         return new ProjectScope();
-    }
-
-    @Override
-    public void setEnd1GuidInLine(ProjectScope line, String guid) {
-        line.setProjectGuid(guid);
-    }
-
-    @Override
-    public void setEnd2GuidInLine(ProjectScope line, String guid) {
-        line.setNodeGuid(guid);
     }
 
     /**

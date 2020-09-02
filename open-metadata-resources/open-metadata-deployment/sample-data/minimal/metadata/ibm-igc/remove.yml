@@ -86,7 +86,7 @@
   vars:
     type: information_governance_rule
     conditions:
-      - { property: "name", operator: "=", value: "Job metadata will be periodically synced through ODPi Egeria's Data Engine OMAS" }
+      - { property: "name", operator: "like {0}%", value: "Job metadata will be periodically synced through ODPi Egeria's Data Engine OMAS" }
 
 - name: close session
   uri:

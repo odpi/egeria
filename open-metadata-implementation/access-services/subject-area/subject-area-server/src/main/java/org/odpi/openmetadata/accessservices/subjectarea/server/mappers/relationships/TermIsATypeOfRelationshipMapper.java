@@ -84,30 +84,6 @@ public class TermIsATypeOfRelationshipMapper extends LineMapper<IsATypeOf> {
         return foundProperty;
     }
 
-    /**
-     * Get proxy1 guid.
-     * The proxy has omrs type GlossaryTerm
-     *
-     * @param termIsATypeOFRelationship line
-     * @return guid for entity proxy 1
-     */
-    @Override
-    protected String getProxy1Guid(IsATypeOf termIsATypeOFRelationship) {
-        return termIsATypeOFRelationship.getSuperTypeGuid();
-    }
-
-    /**
-     * Get proxy2 guid
-     * The proxy has omrs type GlossaryTerm
-     *
-     * @param termIsATypeOFRelationship for this Line
-     * @return guid for entity proxy 2
-     */
-    @Override
-    protected String getProxy2Guid(IsATypeOf termIsATypeOFRelationship) {
-        return termIsATypeOFRelationship.getSubTypeGuid();
-    }
-
     @Override
     public String getTypeName() {
         return TERM_ISA_TYPE_OF_RELATIONSHIP;
@@ -118,13 +94,4 @@ public class TermIsATypeOfRelationshipMapper extends LineMapper<IsATypeOf> {
         return new IsATypeOf();
     }
 
-    @Override
-    protected void setEnd1GuidInLine(IsATypeOf termIsATypeOFRelationship, String guid) {
-        termIsATypeOFRelationship.setSuperTypeGuid(guid);
-    }
-
-    @Override
-    protected void setEnd2GuidInLine(IsATypeOf termIsATypeOFRelationship, String guid) {
-        termIsATypeOFRelationship.setSubTypeGuid(guid);
-    }
 }
