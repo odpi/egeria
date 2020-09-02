@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 const express = require('express');
 const fs = require("fs");
+const path = require("path")
 const session = require("express-session");
 const bodyParser = require("body-parser");
 let passport = require("passport");
@@ -21,8 +22,8 @@ const env = process.env.NODE_ENV || 'development';
 
 
 // ssl self signed certificate and key
-const cert = fs.readFileSync(__dirname + "/../../ssl/keys/server.cert");
-const key = fs.readFileSync(__dirname + "/../../ssl/keys/server.key");
+const cert = fs.readFileSync(path.join(__dirname, '../') + "/../presentation-server/ssl/keys/server.cert");
+const key = fs.readFileSync(path.join(__dirname, '../') + "/../presentation-server/ssl/keys/server.key");
 const options = {
   key: key,
   cert: cert,
