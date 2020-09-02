@@ -38,6 +38,7 @@ export default function GlossaryAuthorNavigation() {
       <InfoSection heading="Glossaries" className="landing-page__r3">
         {glossaries.map((glossary) => (
           <InfoCard
+            key={glossary.name}
             heading={glossary.name}
             body={glossary.description}
             icon={<GlossaryImage />}
