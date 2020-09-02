@@ -48,9 +48,6 @@ public class SemanticAssignmentMapper extends LineMapper<SemanticAssignment> {
         if (semanticAssignment.getSource() != null) {
             SubjectAreaUtils.setStringPropertyInInstanceProperties(properties, semanticAssignment.getSource(), "source");
         }
-        if (semanticAssignment.getAssignedElementGuid() != null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(properties, semanticAssignment.getAssignedElementGuid(), "assignedElementGuid");
-        }
 
         Map<String, InstancePropertyValue> instancePropertyMap = properties.getInstanceProperties();
         InstancePropertyValue instancePropertyValue = instancePropertyMap.get("status");
@@ -107,30 +104,6 @@ public class SemanticAssignmentMapper extends LineMapper<SemanticAssignment> {
         return foundProperty;
     }
 
-    /**
-     * Get proxy1 guid.
-     * The proxy has omrs type Referenceable
-     *
-     * @param semanticAssignment line
-     * @return guid for entity proxy 1
-     */
-    @Override
-    protected String getProxy1Guid(SemanticAssignment semanticAssignment) {
-        return semanticAssignment.getAssignedElementGuid();
-    }
-
-    /**
-     * Get proxy2 guid
-     * The proxy has omrs type GlossaryTerm
-     *
-     * @param semanticAssignment for this Line
-     * @return guid for entity proxy 2
-     */
-    @Override
-    protected String getProxy2Guid(SemanticAssignment semanticAssignment) {
-        return semanticAssignment.getTermGuid();
-    }
-
     @Override
     public String getTypeName() {
         return SEMANTIC_ASSIGNMENT;
@@ -141,13 +114,4 @@ public class SemanticAssignmentMapper extends LineMapper<SemanticAssignment> {
         return new SemanticAssignment();
     }
 
-    @Override
-    protected void setEnd1GuidInLine(SemanticAssignment semanticAssignment, String guid) {
-        semanticAssignment.setAssignedElementGuid(guid);
-    }
-
-    @Override
-    protected void setEnd2GuidInLine(SemanticAssignment semanticAssignment, String guid) {
-        semanticAssignment.setTermGuid(guid);
-    }
 }

@@ -92,30 +92,6 @@ public class AntonymMapper extends LineMapper<Antonym> {
         return foundProperty;
     }
 
-    /**
-     * Get proxy1 guid.
-     * The proxy has omrs type GlossaryTerm
-     *
-     * @param antonym line
-     * @return guid for entity proxy 1
-     */
-    @Override
-    protected String getProxy1Guid(Antonym antonym) {
-        return antonym.getAntonym1Guid();
-    }
-
-    /**
-     * Get proxy2 guid
-     * The proxy has omrs type GlossaryTerm
-     *
-     * @param antonym for this Line
-     * @return guid for entity proxy 2
-     */
-    @Override
-    protected String getProxy2Guid(Antonym antonym) {
-        return antonym.getAntonym2Guid();
-    }
-
     @Override
     public String getTypeName() {
         return ANTONYM;
@@ -126,13 +102,4 @@ public class AntonymMapper extends LineMapper<Antonym> {
         return new Antonym();
     }
 
-    @Override
-    protected void setEnd1GuidInLine(Antonym line, String guid) {
-        line.setAntonym1Guid(guid);
-    }
-
-    @Override
-    protected void setEnd2GuidInLine(Antonym line, String guid) {
-        line.setAntonym2Guid(guid);
-    }
 }

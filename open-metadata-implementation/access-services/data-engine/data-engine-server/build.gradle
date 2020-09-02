@@ -18,6 +18,7 @@ dependencies {
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
     implementation project(':open-metadata-implementation:common-services:ffdc-services')
     implementation project(':open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-handlers')
+    implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
     implementation 'org.apache.commons:commons-collections4:4.4'
     implementation 'org.springframework:spring-web:5.2.7.RELEASE'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.1'
