@@ -25,7 +25,7 @@ import static org.odpi.openmetadata.accessservices.subjectarea.server.services.S
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/subject-area")
 @Tag(name = "Subject Area OMAS", description = "The Subject Area OMAS supports subject matter experts who are documenting their knowledge about a particular subject. This includes glossary terms, reference data, validation rules.", externalDocs = @ExternalDocumentation(description = "Subject Area Open Metadata Access Service (OMAS)", url = "https://egeria.odpi.org/open-metadata-implementation/access-services/subject-area/"))
 public class SubjectAreaTermRESTResource {
-    private SubjectAreaTermRESTServices restAPI = new SubjectAreaTermRESTServices();
+    private final SubjectAreaTermRESTServices restAPI = new SubjectAreaTermRESTServices();
 
     /**
      * Default constructor
