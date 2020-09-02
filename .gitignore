@@ -115,6 +115,11 @@ open-metadata-implementation/user-interfaces/presentation-server/nodejs/yarn.loc
 open-metadata-implementation/user-interfaces/presentation-server/nodejs/node/**
 open-metadata-implementation/user-interfaces/presentation-server/nodejs/.env
 
+open-metadata-implementation/user-interfaces/presentation-server/cra-client/node_modules
+open-metadata-implementation/user-interfaces/presentation-server/cra-client/.env
+open-metadata-implementation/user-interfaces/presentation-server/cra-server/node_modules
+open-metadata-implementation/user-interfaces/presentation-server/cra-server/.env
+
 # Ignore Deployment / Samples Generated content
 open-metadata-resources/open-metadata-deployment/sample-data/coco-pharmaceuticals/cache/**
 open-metadata-resources/open-metadata-deployment/sample-data/coco-pharmaceuticals/*.retry
