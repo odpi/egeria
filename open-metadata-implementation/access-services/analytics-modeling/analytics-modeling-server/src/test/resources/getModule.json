@@ -1,7 +1,7 @@
 {
   "attributes" : {
     "physicalDefinition" : {
-      "identifier" : "GOSALES.dbo",
+      "identifier" : "physicalmodule",
       "version" : "9.0",
       "dataSource" : [ {
         "schema" : "dbo",
@@ -98,10 +98,14 @@
             "name" : "FK_Product_Date_ProductIntroductionDate_ProductTerminationDate",
             "fkColumn" : [ {
               "pkColumn" : "DateKey",
+              "pkCatalog" : "GOSALES",
+              "pkSchema" : "dbo",
               "pkTable" : "Date",
               "columnName" : "ProductIntroductionDate"
             }, {
               "pkColumn" : "DateKey",
+              "pkCatalog" : "GOSALES",
+              "pkSchema" : "dbo",
               "pkTable" : "Date",
               "columnName" : "ProductTerminationDate"
             } ]
@@ -166,6 +170,8 @@
             "name" : "FK_Sales_Date_DateKey",
             "fkColumn" : [ {
               "pkColumn" : "DateKey",
+              "pkCatalog" : "GOSALES",
+              "pkSchema" : "dbo",
               "pkTable" : "Date",
               "columnName" : "DateKey"
             } ]
@@ -173,10 +179,14 @@
             "name" : "FK_Sales_Location_ShipmentDestinationLatitude_ShipmentDestinationLongitude",
             "fkColumn" : [ {
               "pkColumn" : "Latitude",
+              "pkCatalog" : "GOSALES",
+              "pkSchema" : "dbo",
               "pkTable" : "Location",
               "columnName" : "ShipmentDestinationLatitude"
             }, {
               "pkColumn" : "Longitude",
+              "pkCatalog" : "GOSALES",
+              "pkSchema" : "dbo",
               "pkTable" : "Location",
               "columnName" : "ShipmentDestinationLongitude"
             } ]
@@ -184,6 +194,8 @@
             "name" : "FK_Sales_Product_ProductId",
             "fkColumn" : [ {
               "pkColumn" : "ProductId",
+              "pkCatalog" : "GOSALES",
+              "pkSchema" : "dbo",
               "pkTable" : "Product",
               "columnName" : "ProductId"
             } ]

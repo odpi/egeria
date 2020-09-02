@@ -54,6 +54,13 @@ public class DatabaseContextHandler {
 	public static final String DATA_SOURCE_GUID = "dataSourceGUID";
 	private OMEntityDao omEntityDao;
 	private InvalidParameterHandler invalidParameterHandler;
+	
+	
+	private static HashMap<String, String> mapTypes = new HashMap<>();
+	
+	static {
+		mapTypes.put("WVARCHAR", "NVARCHAR");
+	}
 
 	public DatabaseContextHandler(OMEntityDao omEntityDao, InvalidParameterHandler invalidParameterHandler) {
 		this.omEntityDao = omEntityDao;
@@ -264,7 +271,7 @@ public class DatabaseContextHandler {
 	private MetadataModule buildModule(String databaseGuid, String catalog, String schema) throws AnalyticsModelingCheckedException {
 		MetadataModule module = new MetadataModule();
 
-		module.setIdentifier(catalog + "." + schema);
+		module.setIdentifier("physicalmodule");
 		module.setDataSource(Arrays.asList(buildDataSource(databaseGuid, catalog, schema)));
 		return module;
 	}
@@ -392,9 +399,19 @@ public class DatabaseContextHandler {
 					theTableFKs.add(fkColumn);
 					try {
 						// add schema
-						EntityDetail schemaEntity;
-						schemaEntity = getParentEntity(tableEntity, Constants.ATTRIBUTE_FOR_SCHEMA);
-						fkColumn.setPkSchema(getEntityStringProperty(schemaEntity, Constants.DISPLAY_NAME));
+						EntityDetail schemaAttributesEntity = getParentEntity(tableEntity, Constants.ATTRIBUTE_FOR_SCHEMA);
+						EntityDetail schemaEntity = getParentEntity(schemaAttributesEntity, Constants.ASSET_SCHEMA_TYPE);
+						fkColumn.setPkSchema(getEntityStringProperty(schemaEntity, Constants.ATTRIBUTE_NAME));
+						
+						try {
+							EntityDetail catalogEntity = getParentEntity(schemaEntity, Constants.DATA_CONTENT_FOR_DATASET);
+							
+							fkColumn.setPkCatalog(getEntityStringProperty(catalogEntity, Constants.ATTRIBUTE_NAME));							
+						} catch (AnalyticsModelingCheckedException exCatalog) {
+							// log foreign key from unknown catalog
+							return;
+						}
+						
 					} catch (AnalyticsModelingCheckedException exTable) {
 						// log foreign key from unknown schema
 						return;
@@ -404,7 +421,7 @@ public class DatabaseContextHandler {
 					return;
 				}
 				
-				// no catalog: foreign keys are always defined within same catalog/database				
+				
 				
 			});
 			
@@ -430,7 +447,7 @@ public class DatabaseContextHandler {
 			table.getForeignKey().sort(Comparator.comparing(e->e.getName()));
 		}
 	}
-
+	
 	/**
 	 * Get entity by GUID without throwing.
 	 * Log warning when entity is loaded as part of other object,
@@ -456,6 +473,10 @@ public class DatabaseContextHandler {
 	 */
 	private EntityDetail getParentEntity(EntityDetail child, String propertyName) throws AnalyticsModelingCheckedException {
 		List<Relationship> columnRelationships = omEntityDao.getRelationshipsForEntity(child, propertyName);
+		
+		if (columnRelationships == null) {
+			return null;
+		}
 		// relationship table->column
 		Relationship columnTableRelationship = columnRelationships.stream()
 				.filter(r->child.getGUID().equals(r.getEntityTwoProxy().getGUID()))
@@ -496,10 +517,11 @@ public class DatabaseContextHandler {
 		try {
 			EntityDetail columnTypeUniverse = getColumnType(columnEntity);
 			InstanceProperties ap = getAdditiomalProperty(columnTypeUniverse.getProperties());
-			tableColumn.setVendorType(omEntityDao.getStringProperty(Constants.DATA_UNDERSCORE_TYPE, ap));
+			tableColumn.setVendorType(omEntityDao.getStringProperty(Constants.TYPE, ap));
 
 			String length = omEntityDao.getStringProperty(Constants.LENGTH, ap);
 			String dt = omEntityDao.getStringProperty(Constants.ODBC_TYPE, ap);
+			dt = mapDataType(dt);
 			tableColumn.setDatatype(length == null ? dt : dt + "(" + length + ")");
 
 		} catch (AnalyticsModelingCheckedException e) {
@@ -508,6 +530,11 @@ public class DatabaseContextHandler {
 		}
 
 		return item;
+	}
+
+	private String mapDataType(String dt) {
+		String newType = mapTypes.get(dt);
+		return newType == null ? dt : newType;
 	}
 
 	private String getPrimaryKeyClassification(EntityDetail columnEntity) {
