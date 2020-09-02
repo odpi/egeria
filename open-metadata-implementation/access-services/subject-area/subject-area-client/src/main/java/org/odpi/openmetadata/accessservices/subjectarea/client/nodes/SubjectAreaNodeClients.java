@@ -14,6 +14,7 @@ public interface SubjectAreaNodeClients {
     /**
      * Get the subject area glossary API class - use this class to issue glossary calls.
      *
+     * @param <G> type for supplied and return.
      * @return subject area glossary API class
      */
     <G extends Glossary> SubjectAreaNodeClient<G> glossaries();
@@ -21,6 +22,7 @@ public interface SubjectAreaNodeClients {
     /**
      * Get the subject area term API class - use this class to issue term calls.
      *
+     * @param <T> type for supplied and return.
      * @return subject area term API class
      */
     <T extends Term> SubjectAreaNodeClient<T> terms();
@@ -28,6 +30,7 @@ public interface SubjectAreaNodeClients {
     /**
      * Get the subject area category API class - use this class to issue category calls.
      *
+     * @param <C> type for supplied and return.
      * @return subject area category API class
      */
     <C extends Category> SubjectAreaNodeClient<C> categories();
@@ -35,6 +38,7 @@ public interface SubjectAreaNodeClients {
     /**
      * Get the subject area project API class - use this class to issue project calls.
      *
+     * @param <P> type for supplied and return.
      * @return subject area project API class
      */
     <P extends Project> SubjectAreaProjectClient<P> projects();

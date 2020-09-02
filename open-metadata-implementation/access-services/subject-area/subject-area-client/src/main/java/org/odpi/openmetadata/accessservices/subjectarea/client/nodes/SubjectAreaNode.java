@@ -20,8 +20,7 @@ import java.util.*;
 /**
  * The OMAS client library implementation of the Subject Area OMAS.
  * This interface provides entities {@link Node} authoring interface for subject area experts.
- * A standard set of customers is described in {@link SubjectAreaCategory}, {@link SubjectAreaTerm},
- * {@link SubjectAreaProject}, {@link SubjectAreaGlossary}
+ * A standard set of customers is described in {@link SubjectAreaNodeClients}
  */
 public class SubjectAreaNode implements SubjectAreaNodeClients {
     private Map<Class<?>, SubjectAreaNodeClient<?>> cache = new HashMap<>();
