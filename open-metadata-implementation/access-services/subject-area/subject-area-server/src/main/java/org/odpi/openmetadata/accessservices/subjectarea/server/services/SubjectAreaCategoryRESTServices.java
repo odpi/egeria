@@ -337,12 +337,12 @@ public class SubjectAreaCategoryRESTServices extends SubjectAreaRESTServicesInst
     }
 
     /**
-     * Get Category terms
+     * Get the terms that are categorized by this Category
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the category to get terms
-     * @return A list of terms for the category
+     * @return A list of terms is categorized by this Category
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -350,15 +350,15 @@ public class SubjectAreaCategoryRESTServices extends SubjectAreaRESTServicesInst
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      * */
-    public SubjectAreaOMASAPIResponse<Term> getCategoryTerms(String serverName, String userId, String guid) {
-        final String methodName = "getCategoryTerms";
+    public SubjectAreaOMASAPIResponse<Term> getCategorizedTerms(String serverName, String userId, String guid) {
+        final String methodName = "getCategorizedTerms";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
         try {
             SubjectAreaCategoryHandler handler = instanceHandler.getSubjectAreaCategoryHandler(userId, serverName, methodName);
-            response = handler.getCategoryTerms(userId, guid);
+            response = handler.getCategorizedTerms(userId, guid);
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);
         }

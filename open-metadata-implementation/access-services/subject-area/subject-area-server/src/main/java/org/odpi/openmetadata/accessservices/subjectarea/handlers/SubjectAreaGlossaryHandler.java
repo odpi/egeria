@@ -332,11 +332,11 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
     }
 
     /**
-     * Get Glossary terms
+     * Get terms that are owned by this glossary
      *
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the category to get terms
-     * @return A list of terms for the glossary
+     * @return A list of terms owned by the glossary
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -350,11 +350,11 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
     }
 
     /**
-     * Get Glossary categories
+     * Get the Categories owned by this glossary.
      *
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the category to get terms
-     * @return A list of categories for the glossary
+     * @return A list of categories owned by the glossary
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>

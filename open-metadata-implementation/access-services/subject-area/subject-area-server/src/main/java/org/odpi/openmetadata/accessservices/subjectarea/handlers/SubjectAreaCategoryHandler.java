@@ -411,11 +411,11 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
     }
 
     /**
-     * Get Category terms
+     * Get the terms that are categorized by this Category
      *
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the category to get terms
-     * @return A list of terms for the category
+     * @return A list of terms is categorized by this Category
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -423,8 +423,8 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      * */
-    public SubjectAreaOMASAPIResponse<Term> getCategoryTerms(String userId, String guid) {
-        final String methodName = "getCategoryTerms";
+    public SubjectAreaOMASAPIResponse<Term> getCategorizedTerms(String userId, String guid) {
+        final String methodName = "getCategorizedTerms";
         return getRelatedEntities(methodName, userId, guid, TERM_CATEGORIZATION_RELATIONSHIP_NAME, TermMapper.class);
     }
 }

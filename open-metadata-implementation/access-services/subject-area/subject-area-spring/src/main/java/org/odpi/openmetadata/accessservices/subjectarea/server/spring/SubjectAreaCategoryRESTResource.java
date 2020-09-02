@@ -240,12 +240,12 @@ public class SubjectAreaCategoryRESTResource {
     }
 
     /**
-     * Get Category terms
+     *  Get the terms that are categorized by this Category
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the category to get terms
-     * @return A list of terms for the category
+     * @return A list of terms is categorized by this Category
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -254,9 +254,9 @@ public class SubjectAreaCategoryRESTResource {
      * </ul>
      * */
     @GetMapping(path = "/users/{userId}/categories/{guid}/terms")
-    public SubjectAreaOMASAPIResponse<Term> getCategoryTerms(@PathVariable String serverName,
+    public SubjectAreaOMASAPIResponse<Term> getCategorizedTerms(@PathVariable String serverName,
                                                              @PathVariable String userId,
                                                              @PathVariable String guid) {
-        return restAPI.getCategoryTerms(serverName, userId, guid);
+        return restAPI.getCategorizedTerms(serverName, userId, guid);
     }
 }
