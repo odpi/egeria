@@ -37,12 +37,12 @@ public class GlossaryAuthorViewInstanceHandler extends OMVSServiceInstanceHandle
 
     /**
      * This method returns the object for the tenant to use to work with the
-     * subject area glossary API
+     * subject area nodes API
      *
      * @param serverName           name of the server that the request is for
      * @param userId               local server userid
      * @param serviceOperationName service operation - usually the top level rest call
-     * @return SubjectAreaGlossary subject area glossary API object
+     * @return SubjectAreaNodeClients subject area nodes API objects
      */
     public SubjectAreaNodeClients getSubjectAreaNodeClients(String serverName, String userId, String serviceOperationName)
     throws
