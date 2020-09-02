@@ -6,12 +6,13 @@ package org.odpi.openmetadata.accessservices.assetlineage.server;
 import org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineageErrorCode;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.AssetContextHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.ClassificationHandler;
-import org.odpi.openmetadata.accessservices.assetlineage.handlers.GlossaryHandler;
+import org.odpi.openmetadata.accessservices.assetlineage.handlers.GlossaryContextHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.ProcessContextHandler;
+import org.odpi.openmetadata.accessservices.assetlineage.outtopic.AssetLineagePublisher;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OCFOMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
 import java.util.List;
@@ -22,68 +23,67 @@ import java.util.List;
  */
 public class AssetLineageServicesInstance extends OCFOMASServiceInstance {
     private static AccessServiceDescription myDescription = AccessServiceDescription.ASSET_LINEAGE_OMAS;
-    private GlossaryHandler glossaryHandler;
+    private GlossaryContextHandler glossaryContextHandler;
     private AssetContextHandler assetContextHandler;
     private ProcessContextHandler processContextHandler;
     private ClassificationHandler classificationHandler;
+    private AssetLineagePublisher assetLineagePublisher;
 
     /**
      * Set up the handlers for this server.
      *
-     * @param repositoryConnector link to the repository responsible for servicing the REST calls.
-     * @param supportedZones      list of zones that AssetLineage is allowed to serve Assets from.
-     * @param lineageClassificationTypes
-     * @param localServerUserId   userId used for server initiated actions
-     * @param auditLog            destination for audit log events.
+     * @param repositoryConnector        link to the repository responsible for servicing the REST calls.
+     * @param supportedZones             list of zones that AssetLineage is allowed to serve Assets from.
+     * @param lineageClassificationTypes list of lineage classification supported
+     * @param localServerUserId          userId used for server initiated actions
+     * @param auditLog                   destination for audit log events.
      * @throws NewInstanceException a problem occurred during initialization
      */
     public AssetLineageServicesInstance(OMRSRepositoryConnector repositoryConnector,
                                         List<String> supportedZones,
                                         List<String> lineageClassificationTypes,
-                                        String localServerUserId, OMRSAuditLog auditLog) throws NewInstanceException {
+                                        String localServerUserId, AuditLog auditLog) throws NewInstanceException {
         super(myDescription.getAccessServiceFullName(),
                 repositoryConnector,
                 auditLog,
                 localServerUserId,
                 repositoryConnector.getMaxPageSize());
 
-        final String methodName = "AssetLineageServicesInstance";
-
         super.supportedZones = supportedZones;
 
         if (repositoryHandler != null) {
-            glossaryHandler = new GlossaryHandler(
-                    invalidParameterHandler,
-                    repositoryHelper,
-                    repositoryHandler);
-
             assetContextHandler = new AssetContextHandler(
                     invalidParameterHandler,
                     repositoryHelper,
                     repositoryHandler,
-                    supportedZones);
+                    supportedZones,
+                    lineageClassificationTypes);
 
             processContextHandler = new ProcessContextHandler(
                     invalidParameterHandler,
                     repositoryHelper,
                     repositoryHandler,
-                    supportedZones);
+                    assetContextHandler,
+                    supportedZones,
+                    lineageClassificationTypes);
+
+            glossaryContextHandler = new GlossaryContextHandler(
+                    invalidParameterHandler,
+                    repositoryHelper,
+                    repositoryHandler,
+                    assetContextHandler,
+                    lineageClassificationTypes);
 
             classificationHandler = new ClassificationHandler(
                     invalidParameterHandler,
-                    lineageClassificationTypes
-            );
+                    lineageClassificationTypes,
+                    repositoryHelper);
 
         } else {
-            AssetLineageErrorCode errorCode = AssetLineageErrorCode.OMRS_NOT_INITIALIZED;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
-
-            throw new NewInstanceException(errorCode.getHTTPErrorCode(),
+            String methodName = "AssetLineageServicesInstance";
+            throw new NewInstanceException(AssetLineageErrorCode.OMRS_NOT_INITIALIZED.getMessageDefinition(methodName),
                     this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction());
+                    methodName);
         }
     }
 
@@ -92,8 +92,8 @@ public class AssetLineageServicesInstance extends OCFOMASServiceInstance {
      *
      * @return glossary handler
      */
-    GlossaryHandler getGlossaryHandler() {
-        return glossaryHandler;
+    GlossaryContextHandler getGlossaryContextHandler() {
+        return glossaryContextHandler;
     }
 
 
@@ -124,6 +124,13 @@ public class AssetLineageServicesInstance extends OCFOMASServiceInstance {
         return classificationHandler;
     }
 
+    public AssetLineagePublisher getAssetLineagePublisher() {
+        return assetLineagePublisher;
+    }
+
+    public void setAssetLineagePublisher(AssetLineagePublisher assetLineagePublisher) {
+        this.assetLineagePublisher = assetLineagePublisher;
+    }
 }
 
 

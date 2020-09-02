@@ -165,16 +165,16 @@ public abstract class SubjectAreaHandler {
     }
 
     public List<Line> getLinesFromRelationships(Collection<Relationship> relationships) {
-        return convertOrmsToOmas(relationships, ILineMapper.class);
+        return convertOmrsToOmas(relationships, ILineMapper.class);
     }
 
     public List<Node> getNodesFromEntityDetails(Collection<EntityDetail> entityDetails){
-        return convertOrmsToOmas(entityDetails, INodeMapper.class);
+        return convertOmrsToOmas(entityDetails, INodeMapper.class);
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     public <R extends InstanceHeader, T extends OmasObject>List<T>
-    convertOrmsToOmas(Collection<R> list, Class<? extends Mapper> mapperInterface)
+    convertOmrsToOmas(Collection<R> list, Class<? extends Mapper> mapperInterface)
     {
         List<T> result =  new ArrayList<>();
         if (list != null) {

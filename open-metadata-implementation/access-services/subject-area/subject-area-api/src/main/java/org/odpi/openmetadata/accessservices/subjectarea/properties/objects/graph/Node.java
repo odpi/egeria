@@ -1,15 +1,15 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.*;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.OmasObject;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SystemAttributes;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.IconSummary;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.project.Project;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 
 import java.io.Serializable;
 import java.util.*;
@@ -29,9 +29,19 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        property = "class",
+        defaultImpl = Node.class,
+        visible = true
+)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = Category.class),
+        @JsonSubTypes.Type(value = Glossary.class),
+        @JsonSubTypes.Type(value = Term.class),
+        @JsonSubTypes.Type(value = Project.class)
+})
 public class Node implements Serializable, OmasObject {
-    private static final Logger log = LoggerFactory.getLogger(Node.class);
-    private static final String className = Node.class.getName();
     protected NodeType nodeType = NodeType.Unknown;
     private String name =null;
     private String qualifiedName =null;

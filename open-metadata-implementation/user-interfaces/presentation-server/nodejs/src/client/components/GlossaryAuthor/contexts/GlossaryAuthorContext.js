@@ -17,40 +17,47 @@ const GlossaryAuthorContextProvider = (props) => {
   const projectNodeType = getNodeType("project");
 
   const Types = {
-    CREATING_MY_GLOSSARY: Symbol("changingMyGlossary"),
-    CREATED_MY_GLOSSARY: Symbol("changedMyGlossary"),
-    CREATING_MY_PROJECT: Symbol("changingMyProject"),
-    CREATED_MY_PROJECT: Symbol("changedMyProject"),
+    SETTING_MY_GLOSSARY: Symbol("changingMyGlossary"),
+    SET_MY_GLOSSARY: Symbol("changedMyGlossary"),
+    SETTING_MY_PROJECT: Symbol("changingMyProject"),
+    SET_MY_PROJECT: Symbol("changedMyProject"),
     CREATING: Symbol("creating"),
     CREATED: Symbol("created"),
+    NODE_SELECTED: Symbol("node selected"),
     SEARCHING: Symbol("searching"),
     SEARCHED: Symbol("searched"),
     REFRESH: Symbol("refresh"),
     DELETING: Symbol("deleting"),
-    SET_CURRENT_NODE_TYPE: Symbol("SET_CURRENT_NODE_TYPE"),
-    UPDATE_SELECTED_NODE: Symbol("updatedSelectedNode"),
+    SET_CURRENT_NODE_TYPE: Symbol("setCurrentNodeType"),
+    UPDATING_NODE: Symbol("updatingNode"),
+    UPDATE_NODE: Symbol("updateNode"),
+    UPDATE_CANCELLED: Symbol("update cancelled"),
+    UPDATE_NODE_LINES: Symbol("updateNodeLines"),
+    UPDATE_NODELINES_CANCELLED: Symbol("updateNodeLines cancelled"),
+    RESET_SELECTED: Symbol("reset selected"),
     RESET: Symbol("reset"),
   };
   Object.freeze(Types);
-  const MyEdittingTypes = {
-    NONE: Symbol("None"),
-    GLOSSARY: Symbol("Glossary"),
-    PROJECT: Symbol("Project"),
-  };
-  // freeze the "enum" so it cannot change
-  Object.freeze(MyEdittingTypes);
-
   const Operations = {
     NONE: Symbol("none"),
     CREATING: Symbol("creating"),
     CREATED: Symbol("created"),
+    UPDATING: Symbol("updating"),
+    NODE_SELECTED: Symbol("Node selected"),
     SEARCHING: Symbol("searching"),
     SEARCHED: Symbol("searched"),
     REFRESH: Symbol("refresh"),
     DELETING: Symbol("deleting"),
+    GETTING_CURRENT_NODE_LINES: Symbol("gettingCurrentNodeLines"),
   };
   // freeze the "enum" so it cannot change
   Object.freeze(Operations);
+  const myStates = {
+    SETTING: Symbol("Setting"),
+    SET: Symbol("Set"),
+  };
+  // freeze the "enum" so it cannot change
+  Object.freeze(myStates);
   /**
    * Reducer to allow actions to make state transitions within state. Multiple partsof state can be updated and
    * should result in one re-render. Without useReducer each state change resulted in a re-render, leading to renders on
@@ -64,20 +71,17 @@ const GlossaryAuthorContextProvider = (props) => {
   const {
     myGlossary, // this is the glossary that is used for authoring content in
     myProject, // this is a project used for authoring content in
-    myEdittingType, // this indicates that we are editing either myGlossary, myProject or neither
+    myGlossaryState, // SETTING, SET
+    myProjectState, // SETTING, SET
     operation, // this is a more granular state
-    currentNodeType,
-    selectedNode,
+    currentNodeType, // current node type
+    selectedNode, // selected Node
+    selectedNodeLines, // Lines associated with the selected node
   } = state;
 
   function initialiseState() {
     return {
-      // myGlossary: undefined,
-      // myProject: undefined,
-      myEdittingType: MyEdittingTypes.NONE,
       operation: Operations.NONE,
-      // currentNodeType: undefined,
-      // selectedNode: undefined,
     };
   }
   /**
@@ -88,87 +92,123 @@ const GlossaryAuthorContextProvider = (props) => {
    */
   function stateReducer(state, action) {
     switch (action.type.toString()) {
-      case Types.CREATING_MY_GLOSSARY.toString():
-        let operation;
-        if (state.myGlossary) {
-          // if we have a myGlossary then we are searching
-          operation = Operations.SEARCHING;
-        } else {
-          // otherwise we are creating
-          operation = Operations.CREATING;
-        }
+      case Types.SETTING_MY_GLOSSARY.toString(): {
         return {
           ...state,
-          myEdittingType: MyEdittingTypes.GLOSSARY,
-          operation: operation,
           currentNodeType: glossaryNodeType,
           selectedNode: undefined,
-        };
-      case Types.CREATED_MY_GLOSSARY.toString():
-        return {
-          ...state,
-          myGlossary: action.payload, // payload glossary to put into myGlossary
-          myEdittingType: MyEdittingTypes.NONE,
-          operation: Operations.CREATED,
-          selectedNode: undefined,
-        };
-      case Types.CREATING_MY_PROJECT.toString(): {
-        if (state.myProject) {
-          // if we have a myProject then we are searching
-          operation = Operations.SEARCHING;
-        } else {
-          // otherwise we are creating
-          operation = Operations.CREATING;
-        }
-        return {
-          ...state,
-          myEdittingType: MyEdittingTypes.PROJECT,
-          operation: operation,
-          currentNodeType: projectNodeType,
-          selectedNode: undefined,
+          selectedNodeLines: undefined,
+          myGlossaryState: myStates.SETTING,
         };
       }
-      case Types.CREATED_MY_PROJECT.toString():
+      case Types.SETTING_MY_PROJECT.toString(): {
         return {
           ...state,
-          myProject: action.payload, // payload project to put into myProject
-          myEdittingType: MyEdittingTypes.NONE,
-          operation: Operations.CREATED,
+          myProjectState: myStates.SETTING,
+          currentNodeType: projectNodeType,
+          selectedNode: undefined,
+          selectedNodeLines: undefined,
         };
+      }
+
       case Types.CREATING.toString():
+        console.log("Types.CREATING");
         return {
           ...state,
           operation: Operations.CREATING,
+          selectedNodeLines: undefined,
+          selectedNode: undefined
         };
-      case Types.CREATED.toString():
+      case Types.CREATED.toString(): {
+        console.log("Types.CREATED");
+        let newMyGlossaryState = state.myGlossaryState;
+        let newMyProjectState = state.myProjectState;
+        let newMyGlossary = state.myGlossary;
+        let newMyProject = state.myProject;
+
+        if (
+          state.myProjectState &&
+          myStates.SETTING.toString() == state.myProjectState.toString()
+        ) {
+          newMyProjectState = myStates.SET;
+          newMyProject = action.payload;
+        } else if (
+          state.myGlossaryState &&
+          myStates.SETTING.toString() == state.myGlossaryState.toString()
+        ) {
+          newMyGlossaryState = myStates.SET;
+          newMyGlossary = action.payload;
+        }
         return {
           ...state,
           operation: Operations.CREATED,
+          myGlossaryState: newMyGlossaryState,
+          myProjectState: newMyProjectState,
+          myGlossary: newMyGlossary,
+          myProject: newMyProject,
+          selectedNodeLines: undefined,
+          selectedNode: undefined
         };
+      }
+      case Types.NODE_SELECTED.toString(): {
+        let newMyGlossaryState = state.myGlossaryState;
+        let newMyProjectState = state.myProjectState;
+        let newMyGlossary = state.myGlossary;
+        let newMyProject = state.myProject;
+        let newSelectedNode = state.selectedNode;
+        if (
+          state.myProjectState &&
+          myStates.SETTING.toString() == state.myProjectState.toString()
+        ) {
+          newMyProjectState = myStates.SET;
+          newMyProject = action.payload;
+        } else if (
+          state.MyGlossaryState &&
+          myStates.SETTING.toString() == state.MyGlossaryState.toString()
+        ) {
+          newMyGlossaryState = myStates.SET;
+          newMyGlossary = action.payload;
+        } else {
+          newSelectedNode = action.payload;
+        }
+        return {
+          ...state,
+          myGlossaryState: newMyGlossaryState,
+          myProjectState: newMyProjectState,
+          myGlossary: newMyGlossary,
+          myProject: newMyProject,
+          selectedNode: newSelectedNode,
+          selectedNodeLines: undefined,
+        };
+      }
       case Types.SEARCHING.toString():
         return {
           ...state,
           operation: Operations.SEARCHING,
           selectedNode: undefined,
+          selectedNodeLines: undefined,
         };
       case Types.SEARCHED.toString():
         return {
           ...state,
-          myEdittingType: MyEdittingTypes.NONE,
           operation: Operations.SEARCHED,
+          selectedNodeLines: undefined,
+          selectedNode: undefined
         };
       case Types.REFRESH.toString():
         return {
           ...state,
           operation: Operations.REFRESH,
+          selectedNodeLines: undefined,
+          selectedNode: undefined,
         };
       case Types.DELETING.toString():
         return {
           ...state,
-          myEdittingType: MyEdittingTypes.NONE,
           operation: Operations.DELETING,
+          selectedNodeLines: undefined,
         };
-      case Types.SET_CURRENT_NODE_TYPE.toString():
+      case Types.SET_CURRENT_NODE_TYPE.toString(): {
         let nodeType;
         // payload is the nodeType's key
         if (action.payload == "term") {
@@ -183,11 +223,37 @@ const GlossaryAuthorContextProvider = (props) => {
         return {
           ...state,
           currentNodeType: nodeType,
+          selectedNodeLines: undefined,
         };
-      case Types.UPDATE_SELECTED_NODE.toString():
+      }
+      case Types.UPDATING_NODE.toString():
         return {
           ...state,
-          selectedNode: action.payload, // payload is the selected Node
+          selectedNodeLines: undefined,
+        };
+      case Types.UPDATE_NODE_LINES.toString():
+        return {
+          ...state,
+          selectedNodeLines: action.payload, // payload is the selected Node Lines
+          selectedNode: undefined
+        };
+      case Types.UPDATE_NODELINES_CANCELLED.toString():
+        return {
+          ...state,
+          selectedNodeLines: undefined,
+          selectedNode: undefined
+        };
+      case Types.UPDATE_CANCELLED.toString():
+        return {
+          ...state,
+          selectedNodeLines: undefined,
+          selectedNode: undefined
+        };
+      case Types.RESET_SELECTED.toString():
+        return {
+          ...state,
+          selectedNodeLines: undefined,
+          selectedNode: undefined
         };
       case Types.RESET.toString():
         return initialiseState();
@@ -197,46 +263,40 @@ const GlossaryAuthorContextProvider = (props) => {
   }
   // The following do methods result in actions on the reducer, that will cause state changes.
 
-  const doUpdateSelectedNode = (nodeIn) => {
-    dispatch({ type: Types.UPDATE_SELECTED_NODE, payload: nodeIn });
+  const doSelectedNode = (nodeIn) => {
+    dispatch({ type: Types.NODE_SELECTED, payload: nodeIn });
   };
+  const doUpdatingAction = (nodeIn) => {
+    dispatch({ type: Types.UPDATING_NODE, payload: nodeIn });
+  };
+  const doUpdateNodeAction = (nodeIn) => {
+    dispatch({ type: Types.UPDATE_NODE, payload: nodeIn });
+  };
+  const doUpdateNodeLines = (lines) => {
+    dispatch({ type: Types.UPDATE_NODE_LINES, payload: lines });
+  };
+
   /**
    * About to set my glossary
    */
-  const doCreatingMyGlossary = () => {
+  const doSettingMyGlossary = () => {
     console.log("settingMyGlossary");
-    dispatch({ type: Types.CREATING_MY_GLOSSARY });
+    dispatch({ type: Types.SETTING_MY_GLOSSARY });
   };
   /**
    * About to set my project
    */
-  const doCreatingMyProject = () => {
+  const doSettingMyProject = () => {
     // if myProject is not set then this is a create
-    dispatch({ type: Types.CREATING_MY_PROJECT });
+    dispatch({ type: Types.SETTING_MY_PROJECT });
   };
   /**
    * Is setup complete - i.e. have we set up the current glossary we want to author in and were not currently editting current glossary or current project
    */
   const isSetupComplete = () => {
     return (
-      myGlossary &&
-      myEdittingType && 
-      myEdittingType.toString() == MyEdittingTypes.NONE.toString()
+      myGlossaryState && myGlossaryState.toString() == myStates.SET.toString()
     );
-  };
-  /**
-   * Update My Glossary to the provided value.
-   */
-  const doCreatedMyGlossary = (glossary) => {
-    console.log("doCreatedMyGlossary " + glossary.name);
-    dispatch({ type: Types.CREATED_MY_GLOSSARY, payload: glossary });
-  };
-  /**
-   * Update My Project to the provided value.
-   */
-  const doCreatedMyProject = (project) => {
-    console.log("doCreatedMyProject" + project.name);
-    dispatch({ type: Types.CREATED_MY_PROJECT, payload: project });
   };
 
   const doCreatingAction = () => {
@@ -244,8 +304,8 @@ const GlossaryAuthorContextProvider = (props) => {
     dispatch({ type: Types.CREATING });
   };
 
-  const doCreatedAction = () => {
-    dispatch({ type: Types.CREATED});  
+  const doCreatedAction = (node) => {
+    dispatch({ type: Types.CREATED, payload: node });
   };
 
   const doSearchingAction = () => {
@@ -253,17 +313,29 @@ const GlossaryAuthorContextProvider = (props) => {
     dispatch({ type: Types.SEARCHING });
   };
   const doSearchedAction = () => {
-    console.log("setActionSearchedState");
+    console.log("doSearchedAction");
     dispatch({ type: Types.SEARCHED });
   };
   const doRefreshSearchAction = () => {
-    console.log("setRefreshSearchAction");
+    console.log("doRefreshSearchAction");
     dispatch({ type: Types.REFRESH });
+  };
+  const doCancelUpdate = () => {
+    console.log("doCancelUpdate");
+    dispatch({ type: Types.UPDATE_CANCELLED });
+  };
+  const doCancelUpdateNodeLines = () => {
+    console.log(" doCancelUpdateNodeLines");
+    dispatch({ type: Types.UPDATE_NODELINES_CANCELLED });
   };
 
   const doDeletingAction = () => {
     console.log("setDeletingAction");
     dispatch({ type: Types.DELETING });
+  };
+  const doResetSelectedAction = () => {
+    console.log("doResetSelectedAction");
+    dispatch({ type: Types.RESET_SELECTED });
   };
 
   const doSetNodeType = (key) => {
@@ -276,15 +348,11 @@ const GlossaryAuthorContextProvider = (props) => {
    */
   const isEdittingMyGlossary = () => {
     const flag =
-      myEdittingType && // this can be undefined, because we use a function to initialise - so it does a lazy initialization of the reducer.
-      MyEdittingTypes.GLOSSARY.toString() == myEdittingType.toString() &&
+      myGlossaryState &&
+      myGlossaryState.toString() == myStates.SETTING.toString() &&
       currentNodeType &&
       currentNodeType.key == "glossary";
-    if (myEdittingType) {
-      console.log(
-        "isEdittingMyGlossary myEdittingType" + myEdittingType.toString()
-      );
-    }
+
     console.log("currentNodeType" + currentNodeType);
     console.log("flag " + flag);
     return flag;
@@ -294,39 +362,61 @@ const GlossaryAuthorContextProvider = (props) => {
    */
   const isEdittingMyProject = () => {
     const flag =
-      myEdittingType && // this can be undefined, because we use a function to initialise - so it does a lazy initialization of the reducer.
-      MyEdittingTypes.PROJECT.toString() == myEdittingType.toString() &&
+      myProjectState &&
+      myProjectState.toString() == myStates.SETTING.toString() &&
       currentNodeType &&
       currentNodeType.key == "project";
-    if (myEdittingType) {
-      console.log(
-        "isEdittingMyProject myEdittingType" + myEdittingType.toString()
-      );
-    }
     console.log("currentNodeType" + currentNodeType);
     console.log("flag " + flag);
     return flag;
   };
-  const isCreatingOperation = () => {
-    return Operations.CREATING.toString() == operation.toString();
-  };
-  const isCreatedOperation = () => {
-    return Operations.CREATED.toString() == operation.toString();
-  };
-  const isSearchingOperation = () => {
-    return Operations.SEARCHING.toString() == operation.toString();
-  };
-  const isSearchedOperation = () => {
-    return Operations.SEARCHED.toString() == operation.toString();
-  };
   const isRefreshSearchOperation = () => {
-    return Operations.REFRESH.toString() == operation.toString();  
+    return operation && Operations.REFRESH.toString() == operation.toString();
   };
   const isDeletingOperation = () => {
-    return Operations.DELETING.toString() == operation.toString();
+    return operation && Operations.DELETING.toString() == operation.toString();
+  };
+  const isGettingCurrentNodeLines = () => {
+    return (
+      operation &&
+      Operations.GETTING_CURRENT_NODE_LINES.toString() == operation.toString()
+    );
   };
   const isUndefinedOperation = () => {
-    return Operations.NONE.toString() == operation.toString();
+    return !operation || Operations.NONE.toString() == operation.toString();
+  };
+  const showSearchComponent = () => {
+    let show = false;
+    if (operation) {
+      const operationStr = operation.toString();
+      if (
+        operationStr == Operations.SEARCHING.toString() ||
+        operationStr == Operations.SEARCHED.toString()
+      ) {
+        show = true;
+      }
+    }
+    return show;
+  };
+  const showCreatingNodeComponent = () => {
+    let show = false;
+    if (operation) {
+      const operationStr = operation.toString();
+      if (operationStr == Operations.CREATING.toString()) {
+        show = true;
+      }
+    }
+    return show;
+  };
+  const showCreatedNodeComponent = () => {
+    let show = false;
+    if (operation) {
+      const operationStr = operation.toString();
+      if (operationStr == Operations.CREATED.toString()) {
+        show = true;
+      }
+    }
+    return show;
   };
 
   return (
@@ -335,32 +425,38 @@ const GlossaryAuthorContextProvider = (props) => {
         // exposed state
         currentNodeType,
         selectedNode,
+        selectedNodeLines,
         myProject,
         myGlossary,
         // do methods requesting actions
         doSetNodeType,
-        doCreatingMyGlossary,
-        doCreatingMyProject,
-        doCreatedMyGlossary,
-        doCreatedMyProject,
+        doSettingMyGlossary,
+        doSettingMyProject,
+        doCancelUpdate,
         doCreatingAction,
         doCreatedAction,
         doSearchingAction,
         doSearchedAction,
         doRefreshSearchAction,
         doDeletingAction,
-        doUpdateSelectedNode,
+        doSelectedNode,
+        doUpdateNodeLines,
+        doCancelUpdateNodeLines,
+        doUpdatingAction,
+        doUpdateNodeAction,
+        doResetSelectedAction,
+        // show methods interrogate whether a component should be shown
+        showSearchComponent,
+        showCreatingNodeComponent,
+        showCreatedNodeComponent,
         // is methods interrogate state
         isEdittingMyGlossary,
         isEdittingMyProject,
-        isCreatingOperation,
-        isCreatedOperation,
-        isSearchingOperation,
-        isSearchedOperation,
         isRefreshSearchOperation,
         isDeletingOperation,
         isUndefinedOperation,
         isSetupComplete,
+        isGettingCurrentNodeLines,
       }}
     >
       {props.children}

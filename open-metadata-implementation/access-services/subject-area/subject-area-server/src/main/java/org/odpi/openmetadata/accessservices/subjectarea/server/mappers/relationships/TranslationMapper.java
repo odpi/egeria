@@ -79,31 +79,6 @@ public class TranslationMapper extends LineMapper<Translation> {
         return foundProperty;
     }
 
-
-    /**
-     * Get proxy1 guid.
-     * The proxy has omrs type GlossaryTerm
-     *
-     * @param translation line
-     * @return guid for entity proxy 1
-     */
-    @Override
-    protected String getProxy1Guid(Translation translation) {
-        return translation.getTranslation1Guid();
-    }
-
-    /**
-     * Get proxy2 guid
-     * The proxy has omrs type GlossaryTerm
-     *
-     * @param translation for this Line
-     * @return guid for entity proxy 2
-     */
-    @Override
-    protected String getProxy2Guid(Translation translation) {
-        return translation.getTranslation2Guid();
-    }
-
     @Override
     public String getTypeName() {
         return TRANSLATION;
@@ -114,13 +89,4 @@ public class TranslationMapper extends LineMapper<Translation> {
         return new Translation();
     }
 
-    @Override
-    protected void setEnd1GuidInLine(Translation translation, String guid) {
-        translation.setTranslation1Guid(guid);
-    }
-
-    @Override
-    protected void setEnd2GuidInLine(Translation translation, String guid) {
-        translation.setTranslation2Guid(guid);
-    }
 }

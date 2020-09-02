@@ -91,30 +91,6 @@ public class ValidValueMapper extends LineMapper<ValidValue> {
         return foundProperty;
     }
 
-    /**
-     * Get proxy1 guid.
-     * The proxy has omrs type GlossaryTerm
-     *
-     * @param validValue line
-     * @return guid for entity proxy 1
-     */
-    @Override
-    protected String getProxy1Guid(ValidValue validValue) {
-        return validValue.getTermGuid();
-    }
-
-    /**
-     * Get proxy2 guid
-     * The proxy has omrs type GlossaryTerm
-     *
-     * @param validValue for this Line
-     * @return guid for entity proxy 2
-     */
-    @Override
-    protected String getProxy2Guid(ValidValue validValue) {
-        return validValue.getValidValueGuid();
-    }
-
     @Override
     public String getTypeName() {
         return VALID_VALUE;
@@ -125,13 +101,4 @@ public class ValidValueMapper extends LineMapper<ValidValue> {
         return new ValidValue();
     }
 
-    @Override
-    protected void setEnd1GuidInLine(ValidValue validValue, String guid) {
-        validValue.setTermGuid(guid);
-    }
-
-    @Override
-    protected void setEnd2GuidInLine(ValidValue validValue, String guid) {
-        validValue.setValidValueGuid(guid);
-    }
 }

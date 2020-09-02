@@ -8,12 +8,9 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.classificatio
 import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.SpineAttribute;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.SpineObject;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.governednode.GovernedNode;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Node;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.NodeType;
 
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -36,18 +33,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
         property = "class",
-        defaultImpl = Term.class
+        defaultImpl = Term.class,
+        visible = true
 )
-@JsonSubTypes(
-        {
-                @JsonSubTypes.Type(value = Term.class, name = "Term")
-        })
+@JsonSubTypes({ @JsonSubTypes.Type(value = Activity.class, name = "Activity") })
 public class Term extends GovernedNode implements Serializable {
-    private static final Logger log = LoggerFactory.getLogger(Term.class);
-    private static final String className = Term.class.getName();
-
     private String summary =null;
     private String abbreviation =null;
     private String examples =null;

@@ -2,7 +2,11 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetlineage.event;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -18,9 +22,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         use = JsonTypeInfo.Id.NAME,
         property = "class")
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = LineageEvent.class, name = "LineageEvent")
+        @JsonSubTypes.Type(value = LineageEvent.class, name = "LineageEvent"),
+        @JsonSubTypes.Type(value = LineageRelationshipEvent.class, name = "LineageRelationshipEvent")
 })
-public abstract class AssetLineageEventHeader{
+
+public abstract class AssetLineageEventHeader {
 
     private long eventVersionId = 1L;
 

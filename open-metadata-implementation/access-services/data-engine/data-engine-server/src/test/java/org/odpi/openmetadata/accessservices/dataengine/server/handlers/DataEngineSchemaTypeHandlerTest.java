@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
@@ -14,6 +15,7 @@ import org.odpi.openmetadata.accessservices.dataengine.model.Attribute;
 import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.SchemaTypePropertiesMapper;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.builders.SchemaAttributeBuilder;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.handlers.SchemaTypeHandler;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.SchemaElementMapper;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
@@ -154,6 +156,9 @@ class DataEngineSchemaTypeHandlerTest {
         when((attributeDifferences.hasInstancePropertiesDifferences())).thenReturn(Boolean.TRUE);
         when(repositoryHelper.getEntityDetailDifferences(schemaAttributeEntity, schemaAttributeUpdatedEntity, true)).thenReturn(attributeDifferences);
 
+        SchemaAttributeBuilder builder = mock(SchemaAttributeBuilder.class);
+        when(schemaTypeHandler.getSchemaAttributeBuilder(schemaAttribute)).thenReturn(builder);
+
         String result = dataEngineSchemaTypeHandler.createOrUpdateSchemaType(USER, getSchemaType(), EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
         assertEquals(GUID, result);
@@ -242,7 +247,7 @@ class DataEngineSchemaTypeHandlerTest {
                 EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
         verify(dataEngineCommonHandler, times(1)).throwInvalidParameterException(DataEngineErrorCode.SCHEMA_ATTRIBUTE_NOT_FOUND,
-                "addLineageMappingRelationship", SOURCE_QUALIFIED_NAME);
+                "addLineageMappingRelationship", "qualifiedName", SOURCE_QUALIFIED_NAME);
     }
 
     @Test
@@ -278,6 +283,7 @@ class DataEngineSchemaTypeHandlerTest {
     @Test
     void addAnchorGUID_throwsInvalidParameterException() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         SchemaAttribute schemaAttribute = new SchemaAttribute();
+        schemaAttribute.setQualifiedName(ATTRIBUTE_QUALIFIED_NAME);
 
         when(schemaTypeHandler.getEmptyTabularColumn()).thenReturn(schemaAttribute);
 
@@ -286,7 +292,7 @@ class DataEngineSchemaTypeHandlerTest {
         dataEngineSchemaTypeHandler.addAnchorGUID(USER, attribute, PROCESS_GUID);
 
         verify(dataEngineCommonHandler, times(1)).throwInvalidParameterException(DataEngineErrorCode.SCHEMA_ATTRIBUTE_NOT_FOUND,
-                "addAnchorGUID");
+                "addAnchorGUID",  "qualifiedName", ATTRIBUTE_QUALIFIED_NAME);
     }
 
     private EntityDetail mockFindEntity(String qualifiedName, String guid, String entityTypeName) throws UserNotAuthorizedException,
