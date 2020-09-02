@@ -18,7 +18,7 @@ import org.springframework.core.ResolvableType;
 import java.util.List;
 
 @SubjectAreaNodeClient
-public class SubjectAreaProjectClient extends AbstractSubjectAreaNode<Project> {
+public class SubjectAreaProjectClient<P extends Project> extends AbstractSubjectAreaNode<P> {
     public SubjectAreaProjectClient(SubjectAreaRestClient client)
     {
         super(client, SUBJECT_AREA_BASE_URL + "projects");

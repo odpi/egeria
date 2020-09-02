@@ -4,12 +4,8 @@ package org.odpi.openmetadata.accessservices.subjectarea.client.nodes;
 
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaNodeClient;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaRestClient;
-import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.categories.SubjectAreaCategory;
-import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.glossaries.SubjectAreaGlossary;
-import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.projects.SubjectAreaProject;
-import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.terms.SubjectAreaTerm;
+import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.projects.SubjectAreaProjectClient;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.SubjectAreaDefinition;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Node;
@@ -27,7 +23,7 @@ import java.util.*;
  * A standard set of customers is described in {@link SubjectAreaCategory}, {@link SubjectAreaTerm},
  * {@link SubjectAreaProject}, {@link SubjectAreaGlossary}
  */
-public class SubjectAreaNode implements SubjectAreaCategory, SubjectAreaTerm, SubjectAreaProject, SubjectAreaGlossary {
+public class SubjectAreaNode implements SubjectAreaNodeClients {
     private Map<Class<?>, SubjectAreaNodeClient<?>> cache = new HashMap<>();
     private static final String DEFAULT_SCAN_PACKAGE = SubjectAreaNode.class.getPackage().getName();
 
@@ -74,28 +70,23 @@ public class SubjectAreaNode implements SubjectAreaCategory, SubjectAreaTerm, Su
     }
 
     @Override
-    public SubjectAreaNodeClient<Category> category() {
-        return getClient(Category.class);
+    public <G extends Glossary> SubjectAreaNodeClient<G> glossaries() {
+        return (SubjectAreaNodeClient<G>) getClient(Glossary.class);
     }
 
     @Override
-    public SubjectAreaNodeClient<SubjectAreaDefinition> subjectAreaDefinition() {
-        return getClient(SubjectAreaDefinition.class);
+    public <T extends Term> SubjectAreaNodeClient<T> terms() {
+        return (SubjectAreaNodeClient<T>) getClient(Term.class);
     }
 
     @Override
-    public SubjectAreaNodeClient<Glossary> glossary() {
-        return getClient(Glossary.class);
+    public <C extends Category> SubjectAreaNodeClient<C> categories() {
+        return (SubjectAreaNodeClient<C>) getClient(Category.class);
     }
 
     @Override
-    public SubjectAreaNodeClient<Project> project() {
-        return getClient(Project.class);
-    }
-
-    @Override
-    public SubjectAreaNodeClient<Term> term() {
-        return getClient(Term.class);
+    public <P extends Project> SubjectAreaProjectClient<P> projects() {
+        return (SubjectAreaProjectClient<P>) getClient(Project.class);
     }
 
     /**

@@ -27,11 +27,6 @@ public class SubjectAreaGraphClient implements SubjectAreaGraph, ResponseParamet
     }
 
     @Override
-    public Class<Graph> resultType() {
-        return Graph.class;
-    }
-
-    @Override
     public Class<? extends GenericResponse> responseType() {
         return SubjectAreaOMASAPIResponse.class;
     }

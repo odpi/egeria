@@ -2,14 +2,15 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.viewservices.glossaryauthor.services;
 
+import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.SubjectAreaNodeClients;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
-import org.odpi.openmetadata.accessservices.subjectarea.responses.*;
+import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
-import org.odpi.openmetadata.viewservices.glossaryauthor.handlers.GlossaryHandler;
+
 import java.util.Date;
 import java.util.List;
 
@@ -62,8 +63,8 @@ public class GlossaryAuthorViewGlossaryRESTServices extends BaseGlossaryAuthorVi
         // should not be called without a supplied glossary - the calling layer should not allow this.
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            GlossaryHandler handler = instanceHandler.getGlossaryHandler(serverName, userId, methodName);
-            Glossary createdGlossary = handler.createGlossary(userId, suppliedGlossary);
+            SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
+            Glossary createdGlossary = clients.glossaries().create(userId, suppliedGlossary);
             response.addResult(createdGlossary);
         }  catch (Throwable error) {
             response =  getResponseForError(error, auditLog, className, methodName);
@@ -97,8 +98,8 @@ public class GlossaryAuthorViewGlossaryRESTServices extends BaseGlossaryAuthorVi
         AuditLog auditLog = null;
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            GlossaryHandler handler = instanceHandler.getGlossaryHandler(serverName, userId, methodName);
-            Glossary obtainedGlossary = handler.getGlossaryByGuid(userId, guid);
+            SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
+            Glossary obtainedGlossary = clients.glossaries().getByGUID(userId, guid);
             response.addResult(obtainedGlossary);
         }  catch (Throwable error) {
             response =  getResponseForError(error, auditLog, className, methodName);
@@ -144,7 +145,7 @@ public class GlossaryAuthorViewGlossaryRESTServices extends BaseGlossaryAuthorVi
         AuditLog auditLog = null;
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            GlossaryHandler handler = instanceHandler.getGlossaryHandler(serverName, userId, methodName);
+            SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
             FindRequest findRequest = new FindRequest();
             findRequest.setSearchCriteria(searchCriteria);
             findRequest.setAsOfTime(asOfTime);
@@ -153,7 +154,7 @@ public class GlossaryAuthorViewGlossaryRESTServices extends BaseGlossaryAuthorVi
             findRequest.setSequencingOrder(sequencingOrder);
             findRequest.setSequencingProperty(sequencingProperty);
 
-            List<Glossary> glossaries = handler.findGlossary(userId, findRequest);
+            List<Glossary> glossaries = clients.glossaries().find(userId, findRequest);
             response.addAllResults(glossaries);
         }  catch (Throwable error) {
             response =  getResponseForError(error, auditLog, className, methodName);
@@ -202,7 +203,7 @@ public class GlossaryAuthorViewGlossaryRESTServices extends BaseGlossaryAuthorVi
         AuditLog auditLog = null;
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            GlossaryHandler handler = instanceHandler.getGlossaryHandler(serverName, userId, methodName);
+            SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
             FindRequest findRequest = new FindRequest();
             findRequest.setAsOfTime(asOfTime);
             findRequest.setOffset(offset);
@@ -210,7 +211,7 @@ public class GlossaryAuthorViewGlossaryRESTServices extends BaseGlossaryAuthorVi
             findRequest.setSequencingOrder(sequencingOrder);
             findRequest.setSequencingProperty(sequencingProperty);
 
-            List<Line> lines =  handler.getGlossaryRelationships(userId, guid, findRequest);
+            List<Line> lines =  clients.glossaries().getRelationships(userId, guid, findRequest);
             response.addAllResults(lines);
         }  catch (Throwable error) {
             response =  getResponseForError(error, auditLog, className, methodName);
@@ -258,12 +259,12 @@ public class GlossaryAuthorViewGlossaryRESTServices extends BaseGlossaryAuthorVi
         // should not be called without a supplied glossary - the calling layer should not allow this.
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            GlossaryHandler handler = instanceHandler.getGlossaryHandler(serverName, userId, methodName);
+            SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
             Glossary updatedGlossary;
             if (isReplace) {
-                updatedGlossary = handler.replaceGlossary(userId, guid, glossary);
+                updatedGlossary = clients.glossaries().replace(userId, guid, glossary);
             } else {
-                updatedGlossary = handler.updateGlossary(userId, guid, glossary);
+                updatedGlossary = clients.glossaries().update(userId, guid, glossary);
             }
             response.addResult(updatedGlossary);
         }  catch (Throwable error) {
@@ -314,12 +315,12 @@ public class GlossaryAuthorViewGlossaryRESTServices extends BaseGlossaryAuthorVi
         // should not be called without a supplied glossary - the calling layer should not allow this.
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            GlossaryHandler handler = instanceHandler.getGlossaryHandler(serverName, userId, methodName);
+            SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
 
             if (isPurge) {
-                handler.purgeGlossary(userId, guid);
+                clients.glossaries().purge(userId, guid);
             } else {
-                handler.deleteGlossary(userId, guid);
+                clients.glossaries().delete(userId, guid);
             }
         }  catch (Throwable error) {
             response =  getResponseForError(error, auditLog, className, methodName);
@@ -357,8 +358,8 @@ public class GlossaryAuthorViewGlossaryRESTServices extends BaseGlossaryAuthorVi
         // should not be called without a supplied glossary - the calling layer should not allow this.
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            GlossaryHandler handler = instanceHandler.getGlossaryHandler(serverName, userId, methodName);
-            Glossary glossary = handler.restoreGlossary(userId, guid);
+            SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
+            Glossary glossary = clients.glossaries().restore(userId, guid);
             response.addResult(glossary);
         }  catch (Throwable error) {
             response =  getResponseForError(error, auditLog, className, methodName);

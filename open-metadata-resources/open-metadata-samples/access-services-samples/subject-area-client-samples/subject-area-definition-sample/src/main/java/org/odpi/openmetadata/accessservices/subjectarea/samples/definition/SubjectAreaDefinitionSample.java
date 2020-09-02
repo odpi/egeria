@@ -4,8 +4,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.samples.definition;
 
 import org.odpi.openmetadata.accessservices.subjectarea.SubjectArea;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaImpl;
-import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.categories.SubjectAreaCategory;
-import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.glossaries.SubjectAreaGlossary;
+import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaNodeClient;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectAreaCheckedException;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.SubjectAreaDefinition;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
@@ -59,8 +58,8 @@ public class SubjectAreaDefinitionSample
     private String              serverURLRoot;
     private String              clientUserId;
     private String              serverName;
-    private SubjectAreaGlossary subjectAreaGlossary  =null;
-    private SubjectAreaCategory subjectAreaCategory  =null;
+    private SubjectAreaNodeClient<Glossary> subjectAreaGlossary  =null;
+    private SubjectAreaNodeClient<SubjectAreaDefinition> subjectAreaCategory  =null;
 
 
     /**
@@ -83,8 +82,8 @@ public class SubjectAreaDefinitionSample
      */
     private void run() throws SubjectAreaCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         SubjectArea subjectArea = new SubjectAreaImpl(this.serverName, this.serverURLRoot);
-        subjectAreaGlossary = subjectArea.getSubjectAreaGlossary();
-        subjectAreaCategory = subjectArea.getSubjectAreaCategory();
+        subjectAreaGlossary = subjectArea.getNodeClients().glossaries();
+        subjectAreaCategory = subjectArea.getNodeClients().categories();
 
         System.out.println("----------------------------");
         System.out.println("Creating the Coco Pharmaceutical Glossary for Subject Area Definitions : ");
@@ -150,7 +149,7 @@ public class SubjectAreaDefinitionSample
         GlossarySummary glossarySummary = new GlossarySummary();
         glossarySummary.setGuid(glossaryGuid);
         subjectAreaDefinition.setGlossary(glossarySummary);
-        return subjectAreaCategory.subjectAreaDefinition().create(clientUserId, subjectAreaDefinition);
+        return subjectAreaCategory.create(clientUserId, subjectAreaDefinition);
     }
 
 
@@ -170,7 +169,7 @@ public class SubjectAreaDefinitionSample
         CategorySummary parentCategorysummary = new CategorySummary();
         parentCategorysummary.setGuid(parent.getSystemAttributes().getGUID());
         subjectAreaDefinition.setParentCategory(parentCategorysummary);
-        SubjectAreaDefinition newSubjectAreaDefinition = subjectAreaCategory.subjectAreaDefinition().create(clientUserId, subjectAreaDefinition);
+        SubjectAreaDefinition newSubjectAreaDefinition = subjectAreaCategory.create(clientUserId, subjectAreaDefinition);
         if (newSubjectAreaDefinition != null)
         {
             System.out.println("Created Subject Area Definition " + newSubjectAreaDefinition.getName() + " with guid " + newSubjectAreaDefinition.getSystemAttributes().getGUID() + ", parent SubjectArea Definition is " + parent.getName());
@@ -191,7 +190,7 @@ public class SubjectAreaDefinitionSample
         Glossary glossary = new Glossary();
         glossary.setName(glossaryName);
         glossary.setDescription(glossaryDescription);
-        return subjectAreaGlossary.glossary().create(userId, glossary);
+        return subjectAreaGlossary.create(userId, glossary);
     }
 
 

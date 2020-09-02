@@ -19,7 +19,7 @@ import java.util.*;
  * A standard set of customers is described in {@link SubjectAreaRelationship}
  */
 public class SubjectAreaLine implements SubjectAreaRelationship {
-    private static final String HASA = "has-as";
+    private static final String HAS_A = "has-as";
     private static final String RELATED_TERM = "related-terms";
     private static final String SYNONYM = "synonyms";
     private static final String ANTONYM = "antonyms";
@@ -195,7 +195,7 @@ public class SubjectAreaLine implements SubjectAreaRelationship {
     @SubjectAreaLineClient
     static class SubjectAreaHasaClient extends AbstractSubjectAreaRelationship<HasA> {
         protected SubjectAreaHasaClient(SubjectAreaRestClient subjectAreaRestClient) {
-            super(subjectAreaRestClient, HASA);
+            super(subjectAreaRestClient, HAS_A);
         }
     }
     @SubjectAreaLineClient

@@ -8,7 +8,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.SubjectArea
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 
 @SubjectAreaNodeClient
-public class SubjectAreaTermClient extends AbstractSubjectAreaNode<Term> {
+public class SubjectAreaTermClient<T extends Term> extends AbstractSubjectAreaNode<T> {
     public SubjectAreaTermClient(SubjectAreaRestClient client)
     {
         super(client, SUBJECT_AREA_BASE_URL + "terms");

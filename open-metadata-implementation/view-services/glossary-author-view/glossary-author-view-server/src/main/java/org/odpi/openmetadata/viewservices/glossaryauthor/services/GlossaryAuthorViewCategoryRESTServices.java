@@ -2,14 +2,14 @@
 /* Copyright Contributors to the ODPi Egeria category. */
 package org.odpi.openmetadata.viewservices.glossaryauthor.services;
 
+import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.SubjectAreaNodeClients;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
-import org.odpi.openmetadata.accessservices.subjectarea.responses.*;
+import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
-import org.odpi.openmetadata.viewservices.glossaryauthor.handlers.CategoryHandler;
 
 import java.util.Date;
 import java.util.List;
@@ -54,8 +54,8 @@ public class GlossaryAuthorViewCategoryRESTServices extends BaseGlossaryAuthorVi
         // should not be called without a supplied category - the calling layer should not allow this.
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            CategoryHandler handler = instanceHandler.getCategoryHandler(serverName, userId, methodName);
-            Category createdCategory = handler.createCategory(userId, suppliedCategory);
+            SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
+            Category createdCategory = clients.categories().create(userId, suppliedCategory);
             response.addResult(createdCategory);
         }  catch (Throwable error) {
             response =  getResponseForError(error, auditLog, className, methodName);
@@ -89,8 +89,8 @@ public class GlossaryAuthorViewCategoryRESTServices extends BaseGlossaryAuthorVi
         AuditLog auditLog = null;
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            CategoryHandler handler = instanceHandler.getCategoryHandler(serverName, userId, methodName);
-            Category obtainedCategory = handler.getCategoryByGuid(userId, guid);
+            SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
+            Category obtainedCategory = clients.categories().getByGUID(userId, guid);
             response.addResult(obtainedCategory);
         }  catch (Throwable error) {
             response =  getResponseForError(error, auditLog, className, methodName);
@@ -137,7 +137,7 @@ public class GlossaryAuthorViewCategoryRESTServices extends BaseGlossaryAuthorVi
         AuditLog auditLog = null;
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            CategoryHandler handler = instanceHandler.getCategoryHandler(serverName, userId, methodName);
+            SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
             FindRequest findRequest = new FindRequest();
             findRequest.setSearchCriteria(searchCriteria);
             findRequest.setAsOfTime(asOfTime);
@@ -146,7 +146,7 @@ public class GlossaryAuthorViewCategoryRESTServices extends BaseGlossaryAuthorVi
             findRequest.setSequencingOrder(sequencingOrder);
             findRequest.setSequencingProperty(sequencingProperty);
 
-            List<Category> categories = handler.findCategory(userId, findRequest);
+            List<Category> categories = clients.categories().find(userId, findRequest);
             response.addAllResults(categories);
         }  catch (Throwable error) {
             response =  getResponseForError(error, auditLog, className, methodName);
@@ -195,7 +195,7 @@ public class GlossaryAuthorViewCategoryRESTServices extends BaseGlossaryAuthorVi
         AuditLog auditLog = null;
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            CategoryHandler handler = instanceHandler.getCategoryHandler(serverName, userId, methodName);
+            SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
             FindRequest findRequest = new FindRequest();
             findRequest.setAsOfTime(asOfTime);
             findRequest.setOffset(offset);
@@ -203,7 +203,7 @@ public class GlossaryAuthorViewCategoryRESTServices extends BaseGlossaryAuthorVi
             findRequest.setSequencingOrder(sequencingOrder);
             findRequest.setSequencingProperty(sequencingProperty);
 
-            List<Line> lines =  handler.getCategoryRelationships(userId, guid, findRequest);
+            List<Line> lines =  clients.categories().getRelationships(userId, guid, findRequest);
             response.addAllResults(lines);
         }  catch (Throwable error) {
             response =  getResponseForError(error, auditLog, className, methodName);
@@ -247,12 +247,12 @@ public class GlossaryAuthorViewCategoryRESTServices extends BaseGlossaryAuthorVi
         // should not be called without a supplied category - the calling layer should not allow this.
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            CategoryHandler handler = instanceHandler.getCategoryHandler(serverName, userId, methodName);
+            SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
             Category updatedCategory;
             if (isReplace) {
-                updatedCategory = handler.replaceCategory(userId, guid, category);
+                updatedCategory = clients.categories().replace(userId, guid, category);
             } else {
-                updatedCategory = handler.updateCategory(userId, guid, category);
+                updatedCategory = clients.categories().update(userId, guid, category);
             }
             response.addResult(updatedCategory);
         }  catch (Throwable error) {
@@ -303,12 +303,12 @@ public class GlossaryAuthorViewCategoryRESTServices extends BaseGlossaryAuthorVi
         // should not be called without a supplied category - the calling layer should not allow this.
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            CategoryHandler handler = instanceHandler.getCategoryHandler(serverName, userId, methodName);
+            SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
 
             if (isPurge) {
-                handler.purgeCategory(userId, guid);
+                clients.categories().purge(userId, guid);
             } else {
-                handler.deleteCategory(userId, guid);
+                clients.categories().delete(userId, guid);
             }
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, methodName);
@@ -346,8 +346,8 @@ public class GlossaryAuthorViewCategoryRESTServices extends BaseGlossaryAuthorVi
         // should not be called without a supplied category - the calling layer should not allow this.
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            CategoryHandler handler = instanceHandler.getCategoryHandler(serverName, userId, methodName);
-            Category category = handler.restoreCategory(userId, guid);
+            SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
+            Category category = clients.categories().restore(userId, guid);
             response.addResult(category);
         }  catch (Throwable error) {
             response =  getResponseForError(error, auditLog, className, methodName);

@@ -8,7 +8,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.SubjectArea
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
 
 @SubjectAreaNodeClient
-public class SubjectAreaCategoryClient extends AbstractSubjectAreaNode<Category> {
+public class SubjectAreaCategoryClient<C extends Category> extends AbstractSubjectAreaNode<C> {
     public SubjectAreaCategoryClient(SubjectAreaRestClient client)
     {
         super(client, SUBJECT_AREA_BASE_URL + "categories");

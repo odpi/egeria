@@ -30,8 +30,8 @@ public class CheckSerializationFVT {
         this.userId = userId;
 
         SubjectAreaRestClient client = new SubjectAreaRestClient(serverName, url);
-        this.subjectAreaTerm = new SubjectAreaTermClient(client);
-        this.subjectAreaGlossary = new SubjectAreaGlossaryClient(client);
+        this.subjectAreaTerm = new SubjectAreaTermClient<>(client);
+        this.subjectAreaGlossary = new SubjectAreaGlossaryClient<>(client);
         this.subjectAreaRelationship = new SubjectAreaLine(client);
     }
 

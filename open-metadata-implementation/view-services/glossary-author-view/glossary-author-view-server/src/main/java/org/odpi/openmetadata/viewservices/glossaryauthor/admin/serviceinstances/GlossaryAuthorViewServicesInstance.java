@@ -4,10 +4,7 @@ package org.odpi.openmetadata.viewservices.glossaryauthor.admin.serviceinstances
 
 import org.odpi.openmetadata.accessservices.subjectarea.SubjectArea;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaImpl;
-import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.categories.SubjectAreaCategory;
-import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.glossaries.SubjectAreaGlossary;
-import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.projects.SubjectAreaProject;
-import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.terms.SubjectAreaTerm;
+import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.SubjectAreaNodeClients;
 import org.odpi.openmetadata.accessservices.subjectarea.client.relationships.SubjectAreaGraph;
 import org.odpi.openmetadata.accessservices.subjectarea.client.relationships.SubjectAreaRelationship;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
@@ -23,13 +20,9 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 
 public class GlossaryAuthorViewServicesInstance extends OMVSServiceInstance
 {
-    private SubjectArea subjectArea;
-    private SubjectAreaGlossary subjectAreaGlossary;
-    private SubjectAreaProject subjectAreaProject;
-    private SubjectAreaTerm subjectAreaTerm;
-    private SubjectAreaCategory subjectAreaCategory;
-    private SubjectAreaRelationship subjectAreaRelationship;
-    private SubjectAreaGraph subjectAreaGraph;
+    private final SubjectAreaNodeClients nodeClients;
+    private final SubjectAreaRelationship subjectAreaRelationship;
+    private final SubjectAreaGraph subjectAreaGraph;
 
 
 
@@ -52,13 +45,10 @@ public class GlossaryAuthorViewServicesInstance extends OMVSServiceInstance
                                               String       remoteServerURL) throws InvalidParameterException {
         super(serverName, ViewServiceDescription.GLOSSARY_AUTHOR.getViewServiceName(), auditLog, localServerUserId, maxPageSize, remoteServerName,
               remoteServerURL);
-        subjectArea = new SubjectAreaImpl(remoteServerName,remoteServerURL);
-        subjectAreaGlossary = subjectArea.getSubjectAreaGlossary();
-        subjectAreaProject = subjectArea.getSubjectAreaProject();
-        subjectAreaCategory = subjectArea.getSubjectAreaCategory();
-        subjectAreaTerm = subjectArea.getSubjectAreaTerm();
-        subjectAreaGraph = subjectArea.getSubjectAreaGraph();
-        subjectAreaRelationship = subjectArea.getSubjectAreaRelationship();
+        final SubjectArea subjectArea = new SubjectAreaImpl(remoteServerName, remoteServerURL);
+        this.subjectAreaGraph = subjectArea.getSubjectAreaGraph();
+        this.subjectAreaRelationship = subjectArea.getSubjectAreaRelationship();
+        this.nodeClients = subjectArea.getNodeClients();
     }
 
     public String getViewServiceName()
@@ -66,21 +56,7 @@ public class GlossaryAuthorViewServicesInstance extends OMVSServiceInstance
         return ViewServiceDescription.GLOSSARY_AUTHOR.getViewServiceName();
     }
 
-    public SubjectAreaGlossary getSubjectAreaGlossary() {
-        return subjectAreaGlossary;
-    }
-
-    public SubjectAreaProject getSubjectAreaProject() {
-        return subjectAreaProject;
-    }
-
-    public SubjectAreaTerm getSubjectAreaTerm() {
-        return subjectAreaTerm;
-    }
-
-    public SubjectAreaCategory getSubjectAreaCategory() {
-        return subjectAreaCategory;
-    }
+    public SubjectAreaNodeClients getNodeClients() { return nodeClients; }
 
     public SubjectAreaRelationship getSubjectAreaRelationship() {
         return subjectAreaRelationship;

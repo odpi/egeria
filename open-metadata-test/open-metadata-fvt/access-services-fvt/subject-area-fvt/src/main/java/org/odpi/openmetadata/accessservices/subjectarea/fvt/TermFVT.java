@@ -63,7 +63,7 @@ public class TermFVT {
     }
     public TermFVT(String url,String serverName,String userId) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         SubjectAreaRestClient client = new SubjectAreaRestClient(serverName, url);
-        subjectAreaTerm = new SubjectAreaTermClient(client);
+        subjectAreaTerm = new SubjectAreaTermClient<>(client);
         System.out.println("Create a glossary");
         glossaryFVT = new GlossaryFVT(url,serverName,userId);
         this.userId=userId;

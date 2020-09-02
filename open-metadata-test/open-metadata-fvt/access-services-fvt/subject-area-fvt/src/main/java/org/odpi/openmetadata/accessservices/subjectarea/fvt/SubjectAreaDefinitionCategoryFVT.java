@@ -4,7 +4,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.fvt;
 
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaNodeClient;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaRestClient;
-import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.categories.SubjectAreaDefinitionClient;
+import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.categories.SubjectAreaCategoryClient;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.SubjectAreaDefinition;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
@@ -63,7 +63,7 @@ public class SubjectAreaDefinitionCategoryFVT
     }
     public SubjectAreaDefinitionCategoryFVT(String url,String serverName,String userId) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         SubjectAreaRestClient client = new SubjectAreaRestClient(serverName, url);
-        subjectAreaCategory = new SubjectAreaDefinitionClient(client);
+        subjectAreaCategory = new SubjectAreaCategoryClient<>(client);
         glossaryFVT = new GlossaryFVT(url,serverName,userId);
         this.userId=userId;
         existingSubjectAreaCount = findSubjectAreaDefinitions(".*").size();

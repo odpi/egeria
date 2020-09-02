@@ -2,12 +2,11 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.fvt;
 
-import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaNodeClient;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaRestClient;
 import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.projects.SubjectAreaProjectClient;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.project.GlossaryProject;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.project.GlossaryProject;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.project.Project;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -32,7 +31,7 @@ public class ProjectFVT
     private static final String DEFAULT_TEST_PROJECT_NAME5 = "Testproject5";
     private static final String DEFAULT_TEST_PROJECT_NAME6 = "Testproject6";
     private static final String DEFAULT_TEST_PROJECT_NAME7 = "Testproject7";
-    private SubjectAreaNodeClient<Project> subjectAreaProject = null;
+    private SubjectAreaProjectClient<Project> subjectAreaProject = null;
     private String serverName = null;
     private String userId = null;
     private int existingProjectCount = 0;
@@ -46,7 +45,7 @@ public class ProjectFVT
 
     public ProjectFVT(String url, String serverName, String userId) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         SubjectAreaRestClient client = new SubjectAreaRestClient(serverName, url);
-        subjectAreaProject = new SubjectAreaProjectClient(client);
+        subjectAreaProject = new SubjectAreaProjectClient<>(client);
         this.serverName=serverName;
         this.userId=userId;
         existingProjectCount = findProjects(".*").size();
@@ -205,7 +204,6 @@ public class ProjectFVT
         return project;
     }
     public  List<Term> getProjectTerms(String guid) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        SubjectAreaProjectClient subjectAreaProject = (SubjectAreaProjectClient) this.subjectAreaProject;
         List<Term> terms = subjectAreaProject.getProjectTerms(this.userId, guid);
         System.out.println("Got terms from project with userId " + guid);
         return terms;
