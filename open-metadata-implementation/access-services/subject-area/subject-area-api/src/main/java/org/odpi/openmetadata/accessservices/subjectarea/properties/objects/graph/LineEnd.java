@@ -1,17 +1,14 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.OmasObject;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SystemAttributes;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.*;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipEndCardinality;
 
 import java.io.Serializable;
-import java.util.Date;
-import java.util.Map;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -29,7 +26,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         defaultImpl = LineEnd.class,
         visible = true
 )
-
 public class LineEnd implements Serializable, OmasObject {
     protected static final long serialVersionUID = 1L;
     private String nodeGuid;
@@ -48,14 +44,6 @@ public class LineEnd implements Serializable, OmasObject {
         this.setName(name);
         this.setDescription(description);
         this.setCardinality(cardinality);
-    }
-
-    public LineEnd(LineEnd template) {
-        this.setNodeGuid(template.getNodeGuid());
-        this.setNodeType(template.getNodeType());
-        this.setName(template.getName());
-        this.setDescription(template.getDescription());
-        this.setCardinality((template.getCardinality()));
     }
 
     public String getNodeGuid() {
