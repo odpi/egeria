@@ -1,22 +1,20 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-.glossary-card-section {
-  display: flex;
-  flex-flow: column;
-}
+
 .glossary-card-section__heading {
   display: flex;
-  justify-content: left;
+  flex-direction: row;
+  
 }
 
 .glossary-card {
-  margin: 2px;
+  margin: 20px;
   margin-top: $spacing-09;
   display: flex;
   flex-direction: column;
   flex-basis: 23%;
   margin-top: $spacing-09;
-  border: 1px #b4b4b4 solid;
+  border:  1px solid black;
 
   svg {
     margin-top: $spacing-09;
