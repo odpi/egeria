@@ -21,7 +21,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.CLASSIFICATION;
 
@@ -234,12 +233,20 @@ public class HandlerHelper {
      * @return a list of lineage classifications
      */
     public List<Classification> filterLineageClassifications(List<Classification> classifications) {
-        if (CollectionUtils.isEmpty(classifications)) {
-            return Collections.emptyList();
-        }
+        List<Classification> filteredClassification = new ArrayList<>();
 
-        return classifications.stream().filter(classification
-                -> lineageClassificationTypes.contains(classification.getType().getTypeDefName())).collect(Collectors.toList());
+        if (CollectionUtils.isNotEmpty(classifications)) {
+            for (Classification classification : classifications) {
+                //Secure from NPE
+                if (classification.getType() != null) {
+                    final String typeDefName = classification.getType().getTypeDefName();
+                    if (lineageClassificationTypes.contains(typeDefName)) {
+                        filteredClassification.add(classification);
+                    }
+                }
+            }
+        }
+        return filteredClassification;
     }
 
     private void addClassificationsToGraphContext(List<Classification> classifications, AssetContext assetContext, EntityDetail entityDetail) {
