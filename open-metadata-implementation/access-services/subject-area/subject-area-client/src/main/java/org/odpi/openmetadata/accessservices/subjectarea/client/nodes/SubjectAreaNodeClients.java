@@ -41,5 +41,5 @@ public interface SubjectAreaNodeClients {
      * @param <P> type for supplied and return.
      * @return subject area project API class
      */
-    <P extends Project> SubjectAreaProjectClient<P> projects();
+    <P extends Project> SubjectAreaNodeClient<P> projects();
 }
