@@ -27,21 +27,21 @@ public class ValidValue extends Line {
     /*
      * Set up end 1.
      */
-    protected final static String END_1_NODE_TYPE = "Term";
-    protected final static String END_1_ATTRIBUTE_NAME = "validValueFor";
-    protected final static String END_1_ATTRIBUTE_DESCRIPTION = "Glossary terms for data items that can be set to this value.";
-    protected final static RelationshipEndCardinality END_1_CARDINALITY = RelationshipEndCardinality.ANY_NUMBER;
-    protected final static LineEnd LINE_END_1 = new LineEnd(END_1_NODE_TYPE,
+     protected static final String END_1_NODE_TYPE = "Term";
+     protected static final String END_1_ATTRIBUTE_NAME = "validValueFor";
+     protected static final String END_1_ATTRIBUTE_DESCRIPTION = "Glossary terms for data items that can be set to this value.";
+     protected static final RelationshipEndCardinality END_1_CARDINALITY = RelationshipEndCardinality.ANY_NUMBER;
+     protected static final LineEnd LINE_END_1 = new LineEnd(END_1_NODE_TYPE,
             END_1_ATTRIBUTE_NAME, END_1_ATTRIBUTE_DESCRIPTION, END_1_CARDINALITY);
 
     /*
      * Set up end 2.
      */
-    protected final static String END_2_NODE_TYPE = "Term";
-    protected final static String END_2_ATTRIBUTE_NAME = "validValues";
-    protected final static String END_2_ATTRIBUTE_DESCRIPTION = "Glossary terms for data values that can be used with data items represented by this glossary term.";
-    protected final static RelationshipEndCardinality END_2_CARDINALITY = RelationshipEndCardinality.ANY_NUMBER;
-    protected final static LineEnd LINE_END_2 = new LineEnd(END_2_NODE_TYPE,
+     protected static final String END_2_NODE_TYPE = "Term";
+     protected static final String END_2_ATTRIBUTE_NAME = "validValues";
+     protected static final String END_2_ATTRIBUTE_DESCRIPTION = "Glossary terms for data values that can be used with data items represented by this glossary term.";
+     protected static final RelationshipEndCardinality END_2_CARDINALITY = RelationshipEndCardinality.ANY_NUMBER;
+     protected static final LineEnd LINE_END_2 = new LineEnd(END_2_NODE_TYPE,
             END_2_ATTRIBUTE_NAME, END_2_ATTRIBUTE_DESCRIPTION, END_2_CARDINALITY);
 
     private String expression;

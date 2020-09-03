@@ -27,21 +27,21 @@ public class IsA extends Line {
     /*
      * Set up end 1.
      */
-    protected final static String END_1_NODE_TYPE = "Term";
-    protected final static String END_1_ATTRIBUTE_NAME = "classifies";
-    protected final static String END_1_ATTRIBUTE_DESCRIPTION = "More specific glossary terms.";
-    protected final static RelationshipEndCardinality END_1_CARDINALITY = RelationshipEndCardinality.ANY_NUMBER;
-    protected final static LineEnd LINE_END_1 = new LineEnd(END_1_NODE_TYPE,
+     protected static final String END_1_NODE_TYPE = "Term";
+     protected static final String END_1_ATTRIBUTE_NAME = "classifies";
+     protected static final String END_1_ATTRIBUTE_DESCRIPTION = "More specific glossary terms.";
+     protected static final RelationshipEndCardinality END_1_CARDINALITY = RelationshipEndCardinality.ANY_NUMBER;
+     protected static final LineEnd LINE_END_1 = new LineEnd(END_1_NODE_TYPE,
             END_1_ATTRIBUTE_NAME, END_1_ATTRIBUTE_DESCRIPTION, END_1_CARDINALITY);
 
     /*
      * Set up end 2.
      */
-    protected final static String END_2_NODE_TYPE = "Term";
-    protected final static String END_2_ATTRIBUTE_NAME = "isA";
-    protected final static String END_2_ATTRIBUTE_DESCRIPTION = "More general glossary terms.";
-    protected final static RelationshipEndCardinality END_2_CARDINALITY = RelationshipEndCardinality.ANY_NUMBER;
-    protected final static LineEnd LINE_END_2 = new LineEnd(END_2_NODE_TYPE,
+     protected static final String END_2_NODE_TYPE = "Term";
+     protected static final String END_2_ATTRIBUTE_NAME = "isA";
+     protected static final String END_2_ATTRIBUTE_DESCRIPTION = "More general glossary terms.";
+     protected static final RelationshipEndCardinality END_2_CARDINALITY = RelationshipEndCardinality.ANY_NUMBER;
+     protected static final LineEnd LINE_END_2 = new LineEnd(END_2_NODE_TYPE,
             END_2_ATTRIBUTE_NAME, END_2_ATTRIBUTE_DESCRIPTION, END_2_CARDINALITY);
 
     private String expression;

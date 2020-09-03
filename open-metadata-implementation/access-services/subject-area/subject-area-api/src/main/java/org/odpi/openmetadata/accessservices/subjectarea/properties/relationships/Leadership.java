@@ -34,21 +34,21 @@ public class Leadership extends Line {
     /*
      * Set up end 1.
      */
-    protected final static String END_1_NODE_TYPE = "TeamLeader";
-    protected final static String END_1_ATTRIBUTE_NAME = "teamLeaders";
-    protected final static String END_1_ATTRIBUTE_DESCRIPTION = "The leaders of the team.";
-    protected final static RelationshipEndCardinality END_1_CARDINALITY = RelationshipEndCardinality.ANY_NUMBER;
-    protected final static LineEnd LINE_END_1 = new LineEnd(END_1_NODE_TYPE,
+     protected static final String END_1_NODE_TYPE = "TeamLeader";
+     protected static final String END_1_ATTRIBUTE_NAME = "teamLeaders";
+     protected static final String END_1_ATTRIBUTE_DESCRIPTION = "The leaders of the team.";
+     protected static final RelationshipEndCardinality END_1_CARDINALITY = RelationshipEndCardinality.ANY_NUMBER;
+     protected static final LineEnd LINE_END_1 = new LineEnd(END_1_NODE_TYPE,
             END_1_ATTRIBUTE_NAME, END_1_ATTRIBUTE_DESCRIPTION, END_1_CARDINALITY);
 
     /*
      * Set up end 2.
      */
-    protected final static String END_2_NODE_TYPE = "Team";
-    protected final static String END_2_ATTRIBUTE_NAME = "leadsTeam";
-    protected final static String END_2_ATTRIBUTE_DESCRIPTION = "The team lead by this team leader.";
-    protected final static RelationshipEndCardinality END_2_CARDINALITY = RelationshipEndCardinality.ANY_NUMBER;
-    protected final static LineEnd LINE_END_2 = new LineEnd(END_2_NODE_TYPE,
+     protected static final String END_2_NODE_TYPE = "Team";
+     protected static final String END_2_ATTRIBUTE_NAME = "leadsTeam";
+     protected static final String END_2_ATTRIBUTE_DESCRIPTION = "The team lead by this team leader.";
+     protected static final RelationshipEndCardinality END_2_CARDINALITY = RelationshipEndCardinality.ANY_NUMBER;
+     protected static final LineEnd LINE_END_2 = new LineEnd(END_2_NODE_TYPE,
             END_2_ATTRIBUTE_NAME, END_2_ATTRIBUTE_DESCRIPTION, END_2_CARDINALITY);
 
     public Leadership() {

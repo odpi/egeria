@@ -56,11 +56,6 @@ abstract public class Line implements Serializable, OmasObject {
     protected LineEnd end1;
     protected LineEnd end2;
 
-//    /**
-//     * Default constructor
-//     */
-//    public Line() { }
-
     protected Line(String name, String typeDefGuid, LineEnd end1, LineEnd end2) {
         this.end1 = end1;
         this.end2 = end2;

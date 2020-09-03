@@ -27,21 +27,21 @@ public class PreferredTerm extends Line {
     /*
      * Set up end 1.
      */
-    protected final static String END_1_NODE_TYPE = "Term";
-    protected final static String END_1_ATTRIBUTE_NAME = "alternateTerms";
-    protected final static String END_1_ATTRIBUTE_DESCRIPTION = "Link to external media.";
-    protected final static RelationshipEndCardinality END_1_CARDINALITY = RelationshipEndCardinality.ANY_NUMBER;
-    protected final static LineEnd LINE_END_1 = new LineEnd(END_1_NODE_TYPE,
+     protected static final String END_1_NODE_TYPE = "Term";
+     protected static final String END_1_ATTRIBUTE_NAME = "alternateTerms";
+     protected static final String END_1_ATTRIBUTE_DESCRIPTION = "Link to external media.";
+     protected static final RelationshipEndCardinality END_1_CARDINALITY = RelationshipEndCardinality.ANY_NUMBER;
+     protected static final LineEnd LINE_END_1 = new LineEnd(END_1_NODE_TYPE,
             END_1_ATTRIBUTE_NAME, END_1_ATTRIBUTE_DESCRIPTION, END_1_CARDINALITY);
 
     /*
      * Set up end 2.
      */
-    protected final static String END_2_NODE_TYPE = "Term";
-    protected final static String END_2_ATTRIBUTE_NAME = "preferredTerms";
-    protected final static String END_2_ATTRIBUTE_DESCRIPTION = "Related glossary terms.";
-    protected final static RelationshipEndCardinality END_2_CARDINALITY = RelationshipEndCardinality.ANY_NUMBER;
-    protected final static LineEnd LINE_END_2 = new LineEnd(END_2_NODE_TYPE,
+     protected static final String END_2_NODE_TYPE = "Term";
+     protected static final String END_2_ATTRIBUTE_NAME = "preferredTerms";
+     protected static final String END_2_ATTRIBUTE_DESCRIPTION = "Related glossary terms.";
+     protected static final RelationshipEndCardinality END_2_CARDINALITY = RelationshipEndCardinality.ANY_NUMBER;
+     protected static final LineEnd LINE_END_2 = new LineEnd(END_2_NODE_TYPE,
             END_2_ATTRIBUTE_NAME, END_2_ATTRIBUTE_DESCRIPTION, END_2_CARDINALITY);
 
     private String expression;
