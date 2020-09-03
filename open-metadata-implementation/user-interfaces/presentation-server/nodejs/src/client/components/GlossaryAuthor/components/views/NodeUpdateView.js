@@ -127,7 +127,6 @@ function NodeUpdateView(props) {
                   className="bx--text-input"
                   defaultValue={glossaryAuthorContext.selectedNode[item.key]}
                   key={glossaryAuthorContext.selectedNode[item.key]}
-                  //value={glossaryAuthorContext.selectedNode[item.key]?glossaryAuthorContext.selectedNode[item.key]:""}
                   onChange={(e) => setAttribute(item, e.target.value)}
                   placeholder={item.label}
                 />
