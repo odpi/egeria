@@ -20,10 +20,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.CLASSIFICATION;
@@ -38,7 +35,7 @@ public class HandlerHelper {
     private static final String ASSET_ZONE_MEMBERSHIP = "AssetZoneMembership";
     private static final String ZONE_MEMBERSHIP = "zoneMembership";
 
-    private List<String> lineageClassificationTypes;
+    private Set<String> lineageClassificationTypes;
     private RepositoryHandler repositoryHandler;
     private OMRSRepositoryHelper repositoryHelper;
     private InvalidParameterHandler invalidParameterHandler;
@@ -51,7 +48,7 @@ public class HandlerHelper {
     public HandlerHelper(InvalidParameterHandler invalidParameterHandler,
                          OMRSRepositoryHelper repositoryHelper,
                          RepositoryHandler repositoryHandler,
-                         List<String> lineageClassificationTypes) {
+                         Set<String> lineageClassificationTypes) {
         this.invalidParameterHandler = invalidParameterHandler;
         this.repositoryHelper = repositoryHelper;
         this.repositoryHandler = repositoryHandler;
