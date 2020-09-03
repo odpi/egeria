@@ -1,11 +1,13 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 import React, { useState, useEffect, useContext } from "react";
-// import {
-//   GlossaryCardSection,
-//   LocalGlossaryCard,
-// } from "./GlossaryCard/GlossaryCard";
-import {LocalGlossaryCard, GlossaryCardSection} from "./GlossaryCard/GlossaryCard"
+import Add16 from "../../../images/Egeria_add_16";
+import Update16 from "../../../images/Egeria_edit_16";
+import Delete16 from "../../../images/Egeria_delete_16";
+import {
+  LocalGlossaryCard,
+  GlossaryCardSection,
+} from "./GlossaryCard/GlossaryCard";
 import GlossaryImage from "../../../images/Egeria_glossary_32";
 import getNodeType from "./properties/NodeTypes.js";
 import { issueRestGet } from "./RestCaller";
@@ -28,6 +30,16 @@ export default function GlossaryAuthorNavigation() {
     );
     issueRestGet(url, onSuccessfulSearch, onErrorSearch);
   };
+
+  const onClickAdd = () =>{
+    console.log("Add");
+  };
+  const onClickDelete = () =>{
+    console.log("Delete");
+  };
+  const onClickUpdate = () =>{
+    console.log("Update");
+  };
   const onErrorSearch = (msg) => {
     console.log("Error on Get " + msg);
     setErrorMsg(msg);
@@ -48,35 +60,40 @@ export default function GlossaryAuthorNavigation() {
     // setSearchCriteria(criteria);
   };
   return (
-      <div className="bx--grid">
+    <div className="bx--grid">
       <GlossaryCardSection heading="Glossaries" className="landing-page__r3">
-         <article className="bx--col-md- bx--col-lg- bx--col-xlg-2 bx--offset-xlg-1">
-           <section className="row-container">
-            <div>Choose glossary</div>
-            <div>
-              <label id="filter-input" className="bx--label" htmlFor="filter-input">
-                Filter
-              </label>
-            </div>
-            <div>
+        <article className="glossary-card__controls bx--col-sm-4 bx--col-md-1 bx--col-lg-1 bx--col-xlg-1 bx--col-max-1">
+            
+              Choose glossary
+        </article>
+        <article className="glossary-card__controls bx--col-sm-4 bx--col-md-2 bx--col-lg-4 bx--col-xlg-4 bx--col-max-4">
+          
               <input
                 type="text"
                 id="filter-input"
                 onChange={onFilterCriteria}
                 placeholder="Filter"
               />
-            </div>
-            </section>
-          </article>
-          {glossaries.map((glossary) => (
-            <LocalGlossaryCard
-              key={glossary.name}
-              heading={glossary.name}
-              body={glossary.description}
-              icon={<GlossaryImage />}
-              link={getGlossaryUrl(glossary.name)}
-            />
-          ))}
+           </article>
+           <article className="glossary-card__controls bx--col-sm-4 bx--col-md-1 bx--col-lg-1 bx--col-xlg-1 bx--col-max-1">
+     
+              <div className="bx--row">
+                <Add16 kind="primary" onClick={() => onClickAdd()} />
+                <Delete16 onClick={() => onClickDelete()} />
+                <Update16 onClick={() => onClickUpdate()} />
+              </div>
+        </article>
+        </GlossaryCardSection>
+        <GlossaryCardSection className="landing-page__r3">
+        {glossaries.map((glossary) => (
+          <LocalGlossaryCard
+            key={glossary.name}
+            heading={glossary.name}
+            body={glossary.description}
+            icon={<GlossaryImage />}
+            link={getGlossaryUrl(glossary.name)}
+          />
+        ))}
       </GlossaryCardSection>
     </div>
   );
