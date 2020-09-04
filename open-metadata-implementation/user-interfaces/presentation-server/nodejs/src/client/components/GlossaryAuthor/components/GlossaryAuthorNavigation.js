@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 import React, { useState, useEffect, useContext } from "react";
 import Add16 from "../../../images/Egeria_add_16";
-import Update16 from "../../../images/Egeria_edit_16";
 import Delete16 from "../../../images/Egeria_delete_16";
 import {
   LocalGlossaryCard,
@@ -11,11 +10,9 @@ import {
 import GlossaryImage from "../../../images/Egeria_glossary_32";
 import getNodeType from "./properties/NodeTypes.js";
 import { issueRestGet } from "./RestCaller";
-import { IdentificationContext } from "../../../contexts/IdentificationContext";
 import useDebounce from "./useDebounce";
 
 export default function GlossaryAuthorNavigation() {
-  const identificationContext = useContext(IdentificationContext);
   const [glossaries, setGlossaries] = useState([]);
   const nodeType = getNodeType("glossary");
   // State and setter for search term
@@ -28,25 +25,23 @@ export default function GlossaryAuthorNavigation() {
   // The goal is to only have the API call fire when user stops typing ...
   // ... so that we aren't hitting our API rapidly.
   const debouncedSearchCriteria = useDebounce(searchCriteria, 500);
+  const [errorMsg, setErrorMsg] = useState();
 
-  // useEffect(() => {
-  //   issueGlossarySearch("");
-  // }, []);
-  // let refresh = false;
   // Here's where the API call happens
   // We use useEffect since this is an asynchronous action
   useEffect(
     () => {
-      // Fire off our API call
+      // sort out the actual search criteria.
       let actualDebounceCriteria = debouncedSearchCriteria;
       if (actualDebounceCriteria) {
-         if (!exactMatch) {
-          actualDebounceCriteria = actualDebounceCriteria +".*";
-         }
-      } else {  
+        if (!exactMatch) {
+          actualDebounceCriteria = actualDebounceCriteria + ".*";
+        }
+      } else {
         // by default get everything
         actualDebounceCriteria = ".*";
       }
+      // Fire off our API call
       issueGlossarySearch(actualDebounceCriteria);
     },
     // This is the useEffect input array
@@ -61,9 +56,7 @@ export default function GlossaryAuthorNavigation() {
   const issueGlossarySearch = (criteria) => {
     // encode the URI. Be aware the more recent RFC3986 for URLs makes use of square brackets which are reserved (for IPv6)
     const url = encodeURI(
-      nodeType.url +
-        "?offset=0&pageSize=1000&searchCriteria=" +
-        criteria
+      nodeType.url + "?offset=0&pageSize=1000&searchCriteria=" + criteria
     );
     issueRestGet(url, onSuccessfulSearch, onErrorSearch);
   };
@@ -71,21 +64,19 @@ export default function GlossaryAuthorNavigation() {
   const onClickAdd = () => {
     console.log("Add");
   };
+
   const onClickDelete = () => {
     console.log("Delete");
   };
-  const onClickUpdate = () => {
-    console.log("Update");
-  };
+
   const onErrorSearch = (msg) => {
     console.log("Error on Get " + msg);
-    // setErrorMsg(msg);
+    setErrorMsg(msg);
     setGlossaries([]);
   };
   const onSuccessfulSearch = (json) => {
     console.log("onSuccessfulSearch " + json.result);
     setGlossaries(json.result);
-    // setEmptyCards(new Array(16-json.result.length));
   };
   const onClickExactMatch = (flag) => {
     console.log("onClickExactMatch");
@@ -127,10 +118,14 @@ export default function GlossaryAuthorNavigation() {
           <div className="bx--row">
             <Add16 kind="primary" onClick={() => onClickAdd()} />
             <Delete16 onClick={() => onClickDelete()} />
-            <Update16 onClick={() => onClickUpdate()} />
           </div>
         </article>
       </GlossaryCardSection>
+      
+      <GlossaryCardSection className="landing-page__r3">
+        <article style={{ color: "red" }}>{errorMsg}</article>
+      </GlossaryCardSection>
+
       <GlossaryCardSection className="landing-page__r3">
         {glossaries.map((glossary) => (
           <LocalGlossaryCard
@@ -141,6 +136,7 @@ export default function GlossaryAuthorNavigation() {
             link={getGlossaryUrl(glossary.name)}
           />
         ))}
+        {glossaries.length == 0 && <div>No Glossaries found!</div>}
       </GlossaryCardSection>
     </div>
   );
