@@ -28,6 +28,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PROCESS;
@@ -51,7 +52,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
     private AssetLineagePublisher publisher;
     private AuditLog auditLog;
     private Converter converter;
-    private List<String> lineageClassificationTypes;
+    private Set<String> lineageClassificationTypes;
     private String serverName;
 
     /**
@@ -65,7 +66,8 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
      */
     public AssetLineageOMRSTopicListener(OMRSRepositoryHelper repositoryHelper,
                                          OpenMetadataTopicConnector outTopicConnector,
-                                         String serverName, String serverUserName, List<String> lineageClassificationTypes,
+                                         String serverName, String serverUserName,
+                                         Set<String> lineageClassificationTypes,
                                          AuditLog auditLog)
             throws OCFCheckedExceptionBase {
         this.publisher = new AssetLineagePublisher(outTopicConnector, serverName, serverUserName);

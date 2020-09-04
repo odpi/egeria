@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 import React, { useContext } from "react";
-import { GlossaryAuthorContext } from "../contexts/GlossaryAuthorContext";
+import { GlossaryAuthorContext } from "../contexts/GlossaryAuthorCRUDContext";
 /**
  * This component is driven off the state of my project and glossary and whetehr they are being editted.
  * In the cases where we are editting one of them then some text is displayed indicating what is being editted.
