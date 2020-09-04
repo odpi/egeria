@@ -135,19 +135,19 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
         
         <toast-feedback></toast-feedback> 
         
-        <paper-dialog id="modal" modal>
-          <p>[[modalMessage]]</p>
-          <div class="buttons">
-            <paper-button dialog-confirm autofocus>OK</paper-button>
-          </div>
-        </paper-dialog>
+        
         
         <template is="dom-if" if="[[!token]]"  restamp="true">
             <login-view id="loginView" token="{{token}}"></login-view>
         </template>
       
         <template is="dom-if" if="[[token]]"  restamp="true">
-            
+            <paper-dialog id="modal" modal>
+              <p>[[modalMessage]]</p>
+              <div class="buttons">
+                <paper-button dialog-confirm autofocus>OK</paper-button>
+              </div>
+            </paper-dialog>
             <app-drawer-layout id="drawerLayout" flex forceNarrow  narrow="{{narrow}}" fullbleed="">
                 <app-drawer id="drawer" slot="drawer"  swipe-open="[[narrow]]">
                   <div id="logo"></div>
