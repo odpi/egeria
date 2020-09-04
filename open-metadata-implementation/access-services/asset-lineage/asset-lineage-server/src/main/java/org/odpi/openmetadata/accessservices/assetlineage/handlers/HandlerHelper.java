@@ -20,11 +20,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.*;
 
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.CLASSIFICATION;
 
@@ -38,7 +34,7 @@ public class HandlerHelper {
     private static final String ASSET_ZONE_MEMBERSHIP = "AssetZoneMembership";
     private static final String ZONE_MEMBERSHIP = "zoneMembership";
 
-    private List<String> lineageClassificationTypes;
+    private Set<String> lineageClassificationTypes;
     private RepositoryHandler repositoryHandler;
     private OMRSRepositoryHelper repositoryHelper;
     private InvalidParameterHandler invalidParameterHandler;
@@ -51,7 +47,7 @@ public class HandlerHelper {
     public HandlerHelper(InvalidParameterHandler invalidParameterHandler,
                          OMRSRepositoryHelper repositoryHelper,
                          RepositoryHandler repositoryHandler,
-                         List<String> lineageClassificationTypes) {
+                         Set<String> lineageClassificationTypes) {
         this.invalidParameterHandler = invalidParameterHandler;
         this.repositoryHelper = repositoryHelper;
         this.repositoryHandler = repositoryHandler;
@@ -237,12 +233,20 @@ public class HandlerHelper {
      * @return a list of lineage classifications
      */
     public List<Classification> filterLineageClassifications(List<Classification> classifications) {
-        if (CollectionUtils.isEmpty(classifications)) {
-            return Collections.emptyList();
-        }
+        List<Classification> filteredClassification = new ArrayList<>();
 
-        return classifications.stream().filter(classification
-                -> lineageClassificationTypes.contains(classification.getType().getTypeDefName())).collect(Collectors.toList());
+        if (CollectionUtils.isNotEmpty(classifications)) {
+            for (Classification classification : classifications) {
+                //Secure from NPE
+                if (classification.getType() != null) {
+                    final String typeDefName = classification.getType().getTypeDefName();
+                    if (lineageClassificationTypes.contains(typeDefName)) {
+                        filteredClassification.add(classification);
+                    }
+                }
+            }
+        }
+        return filteredClassification;
     }
 
     private void addClassificationsToGraphContext(List<Classification> classifications, AssetContext assetContext, EntityDetail entityDetail) {
