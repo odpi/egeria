@@ -41,7 +41,7 @@ const NodeController = (props) => {
 
   // State for search status (whether there is a pending API request)
   const [isSearching, setIsSearching] = useState(false);
-  // const [refresh, setRefresh] = useState(false);
+  
   // Now we call our hook, passing in the current searchCriteria value.
   // The hook will only return the latest value (what we passed in) ...
   // ... if it's been more than 500ms since it was last called.

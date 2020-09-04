@@ -12,21 +12,58 @@ import GlossaryImage from "../../../images/Egeria_glossary_32";
 import getNodeType from "./properties/NodeTypes.js";
 import { issueRestGet } from "./RestCaller";
 import { IdentificationContext } from "../../../contexts/IdentificationContext";
+import useDebounce from "./useDebounce";
 
 export default function GlossaryAuthorNavigation() {
   const identificationContext = useContext(IdentificationContext);
   const [glossaries, setGlossaries] = useState([]);
-  // const [emptyCards, setEmptyCards] = useState(new Array(16));
   const nodeType = getNodeType("glossary");
+  // State and setter for search term
+  const [searchCriteria, setSearchCriteria] = useState("");
+  const [exactMatch, setExactMatch] = useState(false);
+  // Now we call our hook, passing in the current searchCriteria value.
+  // The hook will only return the latest value (what we passed in) ...
+  // ... if it's been more than 500ms since it was last called.
+  // Otherwise, it will return the previous value of searchCriteria.
+  // The goal is to only have the API call fire when user stops typing ...
+  // ... so that we aren't hitting our API rapidly.
+  const debouncedSearchCriteria = useDebounce(searchCriteria, 500);
 
-  useEffect(() => {
-    getGlossaries();
-  }, []);
+  // useEffect(() => {
+  //   issueGlossarySearch("");
+  // }, []);
+  // let refresh = false;
+  // Here's where the API call happens
+  // We use useEffect since this is an asynchronous action
+  useEffect(
+    () => {
+      // Fire off our API call
+      let actualDebounceCriteria = debouncedSearchCriteria;
+      if (actualDebounceCriteria) {
+         if (!exactMatch) {
+          actualDebounceCriteria = actualDebounceCriteria +".*";
+         }
+      } else {  
+        // by default get everything
+        actualDebounceCriteria = ".*";
+      }
+      issueGlossarySearch(actualDebounceCriteria);
+    },
+    // This is the useEffect input array
+    // Our useEffect function will only execute if this value changes ...
+    // ... and thanks to our hook it will only change if the original ...
+    // value (searchCriteria) hasn't changed for more than 500ms.
+    // If the exactMatch changes then we need to re-issue the search.
+    [debouncedSearchCriteria, exactMatch]
+  );
+
   // issue search for first page of glossaries
-  const getGlossaries = () => {
+  const issueGlossarySearch = (criteria) => {
     // encode the URI. Be aware the more recent RFC3986 for URLs makes use of square brackets which are reserved (for IPv6)
     const url = encodeURI(
-      nodeType.url + "?offset=0&pageSize=1000&searchCriteria=.*"
+      nodeType.url +
+        "?offset=0&pageSize=1000&searchCriteria=" +
+        criteria
     );
     issueRestGet(url, onSuccessfulSearch, onErrorSearch);
   };
@@ -42,26 +79,26 @@ export default function GlossaryAuthorNavigation() {
   };
   const onErrorSearch = (msg) => {
     console.log("Error on Get " + msg);
-    setErrorMsg(msg);
+    // setErrorMsg(msg);
     setGlossaries([]);
   };
   const onSuccessfulSearch = (json) => {
+    console.log("onSuccessfulSearch " + json.result);
     setGlossaries(json.result);
     // setEmptyCards(new Array(16-json.result.length));
   };
-  const onClickExactMatch = () => {
+  const onClickExactMatch = (flag) => {
     console.log("onClickExactMatch");
-  };
-  const getGlossaryUrl = (name) => {
-    return identificationContext.getBrowserURL("glossary-author") + "/" + name;
-    // setEmptyCards(new Array(16-json.result.length));
+    setExactMatch(flag);
   };
 
-  const onFilterCriteria = (criteria) => {
-    console.log("onSearchCriteria " + criteria);
-    // setErrorMsg("");
-    // setSearchCriteria(criteria);
+  const getGlossaryUrl = (name) => {
+    return nodeType.url + "/" + name;
   };
+  const onFilterCriteria = (e) => {
+    setSearchCriteria(e.target.value);
+  };
+
   return (
     <div className="bx--grid">
       <GlossaryCardSection heading="Glossaries" className="landing-page__r3">
