@@ -4,12 +4,7 @@ package org.odpi.openmetadata.accessservices.assetconsumer.ffdc;
 
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
-
-import java.text.MessageFormat;
-import java.util.Arrays;
 
 /**
  * The AssetConsumerAuditCode is used to define the message content for the OMRS Audit Log.

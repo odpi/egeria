@@ -5,19 +5,14 @@ package org.odpi.openmetadata.conformance.tests.repository.types;
 import org.odpi.openmetadata.conformance.tests.repository.RepositoryConformanceTestCase;
 import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConformanceProfileRequirement;
 import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConformanceWorkPad;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefPatch;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.events.OMRSEventOriginator;
 import org.odpi.openmetadata.repositoryservices.events.OMRSTypeDefEvent;
 import org.odpi.openmetadata.repositoryservices.events.OMRSTypeDefEventType;
 
 import java.util.Date;
-
-import static org.odpi.openmetadata.repositoryservices.events.OMRSTypeDefEventType.UPDATED_TYPEDEF_EVENT;
 
 
 /**

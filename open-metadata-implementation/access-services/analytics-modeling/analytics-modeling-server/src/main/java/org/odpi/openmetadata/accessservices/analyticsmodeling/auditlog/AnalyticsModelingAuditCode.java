@@ -67,7 +67,7 @@ public enum AnalyticsModelingAuditCode implements AuditLogMessageSet {
     ;
 
 
-	private AuditLogMessageDefinition messageDefinition;
+	private final AuditLogMessageDefinition messageDefinition;
 
 
     AnalyticsModelingAuditCode(String logMessageId, OMRSAuditLogRecordSeverity severity, String logMessage, String systemAction, String userAction) {

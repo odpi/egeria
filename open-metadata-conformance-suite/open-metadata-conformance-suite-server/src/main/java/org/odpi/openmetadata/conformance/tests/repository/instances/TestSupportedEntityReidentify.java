@@ -15,7 +15,6 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSuppor
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -55,12 +54,11 @@ public class TestSupportedEntityReidentify extends RepositoryConformanceTestCase
     private static final String assertionMsg8 = " repository supports reidentify of instances.";
 
 
-    private String metadataCollectionId;
-    private EntityDef entityDef;
-    private String testTypeName;
+    private final EntityDef entityDef;
+    private final String testTypeName;
 
 
-    private List<EntityDetail> createdEntitiesTUT = new ArrayList<>();
+    private final List<EntityDetail> createdEntitiesTUT = new ArrayList<>();
 
 
     /**
@@ -76,9 +74,7 @@ public class TestSupportedEntityReidentify extends RepositoryConformanceTestCase
               RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getProfileId(),
               RepositoryConformanceProfileRequirement.UPDATE_INSTANCE_IDENTIFIER.getRequirementId());
 
-        this.metadataCollectionId = workPad.getTutMetadataCollectionId();
         this.entityDef = entityDef;
-
         this.testTypeName = this.updateTestIdByType(entityDef.getName(),
                                                     testCaseId,
                                                     testCaseName);
@@ -433,12 +429,8 @@ public class TestSupportedEntityReidentify extends RepositoryConformanceTestCase
                     // Assume the values match and prove it if they don't...
                     boolean matchValues = true;
 
-                    Iterator<String> secondPropertiesKeyIterator = secondPropertiesKeySet.iterator();
-                    while (secondPropertiesKeyIterator.hasNext())
-                    {
-                        String key = secondPropertiesKeyIterator.next();
-                        if (!(secondPropertiesMap.get(key).equals(firstPropertiesMap.get(key))))
-                        {
+                    for (String key : secondPropertiesKeySet) {
+                        if (!(secondPropertiesMap.get(key).equals(firstPropertiesMap.get(key)))) {
                             matchValues = false;
                         }
                     }
@@ -454,5 +446,4 @@ public class TestSupportedEntityReidentify extends RepositoryConformanceTestCase
 
         return matchProperties;
     }
-
 }

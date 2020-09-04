@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.conformance.tests.repository.types;
 
 import org.odpi.openmetadata.conformance.tests.repository.RepositoryConformanceTestCase;
-import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConformanceProfileRequirement;
 import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConformanceWorkPad;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;

@@ -37,7 +37,7 @@ public abstract class OpenMetadataTestCase
     /*
      * Enumerated type for control of multi-phase tests
      */
-    public static enum TestPhase {
+    public enum TestPhase {
         SEED,
         EXECUTE,
         CLEAN
@@ -66,8 +66,6 @@ public abstract class OpenMetadataTestCase
                                 Integer                                 defaultProfileId,
                                 Integer                                 defaultRequirementId)
     {
-        final String methodName = "OpenMetadataTestCase";
-
         this.testCaseId = testCaseId;
         this.testCaseName = testCaseName;
         this.testCaseDescriptionURL = documentationRootURL + workPad.getWorkbenchId() + "/test-cases/" + testCaseId + "-test-case.md";

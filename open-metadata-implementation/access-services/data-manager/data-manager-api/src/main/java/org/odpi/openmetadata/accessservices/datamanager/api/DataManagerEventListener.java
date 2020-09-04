@@ -10,12 +10,12 @@ import org.odpi.openmetadata.accessservices.datamanager.events.DataManagerOutTop
  * DataManagerEventListener is the interface that a client implements to
  * register to receive the events from the Data Manager OMAS's out topic.
  */
-public abstract class DataManagerEventListener
+public interface DataManagerEventListener
 {
     /**
      * Process an event that was published by the Data Manager OMAS.
      *
      * @param event event object - call getEventType to find out what type of event.
      */
-    public abstract void processEvent(DataManagerOutTopicEvent event);
+    void processEvent(DataManagerOutTopicEvent event);
 }

@@ -9,7 +9,7 @@ public class CaughtException extends ConformanceException
 {
     private static final long    serialVersionUID = 1L;
 
-    Throwable    caughtException;
+    private final Throwable    caughtException;
 
     /**
      * The constructor captures the context of the exception.

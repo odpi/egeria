@@ -6,7 +6,6 @@ import org.odpi.openmetadata.conformance.tests.repository.RepositoryConformanceT
 import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConformanceProfileRequirement;
 import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConformanceWorkPad;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntitySummary;
@@ -23,7 +22,6 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSuppor
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotKnownException;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -76,11 +74,11 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
     private static final String assertionMsg12  = " entity proxy identity cannot be updated ";
 
 
-    private List<EntityDetail>             createdEntitiesCTS        = new ArrayList<>();  // these are all master instances
-    private List<EntityDetail>             createdEntitiesTUT        = new ArrayList<>();  // these are all master instances
-    private List<EntityDetail>             createdEntityRefCopiesTUT = new ArrayList<>();  // these are all ref copies
-    private List<EntityProxy>              createdEntityProxiesTUT   = new ArrayList<>();  // these are all proxy instances
-    private List<Relationship>             createdRelationshipsTUT   = new ArrayList<>();  // these are all master instances
+    private final List<EntityDetail>             createdEntitiesCTS        = new ArrayList<>();  // these are all master instances
+    private final List<EntityDetail>             createdEntitiesTUT        = new ArrayList<>();  // these are all master instances
+    private final List<EntityDetail>             createdEntityRefCopiesTUT = new ArrayList<>();  // these are all ref copies
+    private final List<EntityProxy>              createdEntityProxiesTUT   = new ArrayList<>();  // these are all proxy instances
+    private final List<Relationship>             createdRelationshipsTUT   = new ArrayList<>();  // these are all master instances
 
 
 
@@ -130,12 +128,10 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
 
 
 
-    private RepositoryConformanceWorkPad   workPad;
-    private String                         metadataCollectionId;
-    private Map<String, EntityDef>         entityDefs;
-    private RelationshipDef                relationshipDef;
-    private String                         testTypeName;
-    private OMRSMetadataCollection         localMetadataCollection;
+    private final RepositoryConformanceWorkPad   workPad;
+    private final Map<String, EntityDef>         entityDefs;
+    private final RelationshipDef                relationshipDef;
+    private final String                         testTypeName;
 
 
     /*
@@ -167,7 +163,6 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
               RepositoryConformanceProfileRequirement.RETRIEVE_ENTITY_PROXIES.getRequirementId());
 
         this.workPad              = workPad;
-        this.metadataCollectionId = workPad.getTutMetadataCollectionId();
         this.relationshipDef      = relationshipDef;
         this.entityDefs           = entityDefs;
 
@@ -250,7 +245,7 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
         String end1DefName = relationshipDef.getEndDef1().getEntityType().getName();
         List<String> end1DefTypeNames = new ArrayList<>();
         end1DefTypeNames.add(end1DefName);
-        if (this.workPad.getEntitySubTypes(end1DefName) != null) {
+        if (this.workPad != null && this.workPad.getEntitySubTypes(end1DefName) != null) {
             end1DefTypeNames.addAll(this.workPad.getEntitySubTypes(end1DefName));
         }
 
@@ -424,10 +419,8 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
         EntityDetail retrievedEntity1 = ctsMetadataCollection.getEntityDetail(workPad.getLocalServerUserId(), entity1.getGUID());
         EntityProxy entity1Proxy;
 
-        if (retrievedEntity1 != null) {
-
+        if (retrievedEntity1 != null && repositoryHelper != null) {
             entity1Proxy = repositoryHelper.getNewEntityProxy(ctsMetadataCollectionName, retrievedEntity1);
-
         } else {
             /*
              * If we cannot retrieve the entity (detail) from the CTS repository then we are in deep trouble.
@@ -1413,7 +1406,4 @@ public class TestSupportedEntityProxyLifecycle extends RepositoryConformanceTest
             }
         }
     }
-
-
-
 }

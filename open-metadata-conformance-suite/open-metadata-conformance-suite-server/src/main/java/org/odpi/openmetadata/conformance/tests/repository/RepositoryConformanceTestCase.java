@@ -303,28 +303,28 @@ public abstract class RepositoryConformanceTestCase extends OpenMetadataTestCase
                 propertyValue.setPrimitiveValue(true);
                 break;
             case OM_PRIMITIVE_TYPE_SHORT:
-                propertyValue.setPrimitiveValue(new Short("34"));
+                propertyValue.setPrimitiveValue(Short.valueOf("34"));
                 break;
             case OM_PRIMITIVE_TYPE_BYTE:
-                propertyValue.setPrimitiveValue(new Byte("7"));
+                propertyValue.setPrimitiveValue(Byte.valueOf("7"));
                 break;
             case OM_PRIMITIVE_TYPE_CHAR:
-                propertyValue.setPrimitiveValue(new Character('o'));
+                propertyValue.setPrimitiveValue('o');
                 break;
             case OM_PRIMITIVE_TYPE_LONG:
-                propertyValue.setPrimitiveValue(new Long(2452));
+                propertyValue.setPrimitiveValue(2452L);
                 break;
             case OM_PRIMITIVE_TYPE_FLOAT:
-                propertyValue.setPrimitiveValue(new Float(245332));
+                propertyValue.setPrimitiveValue(245332f);
                 break;
             case OM_PRIMITIVE_TYPE_DOUBLE:
-                propertyValue.setPrimitiveValue(new Double(2459992));
+                propertyValue.setPrimitiveValue(2459992d);
                 break;
             case OM_PRIMITIVE_TYPE_BIGDECIMAL:
-                propertyValue.setPrimitiveValue(new Double(245339992));
+                propertyValue.setPrimitiveValue(245339992d);
                 break;
             case OM_PRIMITIVE_TYPE_BIGINTEGER:
-                propertyValue.setPrimitiveValue(new Double(245559992));
+                propertyValue.setPrimitiveValue(245559992d);
                 break;
             case OM_PRIMITIVE_TYPE_UNKNOWN:
                 break;
@@ -408,11 +408,6 @@ public abstract class RepositoryConformanceTestCase extends OpenMetadataTestCase
                     propertyValue.setPrimitiveValue((double)(2459992));
                 break;
             case OM_PRIMITIVE_TYPE_BIGDECIMAL:
-                if (distinct)
-                    propertyValue.setPrimitiveValue((double)(245339992+instanceCount));  // instanceCount is never 0 for distinct cases
-                else
-                    propertyValue.setPrimitiveValue((double)(245339992));
-                break;
             case OM_PRIMITIVE_TYPE_BIGINTEGER:
                 if (distinct)
                     propertyValue.setPrimitiveValue((double)(245339992+instanceCount));  // instanceCount is never 0 for distinct cases
@@ -447,12 +442,9 @@ public abstract class RepositoryConformanceTestCase extends OpenMetadataTestCase
                 AttributeTypeDef         attributeType = typeDefAttribute.getAttributeType();
                 AttributeTypeDefCategory category = attributeType.getCategory();
 
-                switch(category)
-                {
-                    case PRIMITIVE:
-                        PrimitiveDef  primitiveDef = (PrimitiveDef)attributeType;
-                        propertyMap.put(attributeName, this.getPrimitivePropertyValue(attributeName, primitiveDef));
-                        break;
+                if (category == AttributeTypeDefCategory.PRIMITIVE) {
+                    PrimitiveDef primitiveDef = (PrimitiveDef) attributeType;
+                    propertyMap.put(attributeName, this.getPrimitivePropertyValue(attributeName, primitiveDef));
                 }
             }
 
@@ -494,12 +486,9 @@ public abstract class RepositoryConformanceTestCase extends OpenMetadataTestCase
                 AttributeTypeDef         attributeType = typeDefAttribute.getAttributeType();
                 AttributeTypeDefCategory category = attributeType.getCategory();
 
-                switch(category)
-                {
-                    case PRIMITIVE:
-                        PrimitiveDef  primitiveDef = (PrimitiveDef)attributeType;
-                        propertyMap.put(attributeName, this.getPrimitivePropertyValue(attributeName, primitiveDef));
-                        break;
+                if (category == AttributeTypeDefCategory.PRIMITIVE) {
+                    PrimitiveDef primitiveDef = (PrimitiveDef) attributeType;
+                    propertyMap.put(attributeName, this.getPrimitivePropertyValue(attributeName, primitiveDef));
                 }
             }
 
@@ -538,12 +527,9 @@ public abstract class RepositoryConformanceTestCase extends OpenMetadataTestCase
                 AttributeTypeDefCategory category      = attributeType.getCategory();
                 boolean                  attrUnique    = typeDefAttribute.isUnique();
 
-                switch(category)
-                {
-                    case PRIMITIVE:
-                        PrimitiveDef  primitiveDef = (PrimitiveDef)attributeType;
-                        propertyMap.put(attributeName, this.getPrimitivePropertyValue(attributeName, primitiveDef, attrUnique, instanceCount));
-                        break;
+                if (category == AttributeTypeDefCategory.PRIMITIVE) {
+                    PrimitiveDef primitiveDef = (PrimitiveDef) attributeType;
+                    propertyMap.put(attributeName, this.getPrimitivePropertyValue(attributeName, primitiveDef, attrUnique, instanceCount));
                 }
             }
 
@@ -586,11 +572,9 @@ public abstract class RepositoryConformanceTestCase extends OpenMetadataTestCase
                 AttributeTypeDefCategory category = attributeType.getCategory();
 
                 if (typeDefAttribute.isUnique()) {
-                    switch (category) {
-                        case PRIMITIVE:
-                            PrimitiveDef primitiveDef = (PrimitiveDef) attributeType;
-                            propertyMap.put(attributeName, this.getPrimitivePropertyValue(attributeName, primitiveDef));
-                            break;
+                    if (category == AttributeTypeDefCategory.PRIMITIVE) {
+                        PrimitiveDef primitiveDef = (PrimitiveDef) attributeType;
+                        propertyMap.put(attributeName, this.getPrimitivePropertyValue(attributeName, primitiveDef));
                     }
                 }
             }
@@ -635,11 +619,9 @@ public abstract class RepositoryConformanceTestCase extends OpenMetadataTestCase
                 if (attributeCardinality == AttributeCardinality.AT_LEAST_ONE_ORDERED    ||
                     attributeCardinality == AttributeCardinality.AT_LEAST_ONE_UNORDERED) {
 
-                    switch (category) {
-                        case PRIMITIVE:
-                            PrimitiveDef primitiveDef = (PrimitiveDef) attributeType;
-                            propertyMap.put(attributeName, this.getPrimitivePropertyValue(attributeName, primitiveDef));
-                            break;
+                    if (category == AttributeTypeDefCategory.PRIMITIVE) {
+                        PrimitiveDef primitiveDef = (PrimitiveDef) attributeType;
+                        propertyMap.put(attributeName, this.getPrimitivePropertyValue(attributeName, primitiveDef));
                     }
                 }
             }

@@ -43,9 +43,7 @@ public class ConformanceServicesInstanceMap
      */
     private static synchronized ConformanceServicesInstance getInstanceForJVM(String    serverName)
     {
-        ConformanceServicesInstance instance = instanceMap.get(serverName);
-
-        return instance;
+        return instanceMap.get(serverName);
     }
 
 

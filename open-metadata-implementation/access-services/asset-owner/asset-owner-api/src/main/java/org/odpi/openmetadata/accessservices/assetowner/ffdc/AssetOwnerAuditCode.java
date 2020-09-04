@@ -4,7 +4,6 @@ package org.odpi.openmetadata.accessservices.assetowner.ffdc;
 
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
-import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogRecordSeverity;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 
 

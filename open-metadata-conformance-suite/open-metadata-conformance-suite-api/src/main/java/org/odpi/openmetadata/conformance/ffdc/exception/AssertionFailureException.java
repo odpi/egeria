@@ -9,7 +9,7 @@ public class AssertionFailureException extends ConformanceException
 {
     private static final long    serialVersionUID = 1L;
 
-    private String assertionId;
+    private final String assertionId;
 
 
     /**

@@ -6,10 +6,7 @@ import org.odpi.openmetadata.conformance.tests.repository.RepositoryConformanceT
 import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConformanceProfileRequirement;
 import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConformanceWorkPad;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntitySummary;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType;
@@ -474,11 +471,10 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
              * We are not expecting any exceptions from this method call. Log and fail the test.
              */
 
-            String methodName = retrievalOperationName;
             String operationDescription = "retrieve a relationship of type " + relationshipDef.getName();
             Map<String, String> parameters = new HashMap<>();
             parameters.put("relationshipGUID", newRelationship.getGUID());
-            String msg = this.buildExceptionMessage(testCaseId, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
+            String msg = this.buildExceptionMessage(testCaseId, retrievalOperationName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
 
             throw new Exception(msg, exc);
 
@@ -1210,12 +1206,8 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
                     // Assume the values match and prove it if they don't...
                     boolean matchValues = true;
 
-                    Iterator<String> secondPropertiesKeyIterator = secondPropertiesKeySet.iterator();
-                    while (secondPropertiesKeyIterator.hasNext())
-                    {
-                        String key = secondPropertiesKeyIterator.next();
-                        if (!(secondPropertiesMap.get(key).equals(firstPropertiesMap.get(key))))
-                        {
+                    for (String key : secondPropertiesKeySet) {
+                        if (!(secondPropertiesMap.get(key).equals(firstPropertiesMap.get(key)))) {
                             matchValues = false;
                         }
                     }

@@ -5,11 +5,6 @@ package org.odpi.openmetadata.accessservices.communityprofile.ffdc;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.text.MessageFormat;
-import java.util.Arrays;
 
 /**
  * The CommunityProfileAuditCode is used to define the message content for the OMRS Audit Log.
