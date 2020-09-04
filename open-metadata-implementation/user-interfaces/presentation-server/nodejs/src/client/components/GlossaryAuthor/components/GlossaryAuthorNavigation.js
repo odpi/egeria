@@ -31,13 +31,13 @@ export default function GlossaryAuthorNavigation() {
     issueRestGet(url, onSuccessfulSearch, onErrorSearch);
   };
 
-  const onClickAdd = () =>{
+  const onClickAdd = () => {
     console.log("Add");
   };
-  const onClickDelete = () =>{
+  const onClickDelete = () => {
     console.log("Delete");
   };
-  const onClickUpdate = () =>{
+  const onClickUpdate = () => {
     console.log("Update");
   };
   const onErrorSearch = (msg) => {
@@ -48,6 +48,9 @@ export default function GlossaryAuthorNavigation() {
   const onSuccessfulSearch = (json) => {
     setGlossaries(json.result);
     // setEmptyCards(new Array(16-json.result.length));
+  };
+  const onClickExactMatch = () => {
+    console.log("onClickExactMatch");
   };
   const getGlossaryUrl = (name) => {
     return identificationContext.getBrowserURL("glossary-author") + "/" + name;
@@ -63,28 +66,35 @@ export default function GlossaryAuthorNavigation() {
     <div className="bx--grid">
       <GlossaryCardSection heading="Glossaries" className="landing-page__r3">
         <article className="glossary-card__controls bx--col-sm-4 bx--col-md-1 bx--col-lg-1 bx--col-xlg-1 bx--col-max-1">
-            
-              Choose glossary
+          Choose glossary
         </article>
         <article className="glossary-card__controls bx--col-sm-4 bx--col-md-2 bx--col-lg-4 bx--col-xlg-4 bx--col-max-4">
-          
-              <input
-                type="text"
-                id="filter-input"
-                onChange={onFilterCriteria}
-                placeholder="Filter"
-              />
-           </article>
-           <article className="glossary-card__controls bx--col-sm-4 bx--col-md-1 bx--col-lg-1 bx--col-xlg-1 bx--col-max-1">
-     
-              <div className="bx--row">
-                <Add16 kind="primary" onClick={() => onClickAdd()} />
-                <Delete16 onClick={() => onClickDelete()} />
-                <Update16 onClick={() => onClickUpdate()} />
-              </div>
+          <input
+            type="text"
+            id="filter-input"
+            onChange={onFilterCriteria}
+            placeholder="Filter"
+          />
         </article>
-        </GlossaryCardSection>
-        <GlossaryCardSection className="landing-page__r3">
+        <article className="glossary-card__controls bx--col-sm-4 bx--col-md-1 bx--col-lg-2 bx--col-xlg-2 bx--col-max-2">
+          <div className="glossary-card__exact_control">
+            <label forHtml="exactMatch">Exact Match </label>
+            <input
+              type="checkbox"
+              id="exactMatch"
+              onClick={onClickExactMatch}
+            />
+          </div>
+        </article>
+        <article className="glossary-card__controls bx--col-sm-4 bx--col-md-1 bx--col-lg-1 bx--col-xlg-1 bx--col-max-1">
+          <div className="bx--row">
+            <Add16 kind="primary" onClick={() => onClickAdd()} />
+            <Delete16 onClick={() => onClickDelete()} />
+            <Update16 onClick={() => onClickUpdate()} />
+          </div>
+        </article>
+      </GlossaryCardSection>
+      <GlossaryCardSection className="landing-page__r3">
         {glossaries.map((glossary) => (
           <LocalGlossaryCard
             key={glossary.name}
