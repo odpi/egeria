@@ -1,13 +1,10 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 import React, { useState, useEffect } from "react";
-import GlossaryAuthorContext from "../../contexts/GlossaryAuthorContext";
 import { Accordion, AccordionItem } from "carbon-components-react";
-import getNodeType from "./NodeTypes.js";
-import Egeria_project_32 from "../../images/Egeria_project_32";
-import Egeria_glossary_32 from "../../images/Egeria_glossary_32";
-import MyNodeSetter from "./MyNodeSetter";
-import GlossaryAuthorNodes from "./GlossaryAuthorNodes";
+import getNodeType from "./components/properties/NodeTypes.js";
+import GlossaryAuthorCRUD from "./components/GlossaryAuthorCRUD";
+import GlossaryAuthorNavigation from "./components/GlossaryAuthorNavigation";
 
 export default function GlossaryAuthor() {
   const [connected, setConnected] = useState();
@@ -17,6 +14,7 @@ export default function GlossaryAuthor() {
   const [exceptionErrorMessage, setExceptionErrorMessage] = useState();
   const [systemAction, setSystemAction] = useState();
   const [fullResponse, setFullResponse] = useState();
+  const [task, setTask] = useState("crud");
 
   const nodeType = getNodeType("glossary");
   // Try to connect to the server. The [] means it only runs on mount (rather than every render)
@@ -48,7 +46,7 @@ export default function GlossaryAuthor() {
         );
         history.pushState({}, null, loginUrl);
         history.go();
-      } else {
+      } else {get
         alert(
           "The Browser does not support history. Please re-login here: " +
             loginUrl
@@ -108,6 +106,11 @@ export default function GlossaryAuthor() {
         });
     }
   };
+  const handleTaskChange = (e) => {
+    const newTask = e.target.value;
+    console.log("handleTaskChange (() " + newTask);
+    setTask(newTask);
+  };
 
   const handleOnClick = (e) => {
     console.log("GlossaryAuthor connectivity handleClick(()");
@@ -118,21 +121,22 @@ export default function GlossaryAuthor() {
   return (
     <div>
       {connected && (
-        <GlossaryAuthorContext>
-          <div className='my-container'>
-            <span className='my-item'>
-              Project
-              <Egeria_project_32 />
-              <MyNodeSetter typeKey="project" />
-            </span>
-            <span className='my-item'>
-              Glossary
-              <Egeria_glossary_32 />
-              <MyNodeSetter typeKey="glossary" />
-            </span>
-          </div>
-          <GlossaryAuthorNodes />
-        </GlossaryAuthorContext>
+        <div>
+          <select
+            id="tasks"
+            float="right"
+            border-bottom-width="3px"
+            onChange={handleTaskChange}
+          >
+            <option value="authoring">Glossary Authoring</option>
+            <option value="search">Search</option>
+            <option selected value="crud">
+              CRUD
+            </option>
+          </select>
+          {task == "crud" && <GlossaryAuthorCRUD />}
+          {task == "authoring" && <GlossaryAuthorNavigation />}
+        </div>
       )}
       {!connected && (
         <div>
@@ -140,10 +144,10 @@ export default function GlossaryAuthor() {
             Unable to use the UI as we are not Connected to the server - press
             button to retry.
           </div>
-          <div class="bx--form-item">
+          <div className="bx--form-item">
             <button
               id="connectionChecker"
-              class="bx--btn bx--btn--secondary"
+              className="bx--btn bx--btn--secondary"
               onClick={handleOnClick}
               type="button"
               onAnimationEnd={handleOnAnimationEnd}

@@ -49,3 +49,8 @@ Components included are:
  - The notebooks downloaded from git are refreshed on each start. Ensure any modifications to notebooks are saved elsewhere
 
 
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

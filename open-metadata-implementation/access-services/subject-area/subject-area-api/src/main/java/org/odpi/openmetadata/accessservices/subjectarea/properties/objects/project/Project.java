@@ -19,28 +19,24 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 /**
  * Glossary object
  */
-
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
         property = "class",
-        defaultImpl = Project.class
+        defaultImpl = Project.class,
+        visible = true
 )
-@JsonSubTypes(
-        {
-                @JsonSubTypes.Type(value = GlossaryProject.class, name = "GlossaryProject")
-        })
-
+@JsonSubTypes({ @JsonSubTypes.Type(value = GlossaryProject.class, name = "GlossaryProject") })
 public class Project extends Node{
     public Project() {
         nodeType = NodeType.Project;
     }
 
-    Date startDate=null;
-    Date plannedEndDate=null;
-    String status=null;
+    private Date startDate = null;
+    private Date plannedEndDate = null;
+    private String status = null;
 
     public Date getStartDate() {
         return startDate;
@@ -66,11 +62,11 @@ public class Project extends Node{
         this.status = status;
     }
 
-    @Override
     /**
      * The icons associated with this glossary.
      * @return the url of the icon.
      */
+    @Override
     public Set<IconSummary> getIcons() {
         return super.getIcons();
     }

@@ -1,7 +1,7 @@
 {
   "name": "presentation-server",
   "version": "1.0.0",
-  "description": "Egeria multitentant presentation server.",
+  "description": "Egeria Presentation Server.",
   "main": "src/server/index.js",
   "scripts": {
     "build:dev": "webpack --mode development --devtool inline-source-map",
@@ -15,7 +15,7 @@
     "dev": "webpack-dev-server --open"
   },
   "author": "David Radley",
-  "license": "ISC",
+  "license": "Apache-2.0",
   "dependencies": {
     "@carbon/elements": "^10.14.0",
     "@carbon/grid": "^10.12.0",
@@ -58,7 +58,7 @@
     "clean-webpack-plugin": "^1.0.0",
     "concurrently": "^4.0.0",
     "css-loader": "^2.0.0",
-    "eslint": "^5.0.0",
+    "eslint": "^6.6.0",
     "eslint-config-airbnb": "^17.0.0",
     "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-jsx-a11y": "^6.3.1",
@@ -68,8 +68,8 @@
     "nodemon": "^1.17.3",
     "style-loader": "^0.23.0",
     "url-loader": "^1.0.1",
-    "webpack": "^4.43.0",
+    "webpack": "4.42.0",
     "webpack-cli": "^3.3.12",
-    "webpack-dev-server": "^3.11.0"
+    "webpack-dev-server": "3.10.3"
   }
 }

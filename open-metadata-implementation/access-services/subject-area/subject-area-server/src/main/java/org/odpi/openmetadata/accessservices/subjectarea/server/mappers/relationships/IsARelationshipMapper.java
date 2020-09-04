@@ -92,30 +92,6 @@ public class IsARelationshipMapper extends LineMapper<IsA> {
         return foundProperty;
     }
 
-    /**
-     * Get proxy1 guid.
-     * The proxy has omrs type GlossaryTerm
-     *
-     * @param iSARelationship line
-     * @return guid for entity proxy 1
-     */
-    @Override
-    protected String getProxy1Guid(IsA iSARelationship) {
-        return iSARelationship.getTermGuid();
-    }
-
-    /**
-     * Get proxy2 guid
-     * The proxy has omrs type GlossaryTerm
-     *
-     * @param iSARelationship for this Line
-     * @return guid for entity proxy 2
-     */
-    @Override
-    protected String getProxy2Guid(IsA iSARelationship) {
-        return iSARelationship.getSpecialisedTermGuid();
-    }
-
     @Override
     public String getTypeName() {
         return ISA_RELATIONSHIP;
@@ -126,13 +102,4 @@ public class IsARelationshipMapper extends LineMapper<IsA> {
         return new IsA();
     }
 
-    @Override
-    protected void setEnd1GuidInLine(IsA isARelationship, String guid) {
-        isARelationship.setTermGuid(guid);
-    }
-
-    @Override
-    protected void setEnd2GuidInLine(IsA isARelationship, String guid) {
-        isARelationship.setSpecialisedTermGuid(guid);
-    }
-}
+  }

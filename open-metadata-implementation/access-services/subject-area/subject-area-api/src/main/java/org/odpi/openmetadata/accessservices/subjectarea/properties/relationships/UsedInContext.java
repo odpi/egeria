@@ -4,24 +4,16 @@
 
 package org.odpi.openmetadata.accessservices.subjectarea.properties.relationships;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-
-import java.util.*;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.TermRelationshipStatus;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineEnd;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipEndCardinality;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
-
-import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.*;
-
-//omrs
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
-//omrs beans
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineType;
 
 /**
  * Link between glossary terms where on describes the context where the other one is valid to use.
@@ -30,149 +22,36 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UsedInContext extends Line {
-    private static final Logger log = LoggerFactory.getLogger(UsedInContext.class);
-    private static final String className = UsedInContext.class.getName();
+   private String description = "Link between glossary terms where on describes the context where the other one is valid to use.";
 
-    private static final String[] PROPERTY_NAMES_SET_VALUES = new String[]{
-            "description",
-            "expression",
-            "status",
-            "steward",
-            "source",
+    /*
+     * Set up end 1.
+     */
+    protected final static String END_1_NODE_TYPE = "Term";
+    protected final static String END_1_ATTRIBUTE_NAME = "contextRelevantTerms";
+    protected final static String END_1_ATTRIBUTE_DESCRIPTION = "Glossary terms used in this specific context.";
+    protected final static RelationshipEndCardinality END_1_CARDINALITY = RelationshipEndCardinality.ANY_NUMBER;
+    protected final static LineEnd LINE_END_1 = new LineEnd(END_1_NODE_TYPE,
+            END_1_ATTRIBUTE_NAME, END_1_ATTRIBUTE_DESCRIPTION, END_1_CARDINALITY);
 
-            // Terminate the list
-            null
-    };
-    private static final String[] ATTRIBUTE_NAMES_SET_VALUES = new String[]{
-            "description",
-            "expression",
-            "steward",
-            "source",
+    /*
+     * Set up end 2.
+     */
+    protected final static String END_2_NODE_TYPE = "Term";
+    protected final static String END_2_ATTRIBUTE_NAME = "usedInContexts";
+    protected final static String END_2_ATTRIBUTE_DESCRIPTION = "Glossary terms describing the contexts where this term is used.";
+    protected final static RelationshipEndCardinality END_2_CARDINALITY = RelationshipEndCardinality.ANY_NUMBER;
+    protected final static LineEnd LINE_END_2 = new LineEnd(END_2_NODE_TYPE,
+            END_2_ATTRIBUTE_NAME, END_2_ATTRIBUTE_DESCRIPTION, END_2_CARDINALITY);
 
-            // Terminate the list
-            null
-    };
-    private static final String[] ENUM_NAMES_SET_VALUES = new String[]{
-            "status",
-
-            // Terminate the list
-            null
-    };
-    private static final String[] MAP_NAMES_SET_VALUES = new String[]{
-
-            // Terminate the list
-            null
-    };
-    private static final java.util.Set<String> PROPERTY_NAMES_SET = new HashSet<>(Arrays.asList(PROPERTY_NAMES_SET_VALUES));
-    private static final java.util.Set<String> ATTRIBUTE_NAMES_SET = new HashSet<>(Arrays.asList(ATTRIBUTE_NAMES_SET_VALUES));
-    private static final java.util.Set<String> ENUM_NAMES_SET = new HashSet<>(Arrays.asList(ENUM_NAMES_SET_VALUES));
-    private static final java.util.Set<String> MAP_NAMES_SET = new HashSet<>(Arrays.asList(MAP_NAMES_SET_VALUES));
-    private String termInContextGuid;
-    private String contextGuid;
-
+    private String expression;
+    private TermRelationshipStatus status;
+    private String steward;
+    private String source;
 
     public UsedInContext() {
-        initialise();
+        super("UsedInContext", "2dc524d2-e29f-4186-9081-72ea956c75de", LINE_END_1, LINE_END_2);
     }
-
-    private void initialise() {
-        name = "UsedInContext";
-        // set the LineType if this is a LineType enum value.
-        try {
-            lineType = LineType.valueOf(name);
-        } catch (IllegalArgumentException e) {
-            lineType = LineType.Unknown;
-        }
-        entity1Name = "contextRelevantTerms";
-        entity1Type = "GlossaryTerm";
-        entity2Name = "usedInContexts";
-        entity2Type = "GlossaryTerm";
-        typeDefGuid = "2dc524d2-e29f-4186-9081-72ea956c75de";
-    }
-
-    public UsedInContext(Line template) {
-        super(template);
-        initialise();
-    }
-
-    public UsedInContext(Relationship omrsRelationship) {
-        super(omrsRelationship);
-        name = "UsedInContext";
-        // set the LineType if this is a LineType enum value.
-        try {
-            lineType = LineType.valueOf(name);
-        } catch (IllegalArgumentException e) {
-            lineType = LineType.Unknown;
-        }
-    }
-
-    /**
-     * {@literal Get the guid of Term that is valid to use in the associated context. }
-     *
-     * @return {@code String }
-     */
-    public String getTermInContextGuid() {
-        return termInContextGuid;
-    }
-
-    public void setTermInContextGuid(String termInContextGuid) {
-        this.termInContextGuid = termInContextGuid;
-    }
-
-    /**
-     * {@literal Get the guid of context. }
-     *
-     * @return {@code String }
-     */
-    public String getContextGuid() {
-        return contextGuid;
-    }
-
-    public void setContextGuid(String contextGuid) {
-        this.contextGuid = contextGuid;
-    }
-
-    InstanceProperties obtainInstanceProperties() {
-        final String methodName = "obtainInstanceProperties";
-        if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName);
-        }
-        InstanceProperties instanceProperties = new InstanceProperties();
-        EnumPropertyValue enumPropertyValue = null;
-        enumPropertyValue = new EnumPropertyValue();
-        // the status of or confidence in the relationship.
-        enumPropertyValue.setOrdinal(status.ordinal());
-        enumPropertyValue.setSymbolicName(status.name());
-        instanceProperties.setProperty("status", enumPropertyValue);
-        MapPropertyValue mapPropertyValue = null;
-        PrimitivePropertyValue primitivePropertyValue = null;
-        primitivePropertyValue = new PrimitivePropertyValue();
-
-        primitivePropertyValue.setPrimitiveValue(null);
-        instanceProperties.setProperty("description", primitivePropertyValue);
-        primitivePropertyValue = new PrimitivePropertyValue();
-
-        primitivePropertyValue.setPrimitiveValue(null);
-        instanceProperties.setProperty("expression", primitivePropertyValue);
-        primitivePropertyValue = new PrimitivePropertyValue();
-
-        primitivePropertyValue.setPrimitiveValue(null);
-        instanceProperties.setProperty("status", primitivePropertyValue);
-        primitivePropertyValue = new PrimitivePropertyValue();
-
-        primitivePropertyValue.setPrimitiveValue(null);
-        instanceProperties.setProperty("steward", primitivePropertyValue);
-        primitivePropertyValue = new PrimitivePropertyValue();
-
-        primitivePropertyValue.setPrimitiveValue(null);
-        instanceProperties.setProperty("source", primitivePropertyValue);
-        if (log.isDebugEnabled()) {
-            log.debug("<== Method: " + methodName);
-        }
-        return instanceProperties;
-    }
-
-    private String description;
 
     /**
      * {@literal Description of the relationship. }
@@ -182,12 +61,13 @@ public class UsedInContext extends Line {
     public String getDescription() {
         return this.description;
     }
-
+    /**
+     * {@literal Set the description of the relationship. }
+     * @param description {@code String }
+     */
     public void setDescription(String description) {
         this.description = description;
     }
-
-    private String expression;
 
     /**
      * {@literal An expression that explains the relationship. }
@@ -202,8 +82,6 @@ public class UsedInContext extends Line {
         this.expression = expression;
     }
 
-    private TermRelationshipStatus status;
-
     /**
      * {@literal The status of or confidence in the relationship. }
      *
@@ -217,8 +95,6 @@ public class UsedInContext extends Line {
         this.status = status;
     }
 
-    private String steward;
-
     /**
      * {@literal Person responsible for the relationship. }
      *
@@ -231,8 +107,6 @@ public class UsedInContext extends Line {
     public void setSteward(String steward) {
         this.steward = steward;
     }
-
-    private String source;
 
     /**
      * {@literal Person, organization or automated process that created the relationship. }

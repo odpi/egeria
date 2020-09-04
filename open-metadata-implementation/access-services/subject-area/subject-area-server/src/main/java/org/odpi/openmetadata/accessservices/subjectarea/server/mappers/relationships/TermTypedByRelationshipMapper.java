@@ -84,30 +84,6 @@ public class TermTypedByRelationshipMapper extends LineMapper<TypedBy> {
         return foundProperty;
     }
 
-    /**
-     * Get proxy1 guid.
-     * The proxy has omrs type GlossaryTerm
-     *
-     * @param termTYPEDBYRelationship line
-     * @return guid for entity proxy 1
-     */
-    @Override
-    protected String getProxy1Guid(TypedBy termTYPEDBYRelationship) {
-        return termTYPEDBYRelationship.getAttributeGuid();
-    }
-
-    /**
-     * Get proxy2 guid
-     * The proxy has omrs type GlossaryTerm
-     *
-     * @param termTYPEDBYRelationship for this Line
-     * @return guid for entity proxy 2
-     */
-    @Override
-    protected String getProxy2Guid(TypedBy termTYPEDBYRelationship) {
-        return termTYPEDBYRelationship.getTypeGuid();
-    }
-
     @Override
     public String getTypeName() {
         return TERM_TYPED_BY_RELATIONSHIP;
@@ -118,13 +94,4 @@ public class TermTypedByRelationshipMapper extends LineMapper<TypedBy> {
         return new TypedBy();
     }
 
-    @Override
-    protected void setEnd1GuidInLine(TypedBy termTYPEDBYRelationship, String guid) {
-        termTYPEDBYRelationship.setAttributeGuid(guid);
-    }
-
-    @Override
-    protected void setEnd2GuidInLine(TypedBy termTYPEDBYRelationship, String guid) {
-        termTYPEDBYRelationship.setTypeGuid(guid);
-    }
 }

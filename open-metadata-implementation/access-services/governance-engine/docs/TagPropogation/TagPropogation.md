@@ -1,4 +1,4 @@
-<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 # Tag Propagation 
 ## Introduction
@@ -67,3 +67,8 @@ In November 2018 design meetings in Cary came up with the following diagrams, wh
 ![Classification Propagation](../../../../../developer-resources/workshops/November-2018-Carey-workshop/docs/draft-design-diagrams/ClassificationPropogationDraft.png)
 ![Classification Propagation](../../../../../developer-resources/workshops/November-2018-Carey-workshop/docs/draft-design-diagrams/ClassificationAndRolesDraft.png)
 
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

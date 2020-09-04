@@ -23,7 +23,11 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.CLASSIFICATION;
 
 
 /**
@@ -35,44 +39,24 @@ public class HandlerHelper {
     private static final String ASSET_ZONE_MEMBERSHIP = "AssetZoneMembership";
     private static final String ZONE_MEMBERSHIP = "zoneMembership";
 
+    private Set<String> lineageClassificationTypes;
     private RepositoryHandler repositoryHandler;
     private OMRSRepositoryHelper repositoryHelper;
     private InvalidParameterHandler invalidParameterHandler;
 
     /**
-     *
      * @param invalidParameterHandler handler for invalid parameters
      * @param repositoryHelper        helper used by the converters
      * @param repositoryHandler       handler for calling the repository services
      */
     public HandlerHelper(InvalidParameterHandler invalidParameterHandler,
                          OMRSRepositoryHelper repositoryHelper,
-                         RepositoryHandler repositoryHandler) {
+                         RepositoryHandler repositoryHandler,
+                         Set<String> lineageClassificationTypes) {
         this.invalidParameterHandler = invalidParameterHandler;
         this.repositoryHelper = repositoryHelper;
         this.repositoryHandler = repositoryHandler;
-    }
-
-
-    /**
-     * Query about the entity in the repositories based on the Guid
-     *
-     * @param userId   String - userId of user making request.
-     * @param guid     guid of the asset we need to retrieve from a repository
-     * @param typeName the name of the Open Metadata type for getting details
-     * @return optional with entity details if found, empty optional if not found
-     * @throws InvalidParameterException  the invalid parameter exception
-     * @throws PropertyServerException    the property server exception
-     * @throws UserNotAuthorizedException the user not authorized exception
-     */
-    Optional<EntityDetail> getEntityDetails(String userId, String guid, String typeName) throws OCFCheckedExceptionBase {
-
-        String methodName = "getEntityDetails";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(guid, GUID_PARAMETER, methodName);
-
-        return Optional.ofNullable(repositoryHandler.getEntityByGUID(userId, guid, GUID_PARAMETER, typeName, methodName));
+        this.lineageClassificationTypes = lineageClassificationTypes;
     }
 
     /**
@@ -95,7 +79,7 @@ public class HandlerHelper {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(assetGuid, GUID_PARAMETER, methodName);
 
-        String typeGuid = getTypeName(userId, relationshipTypeName);
+        String typeGuid = getTypeByName(userId, relationshipTypeName);
 
         List<Relationship> relationships = repositoryHandler.getRelationshipsByType(userId,
                 assetGuid,
@@ -118,7 +102,7 @@ public class HandlerHelper {
      * @param typeDefName type of the Entity
      * @return Guid of the type if found, null String if not found
      */
-    String getTypeName(String userId, String typeDefName) {
+    String getTypeByName(String userId, String typeDefName) {
         final TypeDef typeDefByName = repositoryHelper.getTypeDefByName(userId, typeDefName);
 
         if (typeDefByName != null) {
@@ -156,6 +140,13 @@ public class HandlerHelper {
         }
     }
 
+    public EntityDetail getEntityDetails(String userId, String entityDetailGUID, String entityTypeName) throws OCFCheckedExceptionBase {
+        String methodName = "getEntityDetails";
+
+        return repositoryHandler.getEntityByGUID(userId, entityDetailGUID, GUID_PARAMETER, entityTypeName, methodName);
+    }
+
+
     /**
      * Adds entities and relationships for the process Context structure
      *
@@ -169,16 +160,17 @@ public class HandlerHelper {
      * @throws UserNotAuthorizedException the user not authorized exception
      */
     EntityDetail buildGraphEdgeByRelationship(String userId, EntityDetail startEntity,
-                                              Relationship relationship, AssetContext graph, boolean changeDirection) throws OCFCheckedExceptionBase {
+                                              Relationship relationship, AssetContext graph) throws OCFCheckedExceptionBase {
 
-        Converter converter = new Converter();
+        Converter converter = new Converter(repositoryHelper);
         EntityDetail endEntity = getEntityAtTheEnd(userId, startEntity.getGUID(), relationship);
 
         if (endEntity == null) return null;
 
         LineageEntity startVertex;
         LineageEntity endVertex;
-        if (changeDirection) {
+
+        if (startEntity.getGUID().equals(relationship.getEntityTwoProxy().getGUID())) {
             startVertex = converter.createLineageEntity(endEntity);
             endVertex = converter.createLineageEntity(startEntity);
         } else {
@@ -189,7 +181,8 @@ public class HandlerHelper {
 
         GraphContext graphContext = new GraphContext(relationship.getType().getTypeDefName(), relationship.getGUID(), startVertex, endVertex);
 
-        if (graph.getGraphContexts().stream().noneMatch(e -> e.getRelationshipGuid().equals(graphContext.getRelationshipGuid()))) {
+        if (graph.getGraphContexts().stream().noneMatch(e -> e.getRelationshipGuid().equals(graphContext.getRelationshipGuid()))
+                || !graph.getNeighbors().containsKey(graphContext.getRelationshipGuid())) {
             graph.addVertex(startVertex);
             graph.addVertex(endVertex);
             graph.addGraphContext(graphContext);
@@ -223,5 +216,73 @@ public class HandlerHelper {
         }
 
         return Collections.emptyList();
+    }
+
+    /**
+     * Adds the classification context to the asset context.
+     *
+     * @param assetContext the context of the asset that is to be updated
+     * @param entity       the entity with its classifications
+     */
+    public void addLineageClassificationToContext(EntityDetail entity, AssetContext assetContext) {
+        List<Classification> classifications = filterLineageClassifications(entity.getClassifications());
+        if (CollectionUtils.isNotEmpty(classifications)) {
+            addClassificationsToGraphContext(classifications, assetContext, entity);
+        }
+    }
+
+    /**
+     * Extract the lineage classifications from the list of classifications assigned
+     *
+     * @param classifications the list of available classifications
+     * @return a list of lineage classifications
+     */
+    public List<Classification> filterLineageClassifications(List<Classification> classifications) {
+        if (CollectionUtils.isNotEmpty(classifications)) {
+            return classifications.stream()
+                    .filter(classification -> classification.getType() != null)
+                    .filter(classification -> lineageClassificationTypes.contains(classification.getType().getTypeDefName()))
+                    .collect(Collectors.toList());
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    private void addClassificationsToGraphContext(List<Classification> classifications, AssetContext assetContext, EntityDetail entityDetail) {
+        Converter converter = new Converter(repositoryHelper);
+        LineageEntity originalEntityVertex = converter.createLineageEntity(entityDetail);
+        assetContext.addVertex(originalEntityVertex);
+
+        String entityGUID = entityDetail.getGUID();
+        for (Classification classification : classifications) {
+            LineageEntity classificationVertex = getClassificationVertex(classification, entityGUID);
+            assetContext.addVertex(classificationVertex);
+            GraphContext graphContext = new GraphContext(CLASSIFICATION, classificationVertex.getGuid(),
+                    originalEntityVertex, classificationVertex);
+            assetContext.addGraphContext(graphContext);
+        }
+
+    }
+
+    private LineageEntity getClassificationVertex(Classification classification, String entityGUID) {
+        LineageEntity classificationVertex = new LineageEntity();
+
+        String classificationGUID = classification.getName() + entityGUID;
+        classificationVertex.setGuid(classificationGUID);
+        copyClassificationProperties(classificationVertex, classification);
+
+        return classificationVertex;
+    }
+
+    private void copyClassificationProperties(LineageEntity lineageEntity, Classification classification) {
+        lineageEntity.setVersion(classification.getVersion());
+        lineageEntity.setTypeDefName(classification.getType().getTypeDefName());
+        lineageEntity.setCreatedBy(classification.getCreatedBy());
+        lineageEntity.setUpdatedBy(classification.getUpdatedBy());
+        lineageEntity.setCreateTime(classification.getCreateTime());
+        lineageEntity.setUpdateTime(classification.getUpdateTime());
+
+        Converter converter = new Converter(repositoryHelper);
+        lineageEntity.setProperties(converter.instancePropertiesToMap(classification.getProperties()));
     }
 }

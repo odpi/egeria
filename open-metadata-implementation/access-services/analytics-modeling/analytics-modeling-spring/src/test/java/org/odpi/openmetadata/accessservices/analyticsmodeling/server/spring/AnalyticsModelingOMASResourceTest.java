@@ -2,17 +2,25 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.analyticsmodeling.server.spring;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.Test;
-
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Answers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.assets.DatabaseContextHandler;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.AnalyticsModelingErrorCode;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.exceptions.AnalyticsModelingCheckedException;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.responses.AnalyticsModelingOMASAPIResponse;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.responses.ErrorResponse;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.server.AnalyticsModelingRestServices;
+import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 
 /**
  * The test class verifies proper use of AnalyticsModelingRestServices to handle requests.
@@ -31,7 +39,7 @@ public class AnalyticsModelingOMASResourceTest {
 	@InjectMocks
 	private AnalyticsModelingOMASResource resource = new AnalyticsModelingOMASResource();
 
-	@Mock
+	@Mock(answer = Answers.RETURNS_DEEP_STUBS)
 	private AnalyticsModelingRestServices restAPI;
 	
 	@Test
@@ -61,5 +69,25 @@ public class AnalyticsModelingOMASResourceTest {
 		resource.getPhysicalModule(SERVER_NAME, USER, GUID, CATALOG, SCHEMA, null);
 		verify(restAPI, times(1)).getModule(SERVER_NAME, USER, GUID, CATALOG, SCHEMA);
 	}
+	
+	@Test
+	void getModuleInvalidParameter() throws AnalyticsModelingCheckedException {
+		DatabaseContextHandler databaseContextHandler = new DatabaseContextHandler(null, new InvalidParameterHandler());
+		when(restAPI.getModule(SERVER_NAME, USER, null, CATALOG, SCHEMA)).thenCallRealMethod();
+		when(restAPI.getHandler().getDatabaseContextHandler(SERVER_NAME, USER, "getModule")).thenReturn(databaseContextHandler);
+		AnalyticsModelingOMASAPIResponse response = 
+				resource.getPhysicalModule(SERVER_NAME, USER, null, CATALOG, SCHEMA, null);
+		
+		assertTrue(response instanceof ErrorResponse);
+		ErrorResponse errResponse = (ErrorResponse)response;
+		assertEquals( 400, errResponse.getRelatedHTTPCode(), "Bad request http status is expected");
+		assertEquals( AnalyticsModelingErrorCode.INVALID_REQUEST_PARAMER.getMessageDefinition().getMessageId(),
+				errResponse.getErrorCode(), "Wrong error code.");
+		assertEquals( "OMAS-ANALYTICS-MODELING-015 The request parameter dataSourceGUID has invalid value.",
+				errResponse.getMessage(), "Wrong error message.");
+		assertEquals( "OMAG-COMMON-400-005 The unique identifier (guid) passed on the dataSourceGUID parameter of the getModule operation is null",
+				errResponse.getExceptionCause(), "Wrong error details.");
+	}
+
 
 }

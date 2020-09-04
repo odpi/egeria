@@ -18,30 +18,6 @@ public class TermAnchorMapper extends LineMapper<TermAnchor> {
         super(omrsapiHelper);
     }
 
-    /**
-     * Get proxy1 guid.
-     * The proxy has omrs type Glossary
-     *
-     * @param termAnchor line
-     * @return guid for entity proxy 1
-     */
-    @Override
-    protected String getProxy1Guid(TermAnchor termAnchor) {
-        return termAnchor.getGlossaryGuid();
-    }
-
-    /**
-     * Get proxy2 guid
-     * The proxy has omrs type GlossaryTerm
-     *
-     * @param termAnchor for this Line
-     * @return guid for entity proxy 2
-     */
-    @Override
-    protected String getProxy2Guid(TermAnchor termAnchor) {
-        return termAnchor.getTermGuid();
-    }
-
     @Override
     public String getTypeName() {
         return TERM_ANCHOR;
@@ -52,13 +28,4 @@ public class TermAnchorMapper extends LineMapper<TermAnchor> {
         return new TermAnchor();
     }
 
-    @Override
-    protected void setEnd1GuidInLine(TermAnchor termAnchor, String guid) {
-        termAnchor.setGlossaryGuid(guid);
-    }
-
-    @Override
-    protected void setEnd2GuidInLine(TermAnchor termAnchor, String guid) {
-        termAnchor.setTermGuid(guid);
-    }
 }
