@@ -78,9 +78,10 @@ export default function GlossaryAuthorNavigation() {
     console.log("onSuccessfulSearch " + json.result);
     setGlossaries(json.result);
   };
-  const onClickExactMatch = (flag) => {
+  const onClickExactMatch = () => {
     console.log("onClickExactMatch");
-    setExactMatch(flag);
+    const checkBox = document.getElementById("glossary_nav_exact_Match");
+    setExactMatch(checkBox.checked);
   };
 
   const getGlossaryUrl = (name) => {
@@ -109,7 +110,7 @@ export default function GlossaryAuthorNavigation() {
             <label forHtml="exactMatch">Exact Match </label>
             <input
               type="checkbox"
-              id="exactMatch"
+              id="glossary_nav_exact_Match"
               onClick={onClickExactMatch}
             />
           </div>
