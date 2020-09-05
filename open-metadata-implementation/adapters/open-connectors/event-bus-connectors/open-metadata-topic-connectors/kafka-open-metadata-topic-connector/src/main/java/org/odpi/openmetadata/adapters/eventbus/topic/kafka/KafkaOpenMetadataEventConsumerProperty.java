@@ -56,8 +56,8 @@ public enum KafkaOpenMetadataEventConsumerProperty
      */
     COMMIT_CHECK_INTERVAL_MS("commit_check_interval_ms", "5000");
 
-	private String propertyName;
-	private String defaultValue;
+	private final String propertyName;
+	private final String defaultValue;
 
 	KafkaOpenMetadataEventConsumerProperty(String name, String defaultValue)
 	{
