@@ -16,7 +16,7 @@ import {
   Button
 } from 'carbon-components-react';
 
-const Login = () => {
+const Login = (props) => {
   const identificationContext = useContext(IdentificationContext);
   const [password, setPassword] = useState("");
   const [userId, setUserId] = useState("");
@@ -30,7 +30,7 @@ const Login = () => {
     const url = identificationContext.getBrowserURL('login') + "?" + new URLSearchParams({
       username: userId,
       password: password
-  });
+    });
     fetch(url, {
       method: "post",
       headers: {
@@ -43,7 +43,8 @@ const Login = () => {
         if (res.status == "success") {
           console.log("login worked " + JSON.stringify(res));
           identificationContext.setUserId(userId);
-          const path = identificationContext.getBrowserURL(''); 
+          // redirect user to page they were previously on if they refresh or enter an exact URL
+          const path = props.currentURL ? identificationContext.getBrowserURL(props.currentURL) : identificationContext.getBrowserURL(''); 
           history.push(path);
         } else {
           if (res.errno) {
@@ -63,7 +64,6 @@ const Login = () => {
     const value = event.target.value;
     sessionStorage.setItem("egeria-userId", value);
     setUserId(value);
-    console.log("handleOnChange :" + value);
   };
 
   const validateForm = () => {
