@@ -31,10 +31,9 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
     private static final Logger       log      = LoggerFactory.getLogger(KafkaOpenMetadataTopicConnector.class);
 
     
-    private Properties producerProperties = new Properties();
-    
-    private Properties consumerEgeriaProperties = new Properties();
-    private Properties consumerProperties = new Properties();
+    private final Properties producerProperties = new Properties();
+    private final Properties consumerEgeriaProperties = new Properties();
+    private final Properties consumerProperties = new Properties();
 
 
     private KafkaOpenMetadataEventConsumer consumer = null;
@@ -44,7 +43,7 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
     private String       serverId           = null;
 
     /* this buffer is for consumed events */
-    private List<IncomingEvent> incomingEventsList = Collections.synchronizedList(new ArrayList<>());
+    private final List<IncomingEvent> incomingEventsList = Collections.synchronizedList(new ArrayList<>());
 
     private KafkaProducerExecutor executor = null;
 
@@ -460,7 +459,5 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
 
             return lastException;
         }
-
-
     }
 }

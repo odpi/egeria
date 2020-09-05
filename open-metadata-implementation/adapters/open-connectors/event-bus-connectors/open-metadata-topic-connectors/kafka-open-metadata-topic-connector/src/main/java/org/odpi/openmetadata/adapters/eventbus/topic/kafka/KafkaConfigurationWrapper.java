@@ -15,7 +15,7 @@ import org.apache.kafka.common.config.ConfigException;
  */
 public class KafkaConfigurationWrapper
 {
-    ConsumerConfig config;
+    private final ConsumerConfig config;
     
     public KafkaConfigurationWrapper(Properties properties)
     {
