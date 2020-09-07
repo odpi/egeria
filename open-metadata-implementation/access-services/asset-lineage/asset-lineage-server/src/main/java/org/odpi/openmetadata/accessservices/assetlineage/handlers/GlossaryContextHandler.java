@@ -44,7 +44,7 @@ public class GlossaryContextHandler {
      */
     public GlossaryContextHandler(InvalidParameterHandler invalidParameterHandler, OMRSRepositoryHelper repositoryHelper,
                                   RepositoryHandler repositoryHandler, AssetContextHandler assetContextHandler,
-                                  List<String> lineageClassificationTypes) {
+                                  Set<String> lineageClassificationTypes) {
         this.invalidParameterHandler = invalidParameterHandler;
         this.repositoryHandler = repositoryHandler;
         this.handlerHelper = new HandlerHelper(invalidParameterHandler, repositoryHelper, repositoryHandler, lineageClassificationTypes);
