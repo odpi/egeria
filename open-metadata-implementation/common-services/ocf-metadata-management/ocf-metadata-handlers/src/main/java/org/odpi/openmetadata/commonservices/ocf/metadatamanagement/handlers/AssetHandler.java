@@ -612,25 +612,25 @@ public class AssetHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
      */
-    public  void saveAssociatedSchemaType(String                   userId,
-                                          String                   assetGUID,
-                                          SchemaType               schemaType,
-                                          List<SchemaAttribute>    schemaAttributes,
-                                          String                   methodName) throws InvalidParameterException,
-                                                                                      PropertyServerException,
-                                                                                      UserNotAuthorizedException
+    public String saveAssociatedSchemaType(String                   userId,
+                                           String                   assetGUID,
+                                           SchemaType               schemaType,
+                                           List<SchemaAttribute>    schemaAttributes,
+                                           String                   methodName) throws InvalidParameterException,
+                                                                                       PropertyServerException,
+                                                                                       UserNotAuthorizedException
     {
         final String  assetGUIDParameter = "assetGUID";
 
-        this.saveAssociatedSchemaType(userId,
-                                      this.retrieveAssetFromRepositoryByGUID(userId,
-                                                                             assetGUID,
-                                                                             assetGUIDParameter,
-                                                                             null,
-                                                                             methodName),
-                                      schemaType,
-                                      schemaAttributes,
-                                      methodName);
+        return this.saveAssociatedSchemaType(userId,
+                                             this.retrieveAssetFromRepositoryByGUID(userId,
+                                                                                    assetGUID,
+                                                                                     assetGUIDParameter,
+                                                                                     null,
+                                                                                     methodName),
+                                             schemaType,
+                                             schemaAttributes,
+                                             methodName);
     }
 
     
