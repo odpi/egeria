@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright Contributors to the Egeria project.
 
-FROM openjdk:8-jre-alpine
+FROM openjdk:14-alpine
 ARG version=2.2
 ARG VCS_REF=unknown
 ARG VCS_ORIGIN=unknown
