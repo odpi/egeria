@@ -46,12 +46,12 @@ the types of [Egeria OMAG Servers](../../admin-services/docs/concepts/omag-serve
   then the browser url to use to login is `https://localhost:8091/aaa`. All browser requests for this tenant will be issued using urls starting
   `https://localhost:8091/aaa`. 
     
-## FOR NEW DEVELOPMENT (as of 8/25/2020)
+## FOR NEW DEVELOPMENT (as of 2020-08-25)
  * Currently, the UI is not optimized to run in development mode. Developers must rebuild the static files every time a change is made.
  * Because of this, work is currently underway to remake the client with Create React App. This will be done iteratively, and updates posted here.
  * Old client code will be maintained until the cutover is complete, so developers can run the traditional way if desired.
  * The new client is maintained in the cra-client directory.
- * The new server is maintained in the cra-server directory.
+ * The new platform (Express API server) is maintained in the cra-server directory.
  * Set up your environment by running `npm install` in both cra-client and cra-server.
  * Start the new UI by navigating into the cra-server directory, then running `npm start`.
  * Enter `https://localhost:3000/` to access the new UI in development mode.

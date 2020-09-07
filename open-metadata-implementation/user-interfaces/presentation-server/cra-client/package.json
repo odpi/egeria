@@ -29,7 +29,12 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
-  "author": "Jacob Madsen",
+  "contributors": [
+    {
+      "name": "Jacob Madsen",
+      "email": "jmmadsen16@gmail.com"
+    }
+  ],
   "license": "Apache-2.0",
   "proxy": "https://localhost:8091",
   "browserslist": {

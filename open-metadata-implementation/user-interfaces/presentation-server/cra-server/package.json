@@ -10,7 +10,12 @@
     "build": "cd ../cra-client && npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Jacob Madsen",
+  "contributors": [
+    {
+      "name": "Jacob Madsen",
+      "email": "jmmadsen16@gmail.com"
+    }
+  ],
   "license": "Apache-2.0",
   "dependencies": {
     "axios": "^0.20.0",
