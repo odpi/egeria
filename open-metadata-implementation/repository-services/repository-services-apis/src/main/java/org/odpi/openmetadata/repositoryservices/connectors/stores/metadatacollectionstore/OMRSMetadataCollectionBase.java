@@ -3712,7 +3712,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
                                                                                                          StatusNotSupportedException,
                                                                                                          UserNotAuthorizedException
     {
-        final String  guidParameterName       = "entityTypeGUID";
+        final String  guidParameterName       = "externalSourceGUID";
 
         /*
          * Validate parameters
