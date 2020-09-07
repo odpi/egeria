@@ -1059,7 +1059,7 @@ public class SchemaTypeHandler
             return true;
         }
 
-        return false;
+        return instanceElementType.getElementOrigin() == ElementOrigin.CONFIGURATION;
     }
 
     /**
@@ -1395,13 +1395,25 @@ public class SchemaTypeHandler
      *
      * @param schemaAttribute bean to interrogate
      * @return guid of the type
+     * @throws InvalidParameterException if the provided schema attribute type cannot be resolved
      */
-    private String getSchemaAttributeTypeGUID(SchemaAttribute   schemaAttribute)
+    private String getSchemaAttributeTypeGUID(SchemaAttribute   schemaAttribute) throws InvalidParameterException
     {
+        final String methodName = "getSchemaAttributeTypeGUID";
         ElementType type = schemaAttribute.getType();
         if (type != null)
         {
-            return type.getElementTypeId();
+            String guid = type.getElementTypeId();
+            if (guid == null)
+            {
+                String typeName = type.getElementTypeName();
+                guid = invalidParameterHandler.validateTypeName(typeName,
+                                                                "SchemaAttribute",
+                                                                serviceName,
+                                                                methodName,
+                                                                repositoryHelper);
+            }
+            return guid;
         }
         else
         {
@@ -1964,13 +1976,25 @@ public class SchemaTypeHandler
      *
      * @param schemaType bean to interrogate
      * @return guid of the type
+     * @throws InvalidParameterException if the type defined in the SchemaType cannot be resolved
      */
-    private String getSchemaTypeTypeGUID(SchemaType   schemaType)
+    private String getSchemaTypeTypeGUID(SchemaType   schemaType) throws InvalidParameterException
     {
+        final String methodName = "getSchemaTypeTypeGUID";
         ElementType type = schemaType.getType();
         if (type != null)
         {
-            return type.getElementTypeId();
+            String guid = type.getElementTypeId();
+            if (guid == null)
+            {
+                String typeName = type.getElementTypeName();
+                guid = invalidParameterHandler.validateTypeName(typeName,
+                                                                "SchemaType",
+                                                                serviceName,
+                                                                methodName,
+                                                                repositoryHelper);
+            }
+            return guid;
         }
         else
         {
