@@ -173,10 +173,10 @@ router.get("/servers/*", (req, res) => {
     instance
       .get()
       .then(function (response) {
-        console.log("response");
-        console.log(response);
-        console.log("response.data");
-        console.log(response.data);
+        // console.log("response");
+        // console.log(response);
+        // console.log("response.data");
+        // console.log(response.data);
         const resBody = response.data;
         res.setHeader("Content-Type", "application/json");
         res.json(resBody);
