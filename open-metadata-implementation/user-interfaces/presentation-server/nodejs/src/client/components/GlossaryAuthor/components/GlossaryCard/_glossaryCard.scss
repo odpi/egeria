@@ -1,0 +1,39 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
+
+.glossary-card-section__heading {
+  display: flex;
+  flex-direction: row;
+  
+}
+
+.glossary-card {
+  margin: 20px;
+  margin-top: $spacing-09;
+  display: flex;
+  flex-direction: column;
+  flex-basis: 23%;
+  margin-top: $spacing-09;
+  border:  1px solid black;
+
+  svg {
+    margin-top: $spacing-09;
+  }
+}
+
+.glossary-card__body {
+  margin-top: $spacing-06;
+  flex-grow: 1;
+  @include type-style("body-long-01");
+  @include carbon--breakpoint-between(321px, md) {
+    max-width: 75%;
+  }
+}
+.glossary-card__footer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.glossary-card__controls {
+  margin-left: 20px;
+}

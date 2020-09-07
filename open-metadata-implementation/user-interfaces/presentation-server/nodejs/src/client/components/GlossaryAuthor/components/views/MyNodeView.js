@@ -3,7 +3,7 @@
 import React, { useState, useContext } from "react";
 
 import { Button } from "react-bootstrap";
-import { GlossaryAuthorContext } from "../../contexts/GlossaryAuthorContext";
+import { GlossaryAuthorContext } from "../../contexts/GlossaryAuthorCRUDContext";
 
 const MyNodeView = props => {
   const glossaryAuthorContext = useContext(GlossaryAuthorContext);
