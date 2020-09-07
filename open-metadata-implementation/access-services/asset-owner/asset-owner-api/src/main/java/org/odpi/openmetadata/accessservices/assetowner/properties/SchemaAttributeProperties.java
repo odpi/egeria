@@ -117,6 +117,20 @@ public class SchemaAttributeProperties extends SchemaElementProperties
             clone = new SchemaAttribute();
         }
 
+        // Set the Referenceable properties
+        ElementType type = new ElementType();
+        type.setElementTypeName(this.getTypeName());
+        clone.setType(type);
+        clone.setClassifications(this.getClassifications());
+        clone.setQualifiedName(this.getQualifiedName());
+        clone.setMeanings(this.getMeanings());
+        clone.setAdditionalProperties(this.getAdditionalProperties());
+        clone.setExtendedProperties(this.getExtendedProperties());
+        // Set the SchemaElement properties
+        clone.setDisplayName(this.getDisplayName());
+        clone.setDescription(this.getDescription());
+        clone.setDeprecated(this.isDeprecated());
+        // Set the SchemaAttribute properties
         clone.setAttributeName(this.getAttributeName());
         clone.setElementPosition(this.getElementPosition());
         clone.setMinCardinality(this.getMinCardinality());
