@@ -18,6 +18,12 @@ spec:
     - port: 8443
       targetPort: 8443
       nodePort: {{ .Values.service.nodeport.ui }}
+  {{ if .Values.debug.egeriaJVM }}
+    - name: debug
+      port: 5005
+      targetPort: 5005
+      nodePort: {{ .Values.service.nodeport.debug.ui }}
+  {{ end }}
   selector:
     app.kubernetes.io/name: {{ include "myapp.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
@@ -68,6 +74,9 @@ spec:
             - "java -jar /opt/egeria/user-interface/ui-chassis-spring-{{ .Values.egeria.version}}.jar"
           ports:
             - containerPort: 8443
+            {{ if .Values.debug.egeriaJVM }}
+            - containerPort: 5005
+            {{ end }}
           readinessProbe:
             tcpSocket:
               port: 8443
@@ -86,6 +95,10 @@ spec:
               value: "open-lineage"
             - name: "OPEN_LINEAGE_GRAPH_SOURCE"
               value: "MAIN"
+            {{ if .Values.debug.egeriaJVM }}
+            - name: JAVA_DEBUG
+              value:  "true"
+            {{ end }}
       restartPolicy: Always
 
 status: {}
