@@ -170,7 +170,7 @@ public class GlossaryContextHandler {
                                                           String entityTypeName,
                                                           String relationshipTypeName) throws UserNotAuthorizedException, PropertyServerException {
         String methodName = "getRelationshipsByTypeGUID";
-        String relationshipTypeGUID = handlerHelper.getTypeByName(userId, TERM_CATEGORIZATION);
+        String relationshipTypeGUID = handlerHelper.getTypeByName(userId, relationshipTypeName);
 
         return repositoryHandler.getRelationshipsByType(userId,
                 entityTypeGUID,
