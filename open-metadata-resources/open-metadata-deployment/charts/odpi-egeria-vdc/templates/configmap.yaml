@@ -45,7 +45,7 @@ data:
   ATLAS_USER: {{ .Values.atlas.user }}
   ATLAS_PASS: {{ .Values.atlas.password }}
   ATLAS_KAFKA_ENDPOINT: {{ include "myapp.fullname" . }}-atlas-service:9027
-  ATLAS_CONNECTOR_URL_PATH: org/odpi/egeria/egeria-connector-apache-atlas-adapter
+  ATLAS_CONNECTOR_URL_PATH: org/odpi/egeria/egeria-connector-hadoop-ecosystem-package
   {{ end }}
 
   {{ if or .Values.postgresql.enabled .Values.ranger.enabled }}
