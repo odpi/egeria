@@ -109,7 +109,7 @@ export default function Frame(props) {
                     <Home />
                   </Route>
                   <Route path={glossaryUrl}>
-                    <GlossaryAuthor />
+                    <GlossaryAuthor/>
                   </Route>
                   <Route path={rexUrl}>
                     <RepositoryExplorer />

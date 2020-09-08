@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import Add16 from "../../../images/Egeria_add_16";
 import Delete16 from "../../../images/Egeria_delete_16";
+import Edit16 from "../../../images/Egeria_edit_16";
 import {
   LocalGlossaryCard,
   GlossaryCardSection,
@@ -11,6 +12,12 @@ import GlossaryImage from "../../../images/Egeria_glossary_32";
 import getNodeType from "./properties/NodeTypes.js";
 import { issueRestGet } from "./RestCaller";
 import useDebounce from "./useDebounce";
+import GlossaryAdd from "./GlossaryAdd";
+import GlossaryEdit from "./GlossaryEdit";
+import GlossaryChildren from "./GlossaryChildren";
+import { IdentificationContext } from "../../../contexts/IdentificationContext";
+
+import { Route, Switch, Link, BrowserRouter } from "react-router-dom";
 
 export default function GlossaryAuthorNavigation() {
   const [glossaries, setGlossaries] = useState([]);
@@ -26,6 +33,7 @@ export default function GlossaryAuthorNavigation() {
   // ... so that we aren't hitting our API rapidly.
   const debouncedSearchCriteria = useDebounce(searchCriteria, 500);
   const [errorMsg, setErrorMsg] = useState();
+  const identificationContext = useContext(IdentificationContext);
 
   // Here's where the API call happens
   // We use useEffect since this is an asynchronous action
@@ -61,12 +69,13 @@ export default function GlossaryAuthorNavigation() {
     issueRestGet(url, onSuccessfulSearch, onErrorSearch);
   };
 
-  const onClickAdd = () => {
-    console.log("Add");
-  };
-
   const onClickDelete = () => {
+    setErrorMsg("");
     console.log("Delete");
+  };
+  const onClickEdit = () => {
+    setErrorMsg("");
+    console.log("Edit");
   };
 
   const onErrorSearch = (msg) => {
@@ -75,6 +84,7 @@ export default function GlossaryAuthorNavigation() {
     setGlossaries([]);
   };
   const onSuccessfulSearch = (json) => {
+    setErrorMsg("");
     console.log("onSuccessfulSearch " + json.result);
     setGlossaries(json.result);
   };
@@ -84,9 +94,12 @@ export default function GlossaryAuthorNavigation() {
     setExactMatch(checkBox.checked);
   };
 
-  const getGlossaryUrl = (name) => {
-    return nodeType.url + "/" + name;
+  const getGlossaryChildrenUrl = (name) => {
+    return "/glossary-author/glossaries/" + name + "/children";
   };
+  function getAddGlossaryUrl() {
+    return "/glossary-author/add-glossary";
+  }
   const onFilterCriteria = (e) => {
     setSearchCriteria(e.target.value);
   };
@@ -117,12 +130,15 @@ export default function GlossaryAuthorNavigation() {
         </article>
         <article className="glossary-card__controls bx--col-sm-4 bx--col-md-1 bx--col-lg-1 bx--col-xlg-1 bx--col-max-1">
           <div className="bx--row">
-            <Add16 kind="primary" onClick={() => onClickAdd()} />
+            <Link to={getAddGlossaryUrl}>
+              <Add16 kind="primary" />
+            </Link>
             <Delete16 onClick={() => onClickDelete()} />
+            <Edit16 onClick={() => onClickEdit()} />
           </div>
         </article>
       </GlossaryCardSection>
-      
+
       <GlossaryCardSection className="landing-page__r3">
         <article style={{ color: "red" }}>{errorMsg}</article>
       </GlossaryCardSection>
@@ -134,11 +150,22 @@ export default function GlossaryAuthorNavigation() {
             heading={glossary.name}
             body={glossary.description}
             icon={<GlossaryImage />}
-            link={getGlossaryUrl(glossary.name)}
+            link={getGlossaryChildrenUrl(glossary.name)}
           />
         ))}
         {glossaries.length == 0 && <div>No Glossaries found!</div>}
       </GlossaryCardSection>
+      <BrowserRouter>
+        <Switch>
+          <Route path="/glossary-add" exact component={GlossaryAdd} />
+          {/* <Route path="/glossary-edit/:glossaryName">
+            <GlossaryEdit />
+          </Route>
+          <Route path="/glossary/:glossaryName/children">
+            <GlossaryChildren />
+          </Route> */}
+        </Switch>
+      </BrowserRouter>
     </div>
   );
 }
