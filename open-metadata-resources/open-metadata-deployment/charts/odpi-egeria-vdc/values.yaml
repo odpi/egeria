@@ -87,6 +87,7 @@ atlas:
   user: admin
   password: admin
   proxyserver: apacheatlas
+  connectorversion: 2.1
 
 gaian:
   enabled: true
@@ -201,6 +202,7 @@ kafka:
 # Set external to "true" to use a pre-existing IBM IGC environment (outside your k8s cluster),
 # in which case, also provide the hostname, IP address and port number for the domain tier
 ibmigc:
+  connectorversion: 2.1
   enabled: false
   user: isadmin
   password: isadmin
