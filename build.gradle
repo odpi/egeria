@@ -23,11 +23,12 @@ buildscript {
 
 plugins {
         //id "nebula.lint" version "16.9.0"
-        //id "nebula-aggregate-javadocs'" "
+        //id "nebula-aggregate-javadocs"
         id "io.spring.dependency-management" version "1.0.9.RELEASE"
     }
 
-//apply plugin: 'nebula-aggregate-javadocs'
+/* run './gradlew aggregateJavadocs' at top level to build all docs & output to build/docs/javadoc */
+apply plugin: 'nebula-aggregate-javadocs'
 
 
 
