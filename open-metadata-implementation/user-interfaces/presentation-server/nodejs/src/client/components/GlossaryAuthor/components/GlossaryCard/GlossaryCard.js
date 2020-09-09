@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 import React from "react";
 import Launch32 from "../../../../images/Launch_32";
+import { Accordion, AccordionItem } from "carbon-components-react";
 
 const GlossaryCardSection = (props) => (
   <div>
@@ -25,18 +26,16 @@ const GlossaryCard = (props) => {
     </article>
   );
 };
-const EmptyGlossaryCard = (props) => {
-  return (
-    <article className="empty-glossary-card bx--col-md-4 bx--col-lg-4 bx--col-xlg-3 bx--offset-xlg-1"></article>
-  );
-};
+
 const LocalGlossaryCard = (props) => {
   return (
     <article className="glossary-card bx--col-md-4 bx--col-lg-4 bx--col-xlg-3 bx--offset-xlg-1">
       <h4 className="glossary-card__heading">{props.heading}</h4>
-      <p className="glossary-card__body">{props.body}</p>
+          <Accordion>
+            <AccordionItem title="Description">{props.body}</AccordionItem>
+          </Accordion>
       <div>
-          {/* <a is not correct as it kills the session - TODO sort this out properly with the router and breadcrumbs */}
+        {/* <a is not correct as it kills the session - TODO sort this out properly with the router and breadcrumbs */}
         <a href={props.link}>{props.icon}</a>
       </div>
     </article>
