@@ -14,6 +14,7 @@ import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,9 +27,10 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_NAME_QUALIFIED_NAME;
 
 /**
- * Based on provided information, the graph will be interrogated on assets of type Process, DataFile, RelationalColumn, TabularColumn
- * and RelationalColumn, and the graph structure around them will be validated. Just one parameter is necessary, path to
- * a json file of the following structure
+ * Based on provided information, the graph will be interrogated on assets of type Process, DataFile, RelationalColumn,
+ * TabularColumn and RelationalColumn, and the graph structure around them will be validated. Since asserts are used,
+ * VM option -ea is necessary. As for necessary program arguments, only the path to a json file of the following structure
+ * is needed
  *
  * {
  *   "graphConfigFile": "/Users/wf40wc/Developer/gremlin.properties",
@@ -141,14 +143,25 @@ public class OpenLineageGraphValidation {
         return jsonObject;
     }
 
+    private static void verifyArgs(String[] args){
+        if(args.length != 1){
+            throw new IllegalArgumentException("Args size must be one. Found " + args.length);
+        }
+        if(!new File(args[0]).exists()){
+            throw new IllegalArgumentException("Test input file does not exists at provided location: " + args[0]);
+        }
+    }
+
     public static void main(String[] args) throws Exception{
+        verifyArgs(args);
+
         JsonObject jsonObject = readJsonObjectFromFile(args[0]);
 
         addEntitiesToTarget(jsonObject.getJsonArray("processes"), createProcess, PROCESSES);
         addEntitiesToTarget(jsonObject.getJsonArray("tables"), createTable, TABLES);
         addEntitiesToTarget(jsonObject.getJsonArray("columns"), createColumn, COLUMNS);
 
-        String graphConfigFile = jsonObject.getJsonString("graphConfigFile").toString();
+        String graphConfigFile = jsonObject.getString("graphConfigFile");
         OpenLineageGraphValidation graphValidation = new OpenLineageGraphValidation(graphConfigFile);
         graphValidation.validate();
         graphValidation.close();
