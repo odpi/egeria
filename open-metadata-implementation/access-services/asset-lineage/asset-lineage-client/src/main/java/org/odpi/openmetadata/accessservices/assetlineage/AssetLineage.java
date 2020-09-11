@@ -40,7 +40,6 @@ public class AssetLineage extends FFDCRESTClient implements AssetLineageInterfac
     /**
      * {@inheritDoc}
      *
-     * @return
      */
     @Override
     public List<String> publishEntities(String serverName, String userId, String entityType)

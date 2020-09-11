@@ -20,6 +20,9 @@ public interface AssetLineageInterface {
      * @param userId     the name of the calling user
      * @param entityType the name of the relationship type
      * @return a list of unique identifiers (guids) of the available entities with the given type provided as a response
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
      */
     List<String> publishEntities(String serverName, String userId, String entityType) throws InvalidParameterException,
             PropertyServerException,
