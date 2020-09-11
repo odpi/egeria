@@ -2,16 +2,15 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 import React, { useState, useEffect, useContext } from "react";
 import { Accordion, AccordionItem } from "carbon-components-react";
+import GlossaryAuthorContext from "./contexts/GlossaryAuthorContext";
 import getNodeType from "./components/properties/NodeTypes.js";
-import GlossaryAuthorCRUD from "./components/GlossaryAuthorCRUD";
-import GlossaryAuthorNavigation from "./components/GlossaryAuthorNavigation";
-import GlossaryAuthorSearch from "./components/GlossaryAuthorSearch";
-import { Route, BrowserRouter, withRouter, Switch } from "react-router-dom";
 import { IdentificationContext } from "../../contexts/IdentificationContext";
-//import DebugRouter from "./DebugRouter";
+import { BrowserRouter } from "react-router-dom";
+import GlossaryAuthorRoutes from "./components/views/GlossaryAuthorRoutes";
+import GlossaryAuthorTaskRouting from "./components/GlossaryAuthorTaskRouting";
 
-export function GlossaryAuthor(props) {
-// const GlossaryAuthor = (match) => {
+export default function GlossaryAuthor() {
+  // const GlossaryAuthor = (match) => {
   const [connected, setConnected] = useState();
   const [errorMsg, setErrorMsg] = useState();
   const [exceptionUserAction, setExceptionUserAction] = useState();
@@ -26,7 +25,7 @@ export function GlossaryAuthor(props) {
   // Try to connect to the server. The [] means it only runs on mount (rather than every render)
   useEffect(() => {
     setGlossaryAuthorURL(
-      identificationContext.getBrowserURL("glossary-author/")
+      identificationContext.getBrowserURL("glossary-author")
     );
     issueConnect();
   }, []);
@@ -115,73 +114,27 @@ export function GlossaryAuthor(props) {
         });
     }
   };
-  const handleTaskChange = (e) => {
-    const newTask = e.target.value;
-    console.log("handleTaskChange (() " + newTask);
-    //setTask(newTask);
-    console.log("handleTaskChange");
-    console.log("history");
-    console.log(history);
-    console.log("props");
-    console.log(props);
-
-    //const targetUrl = window.location.href + `${e.target.value}`;
-    const targetUrl = glossaryAuthorURL + `${e.target.value}`;
-    props.history.push(targetUrl);
-
-    console.log("history post push");
-    console.log(history);
-    console.log("props post push");
-    console.log(props);
-
-  };
 
   const handleOnClick = (e) => {
     console.log("GlossaryAuthor connectivity handleClick(()");
     e.preventDefault();
     issueConnect();
   };
- function getNavigationPath() {
-    const path =glossaryAuthorURL + "navigation";
-   console.log("getNavigationPath " + path ); 
-    return path;
-  };
-  function getCrudPath() {
-    const path =glossaryAuthorURL  + "crud";
-    console.log("getCrudPath " + path);
-    return path;
-  };
-  function getSearchPath() {
-    const path =  glossaryAuthorURL + "search";
-    console.log("getSearchPath " + path);
-    return path;
-  };
 
   return (
     <div>
       {connected && (
         <div>
-          <BrowserRouter>
-            <select
-              id="tasks"
-              float="right"
-              border-bottom-width="3px"
-              onChange={handleTaskChange}
-            >
-              <option value="navigation">Glossary Authoring</option>
-              <option value="search">Search</option>
-              <option selected value="crud">
-                CRUD
-              </option>
-            </select>
-            {/* <BrowserRouter> */}
-            {/* default for now - then move to the glossary author  */}
-            <Switch>
-              <Route path={"/aaa/glossary-author/navigation"} component={GlossaryAuthorNavigation}></Route> 
-              <Route path={"/aaa/glossary-author/search"} component={GlossaryAuthorSearch}></Route> 
-              <Route path={"/aaa/glossary-author/crud"} component={GlossaryAuthorCRUD}></Route> 
-            </Switch>
-          </BrowserRouter>
+          <GlossaryAuthorContext>
+            <BrowserRouter>
+              {/* this will cause the change in URL */}
+              <GlossaryAuthorTaskRouting glossaryAuthorURL={glossaryAuthorURL} />
+
+              {/* This will cause the view to be changed as a result of the url change */}
+              <GlossaryAuthorRoutes glossaryAuthorURL={glossaryAuthorURL} />
+              {/* <GlossaryAuthorRoutes /> */}
+            </BrowserRouter>
+          </GlossaryAuthorContext>
         </div>
       )}
       {!connected && (
@@ -221,4 +174,3 @@ export function GlossaryAuthor(props) {
     </div>
   );
 }
-export default withRouter(GlossaryAuthor);
