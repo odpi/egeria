@@ -18,7 +18,6 @@ The current Egeria maintainers are:
 | Nigel Jones    | jonesn@uk.ibm.com         |
 | David Radley   | david_radley@uk.ibm.com   |
 | Graham Wallis | graham_wallis@uk.ibm.com |
-| Guy Ackermans | guy.ackermans92@gmail.com |
 | Maryna Strelchuk | maryna.strelchuk@gmail.com |
 | Bogdan Sava | Bogdan-Mihail.Sava@ing.com |
 | Chris Replogle | chris.replogle@gmail.com | 
@@ -26,7 +25,6 @@ The current Egeria maintainers are:
 | Chris Grote | chris@thegrotes.net |
 | Raluca Popa | raluca.popa2@ing.com |
 | Chris Replogle | Chris.Replogle@sas.com |
-| Dimitrios Maimaris | dimi.maim@gmail.com |
 | Ljupcho Palashevski | ljupcho.palashevski@ing.com |
 | Marius Patrascu | marius-florin.patrascu@ing.com |
 
@@ -47,8 +45,8 @@ contributions, we have a strong foundation to build on.
 | Ruxandra Gabriela Rosu | ruxandra-gabriela.rosu@ing.com |
 | Cong Chen | cong.chen@ing.com |
 | Wu Yue Feng | wyf1116@gmail.com |
-
-
+| Dimitrios Maimaris | dimi.maim@gmail.com |
+| Guy Ackermans | guy.ackermans92@gmail.com |
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
