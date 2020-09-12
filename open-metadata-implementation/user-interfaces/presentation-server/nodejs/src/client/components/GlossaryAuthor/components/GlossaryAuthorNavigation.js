@@ -11,13 +11,12 @@ import {
 } from "./GlossaryCard/GlossaryCard";
 import GlossaryImage from "../../../images/Egeria_glossary_32";
 import getNodeType from "./properties/NodeTypes.js";
-import { issueRestGet } from "./RestCaller";
+import { issueRestGet, issueRestDelete } from "./RestCaller";
 import useDebounce from "./useDebounce";
-
 
 import { Link } from "react-router-dom";
 
-export default function GlossaryAuthorNavigation({match}) {
+export default function GlossaryAuthorNavigation({ match }) {
   const [glossaries, setGlossaries] = useState([]);
   const nodeType = getNodeType("glossary");
   // State and setter for search term
@@ -31,23 +30,13 @@ export default function GlossaryAuthorNavigation({match}) {
   // ... so that we aren't hitting our API rapidly.
   const debouncedFilterCriteria = useDebounce(filterCriteria, 500);
   const [errorMsg, setErrorMsg] = useState();
+  const [selectedGlossaryName, setSelectedGlossaryName] = useState();
 
   // Here's where the API call happens
   // We use useEffect since this is an asynchronous action
   useEffect(
     () => {
-      // sort out the actual search criteria.
-      let actualDebounceCriteria = debouncedFilterCriteria;
-      if (actualDebounceCriteria) {
-        if (!exactMatch) {
-          actualDebounceCriteria = actualDebounceCriteria + ".*";
-        }
-      } else {
-        // by default get everything
-        actualDebounceCriteria = ".*";
-      }
-      // Fire off our API call
-      issueGlossarySearch(actualDebounceCriteria);
+      processUserCriteriaAndIssueSearch();
     },
     // This is the useEffect input array
     // Our useEffect function will only execute if this value changes ...
@@ -56,6 +45,21 @@ export default function GlossaryAuthorNavigation({match}) {
     // If the exactMatch changes then we need to re-issue the search.
     [debouncedFilterCriteria, exactMatch]
   );
+  const processUserCriteriaAndIssueSearch = () => {
+ // sort out the actual search criteria.
+ let actualDebounceCriteria = debouncedFilterCriteria;
+ if (actualDebounceCriteria) {
+   if (!exactMatch) {
+     actualDebounceCriteria = actualDebounceCriteria + ".*";
+   }
+ } else {
+   // by default get everything
+   actualDebounceCriteria = ".*";
+ }
+ // Fire off our API call
+ issueGlossarySearch(actualDebounceCriteria);
+  }
+
 
   // issue search for first page of glossaries
   const issueGlossarySearch = (criteria) => {
@@ -69,18 +73,46 @@ export default function GlossaryAuthorNavigation({match}) {
   const onClickDelete = () => {
     setErrorMsg("");
     console.log("Delete");
+    if (selectedGlossaryName) {
+      glossaries.forEach(deleteIfSelected);
+    }
+  };
+  /**
+   * Delete the supplied glossary if its name matches the selected one.
+   * @param {*} glossary 
+   */
+  const deleteIfSelected = (glossary) => {
+    if (glossary.name == selectedGlossaryName) {
+      const guid = glossary.systemAttributes.guid;
+      const url = nodeType.url + "/" + guid;
+      issueRestDelete(url, onSuccessfulDelete, onErrorDelete);
+    }
+  }
+
+  const onSuccessfulDelete = () => {
+    setSelectedGlossaryName(undefined);
+    // reprocess the current criteria and issue the search
+    processUserCriteriaAndIssueSearch();
   };
 
-  const onErrorSearch = (msg) => {
-    console.log("Error on Get " + msg);
+  const onErrorDelete = (msg) => {
+    console.log("Error on delete " + msg);
     setErrorMsg(msg);
-    setGlossaries([]);
+    // setGlossaries([]);
   };
+
   const onSuccessfulSearch = (json) => {
     setErrorMsg("");
     console.log("onSuccessfulSearch " + json.result);
     setGlossaries(json.result);
   };
+
+  const onErrorSearch = (msg) => {
+    console.log("Error on search " + msg);
+    setErrorMsg(msg);
+    setGlossaries([]);
+  };
+
   const onClickExactMatch = () => {
     console.log("onClickExactMatch");
     const checkBox = document.getElementById("glossary_nav_exact_Match");
@@ -100,65 +132,70 @@ export default function GlossaryAuthorNavigation({match}) {
   const onFilterCriteria = (e) => {
     setFilterCriteria(e.target.value);
   };
+  const isSelected = (glossaryName) => {
+    return glossaryName == selectedGlossaryName;
+  };
+  const setSelected = (glossaryName) => {
+    setSelectedGlossaryName(glossaryName);
+  };
 
   return (
     <div>
-        <div className="bx--grid">
-          <GlossaryCardSection
-            heading="Glossaries"
-            className="landing-page__r3"
-          >
-            <article className="glossary-card__controls bx--col-sm-4 bx--col-md-1 bx--col-lg-1 bx--col-xlg-1 bx--col-max-1">
-              Choose glossary
-            </article>
-            <article className="glossary-card__controls bx--col-sm-4 bx--col-md-2 bx--col-lg-4 bx--col-xlg-4 bx--col-max-4">
+      <div className="bx--grid">
+        <GlossaryCardSection heading="Glossaries" className="landing-page__r3">
+          <article className="glossary-card__controls bx--col-sm-4 bx--col-md-1 bx--col-lg-1 bx--col-xlg-1 bx--col-max-1">
+            Choose glossary
+          </article>
+          <article className="glossary-card__controls bx--col-sm-4 bx--col-md-2 bx--col-lg-4 bx--col-xlg-4 bx--col-max-4">
+            <input
+              type="text"
+              id="filter-input"
+              onChange={onFilterCriteria}
+              placeholder="Filter"
+            />
+          </article>
+          <article className="glossary-card__controls bx--col-sm-4 bx--col-md-1 bx--col-lg-2 bx--col-xlg-2 bx--col-max-2">
+            <div className="glossary-card__exact_control">
+              <label forHtml="exactMatch">Exact Match </label>
               <input
-                type="text"
-                id="filter-input"
-                onChange={onFilterCriteria}
-                placeholder="Filter"
+                type="checkbox"
+                id="glossary_nav_exact_Match"
+                onClick={onClickExactMatch}
               />
-            </article>
-            <article className="glossary-card__controls bx--col-sm-4 bx--col-md-1 bx--col-lg-2 bx--col-xlg-2 bx--col-max-2">
-              <div className="glossary-card__exact_control">
-                <label forHtml="exactMatch">Exact Match </label>
-                <input
-                  type="checkbox"
-                  id="glossary_nav_exact_Match"
-                  onClick={onClickExactMatch}
-                />
-              </div>
-            </article>
-            <article className="glossary-card__controls bx--col-sm-4 bx--col-md-1 bx--col-lg-1 bx--col-xlg-1 bx--col-max-1">
-              <div className="bx--row">
-                <Link to={getAddGlossaryUrl}>
-                  <Add16 kind="primary" />
-                </Link>
-                <Delete16 onClick={() => onClickDelete()} />
-                <Link to={getEditGlossaryUrl()}>
-                  <Edit16 kind="primary" />
-                </Link>
-              </div>
-            </article>
-          </GlossaryCardSection>
+            </div>
+          </article>
+          <article className="glossary-card__controls bx--col-sm-4 bx--col-md-1 bx--col-lg-1 bx--col-xlg-1 bx--col-max-1">
+            <div className="bx--row">
+              <Link to={getAddGlossaryUrl}>
+                <Add16 kind="primary" />
+              </Link>
+              <Delete16 onClick={() => onClickDelete()} />
+              <Link to={getEditGlossaryUrl()}>
+                <Edit16 kind="primary" />
+              </Link>
+            </div>
+          </article>
+        </GlossaryCardSection>
 
-          <GlossaryCardSection className="landing-page__r3">
-            <article style={{ color: "red" }}>{errorMsg}</article>
-          </GlossaryCardSection>
+        <GlossaryCardSection className="landing-page__r3">
+          <article style={{ color: "red" }}>{errorMsg}</article>
+        </GlossaryCardSection>
 
-          <GlossaryCardSection className="landing-page__r3">
-            {glossaries.map((glossary) => (
-              <LocalGlossaryCard
-                key={glossary.name}
-                heading={glossary.name}
-                body={glossary.description}
-                icon={<GlossaryImage />}
-                link={getGlossaryChildrenUrl(glossary.name)}
-              />
-            ))}
-            {glossaries.length == 0 && <div>No Glossaries found!</div>}
-          </GlossaryCardSection>
-        </div>
+        <GlossaryCardSection className="landing-page__r3">
+          {glossaries.map((glossary) => (
+            <LocalGlossaryCard
+              key={glossary.name}
+              heading={glossary.name}
+              body={glossary.description}
+              icon={<GlossaryImage />}
+              isSelected={isSelected(glossary.name)}
+              setSelected={setSelected}
+              link={getGlossaryChildrenUrl(glossary.name)}
+            />
+          ))}
+          {glossaries.length == 0 && <div>No Glossaries found!</div>}
+        </GlossaryCardSection>
+      </div>
     </div>
   );
 }
