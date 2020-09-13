@@ -30,7 +30,7 @@ export default function GlossaryAuthorNavigation({ match }) {
   // ... so that we aren't hitting our API rapidly.
   const debouncedFilterCriteria = useDebounce(filterCriteria, 500);
   const [errorMsg, setErrorMsg] = useState();
-  const [selectedGlossaryName, setSelectedGlossaryName] = useState();
+  const [selectedGlossaryGuid, setSelectedGlossaryGuid] = useState();
 
   // Here's where the API call happens
   // We use useEffect since this is an asynchronous action
@@ -73,24 +73,24 @@ export default function GlossaryAuthorNavigation({ match }) {
   const onClickDelete = () => {
     setErrorMsg("");
     console.log("Delete");
-    if (selectedGlossaryName) {
+    if (selectedGlossaryGuid) {
       glossaries.forEach(deleteIfSelected);
     }
   };
   /**
-   * Delete the supplied glossary if its name matches the selected one.
+   * Delete the supplied glossary if it's guid matches the selected one.
    * @param {*} glossary 
    */
   const deleteIfSelected = (glossary) => {
-    if (glossary.name == selectedGlossaryName) {
-      const guid = glossary.systemAttributes.guid;
+    if (glossary.systemAttributes.guid == selectedGlossaryGuid) {
+      const guid = selectedGlossaryGuid;
       const url = nodeType.url + "/" + guid;
       issueRestDelete(url, onSuccessfulDelete, onErrorDelete);
     }
   }
 
   const onSuccessfulDelete = () => {
-    setSelectedGlossaryName(undefined);
+    setSelectedGlossaryGuid(undefined);
     // reprocess the current criteria and issue the search
     processUserCriteriaAndIssueSearch();
   };
@@ -119,24 +119,23 @@ export default function GlossaryAuthorNavigation({ match }) {
     setExactMatch(checkBox.checked);
   };
 
-  const getGlossaryChildrenUrl = (name) => {
-    return match.path + "/" + name + "/children";
+  const getGlossaryChildrenUrl = (guid) => {
+    return match.path + "/" + guid + "/children";
   };
   function getAddGlossaryUrl() {
     return match.path + "/add-glossary";
   }
   function getEditGlossaryUrl() {
-    //TODO include the selected glossary name in the url, after the glossaries segment
-    return match.path + "/edit-glossary";
+    return match.path + "/edit-glossary/" + {selectedGlossaryGuid};
   }
   const onFilterCriteria = (e) => {
     setFilterCriteria(e.target.value);
   };
-  const isSelected = (glossaryName) => {
-    return glossaryName == selectedGlossaryName;
+  const isSelected = (glossaryGuid) => {
+    return glossaryGuid == selectedGlossaryGuid;
   };
-  const setSelected = (glossaryName) => {
-    setSelectedGlossaryName(glossaryName);
+  const setSelected = (glossaryGuid) => {
+    setSelectedGlossaryGuid(glossaryGuid);
   };
 
   return (
@@ -184,13 +183,14 @@ export default function GlossaryAuthorNavigation({ match }) {
         <GlossaryCardSection className="landing-page__r3">
           {glossaries.map((glossary) => (
             <LocalGlossaryCard
-              key={glossary.name}
+              key={glossary.systemAttributes.guid}
               heading={glossary.name}
+              guid={glossary.systemAttributes.guid}
               body={glossary.description}
               icon={<GlossaryImage />}
-              isSelected={isSelected(glossary.name)}
+              isSelected={isSelected(glossary.systemAttributes.guid)}
               setSelected={setSelected}
-              link={getGlossaryChildrenUrl(glossary.name)}
+              link={getGlossaryChildrenUrl(glossary.systemAttributes.guid)}
             />
           ))}
           {glossaries.length == 0 && <div>No Glossaries found!</div>}

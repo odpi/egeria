@@ -30,8 +30,8 @@ const GlossaryCard = (props) => {
 const LocalGlossaryCard = (props) => {
   const onChange = (e) => {
     if (e.target.checked) {
-      console.log("onchange LocalGlossaryCard selected " + props.heading);
-      props.setSelected(props.heading);
+      console.log("onchange LocalGlossaryCard selected " + props.guid);
+      props.setSelected(props.guid);
     } else {
       console.log("onchange LocalGlossaryCard unselected " + props.heading);
       props.setSelected(undefined);
@@ -43,6 +43,7 @@ const LocalGlossaryCard = (props) => {
         <h4>{props.heading}</h4>
         <input type="checkbox" checked={props.isSelected} onChange={onChange} />
       </div>
+      <div style={{display:'none'}}>{props.guid}</div> 
       <Accordion>
         <AccordionItem title="Description">{props.body}</AccordionItem>
       </Accordion>
