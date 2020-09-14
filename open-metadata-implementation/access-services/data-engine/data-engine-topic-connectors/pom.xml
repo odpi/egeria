@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<!-- SPDX-License-Identifier: Apache-2.0 -->
-<!-- Copyright Contributors to the ODPi Egeria project.  -->
-
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-
     <parent>
         <artifactId>data-engine</artifactId>
         <groupId>org.odpi.egeria</groupId>
@@ -21,29 +16,14 @@
         <url>http://github.com/odpi/egeria/tree/master</url>
     </scm>
 
-    <name>Data Engine OMAS Client</name>
+    <name>Data Engine OMAS Topic Connectors</name>
     <description>
-        Client library for the Data Engine Open Metadata Access Service (OMAS).
+        Connector library for the Data Engine Open Metadata Access Service (OMAS).
     </description>
 
-    <artifactId>data-engine-client</artifactId>
+    <artifactId>data-engine-topic-connectors</artifactId>
 
     <dependencies>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>ocf-metadata-client</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>ocf-metadata-api</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>data-engine-api</artifactId>
-        </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
@@ -52,24 +32,25 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>ffdc-services</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-collections4</artifactId>
+            <artifactId>audit-log-framework</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>data-engine-topic-connectors</artifactId>
+            <artifactId>repository-services-apis</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>data-engine-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
         </dependency>
 
     </dependencies>
+
 
 </project>
