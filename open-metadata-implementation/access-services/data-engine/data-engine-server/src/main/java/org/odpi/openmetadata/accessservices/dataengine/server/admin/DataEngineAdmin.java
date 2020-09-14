@@ -2,8 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataengine.server.admin;
 
+import org.odpi.openmetadata.accessservices.dataengine.connectors.intopic.DataEngineInTopicClientProvider;
 import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
-import org.odpi.openmetadata.accessservices.dataengine.server.auditlog.DataEngineAuditCode;
+import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineAuditCode;
 import org.odpi.openmetadata.accessservices.dataengine.server.listeners.DataEngineInTopicListener;
 import org.odpi.openmetadata.accessservices.dataengine.server.processors.DataEngineEventProcessor;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
@@ -61,7 +62,12 @@ public class DataEngineAdmin extends AccessServiceAdmin {
                     accessServiceConfig.getAccessServiceName(), auditLog);
 
             instance = new DataEngineServicesInstance(repositoryConnector, supportedZones, defaultZones, auditLog, serverUserName,
-                    repositoryConnector.getMaxPageSize());
+                    repositoryConnector.getMaxPageSize(),
+                    super.getOutTopicConnection(accessServiceConfig.getAccessServiceInTopic(),
+                            AccessServiceDescription.DATA_ENGINE_OMAS.getAccessServiceFullName(),
+                            DataEngineInTopicClientProvider.class.getName(),
+                            auditLog)); //TODO: using getOutTopicConnection temporary, we need getInTopicConnection... Check the correct way to create connection for the omas instance - using dedicated client provider class name (current impl.) or provided by the accessServiceConfig.getAccessServiceInTopic() (?)
+
             serverName = instance.getServerName();
 
             if (accessServiceConfig.getAccessServiceInTopic() != null) {
@@ -69,7 +75,7 @@ public class DataEngineAdmin extends AccessServiceAdmin {
                 DataEngineInTopicListener dataEngineInTopicListener = new DataEngineInTopicListener(auditLog, dataEngineEventProcessor);
 
                 OpenMetadataTopicConnector dataEngineInTopicConnector = initializeDataEngineTopicConnector(
-                        accessServiceConfig.getAccessServiceInTopic());
+                        accessServiceConfig.getAccessServiceInTopic()); //TODO: Check if this should be moved / done form AccessServicesAdmin (?)
                 if (dataEngineInTopicConnector != null) {
                     dataEngineInTopicConnector.registerListener(dataEngineInTopicListener);
                     dataEngineInTopicConnector.start();
