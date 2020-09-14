@@ -8,6 +8,7 @@ import org.odpi.openmetadata.accessservices.dataengine.model.PortImplementation;
 import org.odpi.openmetadata.accessservices.dataengine.model.Process;
 import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
 import org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -53,10 +54,12 @@ public interface DataEngineClient {
      * @throws InvalidParameterException the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
+     * @throws ConnectorCheckedException problem with the underlying connector (if used)
      */
     List<String> createOrUpdateProcesses(String userId, List<Process> processes) throws InvalidParameterException,
                                                                                         PropertyServerException,
-                                                                                        UserNotAuthorizedException;
+                                                                                        UserNotAuthorizedException,
+                                                                                        ConnectorCheckedException;
 
     /**
      * Create or update the software server capability entity
@@ -69,10 +72,12 @@ public interface DataEngineClient {
      * @throws InvalidParameterException the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
+     * @throws ConnectorCheckedException problem with the underlying connector (if used)
      */
     String createExternalDataEngine(String userId, SoftwareServerCapability softwareServerCapability) throws InvalidParameterException,
                                                                                                              UserNotAuthorizedException,
-                                                                                                             PropertyServerException;
+                                                                                                             PropertyServerException,
+                                                                                                             ConnectorCheckedException;
     /**
      * Create or update the schema type entity, with the corresponding schema attributes and relationships
      *
@@ -84,10 +89,12 @@ public interface DataEngineClient {
      * @throws InvalidParameterException the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
+     * @throws ConnectorCheckedException problem with the underlying connector (if used)
      */
     String createOrUpdateSchemaType(String userId, SchemaType schemaType) throws InvalidParameterException,
                                                                                  PropertyServerException,
-                                                                                 UserNotAuthorizedException;
+                                                                                 UserNotAuthorizedException,
+                                                                                 ConnectorCheckedException;
     /**
      * Create or update the port implementation entity,with the corresponding schema type and port schema relationship
      *
