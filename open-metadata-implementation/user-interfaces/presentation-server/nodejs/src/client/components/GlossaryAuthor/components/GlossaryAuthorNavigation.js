@@ -126,7 +126,7 @@ export default function GlossaryAuthorNavigation({ match }) {
     return match.path + "/add-glossary";
   }
   function getEditGlossaryUrl() {
-    return match.path + "/edit-glossary/" + {selectedGlossaryGuid};
+    return match.path + "/edit-glossary/" + selectedGlossaryGuid;
   }
   const onFilterCriteria = (e) => {
     setFilterCriteria(e.target.value);
