@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Accordion,
   AccordionItem,
@@ -15,79 +15,98 @@ import {
   TableHeader,
   TableBody,
 } from "carbon-components-react";
-import { Button } from "react-bootstrap";
-import getNodeType from "../properties/NodeTypes.js";
+import { useParams } from "react-router-dom";
+import getNodeType from "./properties/NodeTypes.js";
 import Info16 from "@carbon/icons-react/lib/information/16";
 import {
-  issueRestCreate
-} from "../RestCaller";
+  issueRestUpdate,
+  issueRestGet
+} from "./RestCaller";
 
-export default function CreateGlossaryView(props) {
-  const [createBody, setCreateBody] = useState({});
-  const [createdNode, setCreatedNode] = useState();
-  const [errorMsg, setErrorMsg] = useState();
+export default function UpdateGlossary(props) {
+  const [updateBody, setUpdateBody] = useState({});
+  const [updatedNode, setUpdatedNode] = useState();
   const currentNodeType = getNodeType("glossary");
+  const [errorMsg, setErrorMsg] = useState();
+  console.log("UpdateGlossary");
 
-  console.log("CreateGlossaryView");
+  const initialise = () => {
+    issueRestGet(getUrl(), onSuccessfulGet, onErrorGet)
+    return "Getting details";
+  }
+  const getUrl = () => {
+    const {guid} = useParams();
+    return currentNodeType.url + "/" + guid;
+  }
 
   /**
    * If there was an error the button has a class added to it to cause it to shake. After the animation ends, we need to remove the class.
    * @param {*} e end anomation event
    */
   const handleOnAnimationEnd = (e) => {
-    document.getElementById("NodeCreateViewButton").classList.remove("shaker");
+    document.getElementById("NodeUpdateViewButton").classList.remove("shaker");
   };
+
+  function issueGet() {
+    console.log("issueGet " + getUrl());
+    issueRestGet(getUrl(), onSuccessfulGet, onErrorGet);
+  }
 
   const handleClick = (e) => {
     console.log("handleClick(()");
     e.preventDefault();
-    let body = createBody;
-    const nodeType = currentNodeType;
-    if (nodeType.typeForCreate) {
-      body.nodeType = nodeType.nodeTypeForCreate;
-    } else {
-      body.nodeType = nodeType.typeName;
-    }
+    let body = updateBody;
+ 
     // TODO consider moving this up to a node controller as per the CRUD pattern.
-    // inthe meantime this will be self contained.
-    const url = currentNodeType.url;
-    console.log("issueCreate " + url);
-    issueRestCreate(url, body, onSuccessfulCreate, onErrorCreate);
+    // in the meantime this will be self contained.
+
+    console.log("issueUpdate " + getUrl());
+    issueRestUpdate(getUrl(), body, onSuccessfulUpdate, onErrorUpdate);
   };
-  const onSuccessfulCreate = (json) => {
-    console.log("onSuccessfulCreate");
+  const onSuccessfulGet = (json) => {
+    console.log("onSuccessfulUpdate");
     if (json.result.length == 1) {
       const node = json.result[0];
-      setCreatedNode(node);
+      setUpdatedNode(node);
     } else {
       onErrorGet("Error did not get a node from the server");
     }
   };
-  const onErrorCreate = (msg) => {
-    console.log("Error on Get " + msg);
-    setErrorMsg(msg);
-    setCreatedNode(undefined);
-  };
-  const validateForm = () => {
-    //TODO consider marking name as manditory in the nodetype definition
-    //return createBody.name && createBody.name.length > 0;
-
-    return true;
-  };
   const onErrorGet = (msg) => {
     console.log("Error on Get " + msg);
     setErrorMsg(msg);
+    setUpdatedNode(undefined);
   };
-  const createLabelId = (labelKey) => {
+  const onSuccessfulUpdate = (json) => {
+    console.log("onSuccessfulUpdate");
+    if (json.result.length == 1) {
+      const node = json.result[0];
+      setUpdatedNode(node);
+    } else {
+      onErrorGet("Error did not get a node from the server");
+    }
+  };
+  const onErrorUpdate = (msg) => {
+    console.log("Error on Update " + msg);
+    setErrorMsg(msg);
+    setUpdatedNode(undefined);
+  };
+  const validateForm = () => {
+    //TODO consider marking name as manditory in the nodetype definition
+    //return updateBody.name && updateBody.name.length > 0;
+
+    return true;
+  };
+  const updateLabelId = (labelKey) => {
     return "text-input-" + labelKey;
   };
   const setAttribute = (item, value) => {
     console.log("setAttribute " + item.key + ",value=" + value);
-    let myCreateBody = createBody;
-    myCreateBody[item.key] = value;
-    setCreateBody(myCreateBody);
+    let myUpdateBody = updateBody;
+    myUpdateBody[item.key] = value;
+    setUpdateBody(myUpdateBody);
   };
-  const createdTableHeaderData = [
+  const updatedTableHeaderData = [
     {
       header: "Attribute Name",
       key: "attrName",
@@ -98,15 +117,15 @@ export default function CreateGlossaryView(props) {
     },
   ];
 
-  const getCreatedTableTitle = () => {
-    return "Successfully created " + createdNode.name;
+  const getUpdatedTableTitle = () => {
+    return "Successfully updated " + updatedNode.name;
   };
 
-  const getCreatedTableAttrRowData = () => {
+  const getUpdatedTableAttrRowData = () => {
     let rowData = [];
     const attributes = currentNodeType.attributes;
 
-    for (var prop in createdNode) {
+    for (var prop in updatedNode) {
       if (
         prop != "systemAttributes" &&
         prop != "glossary" &&
@@ -127,7 +146,7 @@ export default function CreateGlossaryView(props) {
           }
         }
 
-        let value = createdNode[prop];
+        let value = updatedNode[prop];
         // TODO deal with the other types (and null? and arrays?) properly
         value = JSON.stringify(value);
         row.value = value;
@@ -138,7 +157,7 @@ export default function CreateGlossaryView(props) {
   };
   const getSystemDataRowData = () => {
     let rowData = [];
-    const systemAttributes = createdNode.systemAttributes;
+    const systemAttributes = updatedNode.systemAttributes;
     for (var prop in systemAttributes) {
       let row = {};
       row.id = prop;
@@ -153,8 +172,8 @@ export default function CreateGlossaryView(props) {
     return rowData;
   };
 
-  const createAnother = () => {
-    setCreatedNode(undefined);
+  const updateAnother = () => {
+    setupdatedNode(undefined);
   }
   const onClickBack = () => {
     console.log("Back clicked");
@@ -165,14 +184,15 @@ export default function CreateGlossaryView(props) {
   }
   return (
     <div>
-      {createdNode != undefined && (
+       {updatedNode == undefined && initialise() } 
+      {updatedNode != undefined && (
         <div>
           <DataTable
             isSortable
-            rows={getCreatedTableAttrRowData()}
-            headers={createdTableHeaderData}
+            rows={getUpdatedTableAttrRowData()}
+            headers={updatedTableHeaderData}
             render={({ rows, headers, getHeaderProps }) => (
-              <TableContainer title={getCreatedTableTitle()}>
+              <TableContainer title={getUpdatedTableTitle()}>
                 <Table size="normal">
                   <TableHead>
                     <TableRow>
@@ -206,7 +226,7 @@ export default function CreateGlossaryView(props) {
                 <DataTable
                   isSortable
                   rows={getSystemDataRowData()}
-                  headers={createdTableHeaderData}
+                  headers={updatedTableHeaderData}
                   render={({ rows, headers, getHeaderProps }) => (
                     <TableContainer title="System Attributes">
                       <Table size="normal">
@@ -242,10 +262,10 @@ export default function CreateGlossaryView(props) {
           </Accordion>
           <button
                 className="bx--btn bx--btn--primary"
-                onClick={createAnother}
+                onClick={updateAnother}
                 type="button"
               >
-                Create Another
+                Update Again
               </button>
               <button
                 className="bx--btn bx--btn--primary"
@@ -254,73 +274,6 @@ export default function CreateGlossaryView(props) {
               >
                 Back
               </button>
-        </div>
-      )}
-
-      {createdNode == undefined && (
-        <div>
-          <form>
-            <div>
-              <h4>
-                Create {currentNodeType ? currentNodeType.typeName : ""}
-                <Info16 />
-              </h4>
-            </div>
-
-            {currentNodeType &&
-              createdNode == undefined &&
-              currentNodeType.attributes.map((item) => {
-                return (
-                  <div className="bx--form-item" key={item.key}>
-                    <label
-                      htmlFor={createLabelId(item.key)}
-                      className="bx--label"
-                    >
-                      {item.label} <Info16 />
-                    </label>
-                    <input
-                      id={createLabelId(item.key)}
-                      type="text"
-                      className="bx--text-input"
-                      value={item.name}
-                      onChange={(e) => setAttribute(item, e.target.value)}
-                      placeholder={item.label}
-                    ></input>
-                  </div>
-                );
-              })}
-            <Accordion>
-              <AccordionItem title="Advanced options">
-                <DatePicker dateFormat="m/d/Y" datePickerType="range">
-                  <DatePickerInput
-                    id="date-picker-range-start"
-                    placeholder="mm/dd/yyyy"
-                    labelText="Effective from date"
-                    type="text"
-                  />
-                  <DatePickerInput
-                    id="date-picker-range-end"
-                    placeholder="mm/dd/yyyy"
-                    labelText="Effective to date"
-                    type="text"
-                  />
-                </DatePicker>
-              </AccordionItem>
-            </Accordion>
-
-            <div className="bx--form-item">
-              <button
-                id="NodeCreateViewButton"
-                className="bx--btn bx--btn--primary"
-                disabled={!validateForm()}
-                onClick={handleClick}
-                onAnimationEnd={handleOnAnimationEnd}
-                type="button"
-              >
-                Create
-              </button>
-            </div>
-          </form>
         </div>
       )}
     </div>
