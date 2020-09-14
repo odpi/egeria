@@ -46,20 +46,19 @@ export default function GlossaryAuthorNavigation({ match }) {
     [debouncedFilterCriteria, exactMatch]
   );
   const processUserCriteriaAndIssueSearch = () => {
- // sort out the actual search criteria.
- let actualDebounceCriteria = debouncedFilterCriteria;
- if (actualDebounceCriteria) {
-   if (!exactMatch) {
-     actualDebounceCriteria = actualDebounceCriteria + ".*";
-   }
- } else {
-   // by default get everything
-   actualDebounceCriteria = ".*";
- }
- // Fire off our API call
- issueGlossarySearch(actualDebounceCriteria);
-  }
-
+    // sort out the actual search criteria.
+    let actualDebounceCriteria = debouncedFilterCriteria;
+    if (actualDebounceCriteria) {
+      if (!exactMatch) {
+        actualDebounceCriteria = actualDebounceCriteria + ".*";
+      }
+    } else {
+      // by default get everything
+      actualDebounceCriteria = ".*";
+    }
+    // Fire off our API call
+    issueGlossarySearch(actualDebounceCriteria);
+  };
 
   // issue search for first page of glossaries
   const issueGlossarySearch = (criteria) => {
@@ -79,7 +78,7 @@ export default function GlossaryAuthorNavigation({ match }) {
   };
   /**
    * Delete the supplied glossary if it's guid matches the selected one.
-   * @param {*} glossary 
+   * @param {*} glossary
    */
   const deleteIfSelected = (glossary) => {
     if (glossary.systemAttributes.guid == selectedGlossaryGuid) {
@@ -87,7 +86,7 @@ export default function GlossaryAuthorNavigation({ match }) {
       const url = nodeType.url + "/" + guid;
       issueRestDelete(url, onSuccessfulDelete, onErrorDelete);
     }
-  }
+  };
 
   const onSuccessfulDelete = () => {
     setSelectedGlossaryGuid(undefined);
@@ -168,10 +167,15 @@ export default function GlossaryAuthorNavigation({ match }) {
               <Link to={getAddGlossaryUrl}>
                 <Add16 kind="primary" />
               </Link>
-              <Delete16 onClick={() => onClickDelete()} />
-              <Link to={getEditGlossaryUrl()}>
-                <Edit16 kind="primary" />
-              </Link>
+              {selectedGlossaryGuid && (
+                <Link to={getEditGlossaryUrl()}>
+                  <Edit16 kind="primary" />
+                </Link>
+              )}
+              {selectedGlossaryGuid && (
+                <Delete16 onClick={() => onClickDelete()} />
+              )}
+        
             </div>
           </article>
         </GlossaryCardSection>
