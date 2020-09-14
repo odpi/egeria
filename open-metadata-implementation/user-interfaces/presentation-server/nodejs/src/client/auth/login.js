@@ -42,6 +42,7 @@ const Login = () => {
         if (res.status == "success") {
           console.log("login worked " + JSON.stringify(res));
           identificationContext.setUserId(userId);
+          // TODO original url prop. 
           const path = identificationContext.getBrowserURL(''); 
           history.push(path);
         } else {

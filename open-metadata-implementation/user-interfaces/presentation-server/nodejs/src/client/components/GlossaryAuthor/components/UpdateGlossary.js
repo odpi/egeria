@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Accordion,
   AccordionItem,
@@ -18,56 +18,41 @@ import {
 import { useParams } from "react-router-dom";
 import getNodeType from "./properties/NodeTypes.js";
 import Info16 from "@carbon/icons-react/lib/information/16";
-import {
-  issueRestUpdate,
-  issueRestGet
-} from "./RestCaller";
+import { issueRestUpdate, issueRestGet } from "./RestCaller";
 
 export default function UpdateGlossary(props) {
   const [updateBody, setUpdateBody] = useState({});
-  const [updatedNode, setUpdatedNode] = useState();
+  const [currentNode, setCurrentNode] = useState();
   const currentNodeType = getNodeType("glossary");
   const [errorMsg, setErrorMsg] = useState();
   console.log("UpdateGlossary");
+  const url = getUrl();
 
-  const initialise = () => {
-    issueRestGet(getUrl(), onSuccessfulGet, onErrorGet)
+  const initialGet = () => {
+    issueRestGet(url, onSuccessfulGet, onErrorGet);
     return "Getting details";
-  }
-  const getUrl = () => {
-    const {guid} = useParams();
+  };
+  function getUrl() {
+    const { guid } = useParams();
     return currentNodeType.url + "/" + guid;
   }
 
-  /**
-   * If there was an error the button has a class added to it to cause it to shake. After the animation ends, we need to remove the class.
-   * @param {*} e end anomation event
-   */
-  const handleOnAnimationEnd = (e) => {
-    document.getElementById("NodeUpdateViewButton").classList.remove("shaker");
-  };
-
-  function issueGet() {
-    console.log("issueGet " + getUrl());
-    issueRestGet(getUrl(), onSuccessfulGet, onErrorGet);
-  }
-
-  const handleClick = (e) => {
-    console.log("handleClick(()");
+  const handleClickUpdate = (e) => {
+    console.log("handleClickUpdate()");
     e.preventDefault();
     let body = updateBody;
- 
+
     // TODO consider moving this up to a node controller as per the CRUD pattern.
     // in the meantime this will be self contained.
 
-    console.log("issueUpdate " + getUrl());
-    issueRestUpdate(getUrl(), body, onSuccessfulUpdate, onErrorUpdate);
+    console.log("issueUpdate " + url);
+    issueRestUpdate(url, body, onSuccessfulUpdate, onErrorUpdate);
   };
   const onSuccessfulGet = (json) => {
-    console.log("onSuccessfulUpdate");
+    console.log("onSuccessfulGet");
     if (json.result.length == 1) {
       const node = json.result[0];
-      setUpdatedNode(node);
+      setCurrentNode(node);
     } else {
       onErrorGet("Error did not get a node from the server");
     }
@@ -75,13 +60,13 @@ export default function UpdateGlossary(props) {
   const onErrorGet = (msg) => {
     console.log("Error on Get " + msg);
     setErrorMsg(msg);
-    setUpdatedNode(undefined);
+    setCurrentNode(undefined);
   };
   const onSuccessfulUpdate = (json) => {
     console.log("onSuccessfulUpdate");
     if (json.result.length == 1) {
       const node = json.result[0];
-      setUpdatedNode(node);
+      setCurrentNode(node);
     } else {
       onErrorGet("Error did not get a node from the server");
     }
@@ -89,7 +74,7 @@ export default function UpdateGlossary(props) {
   const onErrorUpdate = (msg) => {
     console.log("Error on Update " + msg);
     setErrorMsg(msg);
-    setUpdatedNode(undefined);
+    setCurrentNode(undefined);
   };
   const validateForm = () => {
     //TODO consider marking name as manditory in the nodetype definition
@@ -97,9 +82,9 @@ export default function UpdateGlossary(props) {
 
     return true;
   };
-  const updateLabelId = (labelKey) => {
-    return "text-input-" + labelKey;
-  };
+  // const updateLabelId = (labelKey) => {
+  //   return "text-input-" + labelKey;
+  // };
   const setAttribute = (item, value) => {
     console.log("setAttribute " + item.key + ",value=" + value);
     let myUpdateBody = updateBody;
@@ -116,16 +101,19 @@ export default function UpdateGlossary(props) {
       key: "value",
     },
   ];
+  const updateLabelId = (labelKey) => {
+    return "text-input-" + labelKey;
+  };
 
   const getUpdatedTableTitle = () => {
-    return "Successfully updated " + updatedNode.name;
+    return "Successfully updated " + currentNode.name;
   };
 
   const getUpdatedTableAttrRowData = () => {
     let rowData = [];
     const attributes = currentNodeType.attributes;
 
-    for (var prop in updatedNode) {
+    for (var prop in currentNode) {
       if (
         prop != "systemAttributes" &&
         prop != "glossary" &&
@@ -146,7 +134,7 @@ export default function UpdateGlossary(props) {
           }
         }
 
-        let value = updatedNode[prop];
+        let value = currentNode[prop];
         // TODO deal with the other types (and null? and arrays?) properly
         value = JSON.stringify(value);
         row.value = value;
@@ -157,7 +145,7 @@ export default function UpdateGlossary(props) {
   };
   const getSystemDataRowData = () => {
     let rowData = [];
-    const systemAttributes = updatedNode.systemAttributes;
+    const systemAttributes = currentNode.systemAttributes;
     for (var prop in systemAttributes) {
       let row = {};
       row.id = prop;
@@ -173,109 +161,112 @@ export default function UpdateGlossary(props) {
   };
 
   const updateAnother = () => {
-    setupdatedNode(undefined);
-  }
+    setCurrentNode(undefined);
+  };
   const onClickBack = () => {
     console.log("Back clicked");
-    // use props.history, as there is another window history object in scope in the event listener  
+    // use props.history, as there is another window history object in scope in the event listener
     console.log(props.history);
-    // go  back 
+    // go  back
     props.history.goBack();
-  }
+  };
   return (
     <div>
-       {updatedNode == undefined && initialise() } 
-      {updatedNode != undefined && (
-        <div>
-          <DataTable
-            isSortable
-            rows={getUpdatedTableAttrRowData()}
-            headers={updatedTableHeaderData}
-            render={({ rows, headers, getHeaderProps }) => (
-              <TableContainer title={getUpdatedTableTitle()}>
-                <Table size="normal">
-                  <TableHead>
-                    <TableRow>
-                      {headers.map((header) => (
-                        <TableHeader
-                          key={header.key}
-                          {...getHeaderProps({ header })}
-                        >
-                          {header.header}
-                        </TableHeader>
-                      ))}
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {rows.map((row) => (
-                      <TableRow key={row.id}>
-                        {row.cells.map((cell) => (
-                          <TableCell key={cell.id}>{cell.value}</TableCell>
-                        ))}
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            )}
-          />
-
-          <Accordion>
-            <AccordionItem title="System Attributes">
-              <div className="bx--form-item">
-                <DataTable
-                  isSortable
-                  rows={getSystemDataRowData()}
-                  headers={updatedTableHeaderData}
-                  render={({ rows, headers, getHeaderProps }) => (
-                    <TableContainer title="System Attributes">
-                      <Table size="normal">
-                        <TableHead>
-                          <TableRow>
-                            {headers.map((header) => (
-                              <TableHeader
-                                key={header.key}
-                                {...getHeaderProps({ header })}
-                              >
-                                {header.header}
-                              </TableHeader>
+      {currentNode == undefined && initialGet()}
+      {currentNode != undefined &&
+        currentNodeType.attributes.map((item) => {
+          return (
+            <div className="bx--form-item" key={item.key}>
+              <label htmlFor={updateLabelId(item.key)} className="bx--label">
+                {item.label} <Info16 />
+              </label>
+              <input
+                id={updateLabelId(item.key)}
+                type="text"
+                className="bx--text-input"
+                defaultValue={currentNode[item.key]}
+                key={currentNode[item.key]}
+                onChange={(e) => setAttribute(item, e.target.value)}
+                placeholder={item.label}
+              ></input>
+            </div>
+          );
+        })}
+      {currentNode != undefined && (
+        <Accordion>
+          <AccordionItem title="Advanced options">
+            <DatePicker dateFormat="m/d/Y" datePickerType="range">
+              <DatePickerInput
+                id="date-picker-range-start"
+                placeholder="mm/dd/yyyy"
+                labelText="Effective from date"
+                type="text"
+              />
+              <DatePickerInput
+                id="date-picker-range-end"
+                placeholder="mm/dd/yyyy"
+                labelText="Effective to date"
+                type="text"
+              />
+            </DatePicker>
+          </AccordionItem>
+        </Accordion>
+      )}
+      {currentNode != undefined && (
+        <Accordion>
+          <AccordionItem title="System Attributes">
+            <div className="bx--form-item">
+              <DataTable
+                isSortable
+                rows={getSystemDataRowData()}
+                headers={updatedTableHeaderData}
+                render={({ rows, headers, getHeaderProps }) => (
+                  <TableContainer title="System Attributes">
+                    <Table size="normal">
+                      <TableHead>
+                        <TableRow>
+                          {headers.map((header) => (
+                            <TableHeader
+                              key={header.key}
+                              {...getHeaderProps({ header })}
+                            >
+                              {header.header}
+                            </TableHeader>
+                          ))}
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        {rows.map((row) => (
+                          <TableRow key={row.id}>
+                            {row.cells.map((cell) => (
+                              <TableCell key={cell.id}>{cell.value}</TableCell>
                             ))}
                           </TableRow>
-                        </TableHead>
-                        <TableBody>
-                          {rows.map((row) => (
-                            <TableRow key={row.id}>
-                              {row.cells.map((cell) => (
-                                <TableCell key={cell.id}>
-                                  {cell.value}
-                                </TableCell>
-                              ))}
-                            </TableRow>
-                          ))}
-                        </TableBody>
-                      </Table>
-                    </TableContainer>
-                  )}
-                />
-              </div>
-            </AccordionItem>
-          </Accordion>
-          <button
-                className="bx--btn bx--btn--primary"
-                onClick={updateAnother}
-                type="button"
-              >
-                Update Again
-              </button>
-              <button
-                className="bx--btn bx--btn--primary"
-                onClick={onClickBack}
-                type="button"
-              >
-                Back
-              </button>
-        </div>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                )}
+              />
+            </div>
+          </AccordionItem>
+        </Accordion>
       )}
+
+      <button
+        className="bx--btn bx--btn--primary"
+        onClick={handleClickUpdate}
+        type="button"
+      >
+        Update
+      </button>
+      <button
+        className="bx--btn bx--btn--primary"
+        onClick={onClickBack}
+        type="button"
+      >
+        Back
+      </button>
     </div>
   );
 }
