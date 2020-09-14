@@ -10,7 +10,7 @@ import Edit16 from "../../../images/Egeria_edit_16";
 import Search16 from "../../../images/Egeria_search_16";
 import Delete16 from "../../../images/Egeria_delete_16";
 import Relationships16 from "../../../images/Egeria_relationships_16";
-import { GlossaryAuthorContext } from "../contexts/GlossaryAuthorCRUDContext";
+import { GlossaryAuthorCRUDContext } from "../contexts/GlossaryAuthorCRUDContext";
 import useDebounce from "./useDebounce";
 import {
   issueRestCreate,
@@ -29,7 +29,7 @@ import {
  * @param {*} props
  */
 const NodeController = (props) => {
-  const glossaryAuthorContext = useContext(GlossaryAuthorContext);
+  const glossaryAuthorCRUDContext = useContext(GlossaryAuthorCRUDContext);
   // State and setter for search term
   const [searchCriteria, setSearchCriteria] = useState("");
   // State and setter for search results
@@ -85,7 +85,7 @@ const NodeController = (props) => {
 
   const onClickAdd = () => {
     setErrorMsg("");
-    glossaryAuthorContext.doCreatingAction();
+    glossaryAuthorCRUDContext.doCreatingAction();
   };
   const onClickRelationships = () => {
     setErrorMsg("");
@@ -94,7 +94,7 @@ const NodeController = (props) => {
 
   const onClickSearch = () => {
     setErrorMsg("");
-    glossaryAuthorContext.doSearchingAction();
+    glossaryAuthorCRUDContext.doSearchingAction();
   };
   const onClickEdit = () => {
     setErrorMsg("");
@@ -127,7 +127,7 @@ const NodeController = (props) => {
     if (json.result.length == 1) {
       const node = json.result[0];
       setCreatedNode(node);
-      glossaryAuthorContext.doCreatedAction(node);
+      glossaryAuthorCRUDContext.doCreatedAction(node);
       setCurrentNodeGuid(undefined);
     } else {
       onErrorGetNode("Error did not get a node from the server");
@@ -141,7 +141,7 @@ const NodeController = (props) => {
   };
   const onSuccessfulGetNode = (json) => {
     if (json.result.length == 1) {
-      glossaryAuthorContext.doSelectedNode(json.result[0]);
+      glossaryAuthorCRUDContext.doSelectedNode(json.result[0]);
     } else {
       onErrorGetNode("Error did not get a node from the server");
     }
@@ -149,11 +149,11 @@ const NodeController = (props) => {
   const onErrorGetNode = (msg) => {
     console.log("Error on Get Node" + msg);
     setErrorMsg(msg);
-    glossaryAuthorContext.doRefreshSearchAction();
+    glossaryAuthorCRUDContext.doRefreshSearchAction();
   };
   const onSuccessfulGetNodeLines = (json) => {
     if (json.result) {
-      glossaryAuthorContext.doUpdateNodeLines(json.result);
+      glossaryAuthorCRUDContext.doUpdateNodeLines(json.result);
     } else {
       onErrorGetNode("Error did not get node's lines from the server");
     }
@@ -162,7 +162,7 @@ const NodeController = (props) => {
     console.log("Error on Get Node's Lines" + msg);
     setErrorMsg(msg);
     // do we need to do this - as the main search table will not have changed
-    glossaryAuthorContext.doRefreshSearchAction();
+    glossaryAuthorCRUDContext.doRefreshSearchAction();
   };
   const onErrorDelete = (msg) => {
     console.log("Error on delete " + msg);
@@ -175,11 +175,11 @@ const NodeController = (props) => {
     issueSearch(debouncedSearchCriteria);
   };
   const onSuccessfulUpdate = () => {
-    glossaryAuthorContext.doResetSelectedAction();
+    glossaryAuthorCRUDContext.doResetSelectedAction();
     issueSearch(debouncedSearchCriteria);
   };
   const onErrorUpdate = (msg) => {
-    glossaryAuthorContext.doResetSelectedAction();
+    glossaryAuthorCRUDContext.doResetSelectedAction();
     console.log("Error on update " + msg);
     setCurrentNodeGuid(undefined);
     setErrorMsg(msg);
@@ -227,17 +227,17 @@ const NodeController = (props) => {
       // Set results state
       setResults([]);
     }
-    glossaryAuthorContext.doSearchedAction();
+    glossaryAuthorCRUDContext.doSearchedAction();
   };
   function getCurrentNodeLines() {
     const url =
-      glossaryAuthorContext.currentNodeType.url + "/" + currentNodeGuid + "/relationships";
+      glossaryAuthorCRUDContext.currentNodeType.url + "/" + currentNodeGuid + "/relationships";
     console.log("issueGet " + url);
     issueRestGet(url, onSuccessfulGetNodeLines, onErrorGetNodeLines);
   }
   function getCurrentNode() {
     const url =
-      glossaryAuthorContext.currentNodeType.url + "/" + currentNodeGuid;
+      glossaryAuthorCRUDContext.currentNodeType.url + "/" + currentNodeGuid;
     console.log("issueGet " + url);
     issueRestGet(url, onSuccessfulGetNode, onErrorGetNode);
   }
@@ -248,7 +248,7 @@ const NodeController = (props) => {
     updateSearchTableRows([]);
     setTotal(0);
     setIsSearching(false);
-    glossaryAuthorContext.doSearchedAction();
+    glossaryAuthorCRUDContext.doSearchedAction();
   };
   // refresh the displayed search results
   // this involves taking the results from state and calculating what we need to display pased on the pagination options
@@ -272,8 +272,8 @@ const NodeController = (props) => {
       let resultsToshow = slicedResults.map(function (row) {
         row.id = row.systemAttributes.guid;
         if (
-          glossaryAuthorContext.selectedNode &&
-          glossaryAuthorContext.selectedNode.systemAttributes.guid == row.id
+          glossaryAuthorCRUDContext.selectedNode &&
+          glossaryAuthorCRUDContext.selectedNode.systemAttributes.guid == row.id
         ) {
           row.isSelected = true;
           selectedInResults = true;
@@ -288,28 +288,28 @@ const NodeController = (props) => {
     // we have selectedNode but it is not in the search results - we must have deleted it.
     if (!selectedInResults) {
       setCurrentNodeGuid(undefined);
-      glossaryAuthorContext.doResetSelectedAction();
+      glossaryAuthorCRUDContext.doResetSelectedAction();
     }
   }
   // issue the create rest call for the supplied body
   function issueCreate(body) {
-    const url = glossaryAuthorContext.currentNodeType.url;
+    const url = glossaryAuthorCRUDContext.currentNodeType.url;
     console.log("issueCreate " + url);
     issueRestCreate(url, body, onSuccessfulCreate, onErrorCreate);
   }
   const onSelectRow = (row) => {
     console.log("onSelectRow");
     setCurrentNodeGuid(row.id);
-    glossaryAuthorContext.doResetSelectedAction();
+    glossaryAuthorCRUDContext.doResetSelectedAction();
   };
   const onNodeUpdate = (body) => {
     console.log("onNodeUpdate");
-    const guid = glossaryAuthorContext.selectedNode.systemAttributes.guid;
-    const url = glossaryAuthorContext.currentNodeType.url + "/" + guid;
+    const guid = glossaryAuthorCRUDContext.selectedNode.systemAttributes.guid;
+    const url = glossaryAuthorCRUDContext.currentNodeType.url + "/" + guid;
     issueRestUpdate(url, body, onSuccessfulUpdate, onErrorUpdate);
   };
   const onUpdateClose = () => {
-    glossaryAuthorContext.doResetSelectedAction();
+    glossaryAuthorCRUDContext.doResetSelectedAction();
   };
 
   // issue search using a criteria
@@ -323,24 +323,24 @@ const NodeController = (props) => {
 
     // encode the URI. Be aware the more recent RFC3986 for URLs makes use of square brackets which are reserved (for IPv6)
     const url = encodeURI(
-      glossaryAuthorContext.currentNodeType.url +
+      glossaryAuthorCRUDContext.currentNodeType.url +
         "?offset=0&pageSize=1000&searchCriteria=" +
         actualCriteria
     );
     issueRestGet(url, onSuccessfulSearch, onErrorSearch);
   }
   function issueDelete() {
-    const url = glossaryAuthorContext.currentNodeType.url + "/" + currentNodeGuid;
+    const url = glossaryAuthorCRUDContext.currentNodeType.url + "/" + currentNodeGuid;
     issueRestDelete(url, onSuccessfulDelete, onErrorDelete);
   }
   <div style={{ color: "red" }}>{errorMsg}</div>;
 
-  if (glossaryAuthorContext.currentNodeType === undefined) {
+  if (glossaryAuthorCRUDContext.currentNodeType === undefined) {
     return null;
   } else {
     return (
       <div>
-        {/* {(glossaryAuthorContext.isSetupComplete() || glossaryAuthorContext.isEdittingGlossary ||  glossaryAuthorContext.isEdittingProject)  && ( */}
+
         <div className="bx--row">
           <div className="bx--col-lg-1 bx--col-md-1">
             <Add16 kind="primary" onClick={() => onClickAdd()} />
@@ -367,14 +367,14 @@ const NodeController = (props) => {
           <div style={{ color: "red" }}>{errorMsg}</div>
         </div>
         <div className="bx--row">
-          {glossaryAuthorContext.showCreatingNodeComponent() && (
+          {glossaryAuthorCRUDContext.showCreatingNodeComponent() && (
             <NodeCreateView issueCreate={issueCreate} />
           )}
-          {glossaryAuthorContext.showCreatedNodeComponent() && (
+          {glossaryAuthorCRUDContext.showCreatedNodeComponent() && (
             <NodeCreateView createdNode={createdNode} />
           )}
           <div className="actions-container">
-            {glossaryAuthorContext.showSearchComponent() && (
+            {glossaryAuthorCRUDContext.showSearchComponent() && (
               <div className="actions-item">
                 <NodeSearchView
                   tableKey={searchTableKey}
@@ -389,7 +389,7 @@ const NodeController = (props) => {
                 />
               </div>
             )}
-            {glossaryAuthorContext.selectedNode && (
+            {glossaryAuthorCRUDContext.selectedNode && (
               <div className="actions-item">
                 <NodeUpdateView
                   onUpdate={onNodeUpdate}
@@ -397,7 +397,7 @@ const NodeController = (props) => {
                 />
               </div>
             )}
-            {glossaryAuthorContext.selectedNodeLines && (
+            {glossaryAuthorCRUDContext.selectedNodeLines && (
               <div className="actions-item">
                 <LinesView onClose={onUpdateClose} />
               </div>

@@ -1,12 +1,16 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Accordion, AccordionItem } from "carbon-components-react";
+import GlossaryAuthorContext from "./contexts/GlossaryAuthorContext";
 import getNodeType from "./components/properties/NodeTypes.js";
-import GlossaryAuthorCRUD from "./components/GlossaryAuthorCRUD";
-import GlossaryAuthorNavigation from "./components/GlossaryAuthorNavigation";
+import { IdentificationContext } from "../../contexts/IdentificationContext";
+import { BrowserRouter } from "react-router-dom";
+import GlossaryAuthorRoutes from "./components/views/GlossaryAuthorRoutes";
+import GlossaryAuthorTaskRouting from "./components/GlossaryAuthorTaskRouting";
 
 export default function GlossaryAuthor() {
+  // const GlossaryAuthor = (match) => {
   const [connected, setConnected] = useState();
   const [errorMsg, setErrorMsg] = useState();
   const [exceptionUserAction, setExceptionUserAction] = useState();
@@ -14,11 +18,15 @@ export default function GlossaryAuthor() {
   const [exceptionErrorMessage, setExceptionErrorMessage] = useState();
   const [systemAction, setSystemAction] = useState();
   const [fullResponse, setFullResponse] = useState();
-  const [task, setTask] = useState("crud");
+  const [glossaryAuthorURL, setGlossaryAuthorURL] = useState();
+  const identificationContext = useContext(IdentificationContext);
 
   const nodeType = getNodeType("glossary");
   // Try to connect to the server. The [] means it only runs on mount (rather than every render)
   useEffect(() => {
+    setGlossaryAuthorURL(
+      identificationContext.getBrowserURL("glossary-author")
+    );
     issueConnect();
   }, []);
 
@@ -46,7 +54,7 @@ export default function GlossaryAuthor() {
         );
         history.pushState({}, null, loginUrl);
         history.go();
-      } else {get
+      } else {
         alert(
           "The Browser does not support history. Please re-login here: " +
             loginUrl
@@ -106,11 +114,6 @@ export default function GlossaryAuthor() {
         });
     }
   };
-  const handleTaskChange = (e) => {
-    const newTask = e.target.value;
-    console.log("handleTaskChange (() " + newTask);
-    setTask(newTask);
-  };
 
   const handleOnClick = (e) => {
     console.log("GlossaryAuthor connectivity handleClick(()");
@@ -122,20 +125,16 @@ export default function GlossaryAuthor() {
     <div>
       {connected && (
         <div>
-          <select
-            id="tasks"
-            float="right"
-            border-bottom-width="3px"
-            onChange={handleTaskChange}
-          >
-            <option value="authoring">Glossary Authoring</option>
-            <option value="search">Search</option>
-            <option selected value="crud">
-              CRUD
-            </option>
-          </select>
-          {task == "crud" && <GlossaryAuthorCRUD />}
-          {task == "authoring" && <GlossaryAuthorNavigation />}
+          <GlossaryAuthorContext>
+            <BrowserRouter>
+              {/* this will cause the change in URL */}
+              <GlossaryAuthorTaskRouting glossaryAuthorURL={glossaryAuthorURL} />
+
+              {/* This will cause the view to be changed as a result of the url change */}
+              <GlossaryAuthorRoutes glossaryAuthorURL={glossaryAuthorURL} />
+              {/* <GlossaryAuthorRoutes /> */}
+            </BrowserRouter>
+          </GlossaryAuthorContext>
         </div>
       )}
       {!connected && (
