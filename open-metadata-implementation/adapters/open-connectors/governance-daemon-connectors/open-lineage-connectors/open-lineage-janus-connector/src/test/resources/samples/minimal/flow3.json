@@ -1,0 +1,49 @@
+{
+  "graphConfigFile": "/Users/wd38tc/Tools/janusgraph-0.5.1/conf/ols.properties",
+  "processes": [
+    {
+      "qualifiedName": "(host_(engine))=IS115.OPENMETADATA.IBMCLOUD.COM::(transformation_project)=minimal::(dsjob)=flow3",
+      "noOfSubprocesses": 5
+    }
+  ],
+  "tables": [
+    {
+      "qualifiedName": "(host_(engine))=IS115.OPENMETADATA.IBMCLOUD.COM::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=EMPLNAME"
+    },
+    {
+      "qualifiedName": "(host_(engine))=IS115.OPENMETADATA.IBMCLOUD.COM::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=WORKPLACE"
+    },
+    {
+      "qualifiedName": "(host_(engine))=IS115.OPENMETADATA.IBMCLOUD.COM::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=EMPLDIRECTORY"
+    }
+  ],
+  "columns": [
+    {
+      "qualifiedName": "(host_(engine))=IS115.OPENMETADATA.IBMCLOUD.COM::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=EMPLNAME::(database_column)=EMPID"
+    },
+    {
+      "qualifiedName": "(host_(engine))=IS115.OPENMETADATA.IBMCLOUD.COM::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=EMPLNAME::(database_column)=FNAME"
+    },
+    {
+      "qualifiedName": "(host_(engine))=IS115.OPENMETADATA.IBMCLOUD.COM::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=EMPLNAME::(database_column)=SURNAME"
+    },
+    {
+      "qualifiedName": "(host_(engine))=IS115.OPENMETADATA.IBMCLOUD.COM::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=WORKPLACE::(database_column)=LOCNAME"
+    },
+    {
+      "qualifiedName": "(host_(engine))=IS115.OPENMETADATA.IBMCLOUD.COM::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=EMPLNAME::(database_column)=LOCID"
+    },
+    {
+      "qualifiedName": "(host_(engine))=IS115.OPENMETADATA.IBMCLOUD.COM::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=EMPLDIRECTORY::(database_column)=EMPID"
+    },
+    {
+      "qualifiedName": "(host_(engine))=IS115.OPENMETADATA.IBMCLOUD.COM::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=EMPLDIRECTORY::(database_column)=EMPNAME"
+    },
+    {
+      "qualifiedName": "(host_(engine))=IS115.OPENMETADATA.IBMCLOUD.COM::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=EMPLDIRECTORY::(database_column)=LOCNAME"
+    },
+    {
+      "qualifiedName": "(host_(engine))=IS115.OPENMETADATA.IBMCLOUD.COM::(database)=MINIMAL::(database_schema)=DB2INST1::(database_table)=EMPLDIRECTORY::(database_column)=LOCID"
+    }
+  ]
+}
