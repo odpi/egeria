@@ -1,35 +1,33 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState } from "react";
 import {
   Accordion,
   AccordionItem,
   DatePicker,
   DatePickerInput,
-  Button,
   DataTable,
-  Select,
-  SelectItem,
   TableContainer,
   Table,
   TableHead,
   TableRow,
-  TableSelectAll,
-  TableSelectRow,
   TableCell,
   TableHeader,
   TableBody,
 } from "carbon-components-react";
-
-import { GlossaryAuthorCRUDContext } from "../../contexts/GlossaryAuthorCRUDContext";
+import getNodeType from "./properties/NodeTypes.js";
 import Info16 from "@carbon/icons-react/lib/information/16";
+import {
+  issueRestCreate
+} from "./RestCaller";
 
-function NodeCreateView(props) {
-  console.log("NodeCreateView");
-
-  const glossaryAuthorCRUDContext = useContext(GlossaryAuthorCRUDContext);
-  console.log("NodeCreateView glossaryAuthorCRUDContext", glossaryAuthorCRUDContext);
+export default function CreateGlossary(props) {
   const [createBody, setCreateBody] = useState({});
+  const [createdNode, setCreatedNode] = useState();
+  const [errorMsg, setErrorMsg] = useState();
+  const currentNodeType = getNodeType("glossary");
+
+  console.log("CreateGlossary");
 
   /**
    * If there was an error the button has a class added to it to cause it to shake. After the animation ends, we need to remove the class.
@@ -43,18 +41,25 @@ function NodeCreateView(props) {
     console.log("handleClick(()");
     e.preventDefault();
     let body = createBody;
-    const nodeType = glossaryAuthorCRUDContext.currentNodeType;
-    if (nodeType.typeForCreate) {
-      body.nodeType = nodeType.nodeTypeForCreate;
+    // TODO consider moving this up to a node controller as per the CRUD pattern.
+    // inthe meantime this will be self contained.
+    const url = currentNodeType.url;
+    console.log("issueCreate " + url);
+    issueRestCreate(url, body, onSuccessfulCreate, onErrorCreate);
+  };
+  const onSuccessfulCreate = (json) => {
+    console.log("onSuccessfulCreate");
+    if (json.result.length == 1) {
+      const node = json.result[0];
+      setCreatedNode(node);
     } else {
-      body.nodeType = nodeType.typeName;
+      onErrorGet("Error did not get a node from the server");
     }
-    if (nodeType.hasGlossary) {
-      let glossary = {};
-      glossary.guid = glossaryAuthorCRUDContext.myGlossary.systemAttributes.guid;
-      body.glossary = glossary;
-    }
-    props.issueCreate(body);
+  };
+  const onErrorCreate = (msg) => {
+    console.log("Error on Get " + msg);
+    setErrorMsg(msg);
+    setCreatedNode(undefined);
   };
   const validateForm = () => {
     //TODO consider marking name as manditory in the nodetype definition
@@ -62,11 +67,15 @@ function NodeCreateView(props) {
 
     return true;
   };
+  const onErrorGet = (msg) => {
+    console.log("Error on Get " + msg);
+    setErrorMsg(msg);
+  };
   const createLabelId = (labelKey) => {
     return "text-input-" + labelKey;
   };
   const setAttribute = (item, value) => {
-    console.log("setAttribute " + item.key + ",value="+value);
+    console.log("setAttribute " + item.key + ",value=" + value);
     let myCreateBody = createBody;
     myCreateBody[item.key] = value;
     setCreateBody(myCreateBody);
@@ -83,14 +92,14 @@ function NodeCreateView(props) {
   ];
 
   const getCreatedTableTitle = () => {
-    return "Successfully created " + props.createdNode.name;
+    return "Successfully created " + createdNode.name;
   };
 
   const getCreatedTableAttrRowData = () => {
     let rowData = [];
-    const attributes = glossaryAuthorCRUDContext.currentNodeType.attributes;
+    const attributes = currentNodeType.attributes;
 
-    for (var prop in props.createdNode) {
+    for (var prop in createdNode) {
       if (
         prop != "systemAttributes" &&
         prop != "glossary" &&
@@ -111,7 +120,7 @@ function NodeCreateView(props) {
           }
         }
 
-        let value = props.createdNode[prop];
+        let value = createdNode[prop];
         // TODO deal with the other types (and null? and arrays?) properly
         value = JSON.stringify(value);
         row.value = value;
@@ -122,19 +131,11 @@ function NodeCreateView(props) {
   };
   const getSystemDataRowData = () => {
     let rowData = [];
-    const systemAttributes = props.createdNode.systemAttributes;
+    const systemAttributes = createdNode.systemAttributes;
     for (var prop in systemAttributes) {
       let row = {};
       row.id = prop;
       row.attrName = prop;
-      // TODO if we know about the attribute then use the label.
-
-      // for (var i = 0; i < attributes.length; i++) {
-      // if (attributes[i].key == prop) {
-      //   row.attrName = attributes[i].label;
-      // }
-      // }
-      // }
 
       let value = systemAttributes[prop];
       // TODO deal with the other types (and null? and arrays?) properly
@@ -145,9 +146,19 @@ function NodeCreateView(props) {
     return rowData;
   };
 
+  const createAnother = () => {
+    setCreatedNode(undefined);
+  }
+  const onClickBack = () => {
+    console.log("Back clicked");
+    // use props.history, as there is another window history object in scope in the event listener  
+    console.log(props.history);
+    // go  back 
+    props.history.goBack();
+  }
   return (
     <div>
-      {glossaryAuthorCRUDContext.currentNodeType && props.createdNode != undefined  && (
+      {createdNode != undefined && (
         <div>
           <DataTable
             isSortable
@@ -159,7 +170,10 @@ function NodeCreateView(props) {
                   <TableHead>
                     <TableRow>
                       {headers.map((header) => (
-                        <TableHeader key={header.key} {...getHeaderProps({ header })}>
+                        <TableHeader
+                          key={header.key}
+                          {...getHeaderProps({ header })}
+                        >
                           {header.header}
                         </TableHeader>
                       ))}
@@ -192,7 +206,10 @@ function NodeCreateView(props) {
                         <TableHead>
                           <TableRow>
                             {headers.map((header) => (
-                              <TableHeader key={header.key} {...getHeaderProps({ header })}>
+                              <TableHeader
+                                key={header.key}
+                                {...getHeaderProps({ header })}
+                              >
                                 {header.header}
                               </TableHeader>
                             ))}
@@ -216,28 +233,42 @@ function NodeCreateView(props) {
               </div>
             </AccordionItem>
           </Accordion>
+          <button
+                className="bx--btn bx--btn--primary"
+                onClick={createAnother}
+                type="button"
+              >
+                Create Another
+              </button>
+              <button
+                className="bx--btn bx--btn--primary"
+                onClick={onClickBack}
+                type="button"
+              >
+                Back
+              </button>
         </div>
       )}
 
-      {glossaryAuthorCRUDContext.currentNodeType && props.createdNode == undefined && (
+      {createdNode == undefined && (
         <div>
           <form>
             <div>
               <h4>
-                Create{" "}
-                {glossaryAuthorCRUDContext.currentNodeType
-                  ? glossaryAuthorCRUDContext.currentNodeType.typeName
-                  : ""}
+                Create {currentNodeType ? currentNodeType.typeName : ""}
                 <Info16 />
               </h4>
             </div>
 
-            {glossaryAuthorCRUDContext.currentNodeType &&
-              props.createdNode == undefined &&
-              glossaryAuthorCRUDContext.currentNodeType.attributes.map((item) => {
+            {currentNodeType &&
+              createdNode == undefined &&
+              currentNodeType.attributes.map((item) => {
                 return (
                   <div className="bx--form-item" key={item.key}>
-                    <label htmlFor={createLabelId(item.key)} className="bx--label">
+                    <label
+                      htmlFor={createLabelId(item.key)}
+                      className="bx--label"
+                    >
                       {item.label} <Info16 />
                     </label>
                     <input
@@ -288,5 +319,3 @@ function NodeCreateView(props) {
     </div>
   );
 }
-
-export default NodeCreateView;

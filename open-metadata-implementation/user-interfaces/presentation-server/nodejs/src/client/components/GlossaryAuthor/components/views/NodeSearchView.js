@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 import React, { useState, useEffect, useContext } from "react";
-import { GlossaryAuthorContext } from "../../contexts/GlossaryAuthorCRUDContext";
+import { GlossaryAuthorCRUDContext } from "../../contexts/GlossaryAuthorCRUDContext";
 import {
   Accordion,
   AccordionItem,
@@ -34,7 +34,7 @@ import {
 
 const NodeSearchView = (props) => {
   console.log("NodeSearchView " + props.refresh);
-  const glossaryAuthorContext = useContext(GlossaryAuthorContext);
+  const glossaryAuthorCRUDContext = useContext(GlossaryAuthorCRUDContext);
 
   // properties that will be displayed be default for a node
   const mainProperties = [
@@ -106,7 +106,7 @@ const NodeSearchView = (props) => {
   // calculate the columns from the main attributes and the additional attributes.
   function calculateAdditionalProperties() {
     let items = [];
-    glossaryAuthorContext.currentNodeType.attributes.map(function (attribute) {
+    glossaryAuthorCRUDContext.currentNodeType.attributes.map(function (attribute) {
       if (
         attribute.key != "name" &&
         attribute.key != "qualifiedName" &&
@@ -184,8 +184,8 @@ const NodeSearchView = (props) => {
               </button>
             </div>
           </div>
-          {glossaryAuthorContext.currentNodeType &&
-            glossaryAuthorContext.currentNodeType.attributes.length > 3 && (
+          {glossaryAuthorCRUDContext.currentNodeType &&
+            glossaryAuthorCRUDContext.currentNodeType.attributes.length > 3 && (
               <div className="search-item">
                 <Accordion>
                   <AccordionItem title="Search options">
@@ -225,7 +225,7 @@ const NodeSearchView = (props) => {
                 getRowProps,
               }) => (
                 <TableContainer
-                  title={glossaryAuthorContext.currentNodeType.typeName}
+                  title={glossaryAuthorCRUDContext.currentNodeType.typeName}
                 >
                   <Table>
                     <TableHead>
