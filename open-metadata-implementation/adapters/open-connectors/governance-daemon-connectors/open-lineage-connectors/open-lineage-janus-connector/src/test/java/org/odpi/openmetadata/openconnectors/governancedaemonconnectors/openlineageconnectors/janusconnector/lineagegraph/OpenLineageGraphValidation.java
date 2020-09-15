@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.lineagegraph;
 
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__;
 import org.apache.tinkerpop.gremlin.structure.Graph;
@@ -92,7 +93,7 @@ public class OpenLineageGraphValidation {
         }
     }
 
-    private static Function<JsonObject, Process> createProcess = processAsJsonObject ->
+    private static final Function<JsonObject, Process> createProcess = processAsJsonObject ->
             new Process(processAsJsonObject.getString(QUALIFIED_NAME),
             processAsJsonObject.getJsonNumber("noOfSubprocesses").longValue());
 
@@ -108,7 +109,7 @@ public class OpenLineageGraphValidation {
         }
     }
 
-    private static Function<JsonObject, Table> createTable = tableAsJsonObject ->
+    private static final Function<JsonObject, Table> createTable = tableAsJsonObject ->
             new Table(tableAsJsonObject.getString(QUALIFIED_NAME));
 
     static class Column{
@@ -123,7 +124,7 @@ public class OpenLineageGraphValidation {
         }
     }
 
-    private static Function<JsonObject, Column> createColumn = columnAsJsonObject ->
+    private static final Function<JsonObject, Column> createColumn = columnAsJsonObject ->
             new Column(columnAsJsonObject.getString(QUALIFIED_NAME));
 
     private static <T, R> void addEntitiesToTarget(JsonArray entitiesAsJsonArray, Function<T, R> function, List<R> target){
@@ -167,7 +168,7 @@ public class OpenLineageGraphValidation {
         graphValidation.close();
     }
 
-    private GraphTraversalSource g;
+    private final GraphTraversalSource g;
 
     private OpenLineageGraphValidation(String configFilePath){
         Graph graph = JanusGraphFactory.open(configFilePath);
@@ -192,9 +193,11 @@ public class OpenLineageGraphValidation {
     }
 
     private void validateProcess(Process process){
-        Vertex processAsVertex = g.V().has(VERTEX_QUALIFIED_NAME, process.getQualifiedName()).has(PROPERTY_KEY_LABEL, PROCESS).next();
+        GraphTraversal<Vertex, Vertex> processTraversal = g.V().has(VERTEX_QUALIFIED_NAME, process.getQualifiedName())
+                .has(PROPERTY_KEY_LABEL, PROCESS);
 
-        assert processAsVertex != null : "Process not found by qualified name " + process.getQualifiedName();
+        assert processTraversal.hasNext() : "Process not found by qualified name " + process.getQualifiedName();
+        Vertex processAsVertex = processTraversal.next();
 
         boolean processIsOutput = g.V(processAsVertex.id()).in(TABLE_DATA_FLOW)
                 .or(__.has(PROPERTY_KEY_LABEL, RELATIONAL_TABLE),
@@ -229,23 +232,24 @@ public class OpenLineageGraphValidation {
     }
 
     private void validateTable(Table table){
-        Vertex tableVertex = g.V().has(VERTEX_QUALIFIED_NAME, table.getQualifiedName())
+        GraphTraversal<Vertex, Vertex> tableTraversal = g.V().has(VERTEX_QUALIFIED_NAME, table.getQualifiedName())
                 .or(__.has(PROPERTY_KEY_LABEL, DATA_FILE),
-                    __.has(PROPERTY_KEY_LABEL, RELATIONAL_TABLE)).next();
+                    __.has(PROPERTY_KEY_LABEL, RELATIONAL_TABLE));
 
-        assert tableVertex != null : "Table not found by qualifiedName " + table.getQualifiedName();
+        assert tableTraversal.hasNext() : "Table not found by qualifiedName " + table.getQualifiedName();
+        Vertex tableAsVertex = tableTraversal.next();
 
-        boolean tableIsInput = g.V(tableVertex.id()).out(TABLE_DATA_FLOW).has(PROPERTY_KEY_LABEL, PROCESS).hasNext();
-        boolean tableIsOutput = g.V(tableVertex.id()).in(TABLE_DATA_FLOW).has(PROPERTY_KEY_LABEL, PROCESS).hasNext();
+        boolean tableIsInput = g.V(tableAsVertex.id()).out(TABLE_DATA_FLOW).has(PROPERTY_KEY_LABEL, PROCESS).hasNext();
+        boolean tableIsOutput = g.V(tableAsVertex.id()).in(TABLE_DATA_FLOW).has(PROPERTY_KEY_LABEL, PROCESS).hasNext();
 
         if( tableIsInput && !tableIsOutput ){
-            assert processHasOutput(tableVertex.id()) : "Table is not input for process. Required to be only input";
+            assert processHasOutput(tableAsVertex.id()) : "Table is not input for process. Required to be only input";
         }
         if( !tableIsInput && tableIsOutput ){
-            assert processHasInput(tableVertex.id()) : "Table is not output for process. Required to be only output";
+            assert processHasInput(tableAsVertex.id()) : "Table is not output for process. Required to be only output";
         }
         if(tableIsInput && tableIsOutput){
-            assert processHasOutput(tableVertex.id()) && processHasInput(tableVertex.id()) :
+            assert processHasOutput(tableAsVertex.id()) && processHasInput(tableAsVertex.id()) :
                     "Table is not input and output for processes. Required to be both" ;
         }
 
@@ -265,11 +269,12 @@ public class OpenLineageGraphValidation {
     }
 
     private void validateColumn(Column column){
-        Vertex columnAsVertex = g.V().has(VERTEX_QUALIFIED_NAME, column.getQualifiedName())
+        GraphTraversal<Vertex, Vertex> columnTraversal = g.V().has(VERTEX_QUALIFIED_NAME, column.getQualifiedName())
                 .or(__.has(PROPERTY_KEY_LABEL, RELATIONAL_COLUMN),
-                        __.has(PROPERTY_KEY_LABEL, TABULAR_COLUMN)).next();
+                        __.has(PROPERTY_KEY_LABEL, TABULAR_COLUMN));
 
-        assert columnAsVertex != null : "Column not found by qualifiedName " + column.getQualifiedName();
+        assert columnTraversal.hasNext() : "Column not found by qualifiedName " + column.getQualifiedName();
+        Vertex columnAsVertex= columnTraversal.next();
 
         if( !g.V(columnAsVertex.id()).has(PROPERTY_KEY_LABEL, TABULAR_COLUMN).in(ATTRIBUTE_FOR_SCHEMA)
                 .in("AssetSchemaType").hasLabel(DATA_FILE).hasNext() ){
