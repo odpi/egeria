@@ -236,7 +236,7 @@ public class RelationshipsFVT {
         FVTUtils.validateLine(createIsaRelationship(term1, term2));
         FVTUtils.validateLine(createPreferredTerm(term1, term2));
         FVTUtils.validateLine(createRelatedTerm(term1, term2));
-        FVTUtils.validateLine(createTermHASARelationship(term1, term2));
+        FVTUtils.validateLine(createHasA(term1, term2));
         FVTUtils.validateLine(createSynonym(term1, term3));
         FVTUtils.validateLine(createReplacementTerm(term1, term2));
         FVTUtils.validateLine(createTermTYPEDBYRelationship(term1, term2));
@@ -266,12 +266,7 @@ public class RelationshipsFVT {
         if (!updatedTermIsATypeOFRelationship.getSteward().equals(createdTermIsATypeOFRelationship.getSteward())) {
             throw new SubjectAreaFVTCheckedException("ERROR: IsaTypeOf update steward not as expected");
         }
-        if (!updatedTermIsATypeOFRelationship.getSubTypeGuid().equals(createdTermIsATypeOFRelationship.getSubTypeGuid())) {
-            throw new SubjectAreaFVTCheckedException("ERROR: IsaTypeOf update end 1 not as expected");
-        }
-        if (!updatedTermIsATypeOFRelationship.getSuperTypeGuid().equals(createdTermIsATypeOFRelationship.getSuperTypeGuid())) {
-            throw new SubjectAreaFVTCheckedException("ERROR: IsaTypeOf update end 2 not as expected");
-        }
+        FVTUtils.checkEnds(updatedTermIsATypeOFRelationship,createdTermIsATypeOFRelationship,"IsATypeOf","update");
         System.out.println("Updated IsaTypeOf " + createdTermIsATypeOFRelationship);
         IsATypeOf replaceTermIsATypeOFRelationship = new IsATypeOf();
         replaceTermIsATypeOFRelationship.setDescription("ddd3");
@@ -286,10 +281,10 @@ public class RelationshipsFVT {
         if (replacedTermIsATypeOFRelationship.getSteward() != null) {
             throw new SubjectAreaFVTCheckedException("ERROR: IsaTypeOf replace steward not as expected");
         }
-        if (!replacedTermIsATypeOFRelationship.getSuperTypeGuid().equals(createdTermIsATypeOFRelationship.getSuperTypeGuid())) {
+        if (!replacedTermIsATypeOFRelationship.getEnd1().getNodeGuid().equals(createdTermIsATypeOFRelationship.getEnd1().getNodeGuid())) {
             throw new SubjectAreaFVTCheckedException("ERROR: IsaTypeOf replace end 1 not as expected");
         }
-        if (!replacedTermIsATypeOFRelationship.getSubTypeGuid().equals(createdTermIsATypeOFRelationship.getSubTypeGuid())) {
+        if (!replacedTermIsATypeOFRelationship.getEnd2().getNodeGuid().equals(createdTermIsATypeOFRelationship.getEnd2().getNodeGuid())) {
             throw new SubjectAreaFVTCheckedException("ERROR: IsaTypeOf replace end 2 not as expected");
         }
         System.out.println("Replaced IsaTypeOf " + createdTermIsATypeOFRelationship);
@@ -331,10 +326,10 @@ public class RelationshipsFVT {
         if (!updatedIsA.getSteward().equals(createdIsA.getSteward())) {
             throw new SubjectAreaFVTCheckedException("ERROR: isa update steward not as expected");
         }
-        if (!updatedIsA.getTermGuid().equals(createdIsA.getTermGuid())) {
+        if (!updatedIsA.getEnd1().getNodeGuid().equals(createdIsA.getEnd1().getNodeGuid())) {
             throw new SubjectAreaFVTCheckedException("ERROR: isa update end 1 not as expected");
         }
-        if (!updatedIsA.getSpecialisedTermGuid().equals(createdIsA.getSpecialisedTermGuid())) {
+        if (!updatedIsA.getEnd2().getNodeGuid().equals(createdIsA.getEnd2().getNodeGuid())) {
             throw new SubjectAreaFVTCheckedException("ERROR: isa update end 2 not as expected");
         }
         System.out.println("Updated Isa " + createdIsA);
@@ -354,10 +349,10 @@ public class RelationshipsFVT {
         if (replacedIsA.getSteward() != null) {
             throw new SubjectAreaFVTCheckedException("ERROR: isa replace steward not as expected");
         }
-        if (!replacedIsA.getSpecialisedTermGuid().equals(createdIsA.getSpecialisedTermGuid())) {
+        if (!replacedIsA.getEnd1().getNodeGuid().equals(createdIsA.getEnd1().getNodeGuid())) {
             throw new SubjectAreaFVTCheckedException("ERROR: isa replace end 1 not as expected");
         }
-        if (!replacedIsA.getTermGuid().equals(createdIsA.getTermGuid())) {
+        if (!replacedIsA.getEnd2().getNodeGuid().equals(createdIsA.getEnd2().getNodeGuid())) {
             throw new SubjectAreaFVTCheckedException("ERROR: isa replace end 2 not as expected");
         }
         System.out.println("Replaced Isa " + createdIsA);
@@ -380,12 +375,11 @@ public class RelationshipsFVT {
         isa.setExpression("Ex");
         isa.setSource("source");
         isa.setSteward("Stew");
-        isa.setSpecialisedTermGuid(term1.getSystemAttributes().getGUID());
-        isa.setTermGuid(term2.getSystemAttributes().getGUID());
+        isa.getEnd1().setNodeGuid(term1.getSystemAttributes().getGUID());
+        isa.getEnd2().setNodeGuid(term2.getSystemAttributes().getGUID());
         IsA createdIsA = subjectAreaRelationship.isA().create(this.userId, isa);
         FVTUtils.validateLine(createdIsA);
-        FVTUtils.checkGuidEnd1s("Isa", term1.getSystemAttributes().getGUID(), createdIsA.getSpecialisedTermGuid());
-        FVTUtils.checkGuidEnd2s("Isa", term2.getSystemAttributes().getGUID(), createdIsA.getTermGuid());
+        FVTUtils.checkEnds(isa, createdIsA, "isa", "create");
 
         return createdIsA;
     }
@@ -413,12 +407,7 @@ public class RelationshipsFVT {
         if (!updatedTermTYPEDBYRelationship.getSteward().equals(createdTermTYPEDBYRelationship.getSteward())) {
             throw new SubjectAreaFVTCheckedException("ERROR: termTYPEDBYRelationship update steward not as expected");
         }
-        if (!updatedTermTYPEDBYRelationship.getAttributeGuid().equals(createdTermTYPEDBYRelationship.getAttributeGuid())) {
-            throw new SubjectAreaFVTCheckedException("ERROR: termTYPEDBYRelationship update end 1 not as expected");
-        }
-        if (!updatedTermTYPEDBYRelationship.getTypeGuid().equals(createdTermTYPEDBYRelationship.getTypeGuid())) {
-            throw new SubjectAreaFVTCheckedException("ERROR: termTYPEDBYRelationship update end 2 not as expected");
-        }
+        FVTUtils.checkEnds(updatedTermTYPEDBYRelationship,createdTermTYPEDBYRelationship,"TYPEDBY","update");
         System.out.println("Updated TypedBy " + createdTermTYPEDBYRelationship);
         TypedBy replaceTermTYPEDBYRelationship = new TypedBy();
         replaceTermTYPEDBYRelationship.setDescription("ddd3");
@@ -433,12 +422,8 @@ public class RelationshipsFVT {
         if (replacedTermTYPEDBYRelationship.getSteward() != null) {
             throw new SubjectAreaFVTCheckedException("ERROR: termTYPEDBYRelationship replace steward not as expected");
         }
-        if (!replacedTermTYPEDBYRelationship.getAttributeGuid().equals(createdTermTYPEDBYRelationship.getAttributeGuid())) {
-            throw new SubjectAreaFVTCheckedException("ERROR: termTYPEDBYRelationship replace end 1 not as expected");
-        }
-        if (!replacedTermTYPEDBYRelationship.getTypeGuid().equals(createdTermTYPEDBYRelationship.getTypeGuid())) {
-            throw new SubjectAreaFVTCheckedException("ERROR: termTYPEDBYRelationship replace end 2 not as expected");
-        }
+
+        FVTUtils.checkEnds(replacedTermTYPEDBYRelationship,createdTermTYPEDBYRelationship,"TYPEDBY","replace");
         System.out.println("Replaced TypedBy " + createdTermTYPEDBYRelationship);
         subjectAreaRelationship.typedBy().delete(this.userId, guid);
         //FVTUtils.validateLine(gotTermTYPEDBYRelationship);
@@ -458,12 +443,12 @@ public class RelationshipsFVT {
         termTYPEDBYRelationship.setDescription("ddd");
         termTYPEDBYRelationship.setSource("source");
         termTYPEDBYRelationship.setSteward("Stew");
-        termTYPEDBYRelationship.setAttributeGuid(term1.getSystemAttributes().getGUID());
-        termTYPEDBYRelationship.setTypeGuid(term2.getSystemAttributes().getGUID());
+        termTYPEDBYRelationship.getEnd1().setNodeGuid(term1.getSystemAttributes().getGUID());
+        termTYPEDBYRelationship.getEnd2().setNodeGuid(term2.getSystemAttributes().getGUID());
         TypedBy createdTermTYPEDBYRelationship = subjectAreaRelationship.typedBy().create(this.userId, termTYPEDBYRelationship);
         FVTUtils.validateLine(createdTermTYPEDBYRelationship);
-        FVTUtils.checkGuidEnd1s("TypedBy", term1.getSystemAttributes().getGUID(), createdTermTYPEDBYRelationship.getAttributeGuid());
-        FVTUtils.checkGuidEnd2s("TypedBy", term2.getSystemAttributes().getGUID(), createdTermTYPEDBYRelationship.getTypeGuid());
+        FVTUtils.checkEnds(termTYPEDBYRelationship, createdTermTYPEDBYRelationship, "TypedBy", "create");
+
         return createdTermTYPEDBYRelationship;
     }
 
@@ -493,12 +478,7 @@ public class RelationshipsFVT {
         if (!updatedReplacementTerm.getSteward().equals(createdReplacementTerm.getSteward())) {
             throw new SubjectAreaFVTCheckedException("ERROR: replacementTerm update steward not as expected");
         }
-        if (!updatedReplacementTerm.getReplacedTermGuid().equals(createdReplacementTerm.getReplacedTermGuid())) {
-            throw new SubjectAreaFVTCheckedException("ERROR: replacementTerm update end 1 not as expected");
-        }
-        if (!updatedReplacementTerm.getReplacementTermGuid().equals(createdReplacementTerm.getReplacementTermGuid())) {
-            throw new SubjectAreaFVTCheckedException("ERROR: replacementTerm update end 2 not as expected");
-        }
+        FVTUtils.checkEnds(updatedReplacementTerm,createdReplacementTerm,"replacementTerm","update");
         System.out.println("Updated ReplacementTerm " + createdReplacementTerm);
         ReplacementTerm replaceReplacementTerm = new ReplacementTerm();
         replaceReplacementTerm.setDescription("ddd3");
@@ -516,12 +496,8 @@ public class RelationshipsFVT {
         if (replacedReplacementTerm.getSteward() != null) {
             throw new SubjectAreaFVTCheckedException("ERROR: replacementTerm replace steward not as expected");
         }
-        if (!replacedReplacementTerm.getReplacedTermGuid().equals(createdReplacementTerm.getReplacedTermGuid())) {
-            throw new SubjectAreaFVTCheckedException("ERROR: replacementTerm replace end 1 not as expected");
-        }
-        if (!replacedReplacementTerm.getReplacementTermGuid().equals(createdReplacementTerm.getReplacementTermGuid())) {
-            throw new SubjectAreaFVTCheckedException("ERROR: replacementTerm replace end 2 not as expected");
-        }
+
+        FVTUtils.checkEnds(replacedReplacementTerm,createdReplacementTerm,"replacementTerm","replace");
         System.out.println("Replaced ReplacementTerm " + createdReplacementTerm);
         subjectAreaRelationship.replacementTerm().delete(this.userId, guid);
         //FVTUtils.validateLine(gotReplacementTerm);
@@ -542,12 +518,11 @@ public class RelationshipsFVT {
         replacementTerm.setExpression("Ex");
         replacementTerm.setSource("source");
         replacementTerm.setSteward("Stew");
-        replacementTerm.setReplacedTermGuid(term1.getSystemAttributes().getGUID());
-        replacementTerm.setReplacementTermGuid(term2.getSystemAttributes().getGUID());
+        replacementTerm.getEnd1().setNodeGuid(term1.getSystemAttributes().getGUID());
+        replacementTerm.getEnd2().setNodeGuid(term2.getSystemAttributes().getGUID());
         ReplacementTerm createdReplacementTerm = subjectAreaRelationship.replacementTerm().create(this.userId, replacementTerm);
         FVTUtils.validateLine(createdReplacementTerm);
-        FVTUtils.checkGuidEnd1s("ReplacementTerm", term1.getSystemAttributes().getGUID(), createdReplacementTerm.getReplacedTermGuid());
-        FVTUtils.checkGuidEnd2s("ReplacementTerm", term2.getSystemAttributes().getGUID(), createdReplacementTerm.getReplacementTermGuid());
+        FVTUtils.checkEnds(replacementTerm, createdReplacementTerm, "ReplacementTerm", "create");
 
         return createdReplacementTerm;
     }
@@ -577,12 +552,9 @@ public class RelationshipsFVT {
         if (!updatedValidValue.getSteward().equals(createdValidValue.getSteward())) {
             throw new SubjectAreaFVTCheckedException("ERROR: validValue update steward not as expected");
         }
-        if (!updatedValidValue.getValidValueGuid().equals(createdValidValue.getValidValueGuid())) {
-            throw new SubjectAreaFVTCheckedException("ERROR: validValue update end 1 not as expected");
-        }
-        if (!updatedValidValue.getTermGuid().equals(createdValidValue.getTermGuid())) {
-            throw new SubjectAreaFVTCheckedException("ERROR: validValue update end 2 not as expected");
-        }
+
+        FVTUtils.checkEnds(updatedValidValue, createdValidValue, "ValidValue", "update");
+
         System.out.println("Updated ValidValue " + createdValidValue);
         ValidValue replaceValidValue = new ValidValue();
         replaceValidValue.setDescription("ddd3");
@@ -600,12 +572,8 @@ public class RelationshipsFVT {
         if (replacedValidValue.getSteward() != null) {
             throw new SubjectAreaFVTCheckedException("ERROR: validValue replace steward not as expected");
         }
-        if (!replacedValidValue.getValidValueGuid().equals(createdValidValue.getValidValueGuid())) {
-            throw new SubjectAreaFVTCheckedException("ERROR: validValue replace end 1 not as expected");
-        }
-        if (!replacedValidValue.getTermGuid().equals(createdValidValue.getTermGuid())) {
-            throw new SubjectAreaFVTCheckedException("ERROR: validValue replace end 2 not as expected");
-        }
+        FVTUtils.checkEnds(replacedValidValue, createdValidValue, "ValidValue", "replace");
+
         System.out.println("Replaced ValidValue " + createdValidValue);
         subjectAreaRelationship.validValue().delete(this.userId, guid);
         //FVTUtils.validateLine(gotValidValue);
@@ -626,12 +594,11 @@ public class RelationshipsFVT {
         validValue.setExpression("Ex");
         validValue.setSource("source");
         validValue.setSteward("Stew");
-        validValue.setTermGuid(term1.getSystemAttributes().getGUID());
-        validValue.setValidValueGuid(term2.getSystemAttributes().getGUID());
+        validValue.getEnd1().setNodeGuid(term1.getSystemAttributes().getGUID());
+        validValue.getEnd2().setNodeGuid(term2.getSystemAttributes().getGUID());
         ValidValue createdValidValue = subjectAreaRelationship.validValue().create(this.userId, validValue);
         FVTUtils.validateLine(createdValidValue);
-        FVTUtils.checkGuidEnd1s("ValidValue", term1.getSystemAttributes().getGUID(), createdValidValue.getTermGuid());
-        FVTUtils.checkGuidEnd2s("ValidValue", term2.getSystemAttributes().getGUID(), createdValidValue.getValidValueGuid());
+        FVTUtils.checkEnds(validValue, createdValidValue, "ValidValue", "create");
 
         return createdValidValue;
     }
@@ -662,12 +629,7 @@ public class RelationshipsFVT {
         if (!updatedPreferredTerm.getSteward().equals(createdPreferredTerm.getSteward())) {
             throw new SubjectAreaFVTCheckedException("ERROR: preferredTerm update steward not as expected");
         }
-        if (!updatedPreferredTerm.getAlternateTermGuid().equals(createdPreferredTerm.getAlternateTermGuid())) {
-            throw new SubjectAreaFVTCheckedException("ERROR: preferredTerm update end 1 not as expected");
-        }
-        if (!updatedPreferredTerm.getPreferredTermGuid().equals(createdPreferredTerm.getPreferredTermGuid())) {
-            throw new SubjectAreaFVTCheckedException("ERROR: preferredTerm update end 2 not as expected");
-        }
+        FVTUtils.checkEnds(updatedPreferredTerm,createdPreferredTerm,"PreferredTerm","update");
         System.out.println("Updated PreferredTerm " + createdPreferredTerm);
         PreferredTerm replacePreferredTerm = new PreferredTerm();
         replacePreferredTerm.setDescription("ddd3");
@@ -685,12 +647,7 @@ public class RelationshipsFVT {
         if (replacedPreferredTerm.getSteward() != null) {
             throw new SubjectAreaFVTCheckedException("ERROR: preferredTerm replace steward not as expected");
         }
-        if (!replacedPreferredTerm.getAlternateTermGuid().equals(createdPreferredTerm.getAlternateTermGuid())) {
-            throw new SubjectAreaFVTCheckedException("ERROR: preferredTerm replace end 1 not as expected");
-        }
-        if (!replacedPreferredTerm.getPreferredTermGuid().equals(createdPreferredTerm.getPreferredTermGuid())) {
-            throw new SubjectAreaFVTCheckedException("ERROR: preferredTerm replace end 2 not as expected");
-        }
+        FVTUtils.checkEnds(replacedPreferredTerm,createdPreferredTerm,"PreferredTerm","replace");
         System.out.println("Replaced PreferredTerm " + createdPreferredTerm);
         subjectAreaRelationship.preferredTerm().delete(this.userId, guid);
         //FVTUtils.validateLine(gotPreferredTerm);
@@ -711,12 +668,11 @@ public class RelationshipsFVT {
         preferredTerm.setExpression("Ex");
         preferredTerm.setSource("source");
         preferredTerm.setSteward("Stew");
-        preferredTerm.setAlternateTermGuid(term1.getSystemAttributes().getGUID());
-        preferredTerm.setPreferredTermGuid(term2.getSystemAttributes().getGUID());
+        preferredTerm.getEnd1().setNodeGuid(term1.getSystemAttributes().getGUID());
+        preferredTerm.getEnd2().setNodeGuid(term2.getSystemAttributes().getGUID());
         PreferredTerm createdPreferredTerm = subjectAreaRelationship.preferredTerm().create(this.userId, preferredTerm);
         FVTUtils.validateLine(createdPreferredTerm);
-        FVTUtils.checkGuidEnd1s("PreferredTerm", term1.getSystemAttributes().getGUID(), createdPreferredTerm.getAlternateTermGuid());
-        FVTUtils.checkGuidEnd2s("PreferredTerm", term2.getSystemAttributes().getGUID(), createdPreferredTerm.getPreferredTermGuid());
+        FVTUtils.checkEnds(preferredTerm, createdPreferredTerm, "PreferredTerm", "create");
 
         return createdPreferredTerm;
     }
@@ -747,12 +703,8 @@ public class RelationshipsFVT {
         if (!updatedUsedInContext.getSteward().equals(createdUsedInContext.getSteward())) {
             throw new SubjectAreaFVTCheckedException("ERROR: usedInContext update steward not as expected");
         }
-        if (!updatedUsedInContext.getContextGuid().equals(createdUsedInContext.getContextGuid())) {
-            throw new SubjectAreaFVTCheckedException("ERROR: usedInContext update end 1 not as expected");
-        }
-        if (!updatedUsedInContext.getTermInContextGuid().equals(createdUsedInContext.getTermInContextGuid())) {
-            throw new SubjectAreaFVTCheckedException("ERROR: usedInContext update end 2 not as expected");
-        }
+
+        FVTUtils.checkEnds(updatedUsedInContext,createdUsedInContext,"UsedInContext","update");
         System.out.println("Updated UsedInContext " + createdUsedInContext);
         UsedInContext replaceUsedInContext = new UsedInContext();
         replaceUsedInContext.setDescription("ddd3");
@@ -770,12 +722,7 @@ public class RelationshipsFVT {
         if (replacedUsedInContext.getSteward() != null) {
             throw new SubjectAreaFVTCheckedException("ERROR: usedInContext replace steward not as expected");
         }
-        if (!replacedUsedInContext.getContextGuid().equals(createdUsedInContext.getContextGuid())) {
-            throw new SubjectAreaFVTCheckedException("ERROR: usedInContext replace end 1 not as expected");
-        }
-        if (!replacedUsedInContext.getTermInContextGuid().equals(createdUsedInContext.getTermInContextGuid())) {
-            throw new SubjectAreaFVTCheckedException("ERROR: usedInContext replace end 2 not as expected");
-        }
+        FVTUtils.checkEnds(replacedUsedInContext,createdUsedInContext,"UsedInContext","replace");
         System.out.println("Replaced UsedInContext " + createdUsedInContext);
         subjectAreaRelationship.usedInContext().delete(this.userId, guid);
         //FVTUtils.validateLine(gotUsedInContext);
@@ -796,13 +743,11 @@ public class RelationshipsFVT {
         usedInContext.setExpression("Ex");
         usedInContext.setSource("source");
         usedInContext.setSteward("Stew");
-        usedInContext.setContextGuid(term1.getSystemAttributes().getGUID());
-        usedInContext.setTermInContextGuid(term2.getSystemAttributes().getGUID());
+        usedInContext.getEnd1().setNodeGuid(term1.getSystemAttributes().getGUID());
+        usedInContext.getEnd2().setNodeGuid(term2.getSystemAttributes().getGUID());
         UsedInContext createdUsedInContext = subjectAreaRelationship.usedInContext().create(this.userId, usedInContext);
         FVTUtils.validateLine(createdUsedInContext);
-        FVTUtils.checkGuidEnd1s("UsedInContext", term1.getSystemAttributes().getGUID(), createdUsedInContext.getContextGuid());
-        FVTUtils.checkGuidEnd2s("UsedInContext", term2.getSystemAttributes().getGUID(), createdUsedInContext.getTermInContextGuid());
-
+        FVTUtils.checkEnds(usedInContext, createdUsedInContext, "UsedInContext", "create");
         return createdUsedInContext;
     }
 
@@ -832,12 +777,8 @@ public class RelationshipsFVT {
         if (!updatedTranslation.getSteward().equals(createdTranslation.getSteward())) {
             throw new SubjectAreaFVTCheckedException("ERROR: translation update steward not as expected");
         }
-        if (!updatedTranslation.getTranslation1Guid().equals(createdTranslation.getTranslation1Guid())) {
-            throw new SubjectAreaFVTCheckedException("ERROR: translation update end 1 not as expected");
-        }
-        if (!updatedTranslation.getTranslation2Guid().equals(createdTranslation.getTranslation2Guid())) {
-            throw new SubjectAreaFVTCheckedException("ERROR: translation update end 2 not as expected");
-        }
+        FVTUtils.checkEnds(updatedTranslation, createdTranslation, "translation", "update");
+
         System.out.println("Updated Translation " + createdTranslation);
         Translation replaceTranslation = new Translation();
         replaceTranslation.setDescription("ddd3");
@@ -855,12 +796,8 @@ public class RelationshipsFVT {
         if (replacedTranslation.getSteward() != null) {
             throw new SubjectAreaFVTCheckedException("ERROR: translation replace steward not as expected");
         }
-        if (!replacedTranslation.getTranslation1Guid().equals(createdTranslation.getTranslation1Guid())) {
-            throw new SubjectAreaFVTCheckedException("ERROR: translation replace end 1 not as expected");
-        }
-        if (!replacedTranslation.getTranslation2Guid().equals(createdTranslation.getTranslation2Guid())) {
-            throw new SubjectAreaFVTCheckedException("ERROR: translation replace end 2 not as expected");
-        }
+        FVTUtils.checkEnds(replacedTranslation, updatedTranslation, "translation", "replace");
+
         System.out.println("Replaced Translation " + createdTranslation);
         subjectAreaRelationship.translation().delete(this.userId, guid);
         //FVTUtils.validateLine(gotTranslation);
@@ -881,18 +818,17 @@ public class RelationshipsFVT {
         translation.setExpression("Ex");
         translation.setSource("source");
         translation.setSteward("Stew");
-        translation.setTranslation1Guid(term1.getSystemAttributes().getGUID());
-        translation.setTranslation2Guid(term2.getSystemAttributes().getGUID());
+        translation.getEnd1().setNodeGuid(term1.getSystemAttributes().getGUID());
+        translation.getEnd2().setNodeGuid(term2.getSystemAttributes().getGUID());
         Translation createdTranslation = subjectAreaRelationship.translation().create(this.userId, translation);
         FVTUtils.validateLine(createdTranslation);
-        FVTUtils.checkGuidEnd1s("Translation", term1.getSystemAttributes().getGUID(), createdTranslation.getTranslation1Guid());
-        FVTUtils.checkGuidEnd2s("Translation", term2.getSystemAttributes().getGUID(), createdTranslation.getTranslation2Guid());
+        FVTUtils.checkEnds(translation, createdTranslation, "translations", "create");
 
         return createdTranslation;
     }
 
     private void hasaFVT(Term term1, Term term3) throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException, SubjectAreaFVTCheckedException {
-        HasA createdHasATerm = createTermHASARelationship(term1, term3);
+        HasA createdHasATerm = createHasA(term1, term3);
         FVTUtils.validateLine(createdHasATerm);
         System.out.println("Created Hasa " + createdHasATerm);
         String guid = createdHasATerm.getGuid();
@@ -913,12 +849,8 @@ public class RelationshipsFVT {
         if (!updatedHasATerm.getSteward().equals(createdHasATerm.getSteward())) {
             throw new SubjectAreaFVTCheckedException("ERROR: HASARelationship update steward not as expected");
         }
-        if (!updatedHasATerm.getOwningTermGuid().equals(createdHasATerm.getOwningTermGuid())) {
-            throw new SubjectAreaFVTCheckedException("ERROR: HASARelationship update end 1 not as expected");
-        }
-        if (!updatedHasATerm.getOwnedTermGuid().equals(createdHasATerm.getOwnedTermGuid())) {
-            throw new SubjectAreaFVTCheckedException("ERROR: HASARelationship update end 2 not as expected");
-        }
+        FVTUtils.checkEnds(updatedHasATerm, createdHasATerm, "has-a", "update");
+
         System.out.println("Updated HASARelationship " + createdHasATerm);
         HasA replaceHasATerm = new HasA();
         replaceHasATerm.setDescription("ddd3");
@@ -933,12 +865,8 @@ public class RelationshipsFVT {
         if (replacedHasATerm.getSteward() != null) {
             throw new SubjectAreaFVTCheckedException("ERROR: HASARelationship replace steward not as expected");
         }
-        if (!replacedHasATerm.getOwningTermGuid().equals(createdHasATerm.getOwningTermGuid())) {
-            throw new SubjectAreaFVTCheckedException("ERROR: HASARelationship replace end 1 not as expected");
-        }
-        if (!replacedHasATerm.getOwnedTermGuid().equals(createdHasATerm.getOwnedTermGuid())) {
-            throw new SubjectAreaFVTCheckedException("ERROR: HASARelationship replace end 2 not as expected");
-        }
+        FVTUtils.checkEnds(updatedHasATerm, replacedHasATerm, "has-a", "replace");
+
         System.out.println("Replaced HASARelationship " + createdHasATerm);
 
         subjectAreaRelationship.hasA().delete(this.userId, guid);
@@ -954,17 +882,18 @@ public class RelationshipsFVT {
         System.out.println("Hard deleted Hasa with userId=" + guid);
     }
 
-    private HasA createTermHASARelationship(Term term1, Term term2) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, SubjectAreaFVTCheckedException {
-        HasA hasARelationshipASARelationship = new HasA();
-        hasARelationshipASARelationship.setDescription("ddd");
-        hasARelationshipASARelationship.setSource("source");
-        hasARelationshipASARelationship.setSteward("Stew");
-        hasARelationshipASARelationship.setOwningTermGuid(term1.getSystemAttributes().getGUID());
-        hasARelationshipASARelationship.setOwnedTermGuid(term2.getSystemAttributes().getGUID());
-        HasA createdTermHasARelationship = subjectAreaRelationship.hasA().create(this.userId, hasARelationshipASARelationship);
+    private HasA createHasA(Term term1, Term term2) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, SubjectAreaFVTCheckedException {
+        HasA hasA = new HasA();
+        hasA.setDescription("ddd");
+        hasA.setSource("source");
+        hasA.setSteward("Stew");
+        hasA.getEnd1().setNodeGuid(term1.getSystemAttributes().getGUID());
+        hasA.getEnd2().setNodeGuid(term2.getSystemAttributes().getGUID());
+
+
+        HasA createdTermHasARelationship = subjectAreaRelationship.hasA().create(this.userId, hasA);
         FVTUtils.validateLine(createdTermHasARelationship);
-        FVTUtils.checkGuidEnd1s("Hasa", term1.getSystemAttributes().getGUID(), createdTermHasARelationship.getOwningTermGuid());
-        FVTUtils.checkGuidEnd2s("Hasa", term2.getSystemAttributes().getGUID(), createdTermHasARelationship.getOwnedTermGuid());
+        FVTUtils.checkEnds(hasA, createdTermHasARelationship, "Has-a", "create");
 
         return createdTermHasARelationship;
     }
@@ -995,12 +924,7 @@ public class RelationshipsFVT {
         if (!updatedRelatedTerm.getSteward().equals(createdRelatedTerm.getSteward())) {
             throw new SubjectAreaFVTCheckedException("ERROR: RelatedTerm update steward not as expected");
         }
-        if (!updatedRelatedTerm.getRelatedTerm1Guid().equals(createdRelatedTerm.getRelatedTerm1Guid())) {
-            throw new SubjectAreaFVTCheckedException("ERROR: RelatedTerm update end 1 not as expected");
-        }
-        if (!updatedRelatedTerm.getRelatedTerm2Guid().equals(createdRelatedTerm.getRelatedTerm2Guid())) {
-            throw new SubjectAreaFVTCheckedException("ERROR: RelatedTerm update end 2 not as expected");
-        }
+        FVTUtils.checkEnds(updatedRelatedTerm,createdRelatedTerm,"RelatedTerm","update");
         System.out.println("Updated RelatedTerm " + createdRelatedTerm);
         RelatedTerm replaceRelatedTerm = new RelatedTerm();
         replaceRelatedTerm.setDescription("ddd3");
@@ -1019,12 +943,7 @@ public class RelationshipsFVT {
         if (replacedRelatedTerm.getSteward() != null) {
             throw new SubjectAreaFVTCheckedException("ERROR: RelatedTerm replace steward not as expected");
         }
-        if (!replacedRelatedTerm.getRelatedTerm1Guid().equals(createdRelatedTerm.getRelatedTerm1Guid())) {
-            throw new SubjectAreaFVTCheckedException("ERROR: RelatedTerm replace end 1 not as expected");
-        }
-        if (!replacedRelatedTerm.getRelatedTerm2Guid().equals(createdRelatedTerm.getRelatedTerm2Guid())) {
-            throw new SubjectAreaFVTCheckedException("ERROR: RelatedTerm replace end 2 not as expected");
-        }
+        FVTUtils.checkEnds(replacedRelatedTerm,createdRelatedTerm,"RelatedTerm","replace");
         System.out.println("Replaced RelatedTerm " + createdRelatedTerm);
 
         subjectAreaRelationship.relatedTerm().delete(this.userId, guid);
@@ -1046,12 +965,11 @@ public class RelationshipsFVT {
         relatedterm.setExpression("Ex");
         relatedterm.setSource("source");
         relatedterm.setSteward("Stew");
-        relatedterm.setRelatedTerm1Guid(term1.getSystemAttributes().getGUID());
-        relatedterm.setRelatedTerm2Guid(term2.getSystemAttributes().getGUID());
+        relatedterm.getEnd1().setNodeGuid(term1.getSystemAttributes().getGUID());
+        relatedterm.getEnd2().setNodeGuid(term2.getSystemAttributes().getGUID());
         RelatedTerm createdRelatedTerm = subjectAreaRelationship.relatedTerm().create(this.userId, relatedterm);
         FVTUtils.validateLine(createdRelatedTerm);
-        FVTUtils.checkGuidEnd1s("RelatedTerm", term1.getSystemAttributes().getGUID(), createdRelatedTerm.getRelatedTerm1Guid());
-        FVTUtils.checkGuidEnd2s("RelatedTerm", term2.getSystemAttributes().getGUID(), createdRelatedTerm.getRelatedTerm2Guid());
+        FVTUtils.checkEnds(relatedterm, createdRelatedTerm, "RelatedTerm", "create");
 
         return createdRelatedTerm;
 
@@ -1082,12 +1000,7 @@ public class RelationshipsFVT {
         if (!updatedAntonym.getSteward().equals(createdAntonym.getSteward())) {
             throw new SubjectAreaFVTCheckedException("ERROR: Antonym update steward not as expected");
         }
-        if (!updatedAntonym.getAntonym1Guid().equals(createdAntonym.getAntonym1Guid())) {
-            throw new SubjectAreaFVTCheckedException("ERROR: Antonym update end 1 not as expected");
-        }
-        if (!updatedAntonym.getAntonym2Guid().equals(createdAntonym.getAntonym2Guid())) {
-            throw new SubjectAreaFVTCheckedException("ERROR: Antonym update end 2 not as expected");
-        }
+        FVTUtils.checkEnds(updatedAntonym,createdAntonym,"Antonym","update");
         System.out.println("Updated Antonym " + createdAntonym);
         Antonym replaceAntonym = new Antonym();
         replaceAntonym.setDescription("ddd3");
@@ -1106,14 +1019,8 @@ public class RelationshipsFVT {
         if (replacedAntonym.getSteward() != null) {
             throw new SubjectAreaFVTCheckedException("ERROR: Antonym replace steward not as expected");
         }
-        if (!replacedAntonym.getAntonym1Guid().equals(createdAntonym.getAntonym1Guid())) {
-            throw new SubjectAreaFVTCheckedException("ERROR: Antonym replace end 1 not as expected");
-        }
-        if (!replacedAntonym.getAntonym2Guid().equals(createdAntonym.getAntonym2Guid())) {
-            throw new SubjectAreaFVTCheckedException("ERROR: Antonym replace end 2 not as expected");
-        }
+        FVTUtils.checkEnds(updatedAntonym,createdAntonym,"Antonym","replace");
         System.out.println("Replaced Antonym " + createdAntonym);
-
 
         subjectAreaRelationship.antonym().delete(this.userId, guid);
         //FVTUtils.validateLine(gotAntonym);
@@ -1134,13 +1041,11 @@ public class RelationshipsFVT {
         antonym.setExpression("Ex");
         antonym.setSource("source");
         antonym.setSteward("Stew");
-        antonym.setAntonym1Guid(term1.getSystemAttributes().getGUID());
-        antonym.setAntonym2Guid(term2.getSystemAttributes().getGUID());
+        antonym.getEnd1().setNodeGuid(term1.getSystemAttributes().getGUID());
+        antonym.getEnd2().setNodeGuid(term2.getSystemAttributes().getGUID());
         Antonym createdAntonym = subjectAreaRelationship.antonym().create(this.userId, antonym);
         FVTUtils.validateLine(createdAntonym);
-        FVTUtils.checkGuidEnd1s("Antonym", term1.getSystemAttributes().getGUID(), createdAntonym.getAntonym1Guid());
-        FVTUtils.checkGuidEnd2s("Antonym", term2.getSystemAttributes().getGUID(), createdAntonym.getAntonym2Guid());
-
+        FVTUtils.checkEnds(antonym, createdAntonym, "Antonym", "create");
         return createdAntonym;
     }
 
@@ -1170,12 +1075,9 @@ public class RelationshipsFVT {
         if (!updatedSynonym.getSteward().equals(createdSynonym.getSteward())) {
             throw new SubjectAreaFVTCheckedException("ERROR: synonym update steward not as expected");
         }
-        if (!updatedSynonym.getSynonym1Guid().equals(createdSynonym.getSynonym1Guid())) {
-            throw new SubjectAreaFVTCheckedException("ERROR: synonym update end 1 not as expected");
-        }
-        if (!updatedSynonym.getSynonym2Guid().equals(createdSynonym.getSynonym2Guid())) {
-            throw new SubjectAreaFVTCheckedException("ERROR: synonym update end 2 not as expected");
-        }
+
+        FVTUtils.checkEnds(updatedSynonym, createdSynonym, "synonym", "update");
+
         System.out.println("Updated Synonym " + createdSynonym);
         Synonym replaceSynonym = new Synonym();
         replaceSynonym.setDescription("ddd3");
@@ -1193,12 +1095,8 @@ public class RelationshipsFVT {
         if (replacedSynonym.getSteward() != null) {
             throw new SubjectAreaFVTCheckedException("ERROR: synonym replace steward not as expected");
         }
-        if (!replacedSynonym.getSynonym1Guid().equals(createdSynonym.getSynonym1Guid())) {
-            throw new SubjectAreaFVTCheckedException("ERROR: synonym replace end 1 not as expected");
-        }
-        if (!replacedSynonym.getSynonym2Guid().equals(createdSynonym.getSynonym2Guid())) {
-            throw new SubjectAreaFVTCheckedException("ERROR: synonym replace end 2 not as expected");
-        }
+        FVTUtils.checkEnds(updatedSynonym, replacedSynonym, "synonym", "replace");
+
         System.out.println("Replaced Synonym " + createdSynonym);
         subjectAreaRelationship.synonym().delete(this.userId, guid);
         //FVTUtils.validateLine(gotSynonym);
@@ -1220,13 +1118,11 @@ public class RelationshipsFVT {
         synonym.setExpression("Ex");
         synonym.setSource("source");
         synonym.setSteward("Stew");
-        synonym.setSynonym1Guid(term1.getSystemAttributes().getGUID());
-        synonym.setSynonym2Guid(term2.getSystemAttributes().getGUID());
+        synonym.getEnd1().setNodeGuid(term1.getSystemAttributes().getGUID());
+        synonym.getEnd2().setNodeGuid(term2.getSystemAttributes().getGUID());
         Synonym createdSynonym = subjectAreaRelationship.synonym().create(this.userId, synonym);
         FVTUtils.validateLine(createdSynonym);
-        FVTUtils.checkGuidEnd1s("Synonym", term1.getSystemAttributes().getGUID(), createdSynonym.getSynonym1Guid());
-        FVTUtils.checkGuidEnd2s("Synonym", term2.getSystemAttributes().getGUID(), createdSynonym.getSynonym2Guid());
-
+        FVTUtils.checkEnds(synonym, createdSynonym, "synonym", "create");
         return createdSynonym;
     }
 
@@ -1236,12 +1132,12 @@ public class RelationshipsFVT {
         termIsATypeOFRelationship.setDescription("ddd");
         termIsATypeOFRelationship.setSource("source");
         termIsATypeOFRelationship.setSteward("Stew");
-        termIsATypeOFRelationship.setSubTypeGuid(term1.getSystemAttributes().getGUID());
-        termIsATypeOFRelationship.setSuperTypeGuid(term2.getSystemAttributes().getGUID());
+        termIsATypeOFRelationship.getEnd1().setNodeGuid(term1.getSystemAttributes().getGUID());
+        termIsATypeOFRelationship.getEnd2().setNodeGuid(term2.getSystemAttributes().getGUID());
         IsATypeOf createdTermIsATypeOFRelationship = subjectAreaRelationship.isaTypeOf().create(this.userId, termIsATypeOFRelationship);
         FVTUtils.validateLine(createdTermIsATypeOFRelationship);
-        FVTUtils.checkGuidEnd1s("IsaTypeOf", term1.getSystemAttributes().getGUID(), createdTermIsATypeOFRelationship.getSubTypeGuid());
-        FVTUtils.checkGuidEnd2s("IsaTypeOf", term2.getSystemAttributes().getGUID(), createdTermIsATypeOFRelationship.getSuperTypeGuid());
+        FVTUtils.checkEnds(termIsATypeOFRelationship, createdTermIsATypeOFRelationship, "IsaTypeOf", "create");
+
         System.out.println("Created termISATypeOFRelationship " + createdTermIsATypeOFRelationship);
         return createdTermIsATypeOFRelationship;
     }
@@ -1260,6 +1156,7 @@ public class RelationshipsFVT {
         updateTermCategorizationRelationship.setDescription("ddd2");
         Categorization updatedTermCategorizationRelationship = subjectAreaRelationship.termCategorization().update(this.userId, guid, updateTermCategorizationRelationship);
         FVTUtils.validateLine(updatedTermCategorizationRelationship);
+        FVTUtils.checkEnds(updatedTermCategorizationRelationship,createdTermCategorizationRelationship,"TermCategorization","update");
 
         if (!updatedTermCategorizationRelationship.getDescription().equals(updateTermCategorizationRelationship.getDescription())) {
             throw new SubjectAreaFVTCheckedException("ERROR: TermCategorization update description not as expected");
@@ -1280,9 +1177,7 @@ public class RelationshipsFVT {
             throw new SubjectAreaFVTCheckedException("ERROR: TermCategorization replace source not as expected");
         }
 
-        if (!replacedTermCategorizationRelationship.getTermGuid().equals(createdTermCategorizationRelationship.getTermGuid())) {
-            throw new SubjectAreaFVTCheckedException("ERROR: TermCategorization replace end 2 not as expected");
-        }
+        FVTUtils.checkEnds(replacedTermCategorizationRelationship,createdTermCategorizationRelationship,"TermCategorization","replace");
         System.out.println("Replaced TermCategorizationRelationship " + createdTermCategorizationRelationship);
         subjectAreaRelationship.termCategorization().delete(this.userId, guid);
         //FVTUtils.validateLine(gotTermCategorizationRelationship);
@@ -1323,8 +1218,8 @@ public class RelationshipsFVT {
         System.out.println("Hard deleted TermAnchor with relationshipGuid=" + relationshipGuid);
 
         TermAnchor newTermAnchorRelationship = new TermAnchor();
-        newTermAnchorRelationship.setGlossaryGuid(glossaryGuid);
-        newTermAnchorRelationship.setTermGuid(termGuid);
+        newTermAnchorRelationship.getEnd1().setNodeGuid(glossaryGuid);
+        newTermAnchorRelationship.getEnd2().setNodeGuid(termGuid);
         FVTUtils.validateLine(subjectAreaRelationship.termAnchor().create(userId, newTermAnchorRelationship));
     }
 
@@ -1351,19 +1246,18 @@ public class RelationshipsFVT {
         System.out.println("Hard deleted CategoryAnchor with relationshipGuid=" + relationshipGuid);
 
         CategoryAnchor newCategoryAnchorRelationship = new CategoryAnchor();
-        newCategoryAnchorRelationship.setGlossaryGuid(glossaryGuid);
-        newCategoryAnchorRelationship.setCategoryGuid(categoryGuid);
+        newCategoryAnchorRelationship.getEnd1().setNodeGuid(glossaryGuid);
+        newCategoryAnchorRelationship.getEnd2().setNodeGuid(categoryGuid);
         FVTUtils.validateLine(subjectAreaRelationship.categoryAnchor().create(userId, newCategoryAnchorRelationship));
     }
 
     public Categorization createTermCategorization(Term term, Category category) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, SubjectAreaFVTCheckedException {
         Categorization termCategorization = new Categorization();
-        termCategorization.setTermGuid(term.getSystemAttributes().getGUID());
-        termCategorization.setCategoryGuid(category.getSystemAttributes().getGUID());
+        termCategorization.getEnd1().setNodeGuid(category.getSystemAttributes().getGUID());
+        termCategorization.getEnd2().setNodeGuid(term.getSystemAttributes().getGUID());
         Categorization createdTermCategorization = subjectAreaRelationship.termCategorization().create(this.userId, termCategorization);
         FVTUtils.validateLine(createdTermCategorization);
-        FVTUtils.checkGuidEnd1s("TermCategorizationRelationship", term.getSystemAttributes().getGUID(), createdTermCategorization.getTermGuid());
-        FVTUtils.checkGuidEnd2s("TermCategorizationRelationship", category.getSystemAttributes().getGUID(), createdTermCategorization.getCategoryGuid());
+        FVTUtils.checkEnds(termCategorization, createdTermCategorization, "TermCategorizationRelationship", "create");
         System.out.println("Created TermCategorizationRelationship " + createdTermCategorization);
 
         return createdTermCategorization;
@@ -1388,12 +1282,8 @@ public class RelationshipsFVT {
             throw new SubjectAreaFVTCheckedException("ERROR: Project scope  update scopeDescription not as expected");
         }
 
-        if (!updatedProjectScope.getProjectGuid().equals(createdProjectScope.getProjectGuid())) {
-            throw new SubjectAreaFVTCheckedException("ERROR: Project scope update project end not as expected");
-        }
-        if (!updatedProjectScope.getNodeGuid().equals(createdProjectScope.getNodeGuid())) {
-            throw new SubjectAreaFVTCheckedException("ERROR: Project scope update node end not as expected");
-        }
+        FVTUtils.checkEnds(updatedProjectScope,createdProjectScope,"ProjectScope","update");
+
         System.out.println("Updated ProjectScopeRelationship " + createdProjectScope);
         ProjectScope replaceProjectScope = new ProjectScope();
         replaceProjectScope.setDescription("ddd3");
@@ -1402,12 +1292,8 @@ public class RelationshipsFVT {
         if (!replacedProjectScope.getDescription().equals(replaceProjectScope.getDescription())) {
             throw new SubjectAreaFVTCheckedException("ERROR: project scope replace scope description not as expected");
         }
-        if (!replacedProjectScope.getProjectGuid().equals(createdProjectScope.getProjectGuid())) {
-            throw new SubjectAreaFVTCheckedException("ERROR: project scope replace project end not as expected");
-        }
-        if (!replacedProjectScope.getNodeGuid().equals(createdProjectScope.getNodeGuid())) {
-            throw new SubjectAreaFVTCheckedException("ERROR: project scope replace node end not as expected");
-        }
+        FVTUtils.checkEnds(replacedProjectScope,createdProjectScope,"ProjectScope","replace");
+
         System.out.println("Replaced ProjectScopeRelationship " + createdProjectScope);
         subjectAreaRelationship.projectScope().delete(this.userId, guid);
         //FVTUtils.validateLine(gotProjectScopeRelationship);
@@ -1425,8 +1311,8 @@ public class RelationshipsFVT {
 
     private ProjectScope createProjectScope(Project project, Term term) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, SubjectAreaFVTCheckedException {
         ProjectScope projectScope = new ProjectScope();
-        projectScope.setNodeGuid(term.getSystemAttributes().getGUID());
-        projectScope.setProjectGuid(project.getSystemAttributes().getGUID());
+        projectScope.getEnd1().setNodeGuid(project.getSystemAttributes().getGUID());
+        projectScope.getEnd2().setNodeGuid(term.getSystemAttributes().getGUID());
         ProjectScope createdProjectScope = subjectAreaRelationship.projectScope().create(this.userId, projectScope);
         FVTUtils.validateLine(createdProjectScope);
         System.out.println("CreatedProjectScopeRelationship " + createdProjectScope);
@@ -1453,16 +1339,16 @@ public class RelationshipsFVT {
     }
 
     public CategoryHierarchyLink createCategoryHierarchyLink(Category parent, Category child) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, SubjectAreaFVTCheckedException {
-        CategoryHierarchyLink link = new CategoryHierarchyLink();
-        link.setSuperCategoryGuid(parent.getSystemAttributes().getGUID());
-        link.setSubCategoryGuid(child.getSystemAttributes().getGUID());
-        CategoryHierarchyLink categoryHierarchyLink = subjectAreaRelationship.categoryHierarchyLink().create(this.userId, link);
-        FVTUtils.validateLine(categoryHierarchyLink);
-        FVTUtils.checkGuidEnd1s("CategoryHierarchyLink", parent.getSystemAttributes().getGUID(), categoryHierarchyLink.getSuperCategoryGuid());
-        FVTUtils.checkGuidEnd2s("CategoryHierarchyLink", child.getSystemAttributes().getGUID(), categoryHierarchyLink.getSubCategoryGuid());
-        System.out.println("Created CategoryHierarchyLink " + categoryHierarchyLink);
+        CategoryHierarchyLink categoryHierarchyLink = new CategoryHierarchyLink();
+        categoryHierarchyLink.getEnd1().setNodeGuid(parent.getSystemAttributes().getGUID());
+        categoryHierarchyLink.getEnd2().setNodeGuid(child.getSystemAttributes().getGUID());
+        CategoryHierarchyLink createdCategoryHierarchyLink = subjectAreaRelationship.categoryHierarchyLink().create(this.userId, categoryHierarchyLink);
+        FVTUtils.validateLine(createdCategoryHierarchyLink);
+        FVTUtils.checkEnds(categoryHierarchyLink, createdCategoryHierarchyLink, "CategoryHierarchyLink", "create");
 
-        return categoryHierarchyLink;
+        System.out.println("Created CategoryHierarchyLink " + createdCategoryHierarchyLink);
+
+        return createdCategoryHierarchyLink;
     }
 
     public void checkParent(Category parent, Category gotChildCategory) throws SubjectAreaFVTCheckedException {

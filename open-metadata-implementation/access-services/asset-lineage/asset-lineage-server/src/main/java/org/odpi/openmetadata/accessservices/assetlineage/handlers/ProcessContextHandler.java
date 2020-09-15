@@ -60,7 +60,7 @@ public class ProcessContextHandler {
                                  RepositoryHandler repositoryHandler,
                                  AssetContextHandler assetContextHandler,
                                  List<String> supportedZones,
-                                 List<String> lineageClassificationTypes) {
+                                 Set<String> lineageClassificationTypes) {
         this.invalidParameterHandler = invalidParameterHandler;
         this.handlerHelper = new HandlerHelper(invalidParameterHandler, repositoryHelper, repositoryHandler, lineageClassificationTypes);
         this.assetContextHandler = assetContextHandler;
@@ -100,12 +100,9 @@ public class ProcessContextHandler {
 
         log.error("Some relationships are missing for the entity with guid {}", entityDetail.getGUID());
 
-        throw new AssetLineageException(RELATIONSHIP_NOT_FOUND.getHTTPErrorCode(),
+        throw new AssetLineageException(RELATIONSHIP_NOT_FOUND.getMessageDefinition(),
                 this.getClass().getName(),
-                "Retrieving Relationships",
-                RELATIONSHIP_NOT_FOUND.getErrorMessage(),
-                RELATIONSHIP_NOT_FOUND.getSystemAction(),
-                RELATIONSHIP_NOT_FOUND.getUserAction());
+                "Retrieving Relationships");
     }
 
     private boolean hasEntitiesLinkedWithProcessPort(String userId, EntityDetail entityDetail) throws OCFCheckedExceptionBase {
@@ -115,12 +112,9 @@ public class ProcessContextHandler {
         if (entityDetails.isEmpty()) {
             log.error("No relationships Process Port has been found for the entity with guid {}", entityDetail.getGUID());
 
-            throw new AssetLineageException(RELATIONSHIP_NOT_FOUND.getHTTPErrorCode(),
+            throw new AssetLineageException(RELATIONSHIP_NOT_FOUND.getMessageDefinition(),
                     this.getClass().getName(),
-                    "Retrieving Relationship",
-                    RELATIONSHIP_NOT_FOUND.getErrorMessage(),
-                    RELATIONSHIP_NOT_FOUND.getSystemAction(),
-                    RELATIONSHIP_NOT_FOUND.getUserAction());
+                    "Retrieving Relationship");
         }
 
         return hasRelationshipBasedOnType(entityDetails, userId);

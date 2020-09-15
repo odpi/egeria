@@ -1,4 +1,4 @@
-<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
 # ODPi Egeria ansible playbooks
@@ -164,3 +164,8 @@ To un-deploy the sample configuration run following command:
 ```
 ansible-playbook sites_cleanup.yml -i inventories/sample -e target=omagserver1
 ```
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

@@ -11,6 +11,7 @@ import org.odpi.openmetadata.accessservices.dataengine.server.handlers.ProcessHa
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OCFOMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
@@ -27,7 +28,6 @@ public class DataEngineServicesInstance extends OCFOMASServiceInstance {
     private DataEngineRegistrationHandler dataEngineRegistrationHandler;
     private DataEngineSchemaTypeHandler dataEngineSchemaTypeHandler;
     private PortHandler portHandler;
-    private DataEngineCommonHandler dataEngineCommonHandler;
 
     /**
      * Set up the local repository connector that will service the REST Calls
@@ -42,7 +42,7 @@ public class DataEngineServicesInstance extends OCFOMASServiceInstance {
      * @throws NewInstanceException a problem occurred during initialization
      */
     DataEngineServicesInstance(OMRSRepositoryConnector repositoryConnector, List<String> supportedZones, List<String> defaultZones,
-                               OMRSAuditLog auditLog, String localServerUserId, int maxPageSize) throws NewInstanceException {
+                               AuditLog auditLog, String localServerUserId, int maxPageSize) throws NewInstanceException {
 
 
         super(description.getAccessServiceFullName(), repositoryConnector, supportedZones, defaultZones, auditLog,
@@ -51,7 +51,8 @@ public class DataEngineServicesInstance extends OCFOMASServiceInstance {
         if (repositoryHandler != null) {
             dataEngineRegistrationHandler = new DataEngineRegistrationHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler,
                     repositoryHelper);
-            dataEngineCommonHandler = new DataEngineCommonHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler,
+            DataEngineCommonHandler dataEngineCommonHandler = new DataEngineCommonHandler(serviceName, serverName, invalidParameterHandler,
+                    repositoryHandler,
                     repositoryHelper, dataEngineRegistrationHandler);
             processHandler = new ProcessHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, assetHandler,
                     dataEngineCommonHandler, defaultZones, supportedZones);
@@ -67,11 +68,8 @@ public class DataEngineServicesInstance extends OCFOMASServiceInstance {
         } else {
             final String methodName = "new ServiceInstance";
 
-            DataEngineErrorCode errorCode = DataEngineErrorCode.OMRS_NOT_INITIALIZED;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
-
-            throw new NewInstanceException(errorCode.getHttpErrorCode(), this.getClass().getName(), methodName, errorMessage,
-                    errorCode.getSystemAction(), errorCode.getUserAction());
+            throw new NewInstanceException(DataEngineErrorCode.OMRS_NOT_INITIALIZED.getMessageDefinition(methodName), this.getClass().getName(),
+                    methodName);
         }
     }
 

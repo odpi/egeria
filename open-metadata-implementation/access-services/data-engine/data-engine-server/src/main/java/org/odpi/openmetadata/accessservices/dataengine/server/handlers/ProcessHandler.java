@@ -161,7 +161,7 @@ public class ProcessHandler {
                 serverName, serviceName);
 
         assetHandler.reclassifyAsset(userId, originalProcess, updatedProcess, updatedProcessBuilder.getZoneMembershipProperties(methodName),
-                updatedProcessBuilder.getOwnerProperties(methodName), methodName);
+                updatedProcessBuilder.getOwnerProperties(methodName), null, methodName);
 
         EntityDetail updatedProcessEntity = dataEngineCommonHandler.buildEntityDetail(processGUID,
                 updatedProcessBuilder.getInstanceProperties(methodName));
@@ -201,6 +201,10 @@ public class ProcessHandler {
      * @param processGUID        the unique identifier of the process
      * @param portGUID           the unique identifier of the port
      * @param externalSourceName the unique name of the external source
+     *
+     * @throws InvalidParameterException  the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
      */
     public void addProcessPortRelationship(String userId, String processGUID, String portGUID, String externalSourceName) throws
                                                                                                                           InvalidParameterException,
@@ -289,8 +293,7 @@ public class ProcessHandler {
     }
 
     private void classifyAsset(String userId, Process process, String processGUID) throws UserNotAuthorizedException,
-                                                                                          PropertyServerException,
-                                                                                          InvalidParameterException {
+                                                                                          PropertyServerException {
         final String methodName = "classifyAsset";
 
         ProcessPropertiesBuilder builder = new ProcessPropertiesBuilder(process.getQualifiedName(), process.getName(), process.getDisplayName(),
@@ -327,7 +330,7 @@ public class ProcessHandler {
                     ProcessPropertiesMapper.PROCESS_HIERARCHY_TYPE_NAME, ProcessPropertiesMapper.PROCESS_TYPE_NAME, externalSourceName,
                     relationshipProperties);
         } else {
-            dataEngineCommonHandler.throwInvalidParameterException(DataEngineErrorCode.PROCESS_NOT_FOUND, methodName,
+            dataEngineCommonHandler.throwInvalidParameterException(DataEngineErrorCode.PROCESS_NOT_FOUND, methodName, "qualifiedName",
                     parentProcess.getQualifiedName());
         }
     }

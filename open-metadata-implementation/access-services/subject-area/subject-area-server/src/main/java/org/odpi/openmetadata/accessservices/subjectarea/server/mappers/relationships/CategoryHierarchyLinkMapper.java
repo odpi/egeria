@@ -18,30 +18,6 @@ public class CategoryHierarchyLinkMapper extends LineMapper<CategoryHierarchyLin
     }
 
     /**
-     * Get proxy1 guid.
-     * The proxy has omrs type GlossaryCategory
-     *
-     * @param categoryHierarchyLink line
-     * @return guid for entity proxy 1
-     */
-    @Override
-    protected String getProxy1Guid(CategoryHierarchyLink categoryHierarchyLink) {
-        return categoryHierarchyLink.getSuperCategoryGuid();
-    }
-
-    /**
-     * Get proxy2 guid
-     * The proxy has omrs type GlossaryCategory
-     *
-     * @param categoryHierarchyLink for this Line
-     * @return guid for entity proxy 2
-     */
-    @Override
-    protected String getProxy2Guid(CategoryHierarchyLink categoryHierarchyLink) {
-        return categoryHierarchyLink.getSubCategoryGuid();
-    }
-
-    /**
      * Get the TypeDefName associated with this Relationship
      *
      * @return name of the type def
@@ -54,15 +30,5 @@ public class CategoryHierarchyLinkMapper extends LineMapper<CategoryHierarchyLin
     @Override
     protected CategoryHierarchyLink getLineInstance() {
         return new CategoryHierarchyLink();
-    }
-
-    @Override
-    protected void setEnd1GuidInLine(CategoryHierarchyLink categoryHierarchyLink, String guid) {
-        categoryHierarchyLink.setSuperCategoryGuid(guid);
-    }
-
-    @Override
-    protected void setEnd2GuidInLine(CategoryHierarchyLink categoryHierarchyLink, String guid) {
-        categoryHierarchyLink.setSubCategoryGuid(guid);
     }
 }

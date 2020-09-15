@@ -257,9 +257,9 @@ public class DataEngineImpl extends OCFRESTClient implements DataEngineClient {
         VoidResponse restResult = super.callVoidPostRESTCall(methodName, serverPlatformRootURL
                 + urlTemplate, requestBody, serverName, userId, params);
 
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+        exceptionHandler.detectAndThrowInvalidParameterException(restResult);
+        exceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
+        exceptionHandler.detectAndThrowPropertyServerException(restResult);
     }
 
     private String callGUIDPostRESTCall(String userId, String methodName, String urlTemplate, DataEngineOMASAPIRequestBody requestBody,
@@ -267,9 +267,9 @@ public class DataEngineImpl extends OCFRESTClient implements DataEngineClient {
         GUIDResponse restResult = super.callGUIDPostRESTCall(methodName, serverPlatformRootURL + urlTemplate, requestBody, serverName,
                 userId, params);
 
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+        exceptionHandler.detectAndThrowInvalidParameterException(restResult);
+        exceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
+        exceptionHandler.detectAndThrowPropertyServerException(restResult);
 
         return restResult.getGUID();
     }
@@ -280,9 +280,9 @@ public class DataEngineImpl extends OCFRESTClient implements DataEngineClient {
         ProcessListResponse restResult = super.callPostRESTCall(methodName, ProcessListResponse.class, serverPlatformRootURL + urlTemplate,
                 requestBody, serverName, userId, params);
 
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+        exceptionHandler.detectAndThrowInvalidParameterException(restResult);
+        exceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
+        exceptionHandler.detectAndThrowPropertyServerException(restResult);
 
         return restResult.getGUIDs();
     }

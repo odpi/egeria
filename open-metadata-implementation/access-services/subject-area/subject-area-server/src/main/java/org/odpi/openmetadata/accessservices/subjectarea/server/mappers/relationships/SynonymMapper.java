@@ -91,30 +91,6 @@ public class SynonymMapper extends LineMapper<Synonym> {
         return foundProperty;
     }
 
-    /**
-     * Get proxy1 guid.
-     * The proxy has omrs type GlossaryTerm
-     *
-     * @param synonym line
-     * @return guid for entity proxy 1
-     */
-    @Override
-    protected String getProxy1Guid(Synonym synonym) {
-        return synonym.getSynonym1Guid();
-    }
-
-    /**
-     * Get proxy2 guid
-     * The proxy has omrs type GlossaryTerm
-     *
-     * @param synonym for this Line
-     * @return guid for entity proxy 2
-     */
-    @Override
-    protected String getProxy2Guid(Synonym synonym) {
-        return synonym.getSynonym2Guid();
-    }
-
     @Override
     public String getTypeName() {
         return SYNONYM;
@@ -125,13 +101,4 @@ public class SynonymMapper extends LineMapper<Synonym> {
         return new Synonym();
     }
 
-    @Override
-    protected void setEnd1GuidInLine(Synonym synonym, String guid) {
-        synonym.setSynonym1Guid(guid);
-    }
-
-    @Override
-    protected void setEnd2GuidInLine(Synonym synonym, String guid) {
-        synonym.setSynonym2Guid(guid);
-    }
 }
