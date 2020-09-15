@@ -122,8 +122,8 @@
         <classmate.version>1.5.1</classmate.version>
 
         <!-- Versions of dependent libraries -->
-        <junit.platform.version>1.6.2</junit.platform.version>
-        <junit.jupiter.version>5.6.2</junit.jupiter.version>
+        <junit.platform.version>1.7.0</junit.platform.version>
+        <junit.jupiter.version>5.7.0</junit.jupiter.version>
         <junit.version>4.13</junit.version>
         <surefire.plugin.version>3.0.0-M4</surefire.plugin.version>
         <mockito.version>3.5.10</mockito.version>
@@ -175,7 +175,7 @@
         <jackson-asl.version>1.9.13</jackson-asl.version>
         <antlr.version>3.5.2</antlr.version>
         <snappy.version>1.1.7.7</snappy.version>
-        <snakeyaml.version>1.26</snakeyaml.version>
+        <snakeyaml.version>1.27</snakeyaml.version>
         <springdoc.version>1.4.6</springdoc.version>
         <classgraph.version>4.8.90</classgraph.version>
         <swagger.version>2.1.4</swagger.version>
@@ -200,7 +200,7 @@
         <maven-compiler.version>3.8.1</maven-compiler.version>
         <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
         <maven-pmd.version>3.13.0</maven-pmd.version>
-        <owasp.version>6.0.0</owasp.version>
+        <owasp.version>6.0.1</owasp.version>
         <spotbugs-maven.version>4.0.4</spotbugs-maven.version>
         <maven-download.version>1.6.0</maven-download.version>
         <maven-antrun.version>3.0.0</maven-antrun.version>

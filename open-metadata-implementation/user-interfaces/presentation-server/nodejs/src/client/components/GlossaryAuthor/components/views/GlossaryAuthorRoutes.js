@@ -6,14 +6,15 @@ import { Route, Switch } from "react-router-dom";
 import GlossaryAuthorCRUD from "../GlossaryAuthorCRUD";
 import GlossaryAuthorNavigation from "../GlossaryAuthorNavigation";
 import GlossaryAuthorSearch from "../GlossaryAuthorSearch";
-import GlossaryAdd from "../GlossaryAdd";
-import GlossaryEdit from "../GlossaryEdit";
+import CreateGlossary from "../CreateGlossary";
+import UpdateGlossary from "../UpdateGlossary";
 
 
-  export default function GlossaryAuthorRoutes({glossaryAuthorURL}) {
-    // const identificationContext = useContext(IdentificationContext);
-    // const glossaryAuthorURL = identificationContext.getBrowserURL("glossary_author/");
-    console.log("glossaryAuthorURL="+ glossaryAuthorURL);
+
+export default function GlossaryAuthorRoutes({ glossaryAuthorURL }) {
+  // const identificationContext = useContext(IdentificationContext);
+  // const glossaryAuthorURL = identificationContext.getBrowserURL("glossary_author/");
+  console.log("glossaryAuthorURL=" + glossaryAuthorURL);
 
   function getGlossariesPath() {
     const path = glossaryAuthorURL + "/glossaries";
@@ -21,12 +22,12 @@ import GlossaryEdit from "../GlossaryEdit";
     return path;
   }
   function getGlossariesAddPath() {
-    const path = glossaryAuthorURL + "/add-glossary";
-    console.log("getGlossariesAddPath " +path);
+    const path = glossaryAuthorURL + "/glossaries/add-glossary";
+    console.log("getGlossariesAddPath " + path);
     return path;
   }
   function getGlossariesEditPath() {
-    return glossaryAuthorURL + "/edit-glossary";
+    return glossaryAuthorURL + "/glossaries/edit-glossary/:guid";
   }
   function getCrudPath() {
     const path = glossaryAuthorURL + "/crud";
@@ -41,20 +42,10 @@ import GlossaryEdit from "../GlossaryEdit";
   return (
     <Switch>
       <Route
-        exact
-        path={getGlossariesPath()}
-        component={GlossaryAuthorNavigation}
-      ></Route>
-      <Route
-        exact
         path={getGlossariesAddPath()}
-        component={GlossaryAdd}
+        component={CreateGlossary}
       ></Route>
-            <Route
-        exact
-        path={getGlossariesEditPath()}
-        component={GlossaryEdit}
-      ></Route>
+      <Route path={getGlossariesEditPath()} component={UpdateGlossary}></Route>
       <Route
         exact
         path={getGlossariesPath()}
@@ -63,12 +54,17 @@ import GlossaryEdit from "../GlossaryEdit";
       <Route path={getSearchPath()} component={GlossaryAuthorSearch}></Route>
       <Route path={getCrudPath()} component={GlossaryAuthorCRUD}></Route>
       <Route
+        exact
+        path={getGlossariesPath()}
+        component={GlossaryAuthorNavigation}
+      ></Route>
+      <Route
         path={glossaryAuthorURL}
         exact
         component={GlossaryAuthorCRUD}
       ></Route>
       <Route path="/" render={() => <h1>Route not recognised</h1>}></Route>
-      <Route render={() => <h1>Route not recognised!!</h1>}></Route>
+      {/* <Route render={() => <h1>Route not recognised!!</h1>}></Route> */}
     </Switch>
   );
 }

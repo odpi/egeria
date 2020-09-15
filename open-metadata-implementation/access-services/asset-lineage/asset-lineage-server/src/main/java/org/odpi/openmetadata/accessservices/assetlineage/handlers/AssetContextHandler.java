@@ -18,8 +18,8 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorEx
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.ASSET_LINEAGE_OMAS;
@@ -72,6 +72,7 @@ public class AssetContextHandler {
 
     /**
      * @param userId the user id
+     * @param entityTypeName the name of the entity type
      * @return the existing list of glossary terms available in the repository
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException    something went wrong with the REST call stack.
