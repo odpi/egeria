@@ -94,9 +94,7 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
                 ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.GLOSSARY_CATEGORY_CREATE_WITHOUT_NAME.getMessageDefinition();
                 throw new InvalidParameterException(messageDefinition, className, methodName, "Name", null);
             } else {
-                if (suppliedCategoryQualifiedName == null || suppliedCategoryQualifiedName.equals("")) {
-                    setUniqueQualifiedName(suppliedCategory);
-                }
+                setUniqueQualifiedNameIfBlank(suppliedCategory);
                 CategoryMapper categoryMapper = mappersFactory.get(CategoryMapper.class);
                 EntityDetail categoryEntityDetail = categoryMapper.map(suppliedCategory);
                 GlossarySummary suppliedGlossary = suppliedCategory.getGlossary();

@@ -269,13 +269,16 @@ public abstract class SubjectAreaHandler {
     /**
      * Set unique qualifiedName into the supplied Node. The qualified name needs to be unique and is supplied on an addnEtity omrs call.
      * Prior to the add, we do not know the guid of the entity. We do not want to add an entity, then immediately update it; as these changes to
-     * entity identity would be propagated across the cohort. So we set the qualified name by concatinating the supplied seed, a dot and a newly generated UUID.
+     * entity identity would be propagated across the cohort. So we set the qualified name by concatinating the supplied seed, an @ symbol and a newly generated UUID.
      *
      * Thw assumption is that this method is supplied a node that contains a name.
      *
      * @param node Node to set the unique qualified name into
      */
-    protected void setUniqueQualifiedName(Node node) {
-      node.setQualifiedName(node.getName() + "." + UUID.randomUUID().toString());
+    protected void setUniqueQualifiedNameIfBlank(Node node) {
+        String qualifiedName = node.getQualifiedName();
+        if (qualifiedName == null || qualifiedName.trim().equals("")) {
+            node.setQualifiedName(node.getName() + "@" + UUID.randomUUID().toString());
+        }
     }
 }

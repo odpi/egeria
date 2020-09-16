@@ -87,9 +87,7 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
                 ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.GLOSSARY_PROJECT_CREATE_WITHOUT_NAME.getMessageDefinition();
                 throw new InvalidParameterException(messageDefinition, className, methodName, "Name", null);
             } else {
-                if (suppliedProjectQualifiedName == null || suppliedProjectQualifiedName.equals("")) {
-                    setUniqueQualifiedName(suppliedProject);
-                }
+                setUniqueQualifiedNameIfBlank(suppliedProject);
                 ProjectMapper projectMapper = mappersFactory.get(ProjectMapper.class);
                 EntityDetail projectEntityDetail = projectMapper.map(suppliedProject);
                 String entityDetailGuid = oMRSAPIHelper.callOMRSAddEntity(methodName, userId, projectEntityDetail);
