@@ -6,6 +6,7 @@ import { Route, Switch } from "react-router-dom";
 import GlossaryAuthorCRUD from "../GlossaryAuthorCRUD";
 import GlossaryAuthorNavigation from "../GlossaryAuthorNavigation";
 import GlossaryAuthorSearch from "../GlossaryAuthorSearch";
+import QuickTerms from "../QuickTerms";
 import CreateGlossary from "../CreateGlossary";
 import UpdateGlossary from "../UpdateGlossary";
 
@@ -24,6 +25,11 @@ export default function GlossaryAuthorRoutes({ glossaryAuthorURL }) {
   function getGlossariesAddPath() {
     const path = glossaryAuthorURL + "/glossaries/add-glossary";
     console.log("getGlossariesAddPath " + path);
+    return path;
+  }
+  function getQuickTermsPath() {
+    const path = glossaryAuthorURL + "/glossaries/quick-terms";
+    console.log("getQuickTerms " + path);
     return path;
   }
   function getGlossariesEditPath() {
@@ -52,9 +58,8 @@ export default function GlossaryAuthorRoutes({ glossaryAuthorURL }) {
         component={GlossaryAuthorNavigation}
       ></Route>
       <Route path={getSearchPath()} component={GlossaryAuthorSearch}></Route>
-      <Route path={getCrudPath()} component={GlossaryAuthorCRUD}></Route>
+      <Route path={getQuickTermsPath()} component={QuickTerms}></Route>
       <Route
-        exact
         path={getGlossariesPath()}
         component={GlossaryAuthorNavigation}
       ></Route>

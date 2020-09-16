@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.lineagegraph;
 
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__;
 import org.apache.tinkerpop.gremlin.structure.Graph;
@@ -14,6 +15,7 @@ import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,9 +28,10 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_NAME_QUALIFIED_NAME;
 
 /**
- * Based on provided information, the graph will be interrogated on assets of type Process, DataFile, RelationalColumn, TabularColumn
- * and RelationalColumn, and the graph structure around them will be validated. Just one parameter is necessary, path to
- * a json file of the following structure
+ * Based on provided information, the graph will be interrogated on assets of type Process, DataFile, RelationalColumn,
+ * TabularColumn and RelationalColumn, and the graph structure around them will be validated. Since asserts are used,
+ * VM option -ea is necessary. As for necessary program arguments, only the path to a json file of the following structure
+ * is needed
  *
  * {
  *   "graphConfigFile": "/Users/wf40wc/Developer/gremlin.properties",
@@ -90,7 +93,7 @@ public class OpenLineageGraphValidation {
         }
     }
 
-    private static Function<JsonObject, Process> createProcess = processAsJsonObject ->
+    private static final Function<JsonObject, Process> createProcess = processAsJsonObject ->
             new Process(processAsJsonObject.getString(QUALIFIED_NAME),
             processAsJsonObject.getJsonNumber("noOfSubprocesses").longValue());
 
@@ -106,7 +109,7 @@ public class OpenLineageGraphValidation {
         }
     }
 
-    private static Function<JsonObject, Table> createTable = tableAsJsonObject ->
+    private static final Function<JsonObject, Table> createTable = tableAsJsonObject ->
             new Table(tableAsJsonObject.getString(QUALIFIED_NAME));
 
     static class Column{
@@ -121,7 +124,7 @@ public class OpenLineageGraphValidation {
         }
     }
 
-    private static Function<JsonObject, Column> createColumn = columnAsJsonObject ->
+    private static final Function<JsonObject, Column> createColumn = columnAsJsonObject ->
             new Column(columnAsJsonObject.getString(QUALIFIED_NAME));
 
     private static <T, R> void addEntitiesToTarget(JsonArray entitiesAsJsonArray, Function<T, R> function, List<R> target){
@@ -141,20 +144,31 @@ public class OpenLineageGraphValidation {
         return jsonObject;
     }
 
+    private static void verifyArgs(String[] args){
+        if(args.length != 1){
+            throw new IllegalArgumentException("Args size must be one. Found " + args.length);
+        }
+        if(!new File(args[0]).exists()){
+            throw new IllegalArgumentException("Test input file does not exists at provided location: " + args[0]);
+        }
+    }
+
     public static void main(String[] args) throws Exception{
+        verifyArgs(args);
+
         JsonObject jsonObject = readJsonObjectFromFile(args[0]);
 
         addEntitiesToTarget(jsonObject.getJsonArray("processes"), createProcess, PROCESSES);
         addEntitiesToTarget(jsonObject.getJsonArray("tables"), createTable, TABLES);
         addEntitiesToTarget(jsonObject.getJsonArray("columns"), createColumn, COLUMNS);
 
-        String graphConfigFile = jsonObject.getJsonString("graphConfigFile").toString();
+        String graphConfigFile = jsonObject.getString("graphConfigFile");
         OpenLineageGraphValidation graphValidation = new OpenLineageGraphValidation(graphConfigFile);
         graphValidation.validate();
         graphValidation.close();
     }
 
-    private GraphTraversalSource g;
+    private final GraphTraversalSource g;
 
     private OpenLineageGraphValidation(String configFilePath){
         Graph graph = JanusGraphFactory.open(configFilePath);
@@ -179,9 +193,11 @@ public class OpenLineageGraphValidation {
     }
 
     private void validateProcess(Process process){
-        Vertex processAsVertex = g.V().has(VERTEX_QUALIFIED_NAME, process.getQualifiedName()).has(PROPERTY_KEY_LABEL, PROCESS).next();
+        GraphTraversal<Vertex, Vertex> processTraversal = g.V().has(VERTEX_QUALIFIED_NAME, process.getQualifiedName())
+                .has(PROPERTY_KEY_LABEL, PROCESS);
 
-        assert processAsVertex != null : "Process not found by qualified name " + process.getQualifiedName();
+        assert processTraversal.hasNext() : "Process not found by qualified name " + process.getQualifiedName();
+        Vertex processAsVertex = processTraversal.next();
 
         boolean processIsOutput = g.V(processAsVertex.id()).in(TABLE_DATA_FLOW)
                 .or(__.has(PROPERTY_KEY_LABEL, RELATIONAL_TABLE),
@@ -216,23 +232,24 @@ public class OpenLineageGraphValidation {
     }
 
     private void validateTable(Table table){
-        Vertex tableVertex = g.V().has(VERTEX_QUALIFIED_NAME, table.getQualifiedName())
+        GraphTraversal<Vertex, Vertex> tableTraversal = g.V().has(VERTEX_QUALIFIED_NAME, table.getQualifiedName())
                 .or(__.has(PROPERTY_KEY_LABEL, DATA_FILE),
-                    __.has(PROPERTY_KEY_LABEL, RELATIONAL_TABLE)).next();
+                    __.has(PROPERTY_KEY_LABEL, RELATIONAL_TABLE));
 
-        assert tableVertex != null : "Table not found by qualifiedName " + table.getQualifiedName();
+        assert tableTraversal.hasNext() : "Table not found by qualifiedName " + table.getQualifiedName();
+        Vertex tableAsVertex = tableTraversal.next();
 
-        boolean tableIsInput = g.V(tableVertex.id()).out(TABLE_DATA_FLOW).has(PROPERTY_KEY_LABEL, PROCESS).hasNext();
-        boolean tableIsOutput = g.V(tableVertex.id()).in(TABLE_DATA_FLOW).has(PROPERTY_KEY_LABEL, PROCESS).hasNext();
+        boolean tableIsInput = g.V(tableAsVertex.id()).out(TABLE_DATA_FLOW).has(PROPERTY_KEY_LABEL, PROCESS).hasNext();
+        boolean tableIsOutput = g.V(tableAsVertex.id()).in(TABLE_DATA_FLOW).has(PROPERTY_KEY_LABEL, PROCESS).hasNext();
 
         if( tableIsInput && !tableIsOutput ){
-            assert processHasOutput(tableVertex.id()) : "Table is not input for process. Required to be only input";
+            assert processHasOutput(tableAsVertex.id()) : "Table is not input for process. Required to be only input";
         }
         if( !tableIsInput && tableIsOutput ){
-            assert processHasInput(tableVertex.id()) : "Table is not output for process. Required to be only output";
+            assert processHasInput(tableAsVertex.id()) : "Table is not output for process. Required to be only output";
         }
         if(tableIsInput && tableIsOutput){
-            assert processHasOutput(tableVertex.id()) && processHasInput(tableVertex.id()) :
+            assert processHasOutput(tableAsVertex.id()) && processHasInput(tableAsVertex.id()) :
                     "Table is not input and output for processes. Required to be both" ;
         }
 
@@ -252,11 +269,12 @@ public class OpenLineageGraphValidation {
     }
 
     private void validateColumn(Column column){
-        Vertex columnAsVertex = g.V().has(VERTEX_QUALIFIED_NAME, column.getQualifiedName())
+        GraphTraversal<Vertex, Vertex> columnTraversal = g.V().has(VERTEX_QUALIFIED_NAME, column.getQualifiedName())
                 .or(__.has(PROPERTY_KEY_LABEL, RELATIONAL_COLUMN),
-                        __.has(PROPERTY_KEY_LABEL, TABULAR_COLUMN)).next();
+                        __.has(PROPERTY_KEY_LABEL, TABULAR_COLUMN));
 
-        assert columnAsVertex != null : "Column not found by qualifiedName " + column.getQualifiedName();
+        assert columnTraversal.hasNext() : "Column not found by qualifiedName " + column.getQualifiedName();
+        Vertex columnAsVertex= columnTraversal.next();
 
         if( !g.V(columnAsVertex.id()).has(PROPERTY_KEY_LABEL, TABULAR_COLUMN).in(ATTRIBUTE_FOR_SCHEMA)
                 .in("AssetSchemaType").hasLabel(DATA_FILE).hasNext() ){
