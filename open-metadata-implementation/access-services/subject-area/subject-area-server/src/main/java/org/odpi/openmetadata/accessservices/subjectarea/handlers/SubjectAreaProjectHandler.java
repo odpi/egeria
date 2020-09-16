@@ -81,7 +81,6 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
         try {
             InputValidator.validateNodeType(className, methodName, suppliedProject.getNodeType(), NodeType.Project, NodeType.GlossaryProject);
             String suppliedProjectName = suppliedProject.getName();
-            String suppliedProjectQualifiedName = suppliedProject.getQualifiedName();
             // need to check we have a name
             if (suppliedProjectName == null || suppliedProjectName.equals("")) {
                 ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.GLOSSARY_PROJECT_CREATE_WITHOUT_NAME.getMessageDefinition();
