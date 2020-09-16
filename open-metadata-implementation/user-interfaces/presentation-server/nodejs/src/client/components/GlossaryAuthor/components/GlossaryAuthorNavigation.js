@@ -5,6 +5,7 @@ import React, { useState, useEffect } from "react";
 import Add16 from "../../../images/Egeria_add_16";
 import Delete16 from "../../../images/Egeria_delete_16";
 import Edit16 from "../../../images/Egeria_edit_16";
+import Term16 from "../../../images/Egeria_term_16";
 import {
   LocalGlossaryCard,
   GlossaryCardSection,
@@ -15,6 +16,7 @@ import { issueRestGet, issueRestDelete } from "./RestCaller";
 import useDebounce from "./useDebounce";
 
 import { Link } from "react-router-dom";
+import { Button } from "carbon-components-react";
 
 export default function GlossaryAuthorNavigation({ match }) {
   const [glossaries, setGlossaries] = useState([]);
@@ -124,6 +126,9 @@ export default function GlossaryAuthorNavigation({ match }) {
   function getAddGlossaryUrl() {
     return match.path + "/add-glossary";
   }
+  function getQuickTermsUrl() {
+    return match.path + "/quick-terms";
+  }
   function getEditGlossaryUrl() {
     return match.path + "/edit-glossary/" + selectedGlossaryGuid;
   }
@@ -168,6 +173,11 @@ export default function GlossaryAuthorNavigation({ match }) {
                 <Add16 kind="primary" />
               </Link>
               {selectedGlossaryGuid && (
+              <Link to={getQuickTermsUrl}>
+                <Term16 kind="primary" />
+              </Link>
+              )}
+              {selectedGlossaryGuid && (
                 <Link to={getEditGlossaryUrl()}>
                   <Edit16 kind="primary" />
                 </Link>
@@ -175,7 +185,6 @@ export default function GlossaryAuthorNavigation({ match }) {
               {selectedGlossaryGuid && (
                 <Delete16 onClick={() => onClickDelete()} />
               )}
-        
             </div>
           </article>
         </GlossaryCardSection>
