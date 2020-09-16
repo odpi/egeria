@@ -68,10 +68,6 @@ spec:
           envFrom:
             - configMapRef:
                 name: {{ include "myapp.fullname" . }}-configmap
-          command:
-            - "/bin/bash"
-            - "-c"
-            - "java -jar /opt/egeria/user-interface/ui-chassis-spring-{{ .Values.egeria.version}}.jar"
           ports:
             - containerPort: 8443
             {{ if .Values.debug.egeriaJVM }}
@@ -99,6 +95,8 @@ spec:
             - name: JAVA_DEBUG
               value:  "true"
             {{ end }}
+            - name: "JAVA_APP_JAR"
+              value: "user-interface/ui-chassis-spring-{{ .Values.egeria.version}}.jar"
       restartPolicy: Always
 
 status: {}
