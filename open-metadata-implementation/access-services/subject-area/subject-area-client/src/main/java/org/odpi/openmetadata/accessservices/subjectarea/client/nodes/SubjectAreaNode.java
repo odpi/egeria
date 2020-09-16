@@ -23,7 +23,7 @@ import java.util.*;
  * A standard set of customers is described in {@link SubjectAreaNodeClients}
  */
 public class SubjectAreaNode implements SubjectAreaNodeClients {
-    private Map<Class<?>, SubjectAreaNodeClient<?>> cache = new HashMap<>();
+    private final Map<Class<?>, SubjectAreaNodeClient<?>> cache = new HashMap<>();
     private static final String DEFAULT_SCAN_PACKAGE = SubjectAreaNode.class.getPackage().getName();
 
     /**

@@ -298,7 +298,7 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
 
             response = getCategoryByGuid(userId, guid);
             if (response.getHead() != null) {
-                Category currentCategory = (Category) response.getHead();
+                Category currentCategory = response.getHead();
                 if (isReplace)
                     // copy over attributes
                     replaceAttributes(currentCategory, suppliedCategory);
