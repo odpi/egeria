@@ -1,60 +1,36 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataengine.client;
 
 import org.odpi.openmetadata.accessservices.dataengine.connectors.intopic.DataEngineInTopicClientConnector;
-import org.odpi.openmetadata.accessservices.dataengine.event.DataEngineEventType;
-import org.odpi.openmetadata.accessservices.dataengine.event.DataEngineRegistrationEvent;
-import org.odpi.openmetadata.accessservices.dataengine.event.ProcessesEvent;
-import org.odpi.openmetadata.accessservices.dataengine.event.SchemaTypeEvent;
+import org.odpi.openmetadata.accessservices.dataengine.event.*;
 import org.odpi.openmetadata.accessservices.dataengine.model.*;
 import org.odpi.openmetadata.accessservices.dataengine.model.Process;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.OCFRESTClient;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 
 /***
- * DataEngineEventClient implements Data Engine OMAS client side events interface using provided OMAS server details and topic connector
+ * DataEngineEventClient implements Data Engine client side events interface using provided topic connector.
+ * For more information see {@link DataEngineClient} interface definition.
  */
-public class DataEngineEventClient extends OCFRESTClient implements DataEngineClient {
+public class DataEngineEventClient implements DataEngineClient {
 
-    private static final Logger log = LoggerFactory.getLogger(DataEngineEventClient.class);
-    private DataEngineInTopicClientConnector dataEngineInTopicClientConnector;
-    private static String externalSource;
-
+    private DataEngineInTopicClientConnector topicConnector;
+    private String externalSource;
 
     /**
      * Constructor to create DataEngineEventClient with unauthenticated access to the server
      *
-     * @param serverName            name of the OMAG Server to call
-     * @param serverPlatformURLRoot URL root of the server platform where the OMAG Server is running.
+     * @param source External source system using the client to produce events
      * @param dataEngineInTopicClientConnector topic connector used to publish to InTopic
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      *                                   REST API calls.
      */
-    public DataEngineEventClient(String serverName, String serverPlatformURLRoot, String source, DataEngineInTopicClientConnector dataEngineInTopicClientConnector) throws InvalidParameterException {
-        super(serverName, serverPlatformURLRoot);
-        this.externalSource = source;
-
-    }
-
-    /***
-     * Constructor to create DataEngineEventClient with authenticated user access to the server
-     * @param serverName                name of the OMAG Server to call
-     * @param serverPlatformURLRoot     URL root of the server platform where the OMAG Server is running
-     * @param userName                  name of the user accessing the server
-     * @param userPassword              password for the user accessing the server
-     * @param dataEngineInTopicClientConnector topic connector used to publish to InTopic
-     * @throws InvalidParameterException
-     */
-    public DataEngineEventClient(String serverName, String serverPlatformURLRoot, String userName, String userPassword, String source, DataEngineInTopicClientConnector dataEngineInTopicClientConnector) throws InvalidParameterException {
-        super(serverName, serverPlatformURLRoot, userName, userPassword);
-        this.dataEngineInTopicClientConnector = dataEngineInTopicClientConnector;
+    public DataEngineEventClient(String source, DataEngineInTopicClientConnector dataEngineInTopicClientConnector) {
+        this.topicConnector = dataEngineInTopicClientConnector;
         this.externalSource = source;
     }
 
@@ -62,7 +38,7 @@ public class DataEngineEventClient extends OCFRESTClient implements DataEngineCl
      * {@inheritDoc}
      */
     @Override
-    public String createOrUpdateProcess(String userId, Process process) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+    public String createOrUpdateProcess(String userId, Process process) throws InvalidParameterException, ConnectorCheckedException {
         return null;
     }
 
@@ -78,12 +54,8 @@ public class DataEngineEventClient extends OCFRESTClient implements DataEngineCl
         event.setEventType(DataEngineEventType.PROCESSES_EVENT);
         event.setProcesses(processes);
 
-        try {
-            dataEngineInTopicClientConnector.sendEvent(event);
-        }  catch (ConnectorCheckedException e) {
-            log.error(e.getMessage(),e);
-            throw e;
-        }
+        topicConnector.sendEvent(event);
+
         //async interaction
         return null;
     }
@@ -100,12 +72,7 @@ public class DataEngineEventClient extends OCFRESTClient implements DataEngineCl
         event.setEventType(DataEngineEventType.DATA_ENGINE_REGISTRATION_EVENT);
         event.setSoftwareServerCapability(softwareServerCapability);
 
-        try {
-            dataEngineInTopicClientConnector.sendEvent(event);
-        } catch (ConnectorCheckedException e) {
-            log.error(e.getMessage(),e);
-            throw e;
-        }
+        topicConnector.sendEvent(event);
 
         //async interaction
         return null;
@@ -123,12 +90,7 @@ public class DataEngineEventClient extends OCFRESTClient implements DataEngineCl
         event.setEventType(DataEngineEventType.SCHEMA_TYPE_EVENT);
         event.setSchemaType(schemaType);
 
-        try {
-            dataEngineInTopicClientConnector.sendEvent(event);
-        } catch (ConnectorCheckedException e) {
-            log.error(e.getMessage(),e);
-            throw e;
-        }
+        topicConnector.sendEvent(event);
 
         //async interaction
         return null;
@@ -138,7 +100,17 @@ public class DataEngineEventClient extends OCFRESTClient implements DataEngineCl
      * {@inheritDoc}
      */
     @Override
-    public String createOrUpdatePortImplementation(String userId, PortImplementation portImplementation) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+    public String createOrUpdatePortImplementation(String userId, PortImplementation portImplementation) throws InvalidParameterException, ConnectorCheckedException {
+
+        PortImplementationEvent event = new PortImplementationEvent();
+        event.setUserId(userId);
+        event.setExternalSourceName(externalSource);
+        event.setEventType(DataEngineEventType.PORT_IMPLEMENTATION_EVENT);
+        event.setPortImplementation(portImplementation);
+
+        topicConnector.sendEvent(event);
+
+        //async interaction
         return null;
     }
 
@@ -146,7 +118,17 @@ public class DataEngineEventClient extends OCFRESTClient implements DataEngineCl
      * {@inheritDoc}
      */
     @Override
-    public String createOrUpdatePortAlias(String userId, PortAlias portAlias) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+    public String createOrUpdatePortAlias(String userId, PortAlias portAlias) throws InvalidParameterException, ConnectorCheckedException {
+
+        PortAliasEvent event = new PortAliasEvent();
+        event.setUserId(userId);
+        event.setExternalSourceName(externalSource);
+        event.setEventType(DataEngineEventType.PORT_ALIAS_EVENT);
+        event.setPort(portAlias);
+
+        topicConnector.sendEvent(event);
+
+        //async interaction
         return null;
     }
 
@@ -154,15 +136,30 @@ public class DataEngineEventClient extends OCFRESTClient implements DataEngineCl
      * {@inheritDoc}
      */
     @Override
-    public void addLineageMappings(String userId, List<LineageMapping> lineageMappings) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+    public void addLineageMappings(String userId, List<LineageMapping> lineageMappings) throws InvalidParameterException, ConnectorCheckedException {
 
+        LineageMappingsEvent event = new LineageMappingsEvent();
+        event.setUserId(userId);
+        event.setExternalSourceName(externalSource);
+        event.setEventType(DataEngineEventType.LINEAGE_MAPPINGS_EVENT);
+        event.setLineageMappings(lineageMappings);
+
+        topicConnector.sendEvent(event);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void addPortsToProcess(String userId, List<String> portGUIDs, String processGUID) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+    public void addPortsToProcess(String userId, List<String> portGUIDs, String processGUID) throws InvalidParameterException, ConnectorCheckedException {
 
+        ProcessToPortListEvent event = new ProcessToPortListEvent();
+        event.setUserId(userId);
+        event.setExternalSourceName(externalSource);
+        event.setEventType(DataEngineEventType.PROCESS_TO_PORT_LIST_EVENT);
+        event.setPorts(portGUIDs);
+        event.setProcessGUID(processGUID);
+
+        topicConnector.sendEvent(event);
     }
 }

@@ -39,7 +39,8 @@ public interface DataEngineClient {
      */
     String createOrUpdateProcess(String userId, Process process) throws InvalidParameterException,
                                                                         PropertyServerException,
-                                                                        UserNotAuthorizedException;
+                                                                        UserNotAuthorizedException,
+                                                                        ConnectorCheckedException;
 
 
     /**
@@ -110,7 +111,8 @@ public interface DataEngineClient {
     String createOrUpdatePortImplementation(String userId, PortImplementation portImplementation) throws
                                                                                                   InvalidParameterException,
                                                                                                   UserNotAuthorizedException,
-                                                                                                  PropertyServerException;
+                                                                                                  PropertyServerException,
+                                                                                                  ConnectorCheckedException;
 
     /**
      * Create or update the port alias entity with a PortDelegation relationship
@@ -126,7 +128,8 @@ public interface DataEngineClient {
      */
     String createOrUpdatePortAlias(String userId, PortAlias portAlias) throws InvalidParameterException,
                                                                               UserNotAuthorizedException,
-                                                                              PropertyServerException;
+                                                                              PropertyServerException,
+                                                                              ConnectorCheckedException;
 
     /**
      * Add lineage mapping relationships between schema types
@@ -140,7 +143,8 @@ public interface DataEngineClient {
      */
     void addLineageMappings(String userId, List<LineageMapping> lineageMappings) throws InvalidParameterException,
                                                                                         UserNotAuthorizedException,
-                                                                                        PropertyServerException;
+                                                                                        PropertyServerException,
+                                                                                        ConnectorCheckedException;
 
     /**
      * Add ports and process ports relationship to an existing port
@@ -155,5 +159,6 @@ public interface DataEngineClient {
      */
     void addPortsToProcess(String userId, List<String> portGUIDs, String processGUID) throws InvalidParameterException,
                                                                                              UserNotAuthorizedException,
-                                                                                             PropertyServerException;
+                                                                                             PropertyServerException,
+                                                                                             ConnectorCheckedException;
 }

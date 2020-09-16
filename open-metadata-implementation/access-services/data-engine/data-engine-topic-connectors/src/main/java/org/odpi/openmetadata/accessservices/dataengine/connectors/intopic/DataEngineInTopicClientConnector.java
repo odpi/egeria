@@ -15,17 +15,10 @@ import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.Ope
 
 /**
  * DataEngineInTopicClientConnector is the java implementation of the
- * the client side connector that send events to the Data Engine OMAS InTopic.
+ * the client side connector that send events to the Data Engine OMAS input topic.
  */
 public class DataEngineInTopicClientConnector extends OpenMetadataTopicSenderConnectorBase
 {
-
-    /**
-     * Create DataEngineInTopicClientConnector
-     */
-
-    public DataEngineInTopicClientConnector() {
-    }
 
     /**
      * Send the request to the embedded event bus connector(s).
