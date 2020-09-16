@@ -72,7 +72,7 @@ public abstract class SubjectAreaHandler {
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws UserNotAuthorizedException user not authorized to issue this request.
-     * @throws PropertyServerException problem retrieving the entity.
+     * @throws PropertyServerException problem retrieving the Glossary.
      */
     GlossarySummary getGlossarySummary(String restAPIName,
                                        String userId,
@@ -119,7 +119,7 @@ public abstract class SubjectAreaHandler {
     }
 
     /**
-     * Get All relationships for entity
+     * Get All relationships for Node
      *
      * @param methodName         name of the method being called.
      * @param userId             unique identifier for requesting user, under which the request is performed
@@ -265,5 +265,18 @@ public abstract class SubjectAreaHandler {
                     "glossary",
                     null);
         }
+    }
+    /**
+     * Set unique qualifiedName into the supplied Node. The qualified name needs to be unique and is supplied on an addnEtity omrs call.
+     * Prior to the add, we do not know the guid of the entity. We do not want to add an entity, then immediately update it; as these changes to
+     * entity identity would be propagated across the cohort. So we set the qualified name by concatinating the supplied seed, a dot and a newly generated UUID.
+     *
+     * Thw assumption is that this method is supplied a node that contains a name.
+     *
+     * @param node Node to set the unique qualified name into
+     */
+    protected void setUniqueQualifiedName(Node node) {
+
+      node.setQualifiedName(node.getName() + "." + UUID.randomUUID().toString());
     }
 }

@@ -89,10 +89,14 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
             InputValidator.validateNodeType(className, methodName, suppliedCategory.getNodeType(), NodeType.Category, NodeType.SubjectAreaDefinition);
             // need to check we have a name
             final String suppliedCategoryName = suppliedCategory.getName();
+            final String suppliedCategoryQualifiedName = suppliedCategory.getQualifiedName();
             if (suppliedCategoryName == null || suppliedCategoryName.equals("")) {
                 ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.GLOSSARY_CATEGORY_CREATE_WITHOUT_NAME.getMessageDefinition();
                 throw new InvalidParameterException(messageDefinition, className, methodName, "Name", null);
             } else {
+                if (suppliedCategoryQualifiedName == null || suppliedCategoryQualifiedName.equals("")) {
+                    setUniqueQualifiedName(suppliedCategory);
+                }
                 CategoryMapper categoryMapper = mappersFactory.get(CategoryMapper.class);
                 EntityDetail categoryEntityDetail = categoryMapper.map(suppliedCategory);
                 GlossarySummary suppliedGlossary = suppliedCategory.getGlossary();

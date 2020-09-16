@@ -87,10 +87,14 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
             InputValidator.validateNodeType(className, methodName, suppliedTerm.getNodeType(), NodeType.Term);
             // need to check we have a name
             final String suppliedTermName = suppliedTerm.getName();
+            final String suppliedTermQualifiedName = suppliedTerm.getQualifiedName();
             if (suppliedTermName == null || suppliedTermName.equals("")) {
                 ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.GLOSSARY_TERM_CREATE_WITHOUT_NAME.getMessageDefinition();
                 throw new InvalidParameterException(messageDefinition, className, methodName, "Name", null);
             } else {
+                if (suppliedTermQualifiedName == null || suppliedTermQualifiedName.equals("")) {
+                    setUniqueQualifiedName(suppliedTerm);
+                }
                 TermMapper termMapper = mappersFactory.get(TermMapper.class);
                 EntityDetail termEntityDetail = termMapper.map(suppliedTerm);
                 GlossarySummary suppliedGlossary = suppliedTerm.getGlossary();
