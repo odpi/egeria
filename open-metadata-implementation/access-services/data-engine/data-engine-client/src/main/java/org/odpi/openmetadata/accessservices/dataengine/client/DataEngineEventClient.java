@@ -38,14 +38,6 @@ public class DataEngineEventClient implements DataEngineClient {
      * {@inheritDoc}
      */
     @Override
-    public String createOrUpdateProcess(String userId, Process process) throws InvalidParameterException, ConnectorCheckedException {
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public List<String> createOrUpdateProcesses(String userId, List<Process> processes) throws InvalidParameterException, ConnectorCheckedException {
 
         ProcessesEvent event = new ProcessesEvent();

@@ -22,28 +22,6 @@ import java.util.List;
 public interface DataEngineClient {
 
     /**
-     * Create or update the process, with all the ports, schema types and corresponding relationships except for
-     * process hierarchy relationships - when using this method process hierarchy relationships should not be included
-     * but sent through the separate endpoint specific for process hierarchies.
-     *
-     * @param userId  the name of the calling user
-     * @param process the process bean
-     *
-     * @return unique identifier of the process in the repository
-     *
-     * @throws InvalidParameterException the bean properties are
-     * invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException problem accessing the property server
-     * @see #createOrUpdateProcesses(String, List)
-     */
-    String createOrUpdateProcess(String userId, Process process) throws InvalidParameterException,
-                                                                        PropertyServerException,
-                                                                        UserNotAuthorizedException,
-                                                                        ConnectorCheckedException;
-
-
-    /**
      * Create or update the processes, with all the ports, schema types and corresponding relationships including
      * process hierarchy relationships.
      *
@@ -107,6 +85,7 @@ public interface DataEngineClient {
      * @throws InvalidParameterException the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
+     * @throws ConnectorCheckedException internal problem with the connector
      */
     String createOrUpdatePortImplementation(String userId, PortImplementation portImplementation) throws
                                                                                                   InvalidParameterException,
@@ -125,6 +104,7 @@ public interface DataEngineClient {
      * @throws InvalidParameterException the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
+     * @throws ConnectorCheckedException internal problem with the connector
      */
     String createOrUpdatePortAlias(String userId, PortAlias portAlias) throws InvalidParameterException,
                                                                               UserNotAuthorizedException,
@@ -140,6 +120,7 @@ public interface DataEngineClient {
      * @throws InvalidParameterException the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
+     * @throws ConnectorCheckedException internal problem with the connector
      */
     void addLineageMappings(String userId, List<LineageMapping> lineageMappings) throws InvalidParameterException,
                                                                                         UserNotAuthorizedException,
@@ -156,6 +137,7 @@ public interface DataEngineClient {
      * @throws InvalidParameterException the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
+     * @throws ConnectorCheckedException internal problem with the connector
      */
     void addPortsToProcess(String userId, List<String> portGUIDs, String processGUID) throws InvalidParameterException,
                                                                                              UserNotAuthorizedException,
