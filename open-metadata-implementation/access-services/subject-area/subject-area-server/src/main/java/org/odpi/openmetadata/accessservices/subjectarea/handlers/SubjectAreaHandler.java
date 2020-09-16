@@ -276,7 +276,6 @@ public abstract class SubjectAreaHandler {
      * @param node Node to set the unique qualified name into
      */
     protected void setUniqueQualifiedName(Node node) {
-
       node.setQualifiedName(node.getName() + "." + UUID.randomUUID().toString());
     }
 }
