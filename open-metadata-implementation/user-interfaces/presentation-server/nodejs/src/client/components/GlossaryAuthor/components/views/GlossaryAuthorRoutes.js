@@ -6,8 +6,10 @@ import { Route, Switch } from "react-router-dom";
 import GlossaryAuthorCRUD from "../GlossaryAuthorCRUD";
 import GlossaryAuthorNavigation from "../GlossaryAuthorNavigation";
 import GlossaryAuthorSearch from "../GlossaryAuthorSearch";
-import CreateGlossaryView from "./CreateGlossaryView";
-import GlossaryEdit from "../GlossaryEdit";
+import QuickTerms from "../QuickTerms";
+import CreateGlossary from "../CreateGlossary";
+import UpdateGlossary from "../UpdateGlossary";
+
 
 
 export default function GlossaryAuthorRoutes({ glossaryAuthorURL }) {
@@ -25,8 +27,13 @@ export default function GlossaryAuthorRoutes({ glossaryAuthorURL }) {
     console.log("getGlossariesAddPath " + path);
     return path;
   }
+  function getQuickTermsPath() {
+    const path = glossaryAuthorURL + "/glossaries/quick-terms";
+    console.log("getQuickTerms " + path);
+    return path;
+  }
   function getGlossariesEditPath() {
-    return glossaryAuthorURL + "/glossaries/edit-glossary";
+    return glossaryAuthorURL + "/glossaries/edit-glossary/:guid";
   }
   function getCrudPath() {
     const path = glossaryAuthorURL + "/crud";
@@ -42,19 +49,17 @@ export default function GlossaryAuthorRoutes({ glossaryAuthorURL }) {
     <Switch>
       <Route
         path={getGlossariesAddPath()}
-        //component={CreateGlossaryView}
-        component={CreateGlossaryView}
+        component={CreateGlossary}
       ></Route>
-      <Route path={getGlossariesEditPath()} component={GlossaryEdit}></Route>
+      <Route path={getGlossariesEditPath()} component={UpdateGlossary}></Route>
       <Route
         exact
         path={getGlossariesPath()}
         component={GlossaryAuthorNavigation}
       ></Route>
       <Route path={getSearchPath()} component={GlossaryAuthorSearch}></Route>
-      <Route path={getCrudPath()} component={GlossaryAuthorCRUD}></Route>
+      <Route path={getQuickTermsPath()} component={QuickTerms}></Route>
       <Route
-        exact
         path={getGlossariesPath()}
         component={GlossaryAuthorNavigation}
       ></Route>

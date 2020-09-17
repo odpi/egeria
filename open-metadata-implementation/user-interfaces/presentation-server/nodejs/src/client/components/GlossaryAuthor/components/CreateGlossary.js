@@ -15,20 +15,19 @@ import {
   TableHeader,
   TableBody,
 } from "carbon-components-react";
-import { Button } from "react-bootstrap";
-import getNodeType from "../properties/NodeTypes.js";
+import getNodeType from "./properties/NodeTypes.js";
 import Info16 from "@carbon/icons-react/lib/information/16";
 import {
   issueRestCreate
-} from "../RestCaller";
+} from "./RestCaller";
 
-export default function CreateGlossaryView(props) {
+export default function CreateGlossary(props) {
   const [createBody, setCreateBody] = useState({});
   const [createdNode, setCreatedNode] = useState();
   const [errorMsg, setErrorMsg] = useState();
   const currentNodeType = getNodeType("glossary");
 
-  console.log("CreateGlossaryView");
+  console.log("CreateGlossary");
 
   /**
    * If there was an error the button has a class added to it to cause it to shake. After the animation ends, we need to remove the class.
@@ -42,12 +41,6 @@ export default function CreateGlossaryView(props) {
     console.log("handleClick(()");
     e.preventDefault();
     let body = createBody;
-    const nodeType = currentNodeType;
-    if (nodeType.typeForCreate) {
-      body.nodeType = nodeType.nodeTypeForCreate;
-    } else {
-      body.nodeType = nodeType.typeName;
-    }
     // TODO consider moving this up to a node controller as per the CRUD pattern.
     // inthe meantime this will be self contained.
     const url = currentNodeType.url;
