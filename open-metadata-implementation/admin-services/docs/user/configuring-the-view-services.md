@@ -8,7 +8,7 @@ for user interfaces to integrate with open metadata.
 
 They run in a [View Server](../concepts/view-server.md), they have a REST API. View servers are configured with a remote 
 OMAG Server name and platform root URL, which are used to issue downstream rest calls to another OMAG Server, for example to 
-call [Open Metadata Access Services (OMASs)](../../../access-services) to work with open metadata content from the metadata repositories .   
+call [Open Metadata Access Services (OMASs)](../../../access-services) to work with open metadata content from the metadata repositories.   
 
 ## List the different types of view services
 
