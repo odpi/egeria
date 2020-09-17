@@ -1,7 +1,9 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright Contributors to the Egeria project.
 
-FROM openjdk:14-alpine
+# Based on RedHat UBI image.
+# https://catalog.redhat.com/software/containers/ubi8/openjdk-11/5dd6a4b45a13461646f677f4?container-tabs=gti&gti-tabs=unauthenticated
+FROM registry.access.redhat.com/ubi8/openjdk-11
 ARG version=2.3-SNAPSHOT
 ARG VCS_REF=unknown
 ARG VCS_ORIGIN=unknown
@@ -13,7 +15,7 @@ ENV version ${version}
 # Labels from https://github.com/opencontainers/image-spec/blob/master/annotations.md#pre-defined-annotation-keys (with additions prefixed ext)
 LABEL org.opencontainers.image.vendor = "ODPi" \
       org.opencontainers.image.title = "Egeria" \
-      org.opencontainers.image.description = "Common image for core ODPi Egeria runtime." \
+      org.opencontainers.image.description = "Common image for core ODPi Egeria runtime. Based on RedHat UBI 8 openjdk-11 image" \
       org.opencontainers.image.url = "https://egeria.odpi.org/" \
       org.opencontainers.image.source = "$VCS_ORIGIN" \
       org.opencontainers.image.authors = "ODPi Egeria" \
@@ -28,29 +30,16 @@ LABEL org.opencontainers.image.vendor = "ODPi" \
       org.opencontainers.image.ext.docker.debug = "docker exec -it $CONTAINER /bin/sh" \
       org.opencontainers.image.ext.docker.params = "JAVA_DEBUG=set to true to enable JVM debugging"
 
-RUN apk --no-cache add bash shadow && \
-    apk --no-cache update && \
-    apk --no-cache upgrade && \
-    groupadd -r egeria -g 9443 && \
-    useradd --no-log-init -r -g egeria -u 9443 -m -d /opt/egeria egeria
-
-COPY --chown=egeria:egeria dist/entrypoint.sh /entrypoint.sh
-
-# Copy distribution
-COPY --chown=egeria:egeria target/assembly /opt/egeria
+# Copy egeria distribution
+COPY target/assembly /deployments
 
 # Expose port 8080 (default) for client access, and allow for 5005 being used for remote java debug
 EXPOSE 9443 5005
 
-WORKDIR /opt/egeria
+# By default, we run the server chassis
+ENV JAVA_APP_JAR=server/server-chassis-spring-${version}.jar
+ENV JAVA_LIBDIR=${JAVA_APP_DIR}/server/lib
+ENV LOADER_PATH=${LOADER_PATH}
 
-# Require use of numeric userids to meet some container security checks
-USER 9443:9443
-
-# Spring loader path for connectors etc
-ENV LOADER_PATH=/opt/egeria/server/lib
-
-# Launch server chassis by default
-CMD java -jar /opt/egeria/server/server-chassis-spring-${version}.jar
-
-ENTRYPOINT ["/entrypoint.sh"]
+# Joloka will be removed shortly. For now disable to avoid errors
+ENV AB_JOLOKIA_OFF=true
