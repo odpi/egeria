@@ -173,6 +173,12 @@ public class CategoryFVT {
         if (results.size() != 1) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected 1 back on the find got " + results.size());
         }
+        // make sure there is a category with the name
+        createCategory(DEFAULT_TEST_CATEGORY_NAME, glossaryGuid);
+        Category categoryForUniqueQFN2= createCategory(DEFAULT_TEST_CATEGORY_NAME, glossaryGuid);
+        if (categoryForUniqueQFN2 == null || categoryForUniqueQFN2.equals("")) {
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected qualified name to be set");
+        }
     }
 
     private Category createCategoryWithParentGlossaryGuid(String subjectAreaName, String parentGuid, String glossaryGuid) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, SubjectAreaFVTCheckedException {

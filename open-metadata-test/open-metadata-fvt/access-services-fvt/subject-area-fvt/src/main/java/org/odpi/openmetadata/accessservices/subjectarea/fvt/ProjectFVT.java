@@ -161,6 +161,12 @@ public class ProjectFVT
         if (terms != null && terms.size() > 0) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected null or empty got " +terms.size());
         }
+        // make sure there is a project with the name
+        createProject( DEFAULT_TEST_PROJECT_NAME);
+        Project projectForUniqueQFN2= createProject(DEFAULT_TEST_PROJECT_NAME);
+        if (projectForUniqueQFN2 == null || projectForUniqueQFN2.equals("")) {
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected qualified name to be set");
+        }
     }
 
     public  Project createProject(String projectName) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {

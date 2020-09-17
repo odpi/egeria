@@ -108,6 +108,7 @@
                                 <argument>java</argument>
                                 <argument>-Dserver.port=${fvt.serverport}</argument>
                                 <argument>-Dloader.path=lib</argument>
+                                <argument>-Dspringdoc.api-docs.enabled=false</argument>
                                 <argument>-jar</argument>
                                 <argument>server/server-chassis-spring-${open-metadata.version}.jar</argument>
                             </arguments>
