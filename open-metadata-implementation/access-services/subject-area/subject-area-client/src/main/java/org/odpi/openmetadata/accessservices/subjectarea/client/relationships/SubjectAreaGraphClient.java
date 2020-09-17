@@ -40,7 +40,7 @@ public class SubjectAreaGraphClient implements SubjectAreaGraph, ResponseParamet
 
         String urlTemplate = BASE_URL + "/%s" + createGraphQuery(request).toString();
         GenericResponse<Graph> response = client.getByIdRESTCall(userId, guid, methodName, getParameterizedType(), urlTemplate);
-        return response.getHead();
+        return response.head().get();
     }
 
     public QueryBuilder createGraphQuery(NeighborhoodHistoricalFindRequest request) {

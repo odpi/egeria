@@ -16,9 +16,8 @@ import java.util.*;
 /**
  * The OMAS client library implementation of the Subject Area OMAS.
  * This interface provides relationship {@link Line} authoring interface for subject area experts.
- * A standard set of customers is described in {@link SubjectAreaRelationship}
  */
-public class SubjectAreaLine implements SubjectAreaRelationship {
+public class SubjectAreaLine implements SubjectAreaRelationshipClients {
     private static final String HAS_A = "has-as";
     private static final String RELATED_TERM = "related-terms";
     private static final String SYNONYM = "synonyms";
@@ -294,6 +293,6 @@ public class SubjectAreaLine implements SubjectAreaRelationship {
         if (cache.containsKey(clazz)) {
             return (SubjectAreaRelationshipClient<T>) cache.get(clazz);
         }
-        return null;
+        throw new IllegalArgumentException("Not found client for " + clazz.getName());
     }
 }

@@ -4,7 +4,7 @@ package org.odpi.openmetadata.accessservices.subjectarea;
 
 import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.SubjectAreaNodeClients;
 import org.odpi.openmetadata.accessservices.subjectarea.client.relationships.SubjectAreaGraph;
-import org.odpi.openmetadata.accessservices.subjectarea.client.relationships.SubjectAreaRelationship;
+import org.odpi.openmetadata.accessservices.subjectarea.client.relationships.SubjectAreaRelationshipClients;
 
 /**
  * The SubjectArea Open Metadata Access Service (OMAS).
@@ -18,7 +18,7 @@ public interface SubjectArea {
      *
      * @return subject area relationship API class
      */
-    SubjectAreaRelationship getSubjectAreaRelationship();
+    SubjectAreaRelationshipClients getSubjectAreaRelationship();
 
     /**
      * Get the subject area graph API class - use this class to issue graph calls.

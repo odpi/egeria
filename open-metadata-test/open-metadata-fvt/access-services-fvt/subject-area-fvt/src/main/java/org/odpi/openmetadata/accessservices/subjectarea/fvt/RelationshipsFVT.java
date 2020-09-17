@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.fvt;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaNodeClient;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaRestClient;
 import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.categories.SubjectAreaCategoryClient;
-import org.odpi.openmetadata.accessservices.subjectarea.client.relationships.SubjectAreaRelationship;
+import org.odpi.openmetadata.accessservices.subjectarea.client.relationships.SubjectAreaRelationshipClients;
 import org.odpi.openmetadata.accessservices.subjectarea.client.relationships.SubjectAreaLine;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
@@ -34,7 +34,7 @@ public class RelationshipsFVT {
     private static final String DEFAULT_TEST_CAT_NAME2 = "Test cat B1";
     private static final String DEFAULT_TEST_CAT_NAME3 = "Test cat C1";
     private static final String DEFAULT_TEST_CAT_NAME4 = "Test cat D1";
-    private SubjectAreaRelationship subjectAreaRelationship = null;
+    private SubjectAreaRelationshipClients subjectAreaRelationship = null;
     private SubjectAreaNodeClient<Category> subjectAreaCategory = null;
     private GlossaryFVT glossaryFVT = null;
     private TermFVT termFVT = null;

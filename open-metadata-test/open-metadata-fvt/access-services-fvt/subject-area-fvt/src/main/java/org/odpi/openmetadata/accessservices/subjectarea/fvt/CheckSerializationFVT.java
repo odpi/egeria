@@ -7,7 +7,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaRestCl
 import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.glossaries.SubjectAreaGlossaryClient;
 import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.terms.SubjectAreaTermClient;
 import org.odpi.openmetadata.accessservices.subjectarea.client.relationships.SubjectAreaLine;
-import org.odpi.openmetadata.accessservices.subjectarea.client.relationships.SubjectAreaRelationship;
+import org.odpi.openmetadata.accessservices.subjectarea.client.relationships.SubjectAreaRelationshipClients;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.GlossarySummary;
@@ -22,7 +22,7 @@ import java.util.List;
 
 public class CheckSerializationFVT {
     private final String userId;
-    private final SubjectAreaRelationship subjectAreaRelationship;
+    private final SubjectAreaRelationshipClients subjectAreaRelationship;
     private final SubjectAreaNodeClient<Term> subjectAreaTerm;
     private final SubjectAreaNodeClient<Glossary> subjectAreaGlossary;
 

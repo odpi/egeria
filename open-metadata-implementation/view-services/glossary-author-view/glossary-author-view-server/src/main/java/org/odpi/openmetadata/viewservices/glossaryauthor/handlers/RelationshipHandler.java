@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.viewservices.glossaryauthor.handlers;
 
-import org.odpi.openmetadata.accessservices.subjectarea.client.relationships.SubjectAreaRelationship;
+import org.odpi.openmetadata.accessservices.subjectarea.client.relationships.SubjectAreaRelationshipClients;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.*;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -13,7 +13,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
  * The handler exposes methods for term functionality for the glossary author view
  */
 public class RelationshipHandler {
-    private SubjectAreaRelationship subjectAreaRelationship;
+    private SubjectAreaRelationshipClients subjectAreaRelationship;
 
     /**
      * Constructor for the RelationshipHandler
@@ -21,7 +21,7 @@ public class RelationshipHandler {
      * @param subjectAreaRelationship The SubjectAreaDefinition Open Metadata Access Service (OMAS) API for terms. This is the same as the
      *                                The SubjectAreaDefinition Open Metadata View Service (OMVS) API for terms.
      */
-    public RelationshipHandler(SubjectAreaRelationship subjectAreaRelationship) {
+    public RelationshipHandler(SubjectAreaRelationshipClients subjectAreaRelationship) {
         this.subjectAreaRelationship = subjectAreaRelationship;
     }
 

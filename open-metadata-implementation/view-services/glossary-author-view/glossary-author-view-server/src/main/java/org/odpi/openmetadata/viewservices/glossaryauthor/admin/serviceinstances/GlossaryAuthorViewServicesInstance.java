@@ -6,7 +6,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.SubjectArea;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaImpl;
 import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.SubjectAreaNodeClients;
 import org.odpi.openmetadata.accessservices.subjectarea.client.relationships.SubjectAreaGraph;
-import org.odpi.openmetadata.accessservices.subjectarea.client.relationships.SubjectAreaRelationship;
+import org.odpi.openmetadata.accessservices.subjectarea.client.relationships.SubjectAreaRelationshipClients;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstance;
@@ -21,7 +21,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 public class GlossaryAuthorViewServicesInstance extends OMVSServiceInstance
 {
     private final SubjectAreaNodeClients nodeClients;
-    private final SubjectAreaRelationship subjectAreaRelationship;
+    private final SubjectAreaRelationshipClients subjectAreaRelationship;
     private final SubjectAreaGraph subjectAreaGraph;
 
 
@@ -58,7 +58,7 @@ public class GlossaryAuthorViewServicesInstance extends OMVSServiceInstance
 
     public SubjectAreaNodeClients getNodeClients() { return nodeClients; }
 
-    public SubjectAreaRelationship getSubjectAreaRelationship() {
+    public SubjectAreaRelationshipClients getSubjectAreaRelationship() {
         return subjectAreaRelationship;
     }
 

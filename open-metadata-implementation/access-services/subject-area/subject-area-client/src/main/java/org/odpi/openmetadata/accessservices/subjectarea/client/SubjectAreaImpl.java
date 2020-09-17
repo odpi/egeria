@@ -3,12 +3,12 @@
 package org.odpi.openmetadata.accessservices.subjectarea.client;
 
 import org.odpi.openmetadata.accessservices.subjectarea.SubjectArea;
-import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.SubjectAreaNode;
+import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.DefaultSubjectAreaNodeClients;
 import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.SubjectAreaNodeClients;
 import org.odpi.openmetadata.accessservices.subjectarea.client.relationships.SubjectAreaGraph;
 import org.odpi.openmetadata.accessservices.subjectarea.client.relationships.SubjectAreaGraphClient;
 import org.odpi.openmetadata.accessservices.subjectarea.client.relationships.SubjectAreaLine;
-import org.odpi.openmetadata.accessservices.subjectarea.client.relationships.SubjectAreaRelationship;
+import org.odpi.openmetadata.accessservices.subjectarea.client.relationships.SubjectAreaRelationshipClients;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.accessservices.subjectarea.validators.InputValidator;
@@ -23,7 +23,7 @@ public class SubjectAreaImpl implements SubjectArea {
     private static final String className = SubjectAreaImpl.class.getName();
 
     private final SubjectAreaNodeClients nodeClients;
-    private final SubjectAreaRelationship relationshipAPI;
+    private final SubjectAreaRelationshipClients relationshipAPI;
     private final SubjectAreaGraph graphAPI;
     private final String serverName;
     private final String omasServerUrl;
@@ -41,7 +41,7 @@ public class SubjectAreaImpl implements SubjectArea {
         InputValidator.validateRemoteServerURLNotNull(className, methodName, omasServerURL);
         try {
             SubjectAreaRestClient client = new SubjectAreaRestClient(serverName, omasServerURL);
-            SubjectAreaNode subjectAreaNode = new SubjectAreaNode(client);
+            DefaultSubjectAreaNodeClients subjectAreaNode = new DefaultSubjectAreaNodeClients(client);
             SubjectAreaLine subjectAreaLine = new SubjectAreaLine(client);
             SubjectAreaGraph subjectAreaGraph = new SubjectAreaGraphClient(client);
 
@@ -80,7 +80,7 @@ public class SubjectAreaImpl implements SubjectArea {
      * @return subject area relationship API class
      */
     @Override
-    public SubjectAreaRelationship getSubjectAreaRelationship() {
+    public SubjectAreaRelationshipClients getSubjectAreaRelationship() {
         return this.relationshipAPI;
     }
 

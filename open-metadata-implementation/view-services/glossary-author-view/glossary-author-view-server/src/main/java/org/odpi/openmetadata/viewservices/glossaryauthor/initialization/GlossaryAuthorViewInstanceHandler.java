@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.viewservices.glossaryauthor.initialization;
 
 import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.SubjectAreaNodeClients;
-import org.odpi.openmetadata.accessservices.subjectarea.client.relationships.SubjectAreaRelationship;
+import org.odpi.openmetadata.accessservices.subjectarea.client.relationships.SubjectAreaRelationshipClients;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.PropertyServerException;
 import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstanceHandler;
@@ -31,7 +31,7 @@ public class GlossaryAuthorViewInstanceHandler extends OMVSServiceInstanceHandle
 
     public RelationshipHandler getRelationshipHandler(String serverName, String userId, String serviceOperationName) throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
 
-        SubjectAreaRelationship subjectAreaRelationship = this.getSubjectAreaRelationship(serverName, userId, serviceOperationName);
+        SubjectAreaRelationshipClients subjectAreaRelationship = this.getSubjectAreaRelationship(serverName, userId, serviceOperationName);
         return new RelationshipHandler(subjectAreaRelationship);
     }
 
@@ -60,7 +60,7 @@ public class GlossaryAuthorViewInstanceHandler extends OMVSServiceInstanceHandle
      * @param serviceOperationName service operation - usually the top level rest call
      * @return SubjectAreaRelationship subject area glossary API object
      */
-    private SubjectAreaRelationship getSubjectAreaRelationship(String serverName, String userId, String serviceOperationName)
+    private SubjectAreaRelationshipClients getSubjectAreaRelationship(String serverName, String userId, String serviceOperationName)
     throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         GlossaryAuthorViewServicesInstance instance = getSubjectAreaViewServicesInstance(userId, serverName, serviceOperationName);
         return instance.getSubjectAreaRelationship();

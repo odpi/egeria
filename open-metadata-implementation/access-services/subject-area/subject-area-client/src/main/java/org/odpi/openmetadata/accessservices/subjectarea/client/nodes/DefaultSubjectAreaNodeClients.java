@@ -20,18 +20,17 @@ import java.util.*;
 /**
  * The OMAS client library implementation of the Subject Area OMAS.
  * This interface provides entities {@link Node} authoring interface for subject area experts.
- * A standard set of customers is described in {@link SubjectAreaNodeClients}
  */
-public class SubjectAreaNode implements SubjectAreaNodeClients {
+public class DefaultSubjectAreaNodeClients implements SubjectAreaNodeClients {
     private final Map<Class<?>, SubjectAreaNodeClient<?>> cache = new HashMap<>();
-    private static final String DEFAULT_SCAN_PACKAGE = SubjectAreaNode.class.getPackage().getName();
+    private static final String DEFAULT_SCAN_PACKAGE = DefaultSubjectAreaNodeClients.class.getPackage().getName();
 
     /**
      * @param packagesToScan - search packages for finding classes placed by annotation {@link org.odpi.openmetadata.accessservices.subjectarea.client.nodes.SubjectAreaNodeClient}
      * @param subjectAreaRestClient - rest client for Subject Area OMAS REST APIs
      * */
     @SuppressWarnings("rawtypes")
-    public SubjectAreaNode(SubjectAreaRestClient subjectAreaRestClient, String... packagesToScan) {
+    public DefaultSubjectAreaNodeClients(SubjectAreaRestClient subjectAreaRestClient, String... packagesToScan) {
         Set<String> packages = new HashSet<>(Arrays.asList(packagesToScan));
         packages.add(DEFAULT_SCAN_PACKAGE);
 
@@ -64,7 +63,7 @@ public class SubjectAreaNode implements SubjectAreaNodeClients {
      *
      * @param subjectAreaRestClient - rest client for Subject Area OMAS REST APIs
      */
-    public SubjectAreaNode(SubjectAreaRestClient subjectAreaRestClient) {
+    public DefaultSubjectAreaNodeClients(SubjectAreaRestClient subjectAreaRestClient) {
         this(subjectAreaRestClient, DEFAULT_SCAN_PACKAGE);
     }
 
@@ -99,6 +98,6 @@ public class SubjectAreaNode implements SubjectAreaNodeClients {
         if (cache.containsKey(clazz)) {
             return (SubjectAreaNodeClient<T>) cache.get(clazz);
         }
-        return null;
+        throw new IllegalArgumentException("Not found client for " + clazz.getName());
     }
 }
