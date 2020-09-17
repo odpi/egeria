@@ -37,7 +37,7 @@ public class SubjectAreaLine implements SubjectAreaRelationshipClients {
     private static final String PROJECT_SCOPE = "project-scopes";
     private static final String CATEGORY_HIERARCHY_LINK = "category-hierarchy-link";
 
-    private Map<Class<?>, SubjectAreaRelationshipClient<?>> cache = new HashMap<>();
+    private final Map<Class<?>, SubjectAreaRelationshipClient<?>> cache = new HashMap<>();
     private static final String DEFAULT_SCAN_PACKAGE = SubjectAreaLine.class.getPackage().getName();
 
     /**
@@ -65,7 +65,7 @@ public class SubjectAreaLine implements SubjectAreaRelationshipClients {
                     | InstantiationException
                     | InvocationTargetException e) {
                 throw new ExceptionInInitializerError(
-                        "During initialization SubjectAreaLine an error has occurred - "
+                        "During initialization `SubjectAreaLine` an error has occurred - "
                                 + e.getMessage()
                 );
             }

@@ -50,7 +50,7 @@ public class DefaultSubjectAreaNodeClients implements SubjectAreaNodeClients {
                     | InstantiationException
                     | InvocationTargetException e) {
                 throw new ExceptionInInitializerError(
-                        "During initialization SubjectAreaNode an error has occurred - "
+                        "During initialization `DefaultSubjectAreaNodeClients` an error has occurred - "
                                 + e.getMessage()
                 );
             }
