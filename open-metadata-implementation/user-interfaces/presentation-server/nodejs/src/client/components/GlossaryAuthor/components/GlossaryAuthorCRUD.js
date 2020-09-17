@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 import React from "react";
-import GlossaryAuthorContext from "../contexts/GlossaryAuthorCRUDContext";
+import GlossaryAuthorCRUDContext from "../contexts/GlossaryAuthorCRUDContext";
 import Egeria_project_32 from "../../../images/Egeria_project_32";
 import Egeria_glossary_32 from "../../../images/Egeria_glossary_32";
 import MyNodeView from "./views/MyNodeView";
@@ -12,7 +12,7 @@ import GlossaryAuthorNodes from "./GlossaryAuthorNodes";
 export default function GlossaryAuthorCRUD() {
   return (
     <div>
-        <GlossaryAuthorContext>
+        <GlossaryAuthorCRUDContext>
           <div className='my-container'>
             <span className='my-item'>
               Current Glossary
@@ -26,7 +26,7 @@ export default function GlossaryAuthorCRUD() {
             </span>
           </div>
           <GlossaryAuthorNodes />
-        </GlossaryAuthorContext>
+        </GlossaryAuthorCRUDContext>
     </div>
   );
 }

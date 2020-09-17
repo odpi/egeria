@@ -78,12 +78,12 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
         try {
             InputValidator.validateNodeType(className, methodName, suppliedGlossary.getNodeType(), NodeType.Glossary, NodeType.Taxonomy, NodeType.TaxonomyAndCanonicalGlossary, NodeType.CanonicalGlossary);
             final String suppliedGlossaryName = suppliedGlossary.getName();
-
             // need to check we have a name
             if (suppliedGlossaryName == null || suppliedGlossaryName.equals("")) {
                 ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.GLOSSARY_CREATE_WITHOUT_NAME.getMessageDefinition();
                 throw new InvalidParameterException(messageDefinition, className, methodName, "name");
             } else {
+                setUniqueQualifiedNameIfBlank(suppliedGlossary);
                 GlossaryMapper glossaryMapper = mappersFactory.get(GlossaryMapper.class);
                 EntityDetail glossaryEntityDetail = glossaryMapper.map(suppliedGlossary);
                 String entityDetailGuid = oMRSAPIHelper.callOMRSAddEntity(methodName, userId, glossaryEntityDetail);
