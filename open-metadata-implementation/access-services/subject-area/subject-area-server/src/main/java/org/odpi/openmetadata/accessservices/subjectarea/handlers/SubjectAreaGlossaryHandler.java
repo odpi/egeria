@@ -208,8 +208,8 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
             InputValidator.validateNodeType(className, methodName, suppliedGlossary.getNodeType(), NodeType.Glossary, NodeType.Taxonomy, NodeType.TaxonomyAndCanonicalGlossary, NodeType.CanonicalGlossary);
 
             response = getGlossaryByGuid(userId, guid);
-            if (response.getHead() != null) {
-                Glossary currentGlossary = response.getHead();
+            if (response.head().isPresent()) {
+                Glossary currentGlossary = response.head().get();
                 if (isReplace)
                     replaceAttributes(currentGlossary, suppliedGlossary);
                 else

@@ -30,7 +30,7 @@ public abstract class AbstractSubjectArea<T> implements SubjectAreaClient<T>, Re
     {
         final String urlTemplate = BASE_URL + "/%s";
         GenericResponse<T> response = client.getByIdRESTCall(userId, guid, getMethodInfo("getByGUID"), getParameterizedType(), urlTemplate);
-        return response.getHead();
+        return response.head().get();
     }
 
     @Override
@@ -39,7 +39,7 @@ public abstract class AbstractSubjectArea<T> implements SubjectAreaClient<T>, Re
                                                       UserNotAuthorizedException
     {
         GenericResponse<T> response = client.postRESTCall(userId, getMethodInfo("create"), BASE_URL, getParameterizedType(), supplied);
-        return response.getHead();
+        return response.head().get();
     }
 
     @Override
@@ -48,7 +48,7 @@ public abstract class AbstractSubjectArea<T> implements SubjectAreaClient<T>, Re
                                                                        UserNotAuthorizedException
     {
         GenericResponse<T> response = client.findRESTCall(userId, getMethodInfo("find"), BASE_URL, getParameterizedType(), findRequest);
-        return response.getResult();
+        return response.results();
     }
 
     @Override
@@ -59,7 +59,7 @@ public abstract class AbstractSubjectArea<T> implements SubjectAreaClient<T>, Re
         final String urlTemplate = BASE_URL + "/%s?isReplace=" + Boolean.toString(isReplace);
         String methodInfo = getMethodInfo("update(isReplace=" + isReplace + ")");
         GenericResponse<T> response = client.putRESTCall(userId, guid, methodInfo, urlTemplate, getParameterizedType(), supplied);
-        return response.getHead();
+        return response.head().get();
     }
 
     @Override
@@ -78,7 +78,7 @@ public abstract class AbstractSubjectArea<T> implements SubjectAreaClient<T>, Re
     {
         final String urlTemplate = BASE_URL + "/%s";
         GenericResponse<T> response = client.restoreRESTCall(userId, guid, getMethodInfo("restore"), getParameterizedType(), urlTemplate);
-        return response.getHead();
+        return response.head().get();
     }
 
     @Override

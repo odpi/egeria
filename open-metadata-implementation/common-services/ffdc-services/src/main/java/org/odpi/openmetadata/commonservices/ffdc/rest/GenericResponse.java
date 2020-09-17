@@ -4,8 +4,11 @@ package org.odpi.openmetadata.commonservices.ffdc.rest;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
-
+/**
+ * If an OMAS uses Generic types to implement it's Java API, then the responses can implement this interface.
+ */
 public interface GenericResponse<R> extends FFDCResponse {
 
     /**
@@ -25,7 +28,7 @@ public interface GenericResponse<R> extends FFDCResponse {
      *
      * @return results
      **/
-    List<R> getResult();
+    List<R> results();
 
     /**
      * Get head element from result array.
@@ -33,12 +36,12 @@ public interface GenericResponse<R> extends FFDCResponse {
      *
      * @return result
      **/
-    default R getHead() {
-        List<R> result = getResult();
-        if (result != null && !result.isEmpty()) {
-            return result.get(0);
+    default Optional<R> head() {
+        final List<R> results = results();
+        if (results != null && !results.isEmpty()) {
+            return Optional.of(results.get(0));
         }
 
-        return null;
+        return Optional.empty();
     }
 }

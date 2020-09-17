@@ -38,6 +38,6 @@ public abstract class AbstractSubjectAreaNode<E extends Node> extends AbstractSu
         ResolvableType resolvableType = ResolvableType.forClassWithGenerics(SubjectAreaOMASAPIResponse.class, Line.class);
         ParameterizedTypeReference<GenericResponse<Line>> type = ParameterizedTypeReference.forType(resolvableType.getType());
         GenericResponse<Line> response = client.findRESTCall(userId, guid, methodInfo, urlTemplate, type, findRequest);
-        return response.getResult();
+        return response.results();
     }
 }

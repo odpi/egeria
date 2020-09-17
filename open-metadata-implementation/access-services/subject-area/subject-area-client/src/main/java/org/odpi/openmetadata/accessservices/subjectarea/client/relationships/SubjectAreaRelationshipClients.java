@@ -9,7 +9,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships
 /**
  * The SubjectAreaDefinition Open Metadata Access Service (OMAS) API for relationships.
  */
-public interface SubjectAreaRelationship {
+public interface SubjectAreaRelationshipClients {
 
     /**
      * @return {@link SubjectAreaRelationshipClient} for client calls(described in {@link SubjectAreaClient})

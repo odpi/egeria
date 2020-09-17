@@ -34,6 +34,6 @@ public class SubjectAreaProjectClient<P extends Project> extends AbstractSubject
         ResolvableType resolvableType = ResolvableType.forClassWithGenerics(SubjectAreaOMASAPIResponse.class, Term.class);
         ParameterizedTypeReference<GenericResponse<Term>> type = ParameterizedTypeReference.forType(resolvableType.getType());
         GenericResponse<Term> response = client.findRESTCall(userId, guid, methodInfo, urlTemplate, type, EMPTY_FIND_REQUEST);
-        return response.getResult();
+        return response.results();
     }
 }

@@ -57,7 +57,7 @@ public class SubjectAreaOMASAPIResponse<R> extends FFDCResponseBase implements G
     }
 
     @Override
-    public List<R> getResult() {
+    public List<R> results() {
         return new ArrayList<>(result);
     }
 }

@@ -213,8 +213,8 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
             InputValidator.validateNodeType(className, methodName, suppliedProject.getNodeType(), NodeType.Project, NodeType.GlossaryProject);
 
             response = getProjectByGuid(userId, guid);
-            if (response.getHead() != null) {
-                Project updateProject = response.getHead();
+            if (response.head().isPresent()) {
+                Project updateProject = response.head().get();
                 if (isReplace)
                     replaceAttributes(updateProject, suppliedProject);
                 else
