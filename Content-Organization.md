@@ -84,7 +84,6 @@ The Egeria content is organized into the following modules:
 * **[open-metadata-publication](open-metadata-publication)** - contains scripts that send artifacts collected together by the open-metadata-distribution module to external parties.
 * **[open-metadata-resources](open-metadata-resources)** - contains the open metadata demos and samples.
   * **[open-metadata-archives](open-metadata-resources/open-metadata-archives)** - contains pre-canned collections of metadata for loading into an open metadata server.
-  * **[open-metadata-demos](open-metadata-resources/open-metadata-demos)** - contains resources for running demos.
   * **[open-metadata-deployment](open-metadata-resources/open-metadata-deployment)** - contains resources for deploying ODPi Egeria and related technology.
   * **[open-metadata-labs](open-metadata-resources/open-metadata-labs)** - contains Jupyter Notebooks to guide you through using ODPi Egeria.
   * **[open-metadata-samples](open-metadata-resources/open-metadata-samples)** - contains coding samples for Egeria APIs.

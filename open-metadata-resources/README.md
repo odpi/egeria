@@ -8,8 +8,6 @@ The open metadata resources contains the resources for open metadata demos, hand
 * **[open-metadata-archives](open-metadata-archives)** - provides the code and
 instructions to build open metadata archives to load pre-canned content (both types and instances).
 
-* **[open-metadata-demos](open-metadata-demos)** - provides resources used in demos and the hands on labs.
-
 * **[open-metadata-deployment](open-metadata-deployment)** - provides docker images and helm charts for standard
 deployment configurations of Egeria and other integrated technology.
 

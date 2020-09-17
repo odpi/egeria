@@ -532,7 +532,7 @@ The contents of this tutorial covered a single OMAG server.
 For instructions on how to set up two OMAG Servers using in memory repositories that are exchanging metadata
 over [Apache Kafka](http://kafka.apache.org/), see:
 
-* [In Memory Repository Demo](../../open-metadata-demos/in-memory-repository-demo)
+* [In Memory Repository Demo](http://github.com/odpi/egeria-samples/demos/in-memory-repository)
 
 ## Next steps
 
