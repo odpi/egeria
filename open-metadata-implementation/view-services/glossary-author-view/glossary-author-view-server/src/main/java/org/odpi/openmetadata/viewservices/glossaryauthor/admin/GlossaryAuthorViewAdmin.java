@@ -61,12 +61,15 @@ public class GlossaryAuthorViewAdmin extends ViewServiceAdmin {
             this.auditLog = auditLog;
             this.serverUserName = serverUserName;
             this.serverName = serverName;
+            String remoteServerName = this.viewServiceConfig.getOMAGServerName();
+            String remoteServerPlatformRoot = this.viewServiceConfig.getOMAGServerPlatformRootURL();
+
             this.instance = new GlossaryAuthorViewServicesInstance(this.serverName,
                                                                    auditLog,
                                                                    serverUserName,
                                                                    maxPageSize,
-                                                                   this.viewServiceConfig.getOMAGServerName(),
-                                                                   this.viewServiceConfig.getOMAGServerPlatformRootURL());
+                                                                   remoteServerName,
+                                                                   remoteServerPlatformRoot);
             writeAuditLogPassingErrorMessage(auditLog, actionDescription, GlossaryAuthorViewAuditCode.SERVICE_INITIALIZED, serverName);
 
             if (log.isDebugEnabled()) {
