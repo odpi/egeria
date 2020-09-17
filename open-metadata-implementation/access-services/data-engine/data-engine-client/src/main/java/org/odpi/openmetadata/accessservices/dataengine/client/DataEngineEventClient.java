@@ -26,8 +26,6 @@ public class DataEngineEventClient implements DataEngineClient {
      *
      * @param source External source system using the client to produce events
      * @param dataEngineInTopicClientConnector topic connector used to publish to InTopic
-     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
-     *                                   REST API calls.
      */
     public DataEngineEventClient(String source, DataEngineInTopicClientConnector dataEngineInTopicClientConnector) {
         this.topicConnector = dataEngineInTopicClientConnector;
@@ -54,6 +52,9 @@ public class DataEngineEventClient implements DataEngineClient {
 
     /**
      * {@inheritDoc}
+     *
+     * @throws InvalidParameterException the bean properties are invalid
+     * @throws ConnectorCheckedException problem with the underlying connector (if used)
      */
     @Override
     public String createExternalDataEngine(String userId, SoftwareServerCapability softwareServerCapability) throws InvalidParameterException, ConnectorCheckedException {
@@ -72,6 +73,9 @@ public class DataEngineEventClient implements DataEngineClient {
 
     /**
      * {@inheritDoc}
+     *
+     * @throws InvalidParameterException the bean properties are invalid
+     * @throws ConnectorCheckedException problem with the underlying connector (if used)
      */
     @Override
     public String createOrUpdateSchemaType(String userId, SchemaType schemaType) throws InvalidParameterException, ConnectorCheckedException  {
@@ -90,6 +94,9 @@ public class DataEngineEventClient implements DataEngineClient {
 
     /**
      * {@inheritDoc}
+     *
+     * @throws InvalidParameterException the bean properties are invalid
+     * @throws ConnectorCheckedException problem with the underlying connector (if used)
      */
     @Override
     public String createOrUpdatePortImplementation(String userId, PortImplementation portImplementation) throws InvalidParameterException, ConnectorCheckedException {
@@ -108,6 +115,9 @@ public class DataEngineEventClient implements DataEngineClient {
 
     /**
      * {@inheritDoc}
+     *
+     * @throws InvalidParameterException the bean properties are invalid
+     * @throws ConnectorCheckedException problem with the underlying connector (if used)
      */
     @Override
     public String createOrUpdatePortAlias(String userId, PortAlias portAlias) throws InvalidParameterException, ConnectorCheckedException {
@@ -126,6 +136,9 @@ public class DataEngineEventClient implements DataEngineClient {
 
     /**
      * {@inheritDoc}
+     *
+     * @throws InvalidParameterException the bean properties are invalid
+     * @throws ConnectorCheckedException problem with the underlying connector (if used)
      */
     @Override
     public void addLineageMappings(String userId, List<LineageMapping> lineageMappings) throws InvalidParameterException, ConnectorCheckedException {
@@ -141,6 +154,9 @@ public class DataEngineEventClient implements DataEngineClient {
 
     /**
      * {@inheritDoc}
+     *
+     * @throws InvalidParameterException the bean properties are invalid
+     * @throws ConnectorCheckedException problem with the underlying connector (if used)
      */
     @Override
     public void addPortsToProcess(String userId, List<String> portGUIDs, String processGUID) throws InvalidParameterException, ConnectorCheckedException {
