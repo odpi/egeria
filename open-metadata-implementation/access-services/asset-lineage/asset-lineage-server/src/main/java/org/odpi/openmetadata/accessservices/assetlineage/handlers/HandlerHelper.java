@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.CLASSIFICATION;
@@ -38,7 +39,7 @@ public class HandlerHelper {
     private static final String ASSET_ZONE_MEMBERSHIP = "AssetZoneMembership";
     private static final String ZONE_MEMBERSHIP = "zoneMembership";
 
-    private List<String> lineageClassificationTypes;
+    private Set<String> lineageClassificationTypes;
     private RepositoryHandler repositoryHandler;
     private OMRSRepositoryHelper repositoryHelper;
     private InvalidParameterHandler invalidParameterHandler;
@@ -51,7 +52,7 @@ public class HandlerHelper {
     public HandlerHelper(InvalidParameterHandler invalidParameterHandler,
                          OMRSRepositoryHelper repositoryHelper,
                          RepositoryHandler repositoryHandler,
-                         List<String> lineageClassificationTypes) {
+                         Set<String> lineageClassificationTypes) {
         this.invalidParameterHandler = invalidParameterHandler;
         this.repositoryHelper = repositoryHelper;
         this.repositoryHandler = repositoryHandler;
@@ -237,12 +238,14 @@ public class HandlerHelper {
      * @return a list of lineage classifications
      */
     public List<Classification> filterLineageClassifications(List<Classification> classifications) {
-        if (CollectionUtils.isEmpty(classifications)) {
+        if (CollectionUtils.isNotEmpty(classifications)) {
+            return classifications.stream()
+                    .filter(classification -> classification.getType() != null)
+                    .filter(classification -> lineageClassificationTypes.contains(classification.getType().getTypeDefName()))
+                    .collect(Collectors.toList());
+        } else {
             return Collections.emptyList();
         }
-
-        return classifications.stream().filter(classification
-                -> lineageClassificationTypes.contains(classification.getType().getTypeDefName())).collect(Collectors.toList());
     }
 
     private void addClassificationsToGraphContext(List<Classification> classifications, AssetContext assetContext, EntityDetail entityDetail) {

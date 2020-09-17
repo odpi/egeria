@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 import React, { useContext } from "react";
-import { GlossaryAuthorContext } from "../contexts/GlossaryAuthorContext";
+import { GlossaryAuthorCRUDContext } from "../contexts/GlossaryAuthorCRUDContext";
 /**
  * This component is driven off the state of my project and glossary and whetehr they are being editted.
  * In the cases where we are editting one of them then some text is displayed indicating what is being editted.
@@ -11,37 +11,37 @@ import { GlossaryAuthorContext } from "../contexts/GlossaryAuthorContext";
 const NodeTypeChooser = () => {
   console.log("GlossaryAuthorNodes");
 
-  const glossaryAuthorContext = useContext(GlossaryAuthorContext);
+  const glossaryAuthorCRUDContext = useContext(GlossaryAuthorCRUDContext);
 
   const handleNodeChange = (e) => {
     const value = e.target.value;
     console.log("handleSelectChange (() " + value);
-    glossaryAuthorContext.doSetNodeType(value);
+    glossaryAuthorCRUDContext.doSetNodeType(value);
   };
   return (
     <div>
 
       {/* case one nothing editting my project  */}
-      { glossaryAuthorContext.isEdittingMyProject() && (
+      { glossaryAuthorCRUDContext.isEdittingMyProject() && (
           <div>
             Setting Current Project. Create or Search and Select. 
           </div>
         )}
       {/* case two nothing set no editing being attempted  */}
       { 
-        glossaryAuthorContext.isEdittingMyGlossary() && (
+        glossaryAuthorCRUDContext.isEdittingMyGlossary() && (
           <div>
             Setting Current Glossary. Create or Search and Select. 
           </div>
         )}
-        {!glossaryAuthorContext.isEdittingMyGlossary() && 
-          !glossaryAuthorContext.myGlossary &&
+        {!glossaryAuthorCRUDContext.isEdittingMyGlossary() && 
+          !glossaryAuthorCRUDContext.myGlossary &&
       (
          <div>
           Current glossary needs to be set. 
          </div>
        )}
-      {glossaryAuthorContext.isSetupComplete() && (
+      {glossaryAuthorCRUDContext.isSetupComplete() && (
           <div>
             <div>Choose what to author:</div>
             <div className="bx--col-lg-2 bx--col-md-2">

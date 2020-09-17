@@ -60,7 +60,7 @@ public class ProcessContextHandler {
                                  RepositoryHandler repositoryHandler,
                                  AssetContextHandler assetContextHandler,
                                  List<String> supportedZones,
-                                 List<String> lineageClassificationTypes) {
+                                 Set<String> lineageClassificationTypes) {
         this.invalidParameterHandler = invalidParameterHandler;
         this.handlerHelper = new HandlerHelper(invalidParameterHandler, repositoryHelper, repositoryHandler, lineageClassificationTypes);
         this.assetContextHandler = assetContextHandler;
