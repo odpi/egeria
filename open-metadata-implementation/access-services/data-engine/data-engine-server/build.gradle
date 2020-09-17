@@ -29,6 +29,7 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.2'
     testImplementation 'org.mockito:mockito-core:3.4.2'
     implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
+    implementation project(':open-metadata-implementation:access-services:data-engine:data-engine-topic-connectors')
 }
 
 description = 'Data Engine OMAS Server-side'
