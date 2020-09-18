@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.dataengineproxy.processor;
 
-import org.odpi.openmetadata.accessservices.dataengine.client.DataEngineRESTClient;
+import org.odpi.openmetadata.accessservices.dataengine.client.DataEngineClient;
 import org.odpi.openmetadata.accessservices.dataengine.model.*;
 import org.odpi.openmetadata.accessservices.dataengine.model.Process;
 import org.odpi.openmetadata.adminservices.configuration.properties.DataEngineProxyConfig;
@@ -28,7 +28,7 @@ public class DataEngineProxyChangePoller implements Runnable {
 
     private OMRSAuditLog auditLog;
     private DataEngineProxyConfig dataEngineProxyConfig;
-    private DataEngineRESTClient dataEngineOMASClient;
+    private DataEngineClient dataEngineOMASClient;
     private DataEngineConnectorBase connector;
     private String userId;
 
@@ -55,7 +55,7 @@ public class DataEngineProxyChangePoller implements Runnable {
     public DataEngineProxyChangePoller(DataEngineConnectorBase connector,
                                        String userId,
                                        DataEngineProxyConfig dataEngineProxyConfig,
-                                       DataEngineRESTClient dataEngineOMASClient,
+                                       DataEngineClient dataEngineOMASClient,
                                        OMRSAuditLog auditLog) {
 
         final String methodName = "DataEngineProxyChangePoller";
@@ -155,7 +155,8 @@ public class DataEngineProxyChangePoller implements Runnable {
                                    Date changesCutoff) throws
             InvalidParameterException,
             PropertyServerException,
-            UserNotAuthorizedException {
+            UserNotAuthorizedException,
+            ConnectorCheckedException {
         final String methodName = "upsertSchemaTypes";
         final String type = "SchemaTypes";
         auditLog.logMessage(methodName, DataEngineProxyAuditCode.POLLING_TYPE_START.getMessageDefinition(type));
@@ -172,7 +173,8 @@ public class DataEngineProxyChangePoller implements Runnable {
                                            Date changesCutoff) throws
             InvalidParameterException,
             PropertyServerException,
-            UserNotAuthorizedException {
+            UserNotAuthorizedException,
+            ConnectorCheckedException {
         final String methodName = "upsertPortImplementations";
         final String type = "PortImplementations";
         auditLog.logMessage(methodName, DataEngineProxyAuditCode.POLLING_TYPE_START.getMessageDefinition(type));
@@ -190,7 +192,8 @@ public class DataEngineProxyChangePoller implements Runnable {
                                    Date changesCutoff) throws
             InvalidParameterException,
             PropertyServerException,
-            UserNotAuthorizedException {
+            UserNotAuthorizedException,
+            ConnectorCheckedException {
         final String methodName = "upsertPortAliases";
         final String type = "PortAliases";
         auditLog.logMessage(methodName, DataEngineProxyAuditCode.POLLING_TYPE_START.getMessageDefinition(type));
@@ -207,7 +210,8 @@ public class DataEngineProxyChangePoller implements Runnable {
                                  Date changesCutoff) throws
             InvalidParameterException,
             PropertyServerException,
-            UserNotAuthorizedException {
+            UserNotAuthorizedException,
+            ConnectorCheckedException {
         final String methodName = "upsertProcesses";
         final String type = "Processes";
         auditLog.logMessage(methodName, DataEngineProxyAuditCode.POLLING_TYPE_START.getMessageDefinition(type));
@@ -222,7 +226,8 @@ public class DataEngineProxyChangePoller implements Runnable {
                                        Date changesCutoff) throws
             InvalidParameterException,
             PropertyServerException,
-            UserNotAuthorizedException {
+            UserNotAuthorizedException,
+            ConnectorCheckedException {
         final String methodName = "upsertLineageMappings";
         final String type = "LineageMappings";
         auditLog.logMessage(methodName, DataEngineProxyAuditCode.POLLING_TYPE_START.getMessageDefinition(type));

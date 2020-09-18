@@ -32,6 +32,7 @@ public class DataEngineProxyConfig extends AdminServicesConfigHeader
     private Connection dataEngineConnection    = null;
     private int        pollIntervalInSeconds   = 60;
     private int        batchWindowInSeconds    = 86400;
+    private boolean    eventsClientEnabled     = false;
 
     /**
      * Default constuctor

@@ -2,13 +2,15 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.dataengineproxy.admin;
 
-import org.odpi.openmetadata.accessservices.dataengine.client.DataEngineRESTClient;
+import org.odpi.openmetadata.accessservices.dataengine.client.DataEngineClient;
+import org.odpi.openmetadata.accessservices.dataengine.client.DataEngineEventClient;
+import org.odpi.openmetadata.accessservices.dataengine.client.DataEngineRESTConfigurationClient;
+import org.odpi.openmetadata.accessservices.dataengine.connectors.intopic.DataEngineInTopicClientConnector;
 import org.odpi.openmetadata.adminservices.configuration.properties.DataEngineProxyConfig;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.ConnectionResponse;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.governanceservers.dataengineproxy.auditlog.DataEngineProxyAuditCode;
 import org.odpi.openmetadata.governanceservers.dataengineproxy.auditlog.DataEngineProxyErrorCode;
@@ -29,6 +31,7 @@ public class DataEngineProxyOperationalServices {
     private OMRSAuditLog auditLog;
     private DataEngineConnectorBase dataEngineConnector;
     private DataEngineProxyChangePoller changePoller;
+    private DataEngineInTopicClientConnector dataEngineTopicConnector;
 
     /**
      * Constructor used at server startup.
@@ -83,7 +86,9 @@ public class DataEngineProxyOperationalServices {
         /*
          * Create the OMAS client
          */
-        DataEngineRESTClient dataEngineClient;
+
+        DataEngineClient dataEngineClient;
+
         try {
             if ((localServerName != null) && (localServerPassword != null)) {
                 dataEngineClient = new DataEngineRESTClient(dataEngineProxyConfig.getAccessServiceServerName(),
@@ -94,6 +99,7 @@ public class DataEngineProxyOperationalServices {
                 dataEngineClient = new DataEngineRESTClient(dataEngineProxyConfig.getAccessServiceServerName(),
                         dataEngineProxyConfig.getAccessServiceRootURL());
             }
+
         } catch (InvalidParameterException error) {
             throw new OMAGConfigurationErrorException(
                     DataEngineProxyErrorCode.UNKNOWN_ERROR.getMessageDefinition(),
@@ -101,6 +107,29 @@ public class DataEngineProxyOperationalServices {
                     methodName,
                     error
             );
+        }
+
+        // Check if events interface should be enabled, otherwise we do not start the connector and configure the events client
+        if(dataEngineProxyConfig.isEventsClientEnabled()) {
+
+            try {
+
+                //Configure and start the topic connector
+                ConnectionResponse connectionResponse = ((DataEngineRESTConfigurationClient) dataEngineClient).getInTopicConnection(dataEngineProxyConfig.getAccessServiceServerName(), localServerUserId);
+                ConnectorBroker connectorBroker = new ConnectorBroker();
+                dataEngineTopicConnector = (DataEngineInTopicClientConnector) connectorBroker.getConnector(connectionResponse.getConnection());
+                dataEngineTopicConnector.setAuditLog(auditLog);
+                dataEngineTopicConnector.start();
+                dataEngineClient = new DataEngineEventClient(dataEngineTopicConnector);
+
+            } catch (ConnectionCheckedException | ConnectorCheckedException | PropertyServerException | UserNotAuthorizedException | InvalidParameterException e) {
+                throw new OMAGConfigurationErrorException(
+                        DataEngineProxyErrorCode.ERROR_INITIALIZING_CLIENT_CONNECTION.getMessageDefinition(),
+                        this.getClass().getName(),
+                        methodName,
+                        e
+                );
+            }
         }
 
         // Configure the connector
@@ -163,7 +192,13 @@ public class DataEngineProxyOperationalServices {
                 changePoller.stop();
             }
             // Disconnect the data engine connector
-            dataEngineConnector.disconnect();
+            if(dataEngineConnector!=null) {
+                dataEngineConnector.disconnect();
+            }
+            // Disconnect the topic connector if initialized previously
+            if(dataEngineTopicConnector!=null) {
+                dataEngineTopicConnector.disconnect();
+            }
             auditLog.logMessage(methodName, DataEngineProxyAuditCode.SERVICE_SHUTDOWN.getMessageDefinition(localServerName));
             return true;
         } catch (Exception e) {
