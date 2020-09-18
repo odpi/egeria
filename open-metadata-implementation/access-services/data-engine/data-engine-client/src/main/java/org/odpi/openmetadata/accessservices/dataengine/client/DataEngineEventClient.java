@@ -24,12 +24,10 @@ public class DataEngineEventClient implements DataEngineClient {
     /**
      * Constructor to create DataEngineEventClient with unauthenticated access to the server
      *
-     * @param source External source system using the client to produce events
      * @param dataEngineInTopicClientConnector topic connector used to publish to InTopic
      */
-    public DataEngineEventClient(String source, DataEngineInTopicClientConnector dataEngineInTopicClientConnector) {
+    public DataEngineEventClient(DataEngineInTopicClientConnector dataEngineInTopicClientConnector) {
         this.topicConnector = dataEngineInTopicClientConnector;
-        this.externalSource = source;
     }
 
     /**
@@ -169,5 +167,25 @@ public class DataEngineEventClient implements DataEngineClient {
         event.setProcessGUID(processGUID);
 
         topicConnector.sendEvent(event);
+    }
+
+    /**
+     * Sets external source system name using the data engine client
+     *
+     * @param externalSourceName Source system name
+     */
+    @Override
+    public void setExternalSourceName(String externalSourceName) {
+        this.externalSource = externalSourceName;
+    }
+
+    /**
+     * Returns the name of the source system using data engine client
+     *
+     * @return Source system name
+     */
+    @Override
+    public String getExternalSourceName() {
+        return this.externalSource;
     }
 }

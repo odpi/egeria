@@ -143,4 +143,16 @@ public interface DataEngineClient {
                                                                                              UserNotAuthorizedException,
                                                                                              PropertyServerException,
                                                                                              ConnectorCheckedException;
+
+    /**
+     * Sets external source system name using the data engine client
+     * @param externalSourceName Source system name
+     */
+    void setExternalSourceName(String externalSourceName);
+
+    /**
+     * Returns the name of the source system using data engine client
+     * @return Source system name
+     */
+    String getExternalSourceName();
 }
