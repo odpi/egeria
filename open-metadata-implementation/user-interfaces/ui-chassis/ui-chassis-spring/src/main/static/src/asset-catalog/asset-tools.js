@@ -59,7 +59,7 @@ class AssetTools extends PolymerElement {
                 </a>
             </li>
             <li> 
-                <a href="#/asset-lineage/glossaryLineage/[[guid]]" title="Glossary Lineage">
+                <a href="#/asset-lineage/verticalLineage/[[guid]]" title="Glossary Lineage">
                     <paper-button raised>
                     <iron-icon  icon="vaadin:file-tree"></iron-icon>
                     <div>&nbsp;Glossary</div>

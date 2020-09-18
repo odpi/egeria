@@ -33,7 +33,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -130,7 +129,7 @@ public class OpenLineageServiceTest {
         } catch (OpenLineageException e) {
             e.printStackTrace();
         }
-        Map<String, List> response = openLineageService.getGlossaryLineage(USER_ID, guid, true);
+        Map<String, List> response = openLineageService.getVerticalLineage(USER_ID, guid, true);
         checkResponse(response);
     }
 

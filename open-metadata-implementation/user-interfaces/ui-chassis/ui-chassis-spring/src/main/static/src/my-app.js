@@ -246,7 +246,7 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
                     'ultimateDestination': {label: 'Ultimate Destination', href: "/ultimateDestination"},
                     'endToEnd': {label: 'End To End Lineage', href: "/endToEnd"},
                     'sourceAndDestination': {label: 'Source and Destination', href: "/sourceAndDestination"},
-                    'glossaryLineage': {label: 'Glossary Lineage', href: "/glossaryLineage"},
+                    'verticalLineage': {label: 'Vertical Lineage', href: "/verticalLineage"},
                     'about': {label: 'About', href: "/about"}
                      }
             }

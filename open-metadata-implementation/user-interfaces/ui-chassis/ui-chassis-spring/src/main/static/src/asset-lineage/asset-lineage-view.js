@@ -65,9 +65,9 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
                 Ultimate Destination
             </a>
           </vaadin-tab>
-          <vaadin-tab value="glossaryLineage">
-            <a href="[[rootPath]]#/asset-lineage/glossaryLineage/[[routeData.guid]]" tabindex="-1" rel="noopener"> 
-                Glossary Lineage
+          <vaadin-tab value="verticalLineage">
+            <a href="[[rootPath]]#/asset-lineage/verticalLineage/[[routeData.guid]]" tabindex="-1" rel="noopener"> 
+                Vertical Lineage
             </a>
           </vaadin-tab>
           <vaadin-tab value="sourceAndDestination">
@@ -126,7 +126,7 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
         return {
             usecases:{
                 type: Array,
-                value:['ultimateSource','endToEnd','ultimateDestination','glossaryLineage','sourceAndDestination' ]
+                value:['ultimateSource','endToEnd','ultimateDestination','verticalLineage','sourceAndDestination' ]
             },
             graphData: {
                 type: Object,
@@ -354,12 +354,12 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
       this.$.tokenAjax._go();
     }
 
-    _glossaryLineage(guid, includeProcesses){
+    _verticalLineage(guid, includeProcesses){
       if (includeProcesses === null || includeProcesses === undefined) {
           includeProcesses  = "true";
       }
       this.$.visgraph.options.groups = this.groups;
-      this.$.tokenAjax.url = '/api/lineage/entities/' + guid + '/glossary-lineage?includeProcesses=' + includeProcesses;
+      this.$.tokenAjax.url = '/api/lineage/entities/' + guid + '/vertical-lineage?includeProcesses=' + includeProcesses;
       this.$.tokenAjax._go();
     }
 
@@ -384,8 +384,8 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
                 case 'ultimateDestination':
                     this._ultimateDestination(this.routeData.guid, includeProcesses);
                     break;
-                case 'glossaryLineage':
-                    this._glossaryLineage(this.routeData.guid, includeProcesses);
+                case 'verticalLineage':
+                    this._verticalLineage(this.routeData.guid, includeProcesses);
                     break;
                 case 'sourceAndDestination':
                     this._sourceAndDestination(this.routeData.guid, includeProcesses);
