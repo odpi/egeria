@@ -33,7 +33,7 @@ import java.util.List;
  * The Data Engine Open Metadata Access Service (OMAS) provides an interface for data engine tools to create
  * processes with ports, schemas and relationships. See interface definition for more explanation.
  */
-public class DataEngineImpl extends OCFRESTClient implements DataEngineClient { //TODO: Suggest to rename this class to DataEngineRESTClient
+public class DataEngineRESTClient extends OCFRESTClient implements DataEngineClient {
     private static final String DATA_ENGINE_PATH = "/servers/{0}/open-metadata/access-services/data-engine/users/{1}/";
     private static final String PROCESS_URL_TEMPLATE = DATA_ENGINE_PATH + "processes";
     private static final String DATA_ENGINE_REGISTRATION_URL_TEMPLATE = DATA_ENGINE_PATH + "registration";
@@ -65,7 +65,7 @@ public class DataEngineImpl extends OCFRESTClient implements DataEngineClient { 
      *
      * @throws InvalidParameterException null URL or server name
      */
-    public DataEngineImpl(String serverName, String serverPlatformRootURL) throws InvalidParameterException {
+    public DataEngineRESTClient(String serverName, String serverPlatformRootURL) throws InvalidParameterException {
         super(serverName, serverPlatformRootURL);
 
         this.serverName = serverName;
@@ -83,7 +83,7 @@ public class DataEngineImpl extends OCFRESTClient implements DataEngineClient { 
      *
      * @throws InvalidParameterException null URL or server name
      */
-    public DataEngineImpl(String serverName, String serverPlatformRootURL, String userId, String password) throws InvalidParameterException {
+    public DataEngineRESTClient(String serverName, String serverPlatformRootURL, String userId, String password) throws InvalidParameterException {
         super(serverName, serverPlatformRootURL, userId, password);
 
         this.serverName = serverName;

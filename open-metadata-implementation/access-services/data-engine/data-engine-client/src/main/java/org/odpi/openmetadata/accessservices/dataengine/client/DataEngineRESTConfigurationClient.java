@@ -12,7 +12,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 /**
  * DataEngineRESTConfigurationClient provides an extension to the client-side REST interface for obtaining Data Engine access service configuration specifics.
  */
-public class DataEngineRESTConfigurationClient extends DataEngineImpl {
+public class DataEngineRESTConfigurationClient extends DataEngineRESTClient {
 
     private static final String IN_TOPIC_CONNECTION_PATH = "/servers/{0}/open-metadata/access-services/data-engine/users/{1}/topics/in-topic-connection";
     private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
