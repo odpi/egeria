@@ -62,7 +62,12 @@ public enum DataEngineErrorCode implements ExceptionMessageSet {
     PROCESS_NOT_FOUND(400, "OMAS-DATA-ENGINE-400-008",
             "Process with qualifiedName {0} was not found",
             "The system is unable to create a new ProcessHierarchy relation.",
-            "Correct the code in the caller to provide the correct port qualified name.");
+            "Correct the code in the caller to provide the correct port qualified name."),
+    UNABLE_TO_SEND_EVENT(500, "OMAS-DATA-ENGINE-500-001",
+            "An unexpected exception occurred when sending an event through connector {0} to the Data Engine OMAS out topic.  The failing " +
+                    "event was {1}, the exception was {2} with message {2}",
+            "The system has issued a call to an open metadata access service input topic using event message broker",
+            "Look for errors in the remote server's audit log and console to understand and correct the source of the error.");
 
     private static final long serialVersionUID = 1L;
 

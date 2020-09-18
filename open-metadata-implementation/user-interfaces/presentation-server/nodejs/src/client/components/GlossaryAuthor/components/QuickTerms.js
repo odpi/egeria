@@ -3,11 +3,11 @@
 import React from "react";
 
 
-export default function GlossaryEdit() {
+export default function QuickTerms() {
 
   return (
     <div>
-     TODO Editting Glossary Page
+     TODO QuickTerms
     </div>
   );
 }
