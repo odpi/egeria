@@ -9,7 +9,6 @@ import java.lang.annotation.Target;
 
 /**
  * Annotating client class for working with Node objects.
- * These classes are scanned by {@link DefaultSubjectAreaNodeClients}
  */
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
