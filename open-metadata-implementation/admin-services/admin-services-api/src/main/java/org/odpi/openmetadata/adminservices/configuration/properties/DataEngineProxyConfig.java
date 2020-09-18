@@ -35,7 +35,7 @@ public class DataEngineProxyConfig extends AdminServicesConfigHeader
     private boolean    eventsClientEnabled     = false;
 
     /**
-     * Default constuctor
+     * Default constructor
      */
     public DataEngineProxyConfig() {
         super();
@@ -147,5 +147,22 @@ public class DataEngineProxyConfig extends AdminServicesConfigHeader
         return Objects.hash(getAccessServiceRootURL(), getAccessServiceServerName(),
                 getDataEngineConnection(), getPollIntervalInSeconds());
     }
+
+    /**
+     * Configuration parameter controlling events client usage in the Data Engine Proxy server
+     * @return true if enabled
+     */
+    public boolean isEventsClientEnabled() {
+        return eventsClientEnabled;
+    }
+
+    /**
+     * Sets configuration parameter controlling events client usage in the Data Engine Proxy server
+     * @param eventsClientEnabled
+     */
+    public void setEventsClientEnabled(boolean eventsClientEnabled) {
+        this.eventsClientEnabled = eventsClientEnabled;
+    }
+
 
 }

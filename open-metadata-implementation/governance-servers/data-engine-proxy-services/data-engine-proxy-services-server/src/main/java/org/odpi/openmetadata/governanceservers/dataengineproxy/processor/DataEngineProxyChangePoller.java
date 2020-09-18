@@ -74,7 +74,7 @@ public class DataEngineProxyChangePoller implements Runnable {
                 SoftwareServerCapability dataEngineDetails = connector.getDataEngineDetails();
                 dataEngineOMASClient.createExternalDataEngine(userId, dataEngineDetails);
                 dataEngineOMASClient.setExternalSourceName(dataEngineDetails.getQualifiedName());
-            } catch (InvalidParameterException | PropertyServerException e) {
+            } catch (InvalidParameterException | PropertyServerException | ConnectorCheckedException e) {
                 this.auditLog.logException(methodName, DataEngineProxyAuditCode.OMAS_CONNECTION_ERROR.getMessageDefinition(), e);
             } catch (UserNotAuthorizedException e) {
                 this.auditLog.logMessage(methodName, DataEngineProxyAuditCode.USER_NOT_AUTHORIZED.getMessageDefinition("setup external data engine"));
@@ -134,7 +134,7 @@ public class DataEngineProxyChangePoller implements Runnable {
                 // Sleep for the poll interval before continuing with the next poll
                 Thread.sleep(dataEngineProxyConfig.getPollIntervalInSeconds() * 1000L);
 
-            } catch (InvalidParameterException | PropertyServerException e) {
+            } catch (InvalidParameterException | PropertyServerException | ConnectorCheckedException e ) {
                 this.auditLog.logException(methodName, DataEngineProxyAuditCode.OMAS_CONNECTION_ERROR.getMessageDefinition(), e);
             } catch (UserNotAuthorizedException e) {
                 this.auditLog.logMessage(methodName, DataEngineProxyAuditCode.USER_NOT_AUTHORIZED.getMessageDefinition("send changes"));

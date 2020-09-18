@@ -91,12 +91,12 @@ public class DataEngineProxyOperationalServices {
 
         try {
             if ((localServerName != null) && (localServerPassword != null)) {
-                dataEngineClient = new DataEngineRESTClient(dataEngineProxyConfig.getAccessServiceServerName(),
+                dataEngineClient = new DataEngineRESTConfigurationClient(dataEngineProxyConfig.getAccessServiceServerName(),
                         dataEngineProxyConfig.getAccessServiceRootURL(),
                         localServerUserId,
                         localServerPassword);
             } else {
-                dataEngineClient = new DataEngineRESTClient(dataEngineProxyConfig.getAccessServiceServerName(),
+                dataEngineClient = new DataEngineRESTConfigurationClient(dataEngineProxyConfig.getAccessServiceServerName(),
                         dataEngineProxyConfig.getAccessServiceRootURL());
             }
 
