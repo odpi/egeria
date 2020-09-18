@@ -126,7 +126,7 @@
         <junit.jupiter.version>5.7.0</junit.jupiter.version>
         <junit.version>4.13</junit.version>
         <surefire.plugin.version>3.0.0-M4</surefire.plugin.version>
-        <mockito.version>3.5.10</mockito.version>
+        <mockito.version>3.5.11</mockito.version>
         <testng.version>7.3.0</testng.version>
         <slf4j.version>1.7.30</slf4j.version>
         <logback.version>1.2.3</logback.version>
@@ -180,7 +180,7 @@
         <classgraph.version>4.8.90</classgraph.version>
         <swagger.version>2.1.4</swagger.version>
         <groovy.version>3.0.5</groovy.version>
-        <micrometer-registry-prometheus.version>1.5.4</micrometer-registry-prometheus.version>
+        <micrometer-registry-prometheus.version>1.5.5</micrometer-registry-prometheus.version>
         <jcl-over-slf4j.version>1.7.30</jcl-over-slf4j.version>
         <reflections.version>0.9.12</reflections.version>
         <HdrHistogram.version>2.1.12</HdrHistogram.version>
@@ -928,6 +928,13 @@
                 <groupId>org.odpi.egeria</groupId>
                 <artifactId>data-engine-spring</artifactId>
                 <scope>runtime</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>data-engine-topic-connectors</artifactId>
+                <scope>compile</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
 
