@@ -136,7 +136,7 @@
         <janus.version>0.5.2</janus.version>
         <gremlin.version>3.4.8</gremlin.version>
         <netty.version>4.1.52.Final</netty.version>
-        <spring-boot.version>2.3.3.RELEASE</spring-boot.version>
+        <spring-boot.version>2.3.4.RELEASE</spring-boot.version>
         <spring.version>5.2.9.RELEASE</spring.version>
         <spring-security.version>5.4.0</spring-security.version>
         <spring-data.version>2.3.4.RELEASE</spring-data.version>
