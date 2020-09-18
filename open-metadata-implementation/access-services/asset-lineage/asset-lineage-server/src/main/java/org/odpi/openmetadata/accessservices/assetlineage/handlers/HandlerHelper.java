@@ -71,8 +71,10 @@ public class HandlerHelper {
      * @throws PropertyServerException    the property server exception
      * @throws InvalidParameterException  the invalid parameter exception
      */
-    List<Relationship> getRelationshipsByType(String userId, String assetGuid,
-                                              String relationshipTypeName, String entityTypeName) throws OCFCheckedExceptionBase {
+    List<Relationship> getRelationshipsByType(String userId,
+                                              String assetGuid,
+                                              String relationshipTypeName,
+                                              String entityTypeName) throws OCFCheckedExceptionBase {
 
         final String methodName = "getRelationshipsByType";
 
@@ -123,7 +125,9 @@ public class HandlerHelper {
      * @throws PropertyServerException    the property server exception
      * @throws UserNotAuthorizedException the user not authorized exception
      */
-    private EntityDetail getEntityAtTheEnd(String userId, String entityDetailGUID, Relationship relationship) throws OCFCheckedExceptionBase {
+    private EntityDetail getEntityAtTheEnd(String userId,
+                                           String entityDetailGUID,
+                                           Relationship relationship) throws OCFCheckedExceptionBase {
 
         String methodName = "getEntityAtTheEnd";
 
@@ -140,7 +144,9 @@ public class HandlerHelper {
         }
     }
 
-    public EntityDetail getEntityDetails(String userId, String entityDetailGUID, String entityTypeName) throws OCFCheckedExceptionBase {
+    public EntityDetail getEntityDetails(String userId,
+                                         String entityDetailGUID,
+                                         String entityTypeName) throws OCFCheckedExceptionBase {
         String methodName = "getEntityDetails";
 
         return repositoryHandler.getEntityByGUID(userId, entityDetailGUID, GUID_PARAMETER, entityTypeName, methodName);
@@ -159,8 +165,10 @@ public class HandlerHelper {
      * @throws PropertyServerException    the property server exception
      * @throws UserNotAuthorizedException the user not authorized exception
      */
-    EntityDetail buildGraphEdgeByRelationship(String userId, EntityDetail startEntity,
-                                              Relationship relationship, AssetContext graph) throws OCFCheckedExceptionBase {
+    EntityDetail buildGraphEdgeByRelationship(String userId,
+                                              EntityDetail startEntity,
+                                              Relationship relationship,
+                                              AssetContext graph) throws OCFCheckedExceptionBase {
 
         Converter converter = new Converter(repositoryHelper);
         EntityDetail endEntity = getEntityAtTheEnd(userId, startEntity.getGUID(), relationship);
@@ -248,7 +256,8 @@ public class HandlerHelper {
         }
     }
 
-    private void addClassificationsToGraphContext(List<Classification> classifications, AssetContext assetContext, EntityDetail entityDetail) {
+    private void addClassificationsToGraphContext(List<Classification> classifications,
+                                                  AssetContext assetContext, EntityDetail entityDetail) {
         Converter converter = new Converter(repositoryHelper);
         LineageEntity originalEntityVertex = converter.createLineageEntity(entityDetail);
         assetContext.addVertex(originalEntityVertex);

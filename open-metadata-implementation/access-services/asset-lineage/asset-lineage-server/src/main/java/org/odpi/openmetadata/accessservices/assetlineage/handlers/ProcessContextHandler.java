@@ -91,7 +91,8 @@ public class ProcessContextHandler {
         return checkIfAllRelationshipsExist(userId, process);
     }
 
-    private Map<String, Set<GraphContext>> checkIfAllRelationshipsExist(String userId, EntityDetail entityDetail) throws OCFCheckedExceptionBase {
+    private Map<String, Set<GraphContext>> checkIfAllRelationshipsExist(String userId,
+                                                                        EntityDetail entityDetail) throws OCFCheckedExceptionBase {
 
         boolean entitiesTillLastRelationshipExist = hasEntitiesLinkedWithProcessPort(userId, entityDetail);
         if (entitiesTillLastRelationshipExist) {
@@ -105,7 +106,8 @@ public class ProcessContextHandler {
                 "Retrieving Relationships");
     }
 
-    private boolean hasEntitiesLinkedWithProcessPort(String userId, EntityDetail entityDetail) throws OCFCheckedExceptionBase {
+    private boolean hasEntitiesLinkedWithProcessPort(String userId,
+                                                     EntityDetail entityDetail) throws OCFCheckedExceptionBase {
 
         List<EntityDetail> entityDetails = getRelationshipsBetweenEntities(userId, entityDetail, PROCESS_PORT);
 
@@ -129,7 +131,9 @@ public class ProcessContextHandler {
      * @param relationshipType type of the relationship
      * @return List of entities that are on the other end of the relationship, empty list if none
      */
-    private List<EntityDetail> getRelationshipsBetweenEntities(String userId, EntityDetail startEntity, String relationshipType) throws OCFCheckedExceptionBase {
+    private List<EntityDetail> getRelationshipsBetweenEntities(String userId,
+                                                               EntityDetail startEntity,
+                                                               String relationshipType) throws OCFCheckedExceptionBase {
         if (startEntity == null) return Collections.emptyList();
 
         handlerHelper.addLineageClassificationToContext(startEntity, graph);
@@ -158,7 +162,8 @@ public class ProcessContextHandler {
      * @param entity details of the entity
      * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
      */
-    private void addContextForTabularColumns(String userId, EntityDetail entity) throws OCFCheckedExceptionBase {
+    private void addContextForTabularColumns(String userId,
+                                             EntityDetail entity) throws OCFCheckedExceptionBase {
         Set<String> superTypes = superTypesRetriever.getSuperTypes(userId, entity.getType().getTypeDefName());
 
         if (superTypes.contains(TABULAR_COLUMN)) {
@@ -185,7 +190,8 @@ public class ProcessContextHandler {
      * @param userId        String - userId of user making request.
      * @return boolean true if relationships exist otherwise false.
      */
-    private boolean hasRelationshipBasedOnType(List<EntityDetail> entityDetails, String userId) throws OCFCheckedExceptionBase {
+    private boolean hasRelationshipBasedOnType(List<EntityDetail> entityDetails,
+                                               String userId) throws OCFCheckedExceptionBase {
         boolean relationshipsExist = false;
         if (checkIfEntityExistWithSpecificType(entityDetails, PORT_ALIAS))
             relationshipsExist = hasLineageRelationships(entityDetails, userId);
@@ -203,7 +209,8 @@ public class ProcessContextHandler {
      * @param userId        String - userId of user making request.
      * @return boolean true if relationships exist otherwise false.
      */
-    private boolean hasLineageRelationships(List<EntityDetail> entityDetails, String userId) throws OCFCheckedExceptionBase {
+    private boolean hasLineageRelationships(List<EntityDetail> entityDetails,
+                                            String userId) throws OCFCheckedExceptionBase {
         List<EntityDetail> result = new ArrayList<>();
         for (EntityDetail entityDetail : entityDetails) {
             result.addAll(getRelationshipsBetweenEntities(userId, entityDetail,
@@ -219,7 +226,8 @@ public class ProcessContextHandler {
      * @param userId        String - userId of user making request.
      * @return boolean true if relationships exist otherwise false.
      */
-    private boolean hasTabularSchemaTypes(List<EntityDetail> entityDetails, String userId) throws OCFCheckedExceptionBase {
+    private boolean hasTabularSchemaTypes(List<EntityDetail> entityDetails,
+                                          String userId) throws OCFCheckedExceptionBase {
         List<EntityDetail> result = new ArrayList<>();
         for (EntityDetail entityDetail : entityDetails) {
 
@@ -239,7 +247,8 @@ public class ProcessContextHandler {
      * @param userId        String - userId of user making request.
      * @return boolean true if relationships exist otherwise false.
      */
-    private boolean hasSchemaAttributes(List<EntityDetail> entityDetails, String userId) throws OCFCheckedExceptionBase {
+    private boolean hasSchemaAttributes(List<EntityDetail> entityDetails,
+                                        String userId) throws OCFCheckedExceptionBase {
         List<EntityDetail> result = new ArrayList<>();
         for (EntityDetail entityDetail : entityDetails) {
 

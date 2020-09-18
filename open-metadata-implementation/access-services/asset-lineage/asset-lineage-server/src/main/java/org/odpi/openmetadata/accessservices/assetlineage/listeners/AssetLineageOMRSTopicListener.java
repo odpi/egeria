@@ -160,6 +160,14 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
         }
     }
 
+    /**
+     *
+     * Determine whether an updated entity is an lineage entity and publish the update entity for lineage
+     * @param entityDetail entity object that has just been updated.
+     * @param originalEntity original entity
+     * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
+     * @throws JsonProcessingException exception parsing the event json
+     */
     private void processUpdatedEntity(EntityDetail entityDetail, EntityDetail originalEntity) throws OCFCheckedExceptionBase, JsonProcessingException {
         if (!immutableValidLineageEntityEvents.contains(entityDetail.getType().getTypeDefName())) {
             return;
@@ -174,6 +182,14 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
         }
     }
 
+    /**
+     * Process delete event for lineage entities.
+     * @param entityDetail entity object that has been deleted
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the service name is not known - indicating a logic error
+     * @throws ConnectorCheckedException unable to send the event due to connectivity issue
+     * @throws JsonProcessingException   exception parsing the event json
+     */
     private void processDeletedEntity(EntityDetail entityDetail) throws ConnectorCheckedException, JsonProcessingException, UserNotAuthorizedException, PropertyServerException {
         if (!immutableValidLineageEntityEvents.contains(entityDetail.getType().getTypeDefName())) {
             return;
@@ -183,6 +199,13 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
         publishEntityEvent(entityDetail, AssetLineageEventType.DELETE_ENTITY_EVENT);
     }
 
+    /**
+     * Process classified event for lineage entities.
+     *
+     * @param entityDetail entity object that has been deleted
+     * @throws OCFCheckedExceptionBase unable to send the event due to connectivity issue
+     * @throws JsonProcessingException   exception parsing the event json
+     */
     private void processClassifiedEntityEvent(EntityDetail entityDetail) throws OCFCheckedExceptionBase, JsonProcessingException {
         if (!immutableValidLineageEntityEvents.contains(entityDetail.getType().getTypeDefName()))
             return;
