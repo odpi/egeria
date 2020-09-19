@@ -125,7 +125,7 @@ public enum KafkaOpenMetadataTopicConnectorAuditCode implements AuditLogMessageS
             "Ensure the server has shutdown cleanly")
     ;
 
-    private AuditLogMessageDefinition messageDefinition;
+    private final AuditLogMessageDefinition messageDefinition;
 
 
     /**

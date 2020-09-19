@@ -37,7 +37,7 @@ public enum KafkaOpenMetadataTopicConnectorErrorCode implements ExceptionMessage
             "The system is unable initialize.",
             "Ensure that Kafka is available")
         ;
-        private ExceptionMessageDefinition messageDefinition;
+        private final ExceptionMessageDefinition messageDefinition;
 
 
     /**

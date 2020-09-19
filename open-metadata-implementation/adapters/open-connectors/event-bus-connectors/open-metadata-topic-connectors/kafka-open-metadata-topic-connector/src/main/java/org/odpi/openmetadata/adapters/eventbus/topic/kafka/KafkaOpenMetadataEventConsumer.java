@@ -36,17 +36,17 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
 {
     private static final Logger log      = LoggerFactory.getLogger(KafkaOpenMetadataEventConsumer.class);
 
-    private AuditLog auditLog;
+    private final AuditLog auditLog;
 
     private final long recoverySleepTimeSec; 
     private final long pollTimeout;
     private final long maxQueueSize;
 
     private              KafkaConsumer<String, String>   consumer;
-    private              String                          topicToSubscribe;
-    private              String                          localServerId;
+    private final              String                    topicToSubscribe;
+    private final              String                    localServerId;
 
-    private              KafkaOpenMetadataTopicConnector connector;
+    private final        KafkaOpenMetadataTopicConnector connector;
 
     private long nextMessageProcessingStatusCheckTime = System.currentTimeMillis();
     private long maxNextPollTimestampToAvoidConsumerTimeout = 0;
