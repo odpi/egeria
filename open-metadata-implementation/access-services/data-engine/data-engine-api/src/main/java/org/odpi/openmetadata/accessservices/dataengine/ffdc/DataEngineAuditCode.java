@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.dataengine.server.auditlog;
+package org.odpi.openmetadata.accessservices.dataengine.ffdc;
 
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
@@ -64,7 +64,12 @@ public enum DataEngineAuditCode {
             OMRSAuditLogRecordSeverity.EXCEPTION,
             "The data engine event {0} could not be parsed. Error: {1}",
             "The system is unable to process the event.",
-            "Verify the topic configuration or the event schema.");
+            "Verify the topic configuration or the event schema."),
+    IN_TOPIC_EVENT_SENT("OMAS-DATA-ENGINE-0008",
+            OMRSAuditLogRecordSeverity.EVENT,
+            "The Data Engine Open Metadata Access Service (OMAS) client has sent event: {0}",
+            "The access service client sends out event notification produced by external source like data engine system.",
+            "This event contains external metadata changes that need to be processed by the access service.");
     private AuditLogMessageDefinition messageDefinition;
 
     /**
