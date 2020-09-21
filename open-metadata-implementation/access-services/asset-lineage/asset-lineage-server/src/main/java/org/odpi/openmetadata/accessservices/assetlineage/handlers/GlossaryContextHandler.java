@@ -94,6 +94,15 @@ public class GlossaryContextHandler {
         return glossaryContext.getNeighbors();
     }
 
+    /**
+     * Add Semantic Assignment relationships to the Glossary Term context
+     *
+     * @param userId              the user of user making request.
+     * @param glossaryTerm        the glossary term entity for which the context is built
+     * @param glossaryContext     the glossary term context
+     * @param semanticAssignments list of Semantic Assignment relationships
+     * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
+     */
     private void addSchemaElementsContext(String userId,
                                           EntityDetail glossaryTerm,
                                           AssetContext glossaryContext,
@@ -112,6 +121,15 @@ public class GlossaryContextHandler {
     }
 
 
+    /**
+     * Add Term Categorization relationships to the Glossary Term context
+     *
+     * @param userId             the user Id of user making request.
+     * @param glossaryTerm       the glossary term entity for which the context is built
+     * @param glossaryContext    the glossary term context
+     * @param termCategorization the Term Categorization relationship list
+     * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
+     */
     private void addGlossaryCategories(String userId,
                                        EntityDetail glossaryTerm,
                                        AssetContext glossaryContext,
@@ -134,7 +152,7 @@ public class GlossaryContextHandler {
     /**
      * Add semantic assignments for an asset to the Context structure
      *
-     * @param userId        userId
+     * @param userId        the userId of user making request.
      * @param assetContext  context of the asset
      * @param relationships array of the semantic assignments
      * @return a set of schema elements assigned to the Glossary Term
@@ -153,33 +171,73 @@ public class GlossaryContextHandler {
         return endEntityDetails;
     }
 
+    /**
+     * Fetch the Semantic Assignments Relationships for an entity
+     *
+     * @param userId         the userId of user making request.
+     * @param entityTypeGUID the entity identifier
+     * @param entityTypeName the entity type name
+     * @return the list of semantic assignments available for the given glossary term
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    the property server exception
+     */
     private List<Relationship> getSemanticAssignments(String userId,
                                                       String entityTypeGUID,
                                                       String entityTypeName) throws UserNotAuthorizedException, PropertyServerException {
         return getRelationshipsByTypeGUID(userId, entityTypeGUID, entityTypeName, SEMANTIC_ASSIGNMENT);
     }
 
+    /**
+     * Fetch the Term Categorization Relationships for an entity
+     *
+     * @param userId         the user Id of user making request.
+     * @param entityGUID     the entity identifier
+     * @param entityTypeName the entity type name
+     * @return the list of term categorization relationships available for the
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    the property server exception
+     */
     private List<Relationship> getTermCategorizations(String userId,
-                                                      String entityTypeGUID,
+                                                      String entityGUID,
                                                       String entityTypeName) throws UserNotAuthorizedException, PropertyServerException {
-        return getRelationshipsByTypeGUID(userId, entityTypeGUID, entityTypeName, TERM_CATEGORIZATION);
+        return getRelationshipsByTypeGUID(userId, entityGUID, entityTypeName, TERM_CATEGORIZATION);
     }
 
+    /**
+     * Fetch the relationship by name for a given entity
+     *
+     * @param userId               the user Id of user making request.
+     * @param entityGUID           the entity identifier
+     * @param entityTypeName       the entity type name
+     * @param relationshipTypeName the relationship type name
+     * @return the list of available relationship
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    the property server exception
+     */
     private List<Relationship> getRelationshipsByTypeGUID(String userId,
-                                                          String entityTypeGUID,
+                                                          String entityGUID,
                                                           String entityTypeName,
                                                           String relationshipTypeName) throws UserNotAuthorizedException, PropertyServerException {
         String methodName = "getRelationshipsByTypeGUID";
         String relationshipTypeGUID = handlerHelper.getTypeByName(userId, relationshipTypeName);
 
         return repositoryHandler.getRelationshipsByType(userId,
-                entityTypeGUID,
+                entityGUID,
                 entityTypeName,
                 relationshipTypeGUID,
                 relationshipTypeName,
                 methodName);
     }
 
+    /**
+     * Checks if the glossary term is involved in lineage relationships
+     *
+     * @param userId       the user Id of user making request.
+     * @param entityDetail the glossary term entity for which the context is built
+     * @return true if there are lineage relationships for the glossary term
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    the property server exception
+     */
     public boolean hasGlossaryTermLineageRelationships(String userId, EntityDetail entityDetail)
             throws UserNotAuthorizedException, PropertyServerException {
         String typeDefName = entityDetail.getType().getTypeDefName();

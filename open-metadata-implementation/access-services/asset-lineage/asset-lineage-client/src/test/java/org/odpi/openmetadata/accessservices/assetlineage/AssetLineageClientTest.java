@@ -19,6 +19,9 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
+/**
+ * The type Asset lineage client test.
+ */
 public class AssetLineageClientTest {
 
     private static final String SERVER_URL = "https://localhost:9444";
@@ -44,8 +47,13 @@ public class AssetLineageClientTest {
         }
     }
 
+    /**
+     * Test get asset details.
+     *
+     * @throws Exception the exception
+     */
     @Test
-    public void testGetAssetDetails() throws Exception {
+    public void testPublishEntities() throws Exception {
         GUIDListResponse response = mockGUIDListResponse();
 
         when(connector.callGetRESTCall(eq("publishEntities"),
