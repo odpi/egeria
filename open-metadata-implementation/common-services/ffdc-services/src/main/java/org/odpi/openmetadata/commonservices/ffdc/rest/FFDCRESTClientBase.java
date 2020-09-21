@@ -5,12 +5,13 @@ package org.odpi.openmetadata.commonservices.ffdc.rest;
 
 import org.odpi.openmetadata.adapters.connectors.restclients.RESTClientConnector;
 import org.odpi.openmetadata.adapters.connectors.restclients.RESTClientFactory;
+import org.odpi.openmetadata.adapters.connectors.restclients.spring.SpringRESTClientConnector;
 import org.odpi.openmetadata.commonservices.ffdc.OMAGCommonErrorCode;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.springframework.core.ParameterizedTypeReference;
 
 
 /**
@@ -199,6 +200,33 @@ public class FFDCRESTClientBase
         return null;
     }
 
+    /**
+     * Issue a GET REST call that returns a response object. It's working only with {@link SpringRESTClientConnector}
+     *
+     * @param <T> return type
+     * @param methodName  name of the method being called.
+     * @param responseType class of the response object.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return response object
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    protected  <T> T callGetRESTCall(String    methodName,
+                                     ParameterizedTypeReference<T> responseType,
+                                     String    urlTemplate,
+                                     Object... params) throws PropertyServerException
+    {
+        try {
+            SpringRESTClientConnector clientConnector = (SpringRESTClientConnector) this.clientConnector;
+            return clientConnector.callGetRESTCall(methodName, responseType, urlTemplate, params);
+        } catch (Throwable error) {
+            logRESTCallException(methodName, error);
+        }
+
+        return null;
+    }
+
 
     /**
      * Issue a POST REST call that returns a response object.  This is typically a create, update, or find with
@@ -264,6 +292,36 @@ public class FFDCRESTClientBase
     }
 
     /**
+     * Issue a POST REST call that returns a response object.  This is typically a create, update, or find with
+     * complex parameters. It's working only with {@link SpringRESTClientConnector}
+     *
+     * @param <T> return type
+     * @param methodName  name of the method being called.
+     * @param responseType class of the response for generic object.
+     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters.
+     * @param requestBody request body for the request.
+     * @param params  a list of parameters that are slotted into the url template.
+     *
+     * @return response object
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    protected  <T> T callPostRESTCall(String    methodName,
+                                      ParameterizedTypeReference<T> responseType,
+                                      String    urlTemplate,
+                                      Object    requestBody,
+                                      Object... params) throws PropertyServerException
+    {
+        try {
+            SpringRESTClientConnector clientConnector = (SpringRESTClientConnector) this.clientConnector;
+            return clientConnector.callPostRESTCall(methodName, responseType, urlTemplate, requestBody, params);
+        } catch (Throwable error) {
+            logRESTCallException(methodName, error);
+        }
+
+        return null;
+    }
+
+    /**
      * Issue a PUT REST call that returns a response object.  This is typically an update.
      *
      * @param <T> return type
@@ -295,6 +353,36 @@ public class FFDCRESTClientBase
     }
 
     /**
+     * Issue a PUT REST call that returns a response object.  This is typically an update.
+     * It's working only with {@link SpringRESTClientConnector}
+     *
+     * @param <T> return type
+     * @param methodName  name of the method being called.
+     * @param responseType class of the response for generic object.
+     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters.
+     * @param requestBody request body for the request.
+     * @param params  a list of parameters that are slotted into the url template.
+     *
+     * @return response object
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    protected  <T> T    callPutRESTCall(String    methodName,
+                                     ParameterizedTypeReference<T> responseType,
+                                     String    urlTemplate,
+                                     Object    requestBody,
+                                     Object... params) throws PropertyServerException
+    {
+        try {
+            SpringRESTClientConnector clientConnector = (SpringRESTClientConnector) this.clientConnector;
+            return clientConnector.callPutRESTCall(methodName, responseType, urlTemplate, requestBody, params);
+        } catch (Throwable error) {
+            logRESTCallException(methodName, error);
+        }
+
+        return null;
+    }
+
+    /**
      * Issue a Delete REST call that returns a response object.
      *
      * @param <T> return type
@@ -317,6 +405,32 @@ public class FFDCRESTClientBase
         }
         catch (Throwable error)
         {
+            logRESTCallException(methodName, error);
+        }
+
+        return null;
+    }
+
+    /**
+     * Issue a Delete REST call that returns a response object.
+     *
+     * @param <T> return type
+     * @param methodName  name of the method being called.
+     * @param responseType class of the response for generic object.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return response object
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    protected  <T> T callDeleteRESTCall(String    methodName,
+                                        ParameterizedTypeReference<T> responseType,
+                                        String    urlTemplate, Object... params) throws PropertyServerException
+    {
+        try {
+            SpringRESTClientConnector clientConnector = (SpringRESTClientConnector) this.clientConnector;
+            return clientConnector.callDeleteRESTCall(methodName, responseType, urlTemplate, null, params);
+        } catch (Throwable error) {
             logRESTCallException(methodName, error);
         }
 

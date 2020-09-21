@@ -2,6 +2,13 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea;
 
+import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.glossaries.SubjectAreaGlossary;
+import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.terms.SubjectAreaTerm;
+import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.projects.SubjectAreaProject;
+import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.categories.SubjectAreaCategory;
+import org.odpi.openmetadata.accessservices.subjectarea.client.relationships.SubjectAreaRelationship;
+import org.odpi.openmetadata.accessservices.subjectarea.client.relationships.SubjectAreaGraph;
+
 /**
  * The SubjectArea Open Metadata Access Service (OMAS).
  */
@@ -61,6 +68,5 @@ public interface SubjectArea {
      * @return base url
      */
     String getOmasServerUrl();
-
 
 }

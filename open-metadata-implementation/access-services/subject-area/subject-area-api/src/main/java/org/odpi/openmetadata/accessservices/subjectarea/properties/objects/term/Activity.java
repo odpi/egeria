@@ -4,8 +4,6 @@ package org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term
 
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.ActivityType;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.NodeType;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 
@@ -14,9 +12,7 @@ import java.io.Serializable;
  */
 
 public class Activity extends Term implements Serializable {
-    private static final Logger log = LoggerFactory.getLogger(Activity.class);
-    private static final String className = Activity.class.getName();
-    ActivityType activityType = null;
+    private ActivityType activityType = null;
 
     public Activity() {
         nodeType = NodeType.Activity;
