@@ -3,29 +3,11 @@
 package org.odpi.openmetadata.accessservices.assetlineage.ffdc;
 
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet;
 
-import java.text.MessageFormat;
+public enum AssetLineageErrorCode implements ExceptionMessageSet {
 
-public enum AssetLineageErrorCode {
-
-    PUBLISH_EVENT_EXCEPTION("OMAS-ASSET-LINEAGE-001 ",
-            "Event {0} could not be published: {1}",
-            "The system is unable to process the request.",
-            "Verify the topic configuration."),
-    PROCESS_EVENT_EXCEPTION("OMAS-ASSET-LINEAGE-002 ",
-            "Event {0} could not be consumed. Error: {1}",
-            "The system is unable to process the request.",
-            "Verify the topic configuration."),
-    PARSE_EVENT("OMAS-ASSET-LINEAGE-003 ",
-            "Event could not be parsed",
-            "The system is unable to process the request.",
-            "Verify the topic event."),
-    SERVICE_NOT_INITIALIZED("OMAS-ASSET-LINEAGE-004 ",
-            "The access service has not been initialized for server {0} and can not support REST API calls",
-            "The server has received a call to one of its open metadata access services but is unable to process it because the access service is not active for the requested server.",
-            "If the server is supposed to have this access service activated, correct the server configuration and restart the server."),
     ASSET_NOT_FOUND(404, "OMAS-ASSET-LINEAGE-005 ",
             "The requested asset {0} is not found in OMAS Server {1}",
             "The system is unable to populate the requested asset.",
@@ -57,55 +39,53 @@ public enum AssetLineageErrorCode {
             "The system was unable to perform the classification mapping request.",
             "Correct the caller's code and retry the request.");
 
-    public int getHTTPErrorCode() {
-        return httpErrorCode;
+    private static final long serialVersionUID = 1L;
+
+    private ExceptionMessageDefinition messageDefinition;
+
+
+    /**
+     * The constructor for AssetCatalogErrorCode expects to be passed one of the enumeration rows defined in
+     * AssetCatalogErrorCode above.   For example:
+     * <p>
+     * AssetCatalogErrorCode   errorCode = AssetCatalogErrorCode.SERVER_NOT_AVAILABLE;
+     * <p>
+     * This will expand out to the 5 parameters shown below.
+     *
+     * @param httpErrorCode  error code to use over REST calls
+     * @param errorMessageId unique Id for the message
+     * @param errorMessage   text for the message
+     * @param systemAction   description of the action taken by the system when the error condition happened
+     * @param userAction     instructions for resolving the error
+     */
+    AssetLineageErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction) {
+        this.messageDefinition = new ExceptionMessageDefinition(httpErrorCode,
+                errorMessageId,
+                errorMessage,
+                systemAction,
+                userAction);
     }
 
-    private static final Logger log = LoggerFactory.getLogger(AssetLineageErrorCode.class);
-    private int httpErrorCode;
-    private String errorMessageId;
-    private String errorMessage;
-    private String systemAction;
-    private String userAction;
-
-    AssetLineageErrorCode(String errorMessageId, String errorMessage, String systemAction, String userAction) {
-        this.errorMessageId = errorMessageId;
-        this.errorMessage = errorMessage;
-        this.systemAction = systemAction;
-        this.userAction = userAction;
-    }
-
-    AssetLineageErrorCode(int newHTTPErrorCode, String newErrorMessageId, String newErrorMessage, String newSystemAction, String newUserAction) {
-        this.httpErrorCode = newHTTPErrorCode;
-        this.errorMessageId = newErrorMessageId;
-        this.errorMessage = newErrorMessage;
-        this.systemAction = newSystemAction;
-        this.userAction = newUserAction;
-    }
-
-    public String getErrorMessageId() {
-        return errorMessageId;
-    }
-
-    public String getErrorMessage() {
-        return errorMessage;
-    }
-
-    public String getSystemAction() {
-        return systemAction;
-    }
-
-    public String getUserAction() {
-        return userAction;
-    }
-
-    public int getHttpErrorCode() {
-        return httpErrorCode;
+    /**
+     * Retrieve a message definition object for an exception.  This method is used when there are no message inserts.
+     *
+     * @return message definition object.
+     */
+    public ExceptionMessageDefinition getMessageDefinition() {
+        return messageDefinition;
     }
 
 
-    public String getFormattedErrorMessage(String... params) {
-        MessageFormat mf = new MessageFormat(errorMessage);
-        return mf.format(params);
+    /**
+     * Retrieve a message definition object for an exception.  This method is used when there are values to be inserted into the message.
+     *
+     * @param params array of parameters (all strings).  They are inserted into the message according to the numbering in the message text.
+     * @return message definition object.
+     */
+    public ExceptionMessageDefinition getMessageDefinition(String... params) {
+        messageDefinition.setMessageParameters(params);
+
+        return messageDefinition;
     }
+
 }

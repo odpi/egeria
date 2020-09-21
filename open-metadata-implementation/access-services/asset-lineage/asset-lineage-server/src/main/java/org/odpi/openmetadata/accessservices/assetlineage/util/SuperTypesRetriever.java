@@ -8,20 +8,33 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.ASSET_LINEAGE_OMAS;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.REFERENCEABLE;
 
-
+/**
+ * Retrieves information about the super-types of a given type
+ */
 public class SuperTypesRetriever {
 
     private OMRSRepositoryHelper repositoryHelper;
 
+    /**
+     * SuperTypeRetriever class provides details about a Open Metadata Type
+     *
+     * @param repositoryHelper repository connector helper
+     */
     public SuperTypesRetriever(OMRSRepositoryHelper repositoryHelper) {
         this.repositoryHelper = repositoryHelper;
     }
 
-    public Set<String> getSuperTypes(String typeDefName) {
-        return collectSuperTypes(ASSET_LINEAGE_OMAS, typeDefName);
+    /**
+     * Returns a collection with super type's names for a type
+     *
+     * @param userId      String - userId of user making request.
+     * @param typeDefName type name
+     * @return a set with supertype names
+     */
+    public Set<String> getSuperTypes(String userId, String typeDefName) {
+        return collectSuperTypes(userId, typeDefName);
     }
 
     private Set<String> collectSuperTypes(String userId, String typeDefName) {
@@ -40,6 +53,11 @@ public class SuperTypesRetriever {
             return;
         }
         superTypes.add(type.getName());
+
+        if (type.getSuperType() == null) {
+            return;
+        }
+
         TypeDef typeDefByName = repositoryHelper.getTypeDefByName(userId, type.getSuperType().getName());
         if (typeDefByName != null) {
             collectSuperTypes(userId, typeDefByName, superTypes);
