@@ -144,6 +144,14 @@ public class HandlerHelper {
         }
     }
 
+    /**
+     * Fetch the entity using the identifier and the type name
+     * @param userId the user identifier
+     * @param entityDetailGUID the entity identifier
+     * @param entityTypeName the entity type name
+     * @return the entity
+     * @throws OCFCheckedExceptionBase unable to send the event due to connectivity issue
+     */
     public EntityDetail getEntityDetails(String userId,
                                          String entityDetailGUID,
                                          String entityTypeName) throws OCFCheckedExceptionBase {
@@ -156,7 +164,7 @@ public class HandlerHelper {
     /**
      * Adds entities and relationships for the process Context structure
      *
-     * @param userId       String - userId of user making request.
+     * @param userId       the user Id of user making request.
      * @param startEntity  parent entity of the relationship
      * @param relationship the relationship of the parent node
      * @param graph        the graph
@@ -256,6 +264,13 @@ public class HandlerHelper {
         }
     }
 
+    /**
+     * Add lineage classification to the graph context object
+     *
+     * @param classifications the list of classifications
+     * @param assetContext    the asset context object
+     * @param entityDetail    the entity object that is converted to lineage entity
+     */
     private void addClassificationsToGraphContext(List<Classification> classifications,
                                                   AssetContext assetContext, EntityDetail entityDetail) {
         Converter converter = new Converter(repositoryHelper);

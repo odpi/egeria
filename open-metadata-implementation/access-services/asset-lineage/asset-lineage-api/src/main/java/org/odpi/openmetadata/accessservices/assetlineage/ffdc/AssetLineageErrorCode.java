@@ -9,7 +9,7 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
 /**
  * The AssetLineageErrorCode is used to define first failure data capture (FFDC) for errors that occur when working with
  * the Asset Lineage OMAS Services.  It is used in conjunction with both Checked and Runtime (unchecked) exceptions.
- *
+ * <p>
  * The 5 fields in the enum are:
  * <ul>
  *     <li>HTTP Error Code - for translating between REST and JAVA - Typically the numbers used are:</li>

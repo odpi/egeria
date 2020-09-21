@@ -9,7 +9,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import java.util.List;
 
 /**
- The Asset Lineage OMAS provides services to query the lineage of business terms and data assets.
+ * The Asset Lineage OMAS provides services to query the lineage of business terms and data assets.
  */
 public interface AssetLineageInterface {
 
