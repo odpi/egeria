@@ -168,33 +168,6 @@ public class MetadataHighwayServicesClient implements AuditLoggingComponent
     }
 
 
-
-
-
-    /* APIs to implement
-
-     Stem URL for all APIS:
-       "/servers/{serverName}/open-metadata/repository-services/users/{userId}/metadata-highway")
-
-        Get the descriptions of all cohorts the server is a member of...
-        @GetMapping(path = "/cohort-descriptions") - CohortListResponse getCohorts - no body
-
-        Get the local registration information that is used by the server when it registers with a cohort
-        @GetMapping(path = "/local-registration") - CohortMembershipResponse getLocalRegistration - no body
-
-        Get the local registration of the server within the specified cohort
-        @GetMapping(path = "/cohorts/{cohortName}/local-registration") - CohortMembershipResponse getLocalRegistration - no body
-
-        Get the remote registrations (i.e. the neighbors) of the server within the specified cohort
-        @GetMapping(path = "/cohorts/{cohortName}/remote-members") - CohortMembershipListResponse getRemoteRegistrations - no body
-
-     */
-
-
-
-
-
-
     /**
      * Returns the descriptions of all cohorts the server is a member of.
      *
