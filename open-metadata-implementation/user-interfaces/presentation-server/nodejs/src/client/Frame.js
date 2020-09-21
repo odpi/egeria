@@ -13,6 +13,7 @@ import Home from "./components/Home";
 import GlossaryAuthor from "./components/GlossaryAuthor/GlossaryAuthor";
 import RepositoryExplorer from "./components/RepositoryExplorer/RepositoryExplorer";
 import TypeExplorer from "./components/TypeExplorer/TypeExplorer";
+import Dino from "./components/Dino/Dino";
 import { IdentificationContext } from "./contexts/IdentificationContext";
 
 import {
@@ -35,6 +36,7 @@ export default function Frame(props) {
   const glossaryUrl = identificationContext.getBrowserURL("glossary-author");
   const rexUrl = identificationContext.getBrowserURL("repository-explorer");
   const typeUrl = identificationContext.getBrowserURL("type-explorer");
+  const dinoUrl = identificationContext.getBrowserURL("dino");
 
   return (
     <div className="container">
@@ -90,6 +92,9 @@ export default function Frame(props) {
                   <SideNavLink element={Link} to={typeUrl}>
                     Type Explorer
                   </SideNavLink>
+                  <SideNavLink element={Link} to={dinoUrl}>
+                    Dino
+                  </SideNavLink>
                 </SideNavItems>
               </SideNav>
             </Header>
@@ -111,6 +116,9 @@ export default function Frame(props) {
                   </Route>
                   <Route path={typeUrl}>
                     <TypeExplorer />
+                  </Route>
+                  <Route path={dinoUrl}>
+                    <Dino />
                   </Route>
                 </section>
               </div>

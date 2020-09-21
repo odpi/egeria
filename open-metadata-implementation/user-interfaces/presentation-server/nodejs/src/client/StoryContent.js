@@ -41,6 +41,9 @@ export default class StoryContent extends Component {
           <Route path={this.props.match.url + "/type-explorer"}>
             <TypeExplorer />
           </Route>
+          <Route path={this.props.match.url + "/dino"}>
+            <Dino />
+          </Route>
         </div>
       </Content>
     );
