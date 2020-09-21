@@ -267,8 +267,8 @@ export default function Diagram(props) {
   const dragstarted = (d) => {
     if (!d3.event.active)
       loc_force.alphaTarget(0.3).restart();
-    d.fx = d3.event.x;
-    d.fy = d3.event.y;
+    //d.fx = d3.event.x;
+    //d.fy = d3.event.y;
   }
 
   const dragged = (d) => {

@@ -26,8 +26,8 @@ const RepositoryServerContextProvider = (props) => {
   /*
    * It is possible to set up defaults for the context here .... although not actually wanted in production....
    */
-  const [repositoryServerName, setRepositoryServerName]                         = useState("");  
-  const [repositoryServerURLRoot, setRepositoryServerURLRoot]                   = useState("");  
+  const [repositoryServerName, setRepositoryServerName]                         = useState("");
+  const [repositoryServerRootURL, setRepositoryServerRootURL]                   = useState("");
   const [repositoryServerEnterpriseOption, setRepositoryServerEnterpriseOption] = useState(false);  
 
    
@@ -46,7 +46,7 @@ const RepositoryServerContextProvider = (props) => {
   const buildBaseBody = () => {
     const base = {
       serverName       : repositoryServerName,
-      serverURLRoot    : repositoryServerURLRoot,
+      serverRootURL    : repositoryServerRootURL,
       enterpriseOption : repositoryServerEnterpriseOption };
     return base;
   };
@@ -59,7 +59,7 @@ const RepositoryServerContextProvider = (props) => {
    * repositoryPOST("types", null, _loadTypeInfo)      - there are no operation-specific body parms for this operation
    * repositoryPOST("types", { searchText: <String> , typeName : <String> , gen : <Integer> }, _findEntitiesByPropertyValue)
    * 
-   * The caller does not need to specfiy the serverName, serverURLRoot or enterpriseOption. The other components using
+   * The caller does not need to specfiy the serverName, serverRootURL or enterpriseOption. The other components using
    * this context have access to repositoryServerName, etc. but there is no point passing them in every time wehen they 
    * are already in the context.
    */ 
@@ -95,8 +95,8 @@ const RepositoryServerContextProvider = (props) => {
         repositoryServerName, 
         setRepositoryServerName,
         getRepositoryServerName,
-        repositoryServerURLRoot, 
-        setRepositoryServerURLRoot,
+        repositoryServerRootURL, 
+        setRepositoryServerRootURL,
         repositoryServerEnterpriseOption, 
         setRepositoryServerEnterpriseOption,      
         getRepositoryServerEnterpriseOption,      

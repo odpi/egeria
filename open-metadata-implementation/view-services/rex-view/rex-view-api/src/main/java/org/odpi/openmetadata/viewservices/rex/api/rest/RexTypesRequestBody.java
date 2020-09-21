@@ -21,7 +21,7 @@ public class RexTypesRequestBody {
      */
 
     private String                    serverName;                    // must be non-null
-    private String                    serverURLRoot;                 // must be non-null
+    private String                    serverRootURL;                 // must be non-null
     private Boolean                   enterpriseOption;
 
 
@@ -35,14 +35,14 @@ public class RexTypesRequestBody {
 
     public String getServerName() { return serverName; }
 
-    public String getServerURLRoot() { return serverURLRoot; }
+    public String getServerRootURL() { return serverRootURL; }
 
     public Boolean getEnterpriseOption() { return enterpriseOption; }
 
 
     public void setServerName(String serverName) { this.serverName = serverName; }
 
-    public void setServerURLRoot(String serverURLRoot) { this.serverURLRoot = serverURLRoot; }
+    public void setServerRootURL(String serverRootURL) { this.serverRootURL = serverRootURL; }
 
     public void setEnterpriseOption(Boolean enterpriseOption) { this.enterpriseOption = enterpriseOption; }
 
@@ -53,7 +53,7 @@ public class RexTypesRequestBody {
     {
         return "RexTypesRequestBody{" +
                 ", serverName=" + serverName +
-                ", serverURLRoot=" + serverURLRoot +
+                ", serverRootURL=" + serverRootURL +
                 ", enterpriseOption=" + enterpriseOption +
                 '}';
     }

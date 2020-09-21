@@ -73,7 +73,7 @@ public class TexViewHandler
      * Retrieve type information from the repository server
      * @param userId  userId under which the request is performed
      * @param repositoryServerName The name of the repository server to interrogate
-     * @param repositoryServerURLRoot The URL root of the repository server to interrogate
+     * @param repositoryServerRootURL The URL root of the repository server to interrogate
      * @param enterpriseOption Whether the query is at cohort level or server specific
      * @param methodName The name of the method being invoked
      * @return response containing the TypeExplorer object.
@@ -87,7 +87,7 @@ public class TexViewHandler
      */
     public TypeExplorer getTypeExplorer(String    userId,
                                         String    repositoryServerName,
-                                        String    repositoryServerURLRoot,
+                                        String    repositoryServerRootURL,
                                         boolean   enterpriseOption,
                                         String    methodName)
     throws
@@ -106,9 +106,9 @@ public class TexViewHandler
             MetadataCollectionServicesClient repositoryServicesClient;
 
             if (!enterpriseOption) {
-                repositoryServicesClient = this.getLocalRepositoryServicesClient(repositoryServerName, repositoryServerURLRoot);
+                repositoryServicesClient = this.getLocalRepositoryServicesClient(repositoryServerName, repositoryServerRootURL);
             } else {
-                repositoryServicesClient = this.getEnterpriseRepositoryServicesClient(repositoryServerName, repositoryServerURLRoot);
+                repositoryServicesClient = this.getEnterpriseRepositoryServicesClient(repositoryServerName, repositoryServerRootURL);
             }
 
             TypeExplorer tex = new TypeExplorer();
@@ -175,18 +175,18 @@ public class TexViewHandler
      * connect to the local repository.
      *
      * @param serverName
-     * @param serverURLRoot
+     * @param serverRootURL
      * @throws InvalidParameterException
      */
     private LocalRepositoryServicesClient getLocalRepositoryServicesClient(String serverName,
-                                                                           String serverURLRoot)
+                                                                           String serverRootURL)
     throws
         InvalidParameterException
 
     {
         /*
          * The serverName is used as the repositoryName
-         * The serverURLRoot is used as part of the restURLRoot, along with the serverName
+         * The serverRootURL is used as part of the restRootURL, along with the serverName
          */
 
         /*
@@ -194,8 +194,8 @@ public class TexViewHandler
          * here because we want to surface it to the REST API that called this method so that the
          * exception can be wrapped and a suitable indication sent in the REST Response.
          */
-        String restURLRoot = serverURLRoot + "/servers/" + serverName;
-        LocalRepositoryServicesClient client = new LocalRepositoryServicesClient(serverName, restURLRoot);
+        String restRootURL = serverRootURL + "/servers/" + serverName;
+        LocalRepositoryServicesClient client = new LocalRepositoryServicesClient(serverName, restRootURL);
 
         return client;
     }
@@ -208,17 +208,17 @@ public class TexViewHandler
      * perform federation.
      *
      * @param serverName
-     * @param serverURLRoot
+     * @param serverRootURL
      * @throws InvalidParameterException
      */
     private EnterpriseRepositoryServicesClient getEnterpriseRepositoryServicesClient(String serverName,
-                                                                                     String serverURLRoot)
+                                                                                     String serverRootURL)
     throws
         InvalidParameterException
     {
         /*
          * The serverName is used as the repositoryName
-         * The serverURLRoot is used as part of the restURLRoot, along with the serverName
+         * The serverRootURL is used as part of the restRootURL, along with the serverName
          */
 
         /*
@@ -226,8 +226,8 @@ public class TexViewHandler
          * here because we want to surface it to the REST API that called this method so that the
          * exception can be wrapped and a suitable indication sent in the REST Response.
          */
-        String restURLRoot = serverURLRoot + "/servers/" + serverName;
-        EnterpriseRepositoryServicesClient client = new EnterpriseRepositoryServicesClient(serverName, restURLRoot);
+        String restRootURL = serverRootURL + "/servers/" + serverName;
+        EnterpriseRepositoryServicesClient client = new EnterpriseRepositoryServicesClient(serverName, restRootURL);
 
         return client;
     }

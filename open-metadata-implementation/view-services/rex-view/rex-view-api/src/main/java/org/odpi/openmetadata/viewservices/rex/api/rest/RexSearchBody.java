@@ -23,7 +23,7 @@ public class RexSearchBody {
      */
 
     private String                    serverName;                    // must be non-null
-    private String                    serverURLRoot;                 // must be non-null
+    private String                    serverRootURL;                 // must be non-null
     private String                    searchText;                    // must be non-null
     private Boolean                   enterpriseOption;
     private String                    typeName;                      // filter by type, or null
@@ -41,7 +41,7 @@ public class RexSearchBody {
 
     public String getServerName() { return serverName; }
 
-    public String getServerURLRoot() { return serverURLRoot; }
+    public String getServerRootURL() { return serverRootURL; }
 
     public String getSearchText() { return searchText; }
 
@@ -56,7 +56,7 @@ public class RexSearchBody {
 
     public void setServerName(String serverName) { this.serverName = serverName; }
 
-    public void setServerURLRoot(String serverURLRoot) { this.serverURLRoot = serverURLRoot; }
+    public void setServerRootURL(String serverRootURL) { this.serverRootURL = serverRootURL; }
 
     public void setSearchText(String searchText) { this.searchText = searchText; }
 
@@ -77,7 +77,7 @@ public class RexSearchBody {
     {
         return "RexSearchBody{" +
                 ", serverName=" + serverName +
-                ", serverURLRoot=" + serverURLRoot +
+                ", serverRootURL=" + serverRootURL +
                 ", searchText=" + searchText +
                 ", enterpriseOption=" + enterpriseOption +
                 ", typeName=" + typeName +

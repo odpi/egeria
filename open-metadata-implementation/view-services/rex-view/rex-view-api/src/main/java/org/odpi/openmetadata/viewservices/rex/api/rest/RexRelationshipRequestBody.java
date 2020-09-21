@@ -21,7 +21,7 @@ public class RexRelationshipRequestBody {
      */
 
     private String                    serverName;                    // must be non-null
-    private String                    serverURLRoot;                 // must be non-null
+    private String                    serverRootURL;                 // must be non-null
     private String                    relationshipGUID;              // must be non-null, GUID of root of traversal
     private Boolean                   enterpriseOption;
     private Integer                   gen;                           // indicator of the current gen of the traversal
@@ -37,7 +37,7 @@ public class RexRelationshipRequestBody {
 
     public String getServerName() { return serverName; }
 
-    public String getServerURLRoot() { return serverURLRoot; }
+    public String getServerRootURL() { return serverRootURL; }
 
     public String getRelationshipGUID() { return relationshipGUID; }
 
@@ -48,7 +48,7 @@ public class RexRelationshipRequestBody {
     // ---
     public void setServerName(String serverName) { this.serverName = serverName; }
 
-    public void setServerURLRoot(String serverURLRoot) { this.serverURLRoot = serverURLRoot; }
+    public void setServerRootURL(String serverRootURL) { this.serverRootURL = serverRootURL; }
 
     public void setRelationshipGUID(String relationshipGUID) { this.relationshipGUID = relationshipGUID; }
 
@@ -65,7 +65,7 @@ public class RexRelationshipRequestBody {
     {
         return "RexRelationshipRequestBody{" +
                 ", serverName=" + serverName +
-                ", serverURLRoot=" + serverURLRoot +
+                ", serverRootURL=" + serverRootURL +
                 ", relationshipGUID=" + relationshipGUID +
                 ", enterpriseOption=" + enterpriseOption +
                 ", gen=" + gen +
