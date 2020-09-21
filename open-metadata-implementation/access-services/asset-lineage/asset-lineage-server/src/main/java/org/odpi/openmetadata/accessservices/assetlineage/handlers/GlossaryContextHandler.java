@@ -96,7 +96,7 @@ public class GlossaryContextHandler {
     }
 
     /**
-     * Add Semantic Assignment relationships to the Glossary Term context
+     * Add Schema Elements entities to the Glossary Term context
      *
      * @param userId              the user of user making request.
      * @param glossaryTerm        the glossary term entity for which the context is built

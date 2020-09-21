@@ -71,9 +71,10 @@ public class ProcessContextHandler {
     /**
      * Retrieves the full context for a Process
      *
-     * @param userId  String - userId of user making request.
+     * @param userId  userId of user making request.
      * @param process the process entity for which the context is built
      * @return Map of the relationships between the Entities that are relevant to a Process
+     * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
      */
     public Map<String, Set<GraphContext>> getProcessContext(String userId, EntityDetail process) throws OCFCheckedExceptionBase {
 
@@ -91,6 +92,14 @@ public class ProcessContextHandler {
         return checkIfAllRelationshipsExist(userId, process);
     }
 
+    /**
+     * Check if the Port to Process relationships are created
+     *
+     * @param userId       userId of user making request
+     * @param entityDetail the entity for which the relationships are retrieved
+     * @return the current graph context if the Process to Port relationships are available
+     * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
+     */
     private Map<String, Set<GraphContext>> checkIfAllRelationshipsExist(String userId,
                                                                         EntityDetail entityDetail) throws OCFCheckedExceptionBase {
 
@@ -106,6 +115,14 @@ public class ProcessContextHandler {
                 "Retrieving Relationships");
     }
 
+    /**
+     * Checks if the all the  Process relationships are created
+     *
+     * @param userId       userId of user making request
+     * @param entityDetail the entity for which the relationships are retrieved
+     * @return true if all the process relationships are created
+     * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
+     */
     private boolean hasEntitiesLinkedWithProcessPort(String userId,
                                                      EntityDetail entityDetail) throws OCFCheckedExceptionBase {
 
@@ -130,6 +147,7 @@ public class ProcessContextHandler {
      * @param startEntity      the entity for which the relationships are retrieved
      * @param relationshipType type of the relationship
      * @return List of entities that are on the other end of the relationship, empty list if none
+     * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
      */
     private List<EntityDetail> getRelationshipsBetweenEntities(String userId,
                                                                EntityDetail startEntity,
@@ -189,6 +207,7 @@ public class ProcessContextHandler {
      * @param entityDetails list of entities
      * @param userId        String - userId of user making request.
      * @return boolean true if relationships exist otherwise false.
+     * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
      */
     private boolean hasRelationshipBasedOnType(List<EntityDetail> entityDetails,
                                                String userId) throws OCFCheckedExceptionBase {
@@ -208,6 +227,7 @@ public class ProcessContextHandler {
      * @param entityDetails list of entities
      * @param userId        String - userId of user making request.
      * @return boolean true if relationships exist otherwise false.
+     * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
      */
     private boolean hasLineageRelationships(List<EntityDetail> entityDetails,
                                             String userId) throws OCFCheckedExceptionBase {
@@ -225,6 +245,7 @@ public class ProcessContextHandler {
      * @param entityDetails list of entities
      * @param userId        String - userId of user making request.
      * @return boolean true if relationships exist otherwise false.
+     * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
      */
     private boolean hasTabularSchemaTypes(List<EntityDetail> entityDetails,
                                           String userId) throws OCFCheckedExceptionBase {
@@ -246,6 +267,7 @@ public class ProcessContextHandler {
      * @param entityDetails list of entities
      * @param userId        String - userId of user making request.
      * @return boolean true if relationships exist otherwise false.
+     * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
      */
     private boolean hasSchemaAttributes(List<EntityDetail> entityDetails,
                                         String userId) throws OCFCheckedExceptionBase {
