@@ -39,6 +39,12 @@ repositories. It enables the retrieval of type data (relating to entities, relat
 and exploration of the graphs of entity type inheritance and the supported combinations of entity and
 relationship types.
 
+* **[dino-view](dino-view)** - admin interface to inspect servers, services, cohorts and platforms.
+
+  The Dino OMVS is for user interfaces that support Egeria operators who need to inspect, navigate or explore 
+  the open metadata servers, services, cohorts and platforms that are configured or actively running. It is intended 
+  for operations and problem-determination.
+
 
 ## Inside an OMVS
 

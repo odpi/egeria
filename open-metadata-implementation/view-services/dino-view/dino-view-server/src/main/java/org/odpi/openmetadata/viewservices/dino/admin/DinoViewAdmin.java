@@ -1,0 +1,299 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
+package org.odpi.openmetadata.viewservices.dino.admin;
+
+
+import org.odpi.openmetadata.adminservices.configuration.properties.IntegrationViewServiceConfig;
+import org.odpi.openmetadata.adminservices.configuration.properties.ResourceEndpointConfig;
+import org.odpi.openmetadata.adminservices.configuration.properties.ViewServiceConfig;
+import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
+import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceAdmin;
+import org.odpi.openmetadata.adminservices.ffdc.OMAGAdminAuditCode;
+import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.viewservices.dino.api.ffdc.DinoViewAuditCode;
+import org.odpi.openmetadata.viewservices.dino.api.ffdc.DinoViewErrorCode;
+import org.odpi.openmetadata.viewservices.dino.api.properties.ResourceEndpoint;
+import org.odpi.openmetadata.viewservices.dino.server.DinoViewServicesInstance;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+
+/**
+ * DinoViewAdmin is the class that is called by the UI Server to initialize and terminate
+ * the Dino OMVS.  The initialization call provides this OMVS with the Audit log and configuration.
+ */
+public class DinoViewAdmin extends ViewServiceAdmin {
+
+    private static final Logger log = LoggerFactory.getLogger(DinoViewAdmin.class);
+
+
+    protected String   resourceEndpointsPropertyName       = "resourceEndpoints";      /* Common */
+
+    //private ViewServiceConfig       viewServiceConfig   = null;
+    private AuditLog                  auditLog             = null;
+    private String                    serverUserName       = null;
+    private DinoViewServicesInstance  instance             = null;
+    private String                    serverName           = null;
+
+    /**
+     * Default constructor
+     */
+    public DinoViewAdmin() {
+    }
+
+    /**
+     * Initialize the Dino view service.
+     *
+     * @param serverName                         name of the local server
+     * @param viewServiceConfig                  specific configuration properties for this view service.
+     * @param auditLog                           audit log component for logging messages.
+     * @param serverUserName                     user id to use to issue calls to the remote server.
+     * @param maxPageSize                        maximum page size. 0 means unlimited
+     * @throws OMAGConfigurationErrorException invalid parameters in the configuration properties.
+     */
+    @Override
+    public void initialize(String                       serverName,
+                           ViewServiceConfig            viewServiceConfig,
+                           AuditLog                     auditLog,
+                           String                       serverUserName,
+                           int                          maxPageSize)     throws OMAGConfigurationErrorException
+
+    {
+
+        final String actionDescription = "initialize";
+
+        auditLog.logMessage(actionDescription, DinoViewAuditCode.SERVICE_INITIALIZING.getMessageDefinition());
+
+        this.auditLog = auditLog;
+
+        if (log.isDebugEnabled()) {
+            log.debug("==> Method: " + actionDescription + ", userid=" + serverUserName);
+        }
+
+        /*
+         * This method will be called (by Operational Services) with the view service config passed as a ViewServiceConfig.
+         * This is the super type of IntegrationViewServiceConfig which is what this service actually requires.
+         */
+
+        IntegrationViewServiceConfig integrationViewServiceConfig = null;
+        if (viewServiceConfig instanceof IntegrationViewServiceConfig) {
+            integrationViewServiceConfig = (IntegrationViewServiceConfig) viewServiceConfig;
+        }
+        else {
+            logBadConfiguration(viewServiceConfig.getViewServiceName(),
+                                   "viewServiceConfig",
+                                   viewServiceConfig.toString(),
+                                   auditLog,
+                                   actionDescription);
+
+            // unreachable
+            return;
+        }
+
+        final String viewServiceFullName = viewServiceConfig.getViewServiceName();
+
+        try {
+
+            List<ResourceEndpointConfig> resourceEndpoints = this.extractResourceEndpoints(integrationViewServiceConfig.getResourceEndpoints(),
+                                                                                     viewServiceFullName,
+                                                                                     auditLog);
+
+
+
+
+
+
+            /*
+             * The name and RootURL of the repository server are not passed at this stage - they are not known at this stage as in Tex
+             * they are runtime variables set by the user and potentially changed between operations.
+             */
+            this.instance = new DinoViewServicesInstance(serverName,
+                                                         auditLog,
+                                                         serverUserName,
+                                                         maxPageSize,
+                                                         resourceEndpoints);
+
+            this.serverUserName    = serverUserName;
+            this.serverName        = serverName;
+
+            auditLog.logMessage(actionDescription,
+                                DinoViewAuditCode.SERVICE_INITIALIZED.getMessageDefinition(serverName),
+                                viewServiceConfig.toString());
+
+            if (log.isDebugEnabled()) {
+                log.debug("<== Method: " + actionDescription + ",userid=" + serverUserName);
+            }
+
+        }
+        catch (OMAGConfigurationErrorException error)
+        {
+            throw error;
+        }
+        catch (Throwable error)
+        {
+            auditLog.logException(actionDescription,
+                                  DinoViewAuditCode.SERVICE_INSTANCE_FAILURE.getMessageDefinition(error.getMessage()),
+                                  viewServiceConfig.toString(),
+                                  error);
+
+            super.throwUnexpectedInitializationException(actionDescription,
+                                                         ViewServiceDescription.DINO.getViewServiceFullName(),
+                                                         error);
+        }
+
+    }
+
+    /**
+     * Shutdown the dino view service.
+     */
+    @Override
+    public void shutdown() {
+        final String actionDescription = "shutdown";
+
+        log.debug("==> Method: " + actionDescription + ", userid=" + serverUserName);
+
+        auditLog.logMessage(actionDescription, DinoViewAuditCode.SERVICE_TERMINATING.getMessageDefinition(serverName));
+
+        if (instance != null)
+        {
+            this.instance.shutdown();
+        }
+
+        auditLog.logMessage(actionDescription, DinoViewAuditCode.SERVICE_SHUTDOWN.getMessageDefinition(serverName));
+
+        log.debug("<== Method: " + actionDescription + ", userid=" + serverUserName);
+
+    }
+
+
+
+    /**
+     * Extract the resource endpoints property from the view services option.
+     *
+     * @param resourceEndpoints options passed to the access service.
+     * @param viewServiceFullName name of calling service
+     * @param auditLog audit log for error messages
+     * @return null or list of resource endpoints
+     * @throws OMAGConfigurationErrorException the supported zones property is not a list of zone names.
+     */
+    protected List<ResourceEndpointConfig> extractResourceEndpoints(List<ResourceEndpointConfig> resourceEndpoints,
+                                                              String                       viewServiceFullName,
+                                                              AuditLog                     auditLog)             throws OMAGConfigurationErrorException
+    {
+        final String methodName = "extractResourceEndpoints";
+
+        final String parameterName = "resourceEndpoints";
+
+        try {
+
+            /*
+             * Dino cannot operate without any endpoints.
+             * Check if resourceEndpoints is null and if so throw am exception, which will be caught and logged by logBadConfigProperties, which will throw OMAGConfigurationErrorException...
+             */
+            if (resourceEndpoints == null) {
+
+                throw new InvalidParameterException(DinoViewErrorCode.INVALID_CONFIG_PROPERTY.getMessageDefinition(parameterName),
+                                                    this.getClass().getName(),
+                                                    methodName,
+                                                    parameterName);
+
+            } else {
+
+                @SuppressWarnings("unchecked")
+                List<ResourceEndpointConfig> endpointList = (List<ResourceEndpointConfig>) resourceEndpoints;
+                auditLog.logMessage(methodName, OMAGAdminAuditCode.RESOURCE_ENDPOINTS.getMessageDefinition(viewServiceFullName, endpointList.toString()));
+                return endpointList;
+            }
+
+        } catch (Throwable error) {
+
+            logBadConfigProperties(viewServiceFullName,
+                                   resourceEndpointsPropertyName,
+                                   resourceEndpoints.toString(),
+                                   auditLog,
+                                   methodName,
+                                   error);
+
+            // unreachable
+            return null;
+        }
+    }
+
+
+        /************
+            Object  endpointListObject = viewServiceOptions.get(resourceEndpointsPropertyName);
+
+            if (endpointListObject == null)
+            {
+                auditLog.logMessage(methodName, OMAGAdminAuditCode.RESOURCE_ENDPOINTS.getMessageDefinition(viewServiceFullName));
+                return null;
+            }
+            else
+            {
+                if (false) { // Works but has yukky deserialization
+                    try {
+
+                        // TODO - check this is valid - I think the resourceEndpoints have been deserialized to a HashMap so I have to cast them explicitly here....
+
+                        //@SuppressWarnings("unchecked")
+                        List<ResourceEndpoint> endpointList = new ArrayList<>();
+                        if (endpointListObject instanceof List) {
+                            ((List) endpointListObject).forEach(entry -> {
+                                Map mapEntry = (HashMap) entry;
+                                String resourceCategory = (String) (mapEntry.get("resourceCategory"));
+                                String resourceName = (String) (mapEntry.get("resourceName"));
+                                String resourceRootURL = (String) (mapEntry.get("resourceRootURL"));
+                                ResourceEndpoint rep = new ResourceEndpoint(resourceCategory, resourceName, resourceRootURL);
+                                endpointList.add(rep);
+                            });
+                            auditLog.logMessage(methodName, OMAGAdminAuditCode.RESOURCE_ENDPOINTS.getMessageDefinition(viewServiceFullName, endpointList.toString()));
+                        }
+                        return endpointList;
+                    } catch (Throwable error) {
+                        logBadConfigProperties(viewServiceFullName,
+                                               resourceEndpointsPropertyName,
+                                               endpointListObject.toString(),
+                                               auditLog,
+                                               methodName,
+                                               error);
+
+
+                        return null;
+                    }
+                }
+                else {
+                    // Attempt at nicer deserialization....
+                    try {
+
+                        @SuppressWarnings("unchecked")
+                        List<ResourceEndpoint> endpointList = (List<ResourceEndpoint>) endpointListObject;
+                        auditLog.logMessage(methodName, OMAGAdminAuditCode.RESOURCE_ENDPOINTS.getMessageDefinition(viewServiceFullName, endpointList.toString()));
+                        return endpointList;
+
+                    }
+                    catch (Throwable error) {
+                        logBadConfigProperties(viewServiceFullName,
+                                               resourceEndpointsPropertyName,
+                                               endpointListObject.toString(),
+                                               auditLog,
+                                               methodName,
+                                               error);
+
+
+                        return null;
+                    }
+                }
+            }
+        }
+    }
+    **************/
+
+
+}
