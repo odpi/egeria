@@ -41,6 +41,8 @@ The minimum level required to build & run Egeria is Java 8.
 
 Maven 3.5 or higher is required to build Egeria. 3.6.x or above is recommended.
 
+Note: Gradle is not currently supported. You will see build.gradle configuration files, but this is currently for prototyping only. A gradle build is neither supported nor working at this point. 
+
 ## Build warnings
 
 Build output should be checked for any warnings ie `[WARNING]` and these should be eliminated.
