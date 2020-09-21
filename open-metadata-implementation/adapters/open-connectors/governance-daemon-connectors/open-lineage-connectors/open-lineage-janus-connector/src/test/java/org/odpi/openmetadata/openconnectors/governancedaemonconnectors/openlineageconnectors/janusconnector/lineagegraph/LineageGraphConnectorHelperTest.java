@@ -123,7 +123,7 @@ public class LineageGraphConnectorHelperTest {
     }
 
     @Test
-    public void glossary() {
+    public void verticalLineage() {
         JanusGraph cyclicGlossaryGraph = JanusGraphFactory.build().set("storage.backend", "inmemory").open();
         GraphTraversalSource g = cyclicGlossaryGraph.traversal();
         HashSet<String> expectedNodeIDs = new HashSet<>();
@@ -133,7 +133,7 @@ public class LineageGraphConnectorHelperTest {
         expectedNodeIDs.add("g3");
         expectedNodeIDs.add("c2");
 
-        LineageVerticesAndEdges lineageVerticesAndEdges = mainGraphConnector.glossary(queriedNodeID, true).get();
+        LineageVerticesAndEdges lineageVerticesAndEdges = mainGraphConnector.verticalLineage(queriedNodeID, true).get();
 
         Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
 

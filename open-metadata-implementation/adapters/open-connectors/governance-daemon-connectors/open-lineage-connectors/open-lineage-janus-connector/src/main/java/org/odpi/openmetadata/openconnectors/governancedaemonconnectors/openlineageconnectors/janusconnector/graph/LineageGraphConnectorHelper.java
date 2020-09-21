@@ -37,12 +37,16 @@ import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.hasLab
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.inE;
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.outE;
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.until;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.ASSET_SCHEMA_TYPE;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.ATTRIBUTE_FOR_SCHEMA;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.CONNECTION;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.DATABASE;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.DATA_FILE;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.DEPLOYED_DB_SCHEMA_TYPE;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.FILE_FOLDER;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.FOLDER_HIERARCHY;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.GLOSSARY_TERM;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.NESTED_SCHEMA_ATTRIBUTE;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.RELATIONAL_COLUMN;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.RELATIONAL_DB_SCHEMA_TYPE;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.RELATIONAL_TABLE;
@@ -55,8 +59,11 @@ public class LineageGraphConnectorHelper {
     private GraphTraversalSource g;
     private String[] glossaryTermEdges = {EDGE_LABEL_SEMANTIC_ASSIGNMENT, EDGE_LABEL_RELATED_TERM, EDGE_LABEL_SYNONYM, EDGE_LABEL_ANTONYM,
             EDGE_LABEL_REPLACEMENT_TERM, EDGE_LABEL_TRANSLATION, EDGE_LABEL_IS_A_RELATIONSHIP};
-    private String[] glossaryTermAndClassificationEdges = {EDGE_LABEL_SEMANTIC_ASSIGNMENT, EDGE_LABEL_RELATED_TERM, EDGE_LABEL_SYNONYM,
-            EDGE_LABEL_ANTONYM, EDGE_LABEL_REPLACEMENT_TERM, EDGE_LABEL_TRANSLATION, EDGE_LABEL_IS_A_RELATIONSHIP, EDGE_LABEL_CLASSIFICATION, EDGE_LABEL_TERM_CATEGORIZATION};
+    private String[] glossaryTermAndClassificationEdges = {EDGE_LABEL_SEMANTIC_ASSIGNMENT, EDGE_LABEL_RELATED_TERM,
+            EDGE_LABEL_SYNONYM, EDGE_LABEL_ANTONYM, EDGE_LABEL_REPLACEMENT_TERM, EDGE_LABEL_TRANSLATION, EDGE_LABEL_IS_A_RELATIONSHIP,
+            EDGE_LABEL_CLASSIFICATION, EDGE_LABEL_TERM_CATEGORIZATION};
+    private String[] relationalColumnAndClassificationEdges = {NESTED_SCHEMA_ATTRIBUTE, EDGE_LABEL_CLASSIFICATION, EDGE_LABEL_SEMANTIC_ASSIGNMENT};
+    private String[] tabularColumnAndClassificationEdges = {ATTRIBUTE_FOR_SCHEMA, EDGE_LABEL_CLASSIFICATION, EDGE_LABEL_SEMANTIC_ASSIGNMENT};
 
     public LineageGraphConnectorHelper(GraphTraversalSource graphTraversalSource) {
         this.g = graphTraversalSource;
@@ -182,19 +189,78 @@ public class LineageGraphConnectorHelper {
     }
 
     /**
-     * Returns a subgraph containing all columns or tables connected to the queried glossary term, as well as all
-     * columns or tables connected to synonyms of the queried glossary term.
+     * Returns a subgraph by navigating edges specified in {@link #glossaryTermAndClassificationEdges}, like semantic
+     * assignments and various relationships between glossary terms. Classifications are included
      *
-     * @param guid The guid of the glossary term of which the lineage is queried of.
+     * @param guid guid to extract vertical lineage for
+     * @param includeProcesses include processes
      *
      * @return a subgraph in an Open Lineage specific format.
      */
-    public Optional<LineageVerticesAndEdges> glossary(String guid, boolean includeProcesses) {
+    private Optional<LineageVerticesAndEdges> glossaryVerticalLineage(String guid, boolean includeProcesses) {
 
         Graph subGraph = (Graph) g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).bothE(glossaryTermAndClassificationEdges)
                 .subgraph("s").cap("s").next();
 
         return Optional.of(getLineageVerticesAndEdges(subGraph, includeProcesses));
+    }
+
+    /**
+     * Returns a subgraph by navigating edges specified in {@link #relationalColumnAndClassificationEdges}, like semantic
+     * assignments. Classifications are included
+     *
+     * @param guid guid to extract vertical lineage for
+     * @param includeProcesses include processes
+     *
+     * @return a subgraph in an Open Lineage specific format.
+     */
+    private Optional<LineageVerticesAndEdges> relationalColumnVerticalLineage(String guid, boolean includeProcesses) {
+
+        Graph subGraph = (Graph) g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).bothE(relationalColumnAndClassificationEdges)
+                .subgraph("s").cap("s").next();
+
+        return Optional.of(getLineageVerticesAndEdges(subGraph, includeProcesses));
+    }
+
+    /**
+     * Returns a subgraph by navigating edges specified in {@link #tabularColumnAndClassificationEdges}, like semantic
+     * assignments. Classifications are included
+     *
+     * @param guid guid to extract vertical lineage for
+     * @param includeProcesses include processes
+     *
+     * @return a subgraph in an Open Lineage specific format.
+     */
+    private Optional<LineageVerticesAndEdges> tabularColumnVerticalLineage(String guid, boolean includeProcesses) {
+
+        Graph subGraph = (Graph) g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).bothE(tabularColumnAndClassificationEdges)
+                .subgraph("s").bothV().inE(ASSET_SCHEMA_TYPE).subgraph("s").cap("s").next();
+
+        return Optional.of(getLineageVerticesAndEdges(subGraph, includeProcesses));
+    }
+
+    /**
+     * Returns a subgraph navigating the edges of interest based on target node type. For more info, check
+     * {@link #glossaryVerticalLineage}, {@link #tabularColumnVerticalLineage}, {@link #relationalColumnVerticalLineage}
+     *
+     * @param guid guid to extract vertical lineage for
+     * @param includeProcesses include processes
+     *
+     * @return a subgraph in an Open Lineage specific format
+     */
+    public Optional<LineageVerticesAndEdges> verticalLineage(String guid, boolean includeProcesses) {
+
+        String label = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).label().next();
+        switch (label){
+            case GLOSSARY_TERM:
+                return glossaryVerticalLineage(guid, includeProcesses);
+            case RELATIONAL_COLUMN:
+                return relationalColumnVerticalLineage(guid, includeProcesses);
+            case TABULAR_COLUMN:
+                return tabularColumnVerticalLineage(guid, includeProcesses);
+            default:
+                return Optional.empty();
+        }
     }
 
     /**
