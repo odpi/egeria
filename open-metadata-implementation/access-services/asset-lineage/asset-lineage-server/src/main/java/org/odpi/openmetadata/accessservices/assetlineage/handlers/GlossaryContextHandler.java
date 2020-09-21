@@ -135,7 +135,7 @@ public class GlossaryContextHandler {
     /**
      * Add semantic assignments for an asset to the Context structure
      *
-     * @param userId        userId
+     * @param userId        the userId of user making request.
      * @param assetContext  context of the asset
      * @param relationships array of the semantic assignments
      * @return a set of schema elements assigned to the Glossary Term
@@ -173,12 +173,17 @@ public class GlossaryContextHandler {
         String methodName = "getRelationshipsByTypeGUID";
         String relationshipTypeGUID = handlerHelper.getTypeByName(userId, relationshipTypeName);
 
-        return repositoryHandler.getRelationshipsByType(userId,
+        List<Relationship> relationshipsByType = repositoryHandler.getRelationshipsByType(userId,
                 entityTypeGUID,
                 entityTypeName,
                 relationshipTypeGUID,
                 relationshipTypeName,
                 methodName);
+
+        return relationshipsByType
+                .stream()
+                .filter(relationship -> relationship.getEntityOneProxy() != null && relationship.getEntityTwoProxy() != null)
+                .collect(Collectors.toList());
     }
 
     public boolean hasGlossaryTermLineageRelationships(String userId, EntityDetail entityDetail)
