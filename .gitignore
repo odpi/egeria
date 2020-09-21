@@ -159,3 +159,8 @@ jitdump*dmp
 
 # License files (generated)
 THIRD_PARTY*.txt
+
+# gradle
+!gradle/**
+.gradle/
+build/

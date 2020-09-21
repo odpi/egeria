@@ -19,6 +19,7 @@ public class LineageEntity {
     private Date createTime;
     private Date updateTime = null;
     private long version;
+    private String metadataCollectionId;
     private Map<String, String> properties;
 
     /**
@@ -145,6 +146,25 @@ public class LineageEntity {
      */
     public void setVersion(long version) {
         this.version = version;
+    }
+
+
+    /**
+     * Gets metadataCollectionId.
+     *
+     * @return the metadataCollectionId
+     */
+    public String getMetadataCollectionId() {
+        return metadataCollectionId;
+    }
+
+    /**
+     * Sets metadataCollectionId.
+     *
+     * @param metadataCollectionId the metadataCollectionId
+     */
+    public void setMetadataCollectionId(String metadataCollectionId) {
+        this.metadataCollectionId = metadataCollectionId;
     }
 
     /**

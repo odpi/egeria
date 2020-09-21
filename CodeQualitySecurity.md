@@ -14,3 +14,8 @@ Specific items that Egeria employs include but are not limited to...
 - [GitHub Security Advisories](https://help.github.com/en/github/managing-security-vulnerabilities/about-github-security-advisories) for internally triaging security issues that come through (egeria-security@odpi.org) and other confidential channels before publishing them for broader community awareness.
 
 For more questions on Egeria's commitment to code quality, feel free to reach out to the [Egeria development team](mailto:odpi-project-egeria@lists.odpi.org)
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.
