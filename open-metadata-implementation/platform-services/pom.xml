@@ -30,6 +30,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>platform-services-api</module>
+        <module>platform-services-client</module>
         <module>platform-services-server</module>
         <module>platform-services-spring</module>
     </modules>
