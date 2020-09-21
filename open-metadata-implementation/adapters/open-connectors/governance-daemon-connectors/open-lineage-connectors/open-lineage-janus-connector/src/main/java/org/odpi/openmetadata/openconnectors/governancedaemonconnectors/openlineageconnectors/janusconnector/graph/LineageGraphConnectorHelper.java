@@ -57,8 +57,6 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 public class LineageGraphConnectorHelper {
 
     private GraphTraversalSource g;
-    private String[] glossaryTermEdges = {EDGE_LABEL_SEMANTIC_ASSIGNMENT, EDGE_LABEL_RELATED_TERM, EDGE_LABEL_SYNONYM, EDGE_LABEL_ANTONYM,
-            EDGE_LABEL_REPLACEMENT_TERM, EDGE_LABEL_TRANSLATION, EDGE_LABEL_IS_A_RELATIONSHIP};
     private String[] glossaryTermAndClassificationEdges = {EDGE_LABEL_SEMANTIC_ASSIGNMENT, EDGE_LABEL_RELATED_TERM,
             EDGE_LABEL_SYNONYM, EDGE_LABEL_ANTONYM, EDGE_LABEL_REPLACEMENT_TERM, EDGE_LABEL_TRANSLATION, EDGE_LABEL_IS_A_RELATIONSHIP,
             EDGE_LABEL_CLASSIFICATION, EDGE_LABEL_TERM_CATEGORIZATION};
