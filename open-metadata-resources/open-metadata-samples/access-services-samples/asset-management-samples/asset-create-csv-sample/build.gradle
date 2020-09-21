@@ -1,0 +1,19 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright Contributors to the ODPi Egeria project.
+ */
+
+
+dependencies {
+    implementation project(':open-metadata-implementation:access-services:asset-owner:asset-owner-client')
+    implementation project(':open-metadata-implementation:access-services:asset-owner:asset-owner-api')
+    implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
+    implementation 'ch.qos.logback:logback-classic:1.2.3'
+    implementation project(':open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-client')
+}
+
+description = 'Asset create csv sample'
+
+java {
+    withJavadocJar()
+}

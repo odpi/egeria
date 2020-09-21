@@ -160,7 +160,7 @@ class ProcessHandlerTest {
         processHandler.updateProcess(USER, mockedOriginalProcessEntity, getProcess());
 
         verify(assetHandler, times(1)).reclassifyAsset(any(), originalProcessCaptor.capture(),
-                any(), any(), any(), any());
+                any(), any(), any(), any(), any());
         verify(dataEngineCommonHandler, times(1)).updateEntity(USER, PROCESS_GUID, null, ProcessPropertiesMapper.PROCESS_TYPE_NAME);
     }
 
@@ -179,7 +179,7 @@ class ProcessHandlerTest {
         processHandler.updateProcess(USER, mockedOriginalProcessEntity, getProcess());
 
         verify(assetHandler, times(1)).reclassifyAsset(any(), originalProcessCaptor.capture(),
-                any(), any(), any(), any());
+                any(), any(), any(), any(), any());
         verify(dataEngineCommonHandler, times(0)).updateEntity(USER, PROCESS_GUID, null, ProcessPropertiesMapper.PROCESS_TYPE_NAME);
     }
 
@@ -337,7 +337,7 @@ class ProcessHandlerTest {
         processHandler.createOrUpdateProcessHierarchyRelationship(USER, parentProcess, GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
         verify(dataEngineCommonHandler, times(1)).throwInvalidParameterException(DataEngineErrorCode.PROCESS_NOT_FOUND,
-                "createOrUpdateProcessHierarchyRelationship", PARENT_PROCESS_QUALIFIED_NAME);
+                "createOrUpdateProcessHierarchyRelationship", "qualifiedName", PARENT_PROCESS_QUALIFIED_NAME);
     }
 
     private void mockTypeDef(String typeName, String typeGUID) {

@@ -27,7 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.Objects;
 
 import static org.odpi.openmetadata.accessservices.securityofficer.server.admin.utils.Constants.CONFIDENTIALITY;
 import static org.odpi.openmetadata.accessservices.securityofficer.server.admin.utils.Constants.GLOSSARY_TERM;
@@ -243,15 +243,36 @@ public class SecurityOfficerPublisher extends OMRSInstanceEventProcessor {
     }
 
     private boolean isSchemaElement(InstanceType type) {
-        return type.getTypeDefSuperTypes().stream().anyMatch(typeDefLink -> typeDefLink.getName().equals(SCHEMA_ELEMENT));
+        if (type != null) {
+            return type.getTypeDefSuperTypes().stream()
+                    .filter(Objects::nonNull)
+                    .anyMatch(typeDefLink -> SCHEMA_ELEMENT.equals(typeDefLink.getName()));
+        } else {
+            return false;
+        }
     }
 
     private boolean isGlossaryTerm(InstanceType type) {
-        return type.getTypeDefName().equals(GLOSSARY_TERM);
+        return GLOSSARY_TERM.equals(type.getTypeDefName());
     }
 
     private boolean containsGovernanceConfidentialityClassification(List<Classification> classifications) {
-        Optional<Classification> confidentialityClassification = classifications.stream().filter(classification -> classification.getType().getTypeDefName().equals(CONFIDENTIALITY)).findAny();
-        return confidentialityClassification.isPresent();
+        if (classifications != null) {
+            return classifications.stream()
+                    .map(this::getClassificationName)
+                    .filter(Objects::nonNull)
+                    .anyMatch(CONFIDENTIALITY::equals);
+        } else {
+            return false;
+        }
+    }
+
+    private String getClassificationName(Classification classification) {
+        InstanceType type = classification.getType();
+        if (type != null) {
+            return type.getTypeDefName();
+        } else {
+            return classification.getName();
+        }
     }
 }

@@ -5,6 +5,8 @@ package org.odpi.openmetadata.accessservices.analyticsmodeling.server.spring;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
+import javax.validation.constraints.PositiveOrZero;
+
 import org.odpi.openmetadata.accessservices.analyticsmodeling.responses.AnalyticsModelingOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.server.AnalyticsModelingRestServices;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,38 +30,50 @@ import org.springframework.web.bind.annotation.RestController;
 
 public class AnalyticsModelingOMASResource {
 
-    private final AnalyticsModelingRestServices restAPI = new AnalyticsModelingRestServices();
+    private AnalyticsModelingRestServices restAPI = new AnalyticsModelingRestServices();
 
 	/**
 	 * Get list of databases.
-     * @param serverName  unique identifier for requested server.
-     * @param userId      the unique identifier for the user
+     * @param serverName	unique identifier for requested server.
+     * @param userId		the unique identifier for the user
+     * @param startFrom		starting element (used in paging through large result sets)
+     * @param pageSize		maximum number of results to return
 	 * @return Analytics Modeling response contains list of databases.
 	 */
 	@GetMapping(path = "/databases")
 	public AnalyticsModelingOMASAPIResponse getDatabases(
 			@PathVariable("serverName") String serverName,
-            @PathVariable("userId") String userId
-			)
+            @PathVariable("userId") String userId,
+            @PositiveOrZero(message = "startFrom should be a positive number")
+            @RequestParam Integer startFrom,
+            @PositiveOrZero(message = "pageSize should be a positive number")
+            @RequestParam Integer pageSize
+            )
 	{
-		return restAPI.getDatabases(serverName, userId);
+		return restAPI.getDatabases(serverName, userId, startFrom, pageSize);
 	}
 
 	/**
 	 * Get list of schemas of a given dataSource.
-     * @param serverName  unique identifier for requested server.
-     * @param userId      the unique identifier for the user
-	 * @param dataSource data source GUID.
+     * @param serverName	unique identifier for requested server.
+     * @param userId		the unique identifier for the user
+	 * @param dataSource	data source GUID.
+     * @param startFrom		starting element (used in paging through large result sets)
+     * @param pageSize		maximum number of results to return
 	 * @return Analytics Modeling response contains list of database schemas.
 	 */
 	@GetMapping(path = "/{dataSourceGUID}/schemas")
 	public AnalyticsModelingOMASAPIResponse getSchemas(
 			@PathVariable("serverName") String serverName,
             @PathVariable("userId") String userId,
-            @PathVariable("dataSourceGUID") String dataSource
+            @PathVariable("dataSourceGUID") String dataSource,
+            @PositiveOrZero(message = "startFrom should be a positive number")
+            @RequestParam Integer startFrom,
+            @PositiveOrZero(message = "pageSize should be a positive number")
+            @RequestParam Integer pageSize
 			)
 	{
-		return restAPI.getSchemas(serverName, userId, dataSource);
+		return restAPI.getSchemas(serverName, userId, dataSource, startFrom, pageSize);
 	}
 
 	/**

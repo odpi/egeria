@@ -4,24 +4,16 @@
 
 package org.odpi.openmetadata.accessservices.subjectarea.properties.relationships;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-
-import java.util.*;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.TermRelationshipStatus;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineEnd;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipEndCardinality;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
-
-import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.*;
-
-//omrs
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
-//omrs beans
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineType;
 
 /**
  * Link to an alternative term that the organization prefer is used.
@@ -30,149 +22,36 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class PreferredTerm extends Line {
-    private static final Logger log = LoggerFactory.getLogger(PreferredTerm.class);
-    private static final String className = PreferredTerm.class.getName();
+    private String description = "Link to an alternative term that the organization prefer is used.";
 
-    private static final String[] PROPERTY_NAMES_SET_VALUES = new String[]{
-            "description",
-            "expression",
-            "status",
-            "steward",
-            "source",
+    /*
+     * Set up end 1.
+     */
+    protected final static String END_1_NODE_TYPE = "Term";
+    protected final static String END_1_ATTRIBUTE_NAME = "alternateTerms";
+    protected final static String END_1_ATTRIBUTE_DESCRIPTION = "Link to external media.";
+    protected final static RelationshipEndCardinality END_1_CARDINALITY = RelationshipEndCardinality.ANY_NUMBER;
+    protected final static LineEnd LINE_END_1 = new LineEnd(END_1_NODE_TYPE,
+            END_1_ATTRIBUTE_NAME, END_1_ATTRIBUTE_DESCRIPTION, END_1_CARDINALITY);
 
-            // Terminate the list
-            null
-    };
-    private static final String[] ATTRIBUTE_NAMES_SET_VALUES = new String[]{
-            "description",
-            "expression",
-            "steward",
-            "source",
+    /*
+     * Set up end 2.
+     */
+    protected final static String END_2_NODE_TYPE = "Term";
+    protected final static String END_2_ATTRIBUTE_NAME = "preferredTerms";
+    protected final static String END_2_ATTRIBUTE_DESCRIPTION = "Related glossary terms.";
+    protected final static RelationshipEndCardinality END_2_CARDINALITY = RelationshipEndCardinality.ANY_NUMBER;
+    protected final static LineEnd LINE_END_2 = new LineEnd(END_2_NODE_TYPE,
+            END_2_ATTRIBUTE_NAME, END_2_ATTRIBUTE_DESCRIPTION, END_2_CARDINALITY);
 
-            // Terminate the list
-            null
-    };
-    private static final String[] ENUM_NAMES_SET_VALUES = new String[]{
-            "status",
-
-            // Terminate the list
-            null
-    };
-    private static final String[] MAP_NAMES_SET_VALUES = new String[]{
-
-            // Terminate the list
-            null
-    };
-    private static final java.util.Set<String> PROPERTY_NAMES_SET = new HashSet<>(Arrays.asList(PROPERTY_NAMES_SET_VALUES));
-    private static final java.util.Set<String> ATTRIBUTE_NAMES_SET = new HashSet<>(Arrays.asList(ATTRIBUTE_NAMES_SET_VALUES));
-    private static final java.util.Set<String> ENUM_NAMES_SET = new HashSet<>(Arrays.asList(ENUM_NAMES_SET_VALUES));
-    private static final java.util.Set<String> MAP_NAMES_SET = new HashSet<>(Arrays.asList(MAP_NAMES_SET_VALUES));
-    private String alternateTermGuid;
-    private String preferredTermGuid;
-
+    private String expression;
+    private TermRelationshipStatus status;
+    private String steward;
+    private String source;
 
     public PreferredTerm() {
-        initialise();
+        super("PreferredTerm", "8ac8f9de-9cdd-4103-8a33-4cb204b78c2a", LINE_END_1, LINE_END_2);
     }
-
-    private void initialise() {
-        name = "PreferredTerm";
-        // set the LineType if this is a LineType enum value.
-        try {
-            lineType = LineType.valueOf(name);
-        } catch (IllegalArgumentException e) {
-            lineType = LineType.Unknown;
-        }
-        entity1Name = "alternateTerms";
-        entity1Type = "GlossaryTerm";
-        entity2Name = "preferredTerms";
-        entity2Type = "GlossaryTerm";
-        typeDefGuid = "8ac8f9de-9cdd-4103-8a33-4cb204b78c2a";
-    }
-
-    public PreferredTerm(Line template) {
-        super(template);
-        initialise();
-    }
-
-    public PreferredTerm(Relationship omrsRelationship) {
-        super(omrsRelationship);
-        name = "PreferredTerm";
-        // set the LineType if this is a LineType enum value.
-        try {
-            lineType = LineType.valueOf(name);
-        } catch (IllegalArgumentException e) {
-            lineType = LineType.Unknown;
-        }
-    }
-
-    /**
-     * {@literal Get the guid of the alternate Term. }
-     *
-     * @return {@code String }
-     */
-    public String getAlternateTermGuid() {
-        return alternateTermGuid;
-    }
-
-    public void setAlternateTermGuid(String alternateTermGuid) {
-        this.alternateTermGuid = alternateTermGuid;
-    }
-
-    /**
-     * {@literal Get the guid of the preferred Term. }
-     *
-     * @return {@code String }
-     */
-    public String getPreferredTermGuid() {
-        return preferredTermGuid;
-    }
-
-    public void setPreferredTermGuid(String preferredTermGuid) {
-        this.preferredTermGuid = preferredTermGuid;
-    }
-
-    InstanceProperties obtainInstanceProperties() {
-        final String methodName = "obtainInstanceProperties";
-        if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName);
-        }
-        InstanceProperties instanceProperties = new InstanceProperties();
-        EnumPropertyValue enumPropertyValue = null;
-        enumPropertyValue = new EnumPropertyValue();
-        // the status of or confidence in the relationship.
-        enumPropertyValue.setOrdinal(status.ordinal());
-        enumPropertyValue.setSymbolicName(status.name());
-        instanceProperties.setProperty("status", enumPropertyValue);
-        MapPropertyValue mapPropertyValue = null;
-        PrimitivePropertyValue primitivePropertyValue = null;
-        primitivePropertyValue = new PrimitivePropertyValue();
-
-        primitivePropertyValue.setPrimitiveValue(null);
-        instanceProperties.setProperty("description", primitivePropertyValue);
-        primitivePropertyValue = new PrimitivePropertyValue();
-
-        primitivePropertyValue.setPrimitiveValue(null);
-        instanceProperties.setProperty("expression", primitivePropertyValue);
-        primitivePropertyValue = new PrimitivePropertyValue();
-
-        primitivePropertyValue.setPrimitiveValue(null);
-        instanceProperties.setProperty("status", primitivePropertyValue);
-        primitivePropertyValue = new PrimitivePropertyValue();
-
-        primitivePropertyValue.setPrimitiveValue(null);
-        instanceProperties.setProperty("steward", primitivePropertyValue);
-        primitivePropertyValue = new PrimitivePropertyValue();
-
-        primitivePropertyValue.setPrimitiveValue(null);
-        instanceProperties.setProperty("source", primitivePropertyValue);
-        if (log.isDebugEnabled()) {
-            log.debug("<== Method: " + methodName);
-        }
-        return instanceProperties;
-    }
-
-    private String description;
 
     /**
      * {@literal Description of the relationship. }
@@ -182,12 +61,13 @@ public class PreferredTerm extends Line {
     public String getDescription() {
         return this.description;
     }
-
+    /**
+     * {@literal Set the description of the relationship. }
+     * @param description {@code String }
+     */
     public void setDescription(String description) {
         this.description = description;
     }
-
-    private String expression;
 
     /**
      * {@literal An expression that explains the relationship. }
@@ -202,8 +82,6 @@ public class PreferredTerm extends Line {
         this.expression = expression;
     }
 
-    private TermRelationshipStatus status;
-
     /**
      * {@literal The status of or confidence in the relationship. }
      *
@@ -217,8 +95,6 @@ public class PreferredTerm extends Line {
         this.status = status;
     }
 
-    private String steward;
-
     /**
      * {@literal Person responsible for the relationship. }
      *
@@ -231,8 +107,6 @@ public class PreferredTerm extends Line {
     public void setSteward(String steward) {
         this.steward = steward;
     }
-
-    private String source;
 
     /**
      * {@literal Person, organization or automated process that created the relationship. }
