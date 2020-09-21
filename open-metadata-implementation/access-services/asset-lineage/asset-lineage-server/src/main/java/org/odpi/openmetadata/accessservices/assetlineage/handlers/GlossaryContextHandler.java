@@ -18,6 +18,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.GLOSSARY_TERM;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.GUID_PARAMETER;
@@ -221,12 +222,17 @@ public class GlossaryContextHandler {
         String methodName = "getRelationshipsByTypeGUID";
         String relationshipTypeGUID = handlerHelper.getTypeByName(userId, relationshipTypeName);
 
-        return repositoryHandler.getRelationshipsByType(userId,
+        List<Relationship> relationshipsByType = repositoryHandler.getRelationshipsByType(userId,
                 entityGUID,
                 entityTypeName,
                 relationshipTypeGUID,
                 relationshipTypeName,
                 methodName);
+
+        return relationshipsByType
+                .stream()
+                .filter(relationship -> relationship.getEntityOneProxy() != null && relationship.getEntityTwoProxy() != null)
+                .collect(Collectors.toList());
     }
 
     /**
