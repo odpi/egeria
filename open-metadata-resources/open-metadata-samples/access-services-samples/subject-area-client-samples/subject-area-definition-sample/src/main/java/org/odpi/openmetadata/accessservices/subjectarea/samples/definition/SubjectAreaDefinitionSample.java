@@ -82,8 +82,8 @@ public class SubjectAreaDefinitionSample
      */
     private void run() throws SubjectAreaCheckedException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         SubjectArea subjectArea = new SubjectAreaImpl(this.serverName, this.serverURLRoot);
-        subjectAreaGlossary = subjectArea.getNodeClients().glossaries();
-        subjectAreaCategory = subjectArea.getNodeClients().categories();
+        subjectAreaGlossary = subjectArea.nodeClients().glossaries();
+        subjectAreaCategory = subjectArea.nodeClients().categories();
 
         System.out.println("----------------------------");
         System.out.println("Creating the Coco Pharmaceutical Glossary for Subject Area Definitions : ");

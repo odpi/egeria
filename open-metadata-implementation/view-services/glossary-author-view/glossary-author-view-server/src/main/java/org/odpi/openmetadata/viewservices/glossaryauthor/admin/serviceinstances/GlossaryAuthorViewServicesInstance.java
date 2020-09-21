@@ -46,9 +46,9 @@ public class GlossaryAuthorViewServicesInstance extends OMVSServiceInstance
         super(serverName, ViewServiceDescription.GLOSSARY_AUTHOR.getViewServiceName(), auditLog, localServerUserId, maxPageSize, remoteServerName,
               remoteServerURL);
         final SubjectArea subjectArea = new SubjectAreaImpl(remoteServerName, remoteServerURL);
-        this.subjectAreaGraph = subjectArea.getSubjectAreaGraph();
-        this.subjectAreaRelationship = subjectArea.getSubjectAreaRelationship();
-        this.nodeClients = subjectArea.getNodeClients();
+        this.subjectAreaGraph = subjectArea.subjectAreaGraph();
+        this.subjectAreaRelationship = subjectArea.relationshipClients();
+        this.nodeClients = subjectArea.nodeClients();
     }
 
     public String getViewServiceName()

@@ -70,7 +70,7 @@ public class SubjectAreaImpl implements SubjectArea {
 
 
     @Override
-    public SubjectAreaNodeClients getNodeClients() {
+    public SubjectAreaNodeClients nodeClients() {
         return this.nodeClients;
     }
 
@@ -80,7 +80,7 @@ public class SubjectAreaImpl implements SubjectArea {
      * @return subject area relationship API class
      */
     @Override
-    public SubjectAreaRelationshipClients getSubjectAreaRelationship() {
+    public SubjectAreaRelationshipClients relationshipClients() {
         return this.relationshipAPI;
     }
 
@@ -90,7 +90,7 @@ public class SubjectAreaImpl implements SubjectArea {
      * @return subject area graph API class
      */
     @Override
-    public SubjectAreaGraph getSubjectAreaGraph() {
+    public SubjectAreaGraph subjectAreaGraph() {
         return this.graphAPI;
     }
 
@@ -101,7 +101,7 @@ public class SubjectAreaImpl implements SubjectArea {
      */
 
     @Override
-    public String getServerName() {
+    public String serverName() {
         return serverName;
     }
 
@@ -111,7 +111,7 @@ public class SubjectAreaImpl implements SubjectArea {
      * @return url of the server
      */
     @Override
-    public String getOmasServerUrl() {
+    public String omasServerUrl() {
         return omasServerUrl;
     }
 }

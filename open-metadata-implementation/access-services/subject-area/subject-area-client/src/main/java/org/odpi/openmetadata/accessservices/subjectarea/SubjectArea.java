@@ -11,21 +11,21 @@ import org.odpi.openmetadata.accessservices.subjectarea.client.relationships.Sub
  */
 public interface SubjectArea {
 
-    SubjectAreaNodeClients getNodeClients();
+    SubjectAreaNodeClients nodeClients();
 
     /**
      * Get the subject area relationship API class - use this class to issue relationship calls.
      *
      * @return subject area relationship API class
      */
-    SubjectAreaRelationshipClients getSubjectAreaRelationship();
+    SubjectAreaRelationshipClients relationshipClients();
 
     /**
      * Get the subject area graph API class - use this class to issue graph calls.
      *
      * @return subject area graph API class
      */
-    SubjectAreaGraph getSubjectAreaGraph();
+    SubjectAreaGraph subjectAreaGraph();
 
 
     /**
@@ -33,13 +33,12 @@ public interface SubjectArea {
      *
      * @return serverName name of the server
      */
-    String getServerName();
+    String serverName();
 
     /**
      * Base url used to issue Rest calls
      *
      * @return base url
      */
-    String getOmasServerUrl();
-
+    String omasServerUrl();
 }
