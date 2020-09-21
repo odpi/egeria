@@ -4,24 +4,16 @@
 
 package org.odpi.openmetadata.accessservices.subjectarea.properties.relationships;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-
-import java.util.*;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.TermRelationshipStatus;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineEnd;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipEndCardinality;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
-
-import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.*;
-
-//omrs
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
-//omrs beans
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineType;
 
 /**
  * Defines the relationship between a spine attribute and its type.
@@ -30,142 +22,35 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class TypedBy extends Line {
-    private static final Logger log = LoggerFactory.getLogger(TypedBy.class);
-    private static final String className = TypedBy.class.getName();
+    private String description = "Defines the relationship between a spine attribute and its type.";
 
-    private static final String[] PROPERTY_NAMES_SET_VALUES = new String[]{
-            "description",
-            "status",
-            "steward",
-            "source",
+    /*
+     * Set up end 1.
+     */
+    protected final static String END_1_NODE_TYPE = "Term";
+    protected final static String END_1_ATTRIBUTE_NAME = "attributesTypedBy";
+    protected final static String END_1_ATTRIBUTE_DESCRIPTION = "Attributes of this type.";
+    protected final static RelationshipEndCardinality END_1_CARDINALITY = RelationshipEndCardinality.ANY_NUMBER;
+    protected final static LineEnd LINE_END_1 = new LineEnd(END_1_NODE_TYPE,
+            END_1_ATTRIBUTE_NAME, END_1_ATTRIBUTE_DESCRIPTION, END_1_CARDINALITY);
 
-            // Terminate the list
-            null
-    };
-    private static final String[] ATTRIBUTE_NAMES_SET_VALUES = new String[]{
-            "description",
-            "steward",
-            "source",
+    /*
+     * Set up end 2.
+     */
+    protected final static String END_2_NODE_TYPE = "Term";
+    protected final static String END_2_ATTRIBUTE_NAME = "types";
+    protected final static String END_2_ATTRIBUTE_DESCRIPTION = "Types for this attribute.";
+    protected final static RelationshipEndCardinality END_2_CARDINALITY = RelationshipEndCardinality.ANY_NUMBER;
+    protected final static LineEnd LINE_END_2 = new LineEnd(END_2_NODE_TYPE,
+            END_2_ATTRIBUTE_NAME, END_2_ATTRIBUTE_DESCRIPTION, END_2_CARDINALITY);
 
-            // Terminate the list
-            null
-    };
-    private static final String[] ENUM_NAMES_SET_VALUES = new String[]{
-            "status",
-
-            // Terminate the list
-            null
-    };
-    private static final String[] MAP_NAMES_SET_VALUES = new String[]{
-
-            // Terminate the list
-            null
-    };
-    private static final java.util.Set<String> PROPERTY_NAMES_SET = new HashSet<>(Arrays.asList(PROPERTY_NAMES_SET_VALUES));
-    private static final java.util.Set<String> ATTRIBUTE_NAMES_SET = new HashSet<>(Arrays.asList(ATTRIBUTE_NAMES_SET_VALUES));
-    private static final java.util.Set<String> ENUM_NAMES_SET = new HashSet<>(Arrays.asList(ENUM_NAMES_SET_VALUES));
-    private static final java.util.Set<String> MAP_NAMES_SET = new HashSet<>(Arrays.asList(MAP_NAMES_SET_VALUES));
-    private String attributeGuid;
-    private String typeGuid;
+    private TermRelationshipStatus status;
+    private String steward;
+    private String source;
 
     public TypedBy() {
-        initialise();
+        super("TypedBy", "669e8aa4-c671-4ee7-8d03-f37d09b9d006", LINE_END_1, LINE_END_2);
     }
-
-    private void initialise() {
-        name = "TypedBy";
-        // set the LineType if this is a LineType enum value.
-        try {
-            lineType = LineType.valueOf(name);
-        } catch (IllegalArgumentException e) {
-            lineType = LineType.Unknown;
-        }
-        entity1Name = "attributesTypedBy";
-        entity1Type = "GlossaryTerm";
-        entity2Name = "types";
-        entity2Type = "GlossaryTerm";
-        typeDefGuid = "669e8aa4-c671-4ee7-8d03-f37d09b9d006";
-    }
-
-    public TypedBy(Line template) {
-        super(template);
-        initialise();
-    }
-
-    public TypedBy(Relationship omrsRelationship) {
-        super(omrsRelationship);
-        name = "TypedBy";
-        // set the LineType if this is a LineType enum value.
-        try {
-            lineType = LineType.valueOf(name);
-        } catch (IllegalArgumentException e) {
-            lineType = LineType.Unknown;
-        }
-    }
-
-    /**
-     * {@literal Get the guid of spine attribute. }
-     *
-     * @return {@code String }
-     */
-    public String getAttributeGuid() {
-        return attributeGuid;
-    }
-
-    public void setAttributeGuid(String attributeGuid) {
-        this.attributeGuid = attributeGuid;
-    }
-
-    /**
-     * {@literal Get the guid of type associated with the spine attribute. }
-     *
-     * @return {@code String }
-     */
-    public String getTypeGuid() {
-        return typeGuid;
-    }
-
-    public void setTypeGuid(String typeGuid) {
-        this.typeGuid = typeGuid;
-    }
-
-    InstanceProperties obtainInstanceProperties() {
-        final String methodName = "obtainInstanceProperties";
-        if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName);
-        }
-        InstanceProperties instanceProperties = new InstanceProperties();
-        EnumPropertyValue enumPropertyValue = null;
-        enumPropertyValue = new EnumPropertyValue();
-        // the status of or confidence in the relationship.
-        enumPropertyValue.setOrdinal(status.ordinal());
-        enumPropertyValue.setSymbolicName(status.name());
-        instanceProperties.setProperty("status", enumPropertyValue);
-        MapPropertyValue mapPropertyValue = null;
-        PrimitivePropertyValue primitivePropertyValue = null;
-        primitivePropertyValue = new PrimitivePropertyValue();
-
-        primitivePropertyValue.setPrimitiveValue(null);
-        instanceProperties.setProperty("description", primitivePropertyValue);
-        primitivePropertyValue = new PrimitivePropertyValue();
-
-        primitivePropertyValue.setPrimitiveValue(null);
-        instanceProperties.setProperty("status", primitivePropertyValue);
-        primitivePropertyValue = new PrimitivePropertyValue();
-
-        primitivePropertyValue.setPrimitiveValue(null);
-        instanceProperties.setProperty("steward", primitivePropertyValue);
-        primitivePropertyValue = new PrimitivePropertyValue();
-
-        primitivePropertyValue.setPrimitiveValue(null);
-        instanceProperties.setProperty("source", primitivePropertyValue);
-        if (log.isDebugEnabled()) {
-            log.debug("<== Method: " + methodName);
-        }
-        return instanceProperties;
-    }
-
-    private String description;
 
     /**
      * {@literal Description of the relationship. }
@@ -175,12 +60,13 @@ public class TypedBy extends Line {
     public String getDescription() {
         return this.description;
     }
-
+    /**
+     * {@literal Set the description of the relationship. }
+     * @param description {@code String }
+     */
     public void setDescription(String description) {
         this.description = description;
     }
-
-    private TermRelationshipStatus status;
 
     /**
      * {@literal The status of or confidence in the relationship. }
@@ -195,8 +81,6 @@ public class TypedBy extends Line {
         this.status = status;
     }
 
-    private String steward;
-
     /**
      * {@literal Person responsible for the relationship. }
      *
@@ -209,8 +93,6 @@ public class TypedBy extends Line {
     public void setSteward(String steward) {
         this.steward = steward;
     }
-
-    private String source;
 
     /**
      * {@literal Person, organization or automated process that created the relationship. }
