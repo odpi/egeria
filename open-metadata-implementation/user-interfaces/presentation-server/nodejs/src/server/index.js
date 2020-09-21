@@ -343,7 +343,7 @@ app.get("/servers/*", (req, res) => {
         res.json(resBody);
       })
       .catch(function (error) {
-        console.log(error);
+        console.log("error received: "+error);
         res.status(400).send(error);
       })
       .then(function () {
