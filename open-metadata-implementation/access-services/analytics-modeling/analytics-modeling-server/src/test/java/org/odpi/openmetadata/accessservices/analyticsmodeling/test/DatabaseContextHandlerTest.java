@@ -21,6 +21,8 @@ import org.odpi.openmetadata.accessservices.analyticsmodeling.model.ResponseCont
 import org.odpi.openmetadata.accessservices.analyticsmodeling.model.module.Table;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.test.utils.TestUtilities;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.utils.Constants;
+import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -37,14 +39,17 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 	private static final String SERVER_TYPE_MS_SQL = "MS SQL";
 	private static final String VENDOR_TYPE_INT32 = "INT32";
 	private static final String VENDOR_TYPE_STRING = "STRING";
+	private static final Integer FROM_INDEX = 0;
+	private static final Integer PAGE_SIZE = 20;
 
 	private DatabaseContextHandler databaseContextHandler;
+	private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
 
 	@BeforeMethod
 	public void setup() throws Exception {
 		super.setup();
 		OMEntityDao omEntityDaoReal = new OMEntityDao(enterpriseConnector, Collections.emptyList(), auditLog);
-		databaseContextHandler = new DatabaseContextHandler(omEntityDaoReal);
+		databaseContextHandler = new DatabaseContextHandler(omEntityDaoReal, invalidParameterHandler);
 	}
 
 	@Test
@@ -54,7 +59,7 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 		createDatabaseEntity(DATABASE_ADWENTURE_WORKS, SERVER_TYPE_MS_SQL, "2.0");
 
 		// test
-		List<ResponseContainerDatabase> databases = databaseContextHandler.getDatabases();
+		List<ResponseContainerDatabase> databases = databaseContextHandler.getDatabases(FROM_INDEX, PAGE_SIZE);
 		assertNotNull(databases);
 		assertTrue(databases.size() == 2, "Failed retrieve databases.");
 
@@ -66,31 +71,50 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 	}
 
 	@Test
+	public void getDatabasesPage() throws AnalyticsModelingCheckedException {
+		// setup repository with four databases sorted: AdwentureWorks, DB_3, DB_4, GOSALES
+		createDatabaseEntity(DATABASE_GOSALES, SERVER_TYPE_MS_SQL, "1.0");
+		createDatabaseEntity(DATABASE_ADWENTURE_WORKS, SERVER_TYPE_MS_SQL, "2.0");
+		createDatabaseEntity("DB_3", SERVER_TYPE_MS_SQL, "1.0");
+		createDatabaseEntity("DB_4", SERVER_TYPE_MS_SQL, "2.0");
+
+		List<ResponseContainerDatabase> databases = databaseContextHandler.getDatabases(1, 2);
+		assertNotNull(databases);
+		assertTrue(databases.size() == 2, "Failed retrieve databases.");
+		assertEquals(databases.get(0).getDbName(), "DB_3");
+		assertEquals(databases.get(1).getDbName(), "DB_4");
+
+	}
+
+	@Test
 	public void getDatabasesEmptyRepository() throws AnalyticsModelingCheckedException {
-		List<ResponseContainerDatabase> databases = databaseContextHandler.getDatabases();
+		List<ResponseContainerDatabase> databases = databaseContextHandler.getDatabases(FROM_INDEX, PAGE_SIZE);
 		assertTrue(databases.size() == 0, "Database list expected to be empty.");
 	}
 
 	@Test
-	public void getDatabaseSchemasWithEmptyCatalog() throws AnalyticsModelingCheckedException {
+	public void getDatabaseSchemasWithEmptyCatalog()
+			throws AnalyticsModelingCheckedException, InvalidParameterException {
 		// setup repository
 		EntityDetail entityDB = createDatabaseEntity(DATABASE_GOSALES, SERVER_TYPE_MS_SQL, "1.0");
 		String guidDataSource = entityDB.getGUID();
 		// test
-		List<ResponseContainerDatabaseSchema> schemas = databaseContextHandler.getDatabaseSchemas(guidDataSource);
+		List<ResponseContainerDatabaseSchema> schemas = databaseContextHandler
+				.getDatabaseSchemas(guidDataSource, FROM_INDEX, PAGE_SIZE);
 		assertTrue(schemas.isEmpty(), "Schemas list expected to be empty.");
 
 	}
 
 	@Test
-	public void getDatabaseSchemas() throws AnalyticsModelingCheckedException {
+	public void getDatabaseSchemas() throws AnalyticsModelingCheckedException, InvalidParameterException {
 		// setup repository
 		EntityDetail entityDB = createDatabaseEntity(DATABASE_GOSALES, SERVER_TYPE_MS_SQL, "1.0");
 		String guidDataSource = entityDB.getGUID();
 		createDatabaseSchemaEntity(guidDataSource, SCHEMA_DBO);
 		createDatabaseSchemaEntity(guidDataSource, "sys");
 
-		List<ResponseContainerDatabaseSchema> schemas = databaseContextHandler.getDatabaseSchemas(guidDataSource);
+		List<ResponseContainerDatabaseSchema> schemas = databaseContextHandler
+				.getDatabaseSchemas(guidDataSource,FROM_INDEX, PAGE_SIZE);
 		assertNotNull(schemas);
 		assertTrue(schemas.size() == 2, "Failed to retrieve database schemas.");
 
@@ -102,21 +126,48 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 	}
 
 	@Test
-	public void getDatabaseSchemasSameNameForTwoCatalogs() throws AnalyticsModelingCheckedException {
+	public void getDatabaseSchemasPage() throws AnalyticsModelingCheckedException, InvalidParameterException {
+		// setup repository with four schemas sorted: dbo, s1, s2, sys
+		EntityDetail entityDB = createDatabaseEntity(DATABASE_GOSALES, SERVER_TYPE_MS_SQL, "1.0");
+		String guidDataSource = entityDB.getGUID();
+		createDatabaseSchemaEntity(guidDataSource, SCHEMA_DBO);
+		createDatabaseSchemaEntity(guidDataSource, "s1");
+		createDatabaseSchemaEntity(guidDataSource, "s2");
+		createDatabaseSchemaEntity(guidDataSource, "sys");
+
+		List<ResponseContainerDatabaseSchema> schemas = databaseContextHandler
+				.getDatabaseSchemas(guidDataSource, 1, 2);
+		assertNotNull(schemas);
+		assertTrue(schemas.size() == 2, "Failed to retrieve database schemas.");
+
+		assertEquals(schemas.get(0).getSchema(), "s1");
+		assertEquals(schemas.get(1).getSchema(), "s2");
+
+		// test paging boundaries
+		assertTrue(databaseContextHandler.getDatabaseSchemas(guidDataSource, 1, 0).size() == 3,
+				"Return all elemnts starting from.");
+		assertTrue(databaseContextHandler.getDatabaseSchemas(guidDataSource, 1, 5).size() == 3,
+				"Adjust upper boundary.");
+	}
+
+	@Test
+	public void getDatabaseSchemasSameNameForTwoCatalogs()
+			throws AnalyticsModelingCheckedException, InvalidParameterException {
 		// setup repository
 		EntityDetail entityDB = createDatabaseEntity(DATABASE_GOSALES, SERVER_TYPE_MS_SQL, "1.0");
 		createDatabaseSchemaEntity(entityDB.getGUID(), SCHEMA_DBO);
 		entityDB = createDatabaseEntity("AdventureWorks", SERVER_TYPE_MS_SQL, "1.0");
 		createDatabaseSchemaEntity(entityDB.getGUID(), SCHEMA_DBO);
 
-		List<ResponseContainerDatabaseSchema> schemas = databaseContextHandler.getDatabaseSchemas(entityDB.getGUID());
+		List<ResponseContainerDatabaseSchema> schemas = databaseContextHandler
+				.getDatabaseSchemas(entityDB.getGUID(),FROM_INDEX, PAGE_SIZE);
 		assertNotNull(schemas);
 		assertTrue(schemas.size() == 1, "Failed to retrieve database schema.");
 		assertEquals("AdventureWorks", schemas.get(0).getCatalog());
 	}
 
 	@Test
-	public void getSchemaTablesForEmptySchema() throws AnalyticsModelingCheckedException {
+	public void getSchemaTablesForEmptySchema() throws AnalyticsModelingCheckedException, InvalidParameterException {
 		// setup repository
 		EntityDetail entityDB = createDatabaseEntity(DATABASE_GOSALES, SERVER_TYPE_MS_SQL, "1.0");
 		createDatabaseSchemaEntity(entityDB.getGUID(), SCHEMA_DBO);
@@ -141,7 +192,7 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 	}
 
 	@Test
-	public void getSchemaTables() throws AnalyticsModelingCheckedException {
+	public void getSchemaTables() throws AnalyticsModelingCheckedException, InvalidParameterException {
 		// setup repository
 		EntityDetail entityDB = createDatabaseEntity(DATABASE_GOSALES, SERVER_TYPE_MS_SQL, "1.0");
 		EntityDetail entitySchema = createDatabaseSchemaEntity(entityDB.getGUID(), SCHEMA_DBO);
@@ -183,8 +234,8 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 		addColumn(entityTableA, "ProductName", DATA_TYPE_VARCHAR, VENDOR_TYPE_STRING);
 		EntityDetail columnEntity = addColumn(entityTableA, "ProductDescription", DATA_TYPE_VARCHAR,
 				VENDOR_TYPE_STRING);
-		
-		setColumnProperty(columnEntity, Constants.IS_NULLABLE, Boolean.TRUE);	// only test of nullable field
+
+		setColumnProperty(columnEntity, Constants.IS_NULLABLE, Boolean.TRUE); // only test of nullable field
 
 		columnEntity = addColumn(entityTableA, "ProductIntroductionDate", DATA_TYPE_INTEGER, VENDOR_TYPE_INT32);
 		defineColumnForeignKey(columnEntity, pkDate);
@@ -217,7 +268,7 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 
 		// assert result
 		assertNotNull(moduleResponse);
-		List<Table> tables = moduleResponse.getModule().getDataSource().get(0).getTable();
+		List<Table> tables = moduleResponse.getPhysicalModule().getDataSource().get(0).getTable();
 
 		assertEquals(4, tables.size(), "Failed to retrieve tables.");
 
@@ -250,6 +301,30 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 				thrown.getReportedErrorMessageId(), "Message Id is not correct");
 
 		assertTrue(thrown.getMessage().contains(badSchema), "Failed schema name should be in the message.");
+	}
+
+	@Test
+	public void getDatabaseSchemasInvalidParameter() {
+
+		InvalidParameterException thrown = expectThrows(InvalidParameterException.class,
+				() -> databaseContextHandler.getDatabaseSchemas(null, FROM_INDEX, PAGE_SIZE));
+		assertEquals(thrown.getParameterName(), DatabaseContextHandler.DATA_SOURCE_GUID, "Incorrect parameter name.");
+	}
+
+	@Test
+	public void getSchemaTablesInvalidParameter() {
+
+		InvalidParameterException thrown = expectThrows(InvalidParameterException.class,
+				() -> databaseContextHandler.getSchemaTables(null, SCHEMA_DBO));
+		assertEquals(thrown.getParameterName(), DatabaseContextHandler.DATA_SOURCE_GUID, "Incorrect parameter name.");
+	}
+
+	@Test
+	public void getModuleInvalidParameter() {
+
+		InvalidParameterException thrown = expectThrows(InvalidParameterException.class,
+				() -> databaseContextHandler.getModule(null, DATABASE_GOSALES, SCHEMA_DBO));
+		assertEquals(thrown.getParameterName(), DatabaseContextHandler.DATA_SOURCE_GUID, "Incorrect parameter name.");
 	}
 
 	private String buildKey(String... param) {

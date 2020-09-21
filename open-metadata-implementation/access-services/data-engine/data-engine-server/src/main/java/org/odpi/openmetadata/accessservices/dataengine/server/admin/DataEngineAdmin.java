@@ -2,16 +2,18 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataengine.server.admin;
 
+import org.odpi.openmetadata.accessservices.dataengine.connectors.intopic.DataEngineInTopicClientProvider;
 import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
-import org.odpi.openmetadata.accessservices.dataengine.server.auditlog.DataEngineAuditCode;
+import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineAuditCode;
 import org.odpi.openmetadata.accessservices.dataengine.server.listeners.DataEngineInTopicListener;
 import org.odpi.openmetadata.accessservices.dataengine.server.processors.DataEngineEventProcessor;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
@@ -28,7 +30,7 @@ import java.util.List;
  */
 public class DataEngineAdmin extends AccessServiceAdmin {
 
-    private OMRSAuditLog auditLog;
+    private AuditLog auditLog;
     private DataEngineServicesInstance instance;
     private String serverName;
 
@@ -45,15 +47,12 @@ public class DataEngineAdmin extends AccessServiceAdmin {
      */
     @Override
     public void initialize(AccessServiceConfig accessServiceConfig, OMRSTopicConnector enterpriseOMRSTopicConnector,
-                           OMRSRepositoryConnector repositoryConnector, OMRSAuditLog auditLog, String serverUserName) throws
-                                                                                                                      OMAGConfigurationErrorException {
+                           OMRSRepositoryConnector repositoryConnector, AuditLog auditLog, String serverUserName) throws
+                                                                                                                  OMAGConfigurationErrorException {
         final String actionDescription = "initialize";
 
-        DataEngineAuditCode auditCode;
 
-        auditCode = DataEngineAuditCode.SERVICE_INITIALIZING;
-        auditLog.logRecord(actionDescription, auditCode.getLogMessageId(), auditCode.getSeverity(), auditCode.getFormattedLogMessage(),
-                null, auditCode.getSystemAction(), auditCode.getUserAction());
+        auditLog.logMessage(actionDescription, DataEngineAuditCode.SERVICE_INITIALIZING.getMessageDefinition());
         try {
             this.auditLog = auditLog;
 
@@ -63,7 +62,12 @@ public class DataEngineAdmin extends AccessServiceAdmin {
                     accessServiceConfig.getAccessServiceName(), auditLog);
 
             instance = new DataEngineServicesInstance(repositoryConnector, supportedZones, defaultZones, auditLog, serverUserName,
-                    repositoryConnector.getMaxPageSize());
+                    repositoryConnector.getMaxPageSize(),
+                    super.getOutTopicConnection(accessServiceConfig.getAccessServiceInTopic(),
+                            AccessServiceDescription.DATA_ENGINE_OMAS.getAccessServiceFullName(),
+                            DataEngineInTopicClientProvider.class.getName(),
+                            auditLog)); //TODO: using getOutTopicConnection temporary, we need getInTopicConnection... Check the correct way to create connection for the omas instance - using dedicated client provider class name (current impl.) or provided by the accessServiceConfig.getAccessServiceInTopic() (?)
+
             serverName = instance.getServerName();
 
             if (accessServiceConfig.getAccessServiceInTopic() != null) {
@@ -71,27 +75,22 @@ public class DataEngineAdmin extends AccessServiceAdmin {
                 DataEngineInTopicListener dataEngineInTopicListener = new DataEngineInTopicListener(auditLog, dataEngineEventProcessor);
 
                 OpenMetadataTopicConnector dataEngineInTopicConnector = initializeDataEngineTopicConnector(
-                        accessServiceConfig.getAccessServiceInTopic());
+                        accessServiceConfig.getAccessServiceInTopic()); //TODO: Check if this should be moved / done form AccessServicesAdmin (?)
                 if (dataEngineInTopicConnector != null) {
                     dataEngineInTopicConnector.registerListener(dataEngineInTopicListener);
                     dataEngineInTopicConnector.start();
                 }
             }
 
-            auditCode = DataEngineAuditCode.SERVICE_INITIALIZED;
-
-            auditLog.logRecord(actionDescription, auditCode.getLogMessageId(), auditCode.getSeverity(),
-                    auditCode.getFormattedLogMessage(serverName), accessServiceConfig.toString(), auditCode.getSystemAction(),
-                    auditCode.getUserAction());
-
+            auditLog.logMessage(actionDescription, DataEngineAuditCode.SERVICE_INITIALIZED.getMessageDefinition(serverName));
         } catch (OMAGConfigurationErrorException e) {
             throw e;
         } catch (Exception error) {
-            auditCode = DataEngineAuditCode.SERVICE_INSTANCE_FAILURE;
+            auditLog.logException(actionDescription, DataEngineAuditCode.SERVICE_INSTANCE_FAILURE.getMessageDefinition(error.getMessage(),
+                    serverName), error);
 
-            auditLog.logException(actionDescription, auditCode.getLogMessageId(), auditCode.getSeverity(),
-                    auditCode.getFormattedLogMessage(error.getMessage()), accessServiceConfig.toString(),
-                    auditCode.getSystemAction(), auditCode.getUserAction(), error);
+            super.throwUnexpectedInitializationException(actionDescription, AccessServiceDescription.DATA_ENGINE_OMAS.getAccessServiceFullName(),
+                    error);
         }
     }
 
@@ -107,11 +106,8 @@ public class DataEngineAdmin extends AccessServiceAdmin {
 
         if (auditLog != null) {
             final String actionDescription = "shutdown";
-            DataEngineAuditCode auditCode;
 
-            auditCode = DataEngineAuditCode.SERVICE_SHUTDOWN;
-            auditLog.logRecord(actionDescription, auditCode.getLogMessageId(), auditCode.getSeverity(), auditCode.getFormattedLogMessage(serverName),
-                    null, auditCode.getSystemAction(), auditCode.getUserAction());
+            auditLog.logMessage(actionDescription, DataEngineAuditCode.SERVICE_SHUTDOWN.getMessageDefinition(serverName));
         }
     }
 
@@ -135,13 +131,9 @@ public class DataEngineAdmin extends AccessServiceAdmin {
         } catch (Exception error) {
             String methodName = "getTopicConnector";
 
-            DataEngineErrorCode errorCode    = DataEngineErrorCode.NULL_TOPIC_CONNECTOR;
-            String              errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
-
-            OMAGConfigurationErrorException e = new OMAGConfigurationErrorException(errorCode.getHttpErrorCode(), this.getClass().getName(),
-                    methodName, errorMessage, errorCode.getSystemAction(), errorCode.getUserAction(), error);
-
-            log.error("Exception in returning the topic connector for Data Engine: {}", e);
+            OMAGConfigurationErrorException e = new OMAGConfigurationErrorException(DataEngineErrorCode.NULL_TOPIC_CONNECTOR.getMessageDefinition(),
+                    this.getClass().getName(), methodName);
+            log.error("Exception in returning the topic connector for Data Engine: ", error);
 
             throw e;
         }
@@ -160,15 +152,12 @@ public class DataEngineAdmin extends AccessServiceAdmin {
             try {
                 return getTopicConnector(topicConnection);
             } catch (Exception e) {
-                DataEngineAuditCode auditCode = DataEngineAuditCode.ERROR_INITIALIZING_TOPIC_CONNECTION;
-                auditLog.logRecord(actionDescription, auditCode.getLogMessageId(), auditCode.getSeverity(),
-                        auditCode.getFormattedLogMessage(topicConnection.toString(), serverName, e.getMessage()), null,
-                        auditCode.getSystemAction(), auditCode.getUserAction());
+                auditLog.logException(actionDescription, DataEngineAuditCode.ERROR_INITIALIZING_TOPIC_CONNECTION.getMessageDefinition(e.getMessage(),
+                        serverName), e);
                 throw e;
             }
 
         }
         return null;
-
     }
 }

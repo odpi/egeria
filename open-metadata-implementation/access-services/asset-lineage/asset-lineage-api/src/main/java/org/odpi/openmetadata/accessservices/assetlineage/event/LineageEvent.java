@@ -45,13 +45,12 @@ public class LineageEvent extends AssetLineageEventHeader {
         this.assetContext = assetContext;
     }
 
-    public void setLineageEntity(LineageEntity lineageEntity) {
-        this.lineageEntity = lineageEntity;
-    }
-
-
     public LineageEntity getLineageEntity() {
         return lineageEntity;
+    }
+
+    public void setLineageEntity(LineageEntity lineageEntity) {
+        this.lineageEntity = lineageEntity;
     }
 
     @Override
