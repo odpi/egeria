@@ -23,11 +23,15 @@ and bad.  We would love to hear from you.
 
 Below are the release notes for the latest ODPi Egeria release:
 
- * [Release 2.1](release-notes-2-1.md) - July 2020
+ * [Release 2.2](release-notes-2-2.md) - August 2020
     * Bug fixes
     * Dependency updates
 
 ## Older Releases
+
+ * [Release 2.1](release-notes-2-1.md) - July 2020
+    * Bug fixes
+    * Dependency updates
 
  * [Release 2.0](release-notes-2-0.md) - June 2020
     * https security for server chassis
@@ -87,14 +91,6 @@ So you will see support for much more function than is officially released.
 This way you can monitor and feedback on future items as they are developed.
 
 The draft release notes for our future planned releases are below:
-    
-* [Release 2.1](release-notes-2-1.md) - Planned July 2020
-    * Data Science and AI model governance
-    * Ethics governance
-    
- * [Release 2.2](release-notes-2-2.md) - Planned August 2020
-    * Governance and Privacy Programs
-    * Licenses, certification, terms and conditions governance
     
 * [Release 2.3](release-notes-2-3.md) - Planned September 2020
     * Metadata Controlled Security

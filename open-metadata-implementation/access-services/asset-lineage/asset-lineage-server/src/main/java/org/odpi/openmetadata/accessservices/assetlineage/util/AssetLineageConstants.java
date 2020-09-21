@@ -2,14 +2,11 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetlineage.util;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public final class AssetLineageConstants {
 
@@ -55,33 +52,46 @@ public final class AssetLineageConstants {
     public static final String CLASSIFICATION_NAME_ASSET_ZONE_MEMBERSHIP = "AssetZoneMembership";
     public static final String CLASSIFICATION_NAME_SUBJECT_AREA = "SubjectArea";
     public static final String CLASSIFICATION_NAME_ASSET_OWNERSHIP = "AssetOwnership";
-    public static final ImmutableList<String> immutableValidLineageRelationshipTypes = ImmutableList.copyOf(Arrays.asList(
-            ATTRIBUTE_FOR_SCHEMA, ASSET_SCHEMA_TYPE, CONNECTION_TO_ASSET, CONNECTION_ENDPOINT, DATA_CONTENT_FOR_DATA_SET,
-            SEMANTIC_ASSIGNMENT, PORT_DELEGATION, PROCESS_PORT, LINEAGE_MAPPING, PORT_SCHEMA, NESTED_FILE, FOLDER_HIERARCHY,
-            PROCESS_HIERARCHY, TERM_CATEGORIZATION));
-    private static final List<String> defaultLineageClassifications = new ArrayList<>();
-    public static final ImmutableList<String> immutableDefaultLineageClassifications = ImmutableList.copyOf(defaultLineageClassifications);
+
+    public static final Set<String> immutableValidLineageRelationshipTypes;
+    public static final Set<String> immutableDefaultLineageClassifications;
     // Map of entities to relationship types
-    private static final Map<String, String> processRelationshipsTypes = new HashMap<>();
-    public static final ImmutableMap<String, String> immutableProcessRelationshipsTypes = ImmutableMap.copyOf(processRelationshipsTypes);
-    private static final List<String> validLineageEntityEvents = new ArrayList<>();
-    public static final ImmutableList<String> immutableValidLineageEntityEvents = ImmutableList.copyOf(validLineageEntityEvents);
+    public static final Map<String, String> immutableProcessRelationshipsTypes;
+    public static final Set<String> immutableValidLineageEntityEvents;
 
     static {
+        final Set<String> defaultLineageClassifications = new HashSet<>();
         defaultLineageClassifications.add(CLASSIFICATION_NAME_CONFIDENTIALITY);
         defaultLineageClassifications.add(CLASSIFICATION_NAME_ASSET_ZONE_MEMBERSHIP);
         defaultLineageClassifications.add(CLASSIFICATION_NAME_SUBJECT_AREA);
         defaultLineageClassifications.add(CLASSIFICATION_NAME_ASSET_OWNERSHIP);
-    }
+        immutableDefaultLineageClassifications = Collections.unmodifiableSet(defaultLineageClassifications);
 
-    static {
+        final Set<String> validLineageRelationshipTypes = new HashSet<>();
+        validLineageRelationshipTypes.add(ATTRIBUTE_FOR_SCHEMA);
+        validLineageRelationshipTypes.add(ASSET_SCHEMA_TYPE);
+        validLineageRelationshipTypes.add(CONNECTION_TO_ASSET);
+        validLineageRelationshipTypes.add(CONNECTION_ENDPOINT);
+        validLineageRelationshipTypes.add(DATA_CONTENT_FOR_DATA_SET);
+        validLineageRelationshipTypes.add(SEMANTIC_ASSIGNMENT);
+        validLineageRelationshipTypes.add(PORT_DELEGATION);
+        validLineageRelationshipTypes.add(PROCESS_PORT);
+        validLineageRelationshipTypes.add(LINEAGE_MAPPING);
+        validLineageRelationshipTypes.add(PORT_SCHEMA);
+        validLineageRelationshipTypes.add(NESTED_FILE);
+        validLineageRelationshipTypes.add(FOLDER_HIERARCHY);
+        validLineageRelationshipTypes.add(PROCESS_HIERARCHY);
+        validLineageRelationshipTypes.add(TERM_CATEGORIZATION);
+        immutableValidLineageRelationshipTypes = Collections.unmodifiableSet(validLineageRelationshipTypes);
+
+        final Map<String, String> processRelationshipsTypes = new HashMap<>();
         processRelationshipsTypes.put(PORT_ALIAS, PORT_DELEGATION);
         processRelationshipsTypes.put(PORT_IMPLEMENTATION, PORT_SCHEMA);
         processRelationshipsTypes.put(TABULAR_SCHEMA_TYPE, ATTRIBUTE_FOR_SCHEMA);
         processRelationshipsTypes.put(SCHEMA_ATTRIBUTE, LINEAGE_MAPPING);
-    }
+        immutableProcessRelationshipsTypes = Collections.unmodifiableMap(processRelationshipsTypes);
 
-    static {
+        final Set<String> validLineageEntityEvents = new HashSet<>();
         validLineageEntityEvents.add(GLOSSARY_TERM);
         validLineageEntityEvents.add(GLOSSARY_CATEGORY);
         validLineageEntityEvents.add(TABULAR_COLUMN);
@@ -89,6 +99,7 @@ public final class AssetLineageConstants {
         validLineageEntityEvents.add(RELATIONAL_TABLE);
         validLineageEntityEvents.add(DATA_FILE);
         validLineageEntityEvents.add(PROCESS);
+        immutableValidLineageEntityEvents = Collections.unmodifiableSet(validLineageEntityEvents);
     }
 
     private AssetLineageConstants() {

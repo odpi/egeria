@@ -44,7 +44,7 @@ public class GlossaryContextHandler {
      */
     public GlossaryContextHandler(InvalidParameterHandler invalidParameterHandler, OMRSRepositoryHelper repositoryHelper,
                                   RepositoryHandler repositoryHandler, AssetContextHandler assetContextHandler,
-                                  List<String> lineageClassificationTypes) {
+                                  Set<String> lineageClassificationTypes) {
         this.invalidParameterHandler = invalidParameterHandler;
         this.repositoryHandler = repositoryHandler;
         this.handlerHelper = new HandlerHelper(invalidParameterHandler, repositoryHelper, repositoryHandler, lineageClassificationTypes);
@@ -170,7 +170,7 @@ public class GlossaryContextHandler {
                                                           String entityTypeName,
                                                           String relationshipTypeName) throws UserNotAuthorizedException, PropertyServerException {
         String methodName = "getRelationshipsByTypeGUID";
-        String relationshipTypeGUID = handlerHelper.getTypeByName(userId, TERM_CATEGORIZATION);
+        String relationshipTypeGUID = handlerHelper.getTypeByName(userId, relationshipTypeName);
 
         return repositoryHandler.getRelationshipsByType(userId,
                 entityTypeGUID,

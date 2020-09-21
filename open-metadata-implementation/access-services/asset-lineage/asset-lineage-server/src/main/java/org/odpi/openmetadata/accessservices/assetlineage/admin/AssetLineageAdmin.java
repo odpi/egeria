@@ -21,6 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * AssetLineageAdmin is the class that is called by the OMAG Server to initialize and terminate
@@ -66,7 +67,7 @@ public class AssetLineageAdmin extends AccessServiceAdmin {
                     accessServiceConfigurationProperties.getAccessServiceName(),
                     auditLog);
 
-            List<String> lineageClassificationTypes = getLineageClassificationTypes(accessServiceConfigurationProperties);
+            Set<String> lineageClassificationTypes = getLineageClassificationTypes(accessServiceConfigurationProperties);
             this.instance = new AssetLineageServicesInstance(repositoryConnector,
                     supportedZones, lineageClassificationTypes, serverUserName, auditLog);
             this.serverName = instance.getServerName();
@@ -102,14 +103,14 @@ public class AssetLineageAdmin extends AccessServiceAdmin {
         }
     }
 
-    private List<String> getLineageClassificationTypes(AccessServiceConfig accessServiceConfig) {
+    private Set<String> getLineageClassificationTypes(AccessServiceConfig accessServiceConfig) {
 
         if (accessServiceConfig.getAccessServiceOptions() != null) {
             Object lineageClassificationTypesProperty = accessServiceConfig
                     .getAccessServiceOptions()
                     .get(AssetLineageConstants.LINEAGE_CLASSIFICATION_TYPES_KEY);
             if (lineageClassificationTypesProperty != null) {
-                return (List<String>) lineageClassificationTypesProperty;
+                return (Set<String>) lineageClassificationTypesProperty;
             }
         }
 

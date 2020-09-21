@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 import React, { useContext } from "react";
-import { GlossaryAuthorContext } from "../../contexts/GlossaryAuthorContext";
+import { GlossaryAuthorCRUDContext } from "../../contexts/GlossaryAuthorCRUDContext";
 import { FormGroup } from "carbon-components-react";
 import Info16 from "@carbon/icons-react/lib/information/16";
 import Close16 from "../../../../images/Egeria_close_16";
@@ -9,8 +9,8 @@ import Close16 from "../../../../images/Egeria_close_16";
 function LinesView(props) {
   console.log("LinesView");
 
-  const glossaryAuthorContext = useContext(GlossaryAuthorContext);
-  console.log("LinesView glossaryAuthorContext", glossaryAuthorContext);
+  const glossaryAuthorCRUDContext = useContext(GlossaryAuthorCRUDContext);
+  console.log("LinesView glossaryAuthorCRUDContext", glossaryAuthorCRUDContext);
   const onClickLine = (e) => {
     console.log("onClickLine");
     alert("Got " + e.target.id);
@@ -35,14 +35,14 @@ function LinesView(props) {
         <div>
           <h4>
             Lines for{" "}
-            {glossaryAuthorContext.currentNodeType
-              ? glossaryAuthorContext.currentNodeType.typeName
+            {glossaryAuthorCRUDContext.currentNodeType
+              ? glossaryAuthorCRUDContext.currentNodeType.typeName
               : ""}
            
             <Info16 />
           </h4>
         </div>
-        {glossaryAuthorContext.selectedNodeLines && (
+        {glossaryAuthorCRUDContext.selectedNodeLines && (
           <div>
             <div className="flex-grid-halves">
               <div className="col">
@@ -56,7 +56,7 @@ function LinesView(props) {
                 </button>
               </div>
             </div>
-            {glossaryAuthorContext.selectedNodeLines.map((line) => {
+            {glossaryAuthorCRUDContext.selectedNodeLines.map((line) => {
               return (
                 <div className="flex-grid-halves">
                   <div key={line.guid} className="col">
