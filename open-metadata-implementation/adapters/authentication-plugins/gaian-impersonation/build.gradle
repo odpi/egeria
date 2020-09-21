@@ -1,0 +1,16 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright Contributors to the ODPi Egeria project.
+ */
+
+
+dependencies {
+    compileOnly 'com.ibm.gaiandb:gaian:2.1.8'
+    compileOnly 'org.apache.derby:derby:10.8.3.1'
+}
+
+description = 'Gaian Impersonation support'
+
+java {
+    withJavadocJar()
+}

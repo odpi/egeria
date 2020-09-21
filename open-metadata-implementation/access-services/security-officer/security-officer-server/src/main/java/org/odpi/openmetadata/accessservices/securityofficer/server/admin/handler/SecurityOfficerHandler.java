@@ -83,13 +83,15 @@ public class SecurityOfficerHandler {
 
     public List<EntityDetail> getSchemaElementsAssignedToBusinessTerms(String userId, String glossaryTermGUID) {
 
-        List<Relationship> relationshipsForEntity = getSemanticAssigmentRelationships(userId, glossaryTermGUID);
+        List<Relationship> relationships = getSemanticAssigmentRelationships(userId, glossaryTermGUID);
 
         List<EntityDetail> schemaElements = new ArrayList<>();
-        for (Relationship relationship : relationshipsForEntity) {
-            EntityDetail schemaElement = getSchemaElement(userId, glossaryTermGUID, relationship);
-            if (schemaElement != null) {
-                schemaElements.add(schemaElement);
+        if (relationships != null) {
+            for (Relationship relationship : relationships) {
+                EntityDetail schemaElement = getSchemaElement(userId, glossaryTermGUID, relationship);
+                if (schemaElement != null) {
+                    schemaElements.add(schemaElement);
+                }
             }
         }
 

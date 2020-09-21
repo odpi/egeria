@@ -1,3 +1,4 @@
+
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 import React, { createContext, useState } from "react";
@@ -16,7 +17,9 @@ const IdentificationContextProvider = props => {
    * Get the home url for the browser
    */
   const getBrowserURL = pageName => {
-    return "/" + serverName + "/" + pageName;
+    const url = "/" + serverName + "/" + pageName;
+    console.log("getBrowserURL" + url);
+    return url;
   };
   /**
  * Get the url to use for rest calls 

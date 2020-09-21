@@ -170,7 +170,7 @@ public class TestAssetSchemaAttribute
     /**
      * Validate that the object is initialized properly
      */
-    @Test public void testNullObject()
+    @Test(enabled = false) public void testNullObject()
     {
         SchemaAttribute      nullBean;
         AssetSchemaAttribute nullObject;
@@ -265,7 +265,9 @@ public class TestAssetSchemaAttribute
     /**
      *  Validate that an object cloned from another object has the same content as the original
      */
-    @Test public void testClone()
+
+    @Test(enabled = false)
+    public void testClone()
     {
         validateResultObject(new AssetSchemaAttribute(null, getTestObject()));
     }

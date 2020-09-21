@@ -2809,8 +2809,6 @@ public class TestSupportedRelationshipSearch extends RepositoryConformanceTestCa
 
         String outputString = outputStringBldr.toString();
 
-        System.out.println("escapeRegexSpecials: inputString "+inputString+" outputString "+outputString);
-
         return outputString;
     }
 

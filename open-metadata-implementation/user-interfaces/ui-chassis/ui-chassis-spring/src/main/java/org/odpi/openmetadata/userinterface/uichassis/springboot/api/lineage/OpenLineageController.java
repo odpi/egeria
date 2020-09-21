@@ -33,6 +33,7 @@ public class OpenLineageController {
     /**
      *
      * @param guid unique identifier of the asset
+     * @param includeProcesses if true Process nodes will be included
      * @return map of nodes and edges describing the ultimate sources of the asset
      */
     @GetMapping( value = "/entities/{guid}/ultimate-source")
@@ -46,6 +47,7 @@ public class OpenLineageController {
     /**
      *
      * @param guid unique identifier of the asset
+     * @param includeProcesses if true Process nodes will be included
      * @return map of nodes and edges describing the end to end flow
      */
     @GetMapping( value = "/entities/{guid}/end2end")
@@ -60,6 +62,7 @@ public class OpenLineageController {
     /**
      *
      * @param guid unique identifier of the asset
+     * @param includeProcesses if true Process nodes will be included
      * @return map of nodes and edges describing the ultimate destination of the asset
      */
     @GetMapping( value = "/entities/{guid}/ultimate-destination")
@@ -74,6 +77,7 @@ public class OpenLineageController {
     /**
      *
      * @param guid unique identifier of the glossary term
+     * @param includeProcesses if true Process nodes will be included
      * @return map of nodes and edges describing the assets linked to the glossary term
      */
     @GetMapping( value = "/entities/{guid}/glossary-lineage")
@@ -87,6 +91,7 @@ public class OpenLineageController {
     /**
      *
      * @param guid unique identifier of the asset
+     * @param includeProcesses if true Process nodes will be included
      * @return map of nodes and edges describing the ultimate source and destination of the asset
      */
     @GetMapping( value = "/entities/{guid}/source-and-destination")
