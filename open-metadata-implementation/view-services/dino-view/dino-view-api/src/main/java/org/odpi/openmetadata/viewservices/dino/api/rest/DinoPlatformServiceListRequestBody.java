@@ -21,7 +21,7 @@ public class DinoPlatformServiceListRequestBody {
      */
 
     private String                    platformName;                    // must be non-null
-   
+
 
 
     public DinoPlatformServiceListRequestBody() {
@@ -34,18 +34,9 @@ public class DinoPlatformServiceListRequestBody {
 
     public String getPlatformName() { return platformName; }
 
-    //public String getPlatformRootURL() { return platformRootURL; }
-
     public void setPlatformName(String platformName) { this.platformName = platformName; }
 
-    //public void setPlatformRootURL(String platformRootURL) { this.platformRootURL = platformRootURL; }
-
-
-
-
-
-
-
+   
     @Override
     public String toString()
     {
