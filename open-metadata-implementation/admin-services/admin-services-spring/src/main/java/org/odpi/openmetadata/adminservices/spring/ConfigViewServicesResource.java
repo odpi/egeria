@@ -67,8 +67,8 @@ public class ConfigViewServicesResource
      *
      * @param userId  user that is issuing the request.
      * @param serverName       local server name.
-     * @param viewServiceConfig view service config containing the remote OMAGServerName and OMAGServerPlatformRootURL that all view services will use.
      * @param serviceURLMarker string indicating which view service it is configuring
+     * @param viewServiceConfig if specified, the view service config containing the remote OMAGServerName and OMAGServerPlatformRootURL that the view service will use.
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGConfigurationErrorException the event bus has not been configured or
@@ -78,11 +78,10 @@ public class ConfigViewServicesResource
     public VoidResponse configureViewService(@PathVariable  String                 userId,
                                              @PathVariable  String                 serverName,
                                              @PathVariable  String                 serviceURLMarker,
-                                             @RequestBody   ViewServiceConfig      viewServiceConfig)
+                                             @RequestBody(required = false)  ViewServiceConfig viewServiceConfig)
     {
         return adminAPI.configureViewService(userId, serverName, serviceURLMarker, viewServiceConfig);
     }
-
 
     /**
      * Enable all view services that are registered with this server platform.
@@ -90,7 +89,7 @@ public class ConfigViewServicesResource
      *
      * @param userId      user that is issuing the request.
      * @param serverName  local server name.
-     * @param viewServiceConfig view service config containing the remote OMAGServerName and OMAGServerPlatformRootURL that all view services will use.
+     * @param viewServiceConfig view service config containing the remote OMAGServerName and OMAGServerPlatformRootURL for view services to use.
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGConfigurationErrorException the event bus has not been configured or
@@ -99,7 +98,7 @@ public class ConfigViewServicesResource
     @PostMapping("/view-services")
     public VoidResponse configureAllViewServices(@PathVariable                  String              userId,
                                                  @PathVariable                  String              serverName,
-                                                 @RequestBody                   ViewServiceConfig    viewServiceConfig)
+                                                 @RequestBody(required = false) ViewServiceConfig   viewServiceConfig)
     {
          return adminAPI.configureAllViewServices(userId, serverName, viewServiceConfig);
     }
