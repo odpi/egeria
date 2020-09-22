@@ -8,6 +8,9 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Constants for Open Metadata Types names used to build lineage functionality
+ */
 public final class AssetLineageConstants {
 
     public static final String LINEAGE_CLASSIFICATION_TYPES_KEY = "LineageClassificationTypes";

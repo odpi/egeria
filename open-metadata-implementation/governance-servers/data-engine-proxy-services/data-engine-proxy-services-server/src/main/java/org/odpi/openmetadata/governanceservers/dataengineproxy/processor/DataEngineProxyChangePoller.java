@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.dataengineproxy.processor;
 
-import org.odpi.openmetadata.accessservices.dataengine.client.DataEngineImpl;
+import org.odpi.openmetadata.accessservices.dataengine.client.DataEngineRESTClient;
 import org.odpi.openmetadata.accessservices.dataengine.model.*;
 import org.odpi.openmetadata.accessservices.dataengine.model.Process;
 import org.odpi.openmetadata.adminservices.configuration.properties.DataEngineProxyConfig;
@@ -28,7 +28,7 @@ public class DataEngineProxyChangePoller implements Runnable {
 
     private OMRSAuditLog auditLog;
     private DataEngineProxyConfig dataEngineProxyConfig;
-    private DataEngineImpl dataEngineOMASClient;
+    private DataEngineRESTClient dataEngineOMASClient;
     private DataEngineConnectorBase connector;
     private String userId;
 
@@ -55,7 +55,7 @@ public class DataEngineProxyChangePoller implements Runnable {
     public DataEngineProxyChangePoller(DataEngineConnectorBase connector,
                                        String userId,
                                        DataEngineProxyConfig dataEngineProxyConfig,
-                                       DataEngineImpl dataEngineOMASClient,
+                                       DataEngineRESTClient dataEngineOMASClient,
                                        OMRSAuditLog auditLog) {
 
         final String methodName = "DataEngineProxyChangePoller";

@@ -42,6 +42,31 @@ public abstract class ViewServiceAdmin
      */
     public abstract void shutdown();
 
+    /**
+     * Log that the configuration is not valid
+     *
+     * @param viewServiceFullName name of the calling view service
+     * @param propertyName        name of the property in error
+     * @param propertyValue       value of the property that is in error
+     * @param auditLog            log to write message to
+     * @param methodName          calling method
+     * @throws OMAGConfigurationErrorException exception documenting the error
+     */
+    protected void logBadConfiguration(String       viewServiceFullName,
+                                       String       propertyName,
+                                       String       propertyValue,
+                                       AuditLog     auditLog,
+                                       String       methodName) throws OMAGConfigurationErrorException
+    {
+        auditLog.logMessage(methodName,
+                            OMAGAdminAuditCode.BAD_CONFIG_PROPERTY.getMessageDefinition(viewServiceFullName, propertyValue, propertyName));
+
+        throw new OMAGConfigurationErrorException(OMAGAdminErrorCode.VIEW_SERVICE_CONFIG.getMessageDefinition(viewServiceFullName,
+                                                                                                                propertyValue,
+                                                                                                                propertyName),
+                                                  this.getClass().getName(),
+                                                  methodName);
+    }
 
     /**
      * Log that a property value is incorrect.
@@ -54,12 +79,12 @@ public abstract class ViewServiceAdmin
      * @param error               resulting exception
      * @throws OMAGConfigurationErrorException exception documenting the error
      */
-    private void logBadConfigProperties(String       viewServiceFullName,
-                                        String       propertyName,
-                                        String       propertyValue,
-                                        OMRSAuditLog auditLog,
-                                        String       methodName,
-                                        Throwable    error) throws OMAGConfigurationErrorException
+    protected void logBadConfigProperties(String       viewServiceFullName,
+                                          String       propertyName,
+                                          String       propertyValue,
+                                          AuditLog     auditLog,
+                                          String       methodName,
+                                          Throwable    error) throws OMAGConfigurationErrorException
     {
         auditLog.logMessage(methodName,
                             OMAGAdminAuditCode.BAD_CONFIG_PROPERTY.getMessageDefinition(viewServiceFullName, propertyValue, propertyName));
