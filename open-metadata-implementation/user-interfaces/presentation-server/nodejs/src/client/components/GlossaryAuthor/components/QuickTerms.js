@@ -1,5 +1,3 @@
-
-
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 import React, { useState } from "react";
@@ -9,43 +7,44 @@ import { Form, FormGroup, TextInput, Button } from "carbon-components-react";
 import { issueRestCreate } from "./RestCaller";
 
 export default function QuickTerms() {
- const [terms, setTerms] = useState([]);
- const restUrl = getNodeType("term").url;
+  const [terms, setTerms] = useState([]);
+  const restUrl = getNodeType("term").url;
 
   const validateForm = () => {
     return true;
   };
   const onAdd = (e) => {
     console.log("onAdd");
-    let newTerm ={};
-    const newTerm = {name:"", description:""} 
+    let newTerm = {};
+    newTerm.name = "";
+    newTerm.description = "";
+    const workingTerms = [...terms, newTerm];
+    setTerms(workingTerms);
   };
 
   const onSubmit = (e) => {
     console.log("onSubmit");
     e.preventDefault();
-    
-    if (terms.length > 0) {
-       // create body with glossary and list of terms
-       let body = {};
-       let glossary = {};
-       glossary.guid = getGlossaryGuid();
-       body.glossary = glossary;
-       body.terms = terms;
 
-       //TODO issue create
+    if (terms.length > 0) {
+      // create body with glossary and list of terms
+      let body = {};
+      let glossary = {};
+      glossary.guid = getGlossaryGuid();
+      body.glossary = glossary;
+      body.terms = terms;
+
+      //TODO issue create using the body we have just created. 
     } else {
       alert("Nothing to create");
     }
   };
   function onSuccessfulCreate() {
-   //TODO
-
-
+    //TODO
   }
   //return next term to create
   function onErrorCreate(msg) {
-   TODO
+    TODO;
   }
 
   const getGlossaryGuid = () => {
@@ -54,19 +53,19 @@ export default function QuickTerms() {
   };
 
   const issueCreate = (body) => {
-      console.log("issueCreate " + restUrl);
-      issueRestCreate(restUrl, body, onSuccessfulCreate, onErrorCreate);
+    console.log("issueCreate " + restUrl);
+    issueRestCreate(restUrl, body, onSuccessfulCreate, onErrorCreate);
   };
   function setTermName(index, name) {
-        let workingTerms = terms;
-        workingTerms[index].name = name;
-        setTerms(workingTerms);
+    let workingTerms = terms;
+    workingTerms[index].name = name;
+    setTerms(workingTerms);
   }
-    function setTermName(index, description) {
-          let workingTerms = terms;
-          workingTerms[index].description = description;
-          setTerms(workingTerms);
-    }
+  function setTermDescription(index, description) {
+    let workingTerms = terms;
+    workingTerms[index].description = description;
+    setTerms(workingTerms);
+  }
 
   return (
     <div>
