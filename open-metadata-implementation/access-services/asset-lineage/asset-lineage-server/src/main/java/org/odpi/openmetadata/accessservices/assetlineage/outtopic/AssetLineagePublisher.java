@@ -198,7 +198,8 @@ public class AssetLineagePublisher {
      * @throws UserNotAuthorizedException security access problem
      * @throws PropertyServerException    problem accessing property server
      */
-    public boolean isEntityEligibleForPublishing(EntityDetail entityDetail) throws UserNotAuthorizedException, PropertyServerException {
+    public boolean isEntityEligibleForPublishing(EntityDetail entityDetail)
+            throws UserNotAuthorizedException, PropertyServerException {
         String typeDefName = entityDetail.getType().getTypeDefName();
         if (typeDefName.equals(GLOSSARY_CATEGORY) || typeDefName.equals(GLOSSARY_TERM)) {
             return glossaryHandler.hasGlossaryTermLineageRelationships(serverUserName, entityDetail);
@@ -207,12 +208,20 @@ public class AssetLineagePublisher {
         return true;
     }
 
+    /**
+     * Publish Lineage Events
+     *
+     * @param context          the context of the lineage entity
+     * @param lineageEventType the lineage event type
+     * @throws JsonProcessingException   exception parsing the event json
+     * @throws ConnectorCheckedException unable to send the event due to connectivity issue
+     */
     private void publishLineageEvent(Map<String, Set<GraphContext>> context,
-                                     AssetLineageEventType processContextEvent) throws JsonProcessingException, ConnectorCheckedException {
+                                     AssetLineageEventType lineageEventType) throws JsonProcessingException, ConnectorCheckedException {
         LineageEvent event = new LineageEvent();
 
         event.setAssetContext(context);
-        event.setAssetLineageEventType(processContextEvent);
+        event.setAssetLineageEventType(lineageEventType);
 
         publishEvent(event);
     }
