@@ -5,8 +5,11 @@ package org.odpi.openmetadata.accessservices.subjectarea.client.relationships;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaClient;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaRelationshipClient;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaRestClient;
+import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
+import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectAreaCheckedException;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.*;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.reflections.Reflections;
 
 import java.lang.reflect.Constructor;
@@ -293,6 +296,10 @@ public class SubjectAreaLine implements SubjectAreaRelationshipClients {
         if (cache.containsKey(clazz)) {
             return (SubjectAreaRelationshipClient<T>) cache.get(clazz);
         }
-        throw new IllegalArgumentException("Not found client for " + clazz.getName());
+        final ExceptionMessageDefinition messageDefinition =
+                SubjectAreaErrorCode.NOT_FOUND_CLIENT.getMessageDefinition(clazz.getName());
+        final SubjectAreaCheckedException exc =
+                new SubjectAreaCheckedException(messageDefinition, getClass().getName(), messageDefinition.getSystemAction());
+        throw new IllegalArgumentException(exc);
     }
 }

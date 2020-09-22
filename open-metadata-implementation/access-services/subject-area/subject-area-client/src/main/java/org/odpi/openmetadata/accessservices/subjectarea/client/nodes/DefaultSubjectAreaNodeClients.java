@@ -5,12 +5,15 @@ package org.odpi.openmetadata.accessservices.subjectarea.client.nodes;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaNodeClient;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaRestClient;
 import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.projects.SubjectAreaProjectClient;
+import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
+import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectAreaCheckedException;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Node;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.project.Project;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.reflections.Reflections;
 
 import java.lang.reflect.Constructor;
@@ -98,6 +101,10 @@ public class DefaultSubjectAreaNodeClients implements SubjectAreaNodeClients {
         if (cache.containsKey(clazz)) {
             return (SubjectAreaNodeClient<T>) cache.get(clazz);
         }
-        throw new IllegalArgumentException("Not found client for " + clazz.getName());
+        final ExceptionMessageDefinition messageDefinition =
+                SubjectAreaErrorCode.NOT_FOUND_CLIENT.getMessageDefinition(clazz.getName());
+        final SubjectAreaCheckedException exc =
+                new SubjectAreaCheckedException(messageDefinition, getClass().getName(), messageDefinition.getSystemAction());
+        throw new IllegalArgumentException(exc);
     }
 }
