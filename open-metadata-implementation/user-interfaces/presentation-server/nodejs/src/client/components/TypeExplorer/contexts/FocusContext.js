@@ -60,7 +60,7 @@ const FocusContextProvider = (props) => {
         setView({ typeName : typeName , category : category });
         break;
       case "Enum":
-        setPrevView(view);  // Only required on Enum Type display.
+        setPrevView(view); /* Only required on Enum Type display. */
         setView({ typeName : typeName , category : category });
         break;
     }
