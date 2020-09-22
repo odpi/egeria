@@ -11,9 +11,6 @@ import java.util.Arrays;
 
 public class DinoResponse extends DinoViewOMVSAPIResponse {
 
-
-    //private TypeExplorer typeExplorer = null;
-
     /**
      * Default constructor
      */
@@ -34,32 +31,9 @@ public class DinoResponse extends DinoViewOMVSAPIResponse {
 
         if (template != null)
         {
-            //this.typeExplorer = template.getTypeExplorer();
+            // copy any properties
         }
     }
-
-
-    /**
-     * Return the typeExplorer result.
-     *
-     * @return bean
-     */
-    //public TypeExplorer getTypeExplorer()
-    //{
-    //    return typeExplorer;
-    //}
-
-
-    /**
-     * Set the typeExplorer result.
-     *
-     * @param typeExplorer - bean
-     */
-    //public void setTypeExplorer(TypeExplorer typeExplorer)
-    //{
-    //    this.typeExplorer = typeExplorer;
-    //}
-
 
 
     /**
@@ -71,7 +45,6 @@ public class DinoResponse extends DinoViewOMVSAPIResponse {
     public String toString()
     {
         return "DinoResponse{" +
-                //"typeExplorer=" + typeExplorer +
                 ", exceptionClassName='" + getExceptionClassName() + '\'' +
                 ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
                 ", actionDescription='" + getActionDescription() + '\'' +

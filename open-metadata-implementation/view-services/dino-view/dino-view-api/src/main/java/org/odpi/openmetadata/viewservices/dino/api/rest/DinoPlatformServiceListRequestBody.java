@@ -36,7 +36,7 @@ public class DinoPlatformServiceListRequestBody {
 
     public void setPlatformName(String platformName) { this.platformName = platformName; }
 
-   
+
     @Override
     public String toString()
     {
