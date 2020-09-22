@@ -36,7 +36,7 @@ public class DinoViewAdmin extends ViewServiceAdmin {
 
     protected String   resourceEndpointsPropertyName       = "resourceEndpoints";      /* Common */
 
-    //private ViewServiceConfig       viewServiceConfig   = null;
+
     private AuditLog                  auditLog             = null;
     private String                    serverUserName       = null;
     private DinoViewServicesInstance  instance             = null;
@@ -225,75 +225,5 @@ public class DinoViewAdmin extends ViewServiceAdmin {
             return null;
         }
     }
-
-
-        /************
-            Object  endpointListObject = viewServiceOptions.get(resourceEndpointsPropertyName);
-
-            if (endpointListObject == null)
-            {
-                auditLog.logMessage(methodName, OMAGAdminAuditCode.RESOURCE_ENDPOINTS.getMessageDefinition(viewServiceFullName));
-                return null;
-            }
-            else
-            {
-                if (false) { // Works but has yukky deserialization
-                    try {
-
-                        // TODO - check this is valid - I think the resourceEndpoints have been deserialized to a HashMap so I have to cast them explicitly here....
-
-                        //@SuppressWarnings("unchecked")
-                        List<ResourceEndpoint> endpointList = new ArrayList<>();
-                        if (endpointListObject instanceof List) {
-                            ((List) endpointListObject).forEach(entry -> {
-                                Map mapEntry = (HashMap) entry;
-                                String resourceCategory = (String) (mapEntry.get("resourceCategory"));
-                                String resourceName = (String) (mapEntry.get("resourceName"));
-                                String resourceRootURL = (String) (mapEntry.get("resourceRootURL"));
-                                ResourceEndpoint rep = new ResourceEndpoint(resourceCategory, resourceName, resourceRootURL);
-                                endpointList.add(rep);
-                            });
-                            auditLog.logMessage(methodName, OMAGAdminAuditCode.RESOURCE_ENDPOINTS.getMessageDefinition(viewServiceFullName, endpointList.toString()));
-                        }
-                        return endpointList;
-                    } catch (Throwable error) {
-                        logBadConfigProperties(viewServiceFullName,
-                                               resourceEndpointsPropertyName,
-                                               endpointListObject.toString(),
-                                               auditLog,
-                                               methodName,
-                                               error);
-
-
-                        return null;
-                    }
-                }
-                else {
-                    // Attempt at nicer deserialization....
-                    try {
-
-                        @SuppressWarnings("unchecked")
-                        List<ResourceEndpoint> endpointList = (List<ResourceEndpoint>) endpointListObject;
-                        auditLog.logMessage(methodName, OMAGAdminAuditCode.RESOURCE_ENDPOINTS.getMessageDefinition(viewServiceFullName, endpointList.toString()));
-                        return endpointList;
-
-                    }
-                    catch (Throwable error) {
-                        logBadConfigProperties(viewServiceFullName,
-                                               resourceEndpointsPropertyName,
-                                               endpointListObject.toString(),
-                                               auditLog,
-                                               methodName,
-                                               error);
-
-
-                        return null;
-                    }
-                }
-            }
-        }
-    }
-    **************/
-
 
 }
