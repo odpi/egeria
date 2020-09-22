@@ -12,7 +12,7 @@ import org.odpi.openmetadata.adminservices.configuration.registration.AccessServ
 import org.odpi.openmetadata.commonservices.multitenant.OCFOMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
 import java.util.List;
@@ -28,6 +28,7 @@ public class DataEngineServicesInstance extends OCFOMASServiceInstance {
     private DataEngineRegistrationHandler dataEngineRegistrationHandler;
     private DataEngineSchemaTypeHandler dataEngineSchemaTypeHandler;
     private PortHandler portHandler;
+    private Connection inTopicConnection;
 
     /**
      * Set up the local repository connector that will service the REST Calls
@@ -42,11 +43,13 @@ public class DataEngineServicesInstance extends OCFOMASServiceInstance {
      * @throws NewInstanceException a problem occurred during initialization
      */
     DataEngineServicesInstance(OMRSRepositoryConnector repositoryConnector, List<String> supportedZones, List<String> defaultZones,
-                               AuditLog auditLog, String localServerUserId, int maxPageSize) throws NewInstanceException {
+                               AuditLog auditLog, String localServerUserId, int maxPageSize, Connection inTopicConnection) throws NewInstanceException {
 
 
         super(description.getAccessServiceFullName(), repositoryConnector, supportedZones, defaultZones, auditLog,
                 localServerUserId, maxPageSize);
+
+        this.inTopicConnection = inTopicConnection;
 
         if (repositoryHandler != null) {
             dataEngineRegistrationHandler = new DataEngineRegistrationHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler,
@@ -108,4 +111,11 @@ public class DataEngineServicesInstance extends OCFOMASServiceInstance {
     PortHandler getPortHandler() {
         return portHandler;
     }
+
+    /**
+     * Return the connection used in the client to create a connector that produces events on the input topic
+     *
+     * @return connection object for client
+     */
+    Connection getInTopicConnection() { return inTopicConnection; }
 }

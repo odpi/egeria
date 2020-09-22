@@ -158,6 +158,21 @@ public enum OMAGCommonErrorCode implements ExceptionMessageSet
                         "situations is true in this case.  Use the values in this message to determine the type of API " +
                         "and metadata collection values necessary to make the request successful."),
 
+    VIEW_SERVICE_NULL_PLATFORM_NAME(400, "OMAG-COMMON-400-026",
+                           "OMAG view service has been called with a null platform name",
+                           "The system is unable to resolve the platform to query without knowing what it is called.",
+                           "The platform name is supplied by the caller to the OMAG view service. This call needs to be corrected before the view service can perform the request."),
+
+    VIEW_SERVICE_NULL_SERVER_NAME(400, "OMAG-COMMON-400-027",
+                       "OMAG view service has been called with a null server name",
+                       "The system is unable to resolve the server to query without knowing what it is called.",
+                       "The server name is supplied by the caller to the OMAG view service. This call needs to be corrected before the view service can perform the request."),
+
+    VIEW_SERVICE_UNKNOWN_SERVER_NAME(400, "OMAG-COMMON-400-028",
+                                  "OMAG view service {0} method has been called with an unknown server name of {1}",
+                                  "The system is unable to resolve the server name.",
+                                  "The server name is supplied by the caller to the OMAG view service. Please ensure a known server name is passed and retry the call to the view service."),
+
     INSTANCE_WRONG_TYPE_FOR_GUID(404, "OMAG-COMMON-404-001",
                                  "The {0} method has retrieved an instance for unique identifier (guid) {1} which is of type {2} rather than type {3}",
                                  "The request fails because the requested object is not of the right type.",
