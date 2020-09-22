@@ -92,14 +92,13 @@ DELETE {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/
 
 ## Retrieve the current configuration for the view services
 
-It is possible to retrieve the 
+It is possible to retrieve the current configuration.
 
 ```
 GET {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/view-services/configuration
 ```
 
-it is then possible to make changes to the configuration and 
-save it back:
+it is then possible to make changes to the configuration and save it back:
 
 ```
 POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/view-services/configuration
