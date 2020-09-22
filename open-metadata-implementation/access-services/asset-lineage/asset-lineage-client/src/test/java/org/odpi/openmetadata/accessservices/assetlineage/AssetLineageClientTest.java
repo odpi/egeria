@@ -48,7 +48,7 @@ public class AssetLineageClientTest {
     }
 
     /**
-     * Test get asset details.
+     * Test publish entities
      *
      * @throws Exception the exception
      */
