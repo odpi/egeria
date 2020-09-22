@@ -9,6 +9,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.BooleanResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGServicesResponse;
 import org.odpi.openmetadata.commonservices.multitenant.OMAGServerPlatformInstanceMap;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.platformservices.properties.ServerStatus;
 import org.odpi.openmetadata.platformservices.rest.ServerListResponse;
 import org.odpi.openmetadata.platformservices.rest.ServerServicesListResponse;
 import org.odpi.openmetadata.platformservices.rest.ServerStatusResponse;
@@ -314,13 +315,16 @@ public class OMAGServerPlatformActiveServices
 
         ServerStatusResponse response = new ServerStatusResponse();
 
+        ServerStatus serverStatus = new ServerStatus();
+
         try
         {
-            response.setServerName(serverName);
-            response.setActive(serverInstanceMap.isServerActive(userId, serverName));
-            response.setServerStartTime(serverInstanceMap.getServerStartTime(userId, serverName));
-            response.setServerEndTime(serverInstanceMap.getServerEndTime(userId, serverName));
-            response.setServerHistory(serverInstanceMap.getServerHistory(userId, serverName));
+            serverStatus.setServerName(serverName);
+            serverStatus.setIsActive(serverInstanceMap.isServerActive(userId, serverName));
+            serverStatus.setServerStartTime(serverInstanceMap.getServerStartTime(userId, serverName));
+            serverStatus.setServerEndTime(serverInstanceMap.getServerEndTime(userId, serverName));
+            serverStatus.setServerHistory(serverInstanceMap.getServerHistory(userId, serverName));
+            response.setServerStatus(serverStatus);
         }
         catch (InvalidParameterException error)
         {

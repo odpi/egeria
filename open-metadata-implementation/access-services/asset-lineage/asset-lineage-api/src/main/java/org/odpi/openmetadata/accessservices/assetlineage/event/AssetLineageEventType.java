@@ -16,7 +16,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  * Events are limited to assets that are in the zones listed in the supportedZones property
  * passed to the Asset Lineage OMAS at start up (a null value here means all zones).
  */
-
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -46,14 +45,29 @@ public enum AssetLineageEventType implements Serializable {
         this.eventTypeDescription = eventTypeDescription;
     }
 
+    /**
+     * Gets event type code.
+     *
+     * @return the event type code
+     */
     public int getEventTypeCode() {
         return eventTypeCode;
     }
 
+    /**
+     * Gets event type name.
+     *
+     * @return the event type name
+     */
     public String getEventTypeName() {
         return eventTypeName;
     }
 
+    /**
+     * Gets event type description.
+     *
+     * @return the event type description
+     */
     public String getEventTypeDescription() {
         return eventTypeDescription;
     }
