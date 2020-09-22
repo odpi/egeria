@@ -72,6 +72,8 @@ public class GraphConstants {
     public static final String EDGE_LABEL_IS_A_RELATIONSHIP = "ISARelationship";
     public static final String EDGE_LABEL_CONDENSED = "condensed";
     public static final String EDGE_LABEL_INCLUDED_IN = "includedIn";
+    public static final String EDGE_LABEL_TERM_CATEGORIZATION = "TermCategorization";
+
 
     public static final String EDGE_LABEL_COLUMN_DATA_FLOW = "ColumnDataFlow";
     public static final String EDGE_LABEL_TABLE_DATA_FLOW = "TableDataFlow";

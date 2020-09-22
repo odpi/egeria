@@ -33,6 +33,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         @JsonSubTypes.Type(value = OMAGServerConfig.class, name = "OMAGServerConfig"),
         @JsonSubTypes.Type(value = OpenLineageServerConfig.class, name = "OpenLineageConfig"),
         @JsonSubTypes.Type(value = RepositoryServicesConfig.class, name = "RepositoryServicesConfig"),
+        @JsonSubTypes.Type(value = ResourceEndpointConfig.class, name = "ResourceEndpointConfig"),
         @JsonSubTypes.Type(value = SecuritySyncConfig.class, name = "SecuritySyncConfig"),
         @JsonSubTypes.Type(value = StewardshipEngineServicesConfig.class, name = "StewardshipServicesConfig"),
         @JsonSubTypes.Type(value = VirtualizationConfig.class, name = "VirtualizationConfig"),

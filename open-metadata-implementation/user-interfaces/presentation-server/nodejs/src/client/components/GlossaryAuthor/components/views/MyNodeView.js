@@ -3,26 +3,26 @@
 import React, { useState, useContext } from "react";
 
 import { Button } from "react-bootstrap";
-import { GlossaryAuthorContext } from "../../contexts/GlossaryAuthorCRUDContext";
+import { GlossaryAuthorCRUDContext } from "../../contexts/GlossaryAuthorCRUDContext";
 
 const MyNodeView = props => {
-  const glossaryAuthorContext = useContext(GlossaryAuthorContext);
+  const glossaryAuthorCRUDContext = useContext(GlossaryAuthorCRUDContext);
   console.log("MyNodeView");
   const [typeKey] = useState(props.typeKey);
 
   if (typeKey == "glossary") {
     return (
       <span>
-        <Button kind="primary" onClick={() => glossaryAuthorContext.doSettingMyGlossary()}>
-          {glossaryAuthorContext.myGlossary ? glossaryAuthorContext.myGlossary.name : "None"}
+        <Button kind="primary" onClick={() => glossaryAuthorCRUDContext.doSettingMyGlossary()}>
+          {glossaryAuthorCRUDContext.myGlossary ? glossaryAuthorCRUDContext.myGlossary.name : "None"}
         </Button>
       </span>
     );
   } else if (typeKey == "project") {
     return (
       <span>
-       <Button kind="primary" onClick={() => glossaryAuthorContext.doSettingMyProject()}>
-          {glossaryAuthorContext.myProject ? glossaryAuthorContext.myProject.name : "None"}
+       <Button kind="primary" onClick={() => glossaryAuthorCRUDContext.doSettingMyProject()}>
+          {glossaryAuthorCRUDContext.myProject ? glossaryAuthorCRUDContext.myProject.name : "None"}
         </Button>
       </span>
     );

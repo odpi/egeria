@@ -28,7 +28,8 @@ public enum DataEngineEventType implements Serializable
     PORT_ALIAS_EVENT                        (3,  "PortAliasEvent",      "An event that add or update port alias"),
     PORT_IMPLEMENTATION_EVENT               (4,  "PortImplementationEvent",  "An event that create or update port implementations."),
     PROCESS_TO_PORT_LIST_EVENT              (5,  "ProcessToPortListEvent",      "An event that assign process to a port list."),
-    PROCESSES_EVENT                         (6,  "ProcessesEvent",  "An event that create or update processes.");
+    PROCESSES_EVENT                         (6,  "ProcessesEvent",  "An event that create or update processes."),
+    SCHEMA_TYPE_EVENT                       (7,  "SchemaType",  "An event that create or update schema types.");;
 
     private static final long     serialVersionUID = 1L;
 

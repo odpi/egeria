@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 import React from "react";
 import Launch32 from "../../../../images/Launch_32";
+import { Accordion, AccordionItem } from "carbon-components-react";
 
 const GlossaryCardSection = (props) => (
   <div>
@@ -25,21 +26,33 @@ const GlossaryCard = (props) => {
     </article>
   );
 };
-const EmptyGlossaryCard = (props) => {
-  return (
-    <article className="empty-glossary-card bx--col-md-4 bx--col-lg-4 bx--col-xlg-3 bx--offset-xlg-1"></article>
-  );
-};
+
 const LocalGlossaryCard = (props) => {
+  const onChange = (e) => {
+    if (e.target.checked) {
+      console.log("onchange LocalGlossaryCard selected " + props.guid);
+      props.setSelected(props.guid);
+    } else {
+      console.log("onchange LocalGlossaryCard unselected " + props.heading);
+      props.setSelected(undefined);
+    }
+  };
   return (
     <article className="glossary-card bx--col-md-4 bx--col-lg-4 bx--col-xlg-3 bx--offset-xlg-1">
-      <h4 className="glossary-card__heading">{props.heading}</h4>
-      <p className="glossary-card__body">{props.body}</p>
+      <div className="glossary-card-section__heading">
+        <h4>{props.heading}</h4>
+        <input type="checkbox" checked={props.isSelected} onChange={onChange} />
+      </div>
+      <div style={{display:'none'}}>{props.guid}</div> 
+      <Accordion>
+        <AccordionItem title="Description">{props.body}</AccordionItem>
+      </Accordion>
       <div>
-          {/* <a is not correct as it kills the session - TODO sort this out properly with the router and breadcrumbs */}
+        {/* <a is not correct as it kills the session - TODO sort this out properly with the router and breadcrumbs */}
         <a href={props.link}>{props.icon}</a>
       </div>
     </article>
   );
 };
+
 export { GlossaryCardSection, GlossaryCard, LocalGlossaryCard };

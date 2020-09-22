@@ -294,6 +294,11 @@ public enum OMAGAdminErrorCode implements ExceptionMessageSet
                           "Use the detail messages from the connector broker to work out what is wrong with the connection object.  " +
                            "Once the connection object is corrected, retry the request."),
 
+    VIEW_SERVICE_CONFIG(400, "OMAG-ADMIN-400-042",
+                          "The {0} Open Metadata View Service (OMVS) has been passed an invalid configuration of {1} in the {2} property.",
+                          "The view service has not been passed valid configuration.",
+                          "Check whether the view service expects SolutionViewServiceConfiguration or IntegrationViewServiceConfiguration, correct the configuration and restart the server."),
+
     UNEXPECTED_EXCEPTION(500, "OMAG-ADMIN-500-001",
             "Method {1} for OMAG server {0} returned an unexpected exception of {2} with message {3}",
             "The system is unable to configure the OMAG server.  No change was made to the server's configuration document.",
