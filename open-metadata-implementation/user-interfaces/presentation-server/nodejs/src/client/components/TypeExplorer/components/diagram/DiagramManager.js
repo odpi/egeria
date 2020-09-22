@@ -104,7 +104,7 @@ export default function DiagramManager(props) {
 
 
 DiagramManager.propTypes = {
-  children: PropTypes.node,
+  children : PropTypes.node,
   height   : PropTypes.number,
-  width   : PropTypes.number
+  width    : PropTypes.number
 }

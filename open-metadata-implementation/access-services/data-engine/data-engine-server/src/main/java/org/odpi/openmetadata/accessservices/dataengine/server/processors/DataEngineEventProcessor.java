@@ -11,11 +11,12 @@ import org.odpi.openmetadata.accessservices.dataengine.event.PortAliasEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.PortImplementationEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.ProcessToPortListEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.ProcessesEvent;
+import org.odpi.openmetadata.accessservices.dataengine.event.SchemaTypeEvent;
 import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
 import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineException;
 import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessListResponse;
 import org.odpi.openmetadata.accessservices.dataengine.server.admin.DataEngineServicesInstance;
-import org.odpi.openmetadata.accessservices.dataengine.server.auditlog.DataEngineAuditCode;
+import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineAuditCode;
 import org.odpi.openmetadata.accessservices.dataengine.server.service.DataEngineRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
@@ -185,6 +186,24 @@ public class DataEngineEventProcessor {
             logException(dataEngineEvent, methodName, e);
         }
     }
+
+    /**
+     * Process a {@link SchemaTypeEvent}
+     *
+     * @param schemaTypeEvent the event to be processed
+
+     */
+    public void processSchemaTypeEvent(String schemaTypeEvent) {
+        final String methodName = "processSchemaTypeEvent";
+        log.debug(DEBUG_MESSAGE_METHOD, methodName);
+        try {
+            SchemaTypeEvent schemaEvent = OBJECT_MAPPER.readValue(schemaTypeEvent, SchemaTypeEvent.class);
+            dataEngineRESTServices.createOrUpdateSchemaType(schemaEvent.getUserId(),serverName,schemaEvent.getSchemaType(),schemaEvent.getExternalSourceName());
+        } catch (JsonProcessingException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException e) {
+            logException(schemaTypeEvent, methodName, e);
+        }
+
+        }
 
     private void logException(String dataEngineEvent, String methodName, Exception e) {
         log.debug("Exception in processing {} from in Data Engine In Topic: {}", dataEngineEvent, e);

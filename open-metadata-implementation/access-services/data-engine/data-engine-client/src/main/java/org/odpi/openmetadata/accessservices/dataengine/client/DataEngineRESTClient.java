@@ -33,7 +33,7 @@ import java.util.List;
  * The Data Engine Open Metadata Access Service (OMAS) provides an interface for data engine tools to create
  * processes with ports, schemas and relationships. See interface definition for more explanation.
  */
-public class DataEngineImpl extends OCFRESTClient implements DataEngineClient {
+public class DataEngineRESTClient extends OCFRESTClient implements DataEngineClient {
     private static final String DATA_ENGINE_PATH = "/servers/{0}/open-metadata/access-services/data-engine/users/{1}/";
     private static final String PROCESS_URL_TEMPLATE = DATA_ENGINE_PATH + "processes";
     private static final String DATA_ENGINE_REGISTRATION_URL_TEMPLATE = DATA_ENGINE_PATH + "registration";
@@ -44,7 +44,6 @@ public class DataEngineImpl extends OCFRESTClient implements DataEngineClient {
     private static final String PORTS_TO_PROCESS_URL_TEMPLATE = DATA_ENGINE_PATH + "processes/{2}/ports";
 
     private static final String PROCESSES_METHOD_NAME = "createOrUpdateProcesses";
-    private static final String PROCESS_METHOD_NAME = "createOrUpdateProcess";
     private static final String EXTERNAL_DATA_ENGINE_METHOD_NAME = "createExternalDataEngine";
     private static final String SCHEMA_TYPE_METHOD_NAME = "createOrUpdateSchemaType";
     private static final String PORT_IMPLEMENTATION_METHOD_NAME = "createOrUpdatePortImplementation";
@@ -66,7 +65,7 @@ public class DataEngineImpl extends OCFRESTClient implements DataEngineClient {
      *
      * @throws InvalidParameterException null URL or server name
      */
-    public DataEngineImpl(String serverName, String serverPlatformRootURL) throws InvalidParameterException {
+    public DataEngineRESTClient(String serverName, String serverPlatformRootURL) throws InvalidParameterException {
         super(serverName, serverPlatformRootURL);
 
         this.serverName = serverName;
@@ -84,7 +83,7 @@ public class DataEngineImpl extends OCFRESTClient implements DataEngineClient {
      *
      * @throws InvalidParameterException null URL or server name
      */
-    public DataEngineImpl(String serverName, String serverPlatformRootURL, String userId, String password) throws InvalidParameterException {
+    public DataEngineRESTClient(String serverName, String serverPlatformRootURL, String userId, String password) throws InvalidParameterException {
         super(serverName, serverPlatformRootURL, userId, password);
 
         this.serverName = serverName;
@@ -97,29 +96,6 @@ public class DataEngineImpl extends OCFRESTClient implements DataEngineClient {
 
     public void setExternalSourceName(String externalSourceName) {
         this.externalSourceName = externalSourceName;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String createOrUpdateProcess(String userId, Process process) throws InvalidParameterException,
-                                                                               PropertyServerException,
-                                                                               UserNotAuthorizedException {
-
-        invalidParameterHandler.validateUserId(userId, PROCESS_METHOD_NAME);
-
-        ProcessesRequestBody requestBody = new ProcessesRequestBody();
-        requestBody.setProcesses(Collections.singletonList(process));
-        requestBody.setExternalSourceName(externalSourceName);
-
-        List<String> result = callProcessListPostRESTCall(userId, PROCESS_METHOD_NAME, PROCESS_URL_TEMPLATE, requestBody);
-
-        if (CollectionUtils.isEmpty(result)) {
-            return null;
-        }
-
-        return result.get(0);
     }
 
     /**
