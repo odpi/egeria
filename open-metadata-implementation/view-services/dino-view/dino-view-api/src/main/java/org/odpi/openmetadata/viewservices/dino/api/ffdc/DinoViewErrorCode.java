@@ -7,7 +7,7 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
 
 
 /**
- * The TexViewErrorCode is used to define first failure data capture (FFDC) for errors that occur within the OMVS
+ * The DinoViewErrorCode is used to define first failure data capture (FFDC) for errors that occur within the OMVS
  * It is used in conjunction with all OMVS Exceptions.
  *
  * The 5 fields in the enum are:
