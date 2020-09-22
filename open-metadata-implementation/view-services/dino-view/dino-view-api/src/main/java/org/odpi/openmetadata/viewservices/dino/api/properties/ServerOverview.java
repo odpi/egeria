@@ -25,8 +25,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class ServerOverview {
 
     private static final long    serialVersionUID = 1L;
-
-    // displayName and serverName can differ in a configured server resource endpoint; serverName is the more generally used field.
+    
     private String                          serverInstanceName;
     private String                          serverName;
     private String                          platformRootURL;    // e.g. "https://localhost:9443"
