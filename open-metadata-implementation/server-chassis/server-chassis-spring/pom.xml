@@ -100,13 +100,6 @@
             <scope>runtime</scope>
         </dependency>
 
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>open-lineage-janus-connector</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>asset-consumer-spring</artifactId>
