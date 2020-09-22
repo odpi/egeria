@@ -65,11 +65,15 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
                 Ultimate Destination
             </a>
           </vaadin-tab>
-          <vaadin-tab value="verticalLineage">
-            <a href="[[rootPath]]#/asset-lineage/verticalLineage/[[routeData.guid]]" tabindex="-1" rel="noopener"> 
-                Vertical Lineage
-            </a>
-          </vaadin-tab>
+          <dom-if if = "[[ _displayVerticalLineageButton(item)]]">
+          <template>
+              <vaadin-tab value="verticalLineage">
+                <a href="[[rootPath]]#/asset-lineage/verticalLineage/[[routeData.guid]]" tabindex="-1" rel="noopener"> 
+                    Vertical Lineage
+                </a>
+              </vaadin-tab>
+          </template>
+          </dom-if>
           <vaadin-tab value="sourceAndDestination">
             <a href="[[rootPath]]#/asset-lineage/sourceAndDestination/[[routeData.guid]]" tabindex="-1" rel="noopener"> 
                 Source and Destination
@@ -144,7 +148,6 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
                     hierarchical: {
                         enabled: true,
                         levelSeparation: 250,
-                        direction: 'LR'
                     }
                 }
             },
@@ -376,18 +379,23 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
         if (this.routeData.guid !== undefined && this.routeData.guid !== "")
             switch (usecase) {
                 case 'ultimateSource':
+                    this.graphLayout.hierarchical.direction = 'LR'
                     this._ultimateSource(this.routeData.guid, includeProcesses);
                     break;
                 case 'endToEnd':
+                    this.graphLayout.hierarchical.direction = 'LR'
                     this._endToEndLineage(this.routeData.guid, includeProcesses);
                     break;
                 case 'ultimateDestination':
+                    this.graphLayout.hierarchical.direction = 'LR'
                     this._ultimateDestination(this.routeData.guid, includeProcesses);
                     break;
                 case 'verticalLineage':
+                    this.graphLayout.hierarchical.direction = 'DU'
                     this._verticalLineage(this.routeData.guid, includeProcesses);
                     break;
                 case 'sourceAndDestination':
+                    this.graphLayout.hierarchical.direction = 'LR'
                     this._sourceAndDestination(this.routeData.guid, includeProcesses);
                     break;
             }
@@ -400,6 +408,16 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
     _hideIncludeGlossaryTerms(usecase) {
         // return !("ultimateDestination" === usecase || "ultimateSource" === usecase) ;
         return true;
+    }
+
+    _displayVerticalLineageButton(item) {
+        var type = "";
+        if (item === undefined || item.type === undefined || item.type.name === undefined) {
+            return false;
+        } else {
+            type = item.type.name;
+        }
+        return type === 'RelationalColumn' || type === 'TabularColumn' || type === 'GlossaryTerm';
     }
 }
 
