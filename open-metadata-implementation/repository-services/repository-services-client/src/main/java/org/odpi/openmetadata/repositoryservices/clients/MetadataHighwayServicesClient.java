@@ -12,7 +12,6 @@ import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 import org.odpi.openmetadata.repositoryservices.properties.CohortDescription;
 import org.odpi.openmetadata.repositoryservices.rest.properties.*;
-
 import java.util.List;
 import java.util.Map;
 
