@@ -251,7 +251,7 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
      * and classifications.
      *
      * @param userId unique identifier for requesting user.
-     * @return TypeDefGalleryResponse List of different categories of type definitions.
+     * @return TypeDefGallery List of different categories of type definitions.
      * @throws InvalidParameterException the userId is null
      * @throws RepositoryErrorException   there is a problem communicating with the metadata repository.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
