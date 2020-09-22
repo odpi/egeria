@@ -57,7 +57,7 @@ export default function CreateGlossary(props) {
     }
   };
   const onErrorCreate = (msg) => {
-    console.log("Error on Get " + msg);
+    console.log("Error on Create " + msg);
     setErrorMsg(msg);
     setCreatedNode(undefined);
   };
@@ -68,7 +68,7 @@ export default function CreateGlossary(props) {
     return true;
   };
   const onErrorGet = (msg) => {
-    console.log("Error on Get " + msg);
+    console.log("Error on Create " + msg);
     setErrorMsg(msg);
   };
   const createLabelId = (labelKey) => {
