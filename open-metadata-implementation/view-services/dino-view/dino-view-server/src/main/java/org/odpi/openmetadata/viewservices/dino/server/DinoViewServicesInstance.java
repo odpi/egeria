@@ -24,7 +24,6 @@ public class DinoViewServicesInstance extends OMVSServiceInstance
 
     private DinoViewHandler dinoViewHandler = null;
 
-    //private Map<String, Object> viewServiceOptions = null;  // TODO - cleanup
 
 
     /**
@@ -53,13 +52,7 @@ public class DinoViewServicesInstance extends OMVSServiceInstance
               maxPageSize,
               null,  // see comment above about remoteServerName
               null);  // .... and remoteServerURL.
-
-        /*
-         * THe viewServiceOptions are used to configure the list of administered resourceEndpoints that the view service
-         * can connect to. The user does not specify the root URL for a REST resource - the user selects the resource name
-         * and the view-service inserts the configured endpoint.
-         */
-        //this.viewServiceOptions = viewServiceOptions;  // TODO !! I'm not convinced the servicesInstance needs to keep a copy.
+        
 
         this.dinoViewHandler = new DinoViewHandler(resourceEndpoints);
     }
