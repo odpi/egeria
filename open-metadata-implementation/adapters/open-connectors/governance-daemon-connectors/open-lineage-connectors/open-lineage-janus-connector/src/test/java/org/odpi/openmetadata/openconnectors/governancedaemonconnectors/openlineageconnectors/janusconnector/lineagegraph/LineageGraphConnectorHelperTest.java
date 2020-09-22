@@ -19,6 +19,7 @@ import java.util.Set;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.DATA_FILE;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.GLOSSARY_TERM;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.PROCESS;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.RELATIONAL_TABLE;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.TABULAR_COLUMN;
@@ -26,7 +27,6 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_RELATED_TERM;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_SEMANTIC_ASSIGNMENT;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_TABLE_DATA_FLOW;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.NODE_LABEL_GLOSSARYTERM;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.NODE_LABEL_SUB_PROCESS;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_ENTITY_GUID;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_ENTITY_NODE_ID;
@@ -123,7 +123,7 @@ public class LineageGraphConnectorHelperTest {
     }
 
     @Test
-    public void glossary() {
+    public void verticalLineage() {
         JanusGraph cyclicGlossaryGraph = JanusGraphFactory.build().set("storage.backend", "inmemory").open();
         GraphTraversalSource g = cyclicGlossaryGraph.traversal();
         HashSet<String> expectedNodeIDs = new HashSet<>();
@@ -133,7 +133,7 @@ public class LineageGraphConnectorHelperTest {
         expectedNodeIDs.add("g3");
         expectedNodeIDs.add("c2");
 
-        LineageVerticesAndEdges lineageVerticesAndEdges = mainGraphConnector.glossary(queriedNodeID, true).get();
+        LineageVerticesAndEdges lineageVerticesAndEdges = mainGraphConnector.verticalLineage(queriedNodeID, true).get();
 
         Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
 
@@ -229,9 +229,9 @@ public class LineageGraphConnectorHelperTest {
     }
 
     private static void addGlossaryLineageData(GraphTraversalSource g) {
-        Vertex g1 = getVertex(g, NODE_LABEL_GLOSSARYTERM, "g1", "g1");
-        Vertex g2 = getVertex(g, NODE_LABEL_GLOSSARYTERM, "g2", "g2");
-        Vertex g3 = getVertex(g, NODE_LABEL_GLOSSARYTERM, "g3", "g3");
+        Vertex g1 = getVertex(g, GLOSSARY_TERM, "g1", "g1");
+        Vertex g2 = getVertex(g, GLOSSARY_TERM, "g2", "g2");
+        Vertex g3 = getVertex(g, GLOSSARY_TERM, "g3", "g3");
 
         Vertex c1 = getVertex(g, TABULAR_COLUMN, "c1", "c1");
         Vertex c2 = getVertex(g, TABULAR_COLUMN, "c2", "c2");

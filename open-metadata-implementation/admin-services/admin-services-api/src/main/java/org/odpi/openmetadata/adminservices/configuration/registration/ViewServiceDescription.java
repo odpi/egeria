@@ -30,6 +30,14 @@ public enum ViewServiceDescription implements Serializable {
                   "type-explorer",
                   "Explore the open metadata types.",
                   //TODO create appropriate wiki
+                  "https://odpi.github.io/egeria/open-metadata-implementation/access-services/subject-area/"),
+
+    DINO(1040,
+                  "Dino",
+                  "Dino OMVS",
+                  "dino",
+                  "Operate an open metadata topology.",
+                  //TODO create appropriate wiki
                   "https://odpi.github.io/egeria/open-metadata-implementation/access-services/subject-area/");
 
     private static final long serialVersionUID = 1L;

@@ -18,7 +18,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -108,7 +114,7 @@ public class OpenLineageService {
                                                 String guid,
                                                 boolean includeProcesses) {
         try {
-            LineageVerticesAndEdges response =  openLineageClient.lineage(userId, Scope.GLOSSARY, guid, "", includeProcesses);
+            LineageVerticesAndEdges response =  openLineageClient.lineage(userId, Scope.VERTICAL, guid, "", includeProcesses);
             return processResponse(response,guid);
         } catch (InvalidParameterException | PropertyServerException | OpenLineageException e) {
             LOG.error("Cannot get glossary lineage for guid {}", guid);
