@@ -42,7 +42,6 @@ public class DinoPlatformServiceListRequestBody {
     {
         return "DinoPlatformServiceListRequestBody{" +
                 ", platformName=" + platformName +
-                //", platformRootURL=" + platformRootURL +
                 '}';
     }
 
