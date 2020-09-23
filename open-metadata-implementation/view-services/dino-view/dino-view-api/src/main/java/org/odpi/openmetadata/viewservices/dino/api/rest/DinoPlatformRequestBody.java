@@ -36,13 +36,7 @@ public class DinoPlatformRequestBody {
     public String getPlatformName() { return platformName; }
 
     public void setPlatformName(String platformName) { this.platformName = platformName; }
-
-    // TODO - remove!
-    public boolean getIsPresent() { return isPresent; }
-    public void setIsPresent(boolean isPresent) { this.isPresent = isPresent; }
-    public boolean getIxPresent() { return ixPresent; }
-    public void setIxPresent(boolean ixPresent) { this.ixPresent = ixPresent; }
-
+    
 
     @Override
     public String toString()
