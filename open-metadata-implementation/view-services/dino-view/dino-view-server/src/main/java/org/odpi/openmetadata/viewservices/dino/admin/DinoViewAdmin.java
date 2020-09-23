@@ -111,8 +111,8 @@ public class DinoViewAdmin extends ViewServiceAdmin {
 
 
             /*
-             * The name and RootURL of the repository server are not passed at this stage - they are not known at this stage as in Tex
-             * they are runtime variables set by the user and potentially changed between operations.
+             * The name and rootURL of a repository server are not passed at this stage - they are not known at this stage
+             * because they are set at runtime by the user and potentially changed between operations.
              */
             this.instance = new DinoViewServicesInstance(serverName,
                                                          auditLog,
