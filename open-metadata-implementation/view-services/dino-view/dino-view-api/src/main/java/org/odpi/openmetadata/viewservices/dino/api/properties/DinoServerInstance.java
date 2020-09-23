@@ -28,21 +28,29 @@ public class DinoServerInstance {
      * is explicitly included in the ServerStatus object, alongside the serverName and active status.
      */
 
-    // Include the server instance name - this is name used in the VS configuration as opposed to the serverName used in the server configuration
-    // and reported by the platform. THe serverInstanceName has no real meaning in terms of the configuration or deployment of OMAG resources, it is
-    // a purely logical name used between the VS and the admin UI, to identify the instance of the server as being available to the user to query.
+    /*
+     * Include the server instance name - this is name used in the VS configuration as opposed to the serverName used in the server configuration
+     * and reported by the platform. THe serverInstanceName has no real meaning in terms of the configuration or deployment of OMAG resources, it is
+     * a purely logical name used between the VS and the admin UI, to identify the instance of the server as being available to the user to query.
+     */
     private String                          serverInstanceName;
 
-    // Include the general server name - this is not the same as the serverInstanceName used in the VS configuration; it is the serverName as
-    // used in the server configuration and the servername as reported by the platform.
+    /*
+     * Include the general server name - this is not the same as the serverInstanceName used in the VS configuration; it is the serverName as
+     * used in the server configuration and the servername as reported by the platform.
+     */
     private String                          serverName;
 
-    // The boolean field 'active' indicates if the server is active or not.
+    /*
+     * The boolean field 'active' indicates if the server is active or not.
+     */
     private boolean                         isActive;
 
-    // Include the platform name - this is the name of the platform (in the VS configuration) that was used in the query that retrieved this ServerStatus
-    // object. It can be used by the UI to associate the server with the platform (via a graph relationship) and can be passed again by the client if it
-    // needs to query further information about the server instance.
+    /*
+     * Include the platform name - this is the name of the platform (in the VS configuration) that was used in the query that retrieved this ServerStatus
+     * object. It can be used by the UI to associate the server with the platform (via a graph relationship) and can be passed again by the client if it
+     * needs to query further information about the server instance.
+     */
     private String                          platformName;
 
     /**
