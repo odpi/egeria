@@ -95,7 +95,6 @@ public class DinoViewHandler
         if (resourceEndpoints != null && !resourceEndpoints.isEmpty()) {
             configuredPlatforms         = new HashMap<>();
             configuredServerInstances   = new HashMap<>();
-            //discoveredServers   = new HashMap<>();
 
             resourceEndpoints.forEach(res -> {
 
@@ -116,7 +115,7 @@ public class DinoViewHandler
                         break;
 
                     default:
-                        // LOG ERROR!! TODO
+                        // Unsupported category is ignored
                         break;
 
                 }
@@ -795,9 +794,6 @@ public class DinoViewHandler
              */
             Map<String, ServerCohortDetails> cohortDetails = serverGetCohortDetails(userId, serverName, platformName, methodName);
             serverOverview.setCohortDetails(cohortDetails);
-
-            // Fetch the other overview information desirable for a ServerOverview
-            // TODO...
 
             return serverOverview;
 
