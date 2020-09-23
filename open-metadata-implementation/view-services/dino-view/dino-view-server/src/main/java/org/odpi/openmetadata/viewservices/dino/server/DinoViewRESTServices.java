@@ -681,7 +681,7 @@ public class DinoViewRESTServices {
      * @param serverName    name of the local view server.
      * @param userId        userId under which the request is performed
      * @param requestBody   body containing serverName of the server to be queried.
-     * @return response     the configuration for the server.  TODO - currently using String - should be a configuration response object...
+     * @return response     the configuration for the server.
      *
      */
     public DinoServerConfigResponse serverGetStoredConfiguration(String serverName, String userId, DinoServerRequestBody requestBody) {
@@ -732,7 +732,7 @@ public class DinoViewRESTServices {
      * @param serverName    name of the local view server.
      * @param userId        userId under which the request is performed
      * @param requestBody   body containing serverName of the server to be queried.
-     * @return response     the configuration for the server.  TODO - currently using String - should be a configuration response object...
+     * @return response     the configuration for the server.
      *
      */
     public DinoServerConfigResponse serverGetInstanceConfiguration(String serverName, String userId, DinoServerRequestBody requestBody) {
@@ -784,7 +784,7 @@ public class DinoViewRESTServices {
      * @param serverName    name of the local view server.
      * @param userId        userId under which the request is performed
      * @param requestBody   body containing serverName of the server to be queried.
-     * @return response     the configuration for the server.  TODO - currently using String - should be a configuration response object...
+     * @return response     the configuration for the server.
      *
      */
     public DinoServerDoubleConfigResponse serverGetStoredAndActiveConfiguration(String serverName, String userId, DinoServerRequestBody requestBody) {
@@ -860,7 +860,7 @@ public class DinoViewRESTServices {
      * @param serverName    name of the local view server.
      * @param userId        userId under which the request is performed
      * @param requestBody   body containing serverName of the server to be queried.
-     * @return response     the configuration for the server.  TODO - currently using String - should be a configuration response object...
+     * @return response     the configuration for the server.
      *
      */
     public DinoServerAuditLogResponse serverGetAuditLog(String serverName, String userId, DinoServerRequestBody requestBody) {
