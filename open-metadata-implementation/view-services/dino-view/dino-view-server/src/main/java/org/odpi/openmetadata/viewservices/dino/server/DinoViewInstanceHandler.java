@@ -13,7 +13,7 @@ import org.odpi.openmetadata.viewservices.dino.handlers.DinoViewHandler;
 /**
  * DinoViewInstanceHandler retrieves information from the instance map for the
  * view service instances.  The instance map is thread-safe.  Instances are added
- * and removed by the TexViewAdmin class.
+ * and removed by the DinoViewAdmin class.
  */
 public class DinoViewInstanceHandler extends OMVSServiceInstanceHandler
 {
