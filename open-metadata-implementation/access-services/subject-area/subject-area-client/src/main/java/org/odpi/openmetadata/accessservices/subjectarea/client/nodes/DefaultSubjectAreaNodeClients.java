@@ -4,17 +4,16 @@ package org.odpi.openmetadata.accessservices.subjectarea.client.nodes;
 
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaNodeClient;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaRestClient;
-import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.categories.SubjectAreaCategory;
-import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.glossaries.SubjectAreaGlossary;
-import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.projects.SubjectAreaProject;
-import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.terms.SubjectAreaTerm;
+import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.projects.SubjectAreaProjectClient;
+import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
+import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectAreaCheckedException;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.SubjectAreaDefinition;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Node;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.project.Project;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.reflections.Reflections;
 
 import java.lang.reflect.Constructor;
@@ -24,19 +23,17 @@ import java.util.*;
 /**
  * The OMAS client library implementation of the Subject Area OMAS.
  * This interface provides entities {@link Node} authoring interface for subject area experts.
- * A standard set of customers is described in {@link SubjectAreaCategory}, {@link SubjectAreaTerm},
- * {@link SubjectAreaProject}, {@link SubjectAreaGlossary}
  */
-public class SubjectAreaNode implements SubjectAreaCategory, SubjectAreaTerm, SubjectAreaProject, SubjectAreaGlossary {
-    private Map<Class<?>, SubjectAreaNodeClient<?>> cache = new HashMap<>();
-    private static final String DEFAULT_SCAN_PACKAGE = SubjectAreaNode.class.getPackage().getName();
+public class DefaultSubjectAreaNodeClients implements SubjectAreaNodeClients {
+    private final Map<Class<?>, SubjectAreaNodeClient<?>> cache = new HashMap<>();
+    private static final String DEFAULT_SCAN_PACKAGE = DefaultSubjectAreaNodeClients.class.getPackage().getName();
 
     /**
      * @param packagesToScan - search packages for finding classes placed by annotation {@link org.odpi.openmetadata.accessservices.subjectarea.client.nodes.SubjectAreaNodeClient}
      * @param subjectAreaRestClient - rest client for Subject Area OMAS REST APIs
      * */
     @SuppressWarnings("rawtypes")
-    public SubjectAreaNode(SubjectAreaRestClient subjectAreaRestClient, String... packagesToScan) {
+    public DefaultSubjectAreaNodeClients(SubjectAreaRestClient subjectAreaRestClient, String... packagesToScan) {
         Set<String> packages = new HashSet<>(Arrays.asList(packagesToScan));
         packages.add(DEFAULT_SCAN_PACKAGE);
 
@@ -49,14 +46,14 @@ public class SubjectAreaNode implements SubjectAreaCategory, SubjectAreaTerm, Su
                     ctor.setAccessible(true);
                     final AbstractSubjectAreaNode newInstance =
                             (AbstractSubjectAreaNode) ctor.newInstance(subjectAreaRestClient);
-                    cache.put(newInstance.type(), newInstance);
+                    cache.put(newInstance.resultType(), newInstance);
                 }
             } catch (NoSuchMethodException
                     | IllegalAccessException
                     | InstantiationException
                     | InvocationTargetException e) {
                 throw new ExceptionInInitializerError(
-                        "During initialization SubjectAreaNode an error has occurred - "
+                        "During initialization `DefaultSubjectAreaNodeClients` an error has occurred - "
                                 + e.getMessage()
                 );
             }
@@ -69,33 +66,28 @@ public class SubjectAreaNode implements SubjectAreaCategory, SubjectAreaTerm, Su
      *
      * @param subjectAreaRestClient - rest client for Subject Area OMAS REST APIs
      */
-    public SubjectAreaNode(SubjectAreaRestClient subjectAreaRestClient) {
+    public DefaultSubjectAreaNodeClients(SubjectAreaRestClient subjectAreaRestClient) {
         this(subjectAreaRestClient, DEFAULT_SCAN_PACKAGE);
     }
 
     @Override
-    public SubjectAreaNodeClient<Category> category() {
-        return getClient(Category.class);
+    public <G extends Glossary> SubjectAreaNodeClient<G> glossaries() {
+        return (SubjectAreaNodeClient<G>) getClient(Glossary.class);
     }
 
     @Override
-    public SubjectAreaNodeClient<SubjectAreaDefinition> subjectAreaDefinition() {
-        return getClient(SubjectAreaDefinition.class);
+    public <T extends Term> SubjectAreaNodeClient<T> terms() {
+        return (SubjectAreaNodeClient<T>) getClient(Term.class);
     }
 
     @Override
-    public SubjectAreaNodeClient<Glossary> glossary() {
-        return getClient(Glossary.class);
+    public <C extends Category> SubjectAreaNodeClient<C> categories() {
+        return (SubjectAreaNodeClient<C>) getClient(Category.class);
     }
 
     @Override
-    public SubjectAreaNodeClient<Project> project() {
-        return getClient(Project.class);
-    }
-
-    @Override
-    public SubjectAreaNodeClient<Term> term() {
-        return getClient(Term.class);
+    public <P extends Project> SubjectAreaProjectClient<P> projects() {
+        return (SubjectAreaProjectClient<P>) getClient(Project.class);
     }
 
     /**
@@ -109,6 +101,10 @@ public class SubjectAreaNode implements SubjectAreaCategory, SubjectAreaTerm, Su
         if (cache.containsKey(clazz)) {
             return (SubjectAreaNodeClient<T>) cache.get(clazz);
         }
-        return null;
+        final ExceptionMessageDefinition messageDefinition =
+                SubjectAreaErrorCode.NOT_FOUND_CLIENT.getMessageDefinition(clazz.getName());
+        final SubjectAreaCheckedException exc =
+                new SubjectAreaCheckedException(messageDefinition, getClass().getName(), messageDefinition.getSystemAction());
+        throw new IllegalArgumentException(exc);
     }
 }
