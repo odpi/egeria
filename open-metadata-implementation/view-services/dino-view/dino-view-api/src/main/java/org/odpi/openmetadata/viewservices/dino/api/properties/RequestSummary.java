@@ -25,7 +25,7 @@ public class RequestSummary {
      */
 
     private String                          platformName;
-    private String                          operation;        // TODO - this could be an Enum - but initially it is a String {"loadPlatform" | "loadServer" | ... }
+    private String                          operation;
     private String                          serverName;
 
 
