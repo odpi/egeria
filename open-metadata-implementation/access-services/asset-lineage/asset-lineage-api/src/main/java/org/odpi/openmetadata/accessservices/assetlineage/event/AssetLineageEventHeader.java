@@ -32,18 +32,38 @@ public abstract class AssetLineageEventHeader {
 
     private AssetLineageEventType assetLineageEventType;
 
+    /**
+     * Gets event version id.
+     *
+     * @return the event version id
+     */
     public long getEventVersionId() {
         return eventVersionId;
     }
 
+    /**
+     * Sets event version id.
+     *
+     * @param eventVersionId the event version id
+     */
     public void setEventVersionId(long eventVersionId) {
         this.eventVersionId = eventVersionId;
     }
 
+    /**
+     * Gets asset lineage event type.
+     *
+     * @return the asset lineage event type
+     */
     public AssetLineageEventType getAssetLineageEventType() {
         return assetLineageEventType;
     }
 
+    /**
+     * Sets asset lineage event type.
+     *
+     * @param assetLineageEventType the asset lineage event type
+     */
     public void setAssetLineageEventType(AssetLineageEventType assetLineageEventType) {
         this.assetLineageEventType = assetLineageEventType;
     }
