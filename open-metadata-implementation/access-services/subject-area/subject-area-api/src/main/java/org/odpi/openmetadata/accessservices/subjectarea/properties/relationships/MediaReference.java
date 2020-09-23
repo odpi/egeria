@@ -27,21 +27,21 @@ public class MediaReference extends Line {
     /*
      * Set up end 1.
      */
-    protected final static String END_1_NODE_TYPE = "Referenceable";
-    protected final static String END_1_ATTRIBUTE_NAME = "consumingItem";
-    protected final static String END_1_ATTRIBUTE_DESCRIPTION = "Item that is referencing this work.";
-    protected final static RelationshipEndCardinality END_1_CARDINALITY = RelationshipEndCardinality.ANY_NUMBER;
-    protected final static LineEnd LINE_END_1 = new LineEnd(END_1_NODE_TYPE,
+     protected static final String END_1_NODE_TYPE = "Referenceable";
+     protected static final String END_1_ATTRIBUTE_NAME = "consumingItem";
+     protected static final String END_1_ATTRIBUTE_DESCRIPTION = "Item that is referencing this work.";
+     protected static final RelationshipEndCardinality END_1_CARDINALITY = RelationshipEndCardinality.ANY_NUMBER;
+     protected static final LineEnd LINE_END_1 = new LineEnd(END_1_NODE_TYPE,
             END_1_ATTRIBUTE_NAME, END_1_ATTRIBUTE_DESCRIPTION, END_1_CARDINALITY);
 
     /*
      * Set up end 2.
      */
-    protected final static String END_2_NODE_TYPE = "RelatedMedia";
-    protected final static String END_2_ATTRIBUTE_NAME = "relatedMedia";
-    protected final static String END_2_ATTRIBUTE_DESCRIPTION = "Link to external media.";
-    protected final static RelationshipEndCardinality END_2_CARDINALITY = RelationshipEndCardinality.ANY_NUMBER;
-    protected final static LineEnd LINE_END_2 = new LineEnd(END_2_NODE_TYPE,
+     protected static final String END_2_NODE_TYPE = "RelatedMedia";
+     protected static final String END_2_ATTRIBUTE_NAME = "relatedMedia";
+     protected static final String END_2_ATTRIBUTE_DESCRIPTION = "Link to external media.";
+     protected static final RelationshipEndCardinality END_2_CARDINALITY = RelationshipEndCardinality.ANY_NUMBER;
+     protected static final LineEnd LINE_END_2 = new LineEnd(END_2_NODE_TYPE,
             END_2_ATTRIBUTE_NAME, END_2_ATTRIBUTE_DESCRIPTION, END_2_CARDINALITY);
 
     private String mediaId;

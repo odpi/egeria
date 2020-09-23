@@ -80,6 +80,7 @@ Below are the commands to
   * [Configuring the open metadata archives loaded at server start](configuring-the-startup-archives.md) - Metadata Access Point, Metadata Server and Repository Proxy only
   * [Configuring the repository proxy connectors](configuring-the-repository-proxy-connector.md) - Repository Proxy only
   * [Configuring the Open Metadata Access Services (OMASs)](configuring-the-access-services.md) - Metadata Access Point and Metadata Server only
+  * [Configuring the Open Metadata View Services (OMVSs)](configuring-the-view-services.md) - View Server only
   * [Configuring the Discovery Engine Services](configuring-the-discovery-engine-services.md) - Discovery Server only
   * [Configuring the Security Sync Services](configuring-the-security-sync-services.md) - Security Sync Server only
   * [Configuring the Stewardship Engine Services](configuring-the-stewardship-engine-services.md) - Stewardship server only

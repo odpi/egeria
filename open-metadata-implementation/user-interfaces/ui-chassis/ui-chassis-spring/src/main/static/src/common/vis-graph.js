@@ -69,7 +69,7 @@ class VisGraph extends mixinBehaviors([ItemViewBehavior], PolymerElement) {
              <iron-icon icon="icons:close" style="width: 24px;height: 24px;"></iron-icon>
             </a>
           </div>
-          <asset-tools guid="[[node.id]]" style="display: inline-flex"></asset-tools>
+          <asset-tools  items="[[node.type]]" guid="[[node.id]]" style="display: inline-flex"></asset-tools>
           <props-table  items="[[_attributes(node.properties)]]"   
                         title="[[node.type]]: [[node.displayName]]" 
                         with-row-stripes>
