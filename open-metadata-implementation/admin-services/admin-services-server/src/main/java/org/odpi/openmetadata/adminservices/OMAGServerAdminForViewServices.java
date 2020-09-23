@@ -173,7 +173,7 @@ public class OMAGServerAdminForViewServices {
      * @param userId             user that is issuing the request.
      * @param serverName         local server name.
      * @param serviceURLMarker   view service name used in URL
-     * @param viewServiceOptions view service options
+     * @param requestedViewServiceConfig  view service config
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGConfigurationErrorException the event bus has not been configured or
@@ -182,7 +182,7 @@ public class OMAGServerAdminForViewServices {
     public VoidResponse configureViewService(String userId,
                                              String serverName,
                                              String serviceURLMarker,
-                                             Map<String, Object> viewServiceOptions)
+                                             ViewServiceConfig requestedViewServiceConfig)
     {
         final String methodName = "configureViewService";
 
@@ -208,12 +208,8 @@ public class OMAGServerAdminForViewServices {
             ViewServiceRegistration viewServiceRegistration = OMAGViewServiceRegistration.getViewServiceRegistration(serviceURLMarker);
 
             errorHandler.validateViewServiceIsRegistered(viewServiceRegistration, serviceURLMarker, serverName, methodName);
-
-
-            viewServiceConfigList = this.updateViewServiceConfig(createViewServiceConfig(viewServiceRegistration,
-                                                                                         viewServiceOptions,
-                                                                                         serverName,
-                                                                                         userId),
+            ViewServiceConfig viewServiceConfig = createViewServiceConfig(viewServiceRegistration, requestedViewServiceConfig);
+            viewServiceConfigList = this.updateViewServiceConfig(viewServiceConfig,
                                                                  viewServiceConfigList);
             this.setViewServicesConfig(userId, serverName, viewServiceConfigList);
 
@@ -239,7 +235,7 @@ public class OMAGServerAdminForViewServices {
      *
      * @param userId       user that is issuing the request.
      * @param serverName   local server name.
-     * @param viewServiceOptions       URL root and server name that are used to access the downstream OMAG Server.
+     * @param requestedViewServiceConfig  requested View Service Config containing the OMAGServerName and OMAGServerRootPlatformURL
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGConfigurationErrorException the event bus has not been configured or
@@ -247,7 +243,7 @@ public class OMAGServerAdminForViewServices {
      */
     public VoidResponse configureAllViewServices(String userId,
                                                  String serverName,
-                                                 Map<String, Object> viewServiceOptions) {
+                                                 ViewServiceConfig requestedViewServiceConfig) {
         final String methodName = "configureViewServices";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
@@ -274,10 +270,7 @@ public class OMAGServerAdminForViewServices {
                     {
                         if (registration.getViewServiceOperationalStatus() == ServiceOperationalStatus.ENABLED)
                         {
-                            viewServiceConfigList.add(createViewServiceConfig(registration,
-                                                                              viewServiceOptions,
-                                                                              serverName,
-                                                                              serverConfig.getLocalServerId()));
+                            viewServiceConfigList.add(createViewServiceConfig(registration, requestedViewServiceConfig));
                         }
                     }
                 }
@@ -314,18 +307,17 @@ public class OMAGServerAdminForViewServices {
      * Set up the configuration for a single view service.
      *
      * @param registration registration information about the service.
-     * @param viewServiceOptions options for the service
-     * @param serverName name of this server
-     * @param localServerId unique Id for this server
+     * @param requestedViewServiceConfig requested view service config
      * @return newly created config object
      */
     private ViewServiceConfig createViewServiceConfig(ViewServiceRegistration     registration,
-                                                      Map<String, Object>         viewServiceOptions,
-                                                      String                      serverName,
-                                                      String                      localServerId)
+                                                      ViewServiceConfig           requestedViewServiceConfig)
     {
         ViewServiceConfig viewServiceConfig = new ViewServiceConfig(registration);
-        viewServiceConfig.setViewServiceOptions(viewServiceOptions);
+        Map<String, Object> viewOptions = requestedViewServiceConfig.getViewServiceOptions();
+        viewServiceConfig.setViewServiceOptions(viewOptions);
+        viewServiceConfig.setOMAGServerPlatformRootURL(requestedViewServiceConfig.getOMAGServerPlatformRootURL());
+        viewServiceConfig.setOMAGServerName(requestedViewServiceConfig.getOMAGServerName());
         return viewServiceConfig;
     }
 

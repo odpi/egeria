@@ -11,11 +11,20 @@ service:
     dev: 30082
     factory: 30083
     ui: 30443
+    debug:
+      core: 31005
+      datalake: 31006
+      dev: 31007
+      factory: 31008
+      ui: 31009
 
 egeria:
   #logging: OFF
   development: true
   version: "2.3-SNAPSHOT"
+
+debug:
+  egeriaJVM: false
 
 # Defaults for the images (can be overridden here or individually, see comment below)
 # Note for egeria provided images we use the version specified above

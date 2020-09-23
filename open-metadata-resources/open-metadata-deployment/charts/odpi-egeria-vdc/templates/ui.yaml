@@ -70,14 +70,13 @@ spec:
           imagePullPolicy: {{ .Values.image.egeria.pullPolicy | default .Values.imageDefaults.pullPolicy }}
           ports:
             - containerPort: 8443
-          command:
-            - "/bin/bash"
-            - "-c"
-            - "java -jar /opt/egeria/user-interface/ui-chassis-spring-{{.Values.egeria.version}}.jar"
           envFrom:
             - configMapRef:
                 name: {{ include "myapp.fullname" . }}-configmap
           resources: {}
+          env:
+            - name: "JAVA_APP_JAR"
+              value: "user-interface/ui-chassis-spring-{{ .Values.egeria.version}}.jar"
       restartPolicy: Always
 
 status: {}

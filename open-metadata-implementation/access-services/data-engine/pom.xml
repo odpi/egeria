@@ -39,6 +39,7 @@
         <module>data-engine-client</module>
         <module>data-engine-server</module>
         <module>data-engine-spring</module>
+        <module>data-engine-topic-connectors</module>
     </modules>
     <build>
         <plugins>

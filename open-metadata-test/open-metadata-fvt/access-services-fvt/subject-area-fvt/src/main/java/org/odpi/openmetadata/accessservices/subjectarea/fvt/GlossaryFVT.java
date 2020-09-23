@@ -154,6 +154,12 @@ public class GlossaryFVT {
         if (results.size() != 1) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected 1 back on the find got " + results.size());
         }
+        // make sure there is a category with the name
+        createGlossary(DEFAULT_TEST_GLOSSARY_NAME);
+        Glossary glossaryForUniqueQFN2= createGlossary(DEFAULT_TEST_GLOSSARY_NAME);
+        if (glossaryForUniqueQFN2 == null || glossaryForUniqueQFN2.equals("")) {
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected qualified name to be set");
+        }
     }
 
     void deleteRemainingGlossaries() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, SubjectAreaFVTCheckedException {
