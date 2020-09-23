@@ -13,7 +13,7 @@ detailed textual description of each type of artefact. The textual display provi
 This OMVS calls a remote server using the [repository services client](../../repository-services/repository-services-client/README.md).
 
 
-The module structure for the Type Explorer OMVS is as follows:
+The module structure for the Dino OMVS is as follows:
 
 * [dino-view-api](dino-view-api) defines the interface to the view service.
 * [dino-view-server](dino-view-server) supports an implementation of the view service.
