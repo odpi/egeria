@@ -125,9 +125,8 @@ class GlossaryView extends PolymerElement {
                       
                       <vaadin-grid-column width="5em" resizable>
                           <template class="header">
-                             
                           </template>
-                          <template><asset-tools class="right" guid="[[item.guid]]"></asset-tools></template>
+                          <template><asset-tools class="right"  items="[[item.typeDefName]]" guid="[[item.guid]]"></asset-tools></template>
                       </vaadin-grid-column>
                 </vaadin-grid>
             </div>
