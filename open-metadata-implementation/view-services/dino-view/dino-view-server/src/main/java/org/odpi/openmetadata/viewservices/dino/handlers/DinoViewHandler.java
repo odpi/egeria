@@ -48,7 +48,8 @@ public class DinoViewHandler
 {
     private static final Logger log = LoggerFactory.getLogger(DinoViewHandler.class);
 
-    /* TODO!! viewServiceOptions should have been validated in the Admin layer.
+    /*
+     * viewServiceOptions should have been validated in the Admin layer.
      * The viewServiceOptions contains a list of resource endpoints that the
      * view service can connect to. It is formatted like this:
      * "resourceEndpoints" : [
@@ -76,7 +77,6 @@ public class DinoViewHandler
      */
     private Map<String, ResourceEndpoint>  configuredPlatforms = null;  // map is keyed using platformRootURL
     private Map<String, ResourceEndpoint>  configuredServerInstances   = null;  // map is keyed using serverName+platformRootURL so each instance is unique
-    //private Map<String, ResourceEndpoint>  discoveredServers   = null;  // map is keyed using serverName+platformRootURL so each instance is unique
 
 
     /**
@@ -90,7 +90,7 @@ public class DinoViewHandler
          * Populate map of resources with their endpoints....
          */
 
-        // TODO - need to add validation rules to this - ensure uniqueness etc...
+        // TODO - It would be desirable to add validation rules to ensure uniqueness etc.
 
         if (resourceEndpoints != null && !resourceEndpoints.isEmpty()) {
             configuredPlatforms         = new HashMap<>();
@@ -170,7 +170,6 @@ public class DinoViewHandler
             }
         }
         if (platformName == null || platformRootURL == null) {
-            // TODO - this error code is not entirely accurate - the platformName may not have been null but it is not in the configured map
             throw new InvalidParameterException(OMAGCommonErrorCode.VIEW_SERVICE_NULL_PLATFORM_NAME.getMessageDefinition(),
                                                 this.getClass().getName(),
                                                 methodName,
@@ -430,10 +429,8 @@ public class DinoViewHandler
                 Iterator<ResourceEndpoint> configuredServerInstances = this.configuredServerInstances.values().iterator();
                 while (configuredServerInstances.hasNext()) {
                     ResourceEndpoint csire = configuredServerInstances.next();
-                    if (csire.getServerName().equals(serverName)
-                        //&&
-                        //csire.getResourceRootURL().equals(serverName)   ){   // TODO - rename as platformRootURL!!
-                        && csire.getPlatformName().equals(platformName) ){
+                    if (   csire.getServerName().equals(serverName)
+                        && csire.getPlatformName().equals(platformName) ) {
                         // This is our configuration entry...
                         configuredInstanceName = csire.getServerInstanceName();
                     }
@@ -769,10 +766,8 @@ public class DinoViewHandler
             }
             catch (OMAGNotAuthorizedException exc) {
                     // Wrap the OMAG exception
-                    // TODO !!!!!  This is temporary to get a build working - should be throwing UserNotAuthorizedException
-                    throw new InvalidParameterException("Could not retrieve server type classification as user is not authorized to perform this operation",
-                                                        exc,
-                                                        serverName);
+                    throw new UserNotAuthorizedException(exc,
+                                                         serverName);
             }
             catch (OMAGConfigurationErrorException exc) {
                     // Wrap the OMAG exception
@@ -881,7 +876,7 @@ public class DinoViewHandler
              */
             OMAGServerConfigurationClient adminServicesClient = this.getOMAGServerConfigurationClient(userId, serverName, platformRootURL);
 
-            ServerTypeClassificationSummary summary = adminServicesClient.getServerClassification();  // TODO - check no use of userId??
+            ServerTypeClassificationSummary summary = adminServicesClient.getServerClassification();
             return summary;
 
         }
@@ -925,7 +920,7 @@ public class DinoViewHandler
                 OMAGServerConfigurationClient adminServicesClient = this.getOMAGServerConfigurationClient(userId, serverName, platformRootURL);
 
 
-                OMAGServerConfig config = adminServicesClient.getOMAGServerConfig();  // TODO - check no use of userId??
+                OMAGServerConfig config = adminServicesClient.getOMAGServerConfig();
                 return config;
 
             }
@@ -990,7 +985,7 @@ public class DinoViewHandler
                 OMAGServerConfigurationClient adminServicesClient = this.getOMAGServerConfigurationClient(userId, serverName, platformRootURL);
 
 
-                OMAGServerConfig config = adminServicesClient.getOMAGServerInstanceConfig();  // TODO - check no use of userId??
+                OMAGServerConfig config = adminServicesClient.getOMAGServerInstanceConfig();
                 return config;
 
             }
