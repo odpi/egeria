@@ -35,8 +35,8 @@ import java.util.Map;
 
 
 /**
- * The DinoViewRESTServices provides the org.odpi.openmetadata.viewservices.tex.services implementation of the Type Explorer Open Metadata
- * View Service (OMVS). This interface provides view interfaces for enterprise architects.
+ * The DinoViewRESTServices provides the implementation of the Dino Open Metadata View Service (OMVS).
+ * This interface provides view interfaces for infrastructure and ops users.
  */
 
 public class DinoViewRESTServices {
