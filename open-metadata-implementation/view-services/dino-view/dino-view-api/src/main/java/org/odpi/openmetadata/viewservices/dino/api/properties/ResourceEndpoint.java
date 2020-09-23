@@ -19,7 +19,7 @@ public class ResourceEndpoint {
     private static final long    serialVersionUID = 1L;
 
 
-    private String resourceCategory;  // TODO - could be an Enum (Platform | Server)
+    private String resourceCategory;
     private String resourceDescription;
     private String resourceRootURL;    // e.g. "https://localhost:9443"
     private String serverName;
