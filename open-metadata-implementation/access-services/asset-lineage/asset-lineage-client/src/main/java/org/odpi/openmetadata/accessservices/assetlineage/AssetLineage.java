@@ -22,16 +22,25 @@ public class AssetLineage extends FFDCRESTClient implements AssetLineageInterfac
     private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
 
     /**
-     * Create a new AssetLineage client.
+     * Instantiates a new Asset lineage Client.
      *
-     * @param serverName            name of the server to connect to
+     * @param serverName            the server name
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
-     * @throws InvalidParameterException if parameter validation fails
+     * @throws InvalidParameterException one of the parameters is null or invalid.
      */
     public AssetLineage(String serverName, String serverPlatformURLRoot) throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException {
         super(serverName, serverPlatformURLRoot);
     }
 
+    /**
+     * Instantiates a new Asset Lineage Client.
+     *
+     * @param serverName            the server name
+     * @param serverPlatformURLRoot the server platform url root
+     * @param userId                the user id
+     * @param password              the password
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     */
     public AssetLineage(String serverName, String serverPlatformURLRoot, String userId, String password)
             throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException {
         super(serverName, serverPlatformURLRoot, userId, password);
@@ -39,7 +48,6 @@ public class AssetLineage extends FFDCRESTClient implements AssetLineageInterfac
 
     /**
      * {@inheritDoc}
-     *
      */
     @Override
     public List<String> publishEntities(String serverName, String userId, String entityType)

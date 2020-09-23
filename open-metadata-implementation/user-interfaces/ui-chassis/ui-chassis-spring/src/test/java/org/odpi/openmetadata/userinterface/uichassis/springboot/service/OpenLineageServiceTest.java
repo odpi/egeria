@@ -124,7 +124,7 @@ public class OpenLineageServiceTest {
     @DisplayName("GlossaryLineage")
     public void testGlossaryLineage() throws PropertyServerException, InvalidParameterException {
         try {
-            when(openLineageClient.lineage(eq(USER_ID), eq(Scope.GLOSSARY), eq(guid), eq(""), eq(true)))
+            when(openLineageClient.lineage(eq(USER_ID), eq(Scope.VERTICAL), eq(guid), eq(""), eq(true)))
                     .thenReturn(lineageVerticesAndEdges);
         } catch (OpenLineageException e) {
             e.printStackTrace();
