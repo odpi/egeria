@@ -14,7 +14,6 @@ the types of [Egeria OMAG Servers](../../admin-services/docs/concepts/omag-serve
 There are 2 types of capabilities exposed in the Presentation Server.
 - Integration Server capabilities
 - Governance Solution capabilities  
-  
 
 ### Integration Server capabilities
 
@@ -47,8 +46,6 @@ There are 2 types of capabilities exposed in the Presentation Server.
  ` EGERIA_PRESENTATIONSERVER_SERVER_aaa={"remoteServerName":"cocoView1","remoteURL":"https://localhost:9443"}`
 * To run the presentation server in production, use the presentation server assembly and specify the environment variables as required.   
 
-
-
 ## For development
  * Add the presentation-server folder into [Visual Studio Code](https://code.visualstudio.com/). It will create a new workspace.
  * You can open a terminal in Visual Studio code to issue the npm commands
@@ -57,7 +54,6 @@ There are 2 types of capabilities exposed in the Presentation Server.
  called .env in the same folder and amend the values as required.
  * Once the .env file is in place, build and start the server using `npm start`. Use other npm parameters as specified in [package.json](nodejs/package.json).  
 
- 
 ## Access UI using the browser. 
  * Enter 'https://localhost:8091/<tenant-name>/' on the UI to access the tenanted UI (<tenant-name> is the serverName used by the presentation server). The Ui will prompt for a login; some of the 
  Coco Pharmaceutical personnas have been enabled here - use user 'faith' and password 'admin'. If there is an environment variable :
@@ -71,10 +67,8 @@ There are 2 types of capabilities exposed in the Presentation Server.
  * The ongoing work is being tracked in issue [Git issue 3543](https://github.com/odpi/egeria/issues/3543)
  * The work involves using Create React App. This will be done iteratively.
  * The current latest client code is in the client folder.
- * The new work is being developed the cra-client directory and may contain out of data presentation server source code. 
+ * The new work is being developed the cra-client directory and may contain out of date presentation server source code. 
 
-    
- 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 Copyright Contributors to the ODPi Egeria project.
