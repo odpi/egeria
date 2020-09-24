@@ -1852,6 +1852,9 @@ class GraphOMRSMetadataStore {
                         case '|':
                         case '+':
                         case '?':
+                        case '#':
+                        case '&':
+                        case '<':
                         case '\\':  // single backslash escaped for Java
                             if (literalized) {
                                 outputStringBldr.append('\\').append(c);
