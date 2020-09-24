@@ -16,7 +16,7 @@ import java.util.Map;
  * It may be a configuration error or temporary outage.  The parameters captured by the constructors
  * pinpoint the type an cause of the error.
  */
-public class PropertyServerException extends OCFCheckedExceptionBase
+public class    PropertyServerException extends OCFCheckedExceptionBase
 {
     private static final long    serialVersionUID = 1L;
 

@@ -80,11 +80,11 @@ public class OpenLineageController {
      * @param includeProcesses if true Process nodes will be included
      * @return map of nodes and edges describing the assets linked to the glossary term
      */
-    @GetMapping( value = "/entities/{guid}/glossary-lineage")
-    public Map<String, List> glossaryLineage(@PathVariable("guid") String guid, @RequestParam boolean includeProcesses){
+    @GetMapping( value = "/entities/{guid}/vertical-lineage")
+    public Map<String, List> verticalLineage(@PathVariable("guid") String guid, @RequestParam boolean includeProcesses){
         Map<String, List> exportedGraph;
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-        exportedGraph = openLineageService.getGlossaryLineage(userId, guid, includeProcesses);
+        exportedGraph = openLineageService.getVerticalLineage(userId, guid, includeProcesses);
         return exportedGraph;
     }
 

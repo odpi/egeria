@@ -263,8 +263,8 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
             InputValidator.validateNodeType(className, methodName, suppliedTerm.getNodeType(), NodeType.Term, NodeType.Activity);
 
             response = getTermByGuid(userId, guid);
-            if (response.getHead() != null) {
-                Term currentTerm = response.getHead();
+            if (response.head().isPresent()) {
+                Term currentTerm = response.head().get();
 
                 Set<String> currentClassificationNames = getCurrentClassificationNames(currentTerm);
 
