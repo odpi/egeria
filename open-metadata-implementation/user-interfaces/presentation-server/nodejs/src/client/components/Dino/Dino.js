@@ -39,6 +39,9 @@ import ReadmeMarkdown                           from './README.md';
 
 import "./dino.scss";
 
+
+
+
 export default function Dino() {
 
   const containerDiv = useRef();
@@ -52,8 +55,6 @@ export default function Dino() {
 
   const [readme, setReadme]             = useState( { markdown : '' } );
   const [readmeStatus, setReadmeStatus] = useState("idle");
-
-  
 
   let workingHeight = cltHeight - 50;
   let workingWidth  = cltWidth - 265;
@@ -159,7 +160,7 @@ export default function Dino() {
                 </div>
 
                 <div className="dino-rhs">
-                  <DiagramManager height={workingHeight-270} width={workingWidth-500}/>
+                  <DiagramManager height={workingHeight-150} width={workingWidth-500}/>
                 </div>
 
               </div>
