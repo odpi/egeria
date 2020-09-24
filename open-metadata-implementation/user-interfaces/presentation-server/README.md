@@ -14,7 +14,9 @@ the types of [Egeria OMAG Servers](../../admin-services/docs/concepts/omag-serve
 
 ## Setting up the downstream servers  
  To run the Presentation server, you need to have correctly [configured](../../admin-services/docs/user/configuring-an-omag-server.md) and be [operating](../../admin-services/docs/user/operating-omag-server.md) the downstream servers.
- For example for the Glossary Author capability, the Presentation server issues omvs calls to the [View server](../../admin-services/docs/concepts/view-server.md)
+ Be aware that in addition to any existing OMAG Servers, the Presentation Server requires that you have [configured the view services](../../admin-services/docs/user/configuring-the-view-services.md) on a View Server. 
+
+ For example for the Glossary Author capability, the Presentation server issues OMVS calls to the [View Server](../../admin-services/docs/concepts/view-server.md)
  which issues [Open Metadata Access Service (OMAS)](../../access-services/README.md) calls to the [Access Point Server](../../admin-services/docs/concepts/metadata-access-point.md).     
  
 ## Configuring the presentation server 
@@ -39,13 +41,6 @@ the types of [Egeria OMAG Servers](../../admin-services/docs/concepts/omag-serve
  called .env in the same folder and amend the values as required.
  * Once the .env file is in place, build and start the server using `npm start`. Use other npm parameters as specified in [package.json](nodejs/package.json).  
 
-## FOR NEW DEVELOPMENT (as of 8/2/2020)
- * Currently, the UI is not optimized to run in development mode. Developers must rebuild the static files every time a change is made.
- * Because of this, work is currently underway to remake the client with Create React App. This will be done iteratively, and updates posted here.
- * Old client code will be maintained until the cutover is complete, so developers can run the traditional way if desired.
- * The new client is maintained in the cra-client directory.
- * Set up your environment by running `yarn`.
- * Enter `http://localhost:3000/` to access the new UI in development mode.
  
 ## Access UI using the browser. 
  * Enter 'https://localhost:8091/<tenant-name>/' on the UI to access the tenanted UI (<tenant-name> is the serverName used by the presentation server). The Ui will prompt for a login; some of the 
@@ -53,9 +48,17 @@ the types of [Egeria OMAG Servers](../../admin-services/docs/concepts/omag-serve
   ` EGERIA_PRESENTATIONSERVER_SERVER_aaa={"remoteServerName":"cocoView1","remoteURL":"https://localhost:9443"}`
   then the browser url to use to login is `https://localhost:8091/aaa`. All browser requests for this tenant will be issued using urls starting
   `https://localhost:8091/aaa`. 
-    
-  
 
+## There is on-going work to enhance the development experience 
+ * The build described a production build; meaning everything is rebuilt each time a change is made.
+ * There is ongoing work to allow developers to do be able to make changes and hot swap them into a running server.
+ * The ongoing work is being tracked in issue [Git issue 3543](https://github.com/odpi/egeria/issues/3543)
+ * The work involves using Create React App. This will be done iteratively, and updates posted here.
+ * The existing code is in the client folder which contains the latest presentation source code.
+ * The new work is being developed the cra-client directory.
+
+    
+ 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 Copyright Contributors to the ODPi Egeria project.
