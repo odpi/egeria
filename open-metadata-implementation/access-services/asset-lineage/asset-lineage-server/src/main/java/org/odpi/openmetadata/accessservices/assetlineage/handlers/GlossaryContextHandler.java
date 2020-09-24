@@ -14,6 +14,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -228,6 +229,10 @@ public class GlossaryContextHandler {
                 relationshipTypeGUID,
                 relationshipTypeName,
                 methodName);
+
+        if(CollectionUtils.isEmpty(relationshipsByType)){
+            return Collections.emptyList();
+        }
 
         return relationshipsByType
                 .stream()
