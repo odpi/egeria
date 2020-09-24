@@ -11,6 +11,20 @@ servers.
 See the [Egeria Planning guide](https://github.com/odpi/egeria/tree/master/open-metadata-publication/website/planning-guide) to familiarise yourself with 
 the types of [Egeria OMAG Servers](../../admin-services/docs/concepts/omag-server.md); Presentation Server is one of those servers.  
 
+There are 2 types of capabilities exposed in the Presentation Server.
+- Integration Server capabilities
+- Governance Solution capabilities  
+  
+
+### Integration Server capabilities
+
+- Type Explorer: allowing the use to explore the Egeria open types
+- Repository Explorer: allowing the user to explore Egeria instances
+- Server author: allowing the user to configure a server. This is work in progress.
+- Dino: allowing a user to see and work with Egeria platforms and servers operationally.      
+
+### Governance Solution capabilities  
+- Glossary Author: allowing a Glossary author use to create, update and delete Glossary content.       
 
 ## Setting up the downstream servers  
  To run the Presentation server, you need to have correctly [configured](../../admin-services/docs/user/configuring-an-omag-server.md) and be [operating](../../admin-services/docs/user/operating-omag-server.md) the downstream servers.
@@ -33,6 +47,8 @@ the types of [Egeria OMAG Servers](../../admin-services/docs/concepts/omag-serve
  ` EGERIA_PRESENTATIONSERVER_SERVER_aaa={"remoteServerName":"cocoView1","remoteURL":"https://localhost:9443"}`
 * To run the presentation server in production, use the presentation server assembly and specify the environment variables as required.   
 
+
+
 ## For development
  * Add the presentation-server folder into [Visual Studio Code](https://code.visualstudio.com/). It will create a new workspace.
  * You can open a terminal in Visual Studio code to issue the npm commands
@@ -50,12 +66,12 @@ the types of [Egeria OMAG Servers](../../admin-services/docs/concepts/omag-serve
   `https://localhost:8091/aaa`. 
 
 ## There is on-going work to enhance the development experience 
- * The build described a production build; meaning everything is rebuilt each time a change is made.
+ * The build described above is a production build; meaning everything is rebuilt each time a change is made.
  * There is ongoing work to allow developers to do be able to make changes and hot swap them into a running server.
  * The ongoing work is being tracked in issue [Git issue 3543](https://github.com/odpi/egeria/issues/3543)
- * The work involves using Create React App. This will be done iteratively, and updates posted here.
- * The existing code is in the client folder which contains the latest presentation source code.
- * The new work is being developed the cra-client directory.
+ * The work involves using Create React App. This will be done iteratively.
+ * The current latest client code is in the client folder.
+ * The new work is being developed the cra-client directory and may contain out of data presentation server source code. 
 
     
  
