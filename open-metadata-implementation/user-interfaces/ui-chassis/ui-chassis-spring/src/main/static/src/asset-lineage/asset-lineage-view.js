@@ -81,15 +81,12 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
           </vaadin-tab>
         </vaadin-tabs>
         <ul id="menu"> 
-            <li> 
+            <li>
+            <div hidden = "[[_displayETLJobsToggle(routeData.usecase)]]"> 
                 <paper-toggle-button id="processToggle" checked>
                     ETL Jobs
                 </paper-toggle-button>
-            </li>
-            <li> 
-                <paper-toggle-button id="glossaryTermToggle" disabled>
-                    Glossary Terms
-                </paper-toggle-button>
+            </div>
             </li>
          </ul>
     </div>       
@@ -122,8 +119,7 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
 
             this.$.processToggle.addEventListener('change', () =>
                 this._reload(this.$.useCases.items[this.$.useCases.selected].value, this.$.processToggle.checked));
-            this.$.glossaryTermToggle.addEventListener('changed', () =>
-                this._reload(this.$.useCases.items[this.$.useCases.selected].value, this.$.processToggle.value));
+
     }
 
     static get properties() {
@@ -294,40 +290,6 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
                 };
             }
         }
-        if (!this._hideIncludeGlossaryTerms(this.routeData.usecase) && this.$.glossaryTermMenu.value === "false" ) {
-            var filteredNodes = [];
-            var nodesToRemove = [];
-            var filteredEdges = [];
-            for (var i = 0; i < data.nodes.length; i++) {
-                if (data.nodes[i].group !== "GlossaryTerm") {
-                    filteredNodes.push(data.nodes[i]);
-                } else {
-                    nodesToRemove.push(data.nodes[i])
-                }
-            }
-            for (var j = 0; j < data.edges.length; j++) {
-                var edgeRemoved = false;
-                for (var i = 0; i < nodesToRemove.length; i++) {
-                    if (data.edges[j].from === nodesToRemove[i].id) {
-                        for (var k = 0; k < data.edges.length; k++) {
-                            if (data.edges[k].to === nodesToRemove[i].id) {
-                                edgeRemoved = true;
-                                filteredEdges.push({
-                                    to : data.edges[j].to,
-                                    from : data.edges[k].from,
-                                    label : data.edges[k].label
-                                })
-                            }
-                        }
-                    }
-                }
-                if (edgeRemoved === false) {
-                    filteredEdges.push(data.edges[j])
-                }
-            }
-            data.nodes = filteredNodes;
-            data.edges = filteredEdges;
-        }
         this.$.visgraph.importNodesAndEdges(data.nodes, data.edges);
     }
 
@@ -402,9 +364,8 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
         return this.usecases.indexOf(usecase);
     }
 
-    _hideIncludeGlossaryTerms(usecase) {
-        // return !("ultimateDestination" === usecase || "ultimateSource" === usecase) ;
-        return true;
+    _displayETLJobsToggle(useCase) {
+        return useCase === "verticalLineage";
     }
 
     _displayVerticalLineageButton(item) {
