@@ -735,7 +735,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
                 lineageVerticesAndEdges = helper.ultimateDestination(guid, includeProcesses);
                 break;
             case VERTICAL:
-                lineageVerticesAndEdges = helper.verticalLineage(guid, includeProcesses);
+                lineageVerticesAndEdges = helper.verticalLineage(guid);
                 break;
         }
         if (lineageVerticesAndEdges.isPresent() && !displayNameMustContain.isEmpty()) {
