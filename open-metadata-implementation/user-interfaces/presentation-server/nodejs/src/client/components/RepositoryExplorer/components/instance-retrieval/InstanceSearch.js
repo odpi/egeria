@@ -425,6 +425,8 @@ export default function InstanceSearch(props) {
     <div className={props.className}>
 
       <div className="retrieval-controls">
+
+        <div className="retrieval-fields">
         <p>
         Search for instances
         </p>
@@ -453,26 +455,28 @@ export default function InstanceSearch(props) {
                onChange = { updatedSearchText } >
         </input>
 
+        <br/>
         <FilterManager searchCategory={searchCategory} typeSelected={filterTypeSelected} clsChanged={filterClassificationChanged} />
 
-        <br />
 
-        <button className="top-control-button" onClick = { searchForInstances } >
+        </div>
+
+        <button className="retrieval-button" onClick = { searchForInstances } >
           Search for instances
         </button>
       </div>
 
-        <SearchResultHandler status                = { status }
-                             searchCategory        = { searchCategory }
-                             searchType            = { searchType }
-                             searchText            = { searchText }
-                             searchClassifications = { Object.keys(searchClassifications) }
-                             serverName            = { repositoryServerContext.repositoryServerName }
-                             results               = { searchResults }
-                             selectCallback        = { selectCallback }
-                             setAllCallback        = { setAllCallback }
-                             onCancel              = { cancelSearchModal }
-                             onSubmit              = { submitSearchModal } />
+      <SearchResultHandler status                = { status }
+                           searchCategory        = { searchCategory }
+                           searchType            = { searchType }
+                           searchText            = { searchText }
+                           searchClassifications = { Object.keys(searchClassifications) }
+                           serverName            = { repositoryServerContext.repositoryServerName }
+                           results               = { searchResults }
+                           selectCallback        = { selectCallback }
+                           setAllCallback        = { setAllCallback }
+                           onCancel              = { cancelSearchModal }
+                           onSubmit              = { submitSearchModal } />
 
     </div>      
 

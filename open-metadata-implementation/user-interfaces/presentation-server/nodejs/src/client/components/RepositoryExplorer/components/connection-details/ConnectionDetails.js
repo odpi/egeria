@@ -57,30 +57,33 @@ export default function ConnectionDetails(props) {
      
       <div className="connection-controls">  
 
-        <p>Repository Server</p>
+        <div className="connection-fields">
 
-        <label htmlFor="serverNameField">Server name: </label>
-        <input name="serverNameField"
-           value = { repositoryServerContext.repositoryServerName }      
-           onChange = { updatedServerName }   />
-        <br />
+          <p>Repository Server</p>
 
-        <label htmlFor="serverRootURLField">Server Root URL: </label>
-        <input name="serverRootURLField"
-           value = { repositoryServerContext.repositoryServerRootURL }
-           onChange = { updatedServerRootURL }  />
-       <br />
+          <label htmlFor="serverNameField">Server name: </label>
+          <input name="serverNameField"
+             value = { repositoryServerContext.repositoryServerName }
+             onChange = { updatedServerName }   />
+          <br />
+
+          <label htmlFor="serverRootURLField">Server Root URL: </label>
+          <input name="serverRootURLField"
+             value = { repositoryServerContext.repositoryServerRootURL }
+             onChange = { updatedServerRootURL }  />
+         <br />
          
-        <label htmlFor="cbEnterprise">Enterprise : </label>
-        <input type="checkbox" 
-               id="cbEnterprise" 
-               name="cbEnterprise" 
-               onChange={updatedEnterpriseOption} 
-               checked={ repositoryServerContext.repositoryServerEnterpriseOption } 
-               value={ repositoryServerContext.repositoryServerEnterpriseOption }  />
-        <br />
-          
-        <button className="top-control-button"  onClick = { setServerDetails } >
+          <label htmlFor="cbEnterprise">Enterprise : </label>
+          <input type="checkbox"
+                 id="cbEnterprise"
+                 name="cbEnterprise"
+                 onChange={updatedEnterpriseOption}
+                 checked={ repositoryServerContext.repositoryServerEnterpriseOption }
+                 value={ repositoryServerContext.repositoryServerEnterpriseOption }  />
+          <br />
+        </div>
+
+        <button className="connect-button"  onClick = { setServerDetails } >
           Set Server Details
         </button>
       </div>
