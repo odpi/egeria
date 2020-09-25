@@ -75,7 +75,7 @@ public class TexViewRESTServices {
 
                 response.setTypeExplorer(handler.getTypeExplorer(userId,
                                                                  requestBody.getServerName(),
-                                                                 requestBody.getServerURLRoot(),
+                                                                 requestBody.getServerRootURL(),
                                                                  requestBody.getEnterpriseOption(),
                                                                  methodName));
             }

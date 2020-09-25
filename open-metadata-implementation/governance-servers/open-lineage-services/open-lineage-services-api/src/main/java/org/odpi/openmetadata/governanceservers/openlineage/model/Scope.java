@@ -7,7 +7,7 @@ public enum Scope {
     END_TO_END("end-to-end"),
     ULTIMATE_SOURCE("ultimate-source"),
     ULTIMATE_DESTINATION("ultimate-destination"),
-    GLOSSARY("glossary");
+    VERTICAL("vertical");
 
     private final String value;
 

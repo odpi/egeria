@@ -23,7 +23,7 @@ public class RexTraversalRequestBody {
      */
 
     private String                    serverName;                    // must be non-null
-    private String                    serverURLRoot;                 // must be non-null
+    private String                    serverRootURL;                 // must be non-null
     private String                    entityGUID;                    // must be non-null, GUID of root of traversal
     private Boolean                   enterpriseOption;
     private List<String>              entityTypeGUIDs;               // a list of type guids or null
@@ -43,7 +43,7 @@ public class RexTraversalRequestBody {
 
     public String getServerName() { return serverName; }
 
-    public String getServerURLRoot() { return serverURLRoot; }
+    public String getServerRootURL() { return serverRootURL; }
 
     public String getEntityGUID() { return entityGUID; }
 
@@ -66,7 +66,7 @@ public class RexTraversalRequestBody {
 
     public void setServerName(String serverName) { this.serverName = serverName; }
 
-    public void setServerURLRoot(String serverURLRoot) { this.serverURLRoot = serverURLRoot; }
+    public void setServerRootURL(String serverRootURL) { this.serverRootURL = serverRootURL; }
 
     public void setEntityGUID(String entityGUID) { this.entityGUID = entityGUID; }
 
@@ -95,7 +95,7 @@ public class RexTraversalRequestBody {
     {
         return "RexTraversalRequestBody{" +
                 ", serverName=" + serverName +
-                ", serverURLRoot=" + serverURLRoot +
+                ", serverRootURL=" + serverRootURL +
                 ", entityGUID=" + entityGUID +
                 ", depth=" + depth +
                 ", enterpriseOption=" + enterpriseOption +

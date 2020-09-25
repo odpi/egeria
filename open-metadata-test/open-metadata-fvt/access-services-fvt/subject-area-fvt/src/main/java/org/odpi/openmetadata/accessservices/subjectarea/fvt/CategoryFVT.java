@@ -67,7 +67,7 @@ public class CategoryFVT {
 
     public CategoryFVT(String url, String serverName, String userId) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         SubjectAreaRestClient client = new SubjectAreaRestClient(serverName, url);
-        subjectAreaCategory = new SubjectAreaCategoryClient(client);
+        subjectAreaCategory = new SubjectAreaCategoryClient<>(client);
         glossaryFVT = new GlossaryFVT(url, serverName, userId);
         this.serverName = serverName;
         this.userId = userId;

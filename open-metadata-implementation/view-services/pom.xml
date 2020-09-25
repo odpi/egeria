@@ -31,5 +31,6 @@
         <module>glossary-author-view</module>
         <module>rex-view</module>
         <module>tex-view</module>
+        <module>dino-view</module>
     </modules>
 </project>
