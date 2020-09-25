@@ -390,10 +390,12 @@ public class GlossaryAuthorViewGlossaryRESTServices extends BaseGlossaryAuthorVi
      */
     public SubjectAreaOMASAPIResponse<SubjectAreaOMASAPIResponse<Term>> createMultipleTermsInAGlossary(String serverName, String userId, String guid, Term[] terms) {
         final String methodName = "createMultipleTermsInAGlossary";
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
         List<SubjectAreaOMASAPIResponse<Term>> termList = new ArrayList<>();
         SubjectAreaOMASAPIResponse<SubjectAreaOMASAPIResponse<Term>> response = new SubjectAreaOMASAPIResponse<>();
+        AuditLog auditLog = null;
 
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         try {
 
             SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
@@ -405,19 +407,16 @@ public class GlossaryAuthorViewGlossaryRESTServices extends BaseGlossaryAuthorVi
                 try {
                     Term createdTerm = clients.terms().create(userId, term);
                     termResponse.addResult(createdTerm);
-                } catch (OCFCheckedExceptionBase e) {
-                    termResponse.setExceptionInfo(e, className);
+                } catch (Throwable error) {
+                    termResponse = getResponseForError(error, auditLog, className, methodName);
                 }
                 termList.add(termResponse);
             }
-        } catch (OCFCheckedExceptionBase e) {
-            SubjectAreaOMASAPIResponse<Term> errorResponse = new SubjectAreaOMASAPIResponse<Term>();
-            errorResponse.setExceptionInfo(e, className);
-            termList.add(errorResponse);
+            response.addAllResults(termList);
+        } catch (Throwable error) {
+            response = getResponseForError(error, auditLog, className, methodName);
         }
-        response.addAllResults(termList);
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
-
 }
