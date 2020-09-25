@@ -88,7 +88,7 @@ public class RexViewRESTServices {
 
                 response.setTypeExplorer(handler.getTypeExplorer(userId,
                                                                  requestBody.getServerName(),
-                                                                 requestBody.getServerURLRoot(),
+                                                                 requestBody.getServerRootURL(),
                                                                  requestBody.getEnterpriseOption(),
                                                                  methodName));
             }
@@ -141,7 +141,7 @@ public class RexViewRESTServices {
 
                 response.setExpandedEntityDetail(handler.getEntity(userId,
                                                                    requestBody.getServerName(),
-                                                                   requestBody.getServerURLRoot(),
+                                                                   requestBody.getServerRootURL(),
                                                                    requestBody.getEnterpriseOption(),
                                                                    requestBody.getEntityGUID(),
                                                                    methodName));
@@ -195,7 +195,7 @@ public class RexViewRESTServices {
 
                 response.setExpandedRelationship(handler.getRelationship(userId,
                                                                          requestBody.getServerName(),
-                                                                         requestBody.getServerURLRoot(),
+                                                                         requestBody.getServerRootURL(),
                                                                          requestBody.getEnterpriseOption(),
                                                                          requestBody.getRelationshipGUID(),
                                                                          methodName));
@@ -252,7 +252,7 @@ public class RexViewRESTServices {
 
                 response.setEntities(handler.findEntities(userId,
                                                           requestBody.getServerName(),
-                                                          requestBody.getServerURLRoot(),
+                                                          requestBody.getServerRootURL(),
                                                           requestBody.getEnterpriseOption(),
                                                           requestBody.getSearchText(),
                                                           requestBody.getTypeName(),
@@ -318,7 +318,7 @@ public class RexViewRESTServices {
 
                 response.setRelationships(handler.findRelationships(userId,
                                                                     requestBody.getServerName(),
-                                                                    requestBody.getServerURLRoot(),
+                                                                    requestBody.getServerRootURL(),
                                                                     requestBody.getEnterpriseOption(),
                                                                     requestBody.getSearchText(),
                                                                     requestBody.getTypeName(),
@@ -389,7 +389,7 @@ public class RexViewRESTServices {
 
                 RexPreTraversal preTraversal = handler.preTraversal(userId,
                                                                        requestBody.getServerName(),
-                                                                       requestBody.getServerURLRoot(),
+                                                                       requestBody.getServerRootURL(),
                                                                        requestBody.getEnterpriseOption(),
                                                                        requestBody.getEntityGUID(),
                                                                        requestBody.getDepth(),
@@ -460,7 +460,7 @@ public class RexViewRESTServices {
 
                 RexTraversal traversal = handler.traversal(userId,
                                                               requestBody.getServerName(),
-                                                              requestBody.getServerURLRoot(),
+                                                              requestBody.getServerRootURL(),
                                                               requestBody.getEnterpriseOption(),
                                                               requestBody.getEntityGUID(),
                                                               requestBody.getDepth(),
