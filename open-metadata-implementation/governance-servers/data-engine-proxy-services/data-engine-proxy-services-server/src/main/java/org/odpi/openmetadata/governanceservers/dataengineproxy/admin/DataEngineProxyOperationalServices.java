@@ -12,11 +12,17 @@ import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.Connecti
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.EmbeddedConnection;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.VirtualConnection;
 import org.odpi.openmetadata.governanceservers.dataengineproxy.auditlog.DataEngineProxyAuditCode;
 import org.odpi.openmetadata.governanceservers.dataengineproxy.auditlog.DataEngineProxyErrorCode;
 import org.odpi.openmetadata.governanceservers.dataengineproxy.connectors.DataEngineConnectorBase;
 import org.odpi.openmetadata.governanceservers.dataengineproxy.processor.DataEngineProxyChangePoller;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * DataEngineProxyOperationalServices is responsible for controlling the startup and shutdown of
@@ -25,6 +31,7 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 public class DataEngineProxyOperationalServices {
 
     private String localServerName;
+    private String localServerId;
     private String localServerUserId;
     private String localServerPassword;
 
@@ -41,9 +48,11 @@ public class DataEngineProxyOperationalServices {
      * @param localServerPassword   password for this server to use if processing inbound messages
      */
     public DataEngineProxyOperationalServices(String localServerName,
+                                              String localServerId,
                                               String localServerUserId,
                                               String localServerPassword) {
         this.localServerName = localServerName;
+        this.localServerId = localServerId;
         this.localServerUserId = localServerUserId;
         this.localServerPassword = localServerPassword;
     }
@@ -114,10 +123,26 @@ public class DataEngineProxyOperationalServices {
 
             try {
 
-                //Configure and start the topic connector
+                // Configure and start the topic connector
                 ConnectionResponse connectionResponse = ((DataEngineRESTConfigurationClient) dataEngineClient).getInTopicConnection(dataEngineProxyConfig.getAccessServiceServerName(), localServerUserId);
+
                 ConnectorBroker connectorBroker = new ConnectorBroker();
-                dataEngineTopicConnector = (DataEngineInTopicClientConnector) connectorBroker.getConnector(connectionResponse.getConnection());
+                VirtualConnection virtualConnection = (VirtualConnection)connectionResponse.getConnection();
+
+                // Replace connection configuration properties relevant the server hosting the client connector
+                // In this case it is important to set the kafka consumer `group.id` property
+                List<EmbeddedConnection> embeddedConnections = new ArrayList<>();
+                virtualConnection.getEmbeddedConnections().forEach(embeddedConnection -> {
+                    Connection connection = embeddedConnection.getEmbeddedConnection();
+                    Map cp = connection.getConfigurationProperties();
+                    cp.put("local.server.id", localServerId); // -> maps to `group.id` in OCF
+                    connection.setConfigurationProperties(cp);
+                    embeddedConnection.setEmbeddedConnection(connection);
+                    embeddedConnections.add(embeddedConnection);
+                });
+                virtualConnection.setEmbeddedConnections(embeddedConnections);
+
+                dataEngineTopicConnector = (DataEngineInTopicClientConnector) connectorBroker.getConnector(virtualConnection);
                 dataEngineTopicConnector.setAuditLog(auditLog);
                 dataEngineTopicConnector.start();
                 dataEngineClient = new DataEngineEventClient(dataEngineTopicConnector);
