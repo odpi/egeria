@@ -419,4 +419,5 @@ public class GlossaryAuthorViewGlossaryRESTServices extends BaseGlossaryAuthorVi
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
+
 }
