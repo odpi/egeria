@@ -27,21 +27,21 @@ public class SemanticAssignment extends Line {
     /*
      * Set up end 1.
      */
-    protected final static String END_1_NODE_TYPE = "Referenceable";
-    protected final static String END_1_ATTRIBUTE_NAME = "assignedElements";
-    protected final static String END_1_ATTRIBUTE_DESCRIPTION = "Elements identified as managing data that has the same meaning as this glossary term.";
-    protected final static RelationshipEndCardinality END_1_CARDINALITY = RelationshipEndCardinality.ANY_NUMBER;
-    protected final static LineEnd LINE_END_1 = new LineEnd(END_1_NODE_TYPE,
+     protected static final String END_1_NODE_TYPE = "Referenceable";
+     protected static final String END_1_ATTRIBUTE_NAME = "assignedElements";
+     protected static final String END_1_ATTRIBUTE_DESCRIPTION = "Elements identified as managing data that has the same meaning as this glossary term.";
+     protected static final RelationshipEndCardinality END_1_CARDINALITY = RelationshipEndCardinality.ANY_NUMBER;
+     protected static final LineEnd LINE_END_1 = new LineEnd(END_1_NODE_TYPE,
             END_1_ATTRIBUTE_NAME, END_1_ATTRIBUTE_DESCRIPTION, END_1_CARDINALITY);
 
     /*
      * Set up end 2.
      */
-    protected final static String END_2_NODE_TYPE = "Term";
-    protected final static String END_2_ATTRIBUTE_NAME = "meaning";
-    protected final static String END_2_ATTRIBUTE_DESCRIPTION = "Semantic definition for this element.";
-    protected final static RelationshipEndCardinality END_2_CARDINALITY = RelationshipEndCardinality.ANY_NUMBER;
-    protected final static LineEnd LINE_END_2 = new LineEnd(END_2_NODE_TYPE,
+     protected static final String END_2_NODE_TYPE = "Term";
+     protected static final String END_2_ATTRIBUTE_NAME = "meaning";
+     protected static final String END_2_ATTRIBUTE_DESCRIPTION = "Semantic definition for this element.";
+     protected static final RelationshipEndCardinality END_2_CARDINALITY = RelationshipEndCardinality.ANY_NUMBER;
+     protected static final LineEnd LINE_END_2 = new LineEnd(END_2_NODE_TYPE,
             END_2_ATTRIBUTE_NAME, END_2_ATTRIBUTE_DESCRIPTION, END_2_CARDINALITY);
 
     private String expression;

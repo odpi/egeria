@@ -28,7 +28,7 @@ export default function GlossaryAuthorRoutes({ glossaryAuthorURL }) {
     return path;
   }
   function getQuickTermsPath() {
-    const path = glossaryAuthorURL + "/glossaries/quick-terms";
+    const path = glossaryAuthorURL + "/glossaries/:guid/quick-terms";
     console.log("getQuickTerms " + path);
     return path;
   }

@@ -42,6 +42,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         @JsonSubTypes.Type(value = TermAnchor.class),
         @JsonSubTypes.Type(value = CategoryAnchor.class),
         @JsonSubTypes.Type(value = Categorization.class),
+        @JsonSubTypes.Type(value = SemanticAssignment.class),
+        @JsonSubTypes.Type(value = LibraryCategoryReference.class),
+        @JsonSubTypes.Type(value = LibraryTermReference.class),
+        @JsonSubTypes.Type(value = ProjectScope.class)
 })
 abstract public class Line implements Serializable, OmasObject {
     protected static final long serialVersionUID = 1L;
@@ -55,11 +59,6 @@ abstract public class Line implements Serializable, OmasObject {
     protected String name;
     protected LineEnd end1;
     protected LineEnd end2;
-
-//    /**
-//     * Default constructor
-//     */
-//    public Line() { }
 
     protected Line(String name, String typeDefGuid, LineEnd end1, LineEnd end2) {
         this.end1 = end1;

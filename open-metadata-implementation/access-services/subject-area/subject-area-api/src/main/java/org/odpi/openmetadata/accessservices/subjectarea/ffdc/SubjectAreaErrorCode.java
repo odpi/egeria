@@ -294,7 +294,11 @@ public enum SubjectAreaErrorCode implements ExceptionMessageSet {
             "The access service has not been initialized and can not support REST API call {0}",
             "The server has received a call to one of its open metadata access services but is unable to process it because the access service is " +
                                     "not active.",
-            "If the server is supposed to have this access service activated, correct the server configuration and restart the server.")
+            "If the server is supposed to have this access service activated, correct the server configuration and restart the server."),
+    NOT_FOUND_CLIENT(500, "OMAS-SUBJECT-AREA-500-003",
+            "Not found client for {0}.",
+            "During a method call `getClient` the cache could not find a client instance for this class.",
+            "Check if the type passed to the getClient method is correct. Check if a client has been created for this type.")
     ;
     private static final long    serialVersionUID = 1L;
 

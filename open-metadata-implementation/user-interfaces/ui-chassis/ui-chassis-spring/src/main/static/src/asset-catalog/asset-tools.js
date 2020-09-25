@@ -58,13 +58,17 @@ class AssetTools extends PolymerElement {
                     </paper-button>
                 </a>
             </li>
-            <li> 
-                <a href="#/asset-lineage/glossaryLineage/[[guid]]" title="Glossary Lineage">
-                    <paper-button raised>
-                    <iron-icon  icon="vaadin:file-tree"></iron-icon>
-                    <div>&nbsp;Glossary</div>
-                    </paper-button>
-                </a>
+            <li>
+            <dom-if if="[[ _displayVerticalLineageButton(items)]]" >
+                <template>
+                    <a href="#/asset-lineage/verticalLineage/[[guid]]" title="Vertical Lineage">
+                        <paper-button raised>
+                        <iron-icon  icon="vaadin:file-tree"></iron-icon>
+                        <div>&nbsp;Vertical Lineage</div>
+                        </paper-button>
+                    </a>
+                </template>
+                </dom-if>
             </li>
             <li> 
                 <a href="#/asset-lineage/sourceAndDestination/[[guid]]" title="Source and Destination Lineage">
@@ -84,6 +88,10 @@ class AssetTools extends PolymerElement {
             </li>
         </ul>
     `;
+    }
+
+    _displayVerticalLineageButton(item) {
+        return (item === 'RelationalColumn' || item === 'TabularColumn' || item === 'GlossaryTerm');
     }
 
     _encode(val){

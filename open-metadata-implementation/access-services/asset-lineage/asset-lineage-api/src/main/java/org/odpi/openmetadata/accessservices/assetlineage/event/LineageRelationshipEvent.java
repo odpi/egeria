@@ -21,10 +21,20 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class LineageRelationshipEvent extends AssetLineageEventHeader {
     private LineageRelationship lineageRelationship;
 
+    /**
+     * Gets lineage relationship.
+     *
+     * @return the lineage relationship
+     */
     public LineageRelationship getLineageRelationship() {
         return lineageRelationship;
     }
 
+    /**
+     * Sets lineage relationship.
+     *
+     * @param lineageRelationship the lineage relationship
+     */
     public void setLineageRelationship(LineageRelationship lineageRelationship) {
         this.lineageRelationship = lineageRelationship;
     }

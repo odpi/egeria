@@ -8,15 +8,9 @@ import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.SubjectArea
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
 
 @SubjectAreaNodeClient
-public class SubjectAreaGlossaryClient extends AbstractSubjectAreaNode<Glossary> {
+public class SubjectAreaGlossaryClient<G extends Glossary> extends AbstractSubjectAreaNode<G> {
     public SubjectAreaGlossaryClient(SubjectAreaRestClient client)
     {
         super(client, SUBJECT_AREA_BASE_URL + "glossaries");
-    }
-
-
-    @Override
-    public Class<Glossary> type() {
-        return Glossary.class;
     }
 }
