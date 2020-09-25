@@ -144,7 +144,6 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
                     hierarchical: {
                         enabled: true,
                         levelSeparation: 250,
-                        direction: 'LR'
                     }
                 }
             },
@@ -342,12 +341,15 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
         if (this.routeData.guid !== undefined && this.routeData.guid !== "")
             switch (usecase) {
                 case 'ultimateSource':
+                    this.graphLayout.hierarchical.direction = 'LR'
                     this._ultimateSource(this.routeData.guid, includeProcesses);
                     break;
                 case 'endToEnd':
+                    this.graphLayout.hierarchical.direction = 'LR'
                     this._endToEndLineage(this.routeData.guid, includeProcesses);
                     break;
                 case 'ultimateDestination':
+                    this.graphLayout.hierarchical.direction = 'LR'
                     this._ultimateDestination(this.routeData.guid, includeProcesses);
                     break;
                 case 'verticalLineage':
@@ -355,6 +357,7 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
                     this._verticalLineage(this.routeData.guid, includeProcesses);
                     break;
                 case 'sourceAndDestination':
+                    this.graphLayout.hierarchical.direction = 'LR'
                     this._sourceAndDestination(this.routeData.guid, includeProcesses);
                     break;
             }
