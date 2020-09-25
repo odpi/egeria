@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.LINEAGE_MAPPING;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PROCESS;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.PROCESS_HIERARCHY;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.SEMANTIC_ASSIGNMENT;
@@ -300,6 +301,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
                 publisher.publishGlossaryContext(glossaryTermGUID);
                 break;
             case PROCESS_HIERARCHY:
+            case LINEAGE_MAPPING:
                 log.debug(PROCESSING_RELATIONSHIP_DEBUG_MESSAGE, AssetLineageEventType.NEW_RELATIONSHIP_EVENT.getEventTypeName(), relationship.getGUID());
                 publisher.publishLineageRelationshipEvent(converter.createLineageRelationship(relationship),
                         AssetLineageEventType.NEW_RELATIONSHIP_EVENT);
