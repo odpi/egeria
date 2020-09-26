@@ -392,12 +392,11 @@ public class GlossaryAuthorViewGlossaryRESTServices extends BaseGlossaryAuthorVi
         final String methodName = "createMultipleTermsInAGlossary";
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        List<SubjectAreaOMASAPIResponse<Term>> termList = new ArrayList<>();
         SubjectAreaOMASAPIResponse<SubjectAreaOMASAPIResponse<Term>> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         try {
-
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
             for (Term term : terms) {
                 GlossarySummary glossarySummary = new GlossarySummary();
@@ -410,9 +409,9 @@ public class GlossaryAuthorViewGlossaryRESTServices extends BaseGlossaryAuthorVi
                 } catch (Throwable error) {
                     termResponse = getResponseForError(error, auditLog, className, methodName);
                 }
-                termList.add(termResponse);
+                response.addResult(termResponse);
             }
-            response.addAllResults(termList);
+
         } catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, methodName);
         }
