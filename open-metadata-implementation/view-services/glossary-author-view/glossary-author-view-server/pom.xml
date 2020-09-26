@@ -20,6 +20,10 @@
     </scm>
 
     <artifactId>glossary-author-view-server</artifactId>
+    <name>Glossary Author OMVS Server-side</name>
+    <description>
+        Server-side support for the Glossary Author Open Metadata View Service (OMVS).
+    </description>
 
     <dependencies>
 
