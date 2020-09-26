@@ -893,7 +893,7 @@ const ResourcesContextProvider = (props) => {
     server.serverName            = serverName;
     server.guid                  = serverGUID;
     if (serverOverview.description)
-      server.description         = "Loaded by "+serverOverview.serverInstanceName+" server link.\\n"+serverOverview.description;
+      server.description         = "Loaded by "+serverOverview.serverInstanceName+" server link. "+serverOverview.description;
     else
       server.description         = "Loaded by "+platformName+" platform query";
     server.platformRootURL       = serverOverview.platformRootURL;
