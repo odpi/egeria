@@ -35,6 +35,12 @@ import DetailsPanel                    from "./components/details-panel/DetailsP
 
 import DiagramManager                  from "./components/diagram/DiagramManager";
 
+import ReadmeHandler                            from "./ReadmeHandler";
+
+import QuestionMarkImage                        from "./question-mark-32.png";
+
+import ReadmeMarkdown                           from './README.md';
+
 import "./tex.scss";
 
 
@@ -48,6 +54,9 @@ export default function TypeExplorer() {
    */
   const [cltHeight, setCltHeight] = useState(document.documentElement.clientHeight);  
   const [cltWidth, setCltWidth]   = useState(document.documentElement.clientWidth);  
+
+  const [readme, setReadme]             = useState( { markdown : '' } );
+  const [readmeStatus, setReadmeStatus] = useState("idle");
 
   let workingHeight = cltHeight - 50;
   let workingWidth  = cltWidth - 265;
@@ -69,6 +78,17 @@ export default function TypeExplorer() {
     containerDiv.current.style.width=""+workingWidth+"px";
   }
 
+  const displayReadme = () => {
+    setReadmeStatus("complete");
+  }
+
+  const cancelReadmeModal = () => {
+    setReadmeStatus("idle");
+  };
+
+  const submitReadmeModal = () => {
+    setReadmeStatus("idle");
+  };
 
   /*
    * useEffect to set size of container... 
@@ -83,6 +103,19 @@ export default function TypeExplorer() {
       return () => window.removeEventListener('resize', updateSize);
     }
   )
+
+   /*
+    * useEffect to load markdown readme file
+    */
+  useEffect(
+    () => {
+      // Get the content of the markdown file and save it in 'readme'.
+      fetch(ReadmeMarkdown).then(res => res.text()).then(text => setReadme({ markdown: text }));
+    }, 
+    [] /* run effect once only */
+  )
+
+
   
 
   return (
@@ -98,6 +131,15 @@ export default function TypeExplorer() {
 
                 <div className="title">
                   <p>Type Explorer</p>
+
+                  <input type="image"  src={QuestionMarkImage}
+                     onClick = { () => displayReadme() }  >
+                  </input>
+
+                  <ReadmeHandler   status              = { readmeStatus }
+                                   readme              = { readme }
+                                   onCancel            = { cancelReadmeModal }
+                                   onSubmit            = { submitReadmeModal } />
                 </div>
 
                 <div className="tex-top-left">
