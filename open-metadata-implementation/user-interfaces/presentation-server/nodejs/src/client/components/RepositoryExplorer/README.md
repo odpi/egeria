@@ -2,7 +2,7 @@
 
 The Repository Explorer (Rex) interface provides a way to query Egeria metadata servers to retrieve and display about the metadata instances they contain. It is possible to retrieve entities and relationships, view their properties and display them as a graph of interconnected objects. The instances are presented both textually (on the left side) and diagrammatically (on the right side).
 
-![Dino Interface](image1)
+![Rex Interface](image1)
 TODO - replace image
 
 
@@ -11,7 +11,7 @@ The Rex interface runs under the Presentation Server component of Egeria, and it
 
 
 ### Configuration
-The Repository Explorer View Service is an Integration View Service and is configured using `IntegrationViewServiceConfig`. This contains the name and status of the View Service and also contains a list of the resources that the Rex interface is permitted to access. These resources are platforms and servers that will appear in the selectors in the Rex interface. All requests to the Repository Explorer View Service REST API are based on these configured named resources. When a user selects a platform name or server name from the selector lists, the interface sends the resource name to the Repository Explorer View Service, which resolves the platform or server name to a resource endpoint to identify the URL needed to send a request to the platform or server. 
+The Repository Explorer View Service is an Integration View Service and is configured using `IntegrationViewServiceConfig`. This contains the name and status of the View Service and also contains a list of the resources that the Rex interface is permitted to access. These resources are the platforms and servers that the user will be able access. The configured servers will appear in the selectors in the Rex interface. All requests to the Repository Explorer View Service REST API are based on these configured named resources. When a user selects a server name from the selector list, the interface sends the resource name to the Repository Explorer View Service, which resolves the server name to a resource endpoint to identify the URL needed to send a request to the server. 
 
 In the Repository Explorer View Service configuration, the view service administrator configures a list of Resource Endpoints to represent platforms and servers. Every `ResourceEndpointConfig` needs a `resourceCategory`, which is set to either `"Platform"` or `"Server"`. A platform `ResourceEndpointConfig` must have a unique `platformName` and a `platformRootURL` and can have an optional `description` property. A server `ResourceEndpointConfig` for a server must have a `serverName` and the `platformName` of a configured platform resource endpoint. A server can have an optional `description` property. In an Egeria deployment, a server may be deployed to multiple platforms - this is typically used for clustering - and a server ResourceEndpointConfig contains a property called serverInstanceName which must be unique and is used to name a specific instance of a server. For example, you could configure a pair of server resource endpoints called "Server1@PlatformA" and "Server1@PlatformB". The serverInstanceName is used to display the resource in the user interface selector lists. 
 
