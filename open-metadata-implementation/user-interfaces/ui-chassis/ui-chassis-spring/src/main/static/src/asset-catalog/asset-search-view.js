@@ -61,13 +61,7 @@ class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
         vaadin-grid {
           flex-grow: 1;
         }
-            
-        .level0{ color: inherit;}
-        .level1{ color: inherit;}
-        .level2{ color: orange;}
-        .level3{ color: orange;}
-        .level4{ color: red;}
-        
+ 
       </style>
 
       <token-ajax id="tokenAjax" last-response="{{searchResp}}"></token-ajax>
@@ -211,14 +205,6 @@ class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
 
             this.$.tokenAjax.url = '/api/assets/search?q=' + this.q + '&types=' + types;
             this.$.tokenAjax._go();
-        }
-    }
-
-    _itemClass(item){
-        if( item && item.properties.level){
-            return 'level'+ item.properties.level;
-        } else {
-            return '';
         }
     }
 
