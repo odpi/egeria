@@ -20,6 +20,10 @@
     </scm>
 
     <artifactId>glossary-author-view</artifactId>
+    <name>Glossary Author OMVS</name>
+    <description>
+       REST API for the Glossary Author Open Metadata View Service (OMVS).
+    </description>
     <packaging>pom</packaging>
     <modules>
         <module>glossary-author-view-server</module>

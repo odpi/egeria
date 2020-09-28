@@ -2,13 +2,14 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.client.relationships;
 
-import org.odpi.openmetadata.accessservices.subjectarea.client.Parametrization;
+import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GenericResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.ResponseParameterization;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaRestClient;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.NeighborhoodHistoricalFindRequest;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Graph;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineType;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.NodeType;
-import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.utils.QueryBuilder;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -18,7 +19,7 @@ import java.util.stream.Collectors;
 
 import static org.odpi.openmetadata.accessservices.subjectarea.client.AbstractSubjectArea.SUBJECT_AREA_BASE_URL;
 
-public class SubjectAreaGraphClient implements SubjectAreaGraph, Parametrization<Graph> {
+public class SubjectAreaGraphClient implements SubjectAreaGraph, ResponseParameterization<Graph> {
     private static final String BASE_URL = SUBJECT_AREA_BASE_URL + "nodes";
     protected final SubjectAreaRestClient client;
     public SubjectAreaGraphClient(SubjectAreaRestClient client) {
@@ -26,8 +27,8 @@ public class SubjectAreaGraphClient implements SubjectAreaGraph, Parametrization
     }
 
     @Override
-    public Class<Graph> type() {
-        return Graph.class;
+    public Class<? extends GenericResponse> responseType() {
+        return SubjectAreaOMASAPIResponse.class;
     }
 
     @Override
@@ -38,8 +39,8 @@ public class SubjectAreaGraphClient implements SubjectAreaGraph, Parametrization
         final String methodName = "getGraph";;
 
         String urlTemplate = BASE_URL + "/%s" + createGraphQuery(request).toString();
-        SubjectAreaOMASAPIResponse<Graph> response = client.getByIdRESTCall(userId, guid, methodName, getParametrizedType(), urlTemplate);
-        return response.getHead();
+        GenericResponse<Graph> response = client.getByIdRESTCall(userId, guid, methodName, getParameterizedType(), urlTemplate);
+        return response.head().get();
     }
 
     public QueryBuilder createGraphQuery(NeighborhoodHistoricalFindRequest request) {

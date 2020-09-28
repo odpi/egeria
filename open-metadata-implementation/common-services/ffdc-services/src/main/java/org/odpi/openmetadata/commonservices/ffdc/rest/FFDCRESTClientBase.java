@@ -366,7 +366,7 @@ public class FFDCRESTClientBase
      * @return response object
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    protected  <T> T    callPutRESTCall(String    methodName,
+    protected  <T> T callPutRESTCall(String    methodName,
                                      ParameterizedTypeReference<T> responseType,
                                      String    urlTemplate,
                                      Object    requestBody,
@@ -395,9 +395,9 @@ public class FFDCRESTClientBase
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
     protected  <T> T callDeleteRESTCall(String    methodName,
-                                     Class<T>  returnClass,
-                                     String    urlTemplate,
-                                     Object... params) throws PropertyServerException
+                                        Class<T>  returnClass,
+                                        String    urlTemplate,
+                                        Object... params) throws PropertyServerException
     {
         try
         {

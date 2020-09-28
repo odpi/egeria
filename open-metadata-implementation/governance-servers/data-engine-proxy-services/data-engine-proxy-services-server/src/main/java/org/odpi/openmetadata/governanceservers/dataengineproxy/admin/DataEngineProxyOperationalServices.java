@@ -2,10 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.dataengineproxy.admin;
 
-import org.odpi.openmetadata.accessservices.dataengine.client.DataEngineImpl;
+import org.odpi.openmetadata.accessservices.dataengine.client.DataEngineRESTClient;
 import org.odpi.openmetadata.adminservices.configuration.properties.DataEngineProxyConfig;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
-import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
@@ -16,8 +15,6 @@ import org.odpi.openmetadata.governanceservers.dataengineproxy.auditlog.DataEngi
 import org.odpi.openmetadata.governanceservers.dataengineproxy.connectors.DataEngineConnectorBase;
 import org.odpi.openmetadata.governanceservers.dataengineproxy.processor.DataEngineProxyChangePoller;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
-
-import java.text.MessageFormat;
 
 /**
  * DataEngineProxyOperationalServices is responsible for controlling the startup and shutdown of
@@ -86,15 +83,15 @@ public class DataEngineProxyOperationalServices {
         /*
          * Create the OMAS client
          */
-        DataEngineImpl dataEngineClient;
+        DataEngineRESTClient dataEngineClient;
         try {
             if ((localServerName != null) && (localServerPassword != null)) {
-                dataEngineClient = new DataEngineImpl(dataEngineProxyConfig.getAccessServiceServerName(),
+                dataEngineClient = new DataEngineRESTClient(dataEngineProxyConfig.getAccessServiceServerName(),
                         dataEngineProxyConfig.getAccessServiceRootURL(),
                         localServerUserId,
                         localServerPassword);
             } else {
-                dataEngineClient = new DataEngineImpl(dataEngineProxyConfig.getAccessServiceServerName(),
+                dataEngineClient = new DataEngineRESTClient(dataEngineProxyConfig.getAccessServiceServerName(),
                         dataEngineProxyConfig.getAccessServiceRootURL());
             }
         } catch (InvalidParameterException error) {

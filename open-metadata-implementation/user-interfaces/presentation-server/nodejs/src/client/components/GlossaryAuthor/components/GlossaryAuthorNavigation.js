@@ -2,10 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 import React, { useState, useEffect } from "react";
 
-import Add16 from "../../../images/Egeria_add_16";
-import Delete16 from "../../../images/Egeria_delete_16";
-import Edit16 from "../../../images/Egeria_edit_16";
-import Term16 from "../../../images/Egeria_term_16";
+import Add32 from "../../../images/Egeria_add_32";
+import Delete32 from "../../../images/Egeria_delete_32";
+import Edit32 from "../../../images/Egeria_edit_32";
+import Term32 from "../../../images/Egeria_term_32";
 import {
   LocalGlossaryCard,
   GlossaryCardSection,
@@ -16,7 +16,6 @@ import { issueRestGet, issueRestDelete } from "./RestCaller";
 import useDebounce from "./useDebounce";
 
 import { Link } from "react-router-dom";
-import { Button } from "carbon-components-react";
 
 export default function GlossaryAuthorNavigation({ match }) {
   const [glossaries, setGlossaries] = useState([]);
@@ -127,7 +126,7 @@ export default function GlossaryAuthorNavigation({ match }) {
     return match.path + "/add-glossary";
   }
   function getQuickTermsUrl() {
-    return match.path + "/quick-terms";
+    return match.path + "/" + selectedGlossaryGuid + "/quick-terms";
   }
   function getEditGlossaryUrl() {
     return match.path + "/edit-glossary/" + selectedGlossaryGuid;
@@ -167,23 +166,23 @@ export default function GlossaryAuthorNavigation({ match }) {
               />
             </div>
           </article>
-          <article className="glossary-card__controls bx--col-sm-4 bx--col-md-1 bx--col-lg-1 bx--col-xlg-1 bx--col-max-1">
+          <article className="glossary-card__controls bx--col-sm-4 bx--col-md-1 bx--col-lg-3 bx--col-xlg-3 bx--col-max-2">
             <div className="bx--row">
               <Link to={getAddGlossaryUrl}>
-                <Add16 kind="primary" />
+                <Add32 kind="primary" />
               </Link>
               {selectedGlossaryGuid && (
-              <Link to={getQuickTermsUrl}>
-                <Term16 kind="primary" />
-              </Link>
+                  <Link to={getQuickTermsUrl}>
+                    <Term32 kind="primary" />
+                  </Link>
               )}
               {selectedGlossaryGuid && (
                 <Link to={getEditGlossaryUrl()}>
-                  <Edit16 kind="primary" />
+                  <Edit32 kind="primary" />
                 </Link>
               )}
               {selectedGlossaryGuid && (
-                <Delete16 onClick={() => onClickDelete()} />
+                <Delete32 onClick={() => onClickDelete()} />
               )}
             </div>
           </article>
