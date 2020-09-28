@@ -10,7 +10,11 @@ import org.odpi.openmetadata.adminservices.configuration.properties.DataEnginePr
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.ConnectionResponse;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.EmbeddedConnection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.VirtualConnection;
@@ -129,7 +133,7 @@ public class DataEngineProxyOperationalServices {
                 ConnectorBroker connectorBroker = new ConnectorBroker();
                 VirtualConnection virtualConnection = (VirtualConnection)connectionResponse.getConnection();
 
-                // Replace connection configuration properties relevant the server hosting the client connector
+                // Replace connection configuration properties relevant to the server hosting the client connector
                 // In this case it is important to set the kafka consumer `group.id` property
                 List<EmbeddedConnection> embeddedConnections = new ArrayList<>();
                 virtualConnection.getEmbeddedConnections().forEach(embeddedConnection -> {
