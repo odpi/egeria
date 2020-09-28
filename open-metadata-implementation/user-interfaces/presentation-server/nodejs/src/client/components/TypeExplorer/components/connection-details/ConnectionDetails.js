@@ -29,8 +29,8 @@ export default function ConnectionDetails() {
   /*
    * Handler for change to instance GUID field
    */
-  const updatedServerURLRoot = (evt) => {
-    repositoryServerContext.setRepositoryServerURLRoot(evt.target.value);
+  const updatedServerRootURL = (evt) => {
+    repositoryServerContext.setRepositoryServerRootURL(evt.target.value);
   }
 
   /*
@@ -63,10 +63,10 @@ export default function ConnectionDetails() {
         onChange = { updatedServerName }   />
       <br />
 
-      <label htmlFor="serverURLRootField">Server URL root: </label>
-      <input name="serverURLRootField"
-        value = { repositoryServerContext.repositoryServerURLRoot }
-        onChange = { updatedServerURLRoot }  />
+      <label htmlFor="serverRootURLField">Server root URL: </label>
+      <input name="serverRootURLField"
+        value = { repositoryServerContext.repositoryServerRootURL }
+        onChange = { updatedServerRootURL }  />
       <br />
          
       <label htmlFor="cbEnterprise">Enterprise : </label>
