@@ -4,7 +4,7 @@ package org.odpi.openmetadata.frameworks.connectors.properties;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFRuntimeException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Classification;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementClassification;
 
 import java.util.Map;
 import java.util.Objects;
@@ -19,7 +19,7 @@ public class AssetClassification extends AssetPropertyBase
 {
     private static final long     serialVersionUID = 1L;
 
-    protected Classification    classificationBean;
+    protected ElementClassification classificationBean;
 
     /**
      * A private validation method used by the constructors.
@@ -57,13 +57,13 @@ public class AssetClassification extends AssetPropertyBase
      *
      * @param classification bean containing the properties
      */
-    protected AssetClassification(Classification  classification)
+    protected AssetClassification(ElementClassification classification)
     {
         super(null);
 
         if (classification == null)
         {
-            classificationBean = new Classification();
+            classificationBean = new ElementClassification();
         }
         else
         {
@@ -81,13 +81,13 @@ public class AssetClassification extends AssetPropertyBase
      * @param classification bean containing the properties
      */
     protected AssetClassification(AssetDescriptor parentAsset,
-                                  Classification  classification)
+                                  ElementClassification classification)
     {
         super(parentAsset);
 
         if (classification == null)
         {
-            classificationBean = new Classification();
+            classificationBean = new ElementClassification();
         }
         else
         {
@@ -136,7 +136,7 @@ public class AssetClassification extends AssetPropertyBase
      *
      * @return classification bean
      */
-    protected Classification  getClassificationBean()
+    protected ElementClassification getClassificationBean()
     {
         return classificationBean;
     }

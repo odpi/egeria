@@ -11,16 +11,16 @@ import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
 /**
- * Validate that the Classification bean can be cloned, compared, serialized, deserialized and printed as a String.
+ * Validate that the ElementClassification bean can be cloned, compared, serialized, deserialized and printed as a String.
  */
-public class TestClassification
+public class TestElementClassification
 {
     private Map<String, Object>  classificationProperties = new HashMap<>();
 
     /**
      * Default constructor
      */
-    public TestClassification()
+    public TestElementClassification()
     {
         classificationProperties.put("TestProperty", "TestValue");
     }
@@ -31,9 +31,9 @@ public class TestClassification
      *
      * @return filled in object
      */
-    private Classification getTestObject()
+    private ElementClassification getTestObject()
     {
-        Classification testObject = new Classification();
+        ElementClassification testObject = new ElementClassification();
 
         testObject.setClassificationName("TestName");
         testObject.setClassificationProperties(classificationProperties);
@@ -47,7 +47,7 @@ public class TestClassification
      *
      * @param resultObject object returned by the test
      */
-    private void validateResultObject(Classification  resultObject)
+    private void validateResultObject(ElementClassification resultObject)
     {
         assertTrue(resultObject.getClassificationProperties().equals(classificationProperties));
         assertTrue(resultObject.getClassificationName().equals("TestName"));
@@ -59,12 +59,12 @@ public class TestClassification
      */
     @Test public void testNullObject()
     {
-        Classification    nullObject = new Classification();
+        ElementClassification nullObject = new ElementClassification();
 
         assertTrue(nullObject.getClassificationName() == null);
         assertTrue(nullObject.getClassificationProperties() == null);
 
-        nullObject = new Classification(null);
+        nullObject = new ElementClassification(null);
 
         assertTrue(nullObject.getClassificationName() == null);
         assertTrue(nullObject.getClassificationProperties() == null);
@@ -81,10 +81,10 @@ public class TestClassification
         assertFalse(getTestObject().equals("DummyString"));
         assertTrue(getTestObject().equals(getTestObject()));
 
-        Classification  sameObject = getTestObject();
+        ElementClassification sameObject = getTestObject();
         assertTrue(sameObject.equals(sameObject));
 
-        Classification  differentObject = getTestObject();
+        ElementClassification differentObject = getTestObject();
         differentObject.setClassificationName("Different");
         assertFalse(getTestObject().equals(differentObject));
     }
@@ -104,7 +104,7 @@ public class TestClassification
      */
     @Test public void testClone()
     {
-        validateResultObject(new Classification(getTestObject()));
+        validateResultObject(new ElementClassification(getTestObject()));
     }
 
 
@@ -131,7 +131,7 @@ public class TestClassification
 
         try
         {
-            validateResultObject(objectMapper.readValue(jsonString, Classification.class));
+            validateResultObject(objectMapper.readValue(jsonString, ElementClassification.class));
         }
         catch (Throwable  exc)
         {
@@ -154,7 +154,7 @@ public class TestClassification
 
         try
         {
-            validateResultObject((Classification) objectMapper.readValue(jsonString, PropertyBase.class));
+            validateResultObject((ElementClassification) objectMapper.readValue(jsonString, PropertyBase.class));
         }
         catch (Throwable  exc)
         {

@@ -54,18 +54,19 @@ public class InformalTag extends ElementHeader
     /**
      * Copy/clone constructor.
      *
-     * @param templateInformalTag element to copy
+     * @param template element to copy
      */
-    public InformalTag(InformalTag templateInformalTag)
+    public InformalTag(InformalTag template)
     {
-        super(templateInformalTag);
+        super(template);
 
-        if (templateInformalTag != null)
+        if (template != null)
         {
-            isPrivateTag = templateInformalTag.isPrivateTag();
-            user = templateInformalTag.getUser();
-            name = templateInformalTag.getName();
-            description = templateInformalTag.getDescription();
+            isPublic = template.isPublic();
+            isPrivateTag = template.isPrivateTag();
+            user = template.getUser();
+            name = template.getName();
+            description = template.getDescription();
         }
     }
 
@@ -189,7 +190,8 @@ public class InformalTag extends ElementHeader
     public String toString()
     {
         return "InformalTag{" +
-                "isPrivateTag=" + isPrivateTag +
+                "public=" + isPublic +
+                ", isPrivateTag=" + isPrivateTag +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", user='" + user + '\'' +
@@ -223,7 +225,8 @@ public class InformalTag extends ElementHeader
             return false;
         }
         InformalTag that = (InformalTag) objectToCompare;
-        return isPrivateTag() == that.isPrivateTag() &&
+        return isPublic() == that.isPublic() &&
+                isPrivateTag() == that.isPrivateTag() &&
                 Objects.equals(getName(), that.getName()) &&
                 Objects.equals(getDescription(), that.getDescription()) &&
                 Objects.equals(getUser(), that.getUser());

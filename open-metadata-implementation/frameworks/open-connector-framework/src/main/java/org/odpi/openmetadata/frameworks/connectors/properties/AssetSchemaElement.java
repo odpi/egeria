@@ -147,6 +147,7 @@ public abstract class AssetSchemaElement extends AssetReferenceable
                 ", description='" + getDescription() + '\'' +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", meanings=" + getMeanings() +
+                ", securityTags=" + getSecurityTags() +
                 ", additionalProperties=" + getAdditionalProperties() +
                 ", type=" + getType() +
                 ", GUID='" + getGUID() + '\'' +
