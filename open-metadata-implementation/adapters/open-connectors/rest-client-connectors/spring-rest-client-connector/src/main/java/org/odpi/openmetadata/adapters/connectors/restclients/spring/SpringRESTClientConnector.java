@@ -48,7 +48,6 @@ public class SpringRESTClientConnector extends RESTClientConnector
      * This constructor is work in progress as part of the upgrade of Egeria to use security.
      *
      * @throws NoSuchAlgorithmException new exception added as part of the security work - no description provided yet
-     * @throws KeyStoreException new exception added as part of the security work - no description provided yet
      * @throws KeyManagementException new exception added as part of the security work - no description provided yet
      */
     public SpringRESTClientConnector() throws NoSuchAlgorithmException, KeyManagementException
