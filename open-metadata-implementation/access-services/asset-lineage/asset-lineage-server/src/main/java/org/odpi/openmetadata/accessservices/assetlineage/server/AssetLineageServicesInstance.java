@@ -9,7 +9,7 @@ import org.odpi.openmetadata.accessservices.assetlineage.handlers.Classification
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.GlossaryHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.ProcessContextHandler;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.commonservices.multitenant.OCFOMASServiceInstance;
+import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
@@ -20,7 +20,7 @@ import java.util.List;
  * AssetLineageServicesInstance caches references to OMRS objects for a specific server.
  * It is also responsible for registering itself in the instance map.
  */
-public class AssetLineageServicesInstance extends OCFOMASServiceInstance {
+public class AssetLineageServicesInstance extends OMASServiceInstance {
     private static AccessServiceDescription myDescription = AccessServiceDescription.ASSET_LINEAGE_OMAS;
     private GlossaryHandler glossaryHandler;
     private AssetContextHandler assetContextHandler;
