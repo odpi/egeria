@@ -48,6 +48,7 @@ public class LoginFilter extends AbstractAuthenticationProcessingFilter {
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
                                               AuthenticationException failed) throws IOException, ServletException {
         super.unsuccessfulAuthentication(request, response, failed);
+        log.info("Unsuccessful Authentication");
         if(failed instanceof BadCredentialsException){
             log.warn("Bad credentials UNSUCCESSFUL AUTHENTICATION for user: {}", request.getParameter("username"));
         }else{
@@ -58,6 +59,7 @@ public class LoginFilter extends AbstractAuthenticationProcessingFilter {
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response,
                                             FilterChain chain, Authentication authentication)  {
+        log.info("Successful Authentication");
         authenticationService.addAuthentication(request, response, authentication);
         SecurityContextHolder.getContext().setAuthentication(authentication);
 

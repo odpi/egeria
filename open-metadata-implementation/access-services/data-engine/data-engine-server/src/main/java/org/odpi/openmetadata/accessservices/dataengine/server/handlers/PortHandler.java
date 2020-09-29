@@ -271,6 +271,7 @@ public class PortHandler {
         invalidParameterHandler.validateName(delegatesToQualifiedName, PortPropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, methodName);
 
         Optional<EntityDetail> delegatedPortEntity = findPortEntity(userId, delegatesToQualifiedName);
+        final String parameterName = "qualifiedName";
         if (delegatedPortEntity.isPresent()) {
             String delegatedPortType = getPortType(delegatedPortEntity.get());
 
@@ -278,12 +279,12 @@ public class PortHandler {
                 dataEngineCommonHandler.createOrUpdateExternalRelationship(userId, portGUID, delegatedPortEntity.get().getGUID(),
                         PortPropertiesMapper.PORT_DELEGATION_TYPE_NAME, PortPropertiesMapper.PORT_TYPE_NAME, externalSourceName, null);
             } else {
-                dataEngineCommonHandler.throwInvalidParameterException(DataEngineErrorCode.INVALID_PORT_TYPE, methodName, delegatesToQualifiedName,
-                        delegatedPortType);
+                dataEngineCommonHandler.throwInvalidParameterException(DataEngineErrorCode.INVALID_PORT_TYPE, methodName,
+                        parameterName, delegatesToQualifiedName, portType.getName());
             }
         } else {
-            dataEngineCommonHandler.throwInvalidParameterException(DataEngineErrorCode.PORT_NOT_FOUND, methodName, delegatesToQualifiedName,
-                    portGUID);
+            dataEngineCommonHandler.throwInvalidParameterException(DataEngineErrorCode.PORT_NOT_FOUND, methodName,
+                    parameterName, delegatesToQualifiedName);
         }
     }
 

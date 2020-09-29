@@ -11,3 +11,7 @@ Data Engine OMAS server supports the server side implementation of the access se
   * interaction with the [repository services](../../../repository-services) to work with open metadata from the
     [cohort](../../../repository-services/docs/open-metadata-repository-cohort.md).
   * support for the access service's API and its related event management.
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

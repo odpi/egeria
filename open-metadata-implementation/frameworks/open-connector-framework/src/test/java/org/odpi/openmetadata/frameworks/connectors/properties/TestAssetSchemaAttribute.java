@@ -262,7 +262,9 @@ public class TestAssetSchemaAttribute
     /**
      *  Validate that an object cloned from another object has the same content as the original
      */
-    @Test public void testClone()
+
+    @Test
+    public void testClone()
     {
         validateResultObject(new AssetSchemaAttribute(null, getTestObject()));
     }

@@ -16,13 +16,12 @@ import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstanceHandl
  * access service instances. The instance map is thread-safe. Instances are
  * added and removed by the AnalyticsModelingAdmin class.
  */
-class AnalyticsModelingInstanceHandler extends OMASServiceInstanceHandler
-{
+public class AnalyticsModelingInstanceHandler extends OMASServiceInstanceHandler {
 
 	/**
 	 * Default constructor registers the access service
 	 */
-	AnalyticsModelingInstanceHandler() {
+	public AnalyticsModelingInstanceHandler() {
         super(AccessServiceDescription.ANALYTICS_MODELING_OMAS.getAccessServiceFullName());
 
         AnalyticsModelingOMASRegistration.registerAccessService();

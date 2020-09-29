@@ -2,61 +2,33 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.server.services;
 
-import org.odpi.openmetadata.accessservices.subjectarea.handlers.SubjectAreaGlossaryHandler;
 import org.odpi.openmetadata.accessservices.subjectarea.handlers.SubjectAreaTermHandler;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.*;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
-import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.ExceptionMapper;
-import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Arrays;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * The SubjectAreaTermRESTServices provides the server-side implementation of the SubjectArea Open Metadata
  * Access Service (OMAS) for Terms.  This interface provides term authoring interfaces for subject area experts.
  */
 
-public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
-{
+public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance {
     private static final Logger log = LoggerFactory.getLogger(SubjectAreaTermRESTServices.class);
-
+    private static final SubjectAreaInstanceHandler instanceHandler = new SubjectAreaInstanceHandler();
     private static final String className = SubjectAreaTermRESTServices.class.getName();
-    static private SubjectAreaInstanceHandler instanceHandler = new SubjectAreaInstanceHandler();
-
-
-    public static final Set<String> SUBJECT_AREA_TERM_CLASSIFICATIONS= new HashSet(Arrays.asList(
-            // spine objects
-            SpineObject.class.getSimpleName(),
-            SpineAttribute.class.getSimpleName(),
-            ObjectIdentifier.class.getSimpleName(),
-            //governance actions
-            Confidentiality.class.getSimpleName(),
-            Confidence.class.getSimpleName(),
-            Criticality.class.getSimpleName(),
-            Retention.class.getSimpleName(),
-            // dictionary
-            AbstractConcept.class.getSimpleName(),
-            ActivityDescription.class.getSimpleName(),
-            DataValue.class.getSimpleName(),
-            // context
-            ContextDefinition.class.getSimpleName()));
 
     /**
      * Default constructor
      */
-    public SubjectAreaTermRESTServices()
-    {
+    public SubjectAreaTermRESTServices() {
         //SubjectAreaRESTServicesInstance registers this omas.
-    }
-    public SubjectAreaTermRESTServices(OMRSAPIHelper oMRSAPIHelper)
-    {
-        this.oMRSAPIHelper =oMRSAPIHelper;
     }
 
     /**
@@ -83,20 +55,17 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse createTerm(String serverName, String userId, Term suppliedTerm)
-    {
+    public SubjectAreaOMASAPIResponse<Term> createTerm(String serverName, String userId, Term suppliedTerm) {
         final String methodName = "createTerm";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId);
         }
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
         try {
             SubjectAreaTermHandler handler = instanceHandler.getSubjectAreaTermHandler(userId, serverName, methodName);
-            SubjectAreaGlossaryHandler glossaryHandler = instanceHandler.getSubjectAreaGlossaryHandler(userId, serverName, methodName);
-            response = handler.createTerm(glossaryHandler,userId, suppliedTerm);
-
-        } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase e) {
-            response = ExceptionMapper.getResponseFromOCFCheckedExceptionBase(e);
+            response = handler.createTerm(userId, suppliedTerm);
+        } catch (OCFCheckedExceptionBase e) {
+            response.setExceptionInfo(e, className);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
@@ -119,26 +88,25 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-
-    public SubjectAreaOMASAPIResponse getTermByGuid(String serverName, String userId, String guid)
-    {
+    public SubjectAreaOMASAPIResponse<Term> getTermByGuid(String serverName, String userId, String guid) {
         final String methodName = "getTermByGuid";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
         try {
             SubjectAreaTermHandler handler = instanceHandler.getSubjectAreaTermHandler(userId, serverName, methodName);
             response = handler.getTermByGuid(userId, guid);
 
-        } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase e) {
-            response = ExceptionMapper.getResponseFromOCFCheckedExceptionBase(e);
+        } catch (OCFCheckedExceptionBase e) {
+            response.setExceptionInfo(e, className);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
         }
         return response;
     }
+
     /**
      * Get Term relationships
      *
@@ -162,42 +130,38 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-
-    public  SubjectAreaOMASAPIResponse getTermRelationships(String serverName,
-                                                            String userId,
-                                                            String guid,
-                                                            Date asOfTime,
-                                                            Integer offset,
-                                                            Integer pageSize,
-                                                            org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder,
-                                                            String sequencingProperty
+    public SubjectAreaOMASAPIResponse<Line> getTermRelationships(String serverName,
+                                                                 String userId,
+                                                                 String guid,
+                                                                 Date asOfTime,
+                                                                 Integer offset,
+                                                                 Integer pageSize,
+                                                                 SequencingOrder sequencingOrder,
+                                                                 String sequencingProperty
     ) {
         String methodName = "getTermRelationships";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Line> response = new SubjectAreaOMASAPIResponse<>();
         try {
             SubjectAreaTermHandler handler = instanceHandler.getSubjectAreaTermHandler(userId, serverName, methodName);
-            response = handler.getTermRelationships(userId,
-                                                    guid,
-                                                    asOfTime,
-                                                    offset,
-                                                    pageSize,
-                                                    sequencingOrder,
-                                                    sequencingProperty);
-        } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase e) {
-            response = ExceptionMapper.getResponseFromOCFCheckedExceptionBase(e);
+            FindRequest findRequest = new FindRequest();
+            findRequest.setAsOfTime(asOfTime);
+            findRequest.setOffset(offset);
+            findRequest.setPageSize(pageSize);
+            findRequest.setSequencingOrder(sequencingOrder);
+            findRequest.setSequencingProperty(sequencingProperty);
+            response = handler.getTermRelationships(userId, guid, findRequest);
+        } catch (OCFCheckedExceptionBase e) {
+            response.setExceptionInfo(e, className);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
         }
-
         return response;
-
-
-
     }
+
     /**
      * Find Term
      *
@@ -220,29 +184,35 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
      * <li> FunctionNotSupportedException        Function not supported this indicates that a find was issued but the repository does not implement find functionality in some way.</li>
      * </ul>
      */
-    public  SubjectAreaOMASAPIResponse findTerm( String serverName, String userId,
-                                                String searchCriteria,
-                                                Date asOfTime,
-                                                Integer offset,
-                                                Integer pageSize,
-                                                org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder,
-                                                String sequencingProperty) {
+    public SubjectAreaOMASAPIResponse<Term> findTerm(String serverName, String userId,
+                                                     String searchCriteria,
+                                                     Date asOfTime,
+                                                     Integer offset,
+                                                     Integer pageSize,
+                                                     SequencingOrder sequencingOrder,
+                                                     String sequencingProperty) {
 
         final String methodName = "findTerm";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId);
         }
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
         try {
             SubjectAreaTermHandler handler = instanceHandler.getSubjectAreaTermHandler(userId, serverName, methodName);
-            response = handler.findTerm(userId, searchCriteria, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
-        } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase e) {
-            response = ExceptionMapper.getResponseFromOCFCheckedExceptionBase(e);
+            FindRequest findRequest = new FindRequest();
+            findRequest.setSearchCriteria(searchCriteria);
+            findRequest.setAsOfTime(asOfTime);
+            findRequest.setOffset(offset);
+            findRequest.setPageSize(pageSize);
+            findRequest.setSequencingOrder(sequencingOrder);
+            findRequest.setSequencingProperty(sequencingProperty);
+            response = handler.findTerm(userId, findRequest);
+        } catch (OCFCheckedExceptionBase e) {
+            response.setExceptionInfo(e, className);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
         }
-
         return response;
     }
 
@@ -265,18 +235,18 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse updateTerm(String serverName, String userId, String guid, Term suppliedTerm, boolean isReplace)
+    public SubjectAreaOMASAPIResponse<Term> updateTerm(String serverName, String userId, String guid, Term suppliedTerm, boolean isReplace)
     {
         final String methodName = "updateTerm";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
         try {
             SubjectAreaTermHandler handler = instanceHandler.getSubjectAreaTermHandler(userId, serverName, methodName);
             response = handler.updateTerm(userId, guid, suppliedTerm, isReplace);
-        } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase e) {
-            response = ExceptionMapper.getResponseFromOCFCheckedExceptionBase(e);
+        } catch (OCFCheckedExceptionBase e) {
+            response.setExceptionInfo(e, className);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
@@ -311,18 +281,18 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
      * <li> EntityNotPurgedException               a hard delete was issued but the term was not purged</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse deleteTerm(String serverName, String userId, String guid, Boolean isPurge)
+    public SubjectAreaOMASAPIResponse<Term> deleteTerm(String serverName, String userId, String guid, Boolean isPurge)
     {
         final String methodName = "deleteTerm";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
         try {
             SubjectAreaTermHandler handler = instanceHandler.getSubjectAreaTermHandler(userId, serverName, methodName);
             response = handler.deleteTerm(userId, guid, isPurge);
-        } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase e) {
-            response = ExceptionMapper.getResponseFromOCFCheckedExceptionBase(e);
+        } catch (OCFCheckedExceptionBase e) {
+            response.setExceptionInfo(e, className);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
@@ -346,18 +316,17 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse restoreTerm(String serverName, String userId, String guid)
-    {
+    public SubjectAreaOMASAPIResponse<Term> restoreTerm(String serverName, String userId, String guid) {
         final String methodName = "restoreTerm";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
         try {
             SubjectAreaTermHandler handler = instanceHandler.getSubjectAreaTermHandler(userId, serverName, methodName);
             response = handler.restoreTerm(userId, guid);
-        } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase e) {
-            response = ExceptionMapper.getResponseFromOCFCheckedExceptionBase(e);
+        } catch (OCFCheckedExceptionBase e) {
+            response.setExceptionInfo(e, className);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);

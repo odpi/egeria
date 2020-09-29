@@ -21,6 +21,14 @@ $_documentContainer.innerHTML = `<dom-module id="shared-styles">
             --paper-toast-background-color: var(--egeria-secondary-color);
             
             --iron-icon-fill-color: var(--egeria-primary-color);
+            
+            --paper-toggle-button-checked-bar-color:  var(--egeria-primary-color);
+            --paper-toggle-button-checked-button-color:  var(--egeria-primary-color);
+            --paper-toggle-button-checked-ink-color: var(--egeria-primary-color);
+        }
+        
+        ul#menu li {
+          display:inline-block;
         }
         a {
             color : var(--egeria-primary-color);

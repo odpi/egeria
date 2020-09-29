@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.dataengine.server.util;
 
 import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -12,13 +13,11 @@ public class MockedExceptionUtil {
                                                                                          IllegalAccessException,
                                                                                          InvocationTargetException,
                                                                                          InstantiationException {
-        DataEngineErrorCode errorCode = DataEngineErrorCode.OMRS_NOT_INITIALIZED;
-        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
 
-        Constructor<T> constructor = exceptionClass.getConstructor(Integer.TYPE, String.class,
-                String.class, String.class, String.class, String.class, String.class);
+        Constructor<T> constructor = exceptionClass.getConstructor(ExceptionMessageDefinition.class, String.class,
+                String.class, String.class);
 
-        return constructor.newInstance(errorCode.getHttpErrorCode(), MockedExceptionUtil.class.getName(), methodName,
-                errorMessage, errorCode.getSystemAction(), errorCode.getUserAction(), "");
+        return constructor.newInstance(DataEngineErrorCode.OMRS_NOT_INITIALIZED.getMessageDefinition(),
+                exceptionClass.getName(), methodName, "");
     }
 }

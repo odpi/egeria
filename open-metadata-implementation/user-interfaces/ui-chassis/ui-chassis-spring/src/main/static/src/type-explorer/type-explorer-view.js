@@ -120,7 +120,6 @@ class TypeExplorerView extends mixinBehaviors([AppLocalizeBehavior], PolymerElem
         // The events are as follows:
 
         this.addEventListener('types-loaded', function (e) {
-            //alert( "Event :" + 'types-loaded' + ' from ' + e.detail.source);
             this.$.connectionManager.inEvtTypesLoaded();
             this.$.focusManager.inEvtTypesLoaded();
             this.$.diagramManager.inEvtTypesLoaded();
@@ -128,38 +127,29 @@ class TypeExplorerView extends mixinBehaviors([AppLocalizeBehavior], PolymerElem
         });
 
         this.addEventListener('types-not-loaded', function (e) {
-            //alert( "Event :" + 'types-not-loaded' + ' from ' + e.detail.source);
             this.$.connectionManager.inEvtTypesNotLoaded();
         });
 
         this.addEventListener('focus-changed', function (e) {
-             //alert( "Event :" + 'focus-changed' + ' from ' + e.detail.source);
              var focusType = e.detail.focusType;
-
              this.$.diagramManager.inEvtFocusChanged(focusType);
              this.$.detailsPanel.inEvtFocusChanged(focusType);
         });
 
         this.addEventListener('view-changed', function (e) {
-             //alert( "Event :" + 'view-changed' + ' from ' + e.detail.source);
              var viewCategory = e.detail.viewCategory;
              var viewType = e.detail.viewType;
-
              this.$.detailsPanel.inEvtViewChanged(viewCategory,viewType);
         });
 
         this.addEventListener('change-focus', function (e) {
-             //alert( "Event :" + 'change-focus' + ' from ' + e.detail.source);
              var focusType = e.detail.focusType;
-
              this.$.focusManager.inEvtChangeFocus(focusType);
         });
 
         this.addEventListener('change-view', function (e) {
-             //alert( "Event :" + 'change-view' + ' from ' + e.detail.source);
              var viewCategory = e.detail.viewCategory;
              var viewType = e.detail.viewType;
-
              this.$.focusManager.inEvtChangeView(viewCategory, viewType);
         });
 

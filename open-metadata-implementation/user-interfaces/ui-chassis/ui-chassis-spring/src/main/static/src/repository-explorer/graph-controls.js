@@ -176,12 +176,6 @@ class GraphControls extends PolymerElement {
 
             connectionManager: Object,
 
-            // Depth control to be used for the next query
-            //intDepth: {
-            //    type   : Number,
-            //    value  : 1            // default to getting immediate neighbours
-            //},
-
              currentGen: {
                  type: Number,
                  value: 0
@@ -291,7 +285,7 @@ class GraphControls extends PolymerElement {
          *
          * The filter lists operate as follows:
          * If a category has NO types selected - then the caller wants all possible types included; so generate an empty list (which
-         * will become null at the server side. No filtering will be performed.
+         * will become null at the server side). No filtering will be performed.
          * If a category has SOME types selected - then the caller wants only those types included; so generate a non-empty list.
          * If a category has ALL types selected - then the caller wants no filtering of types included; in this case generate an
          * empty list as in the case for NO types selected.

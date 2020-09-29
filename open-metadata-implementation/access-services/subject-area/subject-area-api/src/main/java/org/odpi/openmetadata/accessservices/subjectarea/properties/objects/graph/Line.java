@@ -1,56 +1,53 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.*;
-
-import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
-import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
-
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.OmasObject;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SystemAttributes;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.*;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Map;
 
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
+
 
 /**
- * A relationship between 2 subject area OMAS entities. It is called types as it has named fields for the attributes and references.
+ * A relationship between 2 subject area OMAS Nodes. It is contains named attributes and has 2 Line ends.
  */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "class")
-@JsonSubTypes(
-        {
-
-                // term to term relationship responses
-                @JsonSubTypes.Type(value = Hasa.class, name = "Hasa"),
-                @JsonSubTypes.Type(value = RelatedTerm.class, name = "RelatedTerm"),
-                @JsonSubTypes.Type(value = Synonym.class, name = "Synonym"),
-                @JsonSubTypes.Type(value = Antonym.class, name = "Antonym"),
-                @JsonSubTypes.Type(value = PreferredTerm.class, name = "PreferredTerm"),
-                @JsonSubTypes.Type(value = ReplacementTerm.class, name = "ReplacementTerm"),
-                @JsonSubTypes.Type(value = Translation.class, name = "Translation"),
-                @JsonSubTypes.Type(value = Isa.class, name = "Isa"),
-                @JsonSubTypes.Type(value = ValidValue.class, name = "ValidValue"),
-                @JsonSubTypes.Type(value = UsedInContext.class, name = "UsedInContext"),
-                @JsonSubTypes.Type(value = IsaTypeOf.class, name = "IsaTypeOf"),
-                @JsonSubTypes.Type(value = TypedBy.class, name = "TypedBy"),
-                @JsonSubTypes.Type(value = TermAnchor.class, name = "TermAnchor"),
-                @JsonSubTypes.Type(value = CategoryAnchor.class, name = "CategoryAnchor"),
-                @JsonSubTypes.Type(value = Categorization.class, name = "Categorization"),
-
-        })
-
-public class Line implements Serializable {
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        property = "class",
+        defaultImpl = Line.class,
+        visible = true
+)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = HasA.class),
+        @JsonSubTypes.Type(value = RelatedTerm.class),
+        @JsonSubTypes.Type(value = Synonym.class),
+        @JsonSubTypes.Type(value = Antonym.class),
+        @JsonSubTypes.Type(value = PreferredTerm.class),
+        @JsonSubTypes.Type(value = ReplacementTerm.class),
+        @JsonSubTypes.Type(value = Translation.class),
+        @JsonSubTypes.Type(value = IsA.class),
+        @JsonSubTypes.Type(value = ValidValue.class),
+        @JsonSubTypes.Type(value = UsedInContext.class),
+        @JsonSubTypes.Type(value = IsATypeOf.class),
+        @JsonSubTypes.Type(value = TypedBy.class),
+        @JsonSubTypes.Type(value = TermAnchor.class),
+        @JsonSubTypes.Type(value = CategoryAnchor.class),
+        @JsonSubTypes.Type(value = Categorization.class),
+        @JsonSubTypes.Type(value = SemanticAssignment.class),
+        @JsonSubTypes.Type(value = LibraryCategoryReference.class),
+        @JsonSubTypes.Type(value = LibraryTermReference.class),
+        @JsonSubTypes.Type(value = ProjectScope.class)
+})
+abstract public class Line implements Serializable, OmasObject {
     protected static final long serialVersionUID = 1L;
     private SystemAttributes systemAttributes = null;
     private Date effectiveFromTime = null;
@@ -58,57 +55,26 @@ public class Line implements Serializable {
     private Map<String, String> additionalProperties;
     protected String typeDefGuid;
     protected LineType lineType;
-    protected String entity1Name;
-    protected String entity1Type;
-    protected String entity2Name;
-    protected String entity2Type;
+    // this is the line name
     protected String name;
+    protected LineEnd end1;
+    protected LineEnd end2;
 
-    /**
-     * Default constructor
-     */
-    public Line() {
-    }
-
-    public Line(Line template) {
-        this.setAdditionalProperties(template.getAdditionalProperties());
-        this.setSystemAttributes(template.getSystemAttributes());
-        this.setGuid(template.getGuid());
-        this.setLineType(template.getLineType());
-        this.setAdditionalProperties(template.getAdditionalProperties());
-    }
-
-    public Line(String name) {
+    protected Line(String name, String typeDefGuid, LineEnd end1, LineEnd end2) {
+        this.end1 = end1;
+        this.end2 = end2;
         this.name = name;
-        this.lineType = LineType.Unknown;
-    }
-
-    public Line(String name, LineType lineType) {
-        this.name = name;
-        this.lineType = lineType;
-    }
-
-    /**
-     * Create a typedRelationship from an omrs relationship
-     *
-     * @param omrsRelationship omrs relationship
-     */
-    public Line(Relationship omrsRelationship) {
-        this.systemAttributes = new SystemAttributes();
-        this.systemAttributes.setUpdateTime(omrsRelationship.getUpdateTime());
-        this.systemAttributes.setCreateTime(omrsRelationship.getCreateTime());
-        this.systemAttributes.setCreatedBy(omrsRelationship.getCreatedBy());
-        this.systemAttributes.setUpdatedBy(omrsRelationship.getUpdatedBy());
-        this.systemAttributes.setVersion(omrsRelationship.getVersion());
-
-    }
-
-    public String getTypeDefGuid() {
-        return typeDefGuid;
-    }
-
-    public void setTypeDefGuid(String typeDefGuid) {
         this.typeDefGuid = typeDefGuid;
+        initialise();
+    }
+
+    protected void initialise() {
+        // set the LineType if this is a LineType enum value.
+        try {
+            lineType = LineType.valueOf(name);
+        } catch (IllegalArgumentException e) {
+            lineType = LineType.Unknown;
+        }
     }
 
     public LineType getLineType() {
@@ -149,6 +115,10 @@ public class Line implements Serializable {
         return effectiveToTime;
     }
 
+    public void setEffectiveToTime(Date effectiveToTime) {
+        this.effectiveToTime = effectiveToTime;
+    }
+
     public String getGuid() {
         if (this.systemAttributes == null) {
             return null;
@@ -168,10 +138,6 @@ public class Line implements Serializable {
         return name;
     }
 
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
-    }
-
     /**
      * Get the extra attributes - ones that are in addition to the standard types.
      *
@@ -186,32 +152,29 @@ public class Line implements Serializable {
     }
 
     /**
-     * Create an omrs relationship with the basic fields filled in.
+     * Get line end 1. The child Line sets the appropriate values for its Line end 1
      *
-     * @param line this is a line to create the relationship from
-     * @return Relationship the created omrs relationship
+     * @return LineEnd Line end 1
      */
-    public static Relationship createOmrsRelationship(Line line) {
-        Relationship omrsRelationship = new Relationship();
-        InstanceType typeOfRelationship = new InstanceType();
-        typeOfRelationship.setTypeDefName(line.getName());
-        typeOfRelationship.setTypeDefGUID(line.getTypeDefGuid());
-        omrsRelationship.setType(typeOfRelationship);
-        SystemAttributes systemAttributes = line.getSystemAttributes();
-        if (systemAttributes == null) {
-            systemAttributes = new SystemAttributes();
-        }
-        omrsRelationship.setCreatedBy(systemAttributes.getCreatedBy());
-        omrsRelationship.setUpdatedBy(systemAttributes.getUpdatedBy());
-        omrsRelationship.setCreateTime(systemAttributes.getCreateTime());
-        omrsRelationship.setUpdateTime(systemAttributes.getUpdateTime());
-        if (systemAttributes.getVersion() == null) {
-            omrsRelationship.setVersion(0L);
-        } else {
-            omrsRelationship.setVersion(systemAttributes.getVersion());
-        }
-        line.setSystemAttributes(systemAttributes);
-        return omrsRelationship;
+    public LineEnd getEnd1() {
+        return end1;
+    }
+
+    public void setEnd1(LineEnd end1) {
+        this.end1 = end1;
+    }
+
+    /**
+     * Get line end 1. The child Line sets the appropriate values for its Line end 1
+     *
+     * @return LineEnd Line end 1
+     */
+    public LineEnd getEnd2() {
+        return end2;
+    }
+
+    public void setEnd2(LineEnd end2) {
+        this.end2 = end2;
     }
 
     public StringBuilder toString(StringBuilder sb) {
@@ -220,7 +183,7 @@ public class Line implements Serializable {
         }
 
         sb.append("Line{");
-        sb.append("typeDefGuid=").append(typeDefGuid).append(",");
+//        sb.append("typeDefGuid=").append(typeDefGuid).append(",");
         sb.append("lineType=").append(lineType.name()).append(",");
         sb.append("name=").append(name);
         if (this.systemAttributes != null) {

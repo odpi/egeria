@@ -76,3 +76,8 @@ The following endpoints are produced in the server chassis.
 | /swagger-resources/configuration/ui       | springfox-swagger-ui | The configuration/management API endpoint for the Swagger UI application.  |
 | /swagger-resources/configuration/security | springfox-swagger-ui | The security management API endpoint for the Swagger UI application.       |
 
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

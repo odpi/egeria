@@ -3,15 +3,11 @@
 package org.odpi.openmetadata.accessservices.assetlineage.auditlog;
 
 
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageSet;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.text.MessageFormat;
-import java.util.Arrays;
-
-
-public enum AssetLineageAuditCode {
+public enum AssetLineageAuditCode implements AuditLogMessageSet {
 
     SERVICE_INITIALIZING("OMAS-ASSET-LINEAGE-0001",
             OMRSAuditLogRecordSeverity.STARTUP,
@@ -43,50 +39,66 @@ public enum AssetLineageAuditCode {
             OMRSAuditLogRecordSeverity.EXCEPTION,
             "An exception occurred while processing incoming event {0}",
             "The event could not be processed",
-            "Review the exception to determine the source of the error and correct it."),
+            "Review the exception to determine the source of the error and correct it.");
 
-    ;
+    private AuditLogMessageDefinition messageDefinition;
 
-    private static final Logger log = LoggerFactory.getLogger(AssetLineageAuditCode.class);
-    private String logMessageId;
-    private OMRSAuditLogRecordSeverity severity;
-    private String logMessage;
-    private String systemAction;
-    private String userAction;
+    /**
+     * The constructor for AssetLineageAuditCode expects to be passed one of the enumeration rows defined in
+     * AssetLineageAuditCode above.   For example:
+     * <p>
+     * AssetLineageAuditCode   auditCode = AssetLineageAuditCode.SERVER_NOT_AVAILABLE;
+     * <p>
+     * This will expand out to the 4 parameters shown below.
+     *
+     * @param messageId    - unique Id for the message
+     * @param severity     - severity of the message
+     * @param message      - text for the message
+     * @param systemAction - description of the action taken by the system when the condition happened
+     * @param userAction   - instructions for resolving the situation, if any
+     */
+    AssetLineageAuditCode(String messageId,
+                          OMRSAuditLogRecordSeverity severity,
+                          String message,
+                          String systemAction,
+                          String userAction) {
+        messageDefinition = new AuditLogMessageDefinition(messageId,
+                severity,
+                message,
+                systemAction,
+                userAction);
+    }
 
-    AssetLineageAuditCode(String logMessageId, OMRSAuditLogRecordSeverity severity, String logMessage, String systemAction, String userAction) {
-        this.logMessageId = logMessageId;
-        this.severity = severity;
-        this.logMessage = logMessage;
-        this.systemAction = systemAction;
-        this.userAction = userAction;
+    /**
+     * Retrieve a message definition object for logging.  This method is used when there are no message inserts.
+     *
+     * @return message definition object.
+     */
+    public AuditLogMessageDefinition getMessageDefinition() {
+        return messageDefinition;
     }
 
 
-    public String getLogMessageId() {
-        return logMessageId;
+    /**
+     * Retrieve a message definition object for logging.  This method is used when there are values to be inserted into the message.
+     *
+     * @param params array of parameters (all strings).  They are inserted into the message according to the numbering in the message text.
+     * @return message definition object.
+     */
+    public AuditLogMessageDefinition getMessageDefinition(String... params) {
+        messageDefinition.setMessageParameters(params);
+        return messageDefinition;
     }
 
-    public OMRSAuditLogRecordSeverity getSeverity() {
-        return severity;
+    /**
+     * JSON-style toString
+     *
+     * @return string of property names and values for this enum
+     */
+    @Override
+    public String toString() {
+        return "AssetLineageAuditCode{" +
+                "messageDefinition=" + messageDefinition +
+                '}';
     }
-
-    public String getSystemAction() {
-        return systemAction;
-    }
-
-    public String getUserAction() {
-        return userAction;
-    }
-
-    public String getFormattedLogMessage(String... params) {
-        log.debug(String.format("<== OMRS Audit Code.getMessage(%s)", Arrays.toString(params)));
-
-        String result = MessageFormat.format(logMessage, params);
-
-        log.debug(String.format("==> OMRS Audit Code.getMessage(%s): %s", Arrays.toString(params), result));
-
-        return result;
-    }
-
 }

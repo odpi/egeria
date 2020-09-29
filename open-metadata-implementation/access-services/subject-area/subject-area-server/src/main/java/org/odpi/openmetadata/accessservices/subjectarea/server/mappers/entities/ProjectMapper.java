@@ -2,16 +2,12 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.server.mappers.entities;
 
-import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
-import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Node;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.NodeType;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.project.GlossaryProject;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.project.Project;
-import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.INodeMapper;
+import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.SubjectAreaMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
-import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.slf4j.Logger;
@@ -26,7 +22,8 @@ import java.util.List;
  * These mapping methods map classifications and attributes that directly map to OMRS.
  *
  */
-public class ProjectMapper extends EntityDetailMapper implements INodeMapper {
+@SubjectAreaMapper
+public class ProjectMapper extends EntityDetailMapper<Project> {
     private static final Logger log = LoggerFactory.getLogger( ProjectMapper.class);
     private static final String className = ProjectMapper.class.getName();
     public static final String PROJECT = "Project";
@@ -41,12 +38,8 @@ public class ProjectMapper extends EntityDetailMapper implements INodeMapper {
      * Map EntityDetail to Project or a sub type of Project
      * @param entityDetail the supplied EntityDetail
      * @return Project the equivalent Project to the supplied entityDetail.
-     * @throws InvalidParameterException a parameter is null or an invalid value.
      */
-    public org.odpi.openmetadata.accessservices.subjectarea.properties.objects.project.Project mapEntityDetailToNode(EntityDetail entityDetail) throws InvalidParameterException{
-        String methodName = "mapEntityDetailToNode";
-        String entityTypeName = entityDetail.getType().getTypeDefName();
-        if (repositoryHelper.isTypeOf(omrsapiHelper.getServiceName(),entityTypeName, PROJECT)) {
+    public Project map(EntityDetail entityDetail) {
             // construct the right type of node.
             Project project  = new Project();
             List<org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification> omrsClassifications = entityDetail.getClassifications();
@@ -62,18 +55,15 @@ public class ProjectMapper extends EntityDetailMapper implements INodeMapper {
             }
             mapEntityDetailToNode(project,entityDetail);
             return project;
-        } else {
-            ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.MAPPER_ENTITY_GUID_TYPE_ERROR.getMessageDefinition();
-            messageDefinition.setMessageParameters(entityDetail.getGUID(), entityTypeName, PROJECT);
-            throw new InvalidParameterException(messageDefinition,
-                                                className,
-                                                methodName,
-                                                "Node Type",
-                                                null);
-        }
     }
+
     @Override
-    protected List<org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification> getInlinedClassifications(Node node) {
+    public EntityDetail map(Project node) {
+        return super.toEntityDetail(node);
+    }
+
+    @Override
+    protected List<org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification> getInlinedClassifications(Project node) {
         List<org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification> inlinedClassifications = new ArrayList<>();
         if (node.getNodeType() == NodeType.GlossaryProject) {
             org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.GlossaryProject glossaryProjectClassification =new org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.GlossaryProject();
@@ -85,16 +75,13 @@ public class ProjectMapper extends EntityDetailMapper implements INodeMapper {
 
     /**
      * Map a primitive omrs property to the Project object.
-     * @param node the Project to be updated
+     * @param project the Project to be updated
      * @param propertyName the omrs property name
      * @param value the omrs primitive property value
      * @return true if the propertyName was recognised and mapped to the Node, otherwise false
      */
     @Override
-    protected boolean mapPrimitiveToNode(Node node, String propertyName, Object value) {
-
-
-        Project project = (Project) node;
+    protected boolean mapPrimitiveToNode(Project project, String propertyName, Object value) {
         boolean foundProperty = true;
         if (propertyName.equals("startDate")) {
             Date dateValue = (Date) value;
@@ -114,12 +101,11 @@ public class ProjectMapper extends EntityDetailMapper implements INodeMapper {
 
     /**
      * Map the supplied Node to omrs InstanceProperties.
-     * @param node supplied node
+     * @param project supplied node
      * @param instanceProperties equivalent instance properties to the Node
      */
     @Override
-    protected void mapNodeToInstanceProperties(Node node, InstanceProperties instanceProperties) {
-        Project project = (Project)node;
+    protected void mapNodeToInstanceProperties(Project project, InstanceProperties instanceProperties) {
         if (project.getStatus()!=null) {
             SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, project.getStatus(), "status");
         }
@@ -132,8 +118,7 @@ public class ProjectMapper extends EntityDetailMapper implements INodeMapper {
     }
 
     @Override
-    protected boolean updateNodeWithClassification(Node node, org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification omasClassification) {
-        Project project = (Project) node;
+    protected boolean updateNodeWithClassification(Project project, org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification omasClassification) {
         boolean handled = false;
 
         final String classificationName = omasClassification.getClassificationName();
@@ -154,7 +139,7 @@ public class ProjectMapper extends EntityDetailMapper implements INodeMapper {
         return handled;
     }
     @Override
-    protected String getTypeName(){
+    public String getTypeName(){
         return PROJECT;
     }
 }

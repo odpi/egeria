@@ -769,7 +769,7 @@ const InstancesContextProvider = (props) => {
    */
   const removeGen = () => {
     /*
-     * Remove the most recent gen from the active gens. his should be noticed by the DiagramManager
+     * Remove the most recent gen from the active gens. This should be noticed by the DiagramManager
      * which will update the diagram data, and callback to the removeGenComplete callback.
      */    
     
@@ -777,13 +777,13 @@ const InstancesContextProvider = (props) => {
     /*
      * Do not mutate the current array - replace for state update to register
      */
-    let newList = Object.assign(gens);
+    let newList = Object.assign([],gens);
     const removedGen = newList.pop();
     setGens( newList );
     setLatestActiveGenId(newList.length);
 
     /*
-     * Look for new instances in the removedGen, and remove then from the guidToGenId map.
+     * Look for instances that were added in the removedGen, and remove then from the guidToGenId map.
      * Because the map is immutable, corral the changes in a cloned map and apply them in one replace operation
      */
     

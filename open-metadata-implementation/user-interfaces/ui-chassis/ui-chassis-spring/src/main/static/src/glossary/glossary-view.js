@@ -125,9 +125,8 @@ class GlossaryView extends PolymerElement {
                       
                       <vaadin-grid-column width="5em" resizable>
                           <template class="header">
-                             
                           </template>
-                          <template><asset-tools class="right" guid="[[item.guid]]"></asset-tools></template>
+                          <template><asset-tools class="right"  items="[[item.typeDefName]]" guid="[[item.guid]]"></asset-tools></template>
                       </vaadin-grid-column>
                 </vaadin-grid>
             </div>
@@ -165,7 +164,19 @@ class GlossaryView extends PolymerElement {
         if(route.prefix === '/glossary'){
             this.$.tokenAjax.url='/api/glossaries';
             this.$.tokenAjax._go();
+            this._loadAllTerms();
+            this._loadAllCategories();
         }
+    }
+
+    _loadAllTerms() {
+        this.$.tokenAjaxTerms.url='/api/glossaries/terms';
+        this.$.tokenAjaxTerms._go();
+    }
+
+    _loadAllCategories() {
+        this.$.tokenAjaxCategories.url='/api/glossaries/categories';
+        this.$.tokenAjaxCategories._go();
     }
 
     _loadTermsByGlossary(guid) {

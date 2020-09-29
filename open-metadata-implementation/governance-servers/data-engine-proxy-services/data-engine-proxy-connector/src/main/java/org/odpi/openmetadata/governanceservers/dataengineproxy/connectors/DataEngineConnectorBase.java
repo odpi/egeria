@@ -62,6 +62,17 @@ public abstract class DataEngineConnectorBase extends ConnectorBase implements D
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Date getOldestChangeSince(Date time) {
+        if (requiresPolling()) {
+            log.warn("DataEngineConnectorBase::getOldestChangeSince(Date) is not overridden (unimplemented), yet the connector requires polling.");
+        }
+        return null;
+    }
+
+    /**
      * Retrieve a list of the changed schema types between the dates and times provided.
      *
      * @param from the date and time from which to look for changes (exclusive)

@@ -148,7 +148,10 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
             serverSecurityConnection        = template.getServerSecurityConnection();
             eventBusConfig                  = template.getEventBusConfig();
             accessServicesConfig            = template.getAccessServicesConfig();
+<<<<<<< HEAD
             integrationServicesConfig       = template.getIntegrationServicesConfig();
+=======
+>>>>>>> 118af316ba5a64828b26add56aa9f07299e09247
             viewServicesConfig              = template.getViewServicesConfig();
             repositoryServicesConfig        = template.getRepositoryServicesConfig();
             conformanceSuiteConfig          = template.getConformanceSuiteConfig();

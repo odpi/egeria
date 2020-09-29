@@ -3,9 +3,9 @@
 ---
 dependencies:
   - name: kafka
-    version: 6.1.6
+    version: 11.8.4
     repository: https://charts.bitnami.com/bitnami
     alias: egeriakafka
   - name: openldap
-    version: 1.2.2
+    version: 1.2.5
     repository: https://kubernetes-charts.storage.googleapis.com/

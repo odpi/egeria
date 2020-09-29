@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.analyticsmodeling.server;
 
 import java.util.List;
 
+import org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.AnalyticsModelingErrorCode;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.exceptions.AnalyticsModelingCheckedException;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.model.ResponseContainerDatabase;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.model.ResponseContainerDatabaseSchema;
@@ -19,6 +20,7 @@ import org.odpi.openmetadata.adminservices.configuration.registration.AccessServ
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
+import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
 import org.slf4j.LoggerFactory;
 
 /**
@@ -26,20 +28,30 @@ import org.slf4j.LoggerFactory;
  */
 public class AnalyticsModelingRestServices {
 
-	AnalyticsModelingInstanceHandler instanceHandler = new AnalyticsModelingInstanceHandler();
+	private AnalyticsModelingInstanceHandler instanceHandler = new AnalyticsModelingInstanceHandler();
 
 	private static RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(AnalyticsModelingRestServices.class),
 			AccessServiceDescription.ANALYTICS_MODELING_OMAS.getAccessServiceFullName());
 	private RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
+	
+	public RESTExceptionHandler getExceptionHandler() {
+		return restExceptionHandler;
+	}
+
+	public AnalyticsModelingInstanceHandler getHandler() {
+		return instanceHandler;
+	}
 
 	/**
 	 * Get databases available on the server for the user.
 	 * 
-	 * @param serverName of the server.
-	 * @param userId     of the user.
+	 * @param serverName	of the server.
+	 * @param userId		of the user.
+     * @param startFrom		starting element (used in paging through large result sets)
+     * @param pageSize		maximum number of results to return
 	 * @return list of databases for the requested server/user.
 	 */
-	public AnalyticsModelingOMASAPIResponse getDatabases(String serverName, String userId) {
+	public AnalyticsModelingOMASAPIResponse getDatabases(String serverName, String userId, Integer startFrom, Integer pageSize) {
 
 		String methodName = "getDatabases";
 		AnalyticsModelingOMASAPIResponse ret;
@@ -47,8 +59,8 @@ public class AnalyticsModelingRestServices {
 
 		try {
 			DatabasesResponse response = new DatabasesResponse();
-			List<ResponseContainerDatabase> databases = instanceHandler
-					.getDatabaseContextHandler(serverName, userId, methodName).getDatabases();
+			List<ResponseContainerDatabase> databases = getHandler()
+					.getDatabaseContextHandler(serverName, userId, methodName).getDatabases(startFrom, pageSize);
 			response.setDatabasesList(databases);
 			ret = response;
 		} catch (AnalyticsModelingCheckedException e) {
@@ -65,9 +77,12 @@ public class AnalyticsModelingRestServices {
 	 * @param serverName     of the request.
 	 * @param userId         of the request.
 	 * @param dataSourceGuid of the requested database.
+     * @param startFrom		 starting element (used in paging through large result sets)
+     * @param pageSize		 maximum number of results to return
 	 * @return list of schemas for the requested database.
 	 */
-	public AnalyticsModelingOMASAPIResponse getSchemas(String serverName, String userId, String dataSourceGuid) {
+	public AnalyticsModelingOMASAPIResponse getSchemas(String serverName, String userId, String dataSourceGuid,
+			Integer startFrom, Integer pageSize) {
 
 		String methodName = "getSchemas";
 		AnalyticsModelingOMASAPIResponse ret;
@@ -75,12 +90,16 @@ public class AnalyticsModelingRestServices {
 
 		try {
 			SchemasResponse response = new SchemasResponse();
-			List<ResponseContainerDatabaseSchema> databasesSchemas = instanceHandler
-					.getDatabaseContextHandler(serverName, userId, methodName).getDatabaseSchemas(dataSourceGuid);
+			List<ResponseContainerDatabaseSchema> databasesSchemas = getHandler()
+					.getDatabaseContextHandler(serverName, userId, methodName)
+					.getDatabaseSchemas(dataSourceGuid, startFrom, pageSize);
+			
 			response.setSchemaList(databasesSchemas);
 			ret = response;
 		} catch (AnalyticsModelingCheckedException e) {
 			ret = handleErrorResponse(e, methodName);
+		} catch (InvalidParameterException e) {
+			ret = handleInvalidParameterResponse(e, methodName);
 		}
 
 		restCallLogger.logRESTCallReturn(token, ret.toString());
@@ -104,12 +123,14 @@ public class AnalyticsModelingRestServices {
 
 		try {
 			SchemaTablesResponse response = new SchemaTablesResponse();
-			ResponseContainerSchemaTables tables = instanceHandler
+			ResponseContainerSchemaTables tables = getHandler()
 					.getDatabaseContextHandler(serverName, userId, methodName).getSchemaTables(databaseGuid, schema);
 			response.setTableList(tables);
 			ret = response;
 		} catch (AnalyticsModelingCheckedException e) {
 			ret = handleErrorResponse(e, methodName);
+		} catch (InvalidParameterException e) {
+			ret = handleInvalidParameterResponse(e, methodName);
 		}
 		restCallLogger.logRESTCallReturn(token, ret.toString());
 		return ret;
@@ -135,12 +156,14 @@ public class AnalyticsModelingRestServices {
 		try {
 
 			ModuleResponse response = new ModuleResponse();
-			ResponseContainerModule module = instanceHandler.getDatabaseContextHandler(serverName, userId, "getModule")
+			ResponseContainerModule module = getHandler().getDatabaseContextHandler(serverName, userId, "getModule")
 					.getModule(databaseGuid, catalog, schema);
 			response.setModule(module);
 			ret = response;
 		} catch (AnalyticsModelingCheckedException e) {
 			ret = handleErrorResponse(e, "getModule");
+		} catch (InvalidParameterException e) {
+			ret = handleInvalidParameterResponse(e, methodName);
 		}
 		
 		restCallLogger.logRESTCallReturn(token, ret.toString());
@@ -155,7 +178,18 @@ public class AnalyticsModelingRestServices {
 	 */
 	private AnalyticsModelingOMASAPIResponse handleErrorResponse(AnalyticsModelingCheckedException error, String methodName) {
 		AnalyticsModelingOMASAPIResponse ret = new ErrorResponse(error);
-		restExceptionHandler.captureThrowable(ret, error, methodName);
+		getExceptionHandler().captureThrowable(ret, error, methodName);
+		return ret;
+	}
+	
+	private AnalyticsModelingOMASAPIResponse handleInvalidParameterResponse(InvalidParameterException e, String methodName)	{
+		AnalyticsModelingCheckedException error = new AnalyticsModelingCheckedException(
+				AnalyticsModelingErrorCode.INVALID_REQUEST_PARAMER.getMessageDefinition(e.getParameterName()),
+				this.getClass().getSimpleName(),
+				methodName,
+				e);
+		AnalyticsModelingOMASAPIResponse ret = new ErrorResponse(error);
+		getExceptionHandler().captureThrowable(ret, error, methodName);
 		return ret;
 	}
 }

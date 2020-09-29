@@ -2,15 +2,19 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.viewservices.glossaryauthor.services;
 
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder;
+import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.SubjectAreaNodeClients;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
-import org.odpi.openmetadata.accessservices.subjectarea.responses.*;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.GlossarySummary;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
+import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.viewservices.glossaryauthor.handlers.GlossaryHandler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -20,9 +24,7 @@ import java.util.List;
  */
 
 public class GlossaryAuthorViewGlossaryRESTServices extends BaseGlossaryAuthorView {
-
     private static String className = GlossaryAuthorViewGlossaryRESTServices.class.getName();
-    private static final Logger LOG = LoggerFactory.getLogger(className);
 
     /**
      * Default constructor
@@ -43,42 +45,37 @@ public class GlossaryAuthorViewGlossaryRESTServices extends BaseGlossaryAuthorVi
      * <li>Glossary to create a glossary that is not a taxonomy or a canonical glossary</li>
      * </ul>
      *
-     * @param serverName name of the local UI server.
-     * @param userId     user identifier
+     * @param serverName       name of the local UI server.
+     * @param userId           user identifier
      * @param suppliedGlossary Glossary to create
      * @return response, when successful contains the created glossary.
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
-     * <li> InvalidParameterException            one of the parameters is null or invalid.
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised.</li>
-     * <li> ClassificationException              Error processing a classification.</li>
-     * <li> StatusNotSupportedException          A status value is not supported.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
 
-    public SubjectAreaOMASAPIResponse createGlossary(String serverName, String userId, Glossary suppliedGlossary) {
+    public SubjectAreaOMASAPIResponse<Glossary> createGlossary(String serverName, String userId, Glossary suppliedGlossary) {
         final String methodName = "createGlossary";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Glossary> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied glossary - the calling layer should not allow this.
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            GlossaryHandler handler = instanceHandler.getGlossaryHandler(serverName, userId, methodName);
-            Glossary createdGlossary = handler.createGlossary(userId,
-                    suppliedGlossary);
-            response = new GlossaryResponse(createdGlossary);
-        }  catch (Throwable error) {
-            response =  getResponseForError(error, auditLog, className, methodName);
+            SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
+            Glossary createdGlossary = clients.glossaries().create(userId, suppliedGlossary);
+            response.addResult(createdGlossary);
+        } catch (Throwable error) {
+            response = getResponseForError(error, auditLog, className, methodName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
-
 
 
     /**
@@ -90,29 +87,25 @@ public class GlossaryAuthorViewGlossaryRESTServices extends BaseGlossaryAuthorVi
      * @return response which when successful contains the glossary with the requested guid
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UserNotAuthorizedException the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException  not able to communicate with a Metadata respository service.</li>
-     * <li> InvalidParameterException one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException the supplied guid was not recognised</li>
-     * <li> UnrecognizedGUIDException the supplied guid was not recognised</li>
-     * <li> FunctionNotSupportedException   Function not supported</li>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
 
-    public SubjectAreaOMASAPIResponse getGlossary(String serverName, String userId, String guid) {
+    public SubjectAreaOMASAPIResponse<Glossary> getGlossary(String serverName, String userId, String guid) {
         final String methodName = "getGlossary";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Glossary> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            GlossaryHandler handler = instanceHandler.getGlossaryHandler(serverName, userId, methodName);
-            Glossary obtainedGlossary = handler.getGlossaryByGuid(userId,
-                    guid);
-            response = new GlossaryResponse(obtainedGlossary);
-        }  catch (Throwable error) {
-            response =  getResponseForError(error, auditLog, className, methodName);
+            SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
+            Glossary obtainedGlossary = clients.glossaries().getByGUID(userId, guid);
+            response.addResult(obtainedGlossary);
+        } catch (Throwable error) {
+            response = getResponseForError(error, auditLog, className, methodName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -132,15 +125,13 @@ public class GlossaryAuthorViewGlossaryRESTServices extends BaseGlossaryAuthorVi
      * @param sequencingOrder    the sequencing order for the results.
      * @param sequencingProperty the name of the property that should be used to sequence the results.
      * @return A list of glossaries meeting the search Criteria
-     *
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse findGlossary(
+    public SubjectAreaOMASAPIResponse<Glossary> findGlossary(
             String serverName,
             String userId,
             Date asOfTime,
@@ -149,34 +140,27 @@ public class GlossaryAuthorViewGlossaryRESTServices extends BaseGlossaryAuthorVi
             Integer pageSize,
             SequencingOrder sequencingOrder,
             String sequencingProperty
-    ) {
+                                                            ) {
         final String methodName = "findGlossary";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Glossary> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            GlossaryHandler handler = instanceHandler.getGlossaryHandler(serverName, userId, methodName);
-            if (offset == null) {
-                offset = new Integer(0);
-            }
-            if (pageSize == null) {
-                pageSize = new Integer(0);
-            }
-            List<Glossary> glossaries = handler.findGlossary(
-                    userId,
-                    searchCriteria,
-                    asOfTime,
-                    offset,
-                    pageSize,
-                    sequencingOrder,
-                    sequencingProperty);
-            GlossariesResponse glossariesResponse = new GlossariesResponse();
-            glossariesResponse.setGlossaries(glossaries);
-            response = glossariesResponse;
-        }  catch (Throwable error) {
-            response =  getResponseForError(error, auditLog, className, methodName);
+            SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
+            FindRequest findRequest = new FindRequest();
+            findRequest.setSearchCriteria(searchCriteria);
+            findRequest.setAsOfTime(asOfTime);
+            findRequest.setOffset(offset);
+            findRequest.setPageSize(pageSize);
+            findRequest.setSequencingOrder(sequencingOrder);
+            findRequest.setSequencingProperty(sequencingProperty);
+
+            List<Glossary> glossaries = clients.glossaries().find(userId, findRequest);
+            response.addAllResults(glossaries);
+        } catch (Throwable error) {
+            response = getResponseForError(error, auditLog, className, methodName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -198,38 +182,42 @@ public class GlossaryAuthorViewGlossaryRESTServices extends BaseGlossaryAuthorVi
      * @return a response which when successful contains the glossary relationships
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse getGlossaryRelationships(
+    public SubjectAreaOMASAPIResponse<Line> getGlossaryRelationships(
             String serverName,
             String userId,
             String guid,
             Date asOfTime,
-            Integer offset,
-            Integer pageSize,
+            int offset,
+            int pageSize,
             SequencingOrder sequencingOrder,
             String sequencingProperty
 
 
-    ) {
+                                                                    ) {
         final String methodName = "getGlossaryRelationships";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Line> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            GlossaryHandler handler = instanceHandler.getGlossaryHandler(serverName, userId, methodName);
-            List<Line> lines =  handler.getGlossaryRelationships(userId, guid, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
-            LinesResponse linesResponse = new LinesResponse();
-            linesResponse.setLines(lines);
-            response = linesResponse;
-        }  catch (Throwable error) {
-            response =  getResponseForError(error, auditLog, className, methodName);
+            SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
+            FindRequest findRequest = new FindRequest();
+            findRequest.setAsOfTime(asOfTime);
+            findRequest.setOffset(offset);
+            findRequest.setPageSize(pageSize);
+            findRequest.setSequencingOrder(sequencingOrder);
+            findRequest.setSequencingProperty(sequencingProperty);
+
+            List<Line> lines = clients.glossaries().getRelationships(userId, guid, findRequest);
+            response.addAllResults(lines);
+        } catch (Throwable error) {
+            response = getResponseForError(error, auditLog, className, methodName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -244,53 +232,46 @@ public class GlossaryAuthorViewGlossaryRESTServices extends BaseGlossaryAuthorVi
      * qualified names to mismatch the Glossary name.
      * Status is not updated using this call.
      *
-     * @param serverName         name of the local UI server.
-     * @param userId             user identifier
+     * @param serverName name of the local UI server.
+     * @param userId     user identifier
      * @param guid       guid of the glossary to update
      * @param glossary   glossary to update
      * @param isReplace  flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return a response which when successful contains the updated glossary
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
 
-    public SubjectAreaOMASAPIResponse updateGlossary(
+    public SubjectAreaOMASAPIResponse<Glossary> updateGlossary(
             String serverName,
             String userId,
             String guid,
             Glossary glossary,
-            Boolean isReplace
-    ) {
+            boolean isReplace
+                                                              ) {
         final String methodName = "updateGlossary";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Glossary> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied glossary - the calling layer should not allow this.
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            GlossaryHandler handler = instanceHandler.getGlossaryHandler(serverName, userId, methodName);
+            SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
             Glossary updatedGlossary;
-            if (isReplace == null) {
-                isReplace = false;
-            }
             if (isReplace) {
-                updatedGlossary = handler.replaceGlossary(userId, guid, glossary);
+                updatedGlossary = clients.glossaries().replace(userId, guid, glossary);
             } else {
-                updatedGlossary = handler.updateGlossary(userId, guid, glossary);
+                updatedGlossary = clients.glossaries().update(userId, guid, glossary);
             }
-            GlossaryResponse glossaryResponse = new GlossaryResponse();
-            glossaryResponse.setGlossary(updatedGlossary);
-            response = glossaryResponse;
-        }  catch (Throwable error) {
-            response =  getResponseForError(error, auditLog, className, methodName);
+            response.addResult(updatedGlossary);
+        } catch (Throwable error) {
+            response = getResponseForError(error, auditLog, className, methodName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -309,55 +290,43 @@ public class GlossaryAuthorViewGlossaryRESTServices extends BaseGlossaryAuthorVi
      * A hard delete means that the glossary will not exist after the operation.
      * when not successful the following Exceptions can occur
      *
-     * @param serverName         name of the local UI server.
-     * @param userId             user identifier
+     * @param serverName name of the local UI server.
+     * @param userId     user identifier
      * @param guid       guid of the glossary to be deleted.
      * @param isPurge    true indicates a hard delete, false is a soft delete.
      * @return a void response
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
-     * <li> EntityNotDeletedException            a soft delete was issued but the glossary was not deleted.</li>
-     * <li> GUIDNotPurgedException               a hard delete was issued but the glossary was not purged</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse deleteGlossary(
+    public SubjectAreaOMASAPIResponse<Glossary> deleteGlossary(
             String serverName,
             String userId,
             String guid,
-            Boolean isPurge
-    ) {
+            boolean isPurge
+                                                              ) {
 
         final String methodName = "deleteGlossary";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Glossary> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied glossary - the calling layer should not allow this.
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            GlossaryHandler handler = instanceHandler.getGlossaryHandler(serverName, userId, methodName);
-            if (isPurge == null) {
-                // default to soft delete if isPurge is not specified.
-                isPurge = false;
-            }
+            SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
 
             if (isPurge) {
-                handler.purgeGlossary(userId, guid);
-                response = new VoidResponse();
+                clients.glossaries().purge(userId, guid);
             } else {
-                Glossary glossary = handler.deleteGlossary(userId, guid);
-                GlossaryResponse glossaryResponse = new GlossaryResponse();
-                glossaryResponse.setGlossary(glossary);
-                response = glossaryResponse;
+                clients.glossaries().delete(userId, guid);
             }
-        }  catch (Throwable error) {
-            response =  getResponseForError(error, auditLog, className, methodName);
+        } catch (Throwable error) {
+            response = getResponseForError(error, auditLog, className, methodName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
@@ -368,39 +337,83 @@ public class GlossaryAuthorViewGlossaryRESTServices extends BaseGlossaryAuthorVi
      * <p>
      * Restore allows the deleted Glossary to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
      *
-     * @param serverName         name of the local UI server.
-     * @param userId             user identifier
+     * @param serverName name of the local UI server.
+     * @param userId     user identifier
      * @param guid       guid of the glossary to restore
      * @return response which when successful contains the restored glossary
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse restoreGlossary(
+    public SubjectAreaOMASAPIResponse<Glossary> restoreGlossary(
             String serverName,
             String userId,
             String guid) {
         final String methodName = "restoreGlossary";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-        SubjectAreaOMASAPIResponse response = null;
+        SubjectAreaOMASAPIResponse<Glossary> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
 
         // should not be called without a supplied glossary - the calling layer should not allow this.
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            GlossaryHandler handler = instanceHandler.getGlossaryHandler(serverName, userId, methodName);
-            Glossary glossary = handler.restoreGlossary(userId, guid);
-            GlossaryResponse glossaryResponse = new GlossaryResponse();
-            glossaryResponse.setGlossary(glossary);
-            response = glossaryResponse;
-        }  catch (Throwable error) {
-            response =  getResponseForError(error, auditLog, className, methodName);
+            SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
+            Glossary glossary = clients.glossaries().restore(userId, guid);
+            response.addResult(glossary);
+        } catch (Throwable error) {
+            response = getResponseForError(error, auditLog, className, methodName);
+        }
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+    /**
+     * Create the supplied list of Terms in the glossary, identified by the supplied guid. Each term does not need to specify a glossary.
+     *
+     * @param serverName       local UI server name
+     * @param userId           user identifier
+     * @param guid             guid of the glossary under which the Terms will be created
+     * @param terms            terms to create
+     * @return a response which when successful contains a list of the responses from the Term creates (successful or otherwise). The order of the responses is the same as the supplied terms order.
+     *
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> FunctionNotSupportedException        Function not supported</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * </ul>
+     */
+    public SubjectAreaOMASAPIResponse<SubjectAreaOMASAPIResponse<Term>> createMultipleTermsInAGlossary(String serverName, String userId, String guid, Term[] terms) {
+        final String methodName = "createMultipleTermsInAGlossary";
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        SubjectAreaOMASAPIResponse<SubjectAreaOMASAPIResponse<Term>> response = new SubjectAreaOMASAPIResponse<>();
+        AuditLog auditLog = null;
+
+        try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
+            for (Term term : terms) {
+                GlossarySummary glossarySummary = new GlossarySummary();
+                glossarySummary.setGuid(guid);
+                term.setGlossary(glossarySummary);
+                SubjectAreaOMASAPIResponse<Term> termResponse = new SubjectAreaOMASAPIResponse<Term>();
+                try {
+                    Term createdTerm = clients.terms().create(userId, term);
+                    termResponse.addResult(createdTerm);
+                } catch (Throwable error) {
+                    termResponse = getResponseForError(error, auditLog, className, methodName);
+                }
+                response.addResult(termResponse);
+            }
+
+        } catch (Throwable error) {
+            response = getResponseForError(error, auditLog, className, methodName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;

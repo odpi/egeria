@@ -5,16 +5,17 @@ package org.odpi.openmetadata.adminservices;
 import org.odpi.openmetadata.adminservices.configuration.OMAGViewServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.ViewServiceConfig;
-import org.odpi.openmetadata.adminservices.configuration.registration.*;
+import org.odpi.openmetadata.adminservices.configuration.registration.CommonServicesDescription;
+import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
+import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceRegistration;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
-import org.odpi.openmetadata.adminservices.rest.ViewServiceRequestBody;
+import org.odpi.openmetadata.adminservices.rest.ViewServicesResponse;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGService;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGServicesResponse;
-import org.odpi.openmetadata.adminservices.rest.ViewServicesResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.slf4j.LoggerFactory;
 
@@ -26,7 +27,8 @@ import java.util.List;
  * OMAGServerAdminForViewServices provides the server-side support for the services that add view services
  * configuration to an OMAG Server.
  */
-public class OMAGServerAdminForViewServices {
+public class OMAGServerAdminForViewServices
+{
     private static RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(OMAGServerAdminForViewServices.class),
                                                                       CommonServicesDescription.ADMIN_OPERATIONAL_SERVICES.getServiceName());
 
@@ -38,7 +40,8 @@ public class OMAGServerAdminForViewServices {
     /**
      * Default constructor
      */
-    public OMAGServerAdminForViewServices() {
+    public OMAGServerAdminForViewServices()
+    {
     }
 
 
@@ -50,14 +53,16 @@ public class OMAGServerAdminForViewServices {
      * @return list of view service descriptions
      */
     public RegisteredOMAGServicesResponse getConfiguredViewServices(String userId,
-                                                                    String serverName) {
+                                                                    String serverName)
+    {
         final String methodName = "getConfiguredViewServices";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         RegisteredOMAGServicesResponse response = new RegisteredOMAGServicesResponse();
 
-        try {
+        try
+        {
             /*
              * Validate and set up the userName and server name.
              */
@@ -74,11 +79,15 @@ public class OMAGServerAdminForViewServices {
             /*
              * Set up the available view services.
              */
-            if ((viewServiceConfigList != null) && (!viewServiceConfigList.isEmpty())) {
+            if ((viewServiceConfigList != null) && (!viewServiceConfigList.isEmpty()))
+            {
                 List<RegisteredOMAGService> services = new ArrayList<>();
-                for (ViewServiceConfig viewServiceConfig : viewServiceConfigList) {
-                    if (viewServiceConfig != null) {
-                        if (viewServiceConfig.getViewServiceOperationalStatus() == ServiceOperationalStatus.ENABLED) {
+                for (ViewServiceConfig viewServiceConfig : viewServiceConfigList)
+                {
+                    if (viewServiceConfig != null)
+                    {
+                        if (viewServiceConfig.getViewServiceOperationalStatus() == ServiceOperationalStatus.ENABLED)
+                        {
                             RegisteredOMAGService service = new RegisteredOMAGService();
                             service.setServiceName(viewServiceConfig.getViewServiceFullName());
                             service.setServiceDescription(viewServiceConfig.getViewServiceDescription());
@@ -88,15 +97,23 @@ public class OMAGServerAdminForViewServices {
                         }
                     }
                 }
-                if (!services.isEmpty()) {
+
+                if (!services.isEmpty())
+                {
                     response.setServices(services);
                 }
             }
-        } catch (OMAGInvalidParameterException error) {
+        }
+        catch (OMAGInvalidParameterException error)
+        {
             exceptionHandler.captureInvalidParameterException(response, error);
-        } catch (OMAGNotAuthorizedException error) {
+        }
+        catch (OMAGNotAuthorizedException error)
+        {
             exceptionHandler.captureNotAuthorizedException(response, error);
-        } catch (Throwable error) {
+        }
+        catch (Throwable error)
+        {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
@@ -114,14 +131,16 @@ public class OMAGServerAdminForViewServices {
      * @return view services response
      */
     public ViewServicesResponse getViewServicesConfiguration(String userId,
-                                                             String serverName) {
+                                                             String serverName)
+    {
         final String methodName = "getViewServicesConfiguration";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         ViewServicesResponse response = new ViewServicesResponse();
 
-        try {
+        try
+        {
             /*
              * Validate and set up the userName and server name.
              */
@@ -138,24 +157,37 @@ public class OMAGServerAdminForViewServices {
             /*
              * Set up the available view services.
              */
-            if ((viewServiceConfigList != null) && (!viewServiceConfigList.isEmpty())) {
+            if ((viewServiceConfigList != null) && (!viewServiceConfigList.isEmpty()))
+            {
                 List<ViewServiceConfig> services = new ArrayList<>();
-                for (ViewServiceConfig viewServiceConfig : viewServiceConfigList) {
-                    if (viewServiceConfig != null) {
-                        if (viewServiceConfig.getViewServiceOperationalStatus() == ServiceOperationalStatus.ENABLED) {
+
+                for (ViewServiceConfig viewServiceConfig : viewServiceConfigList)
+                {
+                    if (viewServiceConfig != null)
+                    {
+                        if (viewServiceConfig.getViewServiceOperationalStatus() == ServiceOperationalStatus.ENABLED)
+                        {
                             services.add(viewServiceConfig);
                         }
                     }
                 }
-                if (!services.isEmpty()) {
+
+                if (!services.isEmpty())
+                {
                     response.setServices(services);
                 }
             }
-        } catch (OMAGInvalidParameterException error) {
+        }
+        catch (OMAGInvalidParameterException error)
+        {
             exceptionHandler.captureInvalidParameterException(response, error);
-        } catch (OMAGNotAuthorizedException error) {
+        }
+        catch (OMAGNotAuthorizedException error)
+        {
             exceptionHandler.captureNotAuthorizedException(response, error);
-        } catch (Throwable error) {
+        }
+        catch (Throwable error)
+        {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
@@ -171,30 +203,31 @@ public class OMAGServerAdminForViewServices {
      * @param userId             user that is issuing the request.
      * @param serverName         local server name.
      * @param serviceURLMarker   view service name used in URL
-     * @param requestBody       URL root and server name that are used to access the downstream OMAG Server.
+     * @param requestedViewServiceConfig  view service config
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGConfigurationErrorException the event bus has not been configured or
      * OMAGInvalidParameterException invalid serverName parameter.
      */
-    public VoidResponse configureViewService(String userId,
-                                             String serverName,
-                                             String serviceURLMarker,
-                                             ViewServiceRequestBody requestBody) {
+    public VoidResponse configureViewService(String            userId,
+                                             String            serverName,
+                                             String            serviceURLMarker,
+                                             ViewServiceConfig requestedViewServiceConfig)
+    {
         final String methodName = "configureViewService";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
-        try {
+        try
+        {
             /*
              * Validate and set up the userName and server name.
              */
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
-            errorHandler.validateOMAGServerClientConfig(serverName, requestBody, methodName);
-
+            errorHandler.validateOMAGServerClientConfig(serverName, requestedViewServiceConfig, methodName);
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
@@ -208,20 +241,28 @@ public class OMAGServerAdminForViewServices {
 
             errorHandler.validateViewServiceIsRegistered(viewServiceRegistration, serviceURLMarker, serverName, methodName);
 
-
             viewServiceConfigList = this.updateViewServiceConfig(createViewServiceConfig(viewServiceRegistration,
-                                                                                         requestBody),
+                                                                                         requestedViewServiceConfig),
                                                                  viewServiceConfigList);
 
             this.storeViewServicesConfig(userId, serverName, serviceURLMarker, viewServiceConfigList, methodName);
 
-        } catch (OMAGInvalidParameterException error) {
+
+        }
+        catch (OMAGInvalidParameterException error)
+        {
             exceptionHandler.captureInvalidParameterException(response, error);
-        } catch (OMAGConfigurationErrorException error) {
+        }
+        catch (OMAGConfigurationErrorException error)
+        {
             exceptionHandler.captureConfigurationErrorException(response, error);
-        } catch (OMAGNotAuthorizedException error) {
+        }
+        catch (OMAGNotAuthorizedException error)
+        {
             exceptionHandler.captureNotAuthorizedException(response, error);
-        } catch (Throwable error) {
+        }
+        catch (Throwable error)
+        {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
@@ -237,31 +278,31 @@ public class OMAGServerAdminForViewServices {
      *
      * @param userId       user that is issuing the request.
      * @param serverName   local server name.
-     * @param requestBody       URL root and server name that are used to access the downstream OMAG Server.
+     * @param requestedViewServiceConfig  requested View Service Config containing the OMAGServerName and OMAGServerRootPlatformURL
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGConfigurationErrorException the event bus has not been configured or
      * OMAGInvalidParameterException invalid serverName parameter.
      */
-    public VoidResponse configureAllViewServices(String userId,
-                                                 String serverName,
-                                                 ViewServiceRequestBody requestBody) {
+    public VoidResponse configureAllViewServices(String            userId,
+                                                 String            serverName,
+                                                 ViewServiceConfig requestedViewServiceConfig)
+    {
         final String methodName = "configureViewServices";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
         VoidResponse response = new VoidResponse();
 
-        try {
+        try
+        {
             /*
              * Validate and set up the userName and server name.
              */
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
-            errorHandler.validateOMAGServerClientConfig(serverName, requestBody,methodName);
-
+            errorHandler.validateOMAGServerClientConfig(serverName, requestedViewServiceConfig, methodName);
 
             List<ViewServiceConfig> viewServiceConfigList = new ArrayList<>();
-
 
             /*
              * Get the list of View Services implemented in this server.
@@ -271,27 +312,38 @@ public class OMAGServerAdminForViewServices {
             /*
              * Set up the available view services.
              */
-            if ((viewServiceRegistrationList != null) && (!viewServiceRegistrationList.isEmpty())) {
-                for (ViewServiceRegistration registration : viewServiceRegistrationList) {
-                    if (registration != null) {
-                        if (registration.getViewServiceOperationalStatus() == ServiceOperationalStatus.ENABLED) {
-
-                            viewServiceConfigList.add(createViewServiceConfig(registration, requestBody));
+            if (! viewServiceRegistrationList.isEmpty())
+            {
+                for (ViewServiceRegistration registration : viewServiceRegistrationList)
+                {
+                    if (registration != null)
+                    {
+                        if (registration.getViewServiceOperationalStatus() == ServiceOperationalStatus.ENABLED)
+                        {
+                            viewServiceConfigList.add(createViewServiceConfig(registration, requestedViewServiceConfig));
                         }
                     }
                 }
+
             }
 
-            if (viewServiceConfigList.isEmpty()) {
+            if (viewServiceConfigList.isEmpty())
+            {
                 viewServiceConfigList = null;
             }
 
             this.storeViewServicesConfig(userId, serverName, null, viewServiceConfigList, methodName);
-        } catch (OMAGInvalidParameterException error) {
+        }
+        catch (OMAGInvalidParameterException error)
+        {
             exceptionHandler.captureInvalidParameterException(response, error);
-        } catch (OMAGNotAuthorizedException error) {
+        }
+        catch (OMAGNotAuthorizedException error)
+        {
             exceptionHandler.captureNotAuthorizedException(response, error);
-        } catch (Throwable error) {
+        }
+        catch (Throwable  error)
+        {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
@@ -305,16 +357,17 @@ public class OMAGServerAdminForViewServices {
      * Set up the configuration for a single view service.
      *
      * @param registration registration information about the service.
-     * @param requestBody URL root and server name for the OMAG server that are used to access the downstream OMAG Server.
+     * @param requestedViewServiceConfig requested view service config
      * @return newly created config object
      */
-    private ViewServiceConfig createViewServiceConfig(ViewServiceRegistration registration,
-                                                      ViewServiceRequestBody  requestBody) {
+    private ViewServiceConfig createViewServiceConfig(ViewServiceRegistration    registration,
+                                                      ViewServiceConfig          requestedViewServiceConfig)
+    {
         ViewServiceConfig viewServiceConfig = new ViewServiceConfig(registration);
 
-        viewServiceConfig.setOMAGServerName(requestBody.getOMAGServerName());
-        viewServiceConfig.setOMAGServerPlatformRootURL(requestBody.getOMAGServerPlatformRootURL());
-        viewServiceConfig.setViewServiceOptions(requestBody.getViewServiceOptions());
+        viewServiceConfig.setViewServiceOptions(requestedViewServiceConfig.getViewServiceOptions());
+        viewServiceConfig.setOMAGServerPlatformRootURL(requestedViewServiceConfig.getOMAGServerPlatformRootURL());
+        viewServiceConfig.setOMAGServerName(requestedViewServiceConfig.getOMAGServerName());
 
         return viewServiceConfig;
     }
@@ -327,17 +380,25 @@ public class OMAGServerAdminForViewServices {
      * @param currentList       current config (may be null)
      * @return updated list
      */
-    private List<ViewServiceConfig> updateViewServiceConfig(ViewServiceConfig viewServiceConfig,
-                                                            List<ViewServiceConfig> currentList) {
-        if (viewServiceConfig == null) {
+    private List<ViewServiceConfig> updateViewServiceConfig(ViewServiceConfig       viewServiceConfig,
+                                                            List<ViewServiceConfig> currentList)
+    {
+        if (viewServiceConfig == null)
+        {
             return currentList;
-        } else {
+        }
+        else
+        {
             List<ViewServiceConfig> newList = new ArrayList<>();
 
-            if (currentList != null) {
-                for (ViewServiceConfig existingConfig : currentList) {
-                    if (existingConfig != null) {
-                        if (viewServiceConfig.getViewServiceId() != existingConfig.getViewServiceId()) {
+            if (currentList != null)
+            {
+                for (ViewServiceConfig existingConfig : currentList)
+                {
+                    if (existingConfig != null)
+                    {
+                        if (viewServiceConfig.getViewServiceId() != existingConfig.getViewServiceId())
+                        {
                             newList.add(existingConfig);
                         }
                     }
@@ -346,7 +407,8 @@ public class OMAGServerAdminForViewServices {
 
             newList.add(viewServiceConfig);
 
-            if (newList.isEmpty()) {
+            if (newList.isEmpty())
+            {
                 return null;
             }
 
@@ -366,14 +428,16 @@ public class OMAGServerAdminForViewServices {
      * OMAGInvalidParameterException invalid serverName  parameter.
      */
     public VoidResponse clearAllViewServices(String userId,
-                                             String serverName) {
+                                             String serverName)
+    {
         final String methodName = "clearAllViewServices";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
-        try {
+        try
+        {
             /*
              * Validate and set up the userName and server name.
              */
@@ -381,11 +445,17 @@ public class OMAGServerAdminForViewServices {
             errorHandler.validateUserId(userId, serverName, methodName);
 
             this.storeViewServicesConfig(userId, serverName, null, null, methodName);
-        } catch (OMAGInvalidParameterException error) {
+        }
+        catch (OMAGInvalidParameterException error)
+        {
             exceptionHandler.captureInvalidParameterException(response, error);
-        } catch (OMAGNotAuthorizedException error) {
+        }
+        catch (OMAGNotAuthorizedException error)
+        {
             exceptionHandler.captureNotAuthorizedException(response, error);
-        } catch (Throwable error) {
+        }
+        catch (Throwable error)
+        {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
@@ -406,9 +476,10 @@ public class OMAGServerAdminForViewServices {
      * OMAGNotAuthorizedException  the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or viewServicesConfig parameter.
      */
-    public VoidResponse setViewServicesConfig(String userId,
-                                              String serverName,
-                                              List<ViewServiceConfig> viewServicesConfig) {
+    public VoidResponse setViewServicesConfig(String                  userId,
+                                              String                  serverName,
+                                              List<ViewServiceConfig> viewServicesConfig)
+    {
         final String methodName = "setViewServicesConfig";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
@@ -437,13 +508,15 @@ public class OMAGServerAdminForViewServices {
      */
     private VoidResponse storeViewServicesConfig(String userId,
                                                  String serverName,
-                                                 String serviceURLMarker,
+                                                 String                  serviceURLMarker,
                                                  List<ViewServiceConfig> viewServicesConfig,
-                                                 String methodName) {
+                                                 String                  methodName)
+    {
 
         VoidResponse response = new VoidResponse();
 
-        try {
+        try
+        {
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
 
@@ -451,15 +524,21 @@ public class OMAGServerAdminForViewServices {
 
             List<String> configAuditTrail = serverConfig.getAuditTrail();
 
-            if (configAuditTrail == null) {
+            if (configAuditTrail == null)
+            {
                 configAuditTrail = new ArrayList<>();
             }
 
-            if (viewServicesConfig == null) {
+            if (viewServicesConfig == null)
+            {
                 configAuditTrail.add(new Date().toString() + " " + userId + " removed configuration for view services.");
-            } else if (serviceURLMarker == null) {
+            }
+            else if (serviceURLMarker == null)
+            {
                 configAuditTrail.add(new Date().toString() + " " + userId + " updated configuration for view services.");
-            } else {
+            }
+            else
+            {
                 configAuditTrail.add(new Date().toString() + " " + userId + " updated configuration for view service " + serviceURLMarker + ".");
             }
 
@@ -468,11 +547,17 @@ public class OMAGServerAdminForViewServices {
             serverConfig.setViewServicesConfig(viewServicesConfig);
 
             configStore.saveServerConfig(serverName, methodName, serverConfig);
-        } catch (OMAGInvalidParameterException error) {
+        }
+        catch (OMAGInvalidParameterException error)
+        {
             exceptionHandler.captureInvalidParameterException(response, error);
-        } catch (OMAGNotAuthorizedException error) {
+        }
+        catch (OMAGNotAuthorizedException error)
+        {
             exceptionHandler.captureNotAuthorizedException(response, error);
-        } catch (Throwable error) {
+        }
+        catch (Throwable error)
+        {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 

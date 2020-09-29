@@ -36,7 +36,7 @@ import '../token-ajax.js';
 *    * attributes (listing names of types)
 *    * valid entity types (listing entity types and providing a link to the entity details)
 *
-* The details panel reacts to events that indicate a change of focus (an entity type's details shoudl be shown)
+* The details panel reacts to events that indicate a change of focus (an entity type's details should be shown)
 * or a change of view (a relationship or classification details should be shown).
 * Because the details panel also includes links to entity, relationship and classification types (as outlined above)
 * the details panel also generates events requesting changeFocus or changeView.

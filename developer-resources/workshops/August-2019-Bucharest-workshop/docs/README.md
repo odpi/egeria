@@ -130,3 +130,7 @@
   * Egeria Hoodies
   * Better web presence (Google Search Result, Wiki page, etc)
   * Better Egeria website design
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

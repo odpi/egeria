@@ -718,7 +718,8 @@ public class OMAGServerOperationalServices
                                                   error);
 
                             throw new OMAGConfigurationErrorException(OMAGAdminErrorCode.UNEXPECTED_INITIALIZATION_EXCEPTION.getMessageDefinition(serverName,
-                                                                                                                                                  accessServiceConfig.getAccessServiceName()),
+                                                                                                                                                  accessServiceConfig.getAccessServiceName(),
+                                                                                                                                                  error.getMessage()),
                                                                       this.getClass().getName(),
                                                                       methodName,
                                                                       error);
@@ -830,7 +831,8 @@ public class OMAGServerOperationalServices
                                               error);
 
                         throw new OMAGConfigurationErrorException(OMAGAdminErrorCode.UNEXPECTED_INITIALIZATION_EXCEPTION.getMessageDefinition(serverName,
-                                                                                                                                              viewServiceConfig.getViewServiceName()),
+                                                                                                                                              viewServiceConfig.getViewServiceName(),
+                                                                                                                                              error.getMessage()),
                                                                   this.getClass().getName(),
                                                                   methodName,
                                                                   error);
@@ -1034,6 +1036,7 @@ public class OMAGServerOperationalServices
         {
             DataEngineProxyOperationalServices operationalDataEngineProxyServices
                     = new DataEngineProxyOperationalServices(configuration.getLocalServerName(),
+                                                             configuration.getLocalServerId(),
                                                              configuration.getLocalServerUserId(),
                                                              configuration.getLocalServerPassword());
 

@@ -2015,6 +2015,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
 
                 case Exact:
                     /* EXACT MATCH */
+                    stringValue = escapeRegexSpecials(stringValue);
                     regexValue = stringValue;
                     break;
                 case Prefix:
@@ -2025,6 +2026,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                     }
                     truncatedLength = (int) (Math.ceil(stringValueLength / 2.0));
                     truncatedStringValue = stringValue.substring(0, truncatedLength);
+                    truncatedStringValue = escapeRegexSpecials(truncatedStringValue);
                     regexValue = truncatedStringValue + ".*";
                     break;
                 case Suffix:
@@ -2035,6 +2037,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                     }
                     truncatedLength = (int) (Math.ceil(stringValueLength / 2.0));
                     truncatedStringValue = stringValue.substring(stringValueLength - truncatedLength, stringValueLength);
+                    truncatedStringValue = escapeRegexSpecials(truncatedStringValue);
                     regexValue = ".*" + truncatedStringValue;
                     break;
                 case Contains:
@@ -2047,6 +2050,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                     int diff = stringValueLength - truncatedLength;
                     int halfDiff = diff / 2;
                     truncatedStringValue = stringValue.substring(halfDiff, stringValueLength - halfDiff);
+                    truncatedStringValue = escapeRegexSpecials(truncatedStringValue);
                     regexValue = ".*" + truncatedStringValue + ".*";
                     break;
             }
@@ -2077,7 +2081,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
 
                             case Exact:
                                 /* EXACT MATCH */
-                                if (stringValue.matches(knownStringValue)) {
+                                if (knownStringValue.matches(stringValue)) {
                                     for (String matchGUID : propValues.get(knownStringValue)) {
                                         if (!expectedGUIDs.contains(matchGUID)) {
                                             expectedGUIDs.add(matchGUID);
@@ -2506,6 +2510,55 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
         parameters.put("sequencingOrder", V_NULL);
         parameters.put("pageSize", Integer.toString(pageSize));
         return parameters;
+    }
+
+    /*
+     * This method will escape any characters that are regex specials - i.e. have significance in a regex.
+     * This is so that the regex (yet to be constructed) will be certain not to contain any characters that
+     * could render the regex invalid.
+     */
+    private String escapeRegexSpecials(String inputString) {
+
+        StringBuilder outputStringBldr = new StringBuilder();
+
+        // Process chars
+        for (int i = 0; i < inputString.length(); i++) {
+            Character c = inputString.charAt(i);
+            /*
+             * No need to escape a '-' char as it is only significant if inside '[]' brackets, and these will be escaped,
+             * so the '-' character has no special meaning
+             */
+
+            /*
+             * Handle special chars - disjoint from alphas
+             */
+            switch (c) {
+                case '.':
+                case '[':
+                case ']':
+                case '^':
+                case '*':
+                case '(':
+                case ')':
+                case '$':
+                case '{':
+                case '}':
+                case '|':
+                case '+':
+                case '?':
+                case '\\':  // single backslash escaped for Java
+                    outputStringBldr.append('\\').append(c);
+                    continue;  // process the next character
+            }
+            /* You only reach this point if the character was not already intercepted and escaped.
+             * The character is not special, so just append it...
+             */
+            outputStringBldr.append(c);
+        }
+
+        String outputString = outputStringBldr.toString();
+
+        return outputString;
     }
 
 }

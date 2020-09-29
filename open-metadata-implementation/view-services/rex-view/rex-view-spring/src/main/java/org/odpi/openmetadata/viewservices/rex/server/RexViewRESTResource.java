@@ -29,7 +29,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/view-services/rex/users/{userId}")
 
-@Tag(name="Rex OMVS", description="Explore instance data in a repository or cohort for visualization of graphs of related items.", externalDocs=@ExternalDocumentation(description="Rex View Services (OMVS)",url="https://egeria.odpi.org/open-metadata-implementation/view-services/rex-view/"))
+@Tag(name="Rex OMVS", description="Explore instance data in a repository or cohort for visualization of graphs of related items.", externalDocs=@ExternalDocumentation(description="Rex View Service (OMVS)",url="https://egeria.odpi.org/open-metadata-implementation/view-services/rex-view/"))
 
 public class RexViewRESTResource {
 

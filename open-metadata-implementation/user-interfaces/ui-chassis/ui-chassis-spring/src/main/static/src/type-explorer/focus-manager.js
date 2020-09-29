@@ -17,7 +17,7 @@ import '../token-ajax.js';
 * The FocusManager component API has functions to clear all types and load all types.
 * The load all types operation will refer to the TypeManager to access the current types, and add them to the selectors. It also initialises
 * the focus and view types.
-* The clear all types operation will drop all tyeps from the selectors and reset the focus and view types.
+* The clear all types operation will drop all types from the selectors and reset the focus and view types.
 * The clear and load all types operations are invoked on receipt of the typesLoaded event.
 *
 * The FocusManager component is the only component that csn actually change the focus or view. Other components have controls that the user
@@ -116,7 +116,6 @@ class FocusManager extends PolymerElement {
       *  Inbound event: change-focus
       */
      inEvtChangeFocus(focusType) {
-         //var focusType = e.detail.focusType;
          this.changeFocus(focusType);
      }
 
@@ -125,8 +124,6 @@ class FocusManager extends PolymerElement {
       *  Inbound event: change-view
       */
      inEvtChangeView(viewCategory, viewType) {
-         //var category = e.detail.category;
-         //var viewType = e.detail.viewType;
          this.changeView(viewCategory, viewType);
      }
 
@@ -180,7 +177,7 @@ class FocusManager extends PolymerElement {
      */
     populateSelectors() {
 
-       // Enpty the selectors before adding new types...
+       // Empty the selectors before adding new types...
        this.prepareSelectors();
 
 
@@ -272,7 +269,7 @@ class FocusManager extends PolymerElement {
         // In the case of a local request (i.e. the focus selector is driving the change), the focus selector will already be displaying
         // the requested type, and does not need to be updated. However, the view selectors need to be cleared.
         //
-        // In the case of a remotely requested change the focus selector needs updating. Ti simplify things it is updated in both the
+        // In the case of a remotely requested change the focus selector needs updating. To simplify things it is updated in both the
         // local and remote cases.
         //
         // Once the selectors are updated, the FocusManager can issue the appropriate event.

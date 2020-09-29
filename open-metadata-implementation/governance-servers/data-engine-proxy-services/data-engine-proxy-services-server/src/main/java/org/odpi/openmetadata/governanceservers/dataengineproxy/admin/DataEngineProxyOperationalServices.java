@@ -2,21 +2,31 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.dataengineproxy.admin;
 
-import org.odpi.openmetadata.accessservices.dataengine.client.DataEngineImpl;
+import org.odpi.openmetadata.accessservices.dataengine.client.DataEngineClient;
+import org.odpi.openmetadata.accessservices.dataengine.client.DataEngineEventClient;
+import org.odpi.openmetadata.accessservices.dataengine.client.DataEngineRESTConfigurationClient;
+import org.odpi.openmetadata.accessservices.dataengine.connectors.intopic.DataEngineInTopicClientConnector;
 import org.odpi.openmetadata.adminservices.configuration.properties.DataEngineProxyConfig;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
-import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.ConnectionResponse;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.EmbeddedConnection;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.VirtualConnection;
 import org.odpi.openmetadata.governanceservers.dataengineproxy.auditlog.DataEngineProxyAuditCode;
+import org.odpi.openmetadata.governanceservers.dataengineproxy.auditlog.DataEngineProxyErrorCode;
 import org.odpi.openmetadata.governanceservers.dataengineproxy.connectors.DataEngineConnectorBase;
 import org.odpi.openmetadata.governanceservers.dataengineproxy.processor.DataEngineProxyChangePoller;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 
-import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * DataEngineProxyOperationalServices is responsible for controlling the startup and shutdown of
@@ -25,12 +35,14 @@ import java.text.MessageFormat;
 public class DataEngineProxyOperationalServices {
 
     private String localServerName;
+    private String localServerId;
     private String localServerUserId;
     private String localServerPassword;
 
     private OMRSAuditLog auditLog;
     private DataEngineConnectorBase dataEngineConnector;
     private DataEngineProxyChangePoller changePoller;
+    private DataEngineInTopicClientConnector dataEngineTopicConnector;
 
     /**
      * Constructor used at server startup.
@@ -40,9 +52,11 @@ public class DataEngineProxyOperationalServices {
      * @param localServerPassword   password for this server to use if processing inbound messages
      */
     public DataEngineProxyOperationalServices(String localServerName,
+                                              String localServerId,
                                               String localServerUserId,
                                               String localServerPassword) {
         this.localServerName = localServerName;
+        this.localServerId = localServerId;
         this.localServerUserId = localServerUserId;
         this.localServerPassword = localServerPassword;
     }
@@ -63,56 +77,88 @@ public class DataEngineProxyOperationalServices {
         auditLog.logMessage(methodName, DataEngineProxyAuditCode.SERVICE_INITIALIZING.getMessageDefinition());
 
         if (dataEngineProxyConfig == null) {
-            AuditLogMessageDefinition error = DataEngineProxyAuditCode.NO_CONFIG_DOC.getMessageDefinition(localServerName);
-            auditLog.logMessage(methodName, error);
-            throw new OMAGConfigurationErrorException(500,
+            throw new OMAGConfigurationErrorException(
+                    DataEngineProxyErrorCode.NO_CONFIG_DOC.getMessageDefinition(localServerName),
                     this.getClass().getName(),
-                    methodName,
-                    MessageFormat.format(error.getMessageTemplate(), error.getMessageParams()),
-                    error.getSystemAction(),
-                    error.getUserAction());
+                    methodName
+            );
         } else if (dataEngineProxyConfig.getAccessServiceRootURL() == null) {
-            AuditLogMessageDefinition error = DataEngineProxyAuditCode.NO_OMAS_SERVER_URL.getMessageDefinition(localServerName);
-            auditLog.logMessage(methodName, error);
-            throw new OMAGConfigurationErrorException(500,
+            throw new OMAGConfigurationErrorException(
+                    DataEngineProxyErrorCode.NO_OMAS_SERVER_URL.getMessageDefinition(localServerName),
                     this.getClass().getName(),
-                    methodName,
-                    MessageFormat.format(error.getMessageTemplate(), error.getMessageParams()),
-                    error.getSystemAction(),
-                    error.getUserAction());
+                    methodName
+            );
         } else if (dataEngineProxyConfig.getAccessServiceServerName() == null) {
-            AuditLogMessageDefinition error = DataEngineProxyAuditCode.NO_OMAS_SERVER_NAME.getMessageDefinition(localServerName);
-            auditLog.logMessage(methodName, error);
-            throw new OMAGConfigurationErrorException(500,
+            throw new OMAGConfigurationErrorException(
+                    DataEngineProxyErrorCode.NO_OMAS_SERVER_NAME.getMessageDefinition(localServerName),
                     this.getClass().getName(),
-                    methodName,
-                    MessageFormat.format(error.getMessageTemplate(), error.getMessageParams()),
-                    error.getSystemAction(),
-                    error.getUserAction());
+                    methodName
+            );
         }
 
         /*
          * Create the OMAS client
          */
-        DataEngineImpl dataEngineClient;
+
+        DataEngineClient dataEngineClient;
+
         try {
             if ((localServerName != null) && (localServerPassword != null)) {
-                dataEngineClient = new DataEngineImpl(dataEngineProxyConfig.getAccessServiceServerName(),
+                dataEngineClient = new DataEngineRESTConfigurationClient(dataEngineProxyConfig.getAccessServiceServerName(),
                         dataEngineProxyConfig.getAccessServiceRootURL(),
                         localServerUserId,
                         localServerPassword);
             } else {
-                dataEngineClient = new DataEngineImpl(dataEngineProxyConfig.getAccessServiceServerName(),
+                dataEngineClient = new DataEngineRESTConfigurationClient(dataEngineProxyConfig.getAccessServiceServerName(),
                         dataEngineProxyConfig.getAccessServiceRootURL());
             }
+
         } catch (InvalidParameterException error) {
-            throw new OMAGConfigurationErrorException(error.getReportedHTTPCode(),
+            throw new OMAGConfigurationErrorException(
+                    DataEngineProxyErrorCode.UNKNOWN_ERROR.getMessageDefinition(),
                     this.getClass().getName(),
                     methodName,
-                    error.getErrorMessage(),
-                    error.getReportedSystemAction(),
-                    error.getReportedUserAction(),
-                    error);
+                    error
+            );
+        }
+
+        // Check if events interface should be enabled, otherwise we do not start the connector and configure the events client
+        if(dataEngineProxyConfig.isEventsClientEnabled()) {
+
+            try {
+
+                // Configure and start the topic connector
+                ConnectionResponse connectionResponse = ((DataEngineRESTConfigurationClient) dataEngineClient).getInTopicConnection(dataEngineProxyConfig.getAccessServiceServerName(), localServerUserId);
+
+                ConnectorBroker connectorBroker = new ConnectorBroker();
+                VirtualConnection virtualConnection = (VirtualConnection)connectionResponse.getConnection();
+
+                // Replace connection configuration properties relevant to the server hosting the client connector
+                // In this case it is important to set the kafka consumer `group.id` property
+                List<EmbeddedConnection> embeddedConnections = new ArrayList<>();
+                virtualConnection.getEmbeddedConnections().forEach(embeddedConnection -> {
+                    Connection connection = embeddedConnection.getEmbeddedConnection();
+                    Map cp = connection.getConfigurationProperties();
+                    cp.put("local.server.id", localServerId); // -> maps to `group.id` in OCF
+                    connection.setConfigurationProperties(cp);
+                    embeddedConnection.setEmbeddedConnection(connection);
+                    embeddedConnections.add(embeddedConnection);
+                });
+                virtualConnection.setEmbeddedConnections(embeddedConnections);
+
+                dataEngineTopicConnector = (DataEngineInTopicClientConnector) connectorBroker.getConnector(virtualConnection);
+                dataEngineTopicConnector.setAuditLog(auditLog);
+                dataEngineTopicConnector.start();
+                dataEngineClient = new DataEngineEventClient(dataEngineTopicConnector);
+
+            } catch (ConnectionCheckedException | ConnectorCheckedException | PropertyServerException | UserNotAuthorizedException | InvalidParameterException e) {
+                throw new OMAGConfigurationErrorException(
+                        DataEngineProxyErrorCode.ERROR_INITIALIZING_CLIENT_CONNECTION.getMessageDefinition(),
+                        this.getClass().getName(),
+                        methodName,
+                        e
+                );
+            }
         }
 
         // Configure the connector
@@ -135,16 +181,27 @@ public class DataEngineProxyOperationalServices {
                 }
                 // TODO: otherwise we likely need to look for and process events
             } catch (ConnectionCheckedException | ConnectorCheckedException e) {
-                this.auditLog.logException(methodName, DataEngineProxyAuditCode.ERROR_INITIALIZING_CONNECTION.getMessageDefinition(), e);
+                throw new OMAGConfigurationErrorException(
+                        DataEngineProxyErrorCode.ERROR_INITIALIZING_CONNECTION.getMessageDefinition(),
+                        this.getClass().getName(),
+                        methodName,
+                        e
+                );
             } finally {
-                changePoller.stop();
+                if (changePoller != null) {
+                    changePoller.stop();
+                }
             }
         }
 
         if (dataEngineConnector != null && dataEngineConnector.isActive()) {
             this.auditLog.logMessage(methodName, DataEngineProxyAuditCode.SERVICE_INITIALIZED.getMessageDefinition(dataEngineConnector.getConnection().getConnectorType().getConnectorProviderClassName()));
         } else {
-            this.auditLog.logMessage(methodName, DataEngineProxyAuditCode.NO_CONFIG_DOC.getMessageDefinition());
+            throw new OMAGConfigurationErrorException(
+                    DataEngineProxyErrorCode.NO_CONFIG_DOC.getMessageDefinition(localServerName),
+                    this.getClass().getName(),
+                    methodName
+            );
         }
 
     }
@@ -164,7 +221,13 @@ public class DataEngineProxyOperationalServices {
                 changePoller.stop();
             }
             // Disconnect the data engine connector
-            dataEngineConnector.disconnect();
+            if(dataEngineConnector!=null) {
+                dataEngineConnector.disconnect();
+            }
+            // Disconnect the topic connector if initialized previously
+            if(dataEngineTopicConnector!=null) {
+                dataEngineTopicConnector.disconnect();
+            }
             auditLog.logMessage(methodName, DataEngineProxyAuditCode.SERVICE_SHUTDOWN.getMessageDefinition(localServerName));
             return true;
         } catch (Exception e) {

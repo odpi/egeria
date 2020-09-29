@@ -3,7 +3,9 @@
 package org.odpi.openmetadata.accessservices.informationview;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
 import org.odpi.openmetadata.accessservices.informationview.assets.DatabaseContextHandler;
 import org.odpi.openmetadata.accessservices.informationview.events.DatabaseSource;
 import org.odpi.openmetadata.accessservices.informationview.events.TableContextEvent;
@@ -28,7 +30,7 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest{
         databaseContextHandler = new DatabaseContextHandler(enterpriseConnector, omEntityDao, auditLog);
     }
 
-
+    @Ignore
     @Test
     public void testDatabaseContextServices() {
         List<DatabaseSource> databases = databaseContextHandler.getDatabases(0, 10);

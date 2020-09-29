@@ -920,7 +920,7 @@
 							"});",
 							"",
 							"pm.test(\"excption message code is the expected one\", function () {",
-							"    pm.expect(jsonData.exceptionErrorMessage).to.equal(\"OMAS-DATA-ENGINE-400-001 The port type passed for the port-impl-qualified-name is invalid, or different from OUTPUT_PORT\");",
+							"    pm.expect(jsonData.exceptionErrorMessage).to.equal(\"OMAS-DATA-ENGINE-400-001 The port type passed for the entity with qualifiedName port-impl-qualified-name is invalid, or different from expected type INPUT_PORT\");",
 							"});"
 						],
 						"type": "text/javascript"

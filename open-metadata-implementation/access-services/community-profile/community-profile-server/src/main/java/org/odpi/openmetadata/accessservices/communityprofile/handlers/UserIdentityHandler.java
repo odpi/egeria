@@ -300,6 +300,8 @@ public class UserIdentityHandler
                 if (anotherIdentity)
                 {
                     repositoryHandler.removeRelationshipBetweenEntities(userId,
+                                                                        null,
+                                                                        null,
                                                                         PersonalProfileMapper.PROFILE_IDENTITY_TYPE_GUID,
                                                                         PersonalProfileMapper.PROFILE_IDENTITY_TYPE_NAME,
                                                                         profileGUID,

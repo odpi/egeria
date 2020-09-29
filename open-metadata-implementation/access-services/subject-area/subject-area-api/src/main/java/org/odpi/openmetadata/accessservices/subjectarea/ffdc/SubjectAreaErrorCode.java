@@ -92,7 +92,7 @@ public enum SubjectAreaErrorCode implements ExceptionMessageSet {
             "The system is unable to proceed with the create request, as it has unexpectly found a relationship to a glossary already exists.",
             "Raise a Git issue indicating that OMAS-SUBJECT-AREA-400-017 has been issued."),
     CREATE_WITH_NON_EXISTANT_GLOSSARY_GUID(400, "OMAS-SUBJECT-AREA-400-018",
-            "Glossary with userId {0} does not exist. Cannot create without a glossary",
+            "Glossary with guid {0} does not exist. Cannot create without a glossary",
             "The system is unable to process create request as the supplied glossary userId does not exist.",
             "Correct the code in the caller to create with a valid glossary userId."),
     GLOSSARY_TERM_CREATE_WITH_PROJECTS(400, "OMAS-SUBJECT-AREA-400-019",
@@ -112,7 +112,7 @@ public enum SubjectAreaErrorCode implements ExceptionMessageSet {
             "The system has deleted the Glossary and is unable to process the requested classifications.",
             "Retry the Glossary creation with valid classifications."),
     GLOSSARY_CONTENT_PREVENTED_DELETE(400, "OMAS-SUBJECT-AREA-400-023",
-            "Glossary (userId {0}) deletion failed, because there is glossary content",
+            "Glossary (guid {0}) deletion failed, because there is glossary content",
             "The system is unable to process the glossary delete becase the glossary has content.",
             "Retry the Glossary deletion when it is is empty."),
     GLOSSARY_CATEGORY_CREATE_FAILED_ADDING_CLASSIFICATIONS(400, "OMAS-SUBJECT-AREA-400-024",
@@ -152,7 +152,6 @@ public enum SubjectAreaErrorCode implements ExceptionMessageSet {
             "The system is unable to process the request for the relationship, because it is not known.",
             "Retry the request with a known relationship."),
 
-
     // The following Exceptions are not descriptive enough - they need more information from the OMRS Exception
     INVALID_PARAMETER(400, "OMAS-SUBJECT-AREA-400-035",
             "Invalid parameter processing request {0}.",
@@ -174,6 +173,11 @@ public enum SubjectAreaErrorCode implements ExceptionMessageSet {
             "Paging error occurred processing request {0}.",
             "The system is unable to process the request due to a paging error.",
             "Please retry the request with different paging options."),
+    SUBJECT_AREA_FAILED_TO_INITIALISE(400, "OMAS-SUBJECT-AREA-400-040",
+            "An error occurred when initializing the subject area client .",
+            "The system is unable to initialize the subject area client, because it failed to connect to the omas server.",
+            "Retry the request with a known available server name and url."),
+
     // End of The following Exception
 
 
@@ -238,13 +242,17 @@ public enum SubjectAreaErrorCode implements ExceptionMessageSet {
             "The system is unable to connect to the OMAG Server to retrieve metadata properties as the server name was not specified.",
             "Ensure a valid OMAG Server name is passed to the Subject Area OMAS when it is created."),
     UNEXPECTED_EXCEPTION(400, "OMAS-SUBJECT-AREA-400-070",
-            "An unexpected Exception occurred. The Exception message is {1}.",
+            "An unexpected Exception occurred. The Exception message is {0}.",
             "The system encountered an unexpected exception.",
             "Review the exception message to assess whether this is a logic error (in which case raise a git issue against Egeria, or a resource constraint - in which case address that issue."),
     BAD_OUT_TOPIC_CONNECTION(400, "OMAS-SUBJECT-AREA-400-071",
             "The Subject Area Open Metadata Access Service (OMAS) has been passed an invalid connection for publishing events.  The connection was {0}.  The resulting exception of {1} included the following message: {2}",
             "The access service has not been passed valid configuration for its out topic connection.",
             "Correct the topic configuration and restart the service."),
+    PROJECT_CONTENT_PREVENTED_DELETE(400, "OMAS-SUBJECT-AREA-400-072",
+            "Project (guid {0}) deletion failed, because there is project content",
+            "The system is unable to process the project delete becase the project has content.",
+            "Retry the Project deletion when it is is empty."),
     OMRS_NOT_INITIALIZED(404, "OMAS-SUBJECT-AREA-404-001",
             "The open metadata repository services are not initialized for the {0} operation",
             "The system is unable to connect to the open metadata property server.",
@@ -286,7 +294,11 @@ public enum SubjectAreaErrorCode implements ExceptionMessageSet {
             "The access service has not been initialized and can not support REST API call {0}",
             "The server has received a call to one of its open metadata access services but is unable to process it because the access service is " +
                                     "not active.",
-            "If the server is supposed to have this access service activated, correct the server configuration and restart the server.")
+            "If the server is supposed to have this access service activated, correct the server configuration and restart the server."),
+    NOT_FOUND_CLIENT(500, "OMAS-SUBJECT-AREA-500-003",
+            "Not found client for {0}.",
+            "During a method call `getClient` the cache could not find a client instance for this class.",
+            "Check if the type passed to the getClient method is correct. Check if a client has been created for this type.")
     ;
     private static final long    serialVersionUID = 1L;
 

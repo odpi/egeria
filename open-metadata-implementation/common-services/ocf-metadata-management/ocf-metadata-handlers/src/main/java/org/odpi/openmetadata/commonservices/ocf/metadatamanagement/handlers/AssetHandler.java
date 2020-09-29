@@ -4,13 +4,11 @@ package org.odpi.openmetadata.commonservices.ocf.metadatamanagement.handlers;
 
 
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.builders.AssetBuilder;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.*;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
@@ -100,6 +98,7 @@ public class AssetHandler extends ReferenceableHandler
             }
         }
         else
+
         {
             if (updatedAsset.getZoneMembership() == null)
             {

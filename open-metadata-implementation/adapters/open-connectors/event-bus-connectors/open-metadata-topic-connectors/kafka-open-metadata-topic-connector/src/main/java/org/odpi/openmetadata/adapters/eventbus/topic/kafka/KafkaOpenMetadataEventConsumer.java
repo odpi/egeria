@@ -86,7 +86,7 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
         this.auditLog = auditLog;
         this.consumer = new KafkaConsumer<>(kafkaConsumerProperties);
         this.topicToSubscribe = topicName;
-        this.consumer.subscribe(Collections.singletonList(topicToSubscribe), new HandleRebalance());
+        this.consumer.subscribe(Collections.singletonList(topicToSubscribe), new HandleRebalance(auditLog));
         this.connector = connector;
         this.localServerId = localServerId;
 
@@ -117,17 +117,6 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
        return Boolean.valueOf(value).booleanValue();
     }
 
-    /**
-     * The server is shutting down.
-     */
-    public void stop()
-    {
-        running = false;
-        if (consumer != null)
-        {
-            consumer.wakeup();
-        }
-    }
 
     private void updateNextMaxPollTimestamp() {
     	maxNextPollTimestampToAvoidConsumerTimeout = System.currentTimeMillis() + maxMsBetweenPolls - consumerTimeoutPreventionSafetyWindowMs;	
@@ -269,9 +258,27 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
                     }
                     //commit with the current offsets
                     log.info("Committing current offsets before shutdown: " + currentOffsets);
-                    consumer.commitSync(currentOffsets);
+                    try {
+                        consumer.commitSync(currentOffsets);
+                    }
+                    catch( WakeupException error)
+                    {
+                        //ignore we are shutting down
+                    }
+                    catch( Exception error)
+                    {
+                        if (auditLog != null)
+                        {
+                            auditLog.logException("consumer.commitSync",
+                                    KafkaOpenMetadataTopicConnectorAuditCode.EXCEPTION_COMMITING_OFFSETS.getMessageDefinition(topicToSubscribe),
+                                    error);
+
+                        }
+
+                    }
                 }
             }
+
             finally
             {
                 consumer.close();
@@ -357,8 +364,25 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
         if (! commitData.isEmpty()) {
             currentOffsets.putAll(commitData);
             log.info("Committing: " + commitData);
-            consumer.commitSync(commitData);
-            return true;
+            try {
+                consumer.commitSync(commitData);
+                return true;
+            }
+            catch( WakeupException error )
+            {
+                //ignore
+            }
+            catch( Exception error)
+            {
+                if (auditLog != null)
+                {
+                    auditLog.logException("checkForFullyProcessedMessages.commitSync",
+                            KafkaOpenMetadataTopicConnectorAuditCode.EXCEPTION_COMMITING_OFFSETS.getMessageDefinition(topicToSubscribe),
+                            error);
+                }
+
+
+            }
         }
         return false;
         
@@ -504,6 +528,11 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
 
     private class HandleRebalance implements ConsumerRebalanceListener
     {
+        AuditLog auditLog = null;
+        public HandleRebalance(AuditLog auditLog) {
+            this.auditLog = auditLog;
+        }
+
         public void onPartitionsAssigned(Collection<TopicPartition> partitions)
         {
         }
@@ -511,7 +540,24 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
         public void onPartitionsRevoked(Collection<TopicPartition> partitions)
         {
             log.info("Lost partitions in rebalance. Committing current offsets:" + currentOffsets);
-            consumer.commitSync(currentOffsets);
+            try {
+                consumer.commitSync(currentOffsets);
+            }
+            catch( WakeupException error)
+            {
+                //ignore
+            }
+            catch( Exception error)
+            {
+                if (auditLog != null)
+                {
+                    auditLog.logException("onPartitionsRevoked.commitSync",
+                            KafkaOpenMetadataTopicConnectorAuditCode.EXCEPTION_COMMITING_OFFSETS.getMessageDefinition(topicToSubscribe),
+                            error);
+                }
+
+
+            }
         }
     }
 }

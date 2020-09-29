@@ -9,7 +9,9 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.Status;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SystemAttributes;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
+import org.odpi.openmetadata.opentypes.OpenMetadataTypesArchiveAccessor;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -106,10 +108,18 @@ abstract public class ClassificationMapper {
          org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification omrsClassification = new org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification();
          SubjectAreaUtils.populateSystemAttributesForInstanceAuditHeader(systemAttributes, omrsClassification);
          // copy over the classification name
-         omrsClassification.setName(omasClassification.getClassificationName());
+         String classificationName = omasClassification.getClassificationName();
+         omrsClassification.setName(classificationName);
+         // copy over the classification type
+         OpenMetadataTypesArchiveAccessor archiveAccessor = OpenMetadataTypesArchiveAccessor.getInstance();
+         String classificationTypeGuid = archiveAccessor.getClassificationDefByName(classificationName).getGUID();
+         InstanceType instanceType = new InstanceType();
+         instanceType.setTypeDefName(classificationName);
+         instanceType.setTypeDefGUID(classificationTypeGuid);
+         omrsClassification.setType(instanceType);
          // copy over the classification properties
-        omrsClassification.setProperties(updateOMRSAttributes(omasClassification));
-        return omrsClassification;
+         omrsClassification.setProperties(updateOMRSAttributes(omasClassification));
+         return omrsClassification;
     }
 
     /**

@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.ffdc;
 
+import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.auditlog.MessageFormatter;
@@ -97,7 +98,7 @@ public class RESTExceptionHandler
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
     public void detectAndThrowStandardExceptions(String           methodName,
-                                                 FFDCResponseBase restResult) throws InvalidParameterException,
+                                                 FFDCResponse restResult) throws InvalidParameterException,
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
     {
@@ -144,7 +145,7 @@ public class RESTExceptionHandler
      *
      * @throws InvalidParameterException encoded exception from the server
      */
-    public void detectAndThrowInvalidParameterException(FFDCResponseBase restResult) throws InvalidParameterException
+    public void detectAndThrowInvalidParameterException(FFDCResponse restResult) throws InvalidParameterException
     {
         final String   exceptionClassName = InvalidParameterException.class.getName();
 
@@ -207,7 +208,7 @@ public class RESTExceptionHandler
      *
      * @throws InvalidParameterException encoded exception from the server
      */
-    private void throwInvalidParameterException(FFDCResponseBase restResult) throws InvalidParameterException
+    private void throwInvalidParameterException(FFDCResponse restResult) throws InvalidParameterException
     {
         String parameterName = null;
 
@@ -247,7 +248,7 @@ public class RESTExceptionHandler
      *
      * @throws PropertyServerException encoded exception from the server
      */
-    public void detectAndThrowPropertyServerException(FFDCResponseBase restResult) throws PropertyServerException
+    public void detectAndThrowPropertyServerException(FFDCResponse restResult) throws PropertyServerException
     {
         final String   exceptionClassName = PropertyServerException.class.getName();
 
@@ -265,7 +266,7 @@ public class RESTExceptionHandler
      *
      * @throws PropertyServerException encoded exception from the server
      */
-    private void throwPropertyServerException(FFDCResponseBase restResult) throws PropertyServerException
+    private void throwPropertyServerException(FFDCResponse restResult) throws PropertyServerException
     {
         PropertyServerException error = new PropertyServerException(restResult.getRelatedHTTPCode(),
                                                                     this.getClass().getName(),
@@ -290,7 +291,7 @@ public class RESTExceptionHandler
      *
      * @throws UserNotAuthorizedException encoded exception from the server
      */
-    public void detectAndThrowUserNotAuthorizedException(FFDCResponseBase restResult) throws UserNotAuthorizedException
+    public void detectAndThrowUserNotAuthorizedException(FFDCResponse restResult) throws UserNotAuthorizedException
     {
         final String   exceptionClassName = UserNotAuthorizedException.class.getName();
 
@@ -308,7 +309,7 @@ public class RESTExceptionHandler
      *
      * @throws UserNotAuthorizedException encoded exception from the server
      */
-    private void throwUserNotAuthorizedException(FFDCResponseBase restResult) throws UserNotAuthorizedException
+    private void throwUserNotAuthorizedException(FFDCResponse restResult) throws UserNotAuthorizedException
     {
         String userId = null;
 
@@ -375,7 +376,7 @@ public class RESTExceptionHandler
      * @throws PropertyServerException wrapping exception for the caught exception
      */
     private void throwUnexpectedException(String           methodName,
-                                          FFDCResponseBase restResult) throws PropertyServerException
+                                          FFDCResponse restResult) throws PropertyServerException
     {
         log.error(methodName + " returned unexpected exception", restResult);
 
@@ -395,7 +396,7 @@ public class RESTExceptionHandler
      * @param error returned response.
      * @param exceptionClassName  class name of the exception to recreate
      */
-    protected  void captureCheckedException(FFDCResponseBase        response,
+    protected  void captureCheckedException(FFDCResponse        response,
                                             OCFCheckedExceptionBase error,
                                             String                  exceptionClassName)
     {
@@ -411,7 +412,7 @@ public class RESTExceptionHandler
      * @param exceptionClassName  class name of the exception to recreate
      * @param exceptionProperties map of properties stored in the exception to help with diagnostics
      */
-    protected  void captureCheckedException(FFDCResponseBase             response,
+    protected  void captureCheckedException(FFDCResponse             response,
                                             OCFCheckedExceptionBase      error,
                                             String                       exceptionClassName,
                                             Map<String, Object>          exceptionProperties)
@@ -440,7 +441,7 @@ public class RESTExceptionHandler
      * @param error returned response
      * @param methodName calling method
      */
-    public  void captureThrowable(FFDCResponseBase             response,
+    public  void captureThrowable(FFDCResponse             response,
                                   Throwable                    error,
                                   String                       methodName)
     {
@@ -456,7 +457,7 @@ public class RESTExceptionHandler
      * @param methodName calling method
      * @param auditLog log location for recording an unexpected exception
      */
-    public  void captureThrowable(FFDCResponseBase   response,
+    public  void captureThrowable(FFDCResponse   response,
                                   Throwable          error,
                                   String             methodName,
                                   AuditLog           auditLog)
@@ -516,7 +517,7 @@ public class RESTExceptionHandler
      * @param response  REST Response
      * @param error returned response.
      */
-    public  void captureInvalidParameterException(FFDCResponseBase          response,
+    public  void captureInvalidParameterException(FFDCResponse          response,
                                                   InvalidParameterException error)
     {
         Map<String, Object>  exceptionProperties = error.getRelatedProperties();
@@ -550,7 +551,7 @@ public class RESTExceptionHandler
      * @param response  REST Response
      * @param error returned response.
      */
-    public  void capturePropertyServerException(FFDCResponseBase        response,
+    public  void capturePropertyServerException(FFDCResponse        response,
                                                 PropertyServerException error)
     {
         captureCheckedException(response, error, PropertyServerException.class.getName());
@@ -563,7 +564,7 @@ public class RESTExceptionHandler
      * @param response  REST Response
      * @param error returned response.
      */
-    public  void captureUserNotAuthorizedException(FFDCResponseBase           response,
+    public  void captureUserNotAuthorizedException(FFDCResponse           response,
                                                    UserNotAuthorizedException error)
     {
         Map<String, Object>  exceptionProperties = error.getRelatedProperties();

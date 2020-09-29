@@ -16,7 +16,7 @@ class ToastFeedback extends PolymerElement {
               }
             </style>
 
-            <paper-toast id="toast" duration="[[duration]]" text="[[message]]">
+            <paper-toast id="toast" text="[[message]]">
                 <paper-button on-tap="_onClose" class="yellow-button">Close!</paper-button>
             </paper-toast>
     `;
@@ -31,13 +31,11 @@ class ToastFeedback extends PolymerElement {
     connectedCallback() {
         super.connectedCallback();
         window.addEventListener('show-feedback', this._boundListener);
-        console.log('feedback listener created!');
     }
 
     disconnectedCallback() {
         super.disconnectedCallback();
         window.removeEventListener('show-feedback', this._boundListener);
-        console.log('feedback event listener removed!');
     }
 
     ready(){
@@ -46,10 +44,6 @@ class ToastFeedback extends PolymerElement {
 
     static get properties() {
         return {
-            duration: {
-                type: Number,
-                value: 5
-            },
             message: String,
             level: {
                 type: String,

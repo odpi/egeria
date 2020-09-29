@@ -4,25 +4,24 @@ package org.odpi.openmetadata.accessservices.subjectarea.properties.classificati
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.OmasObject;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SystemAttributes;
 
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Map;
 
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
+
 /**
  * A Classification
  */
-@JsonAutoDetect(getterVisibility = JsonAutoDetect.Visibility.PUBLIC_ONLY, setterVisibility = JsonAutoDetect.Visibility.PUBLIC_ONLY, fieldVisibility = JsonAutoDetect.Visibility.NONE)
+@JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class Classification implements Serializable {
+@JsonIgnoreProperties(ignoreUnknown=true)
+public class Classification implements Serializable, OmasObject {
     protected static final long serialVersionUID = 1L;
-
-
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
-    }
 
     //system attributes
     private SystemAttributes systemAttributes = null;
@@ -31,6 +30,8 @@ public class Classification implements Serializable {
     private Map<String, String> additionalProperties;
 
     protected String classificationName = null;
+
+    public Classification() {}
 
     /**
      * Get the core attributes

@@ -46,6 +46,15 @@ public interface DataEngineInterface {
     void setChangesLastSynced(Date time);
 
     /**
+     * Retrieve the date of the oldest change since the time specified, or if there were no changes since the time
+     * specified return null.
+     *
+     * @param time the time from which to look for the oldest change
+     * @return Date
+     */
+    Date getOldestChangeSince(Date time);
+
+    /**
      * Retrieve a list of the changed schema types between the dates and times provided.
      *
      * @param from the date and time from which to look for changes (exclusive)

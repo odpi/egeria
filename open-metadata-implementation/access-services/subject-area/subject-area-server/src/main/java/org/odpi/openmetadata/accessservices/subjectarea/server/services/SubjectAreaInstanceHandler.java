@@ -203,5 +203,4 @@ class SubjectAreaInstanceHandler extends OMASServiceInstanceHandler
 
         return null;
     }
-
 }

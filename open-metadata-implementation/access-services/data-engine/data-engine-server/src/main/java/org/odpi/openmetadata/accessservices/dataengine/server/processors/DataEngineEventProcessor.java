@@ -11,18 +11,19 @@ import org.odpi.openmetadata.accessservices.dataengine.event.PortAliasEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.PortImplementationEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.ProcessToPortListEvent;
 import org.odpi.openmetadata.accessservices.dataengine.event.ProcessesEvent;
+import org.odpi.openmetadata.accessservices.dataengine.event.SchemaTypeEvent;
 import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
 import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineException;
 import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessListResponse;
 import org.odpi.openmetadata.accessservices.dataengine.server.admin.DataEngineServicesInstance;
+import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineAuditCode;
 import org.odpi.openmetadata.accessservices.dataengine.server.service.DataEngineRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -37,7 +38,7 @@ public class DataEngineEventProcessor {
     private static final Logger log = LoggerFactory.getLogger(DataEngineEventProcessor.class);
     private static final String DEBUG_MESSAGE_METHOD = "Calling method: {}";
 
-    private final OMRSAuditLog auditLog;
+    private final AuditLog auditLog;
     private final String serverName;
 
     private DataEngineRESTServices dataEngineRESTServices = new DataEngineRESTServices();
@@ -51,7 +52,7 @@ public class DataEngineEventProcessor {
      *
      * @throws NewInstanceException * @throws NewInstanceException a problem occurred during initialization
      */
-    public DataEngineEventProcessor(DataEngineServicesInstance instance, OMRSAuditLog auditLog) throws NewInstanceException {
+    public DataEngineEventProcessor(DataEngineServicesInstance instance, AuditLog auditLog) throws NewInstanceException {
         this.auditLog = auditLog;
         this.serverName = instance.getServerName();
     }
@@ -186,23 +187,37 @@ public class DataEngineEventProcessor {
         }
     }
 
-    private void logException(String dataEngineEvent, String methodName, Exception e) {
-        log.debug("Exception in processing {} from in Data Engine In Topic: {}", methodName, e);
+    /**
+     * Process a {@link SchemaTypeEvent}
+     *
+     * @param schemaTypeEvent the event to be processed
 
-        DataEngineErrorCode errorCode = DataEngineErrorCode.PARSE_EVENT_EXCEPTION;
-        auditLog.logException(methodName, errorCode.getErrorMessageId(), OMRSAuditLogRecordSeverity.EXCEPTION,
-                errorCode.getFormattedErrorMessage(dataEngineEvent, e.getMessage()), e.getMessage(), errorCode.getSystemAction(),
-                errorCode.getUserAction(), e);
+     */
+    public void processSchemaTypeEvent(String schemaTypeEvent) {
+        final String methodName = "processSchemaTypeEvent";
+        log.debug(DEBUG_MESSAGE_METHOD, methodName);
+        try {
+            SchemaTypeEvent schemaEvent = OBJECT_MAPPER.readValue(schemaTypeEvent, SchemaTypeEvent.class);
+            dataEngineRESTServices.createOrUpdateSchemaType(schemaEvent.getUserId(),serverName,schemaEvent.getSchemaType(),schemaEvent.getExternalSourceName());
+        } catch (JsonProcessingException | UserNotAuthorizedException | PropertyServerException | InvalidParameterException e) {
+            logException(schemaTypeEvent, methodName, e);
+        }
+
+        }
+
+    private void logException(String dataEngineEvent, String methodName, Exception e) {
+        log.debug("Exception in processing {} from in Data Engine In Topic: {}", dataEngineEvent, e);
+
+        auditLog.logException(methodName, DataEngineAuditCode.PARSE_EVENT_EXCEPTION.getMessageDefinition(dataEngineEvent, e.toString()), e);
     }
 
     private void validateResponse(FFDCResponseBase response, String dataEngineEvent, String methodName) throws DataEngineException {
         // extra validation needed because the FFDCResponseBase object captures the potential exceptions
         // thrown during a parallel processing
         if (response.getRelatedHTTPCode() != HttpStatus.OK.value()) {
-            DataEngineErrorCode errorCode = DataEngineErrorCode.DATA_ENGINE_EXCEPTION;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(dataEngineEvent);
-            throw new DataEngineException(errorCode.getHttpErrorCode(), this.getClass().getName(), methodName, errorMessage,
-                    errorCode.getSystemAction(), errorCode.getUserAction(), dataEngineEvent);
+            throw new DataEngineException(DataEngineErrorCode.DATA_ENGINE_EXCEPTION.getMessageDefinition(methodName), this.getClass().getName(),
+                    methodName);
+
         }
     }
 }

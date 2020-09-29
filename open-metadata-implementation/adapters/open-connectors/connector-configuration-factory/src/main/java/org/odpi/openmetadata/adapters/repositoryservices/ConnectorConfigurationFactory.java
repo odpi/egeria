@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices;
 
-import org.odpi.openmetadata.adapters.adminservices.configurationstore.file.FileBasedServerConfigStoreProvider;
+import org.odpi.openmetadata.adapters.adminservices.configurationstore.encryptedfile.EncryptedFileBasedServerConfigStoreProvider;
 import org.odpi.openmetadata.adapters.eventbus.topic.inmemory.InMemoryOpenMetadataTopicProvider;
 import org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopicProvider;
 import org.odpi.openmetadata.adapters.repositoryservices.archiveconnector.file.FileBasedOpenMetadataArchiveStoreProvider;
@@ -73,7 +73,7 @@ public class ConnectorConfigurationFactory
 
         Connection connection = new Connection();
         connection.setEndpoint(endpoint);
-        connection.setConnectorType(getConnectorType(FileBasedServerConfigStoreProvider.class.getName()));
+        connection.setConnectorType(getConnectorType(EncryptedFileBasedServerConfigStoreProvider.class.getName()));
         connection.setQualifiedName(endpoint.getAddress());
 
         return connection;

@@ -27,6 +27,8 @@ The current Egeria maintainers are:
 | Raluca Popa | raluca.popa2@ing.com |
 | Chris Replogle | Chris.Replogle@sas.com |
 | Dimitrios Maimaris | dimi.maim@gmail.com |
+| Ljupcho Palashevski | ljupcho.palashevski@ing.com |
+| Marius Patrascu | marius-florin.patrascu@ing.com |
 
 To understand how to become an Egeria maintainer
 see the [Egeria Operations Guide](Egeria-Operations.md).

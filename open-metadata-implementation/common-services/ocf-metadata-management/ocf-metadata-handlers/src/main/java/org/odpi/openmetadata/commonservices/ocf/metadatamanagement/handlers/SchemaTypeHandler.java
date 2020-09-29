@@ -1046,7 +1046,6 @@ public class SchemaTypeHandler extends RootHandler
      * @param schemaTypeGUID schema type entity to link to
      * @param schemaTypeBuilder properties of complete schema type.
      * @param methodName calling method
-     * @return schemaTypeGUID
      * @throws InvalidParameterException  the schemaType bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server

@@ -28,7 +28,20 @@ public enum ViewServiceDescription implements Serializable
                   "Type Explorer OMVS",
                   "type-explorer",
                   "Explore the open metadata types.",
+<<<<<<< HEAD
                   "https://egeria.odpi.org/open-metadata-implementation/view-services/tex-view/");
+=======
+                  //TODO create appropriate wiki
+                  "https://odpi.github.io/egeria/open-metadata-implementation/access-services/subject-area/"),
+
+    DINO(1040,
+                  "Dino",
+                  "Dino OMVS",
+                  "dino",
+                  "Operate an open metadata topology.",
+                  //TODO create appropriate wiki
+                  "https://odpi.github.io/egeria/open-metadata-implementation/access-services/subject-area/");
+>>>>>>> 118af316ba5a64828b26add56aa9f07299e09247
 
     private static final long serialVersionUID = 1L;
 

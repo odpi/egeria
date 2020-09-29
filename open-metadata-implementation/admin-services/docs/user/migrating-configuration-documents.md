@@ -28,6 +28,13 @@ The `additionalProperties` property name changed to `configurationProperties`.
 To migrate the configuration document, make a global change from 
 `additionalProperties` to `configurationProperties` throughout the configuration document.
 
+## Release 2.x+ of Egeria
+
+Release 2.0 encrypts the configuration document by default. This includes automatically
+detecting and encrypting any clear-text (unencrypted) configuration document that may already
+exist. No user action is required for this migration, the encryption will be handled
+automatically when the clear-text configuration document is first opened by the platform in
+these releases.
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

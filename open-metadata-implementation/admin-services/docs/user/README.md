@@ -111,11 +111,11 @@ restarts of the OMAG Server Platform.
 The admin-services modules has three [Postman](../../../../developer-resources/tools/Postman.md)
 collections to illustrate many of the configuration and operation calls: 
 
-* [Egeria-admin-services-platform-configuration.postman_environment.json](https://raw.githubusercontent.com/odpi/egeria/master/open-metadata-implementation/admin-services/Egeria-admin-services-platform-configuration.postman_environment.json) -
+* [Egeria-admin-services-platform-configuration.postman_environment.json](https://raw.githubusercontent.com/odpi/egeria/master/open-metadata-implementation/admin-services/Egeria-admin-services-platform-configuration.postman_collection.json) -
 setting up and configuring the OMAG Server Platform.
-* [Egeria-admin-services-server-configuration.postman_environment.json](https://raw.githubusercontent.com/odpi/egeria/master/open-metadata-implementation/admin-services/Egeria-admin-services-server-configuration.postman_environment.json) -
+* [Egeria-admin-services-server-configuration.postman_environment.json](https://raw.githubusercontent.com/odpi/egeria/master/open-metadata-implementation/admin-services/Egeria-admin-services-server-configuration.postman_collection.json) -
 setting up and configuring the variety of OMAG Servers.
-* [Egeria-admin-services-operational.postman_environment.json](https://raw.githubusercontent.com/odpi/egeria/master/open-metadata-implementation/admin-services/Egeria-admin-services-operational.postman_environment.json) -
+* [Egeria-admin-services-operational.postman_environment.json](https://raw.githubusercontent.com/odpi/egeria/master/open-metadata-implementation/admin-services/Egeria-admin-services-operational.postman_collection.json) -
 operating the OMAG Servers.
 
 

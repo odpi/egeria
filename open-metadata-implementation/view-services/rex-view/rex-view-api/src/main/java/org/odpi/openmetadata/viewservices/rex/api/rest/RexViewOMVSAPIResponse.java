@@ -26,10 +26,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         include = JsonTypeInfo.As.PROPERTY,
         property = "class")
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = TypeExplorerResponse.class, name = "TypeExplorerResponse"),
-        @JsonSubTypes.Type(value = RexSearchResponse.class, name = "RexSearchrResponse")
-        // TODO - add further subtypes...
-
+        @JsonSubTypes.Type(value = TypeExplorerResponse.class,    name = "TypeExplorerResponse"),
+        @JsonSubTypes.Type(value = RexSearchResponse.class,       name = "RexSearchResponse"),
+        @JsonSubTypes.Type(value = RexEntityDetailResponse.class, name = "RexEntityDetailResponse"),
+        @JsonSubTypes.Type(value = RexPreTraversalResponse.class, name = "RexPreTraversalResponse"),
+        @JsonSubTypes.Type(value = RexRelationshipResponse.class, name = "RexRelationshipResponse"),
+        @JsonSubTypes.Type(value = RexTraversalResponse.class,    name = "RexTraversalResponse")
 })
 
 public abstract class RexViewOMVSAPIResponse extends FFDCResponseBase

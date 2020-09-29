@@ -130,8 +130,6 @@ class DataEngineRESTServicesTest {
 
     @BeforeEach
     void before() {
-        MockitoAnnotations.initMocks(this);
-
         Field instanceHandlerField = ReflectionUtils.findField(DataEngineRESTServices.class, "instanceHandler");
         instanceHandlerField.setAccessible(true);
         ReflectionUtils.setField(instanceHandlerField, dataEngineRESTServices, instanceHandler);

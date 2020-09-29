@@ -1,28 +1,22 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Release 1.8 (Planned May 2020)
+# Release 1.8 (May 2020)
 
-Release 1.8 focuses on the capture of 
-IT Infrastructure cataloging maintained through DevOps pipelines
-along with support for API development
+Below are the highlights of Release 1.8:
 
-Below are the highlights:
+* New tutorial information has been added in the form of the [Egeria Dojo](../open-metadata-resources/open-metadata-tutorials/egeria-dojo/README.md)
+* Usability & Capability improvements to [Repository Explorer](../open-metadata-implementation/user-interfaces/ui-chassis/ui-chassis-spring/docs/RepositoryExplorer/RepositoryExplorerGuide.md)
+* Samples & utilities are now also packaged into jars with dependencies to make them easier to use (java -jar)
+* Connections to kafka will now retry to improve availability. See 'Bring up Issues' in the [connector documentation](../open-metadata-implementation/adapters/open-connectors/event-bus-connectors/open-metadata-topic-connectors/kafka-open-metadata-topic-connector/README.md)\
 
-* There are new access services:
-   * The [IT Infrastructure OMAS](../open-metadata-implementation/access-services/it-infrastructure) provides the ability to manage a catalog of IT Infrastructure.
-   * The [DevOps OMAS](../open-metadata-implementation/access-services/dev-ops) supports the recording of successful steps and certifications in a DevOps pipeline.
-   * The [Software Developer OMAS](../open-metadata-implementation/access-services/software-developer) supports the generation of new software artifacts for developers.
-     
-* There are new [tutorials](../open-metadata-resources/open-metadata-tutorials),
-  [hands-on labs](../open-metadata-resources/open-metadata-labs) and
-  [samples](../open-metadata-resources/open-metadata-samples) demonstrating
-  the new IT Infrastructure and API support for Egeria. 
-
-* A new dependencies has been included:
-    * Spring Boot Actuator - Provides features to help you monitor and manage your application when you push it to production
+* New dependencies has been included:
+    * [Spring Boot Actuator](../open-metadata-implementation/server-chassis/server-chassis-spring/README.md) - Provides features to help you monitor and manage your application when you push it to production
     * micrometer-registry-prometheus - Exposes metrics in a format that can be scraped by a Prometheus server
- 
+    
+* Many dependencies have been updated. The most relevant include:
+    * Spring has been updated to 5.2.6
+    * Spring Boot, Spring Security, Spring Security, Spring Data have been updated to 2.3.0
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 Copyright Contributors to the ODPi Egeria project.

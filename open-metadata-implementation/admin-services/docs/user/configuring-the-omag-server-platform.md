@@ -12,8 +12,7 @@ at **https://localhost:9443**. This address is called the server platform's **ro
 is configured in a number of places in the [OMAG Server](configuring-an-omag-server.md) configuration.
 
 * The platform also supports no specific security
-  authorization and stores its configuration in files in clear
-  text JSON format.
+  authorization.
 
 These defaults are suitable for a development environment. However for
 production, the platform should be configured with more robust options.

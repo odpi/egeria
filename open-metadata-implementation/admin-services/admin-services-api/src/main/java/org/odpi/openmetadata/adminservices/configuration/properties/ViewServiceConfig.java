@@ -5,6 +5,8 @@ package org.odpi.openmetadata.adminservices.configuration.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceRegistration;
 
@@ -20,10 +22,19 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "class")
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = SolutionViewServiceConfig.class, name = "SolutionViewServiceConfig"),
+        @JsonSubTypes.Type(value = IntegrationViewServiceConfig.class, name = "IntegrationViewServiceConfig")
+})
 public class ViewServiceConfig extends OMAGServerClientConfig
 {
     private static final long    serialVersionUID = 1L;
 
+<<<<<<< HEAD
     private int                            viewServiceId         = 0;
     private String                         viewAdminClass        = null;
     private String                         viewServiceName       = null;
@@ -33,6 +44,17 @@ public class ViewServiceConfig extends OMAGServerClientConfig
     private String                         viewWiki              = null;
     private ServiceOperationalStatus       viewOperationalStatus = null;
     private Map<String, Object>            viewOptions           = null;
+=======
+    private int                            viewServiceId                = 0;
+    private String                         viewServiceAdminClass        = null;
+    private String                         viewServiceName              = null;
+    private String                         viewServiceFullName          = null;
+    private String                         viewServiceURLMarker         = null;
+    private String                         viewServiceDescription       = null;
+    private String                         viewServiceWiki              = null;
+    private ServiceOperationalStatus       viewServiceOperationalStatus = null;
+    private Map<String, Object>            viewServiceOptions           = null;
+>>>>>>> 118af316ba5a64828b26add56aa9f07299e09247
 
 
     /**
@@ -56,6 +78,7 @@ public class ViewServiceConfig extends OMAGServerClientConfig
         if (template != null)
         {
             viewServiceId = template.getViewServiceId();
+<<<<<<< HEAD
             viewAdminClass = template.getViewServiceAdminClass();
             viewServiceName = template.getViewServiceName();
             viewServiceFullName = template.getViewServiceFullName();
@@ -64,13 +87,22 @@ public class ViewServiceConfig extends OMAGServerClientConfig
             viewWiki = template.getViewServiceWiki();
             viewOperationalStatus = template.getViewServiceOperationalStatus();
             viewOptions = template.getViewServiceOptions();
+=======
+            viewServiceAdminClass = template.getViewServiceAdminClass();
+            viewServiceFullName = template.getViewServiceFullName();
+            viewServiceName = template.getViewServiceName();
+            viewServiceDescription = template.getViewServiceDescription();
+            viewServiceWiki = template.getViewServiceWiki();
+            viewServiceOperationalStatus = template.getViewServiceOperationalStatus();
+            viewServiceOptions = template.getViewServiceOptions();
+>>>>>>> 118af316ba5a64828b26add56aa9f07299e09247
         }
     }
 
 
 
     /**
-     * Set up the default values for an view service using an view service description.
+     * Set up the default values for a view service using a view service description.
      *
      * @param viewRegistration fixed properties about the view service
      */
@@ -78,11 +110,12 @@ public class ViewServiceConfig extends OMAGServerClientConfig
     {
         this.viewServiceId = viewRegistration.getViewServiceCode();
         this.viewServiceName = viewRegistration.getViewServiceName();
-        this.viewURLMarker = viewRegistration.getViewServiceURLMarker();
-        this.viewAdminClass = viewRegistration.getViewServiceAdminClassName();
-        this.viewDescription = viewRegistration.getViewServiceDescription();
-        this.viewWiki = viewRegistration.getViewServiceWiki();
-        this.viewOperationalStatus = viewRegistration.getViewServiceOperationalStatus();
+        this.viewServiceFullName = viewRegistration.getViewServiceFullName();
+        this.viewServiceURLMarker = viewRegistration.getViewServiceURLMarker();
+        this.viewServiceAdminClass = viewRegistration.getViewServiceAdminClassName();
+        this.viewServiceDescription = viewRegistration.getViewServiceDescription();
+        this.viewServiceWiki = viewRegistration.getViewServiceWiki();
+        this.viewServiceOperationalStatus = viewRegistration.getViewServiceOperationalStatus();
     }
 
 
@@ -116,19 +149,19 @@ public class ViewServiceConfig extends OMAGServerClientConfig
      */
     public String getViewServiceAdminClass()
     {
-        return viewAdminClass;
+        return viewServiceAdminClass;
     }
 
 
     /**
      * Set up the Java class name of the admin services interface for this view service.
      *
-     * @param viewAdminClass String class name implementing the
+     * @param viewServiceAdminClass String class name implementing the
      * ViewServiceAdmin interface.
      */
-    public void setViewServiceAdminClass(String viewAdminClass)
+    public void setViewServiceAdminClass(String viewServiceAdminClass)
     {
-        this.viewAdminClass = viewAdminClass;
+        this.viewServiceAdminClass = viewServiceAdminClass;
     }
 
 
@@ -180,11 +213,11 @@ public class ViewServiceConfig extends OMAGServerClientConfig
      * Return the string that appears in the REST API URL that identifies the owning service.
      * Null means no REST APIs supported by this service.
      *
-     * @return String default name
+     * @return String viewServiceURLMarker
      */
     public String getViewServiceURLMarker()
     {
-        return viewURLMarker;
+        return viewServiceURLMarker;
     }
 
 
@@ -192,33 +225,33 @@ public class ViewServiceConfig extends OMAGServerClientConfig
      * Set up the string that appears in the REST API URL that identifies the owning service.
      * Null means no REST APIs supported by this service.
      *
-     * @param viewURLMarker url fragment
+     * @param viewServiceURLMarker url fragment
      */
-    public void setServiceURLMarker(String viewURLMarker)
+    public void setServiceURLMarker(String viewServiceURLMarker)
     {
-        this.viewURLMarker = viewURLMarker;
+        this.viewServiceURLMarker = viewServiceURLMarker;
     }
 
 
     /**
      * Return the short description of the view service.  The default value is in English but this can be changed.
      *
-     * @return String description
+     * @return String viewServiceDescription
      */
     public String getViewServiceDescription()
     {
-        return viewDescription;
+        return viewServiceDescription;
     }
 
 
     /**
      * Set up the short description of the view service.
      *
-     * @param viewDescription String description
+     * @param viewServiceDescription String description
      */
-    public void setViewServiceDescription(String viewDescription)
+    public void setViewServiceDescription(String viewServiceDescription)
     {
-        this.viewDescription = viewDescription;
+        this.viewServiceDescription = viewServiceDescription;
     }
 
 
@@ -226,44 +259,44 @@ public class ViewServiceConfig extends OMAGServerClientConfig
      * Return the wiki page link for the view service.  The default value points to a page on the Atlas
      * confluence wiki.
      *
-     * @return String url
+     * @return viewServiceWiki String url
      */
     public String getViewServiceWiki()
     {
-        return viewWiki;
+        return viewServiceWiki;
     }
 
 
     /**
      * Set up the wiki page link for the view service.
      *
-     * @param viewWiki String url
+     * @param viewServiceWiki String url
      */
-    public void setViewServiceWiki(String viewWiki)
+    public void setViewServiceWiki(String viewServiceWiki)
     {
-        this.viewWiki = viewWiki;
+        this.viewServiceWiki = viewServiceWiki;
     }
 
 
     /**
      * Return the status of this view service.
      *
-     * @return ServiceOperationalStatus enum
+     * @return viewServiceOperationalStatus enum
      */
     public ServiceOperationalStatus getViewServiceOperationalStatus()
     {
-        return viewOperationalStatus;
+        return viewServiceOperationalStatus;
     }
 
 
     /**
      * Set up the status of the view service.
      *
-     * @param viewOperationalStatus ViewServiceOperationalStatus enum
+     * @param viewServiceOperationalStatus ViewServiceOperationalStatus enum
      */
-    public void setViewServiceOperationalStatus(ServiceOperationalStatus viewOperationalStatus)
+    public void setViewServiceOperationalStatus(ServiceOperationalStatus viewServiceOperationalStatus)
     {
-        this.viewOperationalStatus = viewOperationalStatus;
+        this.viewServiceOperationalStatus = viewServiceOperationalStatus;
     }
 
     /**
@@ -273,17 +306,17 @@ public class ViewServiceConfig extends OMAGServerClientConfig
      */
     public Map<String, Object> getViewServiceOptions()
     {
-        if (viewOptions == null)
+        if (viewServiceOptions == null)
         {
             return null;
         }
-        else if (viewOptions.isEmpty())
+        else if (viewServiceOptions.isEmpty())
         {
             return null;
         }
         else
         {
-            return viewOptions;
+            return viewServiceOptions;
         }
     }
 
@@ -291,11 +324,11 @@ public class ViewServiceConfig extends OMAGServerClientConfig
     /**
      * Set up the options for this view service.  These are properties that are specific to the view service.
      *
-     * @param viewOptions Map from String to String
+     * @param viewServiceOptions Map from String to String
      */
-    public void setViewServiceOptions(Map<String, Object> viewOptions)
+    public void setViewServiceOptions(Map<String, Object> viewServiceOptions)
     {
-        this.viewOptions = viewOptions;
+        this.viewServiceOptions = viewServiceOptions;
     }
 
 
@@ -309,9 +342,10 @@ public class ViewServiceConfig extends OMAGServerClientConfig
     {
         return "ViewServiceConfig{" +
                 "viewServiceId=" + viewServiceId +
-                ", viewAdminClass='" + viewAdminClass + '\'' +
+                ", viewServiceAdminClass='" + viewServiceAdminClass + '\'' +
                 ", viewServiceName='" + viewServiceName + '\'' +
                 ", viewServiceFullName='" + viewServiceFullName + '\'' +
+<<<<<<< HEAD
                 ", viewURLMarker='" + viewURLMarker + '\'' +
                 ", viewDescription='" + viewDescription + '\'' +
                 ", viewWiki='" + viewWiki + '\'' +
@@ -319,6 +353,13 @@ public class ViewServiceConfig extends OMAGServerClientConfig
                 ", viewOptions=" + viewOptions +
                 ", OMAGServerPlatformRootURL='" + getOMAGServerPlatformRootURL() + '\'' +
                 ", OMAGServerName='" + getOMAGServerName() + '\'' +
+=======
+                ", viewServiceURLMarker='" + viewServiceURLMarker + '\'' +
+                ", viewServiceDescription='" + viewServiceDescription + '\'' +
+                ", viewServiceWiki='" + viewServiceWiki + '\'' +
+                ", viewServiceOperationalStatus=" + viewServiceOperationalStatus +
+                ", viewServiceOptions=" + viewServiceOptions +
+>>>>>>> 118af316ba5a64828b26add56aa9f07299e09247
                 '}';
     }
 

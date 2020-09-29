@@ -35,6 +35,7 @@ public class OpenMetadataTypesArchiveWriter extends OMRSArchiveWriter
 
     /**
      * Main program to control the archive writer.
+     * Note: See issue #3392 if logging is needed
      *
      * @param args ignored arguments
      */

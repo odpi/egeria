@@ -14,6 +14,7 @@ This OMVS calls a remote server using the [repository services client](../../rep
 
 The module structure for the Repository Explorer OMVS is as follows:
 
+* [rex-view-api](rex-view-api) defines the interface to the view service.
 * [rex-view-server](rex-view-server) supports an implementation of the view service.
 * [rex-view-spring](rex-view-spring) supports the REST API using the [Spring](../../../developer-resources/Spring.md) libraries.
 

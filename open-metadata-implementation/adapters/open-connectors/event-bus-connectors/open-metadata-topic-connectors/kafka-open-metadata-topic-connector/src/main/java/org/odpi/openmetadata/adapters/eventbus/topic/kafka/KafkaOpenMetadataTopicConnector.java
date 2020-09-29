@@ -327,8 +327,42 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
     {
         final String           actionDescription = "disconnect";
 
+
         consumer.safeCloseConsumer();
         producer.safeCloseProducer();
+
+        /*
+        * Ensure Kafka client threads have stopped
+        * before returning.
+         */
+        try {
+            consumerThread.join();
+        }
+        catch ( InterruptedException e )
+        {
+            //expected exception and don't care
+         }
+        catch ( Exception error ) {
+            if (auditLog != null)
+            {
+                auditLog.logMessage("consumerThread.join",
+                        KafkaOpenMetadataTopicConnectorAuditCode.UNEXPECTED_SHUTDOWN_EXCEPTION.getMessageDefinition(topicName));
+            }
+        }
+
+        try {
+            producerThread.join();
+        } catch (InterruptedException e) {
+            //expected and don't care
+        }
+        catch ( Exception error ){
+            if (auditLog != null)
+            {
+                auditLog.logMessage("producerThread.join",
+                        KafkaOpenMetadataTopicConnectorAuditCode.UNEXPECTED_SHUTDOWN_EXCEPTION.getMessageDefinition(topicName));
+            }
+
+        }
 
         super.disconnect();
 
