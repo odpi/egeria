@@ -4,9 +4,7 @@ package org.odpi.openmetadata.accessservices.governanceprogram.properties;
 
 import com.fasterxml.jackson.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -14,7 +12,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * GovernanceDefinition provides the base class for many of the definitions that define the data strategy
+ * GovernanceDefinitionProperties provides the base class for many of the definitions that define the data strategy
  * and governance program.  It includes many of the common fields:
  *
  * <ul>
@@ -40,18 +38,17 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes(
         {
-                @JsonSubTypes.Type(value = GovernanceDriver.class, name = "GovernanceDriver"),
-                @JsonSubTypes.Type(value = GovernancePolicy.class, name = "GovernancePolicy"),
-                @JsonSubTypes.Type(value = GovernanceControl.class, name = "GovernanceControl"),
+                @JsonSubTypes.Type(value = GovernanceDriverProperties.class, name = "GovernanceDriverProperties"),
+                @JsonSubTypes.Type(value = GovernancePolicyProperties.class, name = "GovernancePolicyProperties"),
+                @JsonSubTypes.Type(value = GovernanceControlProperties.class, name = "GovernanceControlProperties"),
                 @JsonSubTypes.Type(value = LicenseType.class,       name = "LicenseType"),
                 @JsonSubTypes.Type(value = CertificationType.class, name = "CertificationType")
         })
-public abstract class GovernanceDefinition extends GovernanceReferenceableHeader
+public abstract class GovernanceDefinitionProperties extends ReferenceableProperties
 {
     private static final long    serialVersionUID = 1L;
 
-    private String                           documentId           = null; /* qualifiedName */
-
+    private String                           title                = null;
     private String                           summary              = null;
     private String                           description          = null;
     private String                           scope                = null;
@@ -67,7 +64,7 @@ public abstract class GovernanceDefinition extends GovernanceReferenceableHeader
     /**
      * Default Constructor
      */
-    public GovernanceDefinition()
+    public GovernanceDefinitionProperties()
     {
         super();
     }
@@ -78,13 +75,13 @@ public abstract class GovernanceDefinition extends GovernanceReferenceableHeader
      *
      * @param template object being copied
      */
-    public GovernanceDefinition(GovernanceDefinition template)
+    public GovernanceDefinitionProperties(GovernanceDefinitionProperties template)
     {
         super(template);
 
         if (template != null)
         {
-            this.documentId = template.getDocumentId();
+            this.title = template.getTitle();
             this.summary = template.getSummary();
             this.description = template.getDescription();
             this.scope = template.getScope();
@@ -98,27 +95,28 @@ public abstract class GovernanceDefinition extends GovernanceReferenceableHeader
         }
     }
 
+
     /**
-     * Return the unique document Id for this governance definition.  This is human-readable/memorable
-     * value.
+     * Return the title associated with this governance definition.
      *
-     * @return String identifier
+     * @return String title
      */
-    public String getDocumentId()
+    public String getTitle()
     {
-        return documentId;
+        return title;
     }
 
 
     /**
-     * Set up the document Id for this governance definition.
+     * Set up the title associated with this governance definition.
      *
-     * @param documentId String identifier
+     * @param title String title
      */
-    public void setDocumentId(String documentId)
+    public void setTitle(String title)
     {
-        this.documentId = documentId;
+        this.title = title;
     }
+
 
 
     /**
@@ -360,8 +358,9 @@ public abstract class GovernanceDefinition extends GovernanceReferenceableHeader
     @Override
     public String toString()
     {
-        return "GovernanceDefinition{" +
-                "documentId='" + documentId + '\'' +
+        return "GovernanceDefinitionProperties{" +
+                "title='" + title + '\'' +
+                ", summary='" + summary + '\'' +
                 ", description='" + description + '\'' +
                 ", scope='" + scope + '\'' +
                 ", status=" + status +
@@ -370,12 +369,10 @@ public abstract class GovernanceDefinition extends GovernanceReferenceableHeader
                 ", outcomes=" + outcomes +
                 ", governanceMetrics=" + governanceMetrics +
                 ", governanceZones=" + governanceZones +
-                ", externalReferences=" + getExternalReferences() +
+                ", typeName='" + getTypeName() + '\'' +
+                ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +
-                ", GUID='" + getGUID() + '\'' +
-                ", type='" + getType() + '\'' +
-                ", title='" + getTitle() + '\'' +
-                ", summary='" + getSummary() + '\'' +
+                ", extendedProperties=" + getExtendedProperties() +
                 '}';
     }
 
@@ -393,7 +390,7 @@ public abstract class GovernanceDefinition extends GovernanceReferenceableHeader
         {
             return true;
         }
-        if (!(objectToCompare instanceof GovernanceDefinition))
+        if (!(objectToCompare instanceof GovernanceDefinitionProperties))
         {
             return false;
         }
@@ -401,14 +398,13 @@ public abstract class GovernanceDefinition extends GovernanceReferenceableHeader
         {
             return false;
         }
-        GovernanceDefinition that = (GovernanceDefinition) objectToCompare;
+        GovernanceDefinitionProperties that = (GovernanceDefinitionProperties) objectToCompare;
         return Objects.equals(getDescription(), that.getDescription()) &&
                 Objects.equals(getScope(), that.getScope()) &&
                 getStatus() == that.getStatus() &&
                 Objects.equals(getPriority(), that.getPriority()) &&
                 Objects.equals(getImplications(), that.getImplications()) &&
                 Objects.equals(getOutcomes(), that.getOutcomes()) &&
-                Objects.equals(getExternalReferences(), that.getExternalReferences()) &&
                 Objects.equals(getAdditionalProperties(), that.getAdditionalProperties()) &&
                 Objects.equals(getGovernanceMetrics(), that.getGovernanceMetrics()) &&
                 Objects.equals(getGovernanceZones(), that.getGovernanceZones());

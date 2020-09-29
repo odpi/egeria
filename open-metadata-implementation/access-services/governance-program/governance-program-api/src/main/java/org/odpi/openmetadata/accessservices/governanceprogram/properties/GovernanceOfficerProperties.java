@@ -4,7 +4,6 @@ package org.odpi.openmetadata.accessservices.governanceprogram.properties;
 
 import com.fasterxml.jackson.annotation.*;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -13,13 +12,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * The GovernanceOfficer describes the leader of a governance program.  Initially, the r0le is defined and then
+ * The GovernanceOfficerProperties describes the leader of a governance program.  Initially, the r0le is defined and then
  * a person is assigned to the role.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class GovernanceOfficer extends ReferenceableProperties
+public class GovernanceOfficerProperties extends ReferenceableProperties
 {
     private static final long    serialVersionUID = 1L;
 
@@ -35,7 +34,7 @@ public class GovernanceOfficer extends ReferenceableProperties
     /**
      * Default Constructor
      */
-    public GovernanceOfficer()
+    public GovernanceOfficerProperties()
     {
         super();
     }
@@ -46,7 +45,7 @@ public class GovernanceOfficer extends ReferenceableProperties
      *
      * @param template object being copied
      */
-    public GovernanceOfficer(GovernanceOfficer template)
+    public GovernanceOfficerProperties(GovernanceOfficerProperties template)
     {
         super(template);
 
@@ -202,7 +201,7 @@ public class GovernanceOfficer extends ReferenceableProperties
     @Override
     public String toString()
     {
-        return "GovernanceOfficer{" +
+        return "GovernanceOfficerProperties{" +
                 "governanceDomain=" + governanceDomain +
                 ", appointmentId='" + appointmentId + '\'' +
                 ", appointmentContext='" + appointmentContext + '\'' +
@@ -215,6 +214,7 @@ public class GovernanceOfficer extends ReferenceableProperties
                 ", extendedProperties=" + getExtendedProperties() +
                 '}';
     }
+
 
     /**
      * Equals method that returns true if containing properties are the same.
@@ -237,7 +237,7 @@ public class GovernanceOfficer extends ReferenceableProperties
         {
             return false;
         }
-        GovernanceOfficer that = (GovernanceOfficer) objectToCompare;
+        GovernanceOfficerProperties that = (GovernanceOfficerProperties) objectToCompare;
         return getGovernanceDomain() == that.getGovernanceDomain() &&
                 Objects.equals(getAppointmentId(), that.getAppointmentId()) &&
                 Objects.equals(getAppointmentContext(), that.getAppointmentContext()) &&

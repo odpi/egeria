@@ -3,14 +3,15 @@
 
 package org.odpi.openmetadata.accessservices.governanceprogram.server;
 
+import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceZoneElement;
+import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceZoneProperties;
+import org.odpi.openmetadata.accessservices.governanceprogram.rest.ZoneListResponse;
+import org.odpi.openmetadata.accessservices.governanceprogram.rest.ZoneResponse;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
-import org.odpi.openmetadata.commonservices.gaf.metadatamanagement.handlers.GovernanceZoneHandler;
-import org.odpi.openmetadata.commonservices.gaf.metadatamanagement.rest.ZoneListResponse;
-import org.odpi.openmetadata.commonservices.gaf.metadatamanagement.rest.ZoneRequestBody;
-import org.odpi.openmetadata.commonservices.gaf.metadatamanagement.rest.ZoneResponse;
+import org.odpi.openmetadata.commonservices.generichandlers.GovernanceZoneHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.slf4j.LoggerFactory;
 
@@ -51,9 +52,9 @@ public class GovernanceZoneRESTServices
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    public VoidResponse createGovernanceZone(String          serverName,
-                                             String          userId,
-                                             ZoneRequestBody requestBody)
+    public VoidResponse createGovernanceZone(String                  serverName,
+                                             String                   userId,
+                                             GovernanceZoneProperties requestBody)
     {
         final String   methodName = "createGovernanceZone";
 
@@ -67,13 +68,17 @@ public class GovernanceZoneRESTServices
             if (requestBody != null)
             {
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                GovernanceZoneHandler handler = instanceHandler.getGovernanceZoneHandler(userId, serverName, methodName);
+                GovernanceZoneHandler<GovernanceZoneElement> handler = instanceHandler.getGovernanceZoneHandler(userId, serverName, methodName);
 
                 handler.createGovernanceZone(userId,
+                                             null,
+                                             null,
                                              requestBody.getQualifiedName(),
                                              requestBody.getDisplayName(),
                                              requestBody.getDescription(),
                                              requestBody.getCriteria(),
+                                             requestBody.getScope(),
+                                             requestBody.getDomainIdentifier(),
                                              requestBody.getAdditionalProperties(),
                                              requestBody.getExtendedProperties(),
                                              methodName);
@@ -121,7 +126,7 @@ public class GovernanceZoneRESTServices
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            GovernanceZoneHandler handler = instanceHandler.getGovernanceZoneHandler(userId, serverName, methodName);
+            GovernanceZoneHandler<GovernanceZoneElement> handler = instanceHandler.getGovernanceZoneHandler(userId, serverName, methodName);
 
             response.setGovernanceZone(handler.getGovernanceZones(userId,
                                                                   startingFrom,
@@ -154,6 +159,7 @@ public class GovernanceZoneRESTServices
                                           String   userId,
                                           String   qualifiedName)
     {
+        final String   qualifiedNameParameterName = "qualifiedName";
         final String   methodName = "getGovernanceZone";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
@@ -164,10 +170,11 @@ public class GovernanceZoneRESTServices
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            GovernanceZoneHandler handler = instanceHandler.getGovernanceZoneHandler(userId, serverName, methodName);
+            GovernanceZoneHandler<GovernanceZoneElement> handler = instanceHandler.getGovernanceZoneHandler(userId, serverName, methodName);
 
             response.setGovernanceZone(handler.getGovernanceZone(userId,
                                                                  qualifiedName,
+                                                                 qualifiedNameParameterName,
                                                                  methodName));
         }
         catch (Throwable error)

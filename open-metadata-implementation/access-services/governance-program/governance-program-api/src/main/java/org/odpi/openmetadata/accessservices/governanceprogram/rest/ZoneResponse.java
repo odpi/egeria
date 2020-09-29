@@ -1,11 +1,12 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
+
 package org.odpi.openmetadata.accessservices.governanceprogram.rest;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceOfficerProperties;
+import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceZoneElement;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -15,23 +16,23 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * GUIDResponse is the response structure used on the OMAS REST API calls that return a
- * unique identifier (governanceOfficer) object as a response.
+ * ZoneResponse is the response structure used on the OMAS REST API calls that return the properties
+ * for a governance zone.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class GovernanceOfficerResponse extends GovernanceProgramOMASAPIResponse
+public class ZoneResponse extends GovernanceProgramOMASAPIResponse
 {
     private static final long    serialVersionUID = 1L;
 
-    private GovernanceOfficerProperties governanceOfficer = null;
+    private GovernanceZoneElement governanceZone = null;
 
 
     /**
      * Default constructor
      */
-    public GovernanceOfficerResponse()
+    public ZoneResponse()
     {
         super();
     }
@@ -42,36 +43,36 @@ public class GovernanceOfficerResponse extends GovernanceProgramOMASAPIResponse
      *
      * @param template object to copy
      */
-    public GovernanceOfficerResponse(GovernanceOfficerResponse template)
+    public ZoneResponse(ZoneResponse template)
     {
         super(template);
 
         if (template != null)
         {
-            this.governanceOfficer = template.getGovernanceOfficer();
+            this.governanceZone = template.getGovernanceZone();
         }
     }
 
 
     /**
-     * Return the governanceOfficer result.
+     * Return the governanceZone result.
      *
-     * @return GovernanceOfficerProperties object
+     * @return bean
      */
-    public GovernanceOfficerProperties getGovernanceOfficer()
+    public GovernanceZoneElement getGovernanceZone()
     {
-        return governanceOfficer;
+        return governanceZone;
     }
 
 
     /**
-     * Set up the governanceOfficer result.
+     * Set up the governanceZone result.
      *
-     * @param guid GovernanceOfficerProperties object
+     * @param governanceZone - bean
      */
-    public void setGovernanceOfficer(GovernanceOfficerProperties guid)
+    public void setGovernanceZone(GovernanceZoneElement governanceZone)
     {
-        this.governanceOfficer = guid;
+        this.governanceZone = governanceZone;
     }
 
 
@@ -83,8 +84,8 @@ public class GovernanceOfficerResponse extends GovernanceProgramOMASAPIResponse
     @Override
     public String toString()
     {
-        return "GovernanceOfficerResponse{" +
-                "governanceOfficer='" + getGovernanceOfficer() + '\'' +
+        return "ZoneResponse{" +
+                "governanceZone=" + governanceZone +
                 ", exceptionClassName='" + getExceptionClassName() + '\'' +
                 ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
                 ", actionDescription='" + getActionDescription() + '\'' +
@@ -112,7 +113,7 @@ public class GovernanceOfficerResponse extends GovernanceProgramOMASAPIResponse
         {
             return true;
         }
-        if (!(objectToCompare instanceof GovernanceOfficerResponse))
+        if (!(objectToCompare instanceof ZoneResponse))
         {
             return false;
         }
@@ -120,8 +121,8 @@ public class GovernanceOfficerResponse extends GovernanceProgramOMASAPIResponse
         {
             return false;
         }
-        GovernanceOfficerResponse that = (GovernanceOfficerResponse) objectToCompare;
-        return Objects.equals(governanceOfficer, that.governanceOfficer);
+        ZoneResponse that = (ZoneResponse) objectToCompare;
+        return Objects.equals(governanceZone, that.governanceZone);
     }
 
 
@@ -133,6 +134,6 @@ public class GovernanceOfficerResponse extends GovernanceProgramOMASAPIResponse
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), governanceOfficer);
+        return Objects.hash(governanceZone);
     }
 }

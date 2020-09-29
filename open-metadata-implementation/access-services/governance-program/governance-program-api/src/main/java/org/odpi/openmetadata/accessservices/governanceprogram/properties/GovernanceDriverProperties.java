@@ -11,7 +11,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * GovernanceDriver documents the strategic or regulatory requirement that is driving an aspect of the
+ * GovernanceDriverProperties documents the strategic or regulatory requirement that is driving an aspect of the
  * governance program.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
@@ -25,7 +25,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = DataStrategy.class, name = "DataStrategy"),
                 @JsonSubTypes.Type(value = Regulation.class, name = "Regulation")
         })
-public abstract class GovernanceDriver extends GovernanceDefinition
+public abstract class GovernanceDriverProperties extends GovernanceDefinitionProperties
 {
     private static final long    serialVersionUID = 1L;
 
@@ -35,7 +35,7 @@ public abstract class GovernanceDriver extends GovernanceDefinition
     /**
      * Default Constructor
      */
-    public GovernanceDriver()
+    public GovernanceDriverProperties()
     {
         super();
     }
@@ -46,7 +46,7 @@ public abstract class GovernanceDriver extends GovernanceDefinition
      *
      * @param template object to copy
      */
-    public GovernanceDriver(GovernanceDriver  template)
+    public GovernanceDriverProperties(GovernanceDriverProperties template)
     {
         super(template);
 
@@ -132,24 +132,23 @@ public abstract class GovernanceDriver extends GovernanceDefinition
     @Override
     public String toString()
     {
-        return "GovernanceDriver{" +
+        return "GovernanceDriverProperties{" +
                 "relatedGovernanceDrivers=" + relatedGovernanceDrivers +
                 ", governancePolicies=" + governancePolicies +
+                ", title='" + getTitle() + '\'' +
+                ", summary='" + getSummary() + '\'' +
                 ", description='" + getDescription() + '\'' +
                 ", scope='" + getScope() + '\'' +
                 ", status=" + getStatus() +
                 ", priority='" + getPriority() + '\'' +
                 ", implications=" + getImplications() +
                 ", outcomes=" + getOutcomes() +
-                ", externalReferences=" + getExternalReferences() +
-                ", additionalProperties=" + getAdditionalProperties() +
                 ", governanceMetrics=" + getGovernanceMetrics() +
                 ", governanceZones=" + getGovernanceZones() +
-                ", GUID='" + getGUID() + '\'' +
-                ", type='" + getType() + '\'' +
-                ", documentId='" + getDocumentId() + '\'' +
-                ", title='" + getTitle() + '\'' +
-                ", summary='" + getSummary() + '\'' +
+                ", typeName='" + getTypeName() + '\'' +
+                ", qualifiedName='" + getQualifiedName() + '\'' +
+                ", additionalProperties=" + getAdditionalProperties() +
+                ", extendedProperties=" + getExtendedProperties() +
                 '}';
     }
 
@@ -167,7 +166,7 @@ public abstract class GovernanceDriver extends GovernanceDefinition
         {
             return true;
         }
-        if (!(objectToCompare instanceof GovernanceDriver))
+        if (!(objectToCompare instanceof GovernanceDriverProperties))
         {
             return false;
         }
@@ -175,7 +174,7 @@ public abstract class GovernanceDriver extends GovernanceDefinition
         {
             return false;
         }
-        GovernanceDriver that = (GovernanceDriver) objectToCompare;
+        GovernanceDriverProperties that = (GovernanceDriverProperties) objectToCompare;
         return Objects.equals(getRelatedGovernanceDrivers(), that.getRelatedGovernanceDrivers()) &&
                 Objects.equals(getGovernancePolicies(), that.getGovernancePolicies());
     }

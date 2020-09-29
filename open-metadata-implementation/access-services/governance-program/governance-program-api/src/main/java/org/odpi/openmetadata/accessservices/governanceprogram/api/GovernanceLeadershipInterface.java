@@ -107,8 +107,8 @@ public interface GovernanceLeadershipInterface
      * @throws PropertyServerException the server is not available.
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    GovernanceOfficer        getGovernanceOfficerByGUID(String     userId,
-                                                        String     governanceOfficerGUID) throws InvalidParameterException,
+    GovernanceOfficerProperties getGovernanceOfficerByGUID(String     userId,
+                                                           String     governanceOfficerGUID) throws InvalidParameterException,
                                                                                                  PropertyServerException,
                                                                                                  UserNotAuthorizedException;
 
@@ -124,8 +124,8 @@ public interface GovernanceLeadershipInterface
      * @throws PropertyServerException the server is not available.
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    GovernanceOfficer        getGovernanceOfficerByAppointmentId(String     userId,
-                                                                 String     appointmentId) throws InvalidParameterException,
+    GovernanceOfficerProperties getGovernanceOfficerByAppointmentId(String     userId,
+                                                                    String     appointmentId) throws InvalidParameterException,
                                                                                                   AppointmentIdNotUniqueException,
                                                                                                   PropertyServerException,
                                                                                                   UserNotAuthorizedException;
@@ -140,9 +140,9 @@ public interface GovernanceLeadershipInterface
      * @throws PropertyServerException the server is not available.
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    List<GovernanceOfficer>  getGovernanceOfficers(String     userId) throws InvalidParameterException,
-                                                                             PropertyServerException,
-                                                                             UserNotAuthorizedException;
+    List<GovernanceOfficerProperties>  getGovernanceOfficers(String     userId) throws InvalidParameterException,
+                                                                                       PropertyServerException,
+                                                                                       UserNotAuthorizedException;
 
 
     /**
@@ -154,9 +154,9 @@ public interface GovernanceLeadershipInterface
      * @throws PropertyServerException the server is not available.
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    List<GovernanceOfficer>  getActiveGovernanceOfficers(String     userId) throws InvalidParameterException,
-                                                                                   PropertyServerException,
-                                                                                   UserNotAuthorizedException;
+    List<GovernanceOfficerProperties>  getActiveGovernanceOfficers(String     userId) throws InvalidParameterException,
+                                                                                             PropertyServerException,
+                                                                                             UserNotAuthorizedException;
 
 
     /**
@@ -171,8 +171,8 @@ public interface GovernanceLeadershipInterface
      * @throws PropertyServerException the server is not available.
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    List<GovernanceOfficer>  getGovernanceOfficersByDomain(String             userId,
-                                                           GovernanceDomain   governanceDomain) throws InvalidParameterException,
+    List<GovernanceOfficerProperties>  getGovernanceOfficersByDomain(String             userId,
+                                                                     GovernanceDomain   governanceDomain) throws InvalidParameterException,
                                                                                                        PropertyServerException,
                                                                                                        UserNotAuthorizedException;
 

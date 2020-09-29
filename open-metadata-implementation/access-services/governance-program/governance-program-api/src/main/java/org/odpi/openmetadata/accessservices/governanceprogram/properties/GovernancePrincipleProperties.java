@@ -6,28 +6,25 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.util.Objects;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * The GovernancePrinciple defines a goal or invariant that the organization wishes to achieve.
+ * The GovernancePrincipleProperties defines a goal or invariant that the organization wishes to achieve.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class GovernancePrinciple extends GovernancePolicy
+public class GovernancePrincipleProperties extends GovernancePolicyProperties
 {
     private static final long    serialVersionUID = 1L;
 
     /**
      * Default constructor
      */
-    public GovernancePrinciple()
+    public GovernancePrincipleProperties()
     {
         super();
-        setType("GovernancePrinciple");
     }
 
 
@@ -36,7 +33,7 @@ public class GovernancePrinciple extends GovernancePolicy
      *
      * @param template object to copy
      */
-    public GovernancePrinciple(GovernancePrinciple template)
+    public GovernancePrincipleProperties(GovernancePrincipleProperties template)
     {
         super(template);
     }
@@ -50,25 +47,24 @@ public class GovernancePrinciple extends GovernancePolicy
     @Override
     public String toString()
     {
-        return "GovernancePrinciple{" +
+        return "GovernancePrincipleProperties{" +
                 "governanceDrivers=" + getGovernanceDrivers() +
                 ", relatedGovernancePolicies=" + getRelatedGovernancePolicies() +
                 ", governanceControls=" + getGovernanceControls() +
+                ", title='" + getTitle() + '\'' +
+                ", summary='" + getSummary() + '\'' +
                 ", description='" + getDescription() + '\'' +
                 ", scope='" + getScope() + '\'' +
                 ", status=" + getStatus() +
                 ", priority='" + getPriority() + '\'' +
                 ", implications=" + getImplications() +
                 ", outcomes=" + getOutcomes() +
-                ", externalReferences=" + getExternalReferences() +
-                ", additionalProperties=" + getAdditionalProperties() +
                 ", governanceMetrics=" + getGovernanceMetrics() +
                 ", governanceZones=" + getGovernanceZones() +
-                ", GUID='" + getGUID() + '\'' +
-                ", type='" + getType() + '\'' +
-                ", documentId='" + getDocumentId() + '\'' +
-                ", title='" + getTitle() + '\'' +
-                ", summary='" + getSummary() + '\'' +
+                ", typeName='" + getTypeName() + '\'' +
+                ", qualifiedName='" + getQualifiedName() + '\'' +
+                ", additionalProperties=" + getAdditionalProperties() +
+                ", extendedProperties=" + getExtendedProperties() +
                 '}';
     }
 }

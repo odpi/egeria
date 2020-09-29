@@ -11,7 +11,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * GovernanceDriver documents the strategic or regulatory requirement that is driving an aspect of the
+ * GovernanceDriverProperties documents the strategic or regulatory requirement that is driving an aspect of the
  * governance program.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
@@ -22,11 +22,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes(
         {
-                @JsonSubTypes.Type(value = GovernancePrinciple.class, name = "GovernancePrinciple"),
-                @JsonSubTypes.Type(value = GovernanceObligation.class, name = "GovernanceObligation"),
-                @JsonSubTypes.Type(value = GovernanceApproach.class, name = "GovernanceApproach")
+                @JsonSubTypes.Type(value = GovernancePrincipleProperties.class, name = "GovernancePrincipleProperties"),
+                @JsonSubTypes.Type(value = GovernanceObligationProperties.class, name = "GovernanceObligationProperties"),
+                @JsonSubTypes.Type(value = GovernanceApproachProperties.class, name = "GovernanceApproachProperties")
         })
-public abstract class GovernancePolicy extends GovernanceDefinition
+public abstract class GovernancePolicyProperties extends GovernanceDefinitionProperties
 {
     private static final long    serialVersionUID = 1L;
 
@@ -37,7 +37,7 @@ public abstract class GovernancePolicy extends GovernanceDefinition
     /**
      * Default Constructor
      */
-    public GovernancePolicy()
+    public GovernancePolicyProperties()
     {
         super();
     }
@@ -48,7 +48,7 @@ public abstract class GovernancePolicy extends GovernanceDefinition
      *
      * @param template object to copy
      */
-    public GovernancePolicy(GovernancePolicy template)
+    public GovernancePolicyProperties(GovernancePolicyProperties template)
     {
         super(template);
 
@@ -168,27 +168,27 @@ public abstract class GovernancePolicy extends GovernanceDefinition
     @Override
     public String toString()
     {
-        return "GovernancePolicy{" +
+        return "GovernancePolicyProperties{" +
                 "governanceDrivers=" + governanceDrivers +
                 ", relatedGovernancePolicies=" + relatedGovernancePolicies +
                 ", governanceControls=" + governanceControls +
+                ", title='" + getTitle() + '\'' +
+                ", summary='" + getSummary() + '\'' +
                 ", description='" + getDescription() + '\'' +
                 ", scope='" + getScope() + '\'' +
                 ", status=" + getStatus() +
                 ", priority='" + getPriority() + '\'' +
                 ", implications=" + getImplications() +
                 ", outcomes=" + getOutcomes() +
-                ", externalReferences=" + getExternalReferences() +
-                ", additionalProperties=" + getAdditionalProperties() +
                 ", governanceMetrics=" + getGovernanceMetrics() +
                 ", governanceZones=" + getGovernanceZones() +
-                ", GUID='" + getGUID() + '\'' +
-                ", type='" + getType() + '\'' +
-                ", documentId='" + getDocumentId() + '\'' +
-                ", title='" + getTitle() + '\'' +
-                ", summary='" + getSummary() + '\'' +
+                ", typeName='" + getTypeName() + '\'' +
+                ", qualifiedName='" + getQualifiedName() + '\'' +
+                ", additionalProperties=" + getAdditionalProperties() +
+                ", extendedProperties=" + getExtendedProperties() +
                 '}';
     }
+
 
 
     /**
@@ -204,7 +204,7 @@ public abstract class GovernancePolicy extends GovernanceDefinition
         {
             return true;
         }
-        if (!(objectToCompare instanceof GovernancePolicy))
+        if (!(objectToCompare instanceof GovernancePolicyProperties))
         {
             return false;
         }
@@ -212,7 +212,7 @@ public abstract class GovernancePolicy extends GovernanceDefinition
         {
             return false;
         }
-        GovernancePolicy that = (GovernancePolicy) objectToCompare;
+        GovernancePolicyProperties that = (GovernancePolicyProperties) objectToCompare;
         return Objects.equals(getGovernanceDrivers(), that.getGovernanceDrivers()) &&
                 Objects.equals(getRelatedGovernancePolicies(), that.getRelatedGovernancePolicies()) &&
                 Objects.equals(getGovernanceControls(), that.getGovernanceControls());

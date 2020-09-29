@@ -1,10 +1,10 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.governanceprogram.properties;
+package org.odpi.openmetadata.accessservices.governanceprogram.metadataelements;
 
 import com.fasterxml.jackson.annotation.*;
+import org.odpi.openmetadata.accessservices.governanceprogram.properties.ExternalReference;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -14,7 +14,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * GovernanceHeader provides the base class for many of the definitions that define the data strategy
+ * ElementHeader provides the base class for many of the definitions that define the data strategy
  * and governance program.  It includes many of the common fields:
  *
  * <ul>
@@ -28,12 +28,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class GovernanceReferenceableHeader extends GovernanceHeader
+public class GovernanceReferenceableHeader extends ElementHeader
 {
     private static final long    serialVersionUID = 1L;
 
-    private List<ExternalReference>    externalReferences   = null;
-    private Map<String, String>        additionalProperties = null;
+    private List<ExternalReference> externalReferences   = null;
+    private Map<String, String>     additionalProperties = null;
 
     /**
      * Default Constructor

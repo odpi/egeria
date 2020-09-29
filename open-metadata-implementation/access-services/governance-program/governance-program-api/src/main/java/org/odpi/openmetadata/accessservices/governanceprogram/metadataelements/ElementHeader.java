@@ -2,7 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.governanceprogram.metadataelements;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -12,65 +14,86 @@ import java.util.Objects;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
-
 /**
- * GovernanceHeader provides the base class for many of the definitions that define the governance program.
- * It includes many of the common fields:
- *
- * <ul>
- *     <li>GUID</li>
- *     <li>Type</li>
- *     <li>Classifications</li>
- * </ul>
+ * ElementHeader provides the common identifier and type information for all properties objects
+ * that link off of the asset and have a guid associated with them.  This typically means it is
+ * represented by an entity in the metadata repository.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "class")
-@JsonSubTypes(
-        {
-                @JsonSubTypes.Type(value = GovernanceReferenceableHeader.class, name = "GovernanceReferenceableHeader"),
-        })
-public class GovernanceHeader implements Serializable
+public class ElementHeader implements Serializable
 {
-    private static final long          serialVersionUID = 1L;
+    private static final long     serialVersionUID = 1L;
 
-    private String                      guid            = null;
-    private String                      type            = null;
+    /*
+     * Common header for first class elements from a metadata repository
+     */
+    private String        guid = null;
+    private ElementType   type = null;
+    private ElementOrigin origin = null;
+
     private List<ElementClassification> classifications = null;
 
-
     /**
-     * Default Constructor
+     * Default constructor used by subclasses
      */
-    public GovernanceHeader()
+    public ElementHeader()
     {
     }
 
 
     /**
-     * Copy/clone Constructor - the resulting object.
+     * Copy/clone constructor.
      *
-     * @param template object being copied
+     * @param template element to copy
      */
-    public GovernanceHeader(GovernanceHeader template)
+    public ElementHeader(ElementHeader template)
     {
         if (template != null)
         {
-            this.guid = template.getGUID();
-            this.type = template.getType();
-            this.classifications = template.getClassifications();
+            guid            = template.getGUID();
+            type            = template.getType();
+            origin          = template.getOrigin();
+            classifications = template.getClassifications();
         }
     }
 
 
     /**
-     * Return the unique identifier for this definition.  This value is assigned by the metadata collection
-     * when the governance definition is created.
+     * Return the element type properties for this properties object.  These values are set up by the metadata repository
+     * and define details to the metadata entity used to represent this element.
      *
-     * @return String guid
+     * @return ElementType type information.
+     */
+    public ElementType getType()
+    {
+        if (type == null)
+        {
+            return null;
+        }
+        else
+        {
+            return type;
+        }
+    }
+
+
+    /**
+     * Set up the type of this element.
+     *
+     * @param type element type properties
+     */
+    public void setType(ElementType type)
+    {
+        this.type = type;
+    }
+
+
+    /**
+     * Return the unique id for the properties object.  Null means no guid is assigned.
+     *
+     * @return String unique id
      */
     public String getGUID()
     {
@@ -79,10 +102,9 @@ public class GovernanceHeader implements Serializable
 
 
     /**
-     * Set up the unique identifier for this definition.  This value is assigned by the metadata collection
-     * when the governance definition is created.
+     * Set up the guid for the element.
      *
-     * @param guid String guid
+     * @param guid String unique identifier
      */
     public void setGUID(String guid)
     {
@@ -91,24 +113,24 @@ public class GovernanceHeader implements Serializable
 
 
     /**
-     * Return the name of the specific type of governance definition.
+     * Return information about the origin of the element. This includes the metadata collection and license.
      *
-     * @return String type name
+     * @return element origin object
      */
-    public String getType()
+    public ElementOrigin getOrigin()
     {
-        return type;
+        return origin;
     }
 
 
     /**
-     * Set up the name of the specific type of the governance definition.
+     * Set up information about the origin of the element. This includes the metadata collection and license.
      *
-     * @param type String type name
+     * @param origin element origin object
      */
-    public void setType(String type)
+    public void setOrigin(ElementOrigin origin)
     {
-        this.type = type;
+        this.origin = origin;
     }
 
 
@@ -147,25 +169,26 @@ public class GovernanceHeader implements Serializable
 
 
     /**
-     * JSON-style toString.
+     * Standard toString method.
      *
-     * @return list of properties and their values.
+     * @return print out of variables in a JSON-style
      */
     @Override
     public String toString()
     {
-        return "GovernanceHeader{" +
+        return "ElementHeader{" +
                 "guid='" + guid + '\'' +
-                ", type='" + type + '\'' +
+                ", type=" + type +
+                ", origin=" + origin +
                 ", classifications=" + classifications +
+                ", GUID='" + getGUID() + '\'' +
                 '}';
     }
 
-
     /**
-     * Equals method that returns true if containing properties are the same.
+     * Compare the values of the supplied object with those stored in the current object.
      *
-     * @param objectToCompare object to compare
+     * @param objectToCompare supplied object
      * @return boolean result of comparison
      */
     @Override
@@ -179,21 +202,21 @@ public class GovernanceHeader implements Serializable
         {
             return false;
         }
-        GovernanceHeader that = (GovernanceHeader) objectToCompare;
+        ElementHeader that = (ElementHeader) objectToCompare;
         return Objects.equals(guid, that.guid) &&
                 Objects.equals(type, that.type) &&
+                Objects.equals(origin, that.origin) &&
                 Objects.equals(classifications, that.classifications);
     }
 
-
     /**
-     * Just use the GUID for the hash code as it should be unique.
+     * Create a hash code for this element type.
      *
-     * @return int code
+     * @return int hash code
      */
     @Override
     public int hashCode()
     {
-        return Objects.hash(guid, type, classifications);
+        return Objects.hash(guid, type, origin, classifications);
     }
 }

@@ -15,14 +15,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class GovernanceProcedure extends OrganizationalControl
+public class GovernanceProcedureProperties extends OrganizationalControl
 {
     private static final long    serialVersionUID = 1L;
 
     /**
      * Default Constructor
      */
-    public GovernanceProcedure()
+    public GovernanceProcedureProperties()
     {
         super();
     }
@@ -33,7 +33,7 @@ public class GovernanceProcedure extends OrganizationalControl
      *
      * @param template object to copy
      */
-    public GovernanceProcedure(GovernanceProcedure template)
+    public GovernanceProcedureProperties(GovernanceProcedureProperties template)
     {
         super(template);
     }
