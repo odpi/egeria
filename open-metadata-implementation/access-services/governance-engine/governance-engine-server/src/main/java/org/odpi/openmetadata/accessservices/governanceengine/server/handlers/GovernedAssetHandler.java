@@ -145,12 +145,13 @@ public class GovernedAssetHandler {
         InstanceProperties initialProperties = getSoftwareServerCapabilityProperties(softwareServerCapability);
 
         return repositoryHandler.createEntity(userId,
-                SOFTWARE_SERVER_CAPABILITY_GUID,
-                SOFTWARE_SERVER_CAPABILITY,
-                initialProperties,
-                Collections.emptyList(),
-                InstanceStatus.ACTIVE,
-                methodName);
+                                              SOFTWARE_SERVER_CAPABILITY_GUID,
+                                              SOFTWARE_SERVER_CAPABILITY,
+                                              null,
+                                              null,
+                                              initialProperties,
+                                              InstanceStatus.ACTIVE,
+                                              methodName);
 
     }
 
