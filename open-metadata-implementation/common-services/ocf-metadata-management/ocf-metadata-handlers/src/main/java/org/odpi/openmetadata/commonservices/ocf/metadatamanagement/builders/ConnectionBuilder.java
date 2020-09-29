@@ -16,7 +16,7 @@ public class ConnectionBuilder extends ReferenceableBuilder
 {
     private String              displayName;
     private String              description;
-    private Map<String, Object> securedProperties       = null;
+    private Map<String, String> securedProperties       = null;
     private Map<String, Object> configurationProperties = null;
     private String              connectorUserId         = null;
     private String              clearPassword           = null;
@@ -68,7 +68,7 @@ public class ConnectionBuilder extends ReferenceableBuilder
                              String                   displayName,
                              String                   description,
                              Map<String, String>      additionalProperties,
-                             Map<String, Object>      securedProperties,
+                             Map<String, String>      securedProperties,
                              Map<String, Object>      configurationProperties,
                              String                   connectorUserId,
                              String                   clearPassword,
@@ -80,6 +80,8 @@ public class ConnectionBuilder extends ReferenceableBuilder
     {
         super(qualifiedName,
               additionalProperties,
+              ConnectionMapper.CONNECTION_TYPE_NAME,
+              ConnectionMapper.CONNECTION_TYPE_GUID,
               extendedProperties,
               repositoryHelper,
               serviceName,
@@ -126,11 +128,11 @@ public class ConnectionBuilder extends ReferenceableBuilder
 
         if (securedProperties != null)
         {
-            properties = repositoryHelper.addMapPropertyToInstance(serviceName,
-                                                                   properties,
-                                                                   ConnectionMapper.SECURED_PROPERTIES_PROPERTY_NAME,
-                                                                   securedProperties,
-                                                                   methodName);
+            properties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
+                                                                         properties,
+                                                                         ConnectionMapper.SECURED_PROPERTIES_PROPERTY_NAME,
+                                                                         securedProperties,
+                                                                         methodName);
         }
 
         if (configurationProperties != null)

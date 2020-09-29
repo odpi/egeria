@@ -2,10 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.ocf.metadatamanagement.builders;
 
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.CommentMapper;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.SchemaElementMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.DataItemSortOrder;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EnumPropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
@@ -17,8 +17,7 @@ import java.util.Map;
  */
 public class SchemaAttributeBuilder extends ReferenceableBuilder
 {
-    private String            attributeName;
-
+    private String            displayName;
     private String            description           = null;
     private int               elementPosition       = 0;
     private int               minCardinality        = 0;
@@ -27,8 +26,7 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
     private String            cardinality           = null;
     private boolean           allowsDuplicateValues = false;
     private boolean           orderedValues         = false;
-    private DataItemSortOrder sortOrder             = null;
-    private String            anchorGUID            = null;
+    private EnumPropertyValue sortOrder             = null;
     private int               minimumLength         = 0;
     private int               length                = 0;
     private int               significantDigits     = 0;
@@ -38,24 +36,30 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
     private List<String>      aliases               = null;
     private String            formula               = null;
 
+
     /**
      * Minimal constructor
      *
      * @param qualifiedName unique name
-     * @param attributeName new value for the display name.
+     * @param displayName new value for the display name.
      * @param repositoryHelper helper methods
      * @param serviceName name of this OMAS
      * @param serverName name of local server
      */
     public SchemaAttributeBuilder(String               qualifiedName,
-                                  String               attributeName,
+                                  String               displayName,
                                   OMRSRepositoryHelper repositoryHelper,
                                   String               serviceName,
                                   String               serverName)
     {
-        super(qualifiedName, repositoryHelper, serviceName, serverName);
+        super(qualifiedName,
+              SchemaElementMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
+              SchemaElementMapper.SCHEMA_ATTRIBUTE_TYPE_GUID,
+              repositoryHelper,
+              serviceName,
+              serverName);
 
-        this.attributeName = attributeName;
+        this.displayName = displayName;
     }
 
 
@@ -63,7 +67,7 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
      * Constructor supporting original properties. Deprecated because uses old form of cardinality.
      *
      * @param qualifiedName unique name
-     * @param attributeName new value for the display name.
+     * @param displayName new value for the display name.
      * @param elementPosition position of the attribute in the parent schemaType.
      * @param cardinality does the attribute repeat?
      * @param defaultValueOverride override for the Type's default value.
@@ -75,7 +79,7 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
      */
     @Deprecated
     public SchemaAttributeBuilder(String               qualifiedName,
-                                  String               attributeName,
+                                  String               displayName,
                                   int                  elementPosition,
                                   String               cardinality,
                                   String               defaultValueOverride,
@@ -87,25 +91,27 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
     {
         super(qualifiedName,
               additionalProperties,
+              SchemaElementMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
+              SchemaElementMapper.SCHEMA_ATTRIBUTE_TYPE_GUID,
               extendedProperties,
               repositoryHelper,
               serviceName,
               serverName);
 
-        this.attributeName = attributeName;
-        this.elementPosition = elementPosition;
-        this.cardinality = cardinality;
-        this.minCardinality = 0;
-        this.maxCardinality = 0;
+        this.displayName          = displayName;
+        this.elementPosition      = elementPosition;
+        this.cardinality          = cardinality;
+        this.minCardinality       = 0;
+        this.maxCardinality       = 0;
         this.defaultValueOverride = defaultValueOverride;
-}
+    }
 
 
     /**
      * Constructor supporting all properties for a schema attribute entity.
      *
      * @param qualifiedName unique name
-     * @param attributeName new value for the display name.
+     * @param displayName new value for the display name.
      * @param description new value for the description.
      * @param elementPosition position of the attribute in the parent schemaType.
      * @param minCardinality is the attribute optional?
@@ -115,7 +121,6 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
      * @param allowsDuplicateValues unique values ?
      * @param orderedValues ordered values ?
      * @param sortOrder sort order if ordered
-     * @param anchorGUID unique identifier of the anchor entity
      * @param minimumLength minimum length of data in field
      * @param length size of data field
      * @param significantDigits number of digits on right of decimal point
@@ -123,13 +128,16 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
      * @param nativeJavaClass name of implementation class for Java
      * @param aliases aliases for the field
      * @param additionalProperties additional properties
+     * @param anchorGUID unique identifier of any attached asset
+     * @param typeName name of the type for this schema element
+     * @param typeId unique identifier of the type for this schema element
      * @param extendedProperties  properties from the subtype.
      * @param repositoryHelper helper methods
      * @param serviceName name of this OMAS
      * @param serverName name of local server
      */
     public SchemaAttributeBuilder(String               qualifiedName,
-                                  String               attributeName,
+                                  String               displayName,
                                   String               description,
                                   int                  elementPosition,
                                   int                  minCardinality,
@@ -138,8 +146,7 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
                                   String               defaultValueOverride,
                                   boolean              allowsDuplicateValues,
                                   boolean              orderedValues,
-                                  DataItemSortOrder    sortOrder,
-                                  String               anchorGUID,
+                                  EnumPropertyValue    sortOrder,
                                   int                  minimumLength,
                                   int                  length,
                                   int                  significantDigits,
@@ -147,6 +154,9 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
                                   String               nativeJavaClass,
                                   List<String>         aliases,
                                   Map<String, String>  additionalProperties,
+                                  String               anchorGUID,
+                                  String               typeName,
+                                  String               typeId,
                                   Map<String, Object>  extendedProperties,
                                   OMRSRepositoryHelper repositoryHelper,
                                   String               serviceName,
@@ -154,40 +164,30 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
     {
         super(qualifiedName,
               additionalProperties,
+              typeName,
+              typeId,
               extendedProperties,
               repositoryHelper,
               serviceName,
               serverName);
 
-        this.attributeName = attributeName;
-        this.description = description;
-        this.elementPosition = elementPosition;
-        this.cardinality = null;
-        this.minCardinality = minCardinality;
-        this.maxCardinality = maxCardinality;
-        this.isDeprecated = isDeprecated;
-        this.defaultValueOverride = defaultValueOverride;
+        this.displayName           = displayName;
+        this.description           = description;
+        this.elementPosition       = elementPosition;
+        this.cardinality           = null;
+        this.minCardinality        = minCardinality;
+        this.maxCardinality        = maxCardinality;
+        this.isDeprecated          = isDeprecated;
+        this.defaultValueOverride  = defaultValueOverride;
         this.allowsDuplicateValues = allowsDuplicateValues;
-        this.orderedValues = orderedValues;
-        this.sortOrder = sortOrder;
-        this.anchorGUID = anchorGUID;
-        this.minimumLength = minimumLength;
-        this.length = length;
-        this.significantDigits = significantDigits;
-        this.isNullable = isNullable;
-        this.nativeJavaClass = nativeJavaClass;
-        this.aliases = aliases;
-    }
-
-
-    /**
-     * Set up the formula for a derived schema attribute.
-     *
-     * @param formula formula used to derive the attribute value.
-     */
-    public void setFormula(String formula)
-    {
-        this.formula = formula;
+        this.orderedValues         = orderedValues;
+        this.sortOrder             = sortOrder;
+        this.minimumLength         = minimumLength;
+        this.length                = length;
+        this.significantDigits     = significantDigits;
+        this.isNullable            = isNullable;
+        this.nativeJavaClass       = nativeJavaClass;
+        this.aliases               = aliases;
     }
 
 
@@ -203,12 +203,12 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
     {
         InstanceProperties properties = super.getInstanceProperties(methodName);
 
-        if (attributeName != null)
+        if (displayName != null)
         {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
-                                                                      SchemaElementMapper.ATTRIBUTE_NAME_PROPERTY_NAME,
-                                                                      attributeName,
+                                                                      SchemaElementMapper.SCHEMA_DISPLAY_NAME_PROPERTY_NAME,
+                                                                      displayName,
                                                                       methodName);
         }
 
@@ -216,7 +216,7 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
         {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
-                                                                      SchemaElementMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                      SchemaElementMapper.SCHEMA_DESCRIPTION_PROPERTY_NAME,
                                                                       description,
                                                                       methodName);
         }
@@ -252,7 +252,7 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addBooleanPropertyToInstance(serviceName,
                                                                    properties,
-                                                                   SchemaElementMapper.IS_DEPRECATED_PROPERTY_NAME,
+                                                                   SchemaElementMapper.SCHEMA_IS_DEPRECATED_PROPERTY_NAME,
                                                                    isDeprecated,
                                                                    methodName);
 
@@ -262,15 +262,6 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
                                                                       properties,
                                                                       SchemaElementMapper.DEFAULT_VALUE_OVERRIDE_PROPERTY_NAME,
                                                                       defaultValueOverride,
-                                                                      methodName);
-        }
-
-        if (anchorGUID != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      SchemaElementMapper.ANCHOR_GUID_PROPERTY_NAME,
-                                                                      anchorGUID,
                                                                       methodName);
         }
 
@@ -287,11 +278,15 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
                                                                    orderedValues,
                                                                    methodName);
 
-        if ((sortOrder != null) && (sortOrder != DataItemSortOrder.UNKNOWN))
+        if (sortOrder != null)
         {
-            properties = this.addSortOrderPropertyToInstance(properties,
-                                                             sortOrder,
-                                                             methodName);
+            properties = repositoryHelper.addEnumPropertyToInstance(serviceName,
+                                                                    properties,
+                                                                    SchemaElementMapper.SORT_ORDER_PROPERTY_NAME,
+                                                                    sortOrder.getOrdinal(),
+                                                                    sortOrder.getSymbolicName(),
+                                                                    sortOrder.getDescription(),
+                                                                    methodName);
         }
 
         properties = repositoryHelper.addIntPropertyToInstance(serviceName,
@@ -360,9 +355,9 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
     {
         InstanceProperties properties = super.getNameInstanceProperties(methodName);
 
-        if (attributeName != null)
+        if (displayName != null)
         {
-            String literalName = repositoryHelper.getExactMatchRegex(attributeName);
+            String literalName = repositoryHelper.getExactMatchRegex(displayName);
 
             properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
