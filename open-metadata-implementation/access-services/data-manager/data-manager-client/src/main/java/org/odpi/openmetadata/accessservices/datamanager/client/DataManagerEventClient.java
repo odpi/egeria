@@ -17,10 +17,10 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 
 
 /**
- * DataManagerEventListenerClient provides the implementation to manage the interaction with the server to
+ * DataManagerEventClient provides the implementation to manage the interaction with the server to
  * set up a listener to support the receipt of inbound events from the Data Manager OMAS Out Topic.
  */
-public class DataManagerEventListenerClient  implements DataManagerEventInterface
+public class DataManagerEventClient implements DataManagerEventInterface
 {
     private static final String  serviceName = "Data Manager OMAS";
 
@@ -42,8 +42,8 @@ public class DataManagerEventListenerClient  implements DataManagerEventInterfac
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    public DataManagerEventListenerClient(String serverName,
-                                          String serverPlatformURLRoot) throws InvalidParameterException
+    public DataManagerEventClient(String serverName,
+                                  String serverPlatformURLRoot) throws InvalidParameterException
     {
         final String methodName = "Constructor (no security)";
 
@@ -66,10 +66,10 @@ public class DataManagerEventListenerClient  implements DataManagerEventInterfac
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    public DataManagerEventListenerClient(String serverName,
-                                          String serverPlatformURLRoot,
-                                          String userId,
-                                          String password) throws InvalidParameterException
+    public DataManagerEventClient(String serverName,
+                                  String serverPlatformURLRoot,
+                                  String userId,
+                                  String password) throws InvalidParameterException
     {
         final String methodName = "Constructor (with security)";
 
@@ -82,8 +82,7 @@ public class DataManagerEventListenerClient  implements DataManagerEventInterfac
 
 
     /**
-     * Create a new client that passes userId and password in each HTTP request.  This is the
-     * userId/password of the calling server.  The end user's userId is sent on each request.
+     * Create a new client that is to be used within an OMAG Server.
      *
      * @param serverName name of the server to connect to
      * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
@@ -92,13 +91,13 @@ public class DataManagerEventListenerClient  implements DataManagerEventInterfac
      * @param auditLog logging destination
      * @throws InvalidParameterException there is a problem with the information about the remote OMAS
      */
-    public DataManagerEventListenerClient(String        serverName,
-                                          String        serverPlatformURLRoot,
-                                          OCFRESTClient restClient,
-                                          int           maxPageSize,
-                                          AuditLog      auditLog) throws InvalidParameterException
+    public DataManagerEventClient(String        serverName,
+                                  String        serverPlatformURLRoot,
+                                  OCFRESTClient restClient,
+                                  int           maxPageSize,
+                                  AuditLog      auditLog) throws InvalidParameterException
     {
-        final String methodName = "Constructor (with security)";
+        final String methodName = "Constructor (with REST Client)";
 
         invalidParameterHandler.setMaxPagingSize(maxPageSize);
         invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);

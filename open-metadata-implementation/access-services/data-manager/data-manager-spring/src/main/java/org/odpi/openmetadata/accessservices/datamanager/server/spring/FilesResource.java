@@ -6,15 +6,13 @@ package org.odpi.openmetadata.accessservices.datamanager.server.spring;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.accessservices.datamanager.rest.*;
-import org.odpi.openmetadata.accessservices.datamanager.server.FileSystemRESTServices;
+import org.odpi.openmetadata.accessservices.datamanager.server.FilesRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * FileSystemResource supports the server-side capture of REST calls to add new file-based asset definitions.
+ * FilesResource supports the server-side capture of REST calls to add new file-based asset definitions.
  */
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/data-manager/users/{userId}")
@@ -24,38 +22,16 @@ import org.springframework.web.bind.annotation.*;
         externalDocs=@ExternalDocumentation(description="Data Manager Open Metadata Access Service (OMAS)",
                 url="https://egeria.odpi.org/open-metadata-implementation/access-services/data-manager/"))
 
-public class FileSystemResource
+public class FilesResource
 {
-    private FileSystemRESTServices restAPI = new FileSystemRESTServices();
+    private FilesRESTServices restAPI = new FilesRESTServices();
 
 
     /**
      * Default constructor
      */
-    public FileSystemResource()
+    public FilesResource()
     {
-    }
-
-
-    /**
-     * Files live on a file system.  This method creates a top level anchor for a file system.
-     *
-     * @param serverName name of calling server
-     * @param userId calling user
-     * @param requestBody properties of the file system
-     *
-     * @return unique identifier for the file system or
-     * InvalidParameterException one of the parameters is null or invalid or
-     * PropertyServerException problem accessing property server or
-     * UserNotAuthorizedException security access problem
-     */
-    @PostMapping(path = "/filesystems")
-
-    public GUIDResponse   createFileSystemInCatalog(@PathVariable String                   serverName,
-                                                    @PathVariable String                   userId,
-                                                    @RequestBody  NewFileSystemRequestBody requestBody)
-    {
-        return restAPI.createFileSystemInCatalog(serverName, userId, requestBody);
     }
 
 
@@ -66,7 +42,7 @@ public class FileSystemResource
      *
      * @param serverName name of calling server
      * @param userId calling user
-     * @param anchorGUID root object to connect the folder to
+     * @param parentGUID root object to connect the folder to
      * @param requestBody pathname of the folder (or folders)
      *
      * @return list of GUIDs from the top level to the leaf of the supplied pathname or
@@ -74,14 +50,14 @@ public class FileSystemResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem.
      */
-    @PostMapping(path = "/folders/{anchorGUID}")
+    @PostMapping(path = "/filesystems/folders/{parentGUID}")
 
     public GUIDListResponse createFolderStructureInCatalog(@PathVariable String              serverName,
                                                            @PathVariable String              userId,
-                                                           @PathVariable String              anchorGUID,
+                                                           @PathVariable String              parentGUID,
                                                            @RequestBody  PathNameRequestBody requestBody)
     {
-        return restAPI.createFolderStructureInCatalog(serverName, userId, anchorGUID, requestBody);
+        return restAPI.createFolderStructureInCatalog(serverName, userId, parentGUID, requestBody);
     }
 
 
@@ -92,6 +68,8 @@ public class FileSystemResource
      *
      * @param serverName name of calling server
      * @param userId calling user
+     * @param fileSystemGUID unique identifier of the software server capability that represents the root of the path name
+     * @param fileSystemName unique name of the software server capability that represents the root of the path name
      * @param requestBody pathname of the folder (or folders)
      *
      * @return list of GUIDs from the top level to the leaf of the supplied pathname or
@@ -99,13 +77,15 @@ public class FileSystemResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem.
      */
-    @PostMapping(path = "/folders")
+    @PostMapping(path = "/filesystems/{fileSystemGUID}/{fileSystemName}/folders")
 
     public GUIDListResponse createFolderStructureInCatalog(@PathVariable String              serverName,
                                                            @PathVariable String              userId,
+                                                           @PathVariable String              fileSystemGUID,
+                                                           @PathVariable String              fileSystemName,
                                                            @RequestBody  PathNameRequestBody requestBody)
     {
-        return restAPI.createFolderStructureInCatalog(serverName, userId, requestBody);
+        return restAPI.createFolderStructureInCatalog(serverName, userId, fileSystemGUID, fileSystemName, requestBody);
     }
 
 
@@ -116,7 +96,7 @@ public class FileSystemResource
      * @param userId calling user
      * @param fileSystemGUID unique identifier of the file system in the catalog
      * @param folderGUID unique identifier of the folder in the catalog
-     * @param requestBody dummy request body
+     * @param requestBody external source identifiers - or null for local
      *
      * @return void or
      * InvalidParameterException one of the parameters is null or invalid or
@@ -125,11 +105,11 @@ public class FileSystemResource
      */
     @PostMapping(path = "/filesystems/{fileSystemGUID}/folders/{fileSystemGUID}/attach")
 
-    public VoidResponse attachFolderToFileSystem(@PathVariable                  String          serverName,
-                                                 @PathVariable                  String          userId,
-                                                 @PathVariable                  String          fileSystemGUID,
-                                                 @PathVariable                  String          folderGUID,
-                                                 @RequestBody(required = false) NullRequestBody requestBody)
+    public VoidResponse attachFolderToFileSystem(@PathVariable                  String                    serverName,
+                                                 @PathVariable                  String                    userId,
+                                                 @PathVariable                  String                    fileSystemGUID,
+                                                 @PathVariable                  String                    folderGUID,
+                                                 @RequestBody(required = false) MetadataSourceRequestBody requestBody)
     {
         return restAPI.attachFolderToFileSystem(serverName, userId, fileSystemGUID, folderGUID, requestBody);
     }
@@ -142,7 +122,7 @@ public class FileSystemResource
      * @param userId calling user
      * @param fileSystemGUID unique identifier of the file system in the catalog
      * @param folderGUID unique identifier of the folder in the catalog
-     * @param requestBody dummy request body
+     * @param requestBody external source identifiers - or null for local
      *
      * @return void or
      * InvalidParameterException one of the parameters is null or invalid or
@@ -151,11 +131,11 @@ public class FileSystemResource
      */
     @PostMapping(path = "/filesystems/{fileSystemGUID}/folders/{fileSystemGUID}/detach")
 
-    public VoidResponse detachFolderFromFileSystem(@PathVariable                  String          serverName,
-                                                   @PathVariable                  String          userId,
-                                                   @PathVariable                  String          fileSystemGUID,
-                                                   @PathVariable                  String          folderGUID,
-                                                   @RequestBody(required = false) NullRequestBody requestBody)
+    public VoidResponse detachFolderFromFileSystem(@PathVariable                  String                    serverName,
+                                                   @PathVariable                  String                    userId,
+                                                   @PathVariable                  String                    fileSystemGUID,
+                                                   @PathVariable                  String                    folderGUID,
+                                                   @RequestBody(required = false) MetadataSourceRequestBody requestBody)
     {
         return restAPI.detachFolderFromFileSystem(serverName, userId, fileSystemGUID, folderGUID, requestBody);
     }
@@ -170,6 +150,8 @@ public class FileSystemResource
      *
      * @param serverName name of calling server
      * @param userId calling user (assumed to be the owner)
+     * @param fileSystemGUID unique identifier of the software server capability that represents the root of the path name
+     * @param fileSystemName unique name of the software server capability that represents the root of the path name
      * @param requestBody properties for the asset
      *
      * @return list of GUIDs from the top level to the root of the pathname or
@@ -177,13 +159,15 @@ public class FileSystemResource
      * PropertyServerException problem accessing property server
      * UserNotAuthorizedException security access problem
      */
-    @PostMapping(path = "/assets/data-files")
+    @PostMapping(path = "/filesystems/{fileSystemGUID}/{fileSystemName}/data-files")
 
-    public GUIDListResponse addDataFileFileToCatalog(@PathVariable String                serverName,
-                                                     @PathVariable String                userId,
-                                                     @RequestBody  NewDataFileRequestBody requestBody)
+    public GUIDListResponse addDataFileToCatalog(@PathVariable String                 serverName,
+                                                 @PathVariable String                 userId,
+                                                 @PathVariable String                 fileSystemGUID,
+                                                 @PathVariable String                 fileSystemName,
+                                                 @RequestBody DataFileRequestBody requestBody)
     {
-        return restAPI.addDataFileToCatalog(serverName, userId, requestBody);
+        return restAPI.addDataFileToCatalog(serverName, userId, fileSystemGUID, fileSystemName, requestBody);
     }
 
 
@@ -198,6 +182,8 @@ public class FileSystemResource
      *
      * @param serverName name of calling server
      * @param userId calling user
+     * @param fileSystemGUID unique identifier of the software server capability that represents the root of the path name
+     * @param fileSystemName unique name of the software server capability that represents the root of the path name
      * @param requestBody pathname of the data folder
      *
      * @return list of GUIDs from the top level to the root of the pathname or
@@ -205,13 +191,15 @@ public class FileSystemResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem.
      */
-    @PostMapping(path = "/assets/data-folders")
+    @PostMapping(path = "/filesystems/{fileSystemGUID}/{fileSystemName}/data-folders")
 
-    public GUIDListResponse addDataFolderAssetToCatalog(@PathVariable String                  serverName,
-                                                        @PathVariable String                  userId,
-                                                        @RequestBody NewDataFolderRequestBody requestBody)
+    public GUIDListResponse addDataFolderAssetToCatalog(@PathVariable String                   serverName,
+                                                        @PathVariable String                   userId,
+                                                        @PathVariable String                   fileSystemGUID,
+                                                        @PathVariable String                   fileSystemName,
+                                                        @RequestBody DataFolderRequestBody requestBody)
     {
-        return restAPI.addDataFolderAssetToCatalog(serverName, userId, requestBody);
+        return restAPI.addDataFolderAssetToCatalog(serverName, userId, fileSystemGUID, fileSystemName, requestBody);
     }
 
 
@@ -223,7 +211,7 @@ public class FileSystemResource
      * @param userId calling user
      * @param folderGUID unique identifier of the folder
      * @param fileGUID unique identifier of the file
-     * @param requestBody dummy request body
+     * @param requestBody external source identifiers - or null for local
      *
      * @return void or
      * InvalidParameterException one of the parameters is null or invalid or
@@ -232,11 +220,11 @@ public class FileSystemResource
      */
     @PostMapping(path = "/folders/{folderGUID}/assets/data-files/{fileGUID}/attach")
 
-    public VoidResponse  attachDataFileAssetToFolder(@PathVariable                  String          serverName,
-                                                     @PathVariable                  String          userId,
-                                                     @PathVariable                  String          folderGUID,
-                                                     @PathVariable                  String          fileGUID,
-                                                     @RequestBody(required = false) NullRequestBody requestBody)
+    public VoidResponse  attachDataFileAssetToFolder(@PathVariable                  String                    serverName,
+                                                     @PathVariable                  String                    userId,
+                                                     @PathVariable                  String                    folderGUID,
+                                                     @PathVariable                  String                    fileGUID,
+                                                     @RequestBody(required = false) MetadataSourceRequestBody requestBody)
     {
         return restAPI.attachDataFileAssetToFolder(serverName, userId, folderGUID, fileGUID, requestBody);
     }
@@ -251,7 +239,7 @@ public class FileSystemResource
      * @param userId calling user
      * @param folderGUID unique identifier of the folder
      * @param fileGUID unique identifier of the file
-     * @param requestBody dummy request body
+     * @param requestBody external source identifiers - or null for local
      *
      * @return void or
      * InvalidParameterException one of the parameters is null or invalid or
@@ -260,11 +248,11 @@ public class FileSystemResource
      */
     @PostMapping(path = "/folders/{folderGUID}/assets/data-files/{fileGUID}/detach")
 
-    public VoidResponse  detachDataFileAssetFromFolder(@PathVariable                  String          serverName,
-                                                       @PathVariable                  String          userId,
-                                                       @PathVariable                  String          folderGUID,
-                                                       @PathVariable                  String          fileGUID,
-                                                       @RequestBody(required = false) NullRequestBody requestBody)
+    public VoidResponse  detachDataFileAssetFromFolder(@PathVariable                  String                    serverName,
+                                                       @PathVariable                  String                    userId,
+                                                       @PathVariable                  String                    folderGUID,
+                                                       @PathVariable                  String                    fileGUID,
+                                                       @RequestBody(required = false) MetadataSourceRequestBody requestBody)
     {
         return restAPI.detachDataFileAssetFromFolder(serverName, userId, folderGUID, fileGUID, requestBody);
     }
@@ -287,11 +275,11 @@ public class FileSystemResource
      */
     @PostMapping(path = "/folders/{folderGUID}/assets/data-files/{fileGUID}/move-to")
 
-    public VoidResponse  moveDataFileInCatalog(@PathVariable                  String          serverName,
-                                               @PathVariable                  String          userId,
-                                               @PathVariable                  String          folderGUID,
-                                               @PathVariable                  String          fileGUID,
-                                               @RequestBody(required = false) NullRequestBody requestBody)
+    public VoidResponse  moveDataFileInCatalog(@PathVariable                  String                    serverName,
+                                               @PathVariable                  String                    userId,
+                                               @PathVariable                  String                    folderGUID,
+                                               @PathVariable                  String                    fileGUID,
+                                               @RequestBody(required = false) MetadataSourceRequestBody requestBody)
     {
         return restAPI.moveDataFileInCatalog(serverName, userId, folderGUID, fileGUID, requestBody);
     }
@@ -314,11 +302,11 @@ public class FileSystemResource
      */
     @PostMapping(path = "/folders/{folderGUID}/assets/data-folders/{dataFolderGUID}/move-to")
 
-    public VoidResponse  moveDataFolderInCatalog(@PathVariable                  String          serverName,
-                                                 @PathVariable                  String          userId,
-                                                 @PathVariable                  String          folderGUID,
-                                                 @PathVariable                  String          dataFolderGUID,
-                                                 @RequestBody(required = false) NullRequestBody requestBody)
+    public VoidResponse  moveDataFolderInCatalog(@PathVariable                  String                    serverName,
+                                                 @PathVariable                  String                    userId,
+                                                 @PathVariable                  String                    folderGUID,
+                                                 @PathVariable                  String                    dataFolderGUID,
+                                                 @RequestBody(required = false) MetadataSourceRequestBody requestBody)
     {
         return restAPI.moveDataFolderInCatalog(serverName, userId, folderGUID, dataFolderGUID, requestBody);
     }

@@ -13,24 +13,24 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * NewDataFileRequestBody carries the parameters for creating a new file asset.
+ * DataFileRequestBody carries the parameters for creating a new file asset.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class NewDataFolderRequestBody extends FileFolderProperties
+public class DataFolderRequestBody extends FileFolderProperties
 {
     private static final long    serialVersionUID = 1L;
 
-    private String externalSourceGUID = null;
-    private String externalSourceName = null;
-    private String connectorClassName = null;
+    private String externalSourceGUID         = null;
+    private String externalSourceName         = null;
+    private String connectorProviderClassName = null;
 
 
     /**
      * Default constructor
      */
-    public NewDataFolderRequestBody()
+    public DataFolderRequestBody()
     {
     }
 
@@ -40,15 +40,15 @@ public class NewDataFolderRequestBody extends FileFolderProperties
      *
      * @param template object to copy
      */
-    public NewDataFolderRequestBody(NewDataFolderRequestBody template)
+    public DataFolderRequestBody(DataFolderRequestBody template)
     {
         super(template);
 
         if (template != null)
         {
-            externalSourceGUID = template.getExternalSourceGUID();
-            externalSourceName = template.getExternalSourceName();
-            connectorClassName = template.getConnectorClassName();
+            externalSourceGUID         = template.getExternalSourceGUID();
+            externalSourceName         = template.getExternalSourceName();
+            connectorProviderClassName = template.getConnectorProviderClassName();
         }
     }
 
@@ -58,7 +58,7 @@ public class NewDataFolderRequestBody extends FileFolderProperties
      *
      * @param template object to copy
      */
-    public NewDataFolderRequestBody(FileFolderProperties template)
+    public DataFolderRequestBody(FileFolderProperties template)
     {
         super(template);
     }
@@ -115,9 +115,9 @@ public class NewDataFolderRequestBody extends FileFolderProperties
      *
      * @return string name
      */
-    public String getConnectorClassName()
+    public String getConnectorProviderClassName()
     {
-        return connectorClassName;
+        return connectorProviderClassName;
     }
 
 
@@ -125,11 +125,11 @@ public class NewDataFolderRequestBody extends FileFolderProperties
      * Set up the fully qualified class name of the connector provider for this type of file.  If null is
      * passed, the server uses the default file connector.
      *
-     * @param connectorClassName string name
+     * @param connectorProviderClassName string name
      */
-    public void setConnectorClassName(String connectorClassName)
+    public void setConnectorProviderClassName(String connectorProviderClassName)
     {
-        this.connectorClassName = connectorClassName;
+        this.connectorProviderClassName = connectorProviderClassName;
     }
 
 
@@ -141,10 +141,10 @@ public class NewDataFolderRequestBody extends FileFolderProperties
     @Override
     public String toString()
     {
-        return "NewDataFolderRequestBody{" +
+        return "DataFolderRequestBody{" +
                 "externalSourceGUID='" + externalSourceGUID + '\'' +
                 ", externalSourceName='" + externalSourceName + '\'' +
-                ", connectorClassName='" + connectorClassName + '\'' +
+                ", connectorClassName='" + connectorProviderClassName + '\'' +
                 ", createTime=" + getCreateTime() +
                 ", modifiedTime=" + getModifiedTime() +
                 ", encodingType='" + getEncodingType() + '\'' +
@@ -189,10 +189,10 @@ public class NewDataFolderRequestBody extends FileFolderProperties
         {
             return false;
         }
-        NewDataFolderRequestBody that = (NewDataFolderRequestBody) objectToCompare;
+        DataFolderRequestBody that = (DataFolderRequestBody) objectToCompare;
         return Objects.equals(externalSourceGUID, that.externalSourceGUID) &&
                 Objects.equals(externalSourceName, that.externalSourceName) &&
-                Objects.equals(connectorClassName, that.connectorClassName);    }
+                Objects.equals(connectorProviderClassName, that.connectorProviderClassName);    }
 
 
     /**
@@ -203,6 +203,6 @@ public class NewDataFolderRequestBody extends FileFolderProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), externalSourceGUID, externalSourceName, connectorClassName);
+        return Objects.hash(super.hashCode(), externalSourceGUID, externalSourceName, connectorProviderClassName);
     }
 }

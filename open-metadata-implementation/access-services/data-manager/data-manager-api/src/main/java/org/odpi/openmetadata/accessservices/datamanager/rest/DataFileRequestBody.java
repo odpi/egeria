@@ -11,24 +11,24 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * NewDataFileRequestBody carries the parameters for creating a new file asset.
+ * DataFileRequestBody carries the parameters for creating a new file asset.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class NewDataFileRequestBody extends DataFileProperties
+public class DataFileRequestBody extends DataFileProperties
 {
     private static final long    serialVersionUID = 1L;
 
-    private String externalSourceGUID = null;
-    private String externalSourceName = null;
-    private String connectorClassName = null;
+    private String externalSourceGUID         = null;
+    private String externalSourceName         = null;
+    private String connectorProviderClassName = null;
 
 
     /**
      * Default constructor
      */
-    public NewDataFileRequestBody()
+    public DataFileRequestBody()
     {
     }
 
@@ -38,15 +38,15 @@ public class NewDataFileRequestBody extends DataFileProperties
      *
      * @param template object to copy
      */
-    public NewDataFileRequestBody(NewDataFileRequestBody template)
+    public DataFileRequestBody(DataFileRequestBody template)
     {
         super(template);
 
         if (template != null)
         {
-            externalSourceGUID = template.getExternalSourceGUID();
-            externalSourceName = template.getExternalSourceName();
-            connectorClassName = template.getConnectorClassName();
+            externalSourceGUID         = template.getExternalSourceGUID();
+            externalSourceName         = template.getExternalSourceName();
+            connectorProviderClassName = template.getConnectorProviderClassName();
         }
     }
 
@@ -56,7 +56,7 @@ public class NewDataFileRequestBody extends DataFileProperties
      *
      * @param template object to copy
      */
-    public NewDataFileRequestBody(DataFileProperties template)
+    public DataFileRequestBody(DataFileProperties template)
     {
         super(template);
     }
@@ -112,9 +112,9 @@ public class NewDataFileRequestBody extends DataFileProperties
      *
      * @return string name
      */
-    public String getConnectorClassName()
+    public String getConnectorProviderClassName()
     {
-        return connectorClassName;
+        return connectorProviderClassName;
     }
 
 
@@ -122,11 +122,11 @@ public class NewDataFileRequestBody extends DataFileProperties
      * Set up the fully qualified class name of the connector provider for this type of file.  If null is
      * passed, the server uses the default file connector.
      *
-     * @param connectorClassName string name
+     * @param connectorProviderClassName string name
      */
-    public void setConnectorClassName(String connectorClassName)
+    public void setConnectorProviderClassName(String connectorProviderClassName)
     {
-        this.connectorClassName = connectorClassName;
+        this.connectorProviderClassName = connectorProviderClassName;
     }
 
 
@@ -138,10 +138,10 @@ public class NewDataFileRequestBody extends DataFileProperties
     @Override
     public String toString()
     {
-        return "NewDataFileRequestBody{" +
+        return "DataFileRequestBody{" +
                 "externalSourceGUID='" + externalSourceGUID + '\'' +
                 ", externalSourceName='" + externalSourceName + '\'' +
-                ", connectorClassName='" + connectorClassName + '\'' +
+                ", connectorClassName='" + connectorProviderClassName + '\'' +
                 ", fileType='" + getFileType() + '\'' +
                 ", createTime=" + getCreateTime() +
                 ", modifiedTime=" + getModifiedTime() +
@@ -188,10 +188,10 @@ public class NewDataFileRequestBody extends DataFileProperties
         {
             return false;
         }
-        NewDataFileRequestBody that = (NewDataFileRequestBody) objectToCompare;
+        DataFileRequestBody that = (DataFileRequestBody) objectToCompare;
         return Objects.equals(externalSourceGUID, that.externalSourceGUID) &&
                 Objects.equals(externalSourceName, that.externalSourceName) &&
-                Objects.equals(connectorClassName, that.connectorClassName);
+                Objects.equals(connectorProviderClassName, that.connectorProviderClassName);
     }
 
 
@@ -203,6 +203,6 @@ public class NewDataFileRequestBody extends DataFileProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), externalSourceGUID, externalSourceName, connectorClassName);
+        return Objects.hash(super.hashCode(), externalSourceGUID, externalSourceName, connectorProviderClassName);
     }
 }

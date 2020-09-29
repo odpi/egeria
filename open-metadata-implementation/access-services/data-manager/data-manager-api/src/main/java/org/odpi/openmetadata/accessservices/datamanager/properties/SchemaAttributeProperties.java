@@ -22,9 +22,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes(
         {
-                @JsonSubTypes.Type(value = DerivedSchemaAttributeProperties.class, name = "DerivedSchemaAttributeProperties"),
-                @JsonSubTypes.Type(value = DatabaseTableProperties.class, name = "DatabaseTableProperties"),
-                @JsonSubTypes.Type(value = DatabaseViewProperties.class, name = "DatabaseViewProperties"),
                 @JsonSubTypes.Type(value = TabularColumnProperties.class, name = "TabularColumnProperties")
         })
 public class SchemaAttributeProperties extends SchemaElementProperties
@@ -38,7 +35,6 @@ public class SchemaAttributeProperties extends SchemaElementProperties
     private boolean           orderedValues         = false;
     private String            defaultValueOverride  = null;
     private DataItemSortOrder sortOrder             = null;
-    private String            anchorGUID            = null;
     private int               minimumLength         = 0;
     private int               length                = 0;
     private int               significantDigits     = 0;
@@ -46,6 +42,7 @@ public class SchemaAttributeProperties extends SchemaElementProperties
     private String            nativeJavaClass       = null;
     private List<String>      aliases               = null;
 
+    private SchemaTypeProperties schemaType         = null;
 
     /**
      * Default constructor
@@ -78,9 +75,9 @@ public class SchemaAttributeProperties extends SchemaElementProperties
             significantDigits = template.getSignificantDigits();
             isNullable = template.isNullable();
             defaultValueOverride = template.getDefaultValueOverride();
-            anchorGUID = template.getAnchorGUID();
             nativeJavaClass = template.getNativeJavaClass();
             aliases = template.getAliases();
+            schemaType = template.getSchemaType();
         }
     }
 
@@ -322,24 +319,6 @@ public class SchemaAttributeProperties extends SchemaElementProperties
         this.defaultValueOverride = defaultValueOverride;
     }
 
-    /**
-     * Return the anchorGUID defined for this schema attribute.
-     *
-     * @return String anchorGUID defined for this schema attribute.
-     */
-    public String getAnchorGUID() {
-        return anchorGUID;
-    }
-
-    /**
-     * Set up the anchorGUID of this schema attribute
-     *
-     * @param anchorGUID GUID of the anchor entity
-     */
-    public void setAnchorGUID(String anchorGUID) {
-        this.anchorGUID = anchorGUID;
-    }
-
 
     /**
      * Return the name of the Java class to use to represent this type.
@@ -395,6 +374,27 @@ public class SchemaAttributeProperties extends SchemaElementProperties
 
 
     /**
+     * Set up SchemaType for this schema attribute.
+     *
+     * @return schema type properties
+     */
+    public SchemaTypeProperties getSchemaType()
+    {
+        return schemaType;
+    }
+
+
+    /**
+     * Set up SchemaType for this schema attribute.
+     *
+     * @param schemaType schema type properties
+     */
+    public void setSchemaType(SchemaTypeProperties schemaType)
+    {
+        this.schemaType = schemaType;
+    }
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -410,13 +410,13 @@ public class SchemaAttributeProperties extends SchemaElementProperties
                 ", orderedValues=" + orderedValues +
                 ", defaultValueOverride='" + defaultValueOverride + '\'' +
                 ", sortOrder=" + sortOrder +
-                ", anchorGUID='" + anchorGUID + '\'' +
                 ", minimumLength=" + minimumLength +
                 ", length=" + length +
                 ", significantDigits=" + significantDigits +
                 ", isNullable=" + isNullable +
                 ", nativeJavaClass='" + nativeJavaClass + '\'' +
                 ", aliases=" + aliases +
+                ", schemaType=" + schemaType +
                 ", nullable=" + isNullable() +
                 ", deprecated=" + isDeprecated() +
                 ", displayName='" + getDisplayName() + '\'' +
@@ -463,9 +463,9 @@ public class SchemaAttributeProperties extends SchemaElementProperties
                 isNullable == that.isNullable &&
                 Objects.equals(defaultValueOverride, that.defaultValueOverride) &&
                 sortOrder == that.sortOrder &&
-                Objects.equals(anchorGUID, that.anchorGUID) &&
                 Objects.equals(nativeJavaClass, that.nativeJavaClass) &&
-                Objects.equals(aliases, that.aliases);
+                Objects.equals(aliases, that.aliases) &&
+                Objects.equals(schemaType, that.schemaType);
     }
 
 
@@ -477,9 +477,7 @@ public class SchemaAttributeProperties extends SchemaElementProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(),elementPosition, minCardinality,
-                            maxCardinality, allowsDuplicateValues, orderedValues, defaultValueOverride,
-                            sortOrder, anchorGUID, minimumLength, length, significantDigits, isNullable,
-                            nativeJavaClass, aliases);
+        return Objects.hash(super.hashCode(), elementPosition, minCardinality, maxCardinality, allowsDuplicateValues, orderedValues,
+                            defaultValueOverride, sortOrder, minimumLength, length, significantDigits, isNullable, nativeJavaClass, aliases, schemaType);
     }
 }

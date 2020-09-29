@@ -59,6 +59,8 @@ public class DatabaseColumnElement extends DatabaseColumnProperties implements M
      */
     public DatabaseColumnElement(DatabaseColumnElement template)
     {
+        super(template);
+
         if (template != null)
         {
             elementHeader = template.getElementHeader();
@@ -211,7 +213,6 @@ public class DatabaseColumnElement extends DatabaseColumnProperties implements M
                 ", significantDigits=" + getSignificantDigits() +
                 ", nullable=" + isNullable() +
                 ", defaultValueOverride='" + getDefaultValueOverride() + '\'' +
-                ", anchorGUID='" + getAnchorGUID() + '\'' +
                 ", nativeJavaClass='" + getNativeJavaClass() + '\'' +
                 ", aliases=" + getAliases() +
                 ", deprecated=" + isDeprecated() +

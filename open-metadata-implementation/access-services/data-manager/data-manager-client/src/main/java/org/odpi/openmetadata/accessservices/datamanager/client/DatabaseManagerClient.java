@@ -7,9 +7,9 @@ import org.odpi.openmetadata.accessservices.datamanager.api.DatabaseManagerInter
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.*;
 import org.odpi.openmetadata.accessservices.datamanager.properties.*;
 import org.odpi.openmetadata.accessservices.datamanager.rest.*;
+import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.ConnectedAssetClientBase;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -18,12 +18,10 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import java.util.List;
 
 /**
- * DataManagerClient is the client for managing resources from a relational database server.
+ * DatabaseManagerClient is the client for managing resources from a relational database server.
  */
-public class DataManagerClient extends ConnectedAssetClientBase implements DatabaseManagerInterface
+public class DatabaseManagerClient implements DatabaseManagerInterface
 {
-    private DataManagerRESTClient restClient;               /* Initialized in constructor */
-
     private final String databaseManagerGUIDParameterName = "databaseManagerGUID";
     private final String databaseManagerNameParameterName = "databaseManagerName";
     private final String editURLTemplatePrefix
@@ -31,24 +29,38 @@ public class DataManagerClient extends ConnectedAssetClientBase implements Datab
     private final String retrieveURLTemplatePrefix   = "/servers/{0}/open-metadata/access-services/data-manager/users/{1}/databases";
     private final String governanceURLTemplatePrefix = "/servers/{0}/open-metadata/access-services/data-manager/users/{1}/databases";
 
-    private final NullRequestBody  nullRequestBody = new NullRequestBody();
+    private String   serverName;               /* Initialized in constructor */
+    private String   serverPlatformURLRoot;    /* Initialized in constructor */
+    private AuditLog auditLog = null;          /* Initialized in constructor */
+
+    private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
+    private DataManagerRESTClient   restClient;               /* Initialized in constructor */
+
+    private static NullRequestBody nullRequestBody   = new NullRequestBody();
+
 
     /**
      * Create a new client with no authentication embedded in the HTTP request.
      *
      * @param serverName name of the server to connect to
-     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
      * @param auditLog logging destination
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    public DataManagerClient(String   serverName,
-                             String   serverPlatformRootURL,
-                             AuditLog auditLog) throws InvalidParameterException
+    public DatabaseManagerClient(String   serverName,
+                                 String   serverPlatformURLRoot,
+                                 AuditLog auditLog) throws InvalidParameterException
     {
-        super(serverName, serverPlatformRootURL, auditLog);
+        final String methodName = "Client Constructor";
 
-        this.restClient = new DataManagerRESTClient(serverName, serverPlatformRootURL, auditLog);
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
+
+        this.serverName = serverName;
+        this.serverPlatformURLRoot = serverPlatformURLRoot;
+        this.auditLog = auditLog;
+
+        this.restClient = new DataManagerRESTClient(serverName, serverPlatformURLRoot, auditLog);
     }
 
 
@@ -56,16 +68,21 @@ public class DataManagerClient extends ConnectedAssetClientBase implements Datab
      * Create a new client with no authentication embedded in the HTTP request.
      *
      * @param serverName name of the server to connect to
-     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    public DataManagerClient(String serverName,
-                             String serverPlatformRootURL) throws InvalidParameterException
+    public DatabaseManagerClient(String serverName,
+                                 String serverPlatformURLRoot) throws InvalidParameterException
     {
-        super(serverName, serverPlatformRootURL);
+        final String methodName = "Client Constructor";
 
-        this.restClient = new DataManagerRESTClient(serverName, serverPlatformRootURL);
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
+
+        this.serverName = serverName;
+        this.serverPlatformURLRoot = serverPlatformURLRoot;
+
+        this.restClient = new DataManagerRESTClient(serverName, serverPlatformURLRoot);
     }
 
 
@@ -74,7 +91,7 @@ public class DataManagerClient extends ConnectedAssetClientBase implements Datab
      * userId/password of the calling server.  The end user's userId is sent on each request.
      *
      * @param serverName name of the server to connect to
-     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
      * @param userId caller's userId embedded in all HTTP requests
      * @param password caller's userId embedded in all HTTP requests
      * @param auditLog logging destination
@@ -82,15 +99,21 @@ public class DataManagerClient extends ConnectedAssetClientBase implements Datab
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    public DataManagerClient(String   serverName,
-                             String   serverPlatformRootURL,
-                             String   userId,
-                             String   password,
-                             AuditLog auditLog) throws InvalidParameterException
+    public DatabaseManagerClient(String   serverName,
+                                 String   serverPlatformURLRoot,
+                                 String   userId,
+                                 String   password,
+                                 AuditLog auditLog) throws InvalidParameterException
     {
-        super(serverName, serverPlatformRootURL, auditLog);
+        final String methodName = "Client Constructor";
 
-        this.restClient = new DataManagerRESTClient(serverName, serverPlatformRootURL, userId, password, auditLog);
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
+
+        this.serverName = serverName;
+        this.serverPlatformURLRoot = serverPlatformURLRoot;
+        this.auditLog = auditLog;
+
+        this.restClient = new DataManagerRESTClient(serverName, serverPlatformURLRoot, userId, password, auditLog);
     }
 
 
@@ -98,20 +121,26 @@ public class DataManagerClient extends ConnectedAssetClientBase implements Datab
      * Create a new client that is going to be used in an OMAG Server.
      *
      * @param serverName name of the server to connect to
-     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
      * @param restClient client that issues the REST API calls
      * @param maxPageSize maximum number of results supported by this server
      * @param auditLog logging destination
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    public DataManagerClient(String                serverName,
-                             String                serverPlatformRootURL,
-                             DataManagerRESTClient restClient,
-                             int                   maxPageSize,
-                             AuditLog              auditLog) throws InvalidParameterException
+    public DatabaseManagerClient(String                serverName,
+                                 String                serverPlatformURLRoot,
+                                 DataManagerRESTClient restClient,
+                                 int                   maxPageSize,
+                                 AuditLog              auditLog) throws InvalidParameterException
     {
-        super(serverName, serverPlatformRootURL, maxPageSize, auditLog);
+        final String methodName = "Client Constructor";
+
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
+
+        this.serverName = serverName;
+        this.serverPlatformURLRoot = serverPlatformURLRoot;
+        this.auditLog = auditLog;
 
         this.restClient = restClient;
     }
@@ -122,22 +151,26 @@ public class DataManagerClient extends ConnectedAssetClientBase implements Datab
      * userId/password of the calling server.  The end user's userId is sent on each request.
      *
      * @param serverName name of the server to connect to
-     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
      * @param userId caller's userId embedded in all HTTP requests
      * @param password caller's userId embedded in all HTTP requests
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    public DataManagerClient(String serverName,
-                             String serverPlatformRootURL,
-                             String userId,
-                             String password) throws InvalidParameterException
+    public DatabaseManagerClient(String serverName,
+                                 String serverPlatformURLRoot,
+                                 String userId,
+                                 String password) throws InvalidParameterException
     {
-        super(serverName, serverPlatformRootURL);
+        final String methodName = "Client Constructor";
 
-        this.restClient = new DataManagerRESTClient(serverName, serverPlatformRootURL, userId, password);
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
+
+        this.serverName = serverName;
+        this.serverPlatformURLRoot = serverPlatformURLRoot;
+
+        this.restClient = new DataManagerRESTClient(serverName, serverPlatformURLRoot, userId, password);
     }
-
 
 
     /* ========================================================
@@ -176,7 +209,7 @@ public class DataManagerClient extends ConnectedAssetClientBase implements Datab
         invalidParameterHandler.validateObject(databaseProperties, propertiesParameterName, methodName);
         invalidParameterHandler.validateName(databaseProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
-        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix;
+        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix;
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate,
@@ -225,7 +258,7 @@ public class DataManagerClient extends ConnectedAssetClientBase implements Datab
         invalidParameterHandler.validateObject(templateProperties, propertiesParameterName, methodName);
         invalidParameterHandler.validateName(templateProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
-        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/from-template/{4}";
+        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/from-template/{4}";
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate,
@@ -273,7 +306,7 @@ public class DataManagerClient extends ConnectedAssetClientBase implements Datab
         invalidParameterHandler.validateObject(databaseProperties, propertiesParameterName, methodName);
         invalidParameterHandler.validateName(databaseProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
-        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/{4}";
+        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/{4}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
@@ -309,7 +342,7 @@ public class DataManagerClient extends ConnectedAssetClientBase implements Datab
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(databaseGUID, elementGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformRootURL + governanceURLTemplatePrefix + "/{4}/publish";
+        final String urlTemplate = serverPlatformURLRoot + governanceURLTemplatePrefix + "/{4}/publish";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
@@ -343,7 +376,7 @@ public class DataManagerClient extends ConnectedAssetClientBase implements Datab
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(databaseGUID, elementGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformRootURL + governanceURLTemplatePrefix + "/{4}/withdraw";
+        final String urlTemplate = serverPlatformURLRoot + governanceURLTemplatePrefix + "databases/{4}/withdraw";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
@@ -387,7 +420,7 @@ public class DataManagerClient extends ConnectedAssetClientBase implements Datab
         invalidParameterHandler.validateGUID(databaseGUID, elementGUIDParameterName, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
-        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/{4}/{5}/delete";
+        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/{4}/{5}/delete";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
@@ -604,7 +637,7 @@ public class DataManagerClient extends ConnectedAssetClientBase implements Datab
         invalidParameterHandler.validateGUID(databaseGUID, parentElementGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(databaseSchemaProperties, propertiesParameterName, methodName);
 
-        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/{4}/schemas";
+        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/{4}/schemas";
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate,
@@ -656,7 +689,7 @@ public class DataManagerClient extends ConnectedAssetClientBase implements Datab
         invalidParameterHandler.validateGUID(databaseGUID, parentElementGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(templateProperties, propertiesParameterName, methodName);
 
-        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/{4}/schemas/from-template/{5}";
+        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/{4}/schemas/from-template/{5}";
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate,
@@ -703,7 +736,7 @@ public class DataManagerClient extends ConnectedAssetClientBase implements Datab
         invalidParameterHandler.validateGUID(databaseSchemaGUID, elementGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(databaseSchemaProperties, propertiesParameterName, methodName);
 
-        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/schemas/{4}";
+        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/schemas/{4}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
@@ -739,7 +772,7 @@ public class DataManagerClient extends ConnectedAssetClientBase implements Datab
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(databaseSchemaGUID, elementGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformRootURL + governanceURLTemplatePrefix + "/schemas/{4}/publish";
+        final String urlTemplate = serverPlatformURLRoot + governanceURLTemplatePrefix + "/schemas/{4}/publish";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
@@ -773,7 +806,7 @@ public class DataManagerClient extends ConnectedAssetClientBase implements Datab
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(databaseSchemaGUID, elementGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformRootURL + governanceURLTemplatePrefix + "/schemas/{4}/withdraw";
+        final String urlTemplate = serverPlatformURLRoot + governanceURLTemplatePrefix + "/schemas/{4}/withdraw";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
@@ -815,7 +848,7 @@ public class DataManagerClient extends ConnectedAssetClientBase implements Datab
         invalidParameterHandler.validateGUID(databaseSchemaGUID, elementGUIDParameterName, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
-        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/schemas/{4}/{5}/delete";
+        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/schemas/{4}/{5}/delete";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
@@ -1029,7 +1062,7 @@ public class DataManagerClient extends ConnectedAssetClientBase implements Datab
         invalidParameterHandler.validateGUID(databaseSchemaGUID, parentElementGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(databaseTableProperties, propertiesParameterName, methodName);
 
-        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/schemas/{4}/tables";
+        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/schemas/{4}/tables";
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate,
@@ -1081,7 +1114,7 @@ public class DataManagerClient extends ConnectedAssetClientBase implements Datab
         invalidParameterHandler.validateGUID(databaseSchemaGUID, parentElementGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(templateProperties, propertiesParameterName, methodName);
 
-        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/schemas/{4}/tables/from-template/{5}";
+        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/schemas/{4}/tables/from-template/{5}";
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate,
@@ -1128,7 +1161,7 @@ public class DataManagerClient extends ConnectedAssetClientBase implements Datab
         invalidParameterHandler.validateGUID(databaseTableGUID, elementGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(databaseTableProperties, propertiesParameterName, methodName);
 
-        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/schemas/tables/{4}";
+        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/schemas/tables/{4}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
@@ -1172,7 +1205,7 @@ public class DataManagerClient extends ConnectedAssetClientBase implements Datab
         invalidParameterHandler.validateGUID(databaseTableGUID, elementGUIDParameterName, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
-        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/schemas/tables/{4}/{5}/delete";
+        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/schemas/tables/{4}/{5}/delete";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
@@ -1382,7 +1415,7 @@ public class DataManagerClient extends ConnectedAssetClientBase implements Datab
         invalidParameterHandler.validateGUID(databaseSchemaGUID, parentElementGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(databaseViewProperties, propertiesParameterName, methodName);
 
-        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/schemas/{4}/tables/views";
+        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/schemas/{4}/tables/views";
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate,
@@ -1434,7 +1467,7 @@ public class DataManagerClient extends ConnectedAssetClientBase implements Datab
         invalidParameterHandler.validateGUID(databaseSchemaGUID, parentElementGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(templateProperties, propertiesParameterName, methodName);
 
-        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/schemas/{4}/tables/views/from-template/{5}";
+        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/schemas/{4}/tables/views/from-template/{5}";
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate,
@@ -1481,7 +1514,7 @@ public class DataManagerClient extends ConnectedAssetClientBase implements Datab
         invalidParameterHandler.validateGUID(databaseViewGUID, elementGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(databaseViewProperties, propertiesParameterName, methodName);
 
-        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/schemas/tables/views/{4}";
+        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/schemas/tables/views/{4}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
@@ -1525,7 +1558,7 @@ public class DataManagerClient extends ConnectedAssetClientBase implements Datab
         invalidParameterHandler.validateGUID(databaseViewGUID, elementGUIDParameterName, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
-        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/schemas/tables/views/{4}/{5}/delete";
+        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/schemas/tables/views/{4}/{5}/delete";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
@@ -1741,7 +1774,7 @@ public class DataManagerClient extends ConnectedAssetClientBase implements Datab
         invalidParameterHandler.validateGUID(databaseTableGUID, parentElementGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(databaseColumnProperties, propertiesParameterName, methodName);
 
-        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/schemas/tables/{4}/columns";
+        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/schemas/tables/{4}/columns";
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate,
@@ -1793,7 +1826,7 @@ public class DataManagerClient extends ConnectedAssetClientBase implements Datab
         invalidParameterHandler.validateGUID(databaseTableGUID, parentElementGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(templateProperties, propertiesParameterName, methodName);
 
-        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/schemas/tables/{4}/columns/from-template/{5}";
+        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/schemas/tables/{4}/columns/from-template/{5}";
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate,
@@ -1840,7 +1873,7 @@ public class DataManagerClient extends ConnectedAssetClientBase implements Datab
         invalidParameterHandler.validateGUID(databaseColumnGUID, elementGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(databaseColumnProperties, propertiesParameterName, methodName);
 
-        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/schemas/tables/columns/{4}";
+        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/schemas/tables/columns/{4}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
@@ -1884,7 +1917,7 @@ public class DataManagerClient extends ConnectedAssetClientBase implements Datab
         invalidParameterHandler.validateGUID(databaseColumnGUID, elementGUIDParameterName, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
-        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/schemas/tables/columns/{4}/{5}/delete";
+        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/schemas/tables/columns/{4}/{5}/delete";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
@@ -2097,7 +2130,7 @@ public class DataManagerClient extends ConnectedAssetClientBase implements Datab
         invalidParameterHandler.validateGUID(databaseColumnGUID, parentElementGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(databasePrimaryKeyProperties, propertiesParameterName, methodName);
 
-        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/schemas/tables/columns/{4}/primary-key";
+        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/schemas/tables/columns/{4}/primary-key";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
@@ -2137,7 +2170,7 @@ public class DataManagerClient extends ConnectedAssetClientBase implements Datab
         invalidParameterHandler.validateName(databaseManagerName, databaseManagerNameParameterName, methodName);
         invalidParameterHandler.validateGUID(databaseColumnGUID, parentElementGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/schemas/tables/columns/{4}/primary-key/delete";
+        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/schemas/tables/columns/{4}/primary-key/delete";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
@@ -2186,7 +2219,7 @@ public class DataManagerClient extends ConnectedAssetClientBase implements Datab
         invalidParameterHandler.validateGUID(foreignKeyColumnGUID, foreignElementGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(databaseForeignKeyProperties, propertiesParameterName, methodName);
 
-        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/schemas/tables/columns/{4}/foreign-key/{5}";
+        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/schemas/tables/columns/{4}/foreign-key/{5}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
@@ -2231,7 +2264,7 @@ public class DataManagerClient extends ConnectedAssetClientBase implements Datab
         invalidParameterHandler.validateGUID(primaryKeyColumnGUID, primaryElementGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(foreignKeyColumnGUID, foreignElementGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/schemas/tables/columns/{4}/foreign-key/{5}/delete";
+        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/schemas/tables/columns/{4}/foreign-key/{5}/delete";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,

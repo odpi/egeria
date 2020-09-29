@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.accessservices.datamanager.properties.DataFileProperties;
-import org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseProperties;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -45,6 +44,8 @@ public class DataFileElement extends DataFileProperties implements MetadataEleme
      */
     public DataFileElement(DataFileElement template)
     {
+        super(template);
+
         if (template != null)
         {
             elementHeader = template.getElementHeader();
@@ -96,8 +97,7 @@ public class DataFileElement extends DataFileProperties implements MetadataEleme
                 ", owner='" + getOwner() + '\'' +
                 ", ownerCategory=" + getOwnerCategory() +
                 ", zoneMembership=" + getZoneMembership() +
-                ", origin=" + getOrigin() +
-                ", latestChange='" + getLatestChange() + '\'' +
+                ", origin=" + getOtherOriginValues() +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +
                 ", vendorProperties=" + getVendorProperties() +

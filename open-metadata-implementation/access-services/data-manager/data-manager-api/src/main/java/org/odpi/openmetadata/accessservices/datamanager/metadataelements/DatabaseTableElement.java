@@ -45,6 +45,8 @@ public class DatabaseTableElement extends DatabaseTableProperties implements Met
      */
     public DatabaseTableElement(DatabaseTableElement template)
     {
+        super(template);
+
         if (template != null)
         {
             elementHeader = template.getElementHeader();
@@ -97,7 +99,6 @@ public class DatabaseTableElement extends DatabaseTableProperties implements Met
                 ", significantDigits=" + getSignificantDigits() +
                 ", nullable=" + isNullable() +
                 ", defaultValueOverride='" + getDefaultValueOverride() + '\'' +
-                ", anchorGUID='" + getAnchorGUID() + '\'' +
                 ", nativeJavaClass='" + getNativeJavaClass() + '\'' +
                 ", aliases=" + getAliases() +
                 ", deprecated=" + isDeprecated() +

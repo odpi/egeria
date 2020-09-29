@@ -44,6 +44,8 @@ public class DatabaseElement extends DatabaseProperties implements MetadataEleme
      */
     public DatabaseElement(DatabaseElement template)
     {
+        super(template);
+
         if (template != null)
         {
             elementHeader = template.getElementHeader();
@@ -99,8 +101,7 @@ public class DatabaseElement extends DatabaseProperties implements MetadataEleme
                 ", owner='" + getOwner() + '\'' +
                 ", ownerCategory=" + getOwnerCategory() +
                 ", zoneMembership=" + getZoneMembership() +
-                ", origin=" + getOrigin() +
-                ", latestChange='" + getLatestChange() + '\'' +
+                ", origin=" + getOtherOriginValues() +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +
                 ", vendorProperties=" + getVendorProperties() +

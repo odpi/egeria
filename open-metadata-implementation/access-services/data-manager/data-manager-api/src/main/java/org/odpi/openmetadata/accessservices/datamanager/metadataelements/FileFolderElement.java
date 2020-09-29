@@ -6,7 +6,6 @@ package org.odpi.openmetadata.accessservices.datamanager.metadataelements;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseProperties;
 import org.odpi.openmetadata.accessservices.datamanager.properties.FileFolderProperties;
 
 import java.io.Serializable;
@@ -45,6 +44,8 @@ public class FileFolderElement extends FileFolderProperties implements MetadataE
      */
     public FileFolderElement(FileFolderElement template)
     {
+        super(template);
+
         if (template != null)
         {
             elementHeader = template.getElementHeader();
@@ -96,8 +97,7 @@ public class FileFolderElement extends FileFolderProperties implements MetadataE
                 ", owner='" + getOwner() + '\'' +
                 ", ownerCategory=" + getOwnerCategory() +
                 ", zoneMembership=" + getZoneMembership() +
-                ", origin=" + getOrigin() +
-                ", latestChange='" + getLatestChange() + '\'' +
+                ", origin=" + getOtherOriginValues() +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +
                 ", vendorProperties=" + getVendorProperties() +

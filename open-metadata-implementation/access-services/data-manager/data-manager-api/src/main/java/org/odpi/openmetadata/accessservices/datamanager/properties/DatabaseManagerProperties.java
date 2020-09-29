@@ -7,26 +7,23 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
-import java.util.Objects;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * DataManager
+ * DatabaseManagerProperties describes the DBMS capability of a database server
  */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class DataManagerProperties extends SoftwareServerCapabilitiesProperties
+public class DatabaseManagerProperties extends SoftwareServerCapabilitiesProperties
 {
     private static final long serialVersionUID = 1L;
 
     /**
      * Default constructor
      */
-    public DataManagerProperties()
+    public DatabaseManagerProperties()
     {
         super();
     }
@@ -37,7 +34,7 @@ public class DataManagerProperties extends SoftwareServerCapabilitiesProperties
      *
      * @param template object to copy
      */
-    public DataManagerProperties(DataManagerProperties template)
+    public DatabaseManagerProperties(DatabaseManagerProperties template)
     {
         super(template);
     }
@@ -51,7 +48,7 @@ public class DataManagerProperties extends SoftwareServerCapabilitiesProperties
     @Override
     public String toString()
     {
-        return "DataManagerProperties{" +
+        return "DatabaseManagerProperties{" +
                 "displayName='" + getDisplayName() + '\'' +
                 ", description='" + getDescription() + '\'' +
                 ", typeDescription='" + getTypeDescription() + '\'' +

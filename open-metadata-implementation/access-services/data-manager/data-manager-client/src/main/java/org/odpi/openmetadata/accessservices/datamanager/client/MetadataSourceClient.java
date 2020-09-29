@@ -3,8 +3,11 @@
 
 package org.odpi.openmetadata.accessservices.datamanager.client;
 
-import org.odpi.openmetadata.accessservices.datamanager.api.DataManagerIntegratorInterface;
+import org.odpi.openmetadata.accessservices.datamanager.api.MetadataSourceInterface;
 import org.odpi.openmetadata.accessservices.datamanager.properties.*;
+import org.odpi.openmetadata.accessservices.datamanager.rest.DatabaseManagerRequestBody;
+import org.odpi.openmetadata.accessservices.datamanager.rest.FileManagerRequestBody;
+import org.odpi.openmetadata.accessservices.datamanager.rest.FileSystemRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.ConnectedAssetClientBase;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -14,13 +17,13 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 
 
 /**
- * DatabaseManagerClient is the client for managing resources from a relational database server.
+ * MetadataSourceClient is the client for setting up the SoftwareServerCapabilities that represent metadata sources.
  */
-public class DataManagerIntegratorClient extends ConnectedAssetClientBase implements DataManagerIntegratorInterface
+public class MetadataSourceClient extends ConnectedAssetClientBase implements MetadataSourceInterface
 {
     private DataManagerRESTClient restClient;               /* Initialized in constructor */
 
-     private final String urlTemplatePrefix = "/servers/{0}/open-metadata/access-services/data-manager/users/{1}/integrators";
+     private final String urlTemplatePrefix = "/servers/{0}/open-metadata/access-services/data-manager/users/{1}/metadata-sources";
 
 
     /**
@@ -32,9 +35,9 @@ public class DataManagerIntegratorClient extends ConnectedAssetClientBase implem
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    public DataManagerIntegratorClient(String   serverName,
-                                       String   serverPlatformRootURL,
-                                       AuditLog auditLog) throws InvalidParameterException
+    public MetadataSourceClient(String   serverName,
+                                String   serverPlatformRootURL,
+                                AuditLog auditLog) throws InvalidParameterException
     {
         super(serverName, serverPlatformRootURL, auditLog);
 
@@ -50,8 +53,8 @@ public class DataManagerIntegratorClient extends ConnectedAssetClientBase implem
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    public DataManagerIntegratorClient(String serverName,
-                                       String serverPlatformRootURL) throws InvalidParameterException
+    public MetadataSourceClient(String serverName,
+                                String serverPlatformRootURL) throws InvalidParameterException
     {
         super(serverName, serverPlatformRootURL);
 
@@ -72,11 +75,11 @@ public class DataManagerIntegratorClient extends ConnectedAssetClientBase implem
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    public DataManagerIntegratorClient(String   serverName,
-                                       String   serverPlatformRootURL,
-                                       String   userId,
-                                       String   password,
-                                       AuditLog auditLog) throws InvalidParameterException
+    public MetadataSourceClient(String   serverName,
+                                String   serverPlatformRootURL,
+                                String   userId,
+                                String   password,
+                                AuditLog auditLog) throws InvalidParameterException
     {
         super(serverName, serverPlatformRootURL, auditLog);
 
@@ -95,10 +98,10 @@ public class DataManagerIntegratorClient extends ConnectedAssetClientBase implem
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    public DataManagerIntegratorClient(String serverName,
-                                       String serverPlatformRootURL,
-                                       String userId,
-                                       String password) throws InvalidParameterException
+    public MetadataSourceClient(String serverName,
+                                String serverPlatformRootURL,
+                                String userId,
+                                String password) throws InvalidParameterException
     {
         super(serverName, serverPlatformRootURL);
 
@@ -116,11 +119,11 @@ public class DataManagerIntegratorClient extends ConnectedAssetClientBase implem
      * @param auditLog logging destination
      * @throws InvalidParameterException there is a problem with the information about the remote OMAS
      */
-    public DataManagerIntegratorClient(String                serverName, 
-                                       String                serverPlatformURLRoot, 
-                                       DataManagerRESTClient restClient, 
-                                       int                   maxPageSize, 
-                                       AuditLog              auditLog) throws InvalidParameterException
+    public MetadataSourceClient(String                serverName,
+                                String                serverPlatformURLRoot,
+                                DataManagerRESTClient restClient,
+                                int                   maxPageSize,
+                                AuditLog              auditLog) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot, maxPageSize, auditLog);
         
@@ -129,15 +132,109 @@ public class DataManagerIntegratorClient extends ConnectedAssetClientBase implem
 
 
     /* ========================================================
-     * The integrator represents this integration processing that is calling the data manager OMAS
+     * The metadata source represents the third party technology this integration processing is connecting to
      */
+
+    /**
+     * Create information about a File System that is being used to store data files.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID        guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName        name of the software server capability entity that represented the external source
+     * @param fileSystemProperties description of the file system
+     *
+     * @return unique identifier of the file system's software server capability
+     *
+     * @throws InvalidParameterException  the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
+    public String  createFileSystem(String               userId,
+                                    String               externalSourceGUID,
+                                    String               externalSourceName,
+                                    FileSystemProperties fileSystemProperties) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
+    {
+        final String methodName                  = "createFileSystem";
+        final String propertiesParameterName     = "fileSystemProperties";
+        final String qualifiedNameParameterName  = "qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateObject(fileSystemProperties, propertiesParameterName, methodName);
+        invalidParameterHandler.validateName(fileSystemProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+
+        FileSystemRequestBody requestBody = new FileSystemRequestBody(fileSystemProperties);
+
+        requestBody.setExternalSourceGUID(externalSourceGUID);
+        requestBody.setExternalSourceName(externalSourceName);
+
+        final String          urlTemplate = serverPlatformRootURL + urlTemplatePrefix + "/filesystems";
+
+        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
+                                                                  urlTemplate,
+                                                                  requestBody,
+                                                                  serverName,
+                                                                  userId);
+
+        return restResult.getGUID();
+    }
+
+
+    /**
+     * Create information about an application that manages a collection of data files.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID        guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName        name of the software server capability entity that represented the external source
+     * @param fileManagerProperties description of the
+     *
+     * @return unique identifier of the file manager's software server capability
+     *
+     * @throws InvalidParameterException  the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
+    public String  createFileManager(String                userId,
+                                     String                externalSourceGUID,
+                                     String                externalSourceName,
+                                     FileManagerProperties fileManagerProperties) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException
+    {
+        final String methodName                  = "createFileManager";
+        final String propertiesParameterName     = "fileManagerProperties";
+        final String qualifiedNameParameterName  = "qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateObject(fileManagerProperties, propertiesParameterName, methodName);
+        invalidParameterHandler.validateName(fileManagerProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
+
+        FileManagerRequestBody requestBody = new FileManagerRequestBody(fileManagerProperties);
+
+        requestBody.setExternalSourceGUID(externalSourceGUID);
+        requestBody.setExternalSourceName(externalSourceName);
+
+        final String urlTemplate = serverPlatformRootURL + urlTemplatePrefix + "/file-managers";
+
+        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
+                                                                  urlTemplate,
+                                                                  requestBody,
+                                                                  serverName,
+                                                                  userId);
+
+        return restResult.getGUID();
+    }
+
 
     /**
      * Create information about the integration daemon that is managing the acquisition of metadata from the
      * data manager.  Typically this is Egeria's data manager integrator OMIS.
      *
      * @param userId calling user
-     * @param integratorCapabilities description of the integration daemon (specify qualified name at a minimum)
+     * @param externalSourceGUID        guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName        name of the software server capability entity that represented the external source
+     * @param databaseManagerProperties description of the integration daemon (specify qualified name at a minimum)
      *
      * @return unique identifier of the integration daemon's software server capability
      *
@@ -145,24 +242,31 @@ public class DataManagerIntegratorClient extends ConnectedAssetClientBase implem
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public String  createDataManagerIntegrator(String                                userId,
-                                               SoftwareServerCapabilitiesProperties  integratorCapabilities) throws InvalidParameterException,
-                                                                                                                    UserNotAuthorizedException,
-                                                                                                                    PropertyServerException
+    public String createDatabaseManager(String                     userId,
+                                        String                     externalSourceGUID,
+                                        String                     externalSourceName,
+                                        DatabaseManagerProperties  databaseManagerProperties) throws InvalidParameterException,
+                                                                                                     UserNotAuthorizedException,
+                                                                                                     PropertyServerException
     {
-        final String methodName                  = "createDataManagerIntegrator";
-        final String propertiesParameterName     = "integratorCapabilities";
+        final String methodName                  = "createDatabaseManager";
+        final String propertiesParameterName     = "databaseManagerProperties";
         final String qualifiedNameParameterName  = "qualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateObject(integratorCapabilities, propertiesParameterName, methodName);
-        invalidParameterHandler.validateName(integratorCapabilities.getQualifiedName(), qualifiedNameParameterName, methodName);
+        invalidParameterHandler.validateObject(databaseManagerProperties, propertiesParameterName, methodName);
+        invalidParameterHandler.validateName(databaseManagerProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
-        final String urlTemplate = serverPlatformRootURL + urlTemplatePrefix;
+        final String urlTemplate = serverPlatformRootURL + urlTemplatePrefix + "/database-managers";
+
+        DatabaseManagerRequestBody requestBody = new DatabaseManagerRequestBody(databaseManagerProperties);
+
+        requestBody.setExternalSourceGUID(externalSourceGUID);
+        requestBody.setExternalSourceName(externalSourceName);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate,
-                                                                  integratorCapabilities,
+                                                                  requestBody,
                                                                   serverName,
                                                                   userId);
 
@@ -182,12 +286,12 @@ public class DataManagerIntegratorClient extends ConnectedAssetClientBase implem
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public String  getDataManagerIntegratorGUID(String  userId,
-                                                String  qualifiedName) throws InvalidParameterException,
+    public String getMetadataSourceGUID(String  userId,
+                                        String  qualifiedName) throws InvalidParameterException,
                                                                               UserNotAuthorizedException,
                                                                               PropertyServerException
     {
-        final String methodName                  = "getDataManagerIntegratorGUID";
+        final String methodName                  = "getMetadataSourceGUID";
         final String qualifiedNameParameterName  = "qualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);

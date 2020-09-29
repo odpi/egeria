@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.accessservices.datamanager.server;
 
+import org.odpi.openmetadata.accessservices.datamanager.metadataelements.*;
 import org.odpi.openmetadata.accessservices.datamanager.properties.*;
 import org.odpi.openmetadata.accessservices.datamanager.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
@@ -11,13 +12,11 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.handlers.ReferenceableHandler;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.handlers.RelationalDataHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.RelationalDataHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
 import org.slf4j.LoggerFactory;
 import java.util.List;
 
@@ -33,7 +32,6 @@ public class DatabaseManagerRESTServices
                                                                                    instanceHandler.getServiceName());
 
     private RESTExceptionHandler     restExceptionHandler = new RESTExceptionHandler();
-    private DataManagerOCFBeanCloner cloner               = new DataManagerOCFBeanCloner(instanceHandler);
 
     /**
      * Default constructor
@@ -53,8 +51,8 @@ public class DatabaseManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param integratorGUID unique identifier of software server capability representing the caller
-     * @param integratorName unique name of software server capability representing the caller
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param databaseProperties properties to store
      *
      * @return unique identifier of the new metadata element or
@@ -64,8 +62,8 @@ public class DatabaseManagerRESTServices
      */
     public GUIDResponse createDatabase(String             serverName,
                                        String             userId,
-                                       String             integratorGUID,
-                                       String             integratorName,
+                                       String             databaseManagerGUID,
+                                       String             databaseManagerName,
                                        DatabaseProperties databaseProperties)
     {
         final String methodName = "createDatabase";
@@ -79,19 +77,25 @@ public class DatabaseManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            RelationalDataHandler handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
+            RelationalDataHandler<DatabaseElement,
+                    DatabaseSchemaElement,
+                    DatabaseTableElement,
+                    DatabaseViewElement,
+                    DatabaseColumnElement,
+                    SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
             String databaseGUID = handler.createDatabase(userId,
-                                                         integratorGUID,
-                                                         integratorName,
+                                                         databaseManagerGUID,
+                                                         databaseManagerName,
                                                          databaseProperties.getQualifiedName(),
                                                          databaseProperties.getDisplayName(),
                                                          databaseProperties.getDescription(),
                                                          databaseProperties.getOwner(),
-                                                         cloner.getOwnerType(databaseProperties.getOwnerCategory()),
+                                                         databaseProperties.getOwnerCategory().getOpenTypeOrdinal(),
                                                          databaseProperties.getZoneMembership(),
-                                                         databaseProperties.getOrigin(),
-                                                         databaseProperties.getLatestChange(),
+                                                         databaseProperties.getOriginOrganizationGUID(),
+                                                         databaseProperties.getOriginBusinessCapabilityGUID(),
+                                                         databaseProperties.getOtherOriginValues(),
                                                          databaseProperties.getCreateTime(),
                                                          databaseProperties.getModifiedTime(),
                                                          databaseProperties.getEncodingType(),
@@ -104,18 +108,8 @@ public class DatabaseManagerRESTServices
                                                          databaseProperties.getAdditionalProperties(),
                                                          databaseProperties.getTypeName(),
                                                          databaseProperties.getExtendedProperties(),
-                                                         methodName);
-
-            if (databaseProperties.getVendorProperties() != null)
-            {
-                ReferenceableHandler referenceableHandler = instanceHandler.getReferenceableHandler(userId, serverName, methodName);
-
-                referenceableHandler.setVendorProperties(userId,
-                                                         databaseGUID,
-                                                         databaseProperties.getQualifiedName(),
                                                          databaseProperties.getVendorProperties(),
                                                          methodName);
-            }
 
             response.setGUID(databaseGUID);
         }
@@ -147,8 +141,8 @@ public class DatabaseManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param integratorGUID unique identifier of software server capability representing the caller
-     * @param integratorName unique name of software server capability representing the caller
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param templateGUID unique identifier of the metadata element to copy
      * @param templateProperties properties that override the template
      *
@@ -159,8 +153,8 @@ public class DatabaseManagerRESTServices
      */
     public GUIDResponse createDatabaseFromTemplate(String             serverName,
                                                    String             userId,
-                                                   String             integratorGUID,
-                                                   String             integratorName,
+                                                   String             databaseManagerGUID,
+                                                   String             databaseManagerName,
                                                    String             templateGUID,
                                                    TemplateProperties templateProperties)
     {
@@ -175,11 +169,16 @@ public class DatabaseManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            RelationalDataHandler handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
+            RelationalDataHandler<DatabaseElement,
+                    DatabaseSchemaElement,
+                    DatabaseTableElement,
+                    DatabaseViewElement,
+                    DatabaseColumnElement,
+                    SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
             response.setGUID(handler.createDatabaseFromTemplate(userId,
-                                                                integratorGUID,
-                                                                integratorName,
+                                                                databaseManagerGUID,
+                                                                databaseManagerName,
                                                                 templateGUID,
                                                                 templateProperties.getQualifiedName(),
                                                                 templateProperties.getDisplayName(),
@@ -214,8 +213,8 @@ public class DatabaseManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param integratorGUID unique identifier of software server capability representing the caller
-     * @param integratorName unique name of software server capability representing the caller
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param databaseGUID unique identifier of the metadata element to update
      * @param databaseProperties new properties for this element
      *
@@ -226,8 +225,8 @@ public class DatabaseManagerRESTServices
      */
     public VoidResponse updateDatabase(String             serverName,
                                        String             userId,
-                                       String             integratorGUID,
-                                       String             integratorName,
+                                       String             databaseManagerGUID,
+                                       String             databaseManagerName,
                                        String             databaseGUID,
                                        DatabaseProperties databaseProperties)
     {
@@ -242,20 +241,26 @@ public class DatabaseManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            RelationalDataHandler handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
+            RelationalDataHandler<DatabaseElement,
+                    DatabaseSchemaElement,
+                    DatabaseTableElement,
+                    DatabaseViewElement,
+                    DatabaseColumnElement,
+                    SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
             handler.updateDatabase(userId,
-                                   integratorGUID,
-                                   integratorName,
+                                   databaseManagerGUID,
+                                   databaseManagerName,
                                    databaseGUID,
                                    databaseProperties.getQualifiedName(),
                                    databaseProperties.getDisplayName(),
                                    databaseProperties.getDescription(),
                                    databaseProperties.getOwner(),
-                                   cloner.getOwnerType(databaseProperties.getOwnerCategory()),
+                                   databaseProperties.getOwnerCategory().getOpenTypeOrdinal(),
                                    databaseProperties.getZoneMembership(),
-                                   databaseProperties.getOrigin(),
-                                   databaseProperties.getLatestChange(),
+                                   databaseProperties.getOriginOrganizationGUID(),
+                                   databaseProperties.getOriginBusinessCapabilityGUID(),
+                                   databaseProperties.getOtherOriginValues(),
                                    databaseProperties.getCreateTime(),
                                    databaseProperties.getModifiedTime(),
                                    databaseProperties.getEncodingType(),
@@ -268,18 +273,8 @@ public class DatabaseManagerRESTServices
                                    databaseProperties.getAdditionalProperties(),
                                    databaseProperties.getTypeName(),
                                    databaseProperties.getExtendedProperties(),
+                                   databaseProperties.getVendorProperties(),
                                    methodName);
-
-            if (databaseProperties.getVendorProperties() != null)
-            {
-                ReferenceableHandler referenceableHandler = instanceHandler.getReferenceableHandler(userId, serverName, methodName);
-
-                referenceableHandler.setVendorProperties(userId,
-                                                         databaseGUID,
-                                                         databaseProperties.getQualifiedName(),
-                                                         databaseProperties.getVendorProperties(),
-                                                         methodName);
-            }
         }
         catch (InvalidParameterException error)
         {
@@ -311,8 +306,6 @@ public class DatabaseManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param integratorGUID unique identifier of software server capability representing the caller
-     * @param integratorName unique name of software server capability representing the caller
      * @param databaseGUID unique identifier of the metadata element to publish
      * @param nullRequestBody empty request body
      *
@@ -324,8 +317,6 @@ public class DatabaseManagerRESTServices
     @SuppressWarnings(value = "unused")
     public VoidResponse publishDatabase(String          serverName,
                                         String          userId,
-                                        String          integratorGUID,
-                                        String          integratorName,
                                         String          databaseGUID,
                                         NullRequestBody nullRequestBody)
     {
@@ -340,9 +331,14 @@ public class DatabaseManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            RelationalDataHandler handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
+            RelationalDataHandler<DatabaseElement,
+                    DatabaseSchemaElement,
+                    DatabaseTableElement,
+                    DatabaseViewElement,
+                    DatabaseColumnElement,
+                    SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            handler.publishDatabase(userId, integratorGUID, integratorName, databaseGUID, methodName);
+            handler.publishDatabase(userId, databaseGUID, methodName);
         }
         catch (InvalidParameterException error)
         {
@@ -374,8 +370,6 @@ public class DatabaseManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param integratorGUID unique identifier of software server capability representing the caller
-     * @param integratorName unique name of software server capability representing the caller
      * @param databaseGUID unique identifier of the metadata element to withdraw
      * @param nullRequestBody empty request body
      *
@@ -387,8 +381,6 @@ public class DatabaseManagerRESTServices
     @SuppressWarnings(value = "unused")
     public VoidResponse withdrawDatabase(String          serverName,
                                          String          userId,
-                                         String          integratorGUID,
-                                         String          integratorName,
                                          String          databaseGUID,
                                          NullRequestBody nullRequestBody)
     {
@@ -403,9 +395,14 @@ public class DatabaseManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            RelationalDataHandler handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
+            RelationalDataHandler<DatabaseElement,
+                    DatabaseSchemaElement,
+                    DatabaseTableElement,
+                    DatabaseViewElement,
+                    DatabaseColumnElement,
+                    SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            handler.withdrawDatabase(userId, integratorGUID, integratorName, databaseGUID, methodName);
+            handler.withdrawDatabase(userId, databaseGUID, methodName);
         }
         catch (InvalidParameterException error)
         {
@@ -435,8 +432,8 @@ public class DatabaseManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param integratorGUID unique identifier of software server capability representing the caller
-     * @param integratorName unique name of software server capability representing the caller
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param databaseGUID unique identifier of the metadata element to remove
      * @param qualifiedName unique name of the metadata element to remove
      * @param nullRequestBody empty request body
@@ -449,8 +446,8 @@ public class DatabaseManagerRESTServices
     @SuppressWarnings(value = "unused")
     public VoidResponse removeDatabase(String          serverName,
                                        String          userId,
-                                       String          integratorGUID,
-                                       String          integratorName,
+                                       String          databaseManagerGUID,
+                                       String          databaseManagerName,
                                        String          databaseGUID,
                                        String          qualifiedName,
                                        NullRequestBody nullRequestBody)
@@ -466,9 +463,14 @@ public class DatabaseManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            RelationalDataHandler handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
+            RelationalDataHandler<DatabaseElement,
+                    DatabaseSchemaElement,
+                    DatabaseTableElement,
+                    DatabaseViewElement,
+                    DatabaseColumnElement,
+                    SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            handler.removeDatabase(userId, integratorGUID, integratorName, databaseGUID, qualifiedName, methodName);
+            handler.removeDatabase(userId, databaseManagerGUID, databaseManagerName, databaseGUID, qualifiedName, methodName);
         }
         catch (InvalidParameterException error)
         {
@@ -525,11 +527,16 @@ public class DatabaseManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            RelationalDataHandler handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
+            RelationalDataHandler<DatabaseElement,
+                    DatabaseSchemaElement,
+                    DatabaseTableElement,
+                    DatabaseViewElement,
+                    DatabaseColumnElement,
+                    SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            List<Asset> databaseAssets = handler.findDatabases(userId, searchString, startFrom, pageSize, methodName);
+            List<DatabaseElement> databaseAssets = handler.findDatabases(userId, searchString, startFrom, pageSize, methodName);
 
-            response.setElementList(cloner.getDatabasesFromAssets(databaseAssets, userId, serverName, methodName));
+            response.setElementList(databaseAssets);
         }
         catch (InvalidParameterException error)
         {
@@ -586,11 +593,16 @@ public class DatabaseManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            RelationalDataHandler handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
+            RelationalDataHandler<DatabaseElement,
+                    DatabaseSchemaElement,
+                    DatabaseTableElement,
+                    DatabaseViewElement,
+                    DatabaseColumnElement,
+                    SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            List<Asset> databaseAssets = handler.getDatabasesByName(userId, name, startFrom, pageSize, methodName);
+            List<DatabaseElement> databaseAssets = handler.getDatabasesByName(userId, name, startFrom, pageSize, methodName);
 
-            response.setElementList(cloner.getDatabasesFromAssets(databaseAssets, userId, serverName, methodName));
+            response.setElementList(databaseAssets);
         }
         catch (InvalidParameterException error)
         {
@@ -620,8 +632,8 @@ public class DatabaseManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param integratorGUID unique identifier of software server capability representing the caller
-     * @param integratorName unique name of software server capability representing the caller
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -630,14 +642,14 @@ public class DatabaseManagerRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public DatabasesResponse   getDatabasesByDaemon(String serverName,
-                                                    String userId,
-                                                    String integratorGUID,
-                                                    String integratorName,
-                                                    int    startFrom,
-                                                    int    pageSize)
+    public DatabasesResponse   getDatabasesForDatabaseManager(String serverName,
+                                                              String userId,
+                                                              String databaseManagerGUID,
+                                                              String databaseManagerName,
+                                                              int    startFrom,
+                                                              int    pageSize)
     {
-        final String methodName = "getDatabasesByDaemon";
+        final String methodName = "getDatabasesForDatabaseManager";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -648,11 +660,21 @@ public class DatabaseManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            RelationalDataHandler handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
+            RelationalDataHandler<DatabaseElement,
+                    DatabaseSchemaElement,
+                    DatabaseTableElement,
+                    DatabaseViewElement,
+                    DatabaseColumnElement,
+                    SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            List<Asset> databaseAssets = handler.getDatabasesByDaemon(userId, integratorGUID, integratorName, startFrom, pageSize, methodName);
+            List<DatabaseElement> databaseAssets = handler.getDatabasesForDatabaseManager(userId,
+                                                                                          databaseManagerGUID,
+                                                                                          databaseManagerName,
+                                                                                          startFrom,
+                                                                                          pageSize,
+                                                                                         methodName);
 
-            response.setElementList(cloner.getDatabasesFromAssets(databaseAssets, userId, serverName, methodName));
+            response.setElementList(databaseAssets);
         }
         catch (InvalidParameterException error)
         {
@@ -704,11 +726,16 @@ public class DatabaseManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            RelationalDataHandler handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
+            RelationalDataHandler<DatabaseElement,
+                    DatabaseSchemaElement,
+                    DatabaseTableElement,
+                    DatabaseViewElement,
+                    DatabaseColumnElement,
+                    SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            Asset databaseAsset = handler.getDatabaseByGUID(userId, guid, methodName);
+            DatabaseElement databaseAsset = handler.getDatabaseByGUID(userId, guid, methodName);
 
-            response.setElement(cloner.getDatabaseFromAsset(databaseAsset, userId, serverName, methodName));
+            response.setElement(databaseAsset);
         }
         catch (InvalidParameterException error)
         {
@@ -742,8 +769,8 @@ public class DatabaseManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param integratorGUID unique identifier of software server capability representing the caller
-     * @param integratorName unique name of software server capability representing the caller
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param databaseGUID unique identifier of the database where the schema is located
      * @param databaseSchemaProperties properties about the database schema
      *
@@ -754,8 +781,8 @@ public class DatabaseManagerRESTServices
      */
     public GUIDResponse createDatabaseSchema(String                   serverName,
                                              String                   userId,
-                                             String                   integratorGUID,
-                                             String                   integratorName,
+                                             String                   databaseManagerGUID,
+                                             String                   databaseManagerName,
                                              String                   databaseGUID,
                                              DatabaseSchemaProperties databaseSchemaProperties)
     {
@@ -770,35 +797,31 @@ public class DatabaseManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            RelationalDataHandler handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
+            RelationalDataHandler<DatabaseElement,
+                    DatabaseSchemaElement,
+                    DatabaseTableElement,
+                    DatabaseViewElement,
+                    DatabaseColumnElement,
+                    SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
             String databaseSchemaGUID = handler.createDatabaseSchema(userId,
-                                                                     integratorGUID,
-                                                                     integratorName,
+                                                                     databaseManagerGUID,
+                                                                     databaseManagerName,
                                                                      databaseGUID,
                                                                      databaseSchemaProperties.getQualifiedName(),
                                                                      databaseSchemaProperties.getDisplayName(),
                                                                      databaseSchemaProperties.getDescription(),
                                                                      databaseSchemaProperties.getOwner(),
-                                                                     cloner.getOwnerType(databaseSchemaProperties.getOwnerCategory()),
+                                                                     databaseSchemaProperties.getOwnerCategory().getOpenTypeOrdinal(),
                                                                      databaseSchemaProperties.getZoneMembership(),
-                                                                     databaseSchemaProperties.getOrigin(),
-                                                                     databaseSchemaProperties.getLatestChange(),
+                                                                     databaseSchemaProperties.getOriginOrganizationGUID(),
+                                                                     databaseSchemaProperties.getOriginBusinessCapabilityGUID(),
+                                                                     databaseSchemaProperties.getOtherOriginValues(),
                                                                      databaseSchemaProperties.getAdditionalProperties(),
                                                                      databaseSchemaProperties.getTypeName(),
                                                                      databaseSchemaProperties.getExtendedProperties(),
+                                                                     databaseSchemaProperties.getVendorProperties(),
                                                                      methodName);
-
-            if (databaseSchemaProperties.getVendorProperties() != null)
-            {
-                ReferenceableHandler referenceableHandler = instanceHandler.getReferenceableHandler(userId, serverName, methodName);
-
-                referenceableHandler.setVendorProperties(userId,
-                                                         databaseSchemaGUID,
-                                                         databaseSchemaProperties.getQualifiedName(),
-                                                         databaseSchemaProperties.getVendorProperties(),
-                                                         methodName);
-            }
 
             response.setGUID(databaseSchemaGUID);
         }
@@ -830,8 +853,8 @@ public class DatabaseManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param integratorGUID unique identifier of software server capability representing the caller
-     * @param integratorName unique name of software server capability representing the caller
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param templateGUID unique identifier of the metadata element to copy
      * @param databaseGUID unique identifier of the database where the schema is located
      * @param templateProperties properties that override the template
@@ -843,8 +866,8 @@ public class DatabaseManagerRESTServices
      */
     public GUIDResponse createDatabaseSchemaFromTemplate(String             serverName,
                                                          String             userId,
-                                                         String             integratorGUID,
-                                                         String             integratorName,
+                                                         String             databaseManagerGUID,
+                                                         String             databaseManagerName,
                                                          String             templateGUID,
                                                          String             databaseGUID,
                                                          TemplateProperties templateProperties)
@@ -860,11 +883,16 @@ public class DatabaseManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            RelationalDataHandler handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
+            RelationalDataHandler<DatabaseElement,
+                    DatabaseSchemaElement,
+                    DatabaseTableElement,
+                    DatabaseViewElement,
+                    DatabaseColumnElement,
+                    SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
             response.setGUID(handler.createDatabaseSchemaFromTemplate(userId,
-                                                                      integratorGUID,
-                                                                      integratorName,
+                                                                      databaseManagerGUID,
+                                                                      databaseManagerName,
                                                                       templateGUID,
                                                                       databaseGUID,
                                                                       templateProperties.getQualifiedName(),
@@ -900,8 +928,8 @@ public class DatabaseManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param integratorGUID unique identifier of software server capability representing the caller
-     * @param integratorName unique name of software server capability representing the caller
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param databaseSchemaGUID unique identifier of the metadata element to update
      * @param databaseSchemaProperties new properties for the metadata element
      *
@@ -912,8 +940,8 @@ public class DatabaseManagerRESTServices
      */
     public VoidResponse updateDatabaseSchema(String                   serverName,
                                              String                   userId,
-                                             String                   integratorGUID,
-                                             String                   integratorName,
+                                             String                   databaseManagerGUID,
+                                             String                   databaseManagerName,
                                              String                   databaseSchemaGUID,
                                              DatabaseSchemaProperties databaseSchemaProperties)
     {
@@ -928,35 +956,31 @@ public class DatabaseManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            RelationalDataHandler handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
+            RelationalDataHandler<DatabaseElement,
+                    DatabaseSchemaElement,
+                    DatabaseTableElement,
+                    DatabaseViewElement,
+                    DatabaseColumnElement,
+                    SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
             handler.updateDatabaseSchema(userId,
-                                         integratorGUID,
-                                         integratorName,
+                                         databaseManagerGUID,
+                                         databaseManagerName,
                                          databaseSchemaGUID,
                                          databaseSchemaProperties.getQualifiedName(),
                                          databaseSchemaProperties.getDisplayName(),
                                          databaseSchemaProperties.getDescription(),
                                          databaseSchemaProperties.getOwner(),
-                                         cloner.getOwnerType(databaseSchemaProperties.getOwnerCategory()),
+                                         databaseSchemaProperties.getOwnerCategory().getOpenTypeOrdinal(),
                                          databaseSchemaProperties.getZoneMembership(),
-                                         databaseSchemaProperties.getOrigin(),
-                                         databaseSchemaProperties.getLatestChange(),
+                                         databaseSchemaProperties.getOriginOrganizationGUID(),
+                                         databaseSchemaProperties.getOriginBusinessCapabilityGUID(),
+                                         databaseSchemaProperties.getOtherOriginValues(),
                                          databaseSchemaProperties.getAdditionalProperties(),
                                          databaseSchemaProperties.getTypeName(),
                                          databaseSchemaProperties.getExtendedProperties(),
+                                         databaseSchemaProperties.getVendorProperties(),
                                          methodName);
-
-            if (databaseSchemaProperties.getVendorProperties() != null)
-            {
-                ReferenceableHandler referenceableHandler = instanceHandler.getReferenceableHandler(userId, serverName, methodName);
-
-                referenceableHandler.setVendorProperties(userId,
-                                                         databaseSchemaGUID,
-                                                         databaseSchemaProperties.getQualifiedName(),
-                                                         databaseSchemaProperties.getVendorProperties(),
-                                                         methodName);
-            }
         }
         catch (InvalidParameterException error)
         {
@@ -988,8 +1012,6 @@ public class DatabaseManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param integratorGUID unique identifier of software server capability representing the caller
-     * @param integratorName unique name of software server capability representing the caller
      * @param databaseSchemaGUID unique identifier of the metadata element to publish
      * @param nullRequestBody empty request body
      *
@@ -1001,8 +1023,6 @@ public class DatabaseManagerRESTServices
     @SuppressWarnings(value = "unused")
     public VoidResponse publishDatabaseSchema(String          serverName,
                                               String          userId,
-                                              String          integratorGUID,
-                                              String          integratorName,
                                               String          databaseSchemaGUID,
                                               NullRequestBody nullRequestBody)
     {
@@ -1017,9 +1037,14 @@ public class DatabaseManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            RelationalDataHandler handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
+            RelationalDataHandler<DatabaseElement,
+                    DatabaseSchemaElement,
+                    DatabaseTableElement,
+                    DatabaseViewElement,
+                    DatabaseColumnElement,
+                    SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            handler.publishDatabaseSchema(userId, integratorGUID, integratorName, databaseSchemaGUID, methodName);
+            handler.publishDatabaseSchema(userId, databaseSchemaGUID, methodName);
         }
         catch (InvalidParameterException error)
         {
@@ -1051,8 +1076,6 @@ public class DatabaseManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param integratorGUID unique identifier of software server capability representing the caller
-     * @param integratorName unique name of software server capability representing the caller
      * @param databaseSchemaGUID unique identifier of the metadata element to withdraw
      * @param nullRequestBody empty request body
      *
@@ -1064,8 +1087,6 @@ public class DatabaseManagerRESTServices
     @SuppressWarnings(value = "unused")
     public VoidResponse withdrawDatabaseSchema(String          serverName,
                                                String          userId,
-                                               String          integratorGUID,
-                                               String          integratorName,
                                                String          databaseSchemaGUID,
                                                NullRequestBody nullRequestBody)
     {
@@ -1080,9 +1101,14 @@ public class DatabaseManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            RelationalDataHandler handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
+            RelationalDataHandler<DatabaseElement,
+                    DatabaseSchemaElement,
+                    DatabaseTableElement,
+                    DatabaseViewElement,
+                    DatabaseColumnElement,
+                    SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            handler.withdrawDatabaseSchema(userId, integratorGUID, integratorName, databaseSchemaGUID, methodName);
+            handler.withdrawDatabaseSchema(userId, databaseSchemaGUID, methodName);
         }
         catch (InvalidParameterException error)
         {
@@ -1112,8 +1138,8 @@ public class DatabaseManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param integratorGUID unique identifier of software server capability representing the caller
-     * @param integratorName unique name of software server capability representing the caller
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param databaseSchemaGUID unique identifier of the metadata element to remove
      * @param qualifiedName unique name of the metadata element to remove
      * @param nullRequestBody empty request body
@@ -1126,8 +1152,8 @@ public class DatabaseManagerRESTServices
     @SuppressWarnings(value = "unused")
     public VoidResponse removeDatabaseSchema(String          serverName,
                                              String          userId,
-                                             String          integratorGUID,
-                                             String          integratorName,
+                                             String          databaseManagerGUID,
+                                             String          databaseManagerName,
                                              String          databaseSchemaGUID,
                                              String          qualifiedName,
                                              NullRequestBody nullRequestBody)
@@ -1143,9 +1169,14 @@ public class DatabaseManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            RelationalDataHandler handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
+            RelationalDataHandler<DatabaseElement,
+                    DatabaseSchemaElement,
+                    DatabaseTableElement,
+                    DatabaseViewElement,
+                    DatabaseColumnElement,
+                    SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            handler.removeDatabaseSchema(userId, integratorGUID, integratorName, databaseSchemaGUID, qualifiedName, methodName);
+            handler.removeDatabaseSchema(userId, databaseManagerGUID, databaseManagerName, databaseSchemaGUID, qualifiedName, methodName);
         }
         catch (InvalidParameterException error)
         {
@@ -1202,11 +1233,16 @@ public class DatabaseManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            RelationalDataHandler handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
+            RelationalDataHandler<DatabaseElement,
+                    DatabaseSchemaElement,
+                    DatabaseTableElement,
+                    DatabaseViewElement,
+                    DatabaseColumnElement,
+                    SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            List<Asset> databaseSchemaAssets = handler.findDatabaseSchemas(userId, searchString, startFrom, pageSize, methodName);
+            List<DatabaseSchemaElement> databaseSchemaAssets = handler.findDatabaseSchemas(userId, searchString, startFrom, pageSize, methodName);
 
-            response.setElementList(cloner.getDatabaseSchemasFromAssets(databaseSchemaAssets, userId, serverName, methodName));
+            response.setElementList(databaseSchemaAssets);
         }
         catch (InvalidParameterException error)
         {
@@ -1262,11 +1298,16 @@ public class DatabaseManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            RelationalDataHandler handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
+            RelationalDataHandler<DatabaseElement,
+                    DatabaseSchemaElement,
+                    DatabaseTableElement,
+                    DatabaseViewElement,
+                    DatabaseColumnElement,
+                    SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            List<Asset> databaseSchemaAssets = handler.getSchemasForDatabase(userId, databaseGUID, startFrom, pageSize, methodName);
+            List<DatabaseSchemaElement> databaseSchemaAssets = handler.getSchemasForDatabase(userId, databaseGUID, startFrom, pageSize, methodName);
 
-            response.setElementList(cloner.getDatabaseSchemasFromAssets(databaseSchemaAssets, userId, serverName, methodName));
+            response.setElementList(databaseSchemaAssets);
         }
         catch (InvalidParameterException error)
         {
@@ -1323,11 +1364,16 @@ public class DatabaseManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            RelationalDataHandler handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
+            RelationalDataHandler<DatabaseElement,
+                    DatabaseSchemaElement,
+                    DatabaseTableElement,
+                    DatabaseViewElement,
+                    DatabaseColumnElement,
+                    SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            List<Asset> databaseSchemaAssets = handler.getDatabaseSchemasByName(userId, name, startFrom, pageSize, methodName);
+            List<DatabaseSchemaElement> databaseSchemaAssets = handler.getDatabaseSchemasByName(userId, name, startFrom, pageSize, methodName);
 
-            response.setElementList(cloner.getDatabaseSchemasFromAssets(databaseSchemaAssets, userId, serverName, methodName));
+            response.setElementList(databaseSchemaAssets);
         }
         catch (InvalidParameterException error)
         {
@@ -1379,11 +1425,16 @@ public class DatabaseManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            RelationalDataHandler handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
+            RelationalDataHandler<DatabaseElement,
+                    DatabaseSchemaElement,
+                    DatabaseTableElement,
+                    DatabaseViewElement,
+                    DatabaseColumnElement,
+                    SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            Asset databaseSchemaAsset = handler.getDatabaseSchemaByGUID(userId, guid, methodName);
+            DatabaseSchemaElement databaseSchemaAsset = handler.getDatabaseSchemaByGUID(userId, guid, methodName);
 
-            response.setElement(cloner.getDatabaseSchemaFromAsset(databaseSchemaAsset, userId, serverName, methodName));
+            response.setElement(databaseSchemaAsset);
         }
         catch (InvalidParameterException error)
         {
@@ -1417,8 +1468,8 @@ public class DatabaseManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param integratorGUID unique identifier of software server capability representing the caller
-     * @param integratorName unique name of software server capability representing the caller
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param databaseSchemaGUID unique identifier of the database schema ASSET where the database table is located.
      * @param databaseTableProperties properties for the database table
      *
@@ -1429,8 +1480,8 @@ public class DatabaseManagerRESTServices
      */
     public GUIDResponse createDatabaseTable(String                  serverName,
                                             String                  userId,
-                                            String                  integratorGUID,
-                                            String                  integratorName,
+                                            String                  databaseManagerGUID,
+                                            String                  databaseManagerName,
                                             String                  databaseSchemaGUID,
                                             DatabaseTableProperties databaseTableProperties)
     {
@@ -1445,11 +1496,16 @@ public class DatabaseManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            RelationalDataHandler handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
+            RelationalDataHandler<DatabaseElement,
+                    DatabaseSchemaElement,
+                    DatabaseTableElement,
+                    DatabaseViewElement,
+                    DatabaseColumnElement,
+                    SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
             String databaseTableGUID = handler.createDatabaseTable(userId,
-                                                                   integratorGUID,
-                                                                   integratorName,
+                                                                   databaseManagerGUID,
+                                                                   databaseManagerName,
                                                                    databaseSchemaGUID,
                                                                    databaseTableProperties.getQualifiedName(),
                                                                    databaseTableProperties.getDisplayName(),
@@ -1459,18 +1515,8 @@ public class DatabaseManagerRESTServices
                                                                    databaseTableProperties.getAdditionalProperties(),
                                                                    databaseTableProperties.getTypeName(),
                                                                    databaseTableProperties.getExtendedProperties(),
+                                                                   databaseTableProperties.getVendorProperties(),
                                                                    methodName);
-
-            if (databaseTableProperties.getVendorProperties() != null)
-            {
-                ReferenceableHandler referenceableHandler = instanceHandler.getReferenceableHandler(userId, serverName, methodName);
-
-                referenceableHandler.setVendorProperties(userId,
-                                                         databaseTableGUID,
-                                                         databaseTableProperties.getQualifiedName(),
-                                                         databaseTableProperties.getVendorProperties(),
-                                                         methodName);
-            }
 
             response.setGUID(databaseTableGUID);
         }
@@ -1502,8 +1548,8 @@ public class DatabaseManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param integratorGUID unique identifier of software server capability representing the caller
-     * @param integratorName unique name of software server capability representing the caller
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param templateGUID unique identifier of the metadata element to copy
      * @param databaseSchemaGUID unique identifier of the database schema where the database table is located.
      * @param templateProperties properties that override the template
@@ -1515,8 +1561,8 @@ public class DatabaseManagerRESTServices
      */
     public GUIDResponse createDatabaseTableFromTemplate(String             serverName,
                                                         String             userId,
-                                                        String             integratorGUID,
-                                                        String             integratorName,
+                                                        String             databaseManagerGUID,
+                                                        String             databaseManagerName,
                                                         String             templateGUID,
                                                         String             databaseSchemaGUID,
                                                         TemplateProperties templateProperties)
@@ -1532,11 +1578,16 @@ public class DatabaseManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            RelationalDataHandler handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
+            RelationalDataHandler<DatabaseElement,
+                    DatabaseSchemaElement,
+                    DatabaseTableElement,
+                    DatabaseViewElement,
+                    DatabaseColumnElement,
+                    SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
             response.setGUID(handler.createDatabaseTableFromTemplate(userId,
-                                                                integratorGUID,
-                                                                integratorName,
+                                                                databaseManagerGUID,
+                                                                databaseManagerName,
                                                                 templateGUID,
                                                                 databaseSchemaGUID,
                                                                 templateProperties.getQualifiedName(),
@@ -1572,8 +1623,8 @@ public class DatabaseManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param integratorGUID unique identifier of software server capability representing the caller
-     * @param integratorName unique name of software server capability representing the caller
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param databaseTableGUID unique identifier of the database table to update
      * @param databaseTableProperties new properties for the database table
      *
@@ -1584,8 +1635,8 @@ public class DatabaseManagerRESTServices
      */
     public VoidResponse updateDatabaseTable(String                  serverName,
                                             String                  userId,
-                                            String                  integratorGUID,
-                                            String                  integratorName,
+                                            String                  databaseManagerGUID,
+                                            String                  databaseManagerName,
                                             String                  databaseTableGUID,
                                             DatabaseTableProperties databaseTableProperties)
     {
@@ -1600,11 +1651,16 @@ public class DatabaseManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            RelationalDataHandler handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
+            RelationalDataHandler<DatabaseElement,
+                    DatabaseSchemaElement,
+                    DatabaseTableElement,
+                    DatabaseViewElement,
+                    DatabaseColumnElement,
+                    SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
             handler.updateDatabaseTable(userId,
-                                        integratorGUID,
-                                        integratorName,
+                                        databaseManagerGUID,
+                                        databaseManagerName,
                                         databaseTableGUID,
                                         databaseTableProperties.getQualifiedName(),
                                         databaseTableProperties.getDisplayName(),
@@ -1614,18 +1670,8 @@ public class DatabaseManagerRESTServices
                                         databaseTableProperties.getAdditionalProperties(),
                                         databaseTableProperties.getTypeName(),
                                         databaseTableProperties.getExtendedProperties(),
+                                        databaseTableProperties.getVendorProperties(),
                                         methodName);
-
-            if (databaseTableProperties.getVendorProperties() != null)
-            {
-                ReferenceableHandler referenceableHandler = instanceHandler.getReferenceableHandler(userId, serverName, methodName);
-
-                referenceableHandler.setVendorProperties(userId,
-                                                         databaseTableGUID,
-                                                         databaseTableProperties.getQualifiedName(),
-                                                         databaseTableProperties.getVendorProperties(),
-                                                         methodName);
-            }
         }
         catch (InvalidParameterException error)
         {
@@ -1655,8 +1701,8 @@ public class DatabaseManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param integratorGUID unique identifier of software server capability representing the caller
-     * @param integratorName unique name of software server capability representing the caller
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param databaseTableGUID unique identifier of the metadata element to remove
      * @param qualifiedName unique name of the metadata element to remove
      * @param nullRequestBody empty request body
@@ -1669,13 +1715,14 @@ public class DatabaseManagerRESTServices
     @SuppressWarnings(value = "unused")
     public VoidResponse removeDatabaseTable(String          serverName,
                                             String          userId,
-                                            String          integratorGUID,
-                                            String          integratorName,
+                                            String          databaseManagerGUID,
+                                            String          databaseManagerName,
                                             String          databaseTableGUID,
                                             String          qualifiedName,
                                             NullRequestBody nullRequestBody)
     {
-        final String methodName = "removeDatabaseTable";
+        final String methodName                  = "removeDatabaseTable";
+        final String elementGUIDParameterName    = "databaseTableGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -1686,9 +1733,20 @@ public class DatabaseManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            RelationalDataHandler handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
+            RelationalDataHandler<DatabaseElement,
+                    DatabaseSchemaElement,
+                    DatabaseTableElement,
+                    DatabaseViewElement,
+                    DatabaseColumnElement,
+                    SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            handler.removeDatabaseTable(userId, integratorGUID, integratorName, databaseTableGUID, qualifiedName, methodName);
+            handler.removeDatabaseTable(userId,
+                                        databaseManagerGUID,
+                                        databaseManagerName,
+                                        databaseTableGUID,
+                                        elementGUIDParameterName,
+                                        qualifiedName,
+                                        methodName);
         }
         catch (InvalidParameterException error)
         {
@@ -1745,11 +1803,16 @@ public class DatabaseManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            RelationalDataHandler handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
+            RelationalDataHandler<DatabaseElement,
+                    DatabaseSchemaElement,
+                    DatabaseTableElement,
+                    DatabaseViewElement,
+                    DatabaseColumnElement,
+                    SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            List<SchemaAttribute> databaseTableAttributes = handler.findDatabaseTables(userId, searchString, startFrom, pageSize, methodName);
+            List<DatabaseTableElement> databaseTableAttributes = handler.findDatabaseTables(userId, searchString, startFrom, pageSize, methodName);
 
-            response.setElementList(cloner.getDatabaseTablesFromAttributes(databaseTableAttributes, userId, serverName, methodName));
+            response.setElementList(databaseTableAttributes);
         }
         catch (InvalidParameterException error)
         {
@@ -1805,11 +1868,20 @@ public class DatabaseManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            RelationalDataHandler handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
+            RelationalDataHandler<DatabaseElement,
+                    DatabaseSchemaElement,
+                    DatabaseTableElement,
+                    DatabaseViewElement,
+                    DatabaseColumnElement,
+                    SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            List<SchemaAttribute> databaseTableAttributes = handler.getTablesForDatabaseSchema(userId, databaseSchemaGUID, startFrom, pageSize, methodName);
+            List<DatabaseTableElement> databaseTableAttributes = handler.getTablesForDatabaseSchema(userId,
+                                                                                                    databaseSchemaGUID,
+                                                                                                    startFrom,
+                                                                                                    pageSize,
+                                                                                                    methodName);
 
-            response.setElementList(cloner.getDatabaseTablesFromAttributes(databaseTableAttributes, userId, serverName, methodName));
+            response.setElementList(databaseTableAttributes);
         }
         catch (InvalidParameterException error)
         {
@@ -1866,11 +1938,16 @@ public class DatabaseManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            RelationalDataHandler handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
+            RelationalDataHandler<DatabaseElement,
+                    DatabaseSchemaElement,
+                    DatabaseTableElement,
+                    DatabaseViewElement,
+                    DatabaseColumnElement,
+                    SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            List<SchemaAttribute> databaseTableAttributes = handler.getDatabaseTablesByName(userId, name, startFrom, pageSize, methodName);
+            List<DatabaseTableElement> databaseTableAttributes = handler.getDatabaseTablesByName(userId, name, startFrom, pageSize, methodName);
 
-            response.setElementList(cloner.getDatabaseTablesFromAttributes(databaseTableAttributes, userId, serverName, methodName));
+            response.setElementList(databaseTableAttributes);
         }
         catch (InvalidParameterException error)
         {
@@ -1922,11 +1999,16 @@ public class DatabaseManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            RelationalDataHandler handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
+            RelationalDataHandler<DatabaseElement,
+                    DatabaseSchemaElement,
+                    DatabaseTableElement,
+                    DatabaseViewElement,
+                    DatabaseColumnElement,
+                    SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            SchemaAttribute databaseTableAttribute = handler.getDatabaseTableByGUID(userId, guid, methodName);
+            DatabaseTableElement databaseTableAttribute = handler.getDatabaseTableByGUID(userId, guid, methodName);
 
-            response.setElement(cloner.getDatabaseTableFromAttribute(databaseTableAttribute, userId, serverName, methodName));
+            response.setElement(databaseTableAttribute);
         }
         catch (InvalidParameterException error)
         {
@@ -1956,8 +2038,8 @@ public class DatabaseManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param integratorGUID unique identifier of software server capability representing the caller
-     * @param integratorName unique name of software server capability representing the caller
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param databaseSchemaGUID unique identifier of the database schema where the database view is located.
      * @param databaseViewProperties properties for the new view
      *
@@ -1968,8 +2050,8 @@ public class DatabaseManagerRESTServices
      */
     public GUIDResponse createDatabaseView(String                 serverName,
                                            String                 userId,
-                                           String                 integratorGUID,
-                                           String                 integratorName,
+                                           String                 databaseManagerGUID,
+                                           String                 databaseManagerName,
                                            String                 databaseSchemaGUID,
                                            DatabaseViewProperties databaseViewProperties)
     {
@@ -1984,33 +2066,28 @@ public class DatabaseManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            RelationalDataHandler handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
+            RelationalDataHandler<DatabaseElement,
+                    DatabaseSchemaElement,
+                    DatabaseTableElement,
+                    DatabaseViewElement,
+                    DatabaseColumnElement,
+                    SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
             String databaseViewGUID = handler.createDatabaseView(userId,
-                                                                 integratorGUID,
-                                                                 integratorName,
+                                                                 databaseManagerGUID,
+                                                                 databaseManagerName,
                                                                  databaseSchemaGUID,
                                                                  databaseViewProperties.getQualifiedName(),
                                                                  databaseViewProperties.getDisplayName(),
                                                                  databaseViewProperties.getDescription(),
                                                                  databaseViewProperties.isDeprecated(),
                                                                  databaseViewProperties.getAliases(),
-                                                                 databaseViewProperties.getExpression(),
+                                                                 databaseViewProperties.getFormula(),
                                                                  databaseViewProperties.getAdditionalProperties(),
                                                                  databaseViewProperties.getTypeName(),
                                                                  databaseViewProperties.getExtendedProperties(),
+                                                                 databaseViewProperties.getVendorProperties(),
                                                                  methodName);
-
-            if (databaseViewProperties.getVendorProperties() != null)
-            {
-                ReferenceableHandler referenceableHandler = instanceHandler.getReferenceableHandler(userId, serverName, methodName);
-
-                referenceableHandler.setVendorProperties(userId,
-                                                         databaseViewGUID,
-                                                         databaseViewProperties.getQualifiedName(),
-                                                         databaseViewProperties.getVendorProperties(),
-                                                         methodName);
-            }
 
             response.setGUID(databaseViewGUID);
         }
@@ -2042,8 +2119,8 @@ public class DatabaseManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param integratorGUID unique identifier of software server capability representing the caller
-     * @param integratorName unique name of software server capability representing the caller
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param templateGUID unique identifier of the metadata element to copy
      * @param databaseSchemaGUID unique identifier of the database schema where the database view is located.
      * @param templateProperties properties that override the template
@@ -2055,8 +2132,8 @@ public class DatabaseManagerRESTServices
      */
     public GUIDResponse createDatabaseViewFromTemplate(String             serverName,
                                                        String             userId,
-                                                       String             integratorGUID,
-                                                       String             integratorName,
+                                                       String             databaseManagerGUID,
+                                                       String             databaseManagerName,
                                                        String             templateGUID,
                                                        String             databaseSchemaGUID,
                                                        TemplateProperties templateProperties)
@@ -2072,11 +2149,16 @@ public class DatabaseManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            RelationalDataHandler handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
+            RelationalDataHandler<DatabaseElement,
+                    DatabaseSchemaElement,
+                    DatabaseTableElement,
+                    DatabaseViewElement,
+                    DatabaseColumnElement,
+                    SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
             response.setGUID(handler.createDatabaseViewFromTemplate(userId,
-                                                                     integratorGUID,
-                                                                     integratorName,
+                                                                     databaseManagerGUID,
+                                                                     databaseManagerName,
                                                                      templateGUID,
                                                                      databaseSchemaGUID,
                                                                      templateProperties.getQualifiedName(),
@@ -2112,8 +2194,8 @@ public class DatabaseManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param integratorGUID unique identifier of software server capability representing the caller
-     * @param integratorName unique name of software server capability representing the caller
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param databaseViewGUID unique identifier of the database view to update
      * @param databaseViewProperties properties for the new database view
      *
@@ -2124,8 +2206,8 @@ public class DatabaseManagerRESTServices
      */
     public VoidResponse updateDatabaseView(String                 serverName,
                                            String                 userId,
-                                           String                 integratorGUID,
-                                           String                 integratorName,
+                                           String                 databaseManagerGUID,
+                                           String                 databaseManagerName,
                                            String                 databaseViewGUID,
                                            DatabaseViewProperties databaseViewProperties)
     {
@@ -2140,33 +2222,28 @@ public class DatabaseManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            RelationalDataHandler handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
+            RelationalDataHandler<DatabaseElement,
+                    DatabaseSchemaElement,
+                    DatabaseTableElement,
+                    DatabaseViewElement,
+                    DatabaseColumnElement,
+                    SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
             handler.updateDatabaseView(userId,
-                                       integratorGUID,
-                                       integratorName,
+                                       databaseManagerGUID,
+                                       databaseManagerName,
                                        databaseViewGUID,
                                        databaseViewProperties.getQualifiedName(),
                                        databaseViewProperties.getDisplayName(),
                                        databaseViewProperties.getDescription(),
                                        databaseViewProperties.isDeprecated(),
                                        databaseViewProperties.getAliases(),
-                                       databaseViewProperties.getExpression(),
+                                       databaseViewProperties.getFormula(),
                                        databaseViewProperties.getAdditionalProperties(),
                                        databaseViewProperties.getTypeName(),
                                        databaseViewProperties.getExtendedProperties(),
+                                       databaseViewProperties.getVendorProperties(),
                                        methodName);
-
-            if (databaseViewProperties.getVendorProperties() != null)
-            {
-                ReferenceableHandler referenceableHandler = instanceHandler.getReferenceableHandler(userId, serverName, methodName);
-
-                referenceableHandler.setVendorProperties(userId,
-                                                         databaseViewGUID,
-                                                         databaseViewProperties.getQualifiedName(),
-                                                         databaseViewProperties.getVendorProperties(),
-                                                         methodName);
-            }
         }
         catch (InvalidParameterException error)
         {
@@ -2196,8 +2273,8 @@ public class DatabaseManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param integratorGUID unique identifier of software server capability representing the caller
-     * @param integratorName unique name of software server capability representing the caller
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param databaseViewGUID unique identifier of the metadata element to remove
      * @param qualifiedName unique name of the metadata element to remove
      * @param nullRequestBody empty request body
@@ -2210,13 +2287,14 @@ public class DatabaseManagerRESTServices
     @SuppressWarnings(value = "unused")
     public VoidResponse removeDatabaseView(String          serverName,
                                            String          userId,
-                                           String          integratorGUID,
-                                           String          integratorName,
+                                           String          databaseManagerGUID,
+                                           String          databaseManagerName,
                                            String          databaseViewGUID,
                                            String          qualifiedName,
                                            NullRequestBody nullRequestBody)
     {
-        final String methodName = "removeDatabaseView";
+        final String methodName                  = "removeDatabaseView";
+        final String elementGUIDParameterName    = "databaseViewGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -2227,9 +2305,20 @@ public class DatabaseManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            RelationalDataHandler handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
+            RelationalDataHandler<DatabaseElement,
+                    DatabaseSchemaElement,
+                    DatabaseTableElement,
+                    DatabaseViewElement,
+                    DatabaseColumnElement,
+                    SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            handler.removeDatabaseView(userId, integratorGUID, integratorName, databaseViewGUID, qualifiedName, methodName);
+            handler.removeDatabaseTable(userId,
+                                        databaseManagerGUID,
+                                        databaseManagerName,
+                                        databaseViewGUID,
+                                        elementGUIDParameterName,
+                                        qualifiedName,
+                                        methodName);
         }
         catch (InvalidParameterException error)
         {
@@ -2286,11 +2375,16 @@ public class DatabaseManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            RelationalDataHandler handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
+            RelationalDataHandler<DatabaseElement,
+                    DatabaseSchemaElement,
+                    DatabaseTableElement,
+                    DatabaseViewElement,
+                    DatabaseColumnElement,
+                    SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            List<SchemaAttribute> databaseViewAttributes = handler.findDatabaseViews(userId, searchString, startFrom, pageSize, methodName);
+            List<DatabaseViewElement> databaseViewAttributes = handler.findDatabaseViews(userId, searchString, startFrom, pageSize, methodName);
 
-            response.setElementList(cloner.getDatabaseViewsFromAttributes(databaseViewAttributes, userId, serverName, methodName));
+            response.setElementList(databaseViewAttributes);
         }
         catch (InvalidParameterException error)
         {
@@ -2346,11 +2440,16 @@ public class DatabaseManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            RelationalDataHandler handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
+            RelationalDataHandler<DatabaseElement,
+                    DatabaseSchemaElement,
+                    DatabaseTableElement,
+                    DatabaseViewElement,
+                    DatabaseColumnElement,
+                    SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            List<SchemaAttribute> databaseViewAttributes = handler.getViewsForDatabaseSchema(userId, databaseSchemaGUID, startFrom, pageSize, methodName);
+            List<DatabaseViewElement> databaseViewAttributes = handler.getViewsForDatabaseSchema(userId, databaseSchemaGUID, startFrom, pageSize, methodName);
 
-            response.setElementList(cloner.getDatabaseViewsFromAttributes(databaseViewAttributes, userId, serverName, methodName));
+            response.setElementList(databaseViewAttributes);
         }
         catch (InvalidParameterException error)
         {
@@ -2407,11 +2506,16 @@ public class DatabaseManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            RelationalDataHandler handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
+            RelationalDataHandler<DatabaseElement,
+                    DatabaseSchemaElement,
+                    DatabaseTableElement,
+                    DatabaseViewElement,
+                    DatabaseColumnElement,
+                    SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            List<SchemaAttribute> databaseViewAttributes = handler.getDatabaseViewsByName(userId, name, startFrom, pageSize, methodName);
+            List<DatabaseViewElement> databaseViewAttributes = handler.getDatabaseViewsByName(userId, name, startFrom, pageSize, methodName);
 
-            response.setElementList(cloner.getDatabaseViewsFromAttributes(databaseViewAttributes, userId, serverName, methodName));
+            response.setElementList(databaseViewAttributes);
         }
         catch (InvalidParameterException error)
         {
@@ -2463,11 +2567,16 @@ public class DatabaseManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            RelationalDataHandler handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
+            RelationalDataHandler<DatabaseElement,
+                    DatabaseSchemaElement,
+                    DatabaseTableElement,
+                    DatabaseViewElement,
+                    DatabaseColumnElement,
+                    SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            SchemaAttribute databaseViewAttribute = handler.getDatabaseViewByGUID(userId, guid, methodName);
+            DatabaseViewElement databaseViewAttribute = handler.getDatabaseViewByGUID(userId, guid, methodName);
 
-            response.setElement(cloner.getDatabaseViewFromAttribute(databaseViewAttribute, userId, serverName, methodName));
+            response.setElement(databaseViewAttribute);
         }
         catch (InvalidParameterException error)
         {
@@ -2503,8 +2612,8 @@ public class DatabaseManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param integratorGUID unique identifier of software server capability representing the caller
-     * @param integratorName unique name of software server capability representing the caller
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param databaseTableGUID unique identifier of the database table where this column is located
      * @param databaseColumnProperties properties for the new column
      *
@@ -2515,8 +2624,8 @@ public class DatabaseManagerRESTServices
      */
     public GUIDResponse createDatabaseColumn(String                   serverName,
                                              String                   userId,
-                                             String                   integratorGUID,
-                                             String                   integratorName,
+                                             String                   databaseManagerGUID,
+                                             String                   databaseManagerName,
                                              String                   databaseTableGUID,
                                              DatabaseColumnProperties databaseColumnProperties)
     {
@@ -2531,19 +2640,26 @@ public class DatabaseManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            RelationalDataHandler handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
+            RelationalDataHandler<DatabaseElement,
+                    DatabaseSchemaElement,
+                    DatabaseTableElement,
+                    DatabaseViewElement,
+                    DatabaseColumnElement,
+                    SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
             String databaseColumnGUID = handler.createDatabaseColumn(userId,
-                                                                     integratorGUID,
-                                                                     integratorName,
+                                                                     databaseManagerGUID,
+                                                                     databaseManagerName,
                                                                      databaseTableGUID,
                                                                      databaseColumnProperties.getQualifiedName(),
                                                                      databaseColumnProperties.getDisplayName(),
                                                                      databaseColumnProperties.getDescription(),
+                                                                     databaseColumnProperties.getExternalTypeGUID(),
                                                                      databaseColumnProperties.getDataType(),
                                                                      databaseColumnProperties.getDefaultValue(),
+                                                                     databaseColumnProperties.getFixedValue(),
+                                                                     databaseColumnProperties.getValidValuesSetGUID(),
                                                                      databaseColumnProperties.getFormula(),
-                                                                     cloner.getOCFDerivedSchemaQueries(databaseColumnProperties.getQueries()),
                                                                      databaseColumnProperties.isDeprecated(),
                                                                      databaseColumnProperties.getElementPosition(),
                                                                      databaseColumnProperties.getMinCardinality(),
@@ -2551,7 +2667,7 @@ public class DatabaseManagerRESTServices
                                                                      databaseColumnProperties.isAllowsDuplicateValues(),
                                                                      databaseColumnProperties.isOrderedValues(),
                                                                      databaseColumnProperties.getDefaultValueOverride(),
-                                                                     cloner.getOCFSortOrder(databaseColumnProperties.getSortOrder()),
+                                                                     databaseColumnProperties.getSortOrder().getOpenTypeOrdinal(),
                                                                      databaseColumnProperties.getMinimumLength(),
                                                                      databaseColumnProperties.getLength(),
                                                                      databaseColumnProperties.getSignificantDigits(),
@@ -2561,17 +2677,26 @@ public class DatabaseManagerRESTServices
                                                                      databaseColumnProperties.getAdditionalProperties(),
                                                                      databaseColumnProperties.getTypeName(),
                                                                      databaseColumnProperties.getExtendedProperties(),
+                                                                     databaseColumnProperties.getVendorProperties(),
                                                                      methodName);
 
-            if (databaseColumnProperties.getVendorProperties() != null)
+            if ((databaseColumnGUID != null) && (databaseColumnProperties.getQueries() != null))
             {
-                ReferenceableHandler referenceableHandler = instanceHandler.getReferenceableHandler(userId, serverName, methodName);
-
-                referenceableHandler.setVendorProperties(userId,
-                                                         databaseColumnGUID,
-                                                         databaseColumnProperties.getQualifiedName(),
-                                                         databaseColumnProperties.getVendorProperties(),
-                                                         methodName);            }
+                for (DatabaseQueryProperties queryProperties : databaseColumnProperties.getQueries())
+                {
+                    if (queryProperties != null)
+                    {
+                        handler.createDatabaseColumnQuery(userId,
+                                                          databaseManagerGUID,
+                                                          databaseManagerName,
+                                                          databaseColumnGUID,
+                                                          queryProperties.getQueryId(),
+                                                          queryProperties.getQuery(),
+                                                          queryProperties.getQueryTargetGUID(),
+                                                          methodName);
+                    }
+                }
+            }
 
             response.setGUID(databaseColumnGUID);
         }
@@ -2603,8 +2728,8 @@ public class DatabaseManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param integratorGUID unique identifier of software server capability representing the caller
-     * @param integratorName unique name of software server capability representing the caller
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param templateGUID unique identifier of the metadata element to copy
      * @param databaseTableGUID unique identifier of the database table where this column is located
      * @param templateProperties properties that override the template
@@ -2616,8 +2741,8 @@ public class DatabaseManagerRESTServices
      */
     public GUIDResponse createDatabaseColumnFromTemplate(String             serverName,
                                                          String             userId,
-                                                         String             integratorGUID,
-                                                         String             integratorName,
+                                                         String             databaseManagerGUID,
+                                                         String             databaseManagerName,
                                                          String             templateGUID,
                                                          String             databaseTableGUID,
                                                          TemplateProperties templateProperties)
@@ -2633,11 +2758,16 @@ public class DatabaseManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            RelationalDataHandler handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
+            RelationalDataHandler<DatabaseElement,
+                    DatabaseSchemaElement,
+                    DatabaseTableElement,
+                    DatabaseViewElement,
+                    DatabaseColumnElement,
+                    SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
             response.setGUID(handler.createDatabaseColumnFromTemplate(userId,
-                                                                      integratorGUID,
-                                                                      integratorName,
+                                                                      databaseManagerGUID,
+                                                                      databaseManagerName,
                                                                       templateGUID,
                                                                       databaseTableGUID,
                                                                       templateProperties.getQualifiedName(),
@@ -2673,8 +2803,8 @@ public class DatabaseManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param integratorGUID unique identifier of software server capability representing the caller
-     * @param integratorName unique name of software server capability representing the caller
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param databaseColumnGUID unique identifier of the metadata element to update
      * @param databaseColumnProperties new properties for the metadata element
      *
@@ -2685,8 +2815,8 @@ public class DatabaseManagerRESTServices
      */
     public VoidResponse updateDatabaseColumn(String                   serverName,
                                              String                   userId,
-                                             String                   integratorGUID,
-                                             String                   integratorName,
+                                             String                   databaseManagerGUID,
+                                             String                   databaseManagerName,
                                              String                   databaseColumnGUID,
                                              DatabaseColumnProperties databaseColumnProperties)
     {
@@ -2701,19 +2831,24 @@ public class DatabaseManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            RelationalDataHandler handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
+            RelationalDataHandler<DatabaseElement,
+                    DatabaseSchemaElement,
+                    DatabaseTableElement,
+                    DatabaseViewElement,
+                    DatabaseColumnElement,
+                    SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
             handler.updateDatabaseColumn(userId,
-                                         integratorGUID,
-                                         integratorName,
+                                         databaseManagerGUID,
+                                         databaseManagerName,
                                          databaseColumnGUID,
                                          databaseColumnProperties.getQualifiedName(),
                                          databaseColumnProperties.getDisplayName(),
                                          databaseColumnProperties.getDescription(),
                                          databaseColumnProperties.getDataType(),
                                          databaseColumnProperties.getDefaultValue(),
+                                         databaseColumnProperties.getFixedValue(),
                                          databaseColumnProperties.getFormula(),
-                                         cloner.getOCFDerivedSchemaQueries(databaseColumnProperties.getQueries()),
                                          databaseColumnProperties.isDeprecated(),
                                          databaseColumnProperties.getElementPosition(),
                                          databaseColumnProperties.getMinCardinality(),
@@ -2721,7 +2856,7 @@ public class DatabaseManagerRESTServices
                                          databaseColumnProperties.isAllowsDuplicateValues(),
                                          databaseColumnProperties.isOrderedValues(),
                                          databaseColumnProperties.getDefaultValueOverride(),
-                                         cloner.getOCFSortOrder(databaseColumnProperties.getSortOrder()),
+                                         databaseColumnProperties.getSortOrder().getOpenTypeOrdinal(),
                                          databaseColumnProperties.getMinimumLength(),
                                          databaseColumnProperties.getLength(),
                                          databaseColumnProperties.getSignificantDigits(),
@@ -2731,17 +2866,25 @@ public class DatabaseManagerRESTServices
                                          databaseColumnProperties.getAdditionalProperties(),
                                          databaseColumnProperties.getTypeName(),
                                          databaseColumnProperties.getExtendedProperties(),
+                                         databaseColumnProperties.getVendorProperties(),
                                          methodName);
 
-            if (databaseColumnProperties.getVendorProperties() != null)
+            if (databaseColumnProperties.getQueries() != null)
             {
-                ReferenceableHandler referenceableHandler = instanceHandler.getReferenceableHandler(userId, serverName, methodName);
-
-                referenceableHandler.setVendorProperties(userId,
-                                                         databaseColumnGUID,
-                                                         databaseColumnProperties.getQualifiedName(),
-                                                         databaseColumnProperties.getVendorProperties(),
-                                                         methodName);
+                for (DatabaseQueryProperties queryProperties : databaseColumnProperties.getQueries())
+                {
+                    if (queryProperties != null)
+                    {
+                        handler.createDatabaseColumnQuery(userId,
+                                                          databaseManagerGUID,
+                                                          databaseManagerName,
+                                                          databaseColumnGUID,
+                                                          queryProperties.getQueryId(),
+                                                          queryProperties.getQuery(),
+                                                          queryProperties.getQueryTargetGUID(),
+                                                          methodName);
+                    }
+                }
             }
         }
         catch (InvalidParameterException error)
@@ -2772,8 +2915,8 @@ public class DatabaseManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param integratorGUID unique identifier of software server capability representing the caller
-     * @param integratorName unique name of software server capability representing the caller
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param databaseColumnGUID unique identifier of the metadata element to remove
      * @param qualifiedName unique name of the metadata element to remove
      * @param nullRequestBody empty request body
@@ -2786,8 +2929,8 @@ public class DatabaseManagerRESTServices
     @SuppressWarnings(value = "unused")
     public VoidResponse removeDatabaseColumn(String          serverName,
                                              String          userId,
-                                             String          integratorGUID,
-                                             String          integratorName,
+                                             String          databaseManagerGUID,
+                                             String          databaseManagerName,
                                              String          databaseColumnGUID,
                                              String          qualifiedName,
                                              NullRequestBody nullRequestBody)
@@ -2803,9 +2946,14 @@ public class DatabaseManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            RelationalDataHandler handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
+            RelationalDataHandler<DatabaseElement,
+                    DatabaseSchemaElement,
+                    DatabaseTableElement,
+                    DatabaseViewElement,
+                    DatabaseColumnElement,
+                    SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            handler.removeDatabaseColumn(userId, integratorGUID, integratorName, databaseColumnGUID, qualifiedName, methodName);
+            handler.removeDatabaseColumn(userId, databaseManagerGUID, databaseManagerName, databaseColumnGUID, qualifiedName, methodName);
         }
         catch (InvalidParameterException error)
         {
@@ -2862,11 +3010,16 @@ public class DatabaseManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            RelationalDataHandler handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
+            RelationalDataHandler<DatabaseElement,
+                    DatabaseSchemaElement,
+                    DatabaseTableElement,
+                    DatabaseViewElement,
+                    DatabaseColumnElement,
+                    SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            List<SchemaAttribute> databaseColumnAttributes = handler.findDatabaseColumns(userId, searchString, startFrom, pageSize, methodName);
+            List<DatabaseColumnElement> databaseColumnAttributes = handler.findDatabaseColumns(userId, searchString, startFrom, pageSize, methodName);
 
-            response.setElementList(cloner.getDatabaseColumnsFromAttributes(databaseColumnAttributes, userId, serverName, methodName));
+            response.setElementList(databaseColumnAttributes);
         }
         catch (InvalidParameterException error)
         {
@@ -2922,11 +3075,20 @@ public class DatabaseManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            RelationalDataHandler handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
+            RelationalDataHandler<DatabaseElement,
+                    DatabaseSchemaElement,
+                    DatabaseTableElement,
+                    DatabaseViewElement,
+                    DatabaseColumnElement,
+                    SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            List<SchemaAttribute> databaseColumnAttributes = handler.getColumnsForDatabaseTable(userId, databaseTableGUID, startFrom, pageSize, methodName);
+            List<DatabaseColumnElement> databaseColumnAttributes = handler.getColumnsForDatabaseTable(userId,
+                                                                                                      databaseTableGUID,
+                                                                                                      startFrom,
+                                                                                                      pageSize,
+                                                                                                      methodName);
 
-            response.setElementList(cloner.getDatabaseColumnsFromAttributes(databaseColumnAttributes, userId, serverName, methodName));
+            response.setElementList(databaseColumnAttributes);
         }
         catch (InvalidParameterException error)
         {
@@ -2983,11 +3145,16 @@ public class DatabaseManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            RelationalDataHandler handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
+            RelationalDataHandler<DatabaseElement,
+                    DatabaseSchemaElement,
+                    DatabaseTableElement,
+                    DatabaseViewElement,
+                    DatabaseColumnElement,
+                    SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            List<SchemaAttribute> databaseColumnAttributes = handler.getDatabaseColumnsByName(userId, name, startFrom, pageSize, methodName);
+            List<DatabaseColumnElement> databaseColumnAttributes = handler.getDatabaseColumnsByName(userId, name, startFrom, pageSize, methodName);
 
-            response.setElementList(cloner.getDatabaseColumnsFromAttributes(databaseColumnAttributes, userId, serverName, methodName));
+            response.setElementList(databaseColumnAttributes);
         }
         catch (InvalidParameterException error)
         {
@@ -3039,11 +3206,16 @@ public class DatabaseManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            RelationalDataHandler handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
+            RelationalDataHandler<DatabaseElement,
+                    DatabaseSchemaElement,
+                    DatabaseTableElement,
+                    DatabaseViewElement,
+                    DatabaseColumnElement,
+                    SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            SchemaAttribute schemaAttribute = handler.getDatabaseColumnByGUID(userId, guid, methodName);
+            DatabaseColumnElement schemaAttribute = handler.getDatabaseColumnByGUID(userId, guid, methodName);
 
-            response.setElement(cloner.getDatabaseColumnFromAttribute(schemaAttribute, userId, serverName, methodName));
+            response.setElement(schemaAttribute);
         }
         catch (InvalidParameterException error)
         {
@@ -3078,8 +3250,8 @@ public class DatabaseManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param integratorGUID unique identifier of software server capability representing the caller
-     * @param integratorName unique name of software server capability representing the caller
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param databaseColumnGUID unique identifier if the primary key column
      * @param databasePrimaryKeyProperties properties to store
      *
@@ -3090,8 +3262,8 @@ public class DatabaseManagerRESTServices
      */
     public VoidResponse setPrimaryKeyOnColumn(String                       serverName,
                                               String                       userId,
-                                              String                       integratorGUID,
-                                              String                       integratorName,
+                                              String                       databaseManagerGUID,
+                                              String                       databaseManagerName,
                                               String                       databaseColumnGUID,
                                               DatabasePrimaryKeyProperties databasePrimaryKeyProperties)
     {
@@ -3106,14 +3278,19 @@ public class DatabaseManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            RelationalDataHandler handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
+            RelationalDataHandler<DatabaseElement,
+                    DatabaseSchemaElement,
+                    DatabaseTableElement,
+                    DatabaseViewElement,
+                    DatabaseColumnElement,
+                    SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
             handler.setPrimaryKeyOnColumn(userId,
-                                          integratorGUID,
-                                          integratorName,
+                                          databaseManagerGUID,
+                                          databaseManagerName,
                                           databaseColumnGUID,
                                           databasePrimaryKeyProperties.getName(),
-                                          cloner.getOCFKeyPattern(databasePrimaryKeyProperties.getKeyPattern()),
+                                          databasePrimaryKeyProperties.getKeyPattern().getOpenTypeOrdinal(),
                                           methodName);
         }
         catch (InvalidParameterException error)
@@ -3144,8 +3321,8 @@ public class DatabaseManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param integratorGUID unique identifier of software server capability representing the caller
-     * @param integratorName unique name of software server capability representing the caller
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param databaseColumnGUID unique identifier if the primary key column
      * @param nullRequestBody empty request body
      *
@@ -3157,8 +3334,8 @@ public class DatabaseManagerRESTServices
     @SuppressWarnings(value = "unused")
     public VoidResponse removePrimaryKeyFromColumn(String          serverName,
                                                    String          userId,
-                                                   String          integratorGUID,
-                                                   String          integratorName,
+                                                   String          databaseManagerGUID,
+                                                   String          databaseManagerName,
                                                    String          databaseColumnGUID,
                                                    NullRequestBody nullRequestBody)
     {
@@ -3173,9 +3350,14 @@ public class DatabaseManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            RelationalDataHandler handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
+            RelationalDataHandler<DatabaseElement,
+                    DatabaseSchemaElement,
+                    DatabaseTableElement,
+                    DatabaseViewElement,
+                    DatabaseColumnElement,
+                    SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            handler.removePrimaryKeyFromColumn(userId, integratorGUID, integratorName, databaseColumnGUID, methodName);
+            handler.removePrimaryKeyFromColumn(userId, databaseManagerGUID, databaseManagerName, databaseColumnGUID, methodName);
         }
         catch (InvalidParameterException error)
         {
@@ -3206,8 +3388,8 @@ public class DatabaseManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param integratorGUID unique identifier of software server capability representing the caller
-     * @param integratorName unique name of software server capability representing the caller
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param primaryKeyColumnGUID unique identifier of the column containing the primary key
      * @param foreignKeyColumnGUID unique identifier of the column containing the primary key from the other table
      * @param databaseForeignKeyProperties properties about the foreign key relationship
@@ -3219,8 +3401,8 @@ public class DatabaseManagerRESTServices
      */
     public VoidResponse addForeignKeyRelationship(String                       serverName,
                                                   String                       userId,
-                                                  String                       integratorGUID,
-                                                  String                       integratorName,
+                                                  String                       databaseManagerGUID,
+                                                  String                       databaseManagerName,
                                                   String                       primaryKeyColumnGUID,
                                                   String                       foreignKeyColumnGUID,
                                                   DatabaseForeignKeyProperties databaseForeignKeyProperties)
@@ -3236,11 +3418,16 @@ public class DatabaseManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            RelationalDataHandler handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
+            RelationalDataHandler<DatabaseElement,
+                    DatabaseSchemaElement,
+                    DatabaseTableElement,
+                    DatabaseViewElement,
+                    DatabaseColumnElement,
+                    SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
             handler.addForeignKeyRelationship(userId,
-                                              integratorGUID,
-                                              integratorName,
+                                              databaseManagerGUID,
+                                              databaseManagerName,
                                               primaryKeyColumnGUID,
                                               foreignKeyColumnGUID,
                                               databaseForeignKeyProperties.getName(),
@@ -3278,8 +3465,8 @@ public class DatabaseManagerRESTServices
      *
      * @param serverName name of the service to route the request to.
      * @param userId calling user
-     * @param integratorGUID unique identifier of software server capability representing the caller
-     * @param integratorName unique name of software server capability representing the caller
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param primaryKeyColumnGUID unique identifier of the column that is the linked primary key
      * @param foreignKeyColumnGUID unique identifier of the column the contains the primary key from another table
      * @param nullRequestBody empty request body
@@ -3292,8 +3479,8 @@ public class DatabaseManagerRESTServices
     @SuppressWarnings(value = "unused")
     public VoidResponse removeForeignKeyRelationship(String          serverName,
                                                      String          userId,
-                                                     String          integratorGUID,
-                                                     String          integratorName,
+                                                     String          databaseManagerGUID,
+                                                     String          databaseManagerName,
                                                      String          primaryKeyColumnGUID,
                                                      String          foreignKeyColumnGUID,
                                                      NullRequestBody nullRequestBody)
@@ -3309,9 +3496,14 @@ public class DatabaseManagerRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            RelationalDataHandler handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
+            RelationalDataHandler<DatabaseElement,
+                    DatabaseSchemaElement,
+                    DatabaseTableElement,
+                    DatabaseViewElement,
+                    DatabaseColumnElement,
+                    SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
-            handler.removeForeignKeyRelationship(userId, integratorGUID, integratorName, primaryKeyColumnGUID, foreignKeyColumnGUID, methodName);
+            handler.removeForeignKeyRelationship(userId, databaseManagerGUID, databaseManagerName, primaryKeyColumnGUID, foreignKeyColumnGUID, methodName);
         }
         catch (InvalidParameterException error)
         {

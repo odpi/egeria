@@ -5,8 +5,7 @@ package org.odpi.openmetadata.accessservices.datamanager.properties;
 
 import com.fasterxml.jackson.annotation.*;
 
-import java.util.Date;
-import java.util.Map;
+import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -18,11 +17,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class DatabaseViewProperties extends SchemaAttributeProperties
+public class DatabaseViewProperties extends DatabaseTableProperties
 {
     private static final long    serialVersionUID = 1L;
 
-    private String expression = null;
+    private String                        formula = null;
+    private List<DatabaseQueryProperties> queries = null;
+
 
     /**
      * Default constructor
@@ -44,30 +45,52 @@ public class DatabaseViewProperties extends SchemaAttributeProperties
 
         if (template != null)
         {
-            expression = template.getExpression();
+            formula = template.getFormula();
+            queries = template.getQueries();
         }
     }
 
 
     /**
-     * Return the code that generates the value for this view.
+     * Return the formula used to combine the values of the queries.  Each query is has a identifier and the
+     * formula has placeholders for these identifiers in it to show how the query results are combined.
      *
-     * @return string name
+     * @return String formula
      */
-    public String getExpression()
+    public String getFormula() { return formula; }
+
+
+    /**
+     * Set up the formula used to combine the values of the queries.  Each query is has a identifier and the
+     * formula has placeholders for these identifiers in it to show how the query results are combined.
+     *
+     * @param formula String formula
+     */
+    public void setFormula(String formula)
     {
-        return expression;
+        this.formula = formula;
     }
 
 
     /**
-     * Set up the code that generates the value for this view.
+     * Return the list of individual query targets for a derived column.
      *
-     * @param expression string name
+     * @return list of queries and their target element
      */
-    public void setExpression(String expression)
+    public List<DatabaseQueryProperties> getQueries()
     {
-        this.expression = expression;
+        return queries;
+    }
+
+
+    /**
+     * Set up the list of individual query targets for a derived column.
+     *
+     * @param queries list of queries and their target element
+     */
+    public void setQueries(List<DatabaseQueryProperties> queries)
+    {
+        this.queries = queries;
     }
 
 
@@ -80,7 +103,8 @@ public class DatabaseViewProperties extends SchemaAttributeProperties
     public String toString()
     {
         return "DatabaseViewProperties{" +
-                "expression='" + expression + '\'' +
+                "formula='" + formula + '\'' +
+                ", queries=" + queries +
                 ", elementPosition=" + getElementPosition() +
                 ", minCardinality=" + getMinCardinality() +
                 ", maxCardinality=" + getMaxCardinality() +
@@ -92,7 +116,6 @@ public class DatabaseViewProperties extends SchemaAttributeProperties
                 ", significantDigits=" + getSignificantDigits() +
                 ", nullable=" + isNullable() +
                 ", defaultValueOverride='" + getDefaultValueOverride() + '\'' +
-                ", anchorGUID='" + getAnchorGUID() + '\'' +
                 ", nativeJavaClass='" + getNativeJavaClass() + '\'' +
                 ", aliases=" + getAliases() +
                 ", deprecated=" + isDeprecated() +
@@ -129,7 +152,8 @@ public class DatabaseViewProperties extends SchemaAttributeProperties
             return false;
         }
         DatabaseViewProperties that = (DatabaseViewProperties) objectToCompare;
-        return Objects.equals(expression, that.expression);
+        return Objects.equals(formula, that.formula) &&
+                Objects.equals(queries, that.queries);
     }
 
 
@@ -141,6 +165,6 @@ public class DatabaseViewProperties extends SchemaAttributeProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), expression);
+        return Objects.hash(super.hashCode(), formula, queries);
     }
 }

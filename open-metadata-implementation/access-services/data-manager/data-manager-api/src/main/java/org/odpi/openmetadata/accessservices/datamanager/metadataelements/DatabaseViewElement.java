@@ -45,6 +45,8 @@ public class DatabaseViewElement extends DatabaseViewProperties implements Metad
      */
     public DatabaseViewElement(DatabaseViewElement template)
     {
+        super(template);
+
         if (template != null)
         {
             elementHeader = template.getElementHeader();
@@ -86,7 +88,8 @@ public class DatabaseViewElement extends DatabaseViewProperties implements Metad
     {
         return "DatabaseViewElement{" +
                 "elementHeader=" + elementHeader +
-                ", expression='" + getExpression() + '\'' +
+                ", formula='" + getFormula() + '\'' +
+                ", queries=" + getQueries() +
                 ", elementPosition=" + getElementPosition() +
                 ", minCardinality=" + getMinCardinality() +
                 ", maxCardinality=" + getMaxCardinality() +
@@ -98,7 +101,6 @@ public class DatabaseViewElement extends DatabaseViewProperties implements Metad
                 ", significantDigits=" + getSignificantDigits() +
                 ", nullable=" + isNullable() +
                 ", defaultValueOverride='" + getDefaultValueOverride() + '\'' +
-                ", anchorGUID='" + getAnchorGUID() + '\'' +
                 ", nativeJavaClass='" + getNativeJavaClass() + '\'' +
                 ", aliases=" + getAliases() +
                 ", deprecated=" + isDeprecated() +

@@ -18,7 +18,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-
 public class DatabaseColumnProperties extends TabularColumnProperties
 {
     private static final long    serialVersionUID = 1L;
@@ -120,7 +119,6 @@ public class DatabaseColumnProperties extends TabularColumnProperties
                 ", significantDigits=" + getSignificantDigits() +
                 ", nullable=" + isNullable() +
                 ", defaultValueOverride='" + getDefaultValueOverride() + '\'' +
-                ", anchorGUID='" + getAnchorGUID() + '\'' +
                 ", nativeJavaClass='" + getNativeJavaClass() + '\'' +
                 ", aliases=" + getAliases() +
                 ", deprecated=" + isDeprecated() +

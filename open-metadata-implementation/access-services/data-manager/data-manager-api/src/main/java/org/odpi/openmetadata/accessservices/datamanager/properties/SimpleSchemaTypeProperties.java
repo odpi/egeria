@@ -150,4 +150,15 @@ public class SimpleSchemaTypeProperties extends SchemaTypeProperties
         return Objects.equals(getDataType(), that.getDataType()) &&
                 Objects.equals(getDefaultValue(), that.getDefaultValue());
     }
+
+    /**
+     * Return hash code for this object
+     *
+     * @return int hash code
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), dataType, defaultValue);
+    }
 }

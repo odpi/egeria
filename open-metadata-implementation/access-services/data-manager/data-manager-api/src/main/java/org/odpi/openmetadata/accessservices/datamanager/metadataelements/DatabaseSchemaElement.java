@@ -45,6 +45,8 @@ public class DatabaseSchemaElement extends DatabaseSchemaProperties implements M
      */
     public DatabaseSchemaElement(DatabaseSchemaElement template)
     {
+        super(template);
+
         if (template != null)
         {
             elementHeader = template.getElementHeader();
@@ -91,8 +93,7 @@ public class DatabaseSchemaElement extends DatabaseSchemaProperties implements M
                 ", owner='" + getOwner() + '\'' +
                 ", ownerCategory=" + getOwnerCategory() +
                 ", zoneMembership=" + getZoneMembership() +
-                ", origin=" + getOrigin() +
-                ", latestChange='" + getLatestChange() + '\'' +
+                ", origin=" + getOtherOriginValues() +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +
                 ", vendorProperties=" + getVendorProperties() +

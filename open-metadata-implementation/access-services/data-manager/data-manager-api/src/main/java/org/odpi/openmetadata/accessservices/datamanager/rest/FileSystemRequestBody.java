@@ -15,13 +15,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * FileSystemProperties describes the root node of a file system.  NewFileSystemRequestBody extends these properties
+ * FileSystemProperties describes the root node of a file system.  FileSystemRequestBody extends these properties
  * with details of the metadata source.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class NewFileSystemRequestBody extends FileSystemProperties
+public class FileSystemRequestBody extends FileSystemProperties
 {
     private static final long    serialVersionUID = 1L;
 
@@ -32,7 +32,7 @@ public class NewFileSystemRequestBody extends FileSystemProperties
     /**
      * Default constructor
      */
-    public NewFileSystemRequestBody()
+    public FileSystemRequestBody()
     {
         super();
     }
@@ -43,7 +43,7 @@ public class NewFileSystemRequestBody extends FileSystemProperties
      *
      * @param template object to copy
      */
-    public NewFileSystemRequestBody(NewFileSystemRequestBody template)
+    public FileSystemRequestBody(FileSystemRequestBody template)
     {
         super(template);
 
@@ -60,7 +60,7 @@ public class NewFileSystemRequestBody extends FileSystemProperties
      *
      * @param template object to copy
      */
-    public NewFileSystemRequestBody(FileSystemProperties template)
+    public FileSystemRequestBody(FileSystemProperties template)
     {
         super(template);
     }
@@ -118,7 +118,7 @@ public class NewFileSystemRequestBody extends FileSystemProperties
     @Override
     public String toString()
     {
-        return "NewFileSystemRequestBody{" +
+        return "FileSystemRequestBody{" +
                 "externalSourceGUID='" + externalSourceGUID + '\'' +
                 ", externalSourceName='" + externalSourceName + '\'' +
                 ", format='" + getFormat() + '\'' +
@@ -159,7 +159,7 @@ public class NewFileSystemRequestBody extends FileSystemProperties
         {
             return false;
         }
-        NewFileSystemRequestBody that = (NewFileSystemRequestBody) objectToCompare;
+        FileSystemRequestBody that = (FileSystemRequestBody) objectToCompare;
         return Objects.equals(externalSourceGUID, that.externalSourceGUID) &&
                 Objects.equals(externalSourceName, that.externalSourceName);
     }

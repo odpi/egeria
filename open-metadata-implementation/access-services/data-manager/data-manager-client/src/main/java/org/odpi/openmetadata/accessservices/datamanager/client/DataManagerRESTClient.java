@@ -12,25 +12,25 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 
 
 /**
- * AssetOwnerRESTClient is responsible for issuing calls to the OMAS REST APIs.
+ * DataManagerRESTClient is responsible for issuing calls to the OMAS REST APIs.
  */
-class DataManagerRESTClient extends OCFRESTClient
+public class DataManagerRESTClient extends OCFRESTClient
 {
     /**
      * Constructor for no authentication with audit log.
      *
      * @param serverName name of the OMAG Server to call
-     * @param serverManagerURLRoot URL root of the server manager where the OMAG Server is running.
+     * @param serverPlatformURLRoot URL root of the server manager where the OMAG Server is running.
      * @param auditLog destination for log messages.
      *
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    DataManagerRESTClient(String    serverName,
-                           String    serverManagerURLRoot,
-                           AuditLog auditLog) throws InvalidParameterException
+    public DataManagerRESTClient(String   serverName,
+                                 String   serverPlatformURLRoot,
+                                 AuditLog auditLog) throws InvalidParameterException
     {
-        super(serverName, serverManagerURLRoot, auditLog);
+        super(serverName, serverPlatformURLRoot, auditLog);
     }
 
 
@@ -38,14 +38,14 @@ class DataManagerRESTClient extends OCFRESTClient
      * Constructor for no authentication.
      *
      * @param serverName name of the OMAG Server to call
-     * @param serverManagerURLRoot URL root of the server manager where the OMAG Server is running.
+     * @param serverPlatformURLRoot URL root of the server manager where the OMAG Server is running.
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
     DataManagerRESTClient(String serverName,
-                           String serverManagerURLRoot) throws InvalidParameterException
+                          String serverPlatformURLRoot) throws InvalidParameterException
     {
-        super(serverName, serverManagerURLRoot);
+        super(serverName, serverPlatformURLRoot);
     }
 
 
@@ -53,20 +53,20 @@ class DataManagerRESTClient extends OCFRESTClient
      * Constructor for simple userId and password authentication with audit log.
      *
      * @param serverName name of the OMAG Server to call
-     * @param serverManagerURLRoot URL root of the server manager where the OMAG Server is running.
+     * @param serverPlatformURLRoot URL root of the server manager where the OMAG Server is running.
      * @param userId user id for the HTTP request
      * @param password password for the HTTP request
      * @param auditLog destination for log messages.
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    DataManagerRESTClient(String   serverName,
-                           String   serverManagerURLRoot,
-                           String   userId,
-                           String   password,
-                           AuditLog auditLog) throws InvalidParameterException
+    public DataManagerRESTClient(String   serverName,
+                                 String   serverPlatformURLRoot,
+                                 String   userId,
+                                 String   password,
+                                 AuditLog auditLog) throws InvalidParameterException
     {
-        super(serverName, serverManagerURLRoot, userId, password, auditLog);
+        super(serverName, serverPlatformURLRoot, userId, password, auditLog);
     }
 
 
@@ -74,18 +74,18 @@ class DataManagerRESTClient extends OCFRESTClient
      * Constructor for simple userId and password authentication.
      *
      * @param serverName name of the OMAG Server to call
-     * @param serverManagerURLRoot URL root of the server manager where the OMAG Server is running.
+     * @param serverPlatformURLRoot URL root of the server manager where the OMAG Server is running.
      * @param userId user id for the HTTP request
      * @param password password for the HTTP request
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
     DataManagerRESTClient(String serverName,
-                           String serverManagerURLRoot,
-                           String userId,
-                           String password) throws InvalidParameterException
+                          String serverPlatformURLRoot,
+                          String userId,
+                          String password) throws InvalidParameterException
     {
-        super(serverName, serverManagerURLRoot, userId, password);
+        super(serverName, serverPlatformURLRoot, userId, password);
     }
 
 
@@ -342,6 +342,166 @@ class DataManagerRESTClient extends OCFRESTClient
                                                                                 PropertyServerException
     {
         DatabaseViewsResponse restResult = this.callGetRESTCall(methodName, DatabaseViewsResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a GET REST call that returns a DataFileResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return response object
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    DataFileResponse callDataFileGetRESTCall(String    methodName,
+                                             String    urlTemplate,
+                                             Object... params) throws InvalidParameterException,
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException
+    {
+        DataFileResponse restResult = this.callGetRESTCall(methodName, DataFileResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a POST REST call that returns a DataFileResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param requestBody object that passes additional parameters
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return response object
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    DataFileResponse callDataFilePostRESTCall(String    methodName,
+                                              String    urlTemplate,
+                                              Object    requestBody,
+                                              Object... params) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException
+    {
+        DataFileResponse restResult = this.callPostRESTCall(methodName, DataFileResponse.class, urlTemplate, requestBody, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a GET REST call that returns a DataFilesResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return response object
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    DataFilesResponse callDataFilesGetRESTCall(String    methodName,
+                                               String    urlTemplate,
+                                               Object... params) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException
+    {
+        DataFilesResponse restResult = this.callGetRESTCall(methodName, DataFilesResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a GET REST call that returns a FileFolderResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return response object
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    FileFolderResponse callFileFolderGetRESTCall(String    methodName,
+                                                 String    urlTemplate,
+                                                 Object... params) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
+    {
+        FileFolderResponse restResult = this.callGetRESTCall(methodName, FileFolderResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a POST REST call that returns a FileFolderResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param requestBody object that passes additional parameters
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return response object
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    FileFolderResponse callFileFolderPostRESTCall(String    methodName,
+                                                  String    urlTemplate,
+                                                  Object    requestBody,
+                                                  Object... params) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
+    {
+        FileFolderResponse restResult = this.callPostRESTCall(methodName, FileFolderResponse.class, urlTemplate, requestBody, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a GET REST call that returns a FileFoldersResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return response object
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    FileFoldersResponse callFileFoldersGetRESTCall(String    methodName,
+                                                   String    urlTemplate,
+                                                   Object... params) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
+    {
+        FileFoldersResponse restResult = this.callGetRESTCall(methodName, FileFoldersResponse.class, urlTemplate, params);
 
         exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
 

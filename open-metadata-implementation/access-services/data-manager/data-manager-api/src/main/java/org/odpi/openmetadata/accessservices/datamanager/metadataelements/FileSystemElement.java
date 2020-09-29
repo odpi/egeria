@@ -45,6 +45,8 @@ public class FileSystemElement extends FileSystemProperties implements MetadataE
      */
     public FileSystemElement(FileSystemElement template)
     {
+        super(template);
+
         if (template != null)
         {
             elementHeader = template.getElementHeader();
@@ -86,7 +88,6 @@ public class FileSystemElement extends FileSystemProperties implements MetadataE
     {
         return "FileSystemElement{" +
                 "elementHeader=" + elementHeader +
-                ", fileSystemType='" + getFileSystemType() + '\'' +
                 ", format='" + getFormat() + '\'' +
                 ", encryption='" + getEncryption() + '\'' +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
