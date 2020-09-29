@@ -19,7 +19,7 @@ they are the only technology employed by the organization.
 The result is that knowledge is not shared between people that use different tool sets.
 
 ODPi Egeria is an open source project dedicated to making metadata open and automatically exchanged between tools
-and data platforms, no matter which vendor they come from.
+and platforms, no matter which vendor they come from.
 
 We believe in the **open metadata and governance manifesto**:
 
@@ -49,7 +49,10 @@ value from data and tools for a wide range of use cases.
 
 ## Eager to Get Started Now
 
-If you are interested in getting started with Egeria, try our [tutorials](open-metadata-resources/open-metadata-tutorials).
+The [Egeria Solutions](open-metadata-publication/website/solutions) describe
+different integration solutions that you can create with Egeria.
+
+If you are interested in getting hands-on with the Egeria technology, try our [tutorials](open-metadata-resources/open-metadata-tutorials).
 They show people with different roles in a fictitious organization called
 [Coco Pharmaceuticals](https://opengovernance.odpi.org/coco-pharmaceuticals/) making use of different capabilities
 from Egeria.
@@ -122,7 +125,7 @@ The following articles may answer additional questions that you have.
 * [What are the goals of Egeria?](open-metadata-publication/website) - understand the motivation behind this project and its key components.
 * [How do I run Egeria?](open-metadata-resources/open-metadata-tutorials) - try our getting started tutorials and labs.
 * [Where is the design documentation?](open-metadata-implementation) - dig deeper into the code.
-* [Where are the open metadata specifications?](open-metadata-publication/website/open-metadata-specifications) - learn how Egeria is both supporting ant providing standards.
+* [Where are the open metadata specifications?](open-metadata-publication/website/open-metadata-specifications) - learn how Egeria is both supporting and providing standards.
 * [How do I raise a bug or feature request?](https://github.com/odpi/egeria/issues) - create a GitHub Issue to get help.
 * [How do I integrate my metadata repository into the open metadata ecosystem?](open-metadata-publication/website/open-metadata-integration-patterns) - understand the options.
 * [How do I test that a technology is conformant with the open metadata specifications?](open-metadata-conformance-suite) - learn how to run the conformance suite.
