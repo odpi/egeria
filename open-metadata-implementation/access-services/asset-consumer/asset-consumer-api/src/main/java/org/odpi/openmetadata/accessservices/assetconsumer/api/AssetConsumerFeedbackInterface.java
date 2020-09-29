@@ -54,7 +54,7 @@ public interface AssetConsumerFeedbackInterface
 
 
     /**
-     * Adds a "Like" to the asset.  If the user has already attached a like then the original one
+     * Adds a "LikeProperties" to the asset.  If the user has already attached a like then the original one
      * is over-ridden.
      *
      * @param userId      userId of user making request.
@@ -73,7 +73,7 @@ public interface AssetConsumerFeedbackInterface
 
 
     /**
-     * Removes a "Like" added to the asset by this user.
+     * Removes a "LikeProperties" added to the asset by this user.
      *
      * @param userId   userId of user making request.
      * @param assetGUID unique identifier for the asset where the like is attached.

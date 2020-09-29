@@ -403,36 +403,6 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
 
 
     /**
-     * Returns the connection object corresponding to the supplied connection name.
-     *
-     * @param userId  String - userId of user making request.
-     * @param name  this may be the qualifiedName or displayName of the connection.
-     *
-     * @return Connection retrieved from property server.
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem retrieving information from the property (metadata) server.
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    private Connection getConnectionByName(String   userId,
-                                           String   name) throws InvalidParameterException,
-                                                                 PropertyServerException,
-                                                                 UserNotAuthorizedException
-    {
-        final String   methodName = "getConnectionByName";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/connections/by-name/{2}";
-
-        ConnectionResponse restResult = restClient.callConnectionGetRESTCall(methodName,
-                                                                             serverPlatformRootURL + urlTemplate,
-                                                                             serverName,
-                                                                             userId,
-                                                                             name);
-
-         return restResult.getConnection();
-    }
-
-
-    /**
      * Returns the connector corresponding to the supplied connection name.
      *
      * @param userId           userId of user making request.
@@ -463,7 +433,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
         return this.getConnectorForConnection(restClient,
                                               serviceURLName,
                                               userId,
-                                              this.getConnectionByName(userId, connectionName),
+                                              super.getConnectionByName(restClient, serviceURLName, userId, connectionName),
                                               methodName);
     }
 
@@ -649,7 +619,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
 
 
     /**
-     * Adds a "Like" to the asset.
+     * Adds a "LikeProperties" to the asset.
      *
      * @param userId      userId of user making request
      * @param assetGUID   unique identifier for the asset
@@ -685,7 +655,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
 
 
     /**
-     * Removes a "Like" added to the asset by this user.
+     * Removes a "LikeProperties" added to the asset by this user.
      *
      * @param userId   userId of user making request.
      * @param assetGUID unique identifier for the like object.
@@ -1524,6 +1494,48 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
 
 
     /**
+     * Adds a tag (either private of public) to an element attached to an asset - such as schema element, glossary term, ...
+     *
+     * @param userId           userId of user making request.
+     * @param elementGUID      unique id for the element.
+     * @param tagGUID          unique id of the tag.
+     * @param isPublic         flag indicating whether the attachment of the tag is public or not
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem adding the asset properties to the property server.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void   addTagToElement(String  userId,
+                                  String  elementGUID,
+                                  String  tagGUID,
+                                  boolean isPublic) throws InvalidParameterException,
+                                                           PropertyServerException,
+                                                           UserNotAuthorizedException
+    {
+        final String   methodName  = "addTagToElement";
+        final String   elementGUIDParameterName = "elementGUID";
+        final String   tagGUIDParameterName = "tagGUID";
+
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/assets/elements/{2}/tags/{3}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(elementGUID, elementGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(tagGUID, tagGUIDParameterName, methodName);
+
+        FeedbackRequestBody requestBody = new FeedbackRequestBody();
+        requestBody.setPublic(isPublic);
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        elementGUID,
+                                        tagGUID);
+    }
+
+
+
+    /**
      * Removes a tag from the asset that was added by this user.
      *
      * @param userId    userId of user making request.
@@ -1556,6 +1568,43 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
                                         serverName,
                                         userId,
                                         assetGUID,
+                                        tagGUID);
+    }
+
+
+    /**
+     * Removes a tag from an element attached to an asset - such as schema element, glossary term, ... that was added by this user.
+     *
+     * @param userId    userId of user making request.
+     * @param elementGUID unique id for the element.
+     * @param tagGUID   unique id for the tag.
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem updating the asset properties in the property server.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void   removeTagFromElement(String userId,
+                                       String elementGUID,
+                                       String tagGUID) throws InvalidParameterException,
+                                                              PropertyServerException,
+                                                              UserNotAuthorizedException
+    {
+        final String   methodName  = "removeTagFromElement";
+        final String   elementGUIDParameterName = "elementGUID";
+        final String   tagGUIDParameterName = "tagGUID";
+
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/assets/elements/{2}/tags/{3}/delete";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(elementGUID, elementGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(tagGUID, tagGUIDParameterName, methodName);
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        nullRequestBody,
+                                        serverName,
+                                        userId,
+                                        elementGUID,
                                         tagGUID);
     }
 

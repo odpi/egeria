@@ -212,6 +212,26 @@ public interface AssetConsumerTaggingInterface
 
 
     /**
+     * Adds a tag (either private of public) to an element attached to an asset - such as schema element, glossary term, ...
+     *
+     * @param userId           userId of user making request.
+     * @param elementGUID      unique id for the element.
+     * @param tagGUID          unique id of the tag.
+     * @param isPublic         flag indicating whether the attachment of the tag is public or not
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem adding the asset properties to the property server.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    void   addTagToElement(String  userId,
+                           String  elementGUID,
+                           String  tagGUID,
+                           boolean isPublic) throws InvalidParameterException,
+                                                    PropertyServerException,
+                                                    UserNotAuthorizedException;
+
+
+    /**
      * Removes a tag from the asset that was added by this user.
      *
      * @param userId    userId of user making request.
@@ -227,6 +247,25 @@ public interface AssetConsumerTaggingInterface
                               String tagGUID) throws InvalidParameterException,
                                                      PropertyServerException,
                                                      UserNotAuthorizedException;
+
+
+    /**
+     * Removes a tag from an element attached to an asset - such as schema element, glossary term, ... that was added by this user.
+     *
+     * @param userId    userId of user making request.
+     * @param elementGUID unique id for the element.
+     * @param tagGUID   unique id for the tag.
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem updating the asset properties in the property server.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    void   removeTagFromElement(String userId,
+                                String elementGUID,
+                                String tagGUID) throws InvalidParameterException,
+                                                       PropertyServerException,
+                                                       UserNotAuthorizedException;
+
 
     /**
      * Return the list of unique identifiers for assets that are linked to a specific tag either directly, or via one
