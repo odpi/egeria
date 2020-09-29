@@ -18,11 +18,7 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopic;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntitySummary;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceGraph;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -133,30 +129,40 @@ public class EventPublisher extends OMRSInstanceEventProcessor {
 
     }
 
-    public void processClassifiedEntityEvent(String sourceName,
-                                             String originatorMetadataCollectionId,
-                                             String originatorServerName,
-                                             String originatorServerType,
-                                             String originatorOrganizationName,
-                                             EntityDetail entity) {
+
+    @Override
+    public  void processClassifiedEntityEvent(String         sourceName,
+                                              String         originatorMetadataCollectionId,
+                                              String         originatorServerName,
+                                              String         originatorServerType,
+                                              String         originatorOrganizationName,
+                                              EntityDetail   entity,
+                                              Classification classification) {
 
     }
 
-    public void processDeclassifiedEntityEvent(String sourceName,
-                                               String originatorMetadataCollectionId,
-                                               String originatorServerName,
-                                               String originatorServerType,
-                                               String originatorOrganizationName,
-                                               EntityDetail entity) {
+
+    @Override
+    public void processDeclassifiedEntityEvent(String         sourceName,
+                                               String         originatorMetadataCollectionId,
+                                               String         originatorServerName,
+                                               String         originatorServerType,
+                                               String         originatorOrganizationName,
+                                               EntityDetail   entity,
+                                               Classification originalClassification) {
 
     }
 
-    public void processReclassifiedEntityEvent(String sourceName,
-                                               String originatorMetadataCollectionId,
-                                               String originatorServerName,
-                                               String originatorServerType,
-                                               String originatorOrganizationName,
-                                               EntityDetail entity) {
+
+    @Override
+    public  void processReclassifiedEntityEvent(String         sourceName,
+                                                String         originatorMetadataCollectionId,
+                                                String         originatorServerName,
+                                                String         originatorServerType,
+                                                String         originatorOrganizationName,
+                                                EntityDetail   entity,
+                                                Classification originalClassification,
+                                                Classification classification) {
 
     }
 
