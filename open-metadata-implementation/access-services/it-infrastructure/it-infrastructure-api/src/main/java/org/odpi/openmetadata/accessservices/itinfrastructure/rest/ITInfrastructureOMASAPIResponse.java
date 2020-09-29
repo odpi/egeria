@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.itinfrastructure.responses;
+package org.odpi.openmetadata.accessservices.itinfrastructure.rest;
 
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;

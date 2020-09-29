@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.itinfrastructure.responses;
+package org.odpi.openmetadata.accessservices.itinfrastructure.rest;
 
 /**
  * MockAPIResponse enables the overridden methods of ITInfrastructureOMASAPIResponse to be tested.
