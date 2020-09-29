@@ -5,8 +5,8 @@ package org.odpi.openmetadata.adminservices.spring;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.adminservices.OMAGServerAdminForViewServices;
-import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerClientConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.ViewServiceConfig;
+import org.odpi.openmetadata.adminservices.rest.ViewServiceRequestBody;
 import org.odpi.openmetadata.adminservices.rest.ViewServicesResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGServicesResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
@@ -39,25 +39,26 @@ public class ConfigViewServicesResource
      * @param serverName name of server
      * @return list of view service descriptions
      */
-    @GetMapping(path = "/configuration")
+    @GetMapping(path = "/view-services")
     public RegisteredOMAGServicesResponse getConfiguredViewServices(@PathVariable String userId,
                                                                     @PathVariable String serverName)
     {
         return adminAPI.getConfiguredViewServices(userId, serverName);
     }
 
+
     /**
-     * Return the list of view services for this server.
+     * Return the view services configuration for this server.
      *
      * @param userId calling user
      * @param serverName name of server
-     * @return response containing the list of enabled view services
+     * @return response containing the view services configuration
      */
-    @GetMapping()
-    public ViewServicesResponse getViewServices(@PathVariable String userId,
-                                                @PathVariable String serverName)
+    @GetMapping(path = "/view-services/configuration")
+    public ViewServicesResponse getViewServicesConfiguration(@PathVariable String userId,
+                                                             @PathVariable String serverName)
     {
-        return adminAPI.getViewServices(userId, serverName);
+        return adminAPI.getViewServicesConfiguration(userId, serverName);
     }
 
 
@@ -66,20 +67,20 @@ public class ConfigViewServicesResource
      *
      * @param userId  user that is issuing the request.
      * @param serverName       local server name.
-     * @param clientConfig     URL root and server name that are used to access the downstream OMAG Server.
+     * @param requestBody     URL root and server name that are used to access the downstream OMAG Server.
      * @param serviceURLMarker string indicating which view service it is configuring
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGConfigurationErrorException the event bus has not been configured or
      * OMAGInvalidParameterException invalid serverName parameter.
      */
-    @PostMapping(path = "/{serviceURLMarker}")
+    @PostMapping(path = "/view-services/{serviceURLMarker}")
     public VoidResponse configureViewService(@PathVariable  String                 userId,
                                              @PathVariable  String                 serverName,
                                              @PathVariable  String                 serviceURLMarker,
-                                             @RequestBody   OMAGServerClientConfig clientConfig)
+                                             @RequestBody   ViewServiceRequestBody requestBody)
     {
-        return adminAPI.configureViewService(userId, serverName, serviceURLMarker, clientConfig);
+        return adminAPI.configureViewService(userId, serverName, serviceURLMarker, requestBody);
     }
 
 
@@ -89,36 +90,20 @@ public class ConfigViewServicesResource
      *
      * @param userId      user that is issuing the request.
      * @param serverName  local server name.
-     * @param clientConfig URL root and server name that are used to access the downstream OMAG Server.
+     * @param requestBody URL root and server name that are used to access the downstream OMAG Server.
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGConfigurationErrorException the event bus has not been configured or
      * OMAGInvalidParameterException invalid serverName parameter.
      */
-    @PostMapping()
-    public VoidResponse configureAllViewServices(@PathVariable                  String              userId,
-                                                 @PathVariable                  String              serverName,
-                                                 @RequestBody                   OMAGServerClientConfig clientConfig)
+    @PostMapping(path = "/view-services")
+    public VoidResponse configureAllViewServices(@PathVariable String                 userId,
+                                                 @PathVariable String                 serverName,
+                                                 @RequestBody  ViewServiceRequestBody requestBody)
     {
-        return adminAPI.configureAllViewServices(userId, serverName, clientConfig);
+        return adminAPI.configureAllViewServices(userId, serverName, requestBody);
     }
 
-    /**
-     * Disable the view services.  This removes all configuration for the view services.
-     *
-     * @param userId  user that is issuing the request.
-     * @param serverName  local server name.
-     * @return void response or
-     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName parameter or
-     * OMAGConfigurationErrorException unusual state in the admin server.
-     */
-    @DeleteMapping()
-    public VoidResponse clearAllViewServices(@PathVariable String          userId,
-                                             @PathVariable String          serverName)
-    {
-        return adminAPI.clearAllViewServices(userId, serverName);
-    }
 
     /**
      * Set up the configuration for selected open metadata view services (OMVSs).  This overrides
@@ -132,11 +117,29 @@ public class ConfigViewServicesResource
      * OMAGInvalidParameterException invalid serverName or viewServicesConfig parameter or
      * OMAGConfigurationErrorException unusual state in the admin server.
      */
-    @PostMapping(path = "/configuration")
-    public VoidResponse setViewServicesConfig(@PathVariable String                    userId,
-                                              @PathVariable String                    serverName,
+    @PostMapping(path = "/view-services/configuration")
+    public VoidResponse setViewServicesConfig(@PathVariable String                  userId,
+                                              @PathVariable String                  serverName,
                                               @RequestBody  List<ViewServiceConfig> viewServicesConfig)
     {
         return adminAPI.setViewServicesConfig(userId, serverName, viewServicesConfig);
+    }
+
+
+    /**
+     * Disable the view services.  This removes all configuration for the view services.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName parameter or
+     * OMAGConfigurationErrorException unusual state in the admin server.
+     */
+    @DeleteMapping(path = "/view-services")
+    public VoidResponse clearAllViewServices(@PathVariable String userId,
+                                             @PathVariable String serverName)
+    {
+        return adminAPI.clearAllViewServices(userId, serverName);
     }
 }

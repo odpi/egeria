@@ -23,17 +23,18 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         include = JsonTypeInfo.As.PROPERTY,
         property = "class")
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = DiscoveryEngineServicesConfig.class, name = "DiscoveryEngineServicesConfig"),
+        @JsonSubTypes.Type(value = DiscoveryEngineServicesConfig.class,   name = "DiscoveryEngineServicesConfig"),
+        @JsonSubTypes.Type(value = IntegrationServiceConfig.class,        name = "IntegrationServiceConfig"),
         @JsonSubTypes.Type(value = StewardshipEngineServicesConfig.class, name = "StewardshipEngineServicesConfig"),
-        @JsonSubTypes.Type(value = ViewServiceConfig.class, name = "ViewServiceConfig")
+        @JsonSubTypes.Type(value = ViewServiceConfig.class,               name = "ViewServiceConfig")
 })
 public class OMAGServerClientConfig extends AdminServicesConfigHeader
 {
     private static final long    serialVersionUID = 1L;
 
     /* Properties needed to call the OMAG Server REST APIs */
-    protected String omagServerPlatformRootURL = null;
-    protected String omagServerName            = null;
+    private String omagServerPlatformRootURL = null;
+    private String omagServerName            = null;
 
     /**
      * Default constructor
@@ -59,6 +60,7 @@ public class OMAGServerClientConfig extends AdminServicesConfigHeader
             omagServerName            = template.getOMAGServerName();
         }
     }
+
 
     /**
      * Return the root URL of the OMAG ServerPlatform.

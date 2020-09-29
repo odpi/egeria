@@ -5,7 +5,7 @@ package org.odpi.openmetadata.adminservices.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.adminservices.configuration.properties.ViewServiceConfig;
+import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
 
 import java.util.Arrays;
@@ -16,23 +16,23 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * ViewServicesResponse provides a response object for returning information about a
+ * AccessServicesResponse provides a response object for returning information about a
  * list of services that are configured in an OMAG Server Platform.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ViewServicesResponse extends FFDCResponseBase
+public class AccessServicesResponse extends FFDCResponseBase
 {
     private static final long    serialVersionUID = 1L;
 
-    private List<ViewServiceConfig> services;
+    private List<AccessServiceConfig> services;
 
 
     /**
      * Default constructor
      */
-    public ViewServicesResponse()
+    public AccessServicesResponse()
     {
     }
 
@@ -42,7 +42,7 @@ public class ViewServicesResponse extends FFDCResponseBase
      *
      * @param template object to copy
      */
-    public ViewServicesResponse(ViewServicesResponse template)
+    public AccessServicesResponse(AccessServicesResponse template)
     {
         super(template);
 
@@ -58,7 +58,7 @@ public class ViewServicesResponse extends FFDCResponseBase
      *
      * @return service descriptions
      */
-    public List<ViewServiceConfig> getServices()
+    public List<AccessServiceConfig> getServices()
     {
         if (services == null)
         {
@@ -80,7 +80,7 @@ public class ViewServicesResponse extends FFDCResponseBase
      *
      * @param services service
      */
-    public void setServices(List<ViewServiceConfig> services)
+    public void setServices(List<AccessServiceConfig> services)
     {
         this.services = services;
     }
@@ -94,7 +94,7 @@ public class ViewServicesResponse extends FFDCResponseBase
     @Override
     public String toString()
     {
-        return "ViewServicesResponse{" +
+        return "AccessServicesResponse{" +
                 "services=" + services +
                 ", exceptionClassName='" + getExceptionClassName() + '\'' +
                 ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
@@ -131,7 +131,7 @@ public class ViewServicesResponse extends FFDCResponseBase
         {
             return false;
         }
-        ViewServicesResponse that = (ViewServicesResponse) objectToCompare;
+        AccessServicesResponse that = (AccessServicesResponse) objectToCompare;
         return Objects.equals(getServices(), that.getServices());
     }
 

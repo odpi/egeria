@@ -1,101 +1,80 @@
-/* SPDX-License-Identifier: Apache 2.0 */
+/* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adminservices.rest;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.adminservices.configuration.properties.ViewServiceConfig;
-import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
+import org.odpi.openmetadata.adminservices.configuration.properties.IntegrationServiceConfig;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
+
 /**
- * ViewServicesResponse provides a response object for returning information about a
- * list of services that are configured in an OMAG Server Platform.
+ * IntegrationServiceConfigResponse is the response structure used on the OMAG REST API calls that returns a
+ * IntegrationServiceConfig object as a response.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ViewServicesResponse extends FFDCResponseBase
+public class IntegrationServiceConfigResponse extends AdminServicesAPIResponse
 {
     private static final long    serialVersionUID = 1L;
 
-    private List<ViewServiceConfig> services;
+    private IntegrationServiceConfig config = null;
 
 
     /**
      * Default constructor
      */
-    public ViewServicesResponse()
+    public IntegrationServiceConfigResponse()
     {
     }
 
 
     /**
-     * Copy clone constructor
+     * Return the config object.
      *
-     * @param template object to copy
+     * @return IntegrationServiceConfig object
      */
-    public ViewServicesResponse(ViewServicesResponse template)
+    public IntegrationServiceConfig getConfig()
     {
-        super(template);
-
-        if (template != null)
-        {
-            this.services = template.getServices();
-        }
-    }
-
-
-    /**
-     * Return the list of services
-     *
-     * @return service descriptions
-     */
-    public List<ViewServiceConfig> getServices()
-    {
-        if (services == null)
-        {
-            return null;
-        }
-        else if (services.isEmpty())
+        if (config == null)
         {
             return null;
         }
         else
         {
-            return services;
+            return new IntegrationServiceConfig(config);
         }
     }
 
 
     /**
-     * Set up the list of services
+     * Set up the config object.
      *
-     * @param services service
+     * @param config - IntegrationServiceConfig object
      */
-    public void setServices(List<ViewServiceConfig> services)
+    public void setConfig(IntegrationServiceConfig config)
     {
-        this.services = services;
+        this.config = config;
     }
 
 
     /**
-     * JSON-style toString
+     * Standard toString method.
      *
-     * @return return string containing the property names and values
+     * @return print out of variables in a JSON-style
      */
     @Override
     public String toString()
     {
-        return "ViewServicesResponse{" +
-                "services=" + services +
+        return "IntegrationServiceConfigResponse{" +
+                "config=" + config +
                 ", exceptionClassName='" + getExceptionClassName() + '\'' +
                 ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
                 ", actionDescription='" + getActionDescription() + '\'' +
@@ -111,10 +90,10 @@ public class ViewServicesResponse extends FFDCResponseBase
 
 
     /**
-     * Return comparison result based on the content of the properties.
+     * Compare the values of the supplied object with those stored in the current object.
      *
-     * @param objectToCompare test object
-     * @return result of comparison
+     * @param objectToCompare supplied object
+     * @return boolean result of comparison
      */
     @Override
     public boolean equals(Object objectToCompare)
@@ -123,7 +102,7 @@ public class ViewServicesResponse extends FFDCResponseBase
         {
             return true;
         }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        if (!(objectToCompare instanceof IntegrationServiceConfigResponse))
         {
             return false;
         }
@@ -131,20 +110,20 @@ public class ViewServicesResponse extends FFDCResponseBase
         {
             return false;
         }
-        ViewServicesResponse that = (ViewServicesResponse) objectToCompare;
-        return Objects.equals(getServices(), that.getServices());
+        IntegrationServiceConfigResponse that = (IntegrationServiceConfigResponse) objectToCompare;
+        return Objects.equals(config, that.config);
     }
 
 
-
     /**
-     * Return hash code for this object
+     * Create a hash code for this element type.
      *
      * @return int hash code
      */
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getServices());
+
+        return Objects.hash(super.hashCode(), config);
     }
 }

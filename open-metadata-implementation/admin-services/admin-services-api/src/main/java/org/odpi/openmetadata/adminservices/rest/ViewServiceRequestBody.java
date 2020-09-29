@@ -1,36 +1,35 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.adminservices.configuration.properties;
-
+package org.odpi.openmetadata.adminservices.rest;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerClientConfig;
 
-import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * StewardshipServicesConfig provides the configuration properties for
- * the stewardship services.
+ * ViewServiceRequestBody passes the minimum information to set up an view server.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class StewardshipEngineServicesConfig extends OMAGServerClientConfig
+public class ViewServiceRequestBody extends OMAGServerClientConfig
 {
     private static final long    serialVersionUID = 1L;
 
-    private List<String> stewardshipEngineNames = null;
+    private Map<String, Object>  viewServiceOptions = null;
 
 
     /**
-     * Default constructor
+     * Default constructor for use with Jackson libraries
      */
-    public StewardshipEngineServicesConfig()
+    public ViewServiceRequestBody()
     {
         super();
     }
@@ -41,36 +40,47 @@ public class StewardshipEngineServicesConfig extends OMAGServerClientConfig
      *
      * @param template object to copy
      */
-    public StewardshipEngineServicesConfig(StewardshipEngineServicesConfig template)
+    public ViewServiceRequestBody(ViewServiceRequestBody template)
     {
         super(template);
 
         if (template != null)
         {
-            stewardshipEngineNames = template.getStewardshipEngineNames();
+            viewServiceOptions = template.getViewServiceOptions();
         }
     }
 
 
     /**
-     * Return the list of unique names (qualifiedName) for the stewardship engines that will run in this server.
+     * Return the options for this view service. These are properties that are specific to the view service.
      *
-     * @return list of qualified names
+     * @return Map from String to String
      */
-    public List<String> getStewardshipEngineNames()
+    public Map<String, Object> getViewServiceOptions()
     {
-        return stewardshipEngineNames;
+        if (viewServiceOptions == null)
+        {
+            return null;
+        }
+        else if (viewServiceOptions.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return viewServiceOptions;
+        }
     }
 
 
     /**
-     * Set up the list of unique names (qualifiedName) for the stewardship engines that will run in this server.
+     * Set up the options for this view service.  These are properties that are specific to the view service.
      *
-     * @param stewardshipEngineNames list of qualified names
+     * @param viewServiceOptions Map from String to String
      */
-    public void setStewardshipEngineNames(List<String> stewardshipEngineNames)
+    public void setViewServiceOptions(Map<String, Object> viewServiceOptions)
     {
-        this.stewardshipEngineNames = stewardshipEngineNames;
+        this.viewServiceOptions = viewServiceOptions;
     }
 
 
@@ -82,12 +92,13 @@ public class StewardshipEngineServicesConfig extends OMAGServerClientConfig
     @Override
     public String toString()
     {
-        return "StewardshipEngineServicesConfig{" +
-                "stewardshipEngineNames=" + stewardshipEngineNames +
+        return "ViewServiceRequestBody{" +
+                "viewServiceOptions=" + viewServiceOptions +
                 ", OMAGServerPlatformRootURL='" + getOMAGServerPlatformRootURL() + '\'' +
-                ", OMAGServerName='" + getOMAGServerPlatformRootURL() + '\'' +
+                ", OMAGServerName='" + getOMAGServerName() + '\'' +
                 '}';
     }
+
 
 
     /**
@@ -111,9 +122,10 @@ public class StewardshipEngineServicesConfig extends OMAGServerClientConfig
         {
             return false;
         }
-        StewardshipEngineServicesConfig that = (StewardshipEngineServicesConfig) objectToCompare;
-        return Objects.equals(stewardshipEngineNames, that.getStewardshipEngineNames());
+        ViewServiceRequestBody that = (ViewServiceRequestBody) objectToCompare;
+        return Objects.equals(viewServiceOptions, that.viewServiceOptions);
     }
+
 
     /**
      * Return a hash code based on the values of this object.
@@ -123,6 +135,6 @@ public class StewardshipEngineServicesConfig extends OMAGServerClientConfig
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), stewardshipEngineNames);
+        return Objects.hash(super.hashCode(), viewServiceOptions);
     }
 }

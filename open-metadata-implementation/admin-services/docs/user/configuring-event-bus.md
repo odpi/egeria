@@ -48,6 +48,9 @@ For example, when using Apache Kafka as your event bus you may want to configure
 }
 ```
 
+----
+* Return to [configuring an OMAG server](configuring-an-omag-server.md)
+* Return to [configuration document structure](../concepts/configuration-document.md)
 
 
 ----
