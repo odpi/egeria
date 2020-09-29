@@ -15,6 +15,7 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
  *     <li><ul>
  *         <li>500 - internal error</li>
  *         <li>400 - invalid parameters</li>
+ *         <li>403 - forbidden</li>
  *         <li>404 - not found</li>
  *         <li>409 - data conflict errors - eg item already defined</li>
  *     </ul></li>
@@ -154,14 +155,27 @@ public enum OMAGCommonErrorCode implements ExceptionMessageSet
                         "support the updating of metadata instances owned by a repository in the local cohort, whilst " +
                         "other APIs support the updating of metadata instances from external metadata collections. If the API " +
                         "supports the management of instances from an external metadata collection, the supplied " +
-                        "metadata collection name and gUID must match that of the instance.  None of these " +
+                        "metadata collection name and guid must match that of the instance.  None of these " +
                         "situations is true in this case.  Use the values in this message to determine the type of API " +
                         "and metadata collection values necessary to make the request successful."),
+
+    BAD_ANCHOR_GUID(400, "OMAG-COMMON-400-026",
+               "The {0} element {1} is expected to be anchored to {2} but is in fact anchored to {3}",
+               "The system is unable to process the request because the requested object is anchored to a different element.",
+               "Correct the code in the caller to provide either the correct identifier of the object or the correct anchor identifier."),
 
     INSTANCE_WRONG_TYPE_FOR_GUID(404, "OMAG-COMMON-404-001",
                                  "The {0} method has retrieved an instance for unique identifier (guid) {1} which is of type {2} rather than type {3}",
                                  "The request fails because the requested object is not of the right type.",
-                                 "Retry the request with the correct unique identifier."),
+                                 "Retry the request with the correct unique identifier (or a different request suitable for the type of " +
+                                         "instance requested)."),
+
+    UNIQUE_NAME_ALREADY_IN_USE(409, "OMAG-COMMON-409-001",
+                               "Method {0} of service {1} is not able to create an instance of type {2} because parameter name {3} is " +
+                                       "defined as a unique property and it's value {4} is not available for use",
+                               "The system is unable to process the request because the unique property for this new entity " +
+                                       "is not permitted either because it is a reserved value, or it is already in use.",
+                               "Retry the request with a different unique parameter name."),
 
     METHOD_NOT_IMPLEMENTED(500, "OMAG-COMMON-500-001",
                            "Method {0} called by user {1} to OMAG Server {2} is not implemented in service {3}",

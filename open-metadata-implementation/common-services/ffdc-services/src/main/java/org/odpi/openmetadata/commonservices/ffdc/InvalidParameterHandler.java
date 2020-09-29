@@ -7,8 +7,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementOrigin;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
@@ -352,6 +351,41 @@ public class InvalidParameterHandler
 
 
     /**
+     * When attached elements are being retrieved for an anchor, this method checks that the anchor is set up correctly
+     * in the element's anchors classification.
+     *
+     * @param anchorGUID unique identifier of the expected anchor
+     * @param anchorGUIDParameterName parameter name used to supply anchorGUID
+     * @param anchorEntity current setting for the anchor
+     * @param elementGUID unique identifier of the element being retrieved
+     * @param elementTypeName type of element being retrieved
+     * @param methodName calling method
+     * @throws InvalidParameterException exception raise when the anchors do not match
+     */
+    public void validateAnchorGUID(String       anchorGUID,
+                                   String       anchorGUIDParameterName,
+                                   EntityDetail anchorEntity,
+                                   String       elementGUID,
+                                   String       elementTypeName,
+                                   String       methodName) throws InvalidParameterException
+    {
+        if ((anchorGUID != null) && (anchorEntity != null))
+        {
+            if (! anchorGUID.equals(anchorEntity.getGUID()))
+            {
+                throw new InvalidParameterException(OMAGCommonErrorCode.BAD_ANCHOR_GUID.getMessageDefinition(elementTypeName,
+                                                                                                             elementGUID,
+                                                                                                             anchorGUID,
+                                                                                                             anchorEntity.getGUID()),
+                                                    this.getClass().getName(),
+                                                    methodName,
+                                                    anchorGUIDParameterName);
+            }
+        }
+    }
+
+
+    /**
      * Throw an exception if the supplied connection is null
      *
      * @param connection  object to validate
@@ -383,7 +417,7 @@ public class InvalidParameterHandler
 
 
     /**
-     * Throw an exception if the supplied type name is not recognized not of the correct subclass
+     * Throw an exception if the supplied type name is not of the correct subclass
      *
      * @param typeName name of type
      * @param superTypeName name of expected supertype
@@ -403,7 +437,16 @@ public class InvalidParameterHandler
     {
         final String parameterName = "typeName";
 
-        TypeDef typeDef = repositoryHelper.getTypeDefByName(serviceName, typeName);
+        TypeDef typeDef;
+        if (typeName == null)
+        {
+            typeDef = repositoryHelper.getTypeDefByName(serviceName, superTypeName);
+        }
+        else
+        {
+            typeDef = repositoryHelper.getTypeDefByName(serviceName, typeName);
+
+        }
 
         if (typeDef == null)
         {
@@ -492,7 +535,7 @@ public class InvalidParameterHandler
                         return;
                     }
 
-                    if (expectedMetadataCollectionGUID.equals(instanceType.getElementHomeMetadataCollectionId()))
+                    if (expectedMetadataCollectionGUID.equals(instanceType.getElementMetadataCollectionId()))
                     {
                         return;
                     }
@@ -519,8 +562,8 @@ public class InvalidParameterHandler
                                                                                                                                   expectedMetadataCollectionName,
                                                                                                                                   expectedMetadataCollectionGUID,
                                                                                                                                   instanceOriginName,
-                                                                                                                                  instanceType.getElementHomeMetadataCollectionName(),
-                                                                                                                                  instanceType.getElementHomeMetadataCollectionId()),
+                                                                                                                                  instanceType.getElementMetadataCollectionName(),
+                                                                                                                                  instanceType.getElementMetadataCollectionId()),
                                                     this.getClass().getName(),
                                                     methodName,
                                                     parameterName);
@@ -659,6 +702,33 @@ public class InvalidParameterHandler
                                             this.getClass().getName(),
                                             methodName,
                                             parameterName);
+    }
+
+
+    /**
+     * Report the fact that a unique name that was requested for a new entity is already in use or not a permitted value.
+     *
+     * @param uniqueName value of unique parameter that is in error
+     * @param uniqueNameParameterName parameter that passed the qualified name
+     * @param typeName requested type name
+     * @param serviceName calling service
+     * @param methodName calling method
+     * @throws InvalidParameterException the unique name is in use
+     */
+    public void throwUniqueNameInUse(String uniqueName,
+                                     String uniqueNameParameterName,
+                                     String typeName,
+                                     String serviceName,
+                                     String methodName) throws InvalidParameterException
+    {
+        throw new InvalidParameterException(OMAGCommonErrorCode.UNIQUE_NAME_ALREADY_IN_USE.getMessageDefinition(methodName,
+                                                                                                                serviceName,
+                                                                                                                typeName,
+                                                                                                                uniqueNameParameterName,
+                                                                                                                uniqueName),
+                                            this.getClass().getName(),
+                                            methodName,
+                                            uniqueNameParameterName);
     }
 
 
