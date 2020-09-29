@@ -14,25 +14,25 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * RelationshipAdviceAnnotation is used to record a recommendation that a new relationship should be made from this data field to another
- * object in the open metadata types.
+ * RequestForActionAnnotation is used to record an issue that has been discovered.  It is typically used when the discovery
+ * service is running quality rules and data values are discovered that are not correct.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class RelationshipAdviceAnnotation extends DataFieldAnnotation
+public class RequestForActionAnnotation extends DataFieldAnnotation
 {
     private static final long    serialVersionUID = 1L;
 
-    private String              relatedEntityGUID = null;
-    private String              relationshipTypeName = null;
-    private Map<String, String> relationshipProperties = null;
+    private String              discoveryActivity = null;
+    private String              actionRequested   = null;
+    private Map<String, String> actionProperties  = null;
 
 
     /**
      * Default constructor
      */
-    public RelationshipAdviceAnnotation()
+    public RequestForActionAnnotation()
     {
         super();
     }
@@ -43,91 +43,95 @@ public class RelationshipAdviceAnnotation extends DataFieldAnnotation
      *
      * @param template object to copy
      */
-    public RelationshipAdviceAnnotation(RelationshipAdviceAnnotation template)
+    public RequestForActionAnnotation(RequestForActionAnnotation template)
     {
         super(template);
 
         if (template != null)
         {
-            relatedEntityGUID = template.getRelatedEntityGUID();
-            relationshipTypeName = template.getRelationshipTypeName();
-            relationshipProperties = template.getRelationshipProperties();
+            discoveryActivity = template.getDiscoveryActivity();
+            actionRequested   = template.getActionRequested();
+            actionProperties  = template.getActionProperties();
         }
     }
 
 
     /**
-     * Return the unique identifier of the object to connect to.
+     * Return the unique name of the discovery activity.  It should be possible for the stewardship processes to know what
+     * discovery processing was running for this value.
      *
-     * @return string guid
+     * @return string name
      */
-    public String getRelatedEntityGUID()
+    public String getDiscoveryActivity()
     {
-        return relatedEntityGUID;
+        return discoveryActivity;
     }
 
 
     /**
-     * Set up the unique identifier of the object to connect to.
+     * Set up the unique name of the discovery activity.  It should be possible for the stewardship processes to know what
+     * discovery processing was running for this value.
      *
-     * @param relatedEntityGUID string guid
+     * @param discoveryActivity string name
      */
-    public void setRelatedEntityGUID(String relatedEntityGUID)
+    public void setDiscoveryActivity(String discoveryActivity)
     {
-        this.relatedEntityGUID = relatedEntityGUID;
+        this.discoveryActivity = discoveryActivity;
     }
 
 
     /**
-     * Return the type of relationship to create.
+     * Return the identifier of the type of action that needs to be run. It should be possible for the stewardship processes to know what
+     * to run from this value.
      *
-     * @return type name
+     * @return string name
      */
-    public String getRelationshipTypeName()
+    public String getActionRequested()
     {
-        return relationshipTypeName;
+        return actionRequested;
     }
 
 
     /**
-     * Set up the type of relationship to create.
+     * Set up the identifier of the type of action that needs to be run. It should be possible for the stewardship processes to know what
+     * to run from this value.
      *
-     * @param relationshipTypeName type name
+     * @param actionRequested string name
      */
-    public void setRelationshipTypeName(String relationshipTypeName)
+    public void setActionRequested(String actionRequested)
     {
-        this.relationshipTypeName = relationshipTypeName;
+        this.actionRequested = actionRequested;
     }
 
 
     /**
-     * Return the properties that should be stored in the relationship.
+     * Return the properties that will guide the remediation action.
      *
      * @return map of property names to property values
      */
-    public Map<String, String> getRelationshipProperties()
+    public Map<String, String> getActionProperties()
     {
-        if (relationshipProperties == null)
+        if (actionProperties == null)
         {
             return null;
         }
-        else if (relationshipProperties.isEmpty())
+        else if (actionProperties.isEmpty())
         {
             return null;
         }
 
-        return relationshipProperties;
+        return actionProperties;
     }
 
 
     /**
-     * Set up the properties that should be stored in the relationship.
+     * Set up the properties that will guide the remediation action.
      *
-     * @param relationshipProperties map of property names to property values
+     * @param actionProperties map of property names to property values
      */
-    public void setRelationshipProperties(Map<String, String> relationshipProperties)
+    public void setActionProperties(Map<String, String> actionProperties)
     {
-        this.relationshipProperties = relationshipProperties;
+        this.actionProperties = actionProperties;
     }
 
 
@@ -139,10 +143,10 @@ public class RelationshipAdviceAnnotation extends DataFieldAnnotation
     @Override
     public String toString()
     {
-        return "RelationshipAdviceAnnotation{" +
-                "relatedEntityGUID='" + relatedEntityGUID + '\'' +
-                ", relationshipTypeName='" + relationshipTypeName + '\'' +
-                ", relationshipProperties=" + relationshipProperties +
+        return "RequestForActionAnnotation{" +
+                "discoveryActivity='" + discoveryActivity + '\'' +
+                ", actionRequested='" + actionRequested + '\'' +
+                ", actionProperties=" + actionProperties +
                 ", annotationType='" + getAnnotationType() + '\'' +
                 ", summary='" + getSummary() + '\'' +
                 ", confidenceLevel=" + getConfidenceLevel() +
@@ -185,10 +189,10 @@ public class RelationshipAdviceAnnotation extends DataFieldAnnotation
         {
             return false;
         }
-        RelationshipAdviceAnnotation that = (RelationshipAdviceAnnotation) objectToCompare;
-        return Objects.equals(relatedEntityGUID, that.relatedEntityGUID) &&
-                Objects.equals(relationshipTypeName, that.relationshipTypeName) &&
-                Objects.equals(relationshipProperties, that.relationshipProperties);
+        RequestForActionAnnotation that = (RequestForActionAnnotation) objectToCompare;
+        return Objects.equals(discoveryActivity, that.discoveryActivity) &&
+                Objects.equals(actionRequested, that.actionRequested) &&
+                Objects.equals(actionProperties, that.actionProperties);
     }
 
 
@@ -200,6 +204,6 @@ public class RelationshipAdviceAnnotation extends DataFieldAnnotation
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), relatedEntityGUID, relationshipTypeName, relationshipProperties);
+        return Objects.hash(super.hashCode(), discoveryActivity, actionRequested, actionProperties);
     }
 }
