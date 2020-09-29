@@ -78,7 +78,7 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>ocf-metadata-handlers</artifactId>
+            <artifactId>generic-handlers</artifactId>
         </dependency>
 
     </dependencies>

@@ -166,76 +166,6 @@ public class ValidValuesManager extends DigitalArchitecture implements ManageVal
 
 
     /**
-     * Create a new valid value set that is owned/managed by an external tool.  This just creates the Set itself.
-     * Members are added either as they are created, or they can be attached to a set after they are created.
-     *
-     * @param userId calling user.
-     * @param externalSourceGUID guid of the software server capability entity that represented the external source
-     * @param externalSourceName name of the software server capability entity that represented the external source
-     * @param qualifiedName unique name.
-     * @param displayName displayable descriptive name.
-     * @param description further information.
-     * @param usage how/when should this set be used.
-     * @param scope what is the scope of this set's values.
-     * @param isDeprecated is the valid value deprecated
-     * @param additionalProperties additional properties for this set.
-     * @param extendedProperties properties that need to be populated into a subtype.
-     *
-     * @return unique identifier for the new set
-     *
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException the repository is not available or not working properly.
-     */
-    public String  createExternalValidValueSet(String              userId,
-                                               String              externalSourceGUID,
-                                               String              externalSourceName,
-                                               String              qualifiedName,
-                                               String              displayName,
-                                               String              description,
-                                               String              usage,
-                                               String              scope,
-                                               boolean             isDeprecated,
-                                               Map<String, String> additionalProperties,
-                                               Map<String, Object> extendedProperties) throws InvalidParameterException,
-                                                                                              UserNotAuthorizedException,
-                                                                                              PropertyServerException
-    {
-        final String   methodName = "createExternalValidValueSet";
-        final String   nameParameter = "qualifiedName";
-        final String   externalSourceGUIDParameter = "externalSourceGUID";
-        final String   externalSourceNameParameter = "externalSourceName";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(externalSourceGUID, externalSourceGUIDParameter, methodName);
-        invalidParameterHandler.validateName(qualifiedName, nameParameter, methodName);
-        invalidParameterHandler.validateName(externalSourceName, externalSourceNameParameter, methodName);
-
-        final String   urlTemplate =
-                "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/valid-values/sets/external-collection/{2}/{3}";
-
-        ValidValueProperties requestBody = new ValidValueProperties();
-        requestBody.setQualifiedName(qualifiedName);
-        requestBody.setDisplayName(displayName);
-        requestBody.setDescription(description);
-        requestBody.setUsage(usage);
-        requestBody.setScope(scope);
-        requestBody.setAdditionalProperties(additionalProperties);
-        requestBody.setExtendedProperties(extendedProperties);
-
-        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  serverPlatformRootURL + urlTemplate,
-                                                                  requestBody,
-                                                                  serverName,
-                                                                  userId,
-                                                                  externalSourceGUID,
-                                                                  externalSourceName);
-
-        return restResult.getGUID();
-    }
-
-
-    /**
      * Create a new valid value definition.
      *
      * @param userId calling user.
@@ -291,82 +221,6 @@ public class ValidValuesManager extends DigitalArchitecture implements ManageVal
                                                                   serverName,
                                                                   userId,
                                                                   setGUID);
-
-        return restResult.getGUID();
-    }
-
-
-    /**
-     * Create a new valid value definition that is owned/managed by an external tool.
-     *
-     * @param userId calling user.
-     * @param externalSourceGUID guid of the software server capability entity that represented the external source
-     * @param externalSourceName name of the software server capability entity that represented the external source
-     * @param setGUID unique identifier of the set to attach this to.
-     * @param qualifiedName unique name.
-     * @param displayName displayable descriptive name.
-     * @param description further information.
-     * @param usage how/when should this value be used.
-     * @param scope what is the scope of the values.
-     * @param preferredValue the value that should be used in an implementation if possible.
-     * @param isDeprecated is the valid value deprecated
-     * @param additionalProperties additional properties for this definition.
-     * @param extendedProperties properties that need to be populated into a subtype.
-     *
-     * @return unique identifier for the new definition
-     *
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException the repository is not available or not working properly.
-     */
-    public String  createExternalValidValueDefinition(String              userId,
-                                                      String              externalSourceGUID,
-                                                      String              externalSourceName,
-                                                      String              setGUID,
-                                                      String              qualifiedName,
-                                                      String              displayName,
-                                                      String              description,
-                                                      String              usage,
-                                                      String              scope,
-                                                      String              preferredValue,
-                                                      boolean             isDeprecated,
-                                                      Map<String, String> additionalProperties,
-                                                      Map<String, Object> extendedProperties) throws InvalidParameterException,
-                                                                                                     UserNotAuthorizedException,
-                                                                                                     PropertyServerException
-    {
-        final String   methodName = "createValidValueDefinition";
-
-        final String   nameParameter = "qualifiedName";
-        final String   externalSourceGUIDParameter = "externalSourceGUID";
-        final String   externalSourceNameParameter = "externalSourceName";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(externalSourceGUID, externalSourceGUIDParameter, methodName);
-        invalidParameterHandler.validateName(qualifiedName, nameParameter, methodName);
-        invalidParameterHandler.validateName(externalSourceName, externalSourceNameParameter, methodName);
-
-        final String   urlTemplate =
-                "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/valid-values/sets/{2}/external-collection/{3}/{4}";
-
-        ValidValueProperties requestBody = new ValidValueProperties();
-        requestBody.setQualifiedName(qualifiedName);
-        requestBody.setDisplayName(displayName);
-        requestBody.setDescription(description);
-        requestBody.setUsage(usage);
-        requestBody.setScope(scope);
-        requestBody.setPreferredValue(preferredValue);
-        requestBody.setAdditionalProperties(additionalProperties);
-        requestBody.setExtendedProperties(extendedProperties);
-
-        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  serverPlatformRootURL + urlTemplate,
-                                                                  requestBody,
-                                                                  serverName,
-                                                                  userId,
-                                                                  setGUID,
-                                                                  externalSourceGUID,
-                                                                  externalSourceName);
 
         return restResult.getGUID();
     }
@@ -999,6 +853,8 @@ public class ValidValuesManager extends DigitalArchitecture implements ManageVal
      *
      * @param userId calling user
      * @param validValueName qualified name of the valid value.
+     * @param startFrom paging starting point
+     * @param pageSize maximum number of return values.
      *
      * @return Valid value beans
      *
@@ -1007,9 +863,11 @@ public class ValidValuesManager extends DigitalArchitecture implements ManageVal
      * @throws PropertyServerException the repository is not available or not working properly.
      */
     public List<ValidValueElement>   getValidValueByName(String   userId,
-                                                         String   validValueName) throws InvalidParameterException,
-                                                                                         UserNotAuthorizedException,
-                                                                                         PropertyServerException
+                                                         String   validValueName,
+                                                         int      startFrom,
+                                                         int      pageSize) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
     {
         final String   methodName = "getValidValueByName";
         final String   validValueNameParameter = "validValueName";
@@ -1017,13 +875,15 @@ public class ValidValuesManager extends DigitalArchitecture implements ManageVal
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(validValueName, validValueNameParameter, methodName);
 
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/valid-values/by-name";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/valid-values/by-name?startFrom={2}&pageSize={3}";
 
         ValidValuesResponse restResult = restClient.callValidValuesPostRESTCall(methodName,
                                                                                 serverPlatformRootURL + urlTemplate,
                                                                                 validValueName,
                                                                                 serverName,
-                                                                                userId);
+                                                                                userId,
+                                                                                startFrom,
+                                                                                pageSize);
 
         return restResult.getElementList();
     }
@@ -1058,13 +918,16 @@ public class ValidValuesManager extends DigitalArchitecture implements ManageVal
         invalidParameterHandler.validateSearchString(searchString, parameterName, methodName);
         invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/valid-values/by-search-string";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/digital-architecture/users/{1}/valid-values/by-search-string" +
+                "?startFrom={2}&pageSize={3}";
 
         ValidValuesResponse restResult = restClient.callValidValuesPostRESTCall(methodName,
                                                                                 serverPlatformRootURL + urlTemplate,
                                                                                 searchString,
                                                                                 serverName,
-                                                                                userId);
+                                                                                userId,
+                                                                                startFrom,
+                                                                                pageSize);
 
         return restResult.getElementList();
     }
@@ -1105,8 +968,8 @@ public class ValidValuesManager extends DigitalArchitecture implements ManageVal
                                                                                serverName,
                                                                                userId,
                                                                                validValueSetGUID,
-                                                                               Integer.toString(startFrom),
-                                                                               Integer.toString(pageSize));
+                                                                               startFrom,
+                                                                               pageSize);
         return restResult.getElementList();
     }
 
@@ -1146,8 +1009,8 @@ public class ValidValuesManager extends DigitalArchitecture implements ManageVal
                                                                                serverName,
                                                                                userId,
                                                                                validValueGUID,
-                                                                               Integer.toString(startFrom),
-                                                                               Integer.toString(pageSize));
+                                                                               startFrom,
+                                                                               pageSize);
         return restResult.getElementList();
     }
 
@@ -1189,8 +1052,8 @@ public class ValidValuesManager extends DigitalArchitecture implements ManageVal
                                                                         serverName,
                                                                         userId,
                                                                         validValueGUID,
-                                                                        Integer.toString(startFrom),
-                                                                        Integer.toString(pageSize));
+                                                                        startFrom,
+                                                                        pageSize);
         return restResult.getElementList();
     }
 
@@ -1231,8 +1094,8 @@ public class ValidValuesManager extends DigitalArchitecture implements ManageVal
                                                                           serverName,
                                                                           userId,
                                                                           referenceableGUID,
-                                                                          Integer.toString(startFrom),
-                                                                          Integer.toString(pageSize));
+                                                                          startFrom,
+                                                                          pageSize);
         return restResult.getElementList();
     }
 
@@ -1274,8 +1137,8 @@ public class ValidValuesManager extends DigitalArchitecture implements ManageVal
                                                                                                    serverName,
                                                                                                    userId,
                                                                                                    validValueGUID,
-                                                                                                   Integer.toString(startFrom),
-                                                                                                   Integer.toString(pageSize));
+                                                                                                   startFrom,
+                                                                                                   pageSize);
         return restResult.getElementList();
     }
 
@@ -1318,8 +1181,8 @@ public class ValidValuesManager extends DigitalArchitecture implements ManageVal
                                                                      serverName,
                                                                      userId,
                                                                      assetGUID,
-                                                                     Integer.toString(startFrom),
-                                                                     Integer.toString(pageSize));
+                                                                     startFrom,
+                                                                     pageSize);
         return restResult.getElementList();
     }
 
@@ -1362,8 +1225,8 @@ public class ValidValuesManager extends DigitalArchitecture implements ManageVal
                                                                                              serverName,
                                                                                              userId,
                                                                                              validValueGUID,
-                                                                                             Integer.toString(startFrom),
-                                                                                             Integer.toString(pageSize));
+                                                                                             startFrom,
+                                                                                             pageSize);
         return restResult.getElementList();
     }
 
@@ -1407,8 +1270,8 @@ public class ValidValuesManager extends DigitalArchitecture implements ManageVal
                                                                                                serverName,
                                                                                                userId,
                                                                                                validValueGUID,
-                                                                                               Integer.toString(startFrom),
-                                                                                               Integer.toString(pageSize));
+                                                                                               startFrom,
+                                                                                               pageSize);
         return restResult.getElementList();
     }
 
@@ -1451,8 +1314,8 @@ public class ValidValuesManager extends DigitalArchitecture implements ManageVal
                                                                         serverName,
                                                                         userId,
                                                                         validValueGUID,
-                                                                        Integer.toString(startFrom),
-                                                                        Integer.toString(pageSize));
+                                                                        startFrom,
+                                                                        pageSize);
         return restResult.getElementList();
     }
 
@@ -1495,8 +1358,8 @@ public class ValidValuesManager extends DigitalArchitecture implements ManageVal
                                                                               serverName,
                                                                               userId,
                                                                               referenceableGUID,
-                                                                              Integer.toString(startFrom),
-                                                                              Integer.toString(pageSize));
+                                                                              startFrom,
+                                                                              pageSize);
         return restResult.getElementList();
     }
 }

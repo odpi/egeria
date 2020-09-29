@@ -91,8 +91,9 @@ public class ReferenceDataAssetElement extends ReferenceDataAssetProperties impl
                 ", owner='" + getOwner() + '\'' +
                 ", ownerCategory=" + getOwnerCategory() +
                 ", zoneMembership=" + getZoneMembership() +
-                ", origin=" + getOrigin() +
-                ", latestChange='" + getLatestChange() + '\'' +
+                ", originOrganizationGUID='" + getOriginOrganizationGUID() + '\'' +
+                ", originBusinessCapabilityGUID='" + getOriginBusinessCapabilityGUID() + '\'' +
+                ", otherOriginValues=" + getOtherOriginValues() +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +
                 ", meanings=" + getMeanings() +
@@ -101,6 +102,7 @@ public class ReferenceDataAssetElement extends ReferenceDataAssetProperties impl
                 ", extendedProperties=" + getExtendedProperties() +
                 '}';
     }
+
 
     /**
      * Return comparison result based on the content of the properties.

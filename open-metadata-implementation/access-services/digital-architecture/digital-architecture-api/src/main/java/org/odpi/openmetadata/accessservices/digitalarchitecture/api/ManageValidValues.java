@@ -52,43 +52,6 @@ public interface ManageValidValues
 
 
     /**
-     * Create a new valid value set that is owned/managed by an external tool.  This just creates the Set itself.
-     * Members are added either as they are created, or they can be attached to a set after they are created.
-     *
-     * @param userId calling user.
-     * @param externalSourceGUID guid of the software server capability entity that represented the external source
-     * @param externalSourceName name of the software server capability entity that represented the external source
-     * @param qualifiedName unique name.
-     * @param displayName displayable descriptive name.
-     * @param description further information.
-     * @param usage how/when should this set be used.
-     * @param scope what is the scope of this set's values.
-     * @param isDeprecated is the valid value deprecated
-     * @param additionalProperties additional properties for this set.
-     * @param extendedProperties properties that need to be populated into a subtype.
-     *
-     * @return unique identifier for the new set
-     *
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException the repository is not available or not working properly.
-     */
-    String  createExternalValidValueSet(String              userId,
-                                        String              externalSourceGUID,
-                                        String              externalSourceName,
-                                        String              qualifiedName,
-                                        String              displayName,
-                                        String              description,
-                                        String              usage,
-                                        String              scope,
-                                        boolean             isDeprecated,
-                                        Map<String, String> additionalProperties,
-                                        Map<String, Object> extendedProperties) throws InvalidParameterException,
-                                                                                       UserNotAuthorizedException,
-                                                                                       PropertyServerException;
-
-
-    /**
      * Create a new valid value definition.
      *
      * @param userId calling user.
@@ -120,46 +83,6 @@ public interface ManageValidValues
                                        Map<String, Object> extendedProperties) throws InvalidParameterException,
                                                                                       UserNotAuthorizedException,
                                                                                       PropertyServerException;
-
-
-    /**
-     * Create a new valid value definition that is owned/managed by an external tool.
-     *
-     * @param userId calling user.
-     * @param externalSourceGUID guid of the software server capability entity that represented the external source
-     * @param externalSourceName name of the software server capability entity that represented the external source
-     * @param setGUID unique identifier of the set to attach this to.
-     * @param qualifiedName unique name.
-     * @param displayName displayable descriptive name.
-     * @param description further information.
-     * @param usage how/when should this value be used.
-     * @param scope what is the scope of the values.
-     * @param preferredValue the value that should be used in an implementation if possible.
-     * @param isDeprecated is the valid value deprecated
-     * @param additionalProperties additional properties for this definition.
-     * @param extendedProperties properties that need to be populated into a subtype.
-     *
-     * @return unique identifier for the new definition
-     *
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException the repository is not available or not working properly.
-     */
-    String  createExternalValidValueDefinition(String              userId,
-                                               String              externalSourceGUID,
-                                               String              externalSourceName,
-                                               String              setGUID,
-                                               String              qualifiedName,
-                                               String              displayName,
-                                               String              description,
-                                               String              usage,
-                                               String              scope,
-                                               String              preferredValue,
-                                               boolean             isDeprecated,
-                                               Map<String, String> additionalProperties,
-                                               Map<String, Object> extendedProperties) throws InvalidParameterException,
-                                                                                              UserNotAuthorizedException,
-                                                                                              PropertyServerException;
 
 
     /**
@@ -481,6 +404,8 @@ public interface ManageValidValues
      *
      * @param userId calling user
      * @param validValueName qualified name of the valid value.
+     * @param startFrom paging starting point
+     * @param pageSize maximum number of return values.
      *
      * @return Valid value beans
      *
@@ -489,9 +414,11 @@ public interface ManageValidValues
      * @throws PropertyServerException the repository is not available or not working properly.
      */
     List<ValidValueElement>   getValidValueByName(String userId,
-                                                  String validValueName) throws InvalidParameterException,
-                                                                                UserNotAuthorizedException,
-                                                                                PropertyServerException;
+                                                  String validValueName,
+                                                  int    startFrom,
+                                                  int    pageSize) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException;
 
 
     /**
