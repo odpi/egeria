@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.accessservices.assetowner.properties;
 
 import com.fasterxml.jackson.annotation.*;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,42 +22,43 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         include = JsonTypeInfo.As.PROPERTY,
         property = "class")
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = DerivedSchemaAttributeProperties.class, name = "DerivedSchemaAttributeProperties"),
         @JsonSubTypes.Type(value = TabularColumnProperties.class, name = "TabularColumnProperties")
               })
 public class SchemaAttributeProperties extends SchemaElementProperties
 {
     private static final long    serialVersionUID = 1L;
 
-    protected String            attributeName         = null;
-    protected int               elementPosition       = 0;
+    private int               elementPosition       = 0;
 
     /*
      * Details related to the instances of the attribute
      */
-    protected int               minCardinality        = 0;
-    protected int               maxCardinality        = -1;
-    protected boolean           allowsDuplicateValues = false;
-    protected boolean           orderedValues         = false;
-    protected String            defaultValueOverride  = null;
-    protected DataItemSortOrder sortOrder             = null;
-    protected int               minimumLength         = 0;
-    protected int               length                = 0;
-    protected int               significantDigits     = 0;
-    protected boolean           isNullable            = true;
+    private int               minCardinality        = 0;
+    private int               maxCardinality        = -1;
+    private boolean           allowsDuplicateValues = false;
+    private boolean           orderedValues         = false;
+    private String            defaultValueOverride  = null;
+    private DataItemSortOrder sortOrder             = null;
+    private int               minimumLength         = 0;
+    private int               length                = 0;
+    private int               significantDigits     = 0;
+    private boolean           isNullable            = true;
 
     /*
-     * Three choices on how the type is expressed
+     * Two choices on how the type is expressed
      */
-    protected SchemaType                        attributeType          = null;
-    protected SchemaLink                        externalAttributeType  = null;
-    protected List<SchemaAttributeRelationship> attributeRelationships = null;
+    private SchemaTypeProperties attributeType = null;
+
+    /*
+     * Attribute relationships are things like foreign keys
+     */
+    private List<SchemaAttributeRelationshipProperties> attributeRelationships = null;
 
     /*
      * Implementation details
      */
-    protected String            nativeJavaClass       = null;
-    protected List<String>      aliases               = null;
+    private String            nativeJavaClass       = null;
+    private List<String>      aliases               = null;
 
 
     /**
@@ -81,7 +81,6 @@ public class SchemaAttributeProperties extends SchemaElementProperties
 
         if (template != null)
         {
-            attributeName = template.getAttributeName();
             elementPosition = template.getElementPosition();
             minCardinality = template.getMinCardinality();
             maxCardinality = template.getMaxCardinality();
@@ -94,67 +93,10 @@ public class SchemaAttributeProperties extends SchemaElementProperties
             isNullable = template.isNullable();
             defaultValueOverride = template.getDefaultValueOverride();
             attributeType = template.getAttributeType();
-            externalAttributeType = template.getExternalAttributeType();
             attributeRelationships = template.getAttributeRelationships();
             nativeJavaClass = template.getNativeJavaClass();
             aliases = template.getAliases();
         }
-    }
-
-
-    /**
-     * Copy/clone operator.
-     *
-     * @param objectToFill schema attribute object
-     * @return filled object
-     */
-    public SchemaAttribute cloneProperties(SchemaAttribute  objectToFill)
-    {
-        SchemaAttribute clone = objectToFill;
-
-        if (clone == null)
-        {
-            clone = new SchemaAttribute();
-        }
-
-        clone.setAttributeName(this.getAttributeName());
-        clone.setElementPosition(this.getElementPosition());
-        clone.setMinCardinality(this.getMinCardinality());
-        clone.setMaxCardinality(this.getMaxCardinality());
-        clone.setAllowsDuplicateValues(this.isAllowsDuplicateValues());
-        clone.setOrderedValues(this.isOrderedValues());
-        clone.setSortOrder(this.getSortOrder());
-        clone.setMinimumLength(this.getMinimumLength());
-        clone.setLength(this.getLength());
-        clone.setSignificantDigits(this.getSignificantDigits());
-        clone.setNullable(this.isNullable());
-        clone.setDefaultValueOverride(getDefaultValueOverride());
-        clone.setAttributeType(getAttributeType());
-        clone.setExternalAttributeType(getExternalAttributeType());
-        clone.setAttributeRelationships(getAttributeRelationships());
-        clone.setNativeJavaClass(getNativeJavaClass());
-        clone.setAliases(this.getAliases());
-
-        return clone;
-    }
-
-
-    /**
-     * Return the name of this schema attribute.
-     *
-     * @return String attribute name
-     */
-    public String getAttributeName() { return attributeName; }
-
-
-    /**
-     * Set up the name of this schema attribute.
-     *
-     * @param attributeName String attribute name
-     */
-    public void setAttributeName(String attributeName)
-    {
-        this.attributeName = attributeName;
     }
 
 
@@ -401,16 +343,9 @@ public class SchemaAttributeProperties extends SchemaElementProperties
      *
      * @return SchemaType
      */
-    public SchemaType getAttributeType()
+    public SchemaTypeProperties getAttributeType()
     {
-        if (attributeType == null)
-        {
-            return null;
-        }
-        else
-        {
-            return attributeType.cloneSchemaType();
-        }
+        return attributeType;
     }
 
 
@@ -419,33 +354,9 @@ public class SchemaAttributeProperties extends SchemaElementProperties
      *
      * @param attributeType SchemaType
      */
-    public void setAttributeType(SchemaType attributeType)
+    public void setAttributeType(SchemaTypeProperties attributeType)
     {
         this.attributeType = attributeType;
-    }
-
-
-    /**
-     * Set up optional link to another attribute.  For example, a foreign key relationship between relational
-     * columns.
-     *
-     * @return SchemaLink object
-     */
-    public SchemaLink getExternalAttributeType()
-    {
-        return externalAttributeType;
-    }
-
-
-    /**
-     * Set up optional links to another attribute.  For example, a foreign key relationship between relational
-     * columns.
-     *
-     * @param externalAttributeType SchemaLink object
-     */
-    public void setExternalAttributeType(SchemaLink externalAttributeType)
-    {
-        this.externalAttributeType = externalAttributeType;
     }
 
 
@@ -454,7 +365,7 @@ public class SchemaAttributeProperties extends SchemaElementProperties
      *
      * @return list of attribute relationships
      */
-    public List<SchemaAttributeRelationship> getAttributeRelationships()
+    public List<SchemaAttributeRelationshipProperties> getAttributeRelationships()
     {
         if (attributeRelationships == null)
         {
@@ -476,11 +387,10 @@ public class SchemaAttributeProperties extends SchemaElementProperties
      *
      * @param attributeRelationships list of attribute relationships
      */
-    public void setAttributeRelationships(List<SchemaAttributeRelationship> attributeRelationships)
+    public void setAttributeRelationships(List<SchemaAttributeRelationshipProperties> attributeRelationships)
     {
         this.attributeRelationships = attributeRelationships;
     }
-
 
 
     /**
@@ -536,7 +446,6 @@ public class SchemaAttributeProperties extends SchemaElementProperties
     public String toString()
     {
         return "SchemaAttributeProperties{" +
-                "attributeName='" + attributeName + '\'' +
                 ", elementPosition=" + elementPosition +
                 ", minCardinality=" + minCardinality +
                 ", maxCardinality=" + maxCardinality +
@@ -545,7 +454,6 @@ public class SchemaAttributeProperties extends SchemaElementProperties
                 ", defaultValueOverride='" + defaultValueOverride + '\'' +
                 ", sortOrder=" + sortOrder +
                 ", attributeType=" + attributeType +
-                ", externalAttributeType=" + externalAttributeType +
                 ", attributeRelationships=" + attributeRelationships +
                 ", nativeJavaClass='" + nativeJavaClass + '\'' +
                 ", aliases=" + aliases +
@@ -554,8 +462,7 @@ public class SchemaAttributeProperties extends SchemaElementProperties
                 ", description='" + getDescription() + '\'' +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +
-                ", meanings=" + getMeanings() +
-                ", classifications=" + getClassifications() +
+                ", typeName=" + getTypeName() +
                 ", extendedProperties=" + getExtendedProperties() +
                 '}';
     }
@@ -588,13 +495,25 @@ public class SchemaAttributeProperties extends SchemaElementProperties
                 maxCardinality == that.maxCardinality &&
                 allowsDuplicateValues == that.allowsDuplicateValues &&
                 orderedValues == that.orderedValues &&
-                Objects.equals(attributeName, that.attributeName) &&
                 Objects.equals(defaultValueOverride, that.defaultValueOverride) &&
                 sortOrder == that.sortOrder &&
                 Objects.equals(attributeType, that.attributeType) &&
-                Objects.equals(externalAttributeType, that.externalAttributeType) &&
                 Objects.equals(getAttributeRelationships(), that.getAttributeRelationships()) &&
                 Objects.equals(nativeJavaClass, that.nativeJavaClass) &&
                 Objects.equals(aliases, that.aliases);
+    }
+
+
+    /**
+     * Return hash code for this object
+     *
+     * @return int hash code
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), elementPosition, minCardinality, maxCardinality, allowsDuplicateValues, orderedValues,
+                            defaultValueOverride, sortOrder, minimumLength, length, significantDigits, isNullable, attributeType,
+                            attributeRelationships, nativeJavaClass, aliases);
     }
 }

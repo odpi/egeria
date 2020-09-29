@@ -3,13 +3,11 @@
 package org.odpi.openmetadata.accessservices.assetowner.client;
 
 import org.odpi.openmetadata.accessservices.assetowner.api.AssetOnboardingFileSystem;
-import org.odpi.openmetadata.accessservices.assetowner.properties.FileSystem;
-import org.odpi.openmetadata.accessservices.assetowner.properties.Folder;
+import org.odpi.openmetadata.accessservices.assetowner.metadataelements.FileSystemElement;
+import org.odpi.openmetadata.accessservices.assetowner.metadataelements.FolderElement;
 import org.odpi.openmetadata.accessservices.assetowner.rest.*;
-import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -567,21 +565,21 @@ public class FileSystemAssetOwner extends AssetOwner implements AssetOnboardingF
 
 
     /**
-     * Retrieve a FileSystem asset by its unique identifier (GUID).
+     * Retrieve a FileSystemProperties asset by its unique identifier (GUID).
      *
      * @param userId calling user
      * @param fileSystemGUID unique identifier used to locate the file system
      *
-     * @return FileSystem properties
+     * @return FileSystemProperties properties
      *
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public FileSystem getFileSystemByGUID(String   userId,
-                                          String   fileSystemGUID) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException
+    public FileSystemElement getFileSystemByGUID(String   userId,
+                                                 String   fileSystemGUID) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
     {
         final String   methodName = "getFileSystemByGUID";
         final String   fileSystemGUIDParameter = "fileSystemGUID";
@@ -601,7 +599,7 @@ public class FileSystemAssetOwner extends AssetOwner implements AssetOnboardingF
 
 
     /**
-     * Retrieve a FileSystem asset by its unique name.
+     * Retrieve a FileSystemProperties asset by its unique name.
      *
      * @param userId calling user
      * @param uniqueName unique identifier used to locate the folder
@@ -612,10 +610,10 @@ public class FileSystemAssetOwner extends AssetOwner implements AssetOnboardingF
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public FileSystem getFileSystemByUniqueName(String userId,
-                                                String uniqueName) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException
+    public FileSystemElement getFileSystemByUniqueName(String userId,
+                                                       String uniqueName) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
     {
         final String   methodName = "getFileSystemByUniqueName";
         final String   nameParameter = "uniqueName";
@@ -670,21 +668,21 @@ public class FileSystemAssetOwner extends AssetOwner implements AssetOnboardingF
 
 
     /**
-     * Retrieve a Folder asset by its unique identifier (GUID).
+     * Retrieve a FolderProperties asset by its unique identifier (GUID).
      *
      * @param userId calling user
      * @param folderGUID unique identifier used to locate the folder
      *
-     * @return Folder properties
+     * @return FolderProperties properties
      *
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public Folder getFolderByGUID(String   userId,
-                                  String   folderGUID) throws InvalidParameterException,
-                                                              UserNotAuthorizedException,
-                                                              PropertyServerException
+    public FolderElement getFolderByGUID(String   userId,
+                                         String   folderGUID) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException
     {
         final String   methodName = "getFileSystemByGUID";
         final String   folderGUIDParameter = "folderGUID";
@@ -709,16 +707,16 @@ public class FileSystemAssetOwner extends AssetOwner implements AssetOnboardingF
      * @param userId calling user
      * @param pathName path name
      *
-     * @return Folder properties
+     * @return FolderProperties properties
      *
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public Folder getFolderByPathName(String   userId,
-                                      String   pathName) throws InvalidParameterException,
-                                                                UserNotAuthorizedException,
-                                                                PropertyServerException
+    public FolderElement getFolderByPathName(String   userId,
+                                             String   pathName) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException
     {
         final String   methodName = "getFileSystemByUniqueName";
         final String   nameParameter = "pathName";
@@ -741,7 +739,7 @@ public class FileSystemAssetOwner extends AssetOwner implements AssetOnboardingF
      * Return the list of folders nested inside a folder.
      *
      * @param userId calling user
-     * @param anchorGUID unique identifier of the anchor folder or file system
+     * @param parentGUID unique identifier of the anchor folder or file system
      * @param startingFrom starting point in the list
      * @param maxPageSize maximum number of results
      *
@@ -752,7 +750,7 @@ public class FileSystemAssetOwner extends AssetOwner implements AssetOnboardingF
      * @throws UserNotAuthorizedException security access problem
      */
     public List<String>  getNestedFolders(String  userId,
-                                          String  anchorGUID,
+                                          String  parentGUID,
                                           int     startingFrom,
                                           int     maxPageSize) throws InvalidParameterException,
                                                                       UserNotAuthorizedException,
@@ -763,13 +761,13 @@ public class FileSystemAssetOwner extends AssetOwner implements AssetOnboardingF
         final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/anchor/{2}/folders?startingFrom={3}&maximumResults={4}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(anchorGUID, anchorGUIDParameter, methodName);
+        invalidParameterHandler.validateGUID(parentGUID, anchorGUIDParameter, methodName);
 
         GUIDListResponse restResult = restClient.callGUIDListGetRESTCall(methodName,
                                                                          serverPlatformRootURL + urlTemplate,
                                                                          serverName,
                                                                          userId,
-                                                                         anchorGUID,
+                                                                         parentGUID,
                                                                          Integer.toString(startingFrom),
                                                                          Integer.toString(maxPageSize));
 

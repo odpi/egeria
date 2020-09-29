@@ -2,22 +2,30 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetowner.properties;
 
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementClassification;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.SoftwareServerCapability;
+
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
+
 
 /**
- * FileSystem describes the root node of a file system.
+ * FileSystemProperties describes the root node of a file system.
  */
-public class FileSystem extends ReferenceableProperties
+@JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown=true)
+public class FileSystemProperties extends SoftwareServerCapabilityProperties
 {
     private static final long    serialVersionUID = 1L;
 
-    private static String FILE_SYSTEM_CLASSIFICATION_NAME = "FileSystem";
+    private static String FILE_SYSTEM_CLASSIFICATION_NAME = "FileSystemProperties";
     private static String FORMAT_PROPERTY_NAME            = "format";
     private static String ENCRYPTION_PROPERTY_NAME        = "encryption";
 
@@ -32,7 +40,7 @@ public class FileSystem extends ReferenceableProperties
     /**
      * Default constructor
      */
-    public FileSystem()
+    public FileSystemProperties()
     {
         super();
     }
@@ -43,7 +51,7 @@ public class FileSystem extends ReferenceableProperties
      *
      * @param template object to copy
      */
-    public FileSystem(FileSystem template)
+    public FileSystemProperties(FileSystemProperties template)
     {
         super(template);
 
@@ -55,47 +63,6 @@ public class FileSystem extends ReferenceableProperties
             source = template.getSource();
             format = template.getFormat();
             encryption = template.getEncryption();
-        }
-    }
-
-
-    /**
-     * Copy/clone constructor from OCF bean.
-     *
-     * @param template object to copy
-     */
-    public FileSystem(SoftwareServerCapability template)
-    {
-        super(template);
-
-        if (template != null)
-        {
-            fileSystemType = template.getTypeDescription();
-            version = template.getVersion();
-            patchLevel = template.getPatchLevel();
-            source = template.getSource();
-
-            List<ElementClassification> classifications = template.getClassifications();
-
-            if (classifications != null)
-            {
-                for (ElementClassification classification : classifications)
-                {
-                    if (classification != null)
-                    {
-                        if (FILE_SYSTEM_CLASSIFICATION_NAME.equals(classification.getClassificationName()))
-                        {
-                            Map<String, Object>   properties = classification.getClassificationProperties();
-
-                            if (properties != null)
-                            {
-                                format     = properties.get(FORMAT_PROPERTY_NAME).toString();
-                                encryption = properties.get(ENCRYPTION_PROPERTY_NAME).toString();
-                            }
-                        }
-                    }
-                }
-            }
         }
     }
 
@@ -240,18 +207,19 @@ public class FileSystem extends ReferenceableProperties
     @Override
     public String toString()
     {
-        return "FileSystem{" +
+        return "FileSystemProperties{" +
                 "fileSystemType='" + fileSystemType + '\'' +
                 ", version='" + version + '\'' +
                 ", patchLevel='" + patchLevel + '\'' +
                 ", source='" + source + '\'' +
                 ", format='" + format + '\'' +
                 ", encryption='" + encryption + '\'' +
+                ", displayName='" + getDisplayName() + '\'' +
+                ", description='" + getDescription() + '\'' +
+                ", typeDescription='" + getTypeDescription() + '\'' +
                 ", typeName='" + getTypeName() + '\'' +
-                ", classifications=" + getClassifications() +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +
-                ", meanings=" + getMeanings() +
                 ", extendedProperties=" + getExtendedProperties() +
                 '}';
     }
@@ -278,7 +246,7 @@ public class FileSystem extends ReferenceableProperties
         {
             return false;
         }
-        FileSystem that = (FileSystem) objectToCompare;
+        FileSystemProperties that = (FileSystemProperties) objectToCompare;
         return Objects.equals(getFileSystemType(), that.getFileSystemType()) &&
                        Objects.equals(getVersion(), that.getVersion()) &&
                        Objects.equals(getPatchLevel(), that.getPatchLevel()) &&

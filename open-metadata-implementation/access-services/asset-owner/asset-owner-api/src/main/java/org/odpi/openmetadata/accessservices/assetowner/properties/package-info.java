@@ -2,6 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 
 /**
- * This properties package provides the extensions to asset for specific subtypes.
+ * This properties package provides the properties used to create different types of elements for an asset and its attachments.
  */
 package org.odpi.openmetadata.accessservices.assetowner.properties;

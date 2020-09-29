@@ -3,9 +3,6 @@
 package org.odpi.openmetadata.accessservices.assetowner.properties;
 
 import com.fasterxml.jackson.annotation.*;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaElement;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaType;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.SimpleSchemaType;
 
 import java.util.Objects;
 
@@ -141,10 +138,8 @@ public abstract class SchemaElementProperties extends ReferenceableProperties
                 ", description='" + description + '\'' +
                 ", isDeprecated=" + isDeprecated +
                 ", typeName='" + getTypeName() + '\'' +
-                ", classifications=" + getClassifications() +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +
-                ", meanings=" + getMeanings() +
                 ", extendedProperties=" + getExtendedProperties() +
                 '}';
     }

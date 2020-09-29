@@ -2,12 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetowner.client;
 
-import org.odpi.openmetadata.accessservices.assetowner.rest.FileSystemResponse;
-import org.odpi.openmetadata.accessservices.assetowner.rest.FolderResponse;
-import org.odpi.openmetadata.accessservices.assetowner.rest.ValidValueConsumersResponse;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.ValidValueResponse;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.ValidValuesResponse;
-import org.odpi.openmetadata.commonservices.odf.metadatamanagement.client.ODFRESTClient;
+import org.odpi.openmetadata.accessservices.assetowner.rest.*;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.OCFRESTClient;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -17,7 +13,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 /**
  * AssetOwnerRESTClient is responsible for issuing calls to the OMAS REST APIs.
  */
-class AssetOwnerRESTClient extends ODFRESTClient
+class AssetOwnerRESTClient extends OCFRESTClient
 {
     /**
      * Constructor for no authentication with audit log.
@@ -29,8 +25,8 @@ class AssetOwnerRESTClient extends ODFRESTClient
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    AssetOwnerRESTClient(String    serverName,
-                         String    serverPlatformURLRoot,
+    AssetOwnerRESTClient(String   serverName,
+                         String   serverPlatformURLRoot,
                          AuditLog auditLog) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot, auditLog);
@@ -144,9 +140,6 @@ class AssetOwnerRESTClient extends ODFRESTClient
     }
 
 
-
-
-
     /**
      * Issue a GET REST call that returns a ValidValuesResponse object.
      *
@@ -225,25 +218,250 @@ class AssetOwnerRESTClient extends ODFRESTClient
         return restResult;
     }
 
+
     /**
-     * Issue a GET REST call that returns a ValidValueConsumersResponse object.
+     * Issue a GET REST call that returns an AssetElementResponse object.
      *
      * @param methodName  name of the method being called.
      * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
-     * @return ValidValueConsumersResponse
+     * @return AssetElementResponse
      * @throws InvalidParameterException one of the parameters is invalid.
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException the repository is not available or not working properly.
+     * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    ValidValueConsumersResponse callValidValueConsumersGetRESTCall(String    methodName,
-                                                                   String    urlTemplate,
-                                                                   Object... params) throws InvalidParameterException,
-                                                                                            UserNotAuthorizedException,
-                                                                                            PropertyServerException
+    public AssetElementResponse callAssetElementGetRESTCall(String    methodName,
+                                                            String    urlTemplate,
+                                                            Object... params) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
     {
-        ValidValueConsumersResponse restResult = this.callGetRESTCall(methodName, ValidValueConsumersResponse.class, urlTemplate, params);
+        AssetElementResponse restResult = this.callGetRESTCall(methodName, AssetElementResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a GET REST call that returns a AssetElementsResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return AssetElementsResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    public AssetElementsResponse callAssetElementsGetRESTCall(String    methodName,
+                                                              String    urlTemplate,
+                                                              Object... params) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
+    {
+        AssetElementsResponse restResult = this.callGetRESTCall(methodName, AssetElementsResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a POST REST call that returns a AssetElementsResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param requestBody request body for the REST call - contains most of the parameters
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return AssetElementsResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    public AssetElementsResponse callAssetElementsPostRESTCall(String    methodName,
+                                                               String    urlTemplate,
+                                                               Object    requestBody,
+                                                               Object... params) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
+    {
+        AssetElementsResponse restResult = this.callPostRESTCall(methodName, AssetElementsResponse.class, urlTemplate, requestBody, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+
+    /**
+     * Issue a GET REST call that returns a DiscoveryAnalysisReportListResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return DiscoveryAnalysisReportResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    public DiscoveryAnalysisReportListResponse callDiscoveryAnalysisReportListGetRESTCall(String    methodName,
+                                                                                          String    urlTemplate,
+                                                                                          Object... params) throws InvalidParameterException,
+                                                                                                                   UserNotAuthorizedException,
+                                                                                                                   PropertyServerException
+    {
+        DiscoveryAnalysisReportListResponse restResult = this.callGetRESTCall(methodName,
+                                                                              DiscoveryAnalysisReportListResponse.class,
+                                                                              urlTemplate,
+                                                                              params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a POST REST call that returns a DiscoveryAnalysisReportListResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param requestBody request body for the REST call - contains most of the parameters
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return DiscoveryAnalysisReportResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    public DiscoveryAnalysisReportListResponse callDiscoveryAnalysisReportListPostRESTCall(String    methodName,
+                                                                                           String    urlTemplate,
+                                                                                           Object    requestBody,
+                                                                                           Object... params) throws InvalidParameterException,
+                                                                                                                    UserNotAuthorizedException,
+                                                                                                                    PropertyServerException
+    {
+        DiscoveryAnalysisReportListResponse restResult = this.callPostRESTCall(methodName,
+                                                                               DiscoveryAnalysisReportListResponse.class,
+                                                                               urlTemplate,
+                                                                               requestBody,
+                                                                               params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a GET REST call that returns an AnnotationListResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return AnnotationListResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    public AnnotationListResponse callAnnotationListGetRESTCall(String    methodName,
+                                                                String    urlTemplate,
+                                                                Object... params) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException
+    {
+        AnnotationListResponse restResult = this.callGetRESTCall(methodName, AnnotationListResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a POST REST call that returns an AnnotationResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param requestBody request body for the REST call - contains most of the parameters
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return AnnotationResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    public AnnotationListResponse callAnnotationListPostRESTCall(String    methodName,
+                                                                 String    urlTemplate,
+                                                                 Object    requestBody,
+                                                                 Object... params) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException
+    {
+        AnnotationListResponse restResult = this.callPostRESTCall(methodName, AnnotationListResponse.class, urlTemplate, requestBody, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a GET REST call that returns an AnnotationResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return AnnotationResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    public AnnotationResponse callAnnotationGetRESTCall(String    methodName,
+                                                        String    urlTemplate,
+                                                        Object... params) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
+    {
+        AnnotationResponse restResult = this.callGetRESTCall(methodName, AnnotationResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a POST REST call that returns an AnnotationResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param requestBody request body for the REST call - contains most of the parameters
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return AnnotationResponse
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    public AnnotationResponse callAnnotationPostRESTCall(String    methodName,
+                                                         String    urlTemplate,
+                                                         Object    requestBody,
+                                                         Object... params) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException
+    {
+        AnnotationResponse restResult = this.callPostRESTCall(methodName, AnnotationResponse.class, urlTemplate, requestBody, params);
 
         exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
 

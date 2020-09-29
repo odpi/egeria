@@ -3,19 +3,22 @@
 package org.odpi.openmetadata.accessservices.assetowner.properties;
 
 
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
+import java.util.Objects;
 
 /**
- * File describes the property of a single data file.
+ * FileProperties describes the property of a single data file.
  */
-public class File extends DataStore
+public class FileProperties extends DataStoreProperties
 {
     private static final long    serialVersionUID = 1L;
+
+    private String   fileType = null;
+
 
     /**
      * Default constructor
      */
-    public File()
+    public FileProperties()
     {
         super();
     }
@@ -26,30 +29,102 @@ public class File extends DataStore
      *
      * @param template object to copy
      */
-    public File(File template)
+    public FileProperties(FileProperties template)
     {
         super(template);
+
+        if (template != null)
+        {
+            fileType = template.getFileType();
+        }
     }
 
 
     /**
-     * Subtyping constructor.
+     * Return the file type of the file if known.
      *
-     * @param template object to copy
+     * @return file type string
      */
-    public File(DataStore template)
+    public String getFileType()
     {
-        super(template);
+        return fileType;
     }
 
 
     /**
-     * Subtyping constructor.
+     * Set up the file type of the file if known.
      *
-     * @param template object to copy
+     * @param fileType string
      */
-    public File(Asset template)
+    public void setFileType(String fileType)
     {
-        super(template);
+        this.fileType = fileType;
+    }
+
+
+    /**
+     * JSON-style toString
+     *
+     * @return return string containing the property names and values
+     */
+    @Override
+    public String toString()
+    {
+        return "FileProperties{" +
+                "fileType='" + fileType + '\'' +
+                ", createTime=" + getCreateTime() +
+                ", modifiedTime=" + getModifiedTime() +
+                ", encodingType='" + getEncodingType() + '\'' +
+                ", encodingLanguage='" + getEncodingLanguage() + '\'' +
+                ", encodingDescription='" + getEncodingDescription() + '\'' +
+                ", displayName='" + getDisplayName() + '\'' +
+                ", description='" + getDescription() + '\'' +
+                ", owner='" + getOwner() + '\'' +
+                ", ownerType=" + getOwnerType() +
+                ", zoneMembership=" + getZoneMembership() +
+                ", origin=" + getOtherOriginValues() +
+                ", qualifiedName='" + getQualifiedName() + '\'' +
+                ", additionalProperties=" + getAdditionalProperties() +
+                ", typeName='" + getTypeName() + '\'' +
+                ", extendedProperties=" + getExtendedProperties() +
+                '}';
+    }
+
+
+    /**
+     * Return comparison result based on the content of the properties.
+     *
+     * @param objectToCompare test object
+     * @return result of comparison
+     */
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
+        {
+            return true;
+        }
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        {
+            return false;
+        }
+        if (!super.equals(objectToCompare))
+        {
+            return false;
+        }
+        FileProperties that = (FileProperties) objectToCompare;
+        return Objects.equals(fileType, that.fileType);
+    }
+
+
+    /**
+     * Return hash code for this object
+     *
+     * @return int hash code
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), fileType);
     }
 }

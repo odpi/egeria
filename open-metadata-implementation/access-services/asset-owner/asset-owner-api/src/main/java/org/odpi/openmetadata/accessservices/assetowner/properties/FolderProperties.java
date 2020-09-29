@@ -4,16 +4,16 @@ package org.odpi.openmetadata.accessservices.assetowner.properties;
 
 
 /**
- * Folder defines an asset that is a folder.  The qualified name is the fully qualified path name of the folder.
+ * FolderProperties defines an asset that is a folder.  The qualified name is the fully qualified path name of the folder.
  */
-public class Folder extends DataStore
+public class FolderProperties extends DataStoreProperties
 {
     private static final long    serialVersionUID = 1L;
 
     /**
      * Default constructor
      */
-    public Folder()
+    public FolderProperties()
     {
         super();
     }
@@ -24,7 +24,7 @@ public class Folder extends DataStore
      *
      * @param template object to copy
      */
-    public Folder(Folder template)
+    public FolderProperties(FolderProperties template)
     {
         super(template);
     }
@@ -35,7 +35,7 @@ public class Folder extends DataStore
      *
      * @param template object to copy
      */
-    public Folder(DataStore template)
+    public FolderProperties(DataStoreProperties template)
     {
         super(template);
     }
@@ -46,7 +46,7 @@ public class Folder extends DataStore
      *
      * @param template object to copy
      */
-    public Folder(AssetProperties template)
+    public FolderProperties(AssetProperties template)
     {
         super(template);
     }
