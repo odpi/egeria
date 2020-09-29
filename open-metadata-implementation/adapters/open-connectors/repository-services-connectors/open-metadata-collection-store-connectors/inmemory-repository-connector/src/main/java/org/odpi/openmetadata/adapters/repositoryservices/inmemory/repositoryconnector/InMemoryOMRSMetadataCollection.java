@@ -440,7 +440,37 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
 
 
     /**
-     * {@inheritDoc}
+     * Return a list of entities that match the supplied criteria.  The results can be returned over many pages.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityTypeGUID String unique identifier for the entity type of interest (null means any entity type).
+     * @param entitySubtypeGUIDs optional list of the unique identifiers (guids) for subtypes of the entityTypeGUID to
+     *                           include in the search results. Null means all subtypes.
+     * @param matchProperties Optional list of entity property conditions to match.
+     * @param fromEntityElement the starting element number of the entities to return.
+     *                                This is used when retrieving elements
+     *                                beyond the first page of results. Zero means start from the first element.
+     * @param limitResultsByStatus By default, entities in all statuses are returned.  However, it is possible
+     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
+     *                             status values.
+     * @param matchClassifications Optional list of entity classifications to match.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingProperty String name of the entity property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
+     * @param pageSize the maximum number of result entities that can be returned on this request.  Zero means
+     *                 unrestricted return results size.
+     * @return a list of entities matching the supplied criteria; null means no matching entities in the metadata
+     * collection.
+     * @throws InvalidParameterException a parameter is invalid or null.
+     * @throws TypeErrorException the type guid passed on the request is not known by the
+     *                              metadata collection.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws PropertyErrorException the properties specified are not valid for any of the requested types of
+     *                                  entity.
+     * @throws PagingErrorException the paging/sequencing parameters are set up incorrectly.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @Override
     public List<EntityDetail> findEntities(String                    userId,
@@ -842,7 +872,40 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
 
 
     /**
-     * {@inheritDoc}
+     * Return a list of relationships that match the requested conditions.  The results can be received as a series of
+     * pages.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param relationshipTypeGUID unique identifier (guid) for the relationship's type.  Null means all types
+     *                             (but may be slow so not recommended).
+     * @param relationshipSubtypeGUIDs optional list of the unique identifiers (guids) for subtypes of the
+     *                                 relationshipTypeGUID to include in the search results. Null means all subtypes.
+     * @param matchProperties Optional list of relationship property conditions to match.
+     * @param fromRelationshipElement the starting element number of the entities to return.
+     *                                This is used when retrieving elements
+     *                                beyond the first page of results. Zero means start from the first element.
+     * @param limitResultsByStatus By default, relationships in all statuses are returned.  However, it is possible
+     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
+     *                             status values.
+     * @param asOfTime Requests a historical query of the relationships for the entity.  Null means return the
+     *                 present values.
+     * @param sequencingProperty String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
+     * @param pageSize the maximum number of result relationships that can be returned on this request.  Zero means
+     *                 unrestricted return results size.
+     * @return a list of relationships.  Null means no matching relationships.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws TypeErrorException the type guid passed on the request is not known by the
+     *                              metadata collection.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws PropertyErrorException the properties specified are not valid for any of the requested types of
+     *                                  relationships.
+     * @throws PagingErrorException the paging/sequencing parameters are set up incorrectly.
+     * @throws FunctionNotSupportedException the repository does not support one of the provided parameters.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * @see OMRSRepositoryHelper#getExactMatchRegex(String)
      */
     @Override
     public  List<Relationship> findRelationships(String                    userId,
@@ -1969,6 +2032,8 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
              * Validation complete - build the new classification
              */
             newClassification = repositoryHelper.getNewClassification(repositoryName,
+                                                                      null,
+                                                                      InstanceProvenanceType.LOCAL_COHORT,
                                                                       userId,
                                                                       classificationName,
                                                                       entityType.getTypeDefName(),
@@ -1980,7 +2045,153 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         {
             throw error;
         }
-        catch (Throwable   error)
+        catch (Exception   error)
+        {
+            throw new ClassificationErrorException(OMRSErrorCode.INVALID_CLASSIFICATION_FOR_ENTITY.getMessageDefinition(repositoryName,
+                                                                                                                        classificationName,
+                                                                                                                        entityType.getTypeDefName()),
+                                                   this.getClass().getName(),
+                                                   methodName);
+        }
+
+        /*
+         * Validation complete - ok to update entity
+         */
+
+        EntityDetail updatedEntity = repositoryHelper.addClassificationToEntity(repositoryName,
+                                                                                entity,
+                                                                                newClassification,
+                                                                                methodName);
+
+        updatedEntity = repositoryHelper.incrementVersion(userId, entity, updatedEntity);
+
+        repositoryStore.updateEntityInStore(updatedEntity);
+
+        /*
+         * The repository store maintains an entity proxy for use with relationships.
+         */
+        EntityProxy entityProxy = repositoryHelper.getNewEntityProxy(repositoryName, updatedEntity);
+
+        repositoryStore.updateEntityProxyInStore(entityProxy);
+
+        return updatedEntity;
+    }
+
+
+    /**
+     * Add the requested classification to a specific entity.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityGUID String unique identifier (guid) for the entity.
+     * @param classificationName String name for the classification.
+     * @param externalSourceGUID unique identifier (guid) for the external source.
+     * @param externalSourceName unique name for the external source.
+     * @param classificationOrigin source of the classification
+     * @param classificationOriginGUID if the classification is propagated, this is the unique identifier of the entity where
+     * @param classificationProperties list of properties to set in the classification.
+     * @return EntitySummary showing the resulting entity header and classifications.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection
+     * @throws ClassificationErrorException the requested classification is either not known or not valid
+     *                                         for the entity.
+     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                characteristics in the TypeDef for this classification type
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
+     */
+    public   EntityDetail classifyEntity(String               userId,
+                                         String               entityGUID,
+                                         String               classificationName,
+                                         String               externalSourceGUID,
+                                         String               externalSourceName,
+                                         ClassificationOrigin classificationOrigin,
+                                         String               classificationOriginGUID,
+                                         InstanceProperties   classificationProperties) throws InvalidParameterException,
+                                                                                               RepositoryErrorException,
+                                                                                               EntityNotKnownException,
+                                                                                               ClassificationErrorException,
+                                                                                               PropertyErrorException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               FunctionNotSupportedException
+    {
+        final String  methodName = "classifyEntity (detailed)";
+        final String  entityGUIDParameterName     = "entityGUID";
+        final String  classificationParameterName = "classificationName";
+        final String  propertiesParameterName     = "classificationProperties";
+
+        /*
+         * Validate parameters
+         */
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        repositoryValidator.validateUserId(repositoryName, userId, methodName);
+        repositoryValidator.validateGUID(repositoryName, entityGUIDParameterName, entityGUID, methodName);
+
+        /*
+         * Locate entity
+         */
+        EntityDetail entity = repositoryStore.getEntity(entityGUID);
+
+        repositoryValidator.validateEntityFromStore(repositoryName, entityGUID, entity, methodName);
+        repositoryValidator.validateEntityIsNotDeleted(repositoryName, entity, methodName);
+
+        repositoryValidator.validateInstanceType(repositoryName, entity);
+
+        InstanceType entityType = entity.getType();
+
+        repositoryValidator.validateClassification(repositoryName,
+                                                   classificationParameterName,
+                                                   classificationName,
+                                                   entityType.getTypeDefName(),
+                                                   methodName);
+
+        Classification newClassification;
+        try
+        {
+            repositoryValidator.validateClassificationProperties(repositoryName,
+                                                                 classificationName,
+                                                                 propertiesParameterName,
+                                                                 classificationProperties,
+                                                                 methodName);
+
+            /*
+             * Validation complete - build the new classification
+             */
+            if (externalSourceGUID == null)
+            {
+                newClassification = repositoryHelper.getNewClassification(repositoryName,
+                                                                          null,
+                                                                          InstanceProvenanceType.LOCAL_COHORT,
+                                                                          userId,
+                                                                          classificationName,
+                                                                          entityType.getTypeDefName(),
+                                                                          classificationOrigin,
+                                                                          classificationOriginGUID,
+                                                                          classificationProperties);
+            }
+            else
+            {
+                newClassification = repositoryHelper.getNewClassification(repositoryName,
+                                                                          externalSourceGUID,
+                                                                          InstanceProvenanceType.EXTERNAL_SOURCE,
+                                                                          userId,
+                                                                          classificationName,
+                                                                          entityType.getTypeDefName(),
+                                                                          classificationOrigin,
+                                                                          classificationOriginGUID,
+                                                                          classificationProperties);
+                newClassification.setMetadataCollectionName(externalSourceName);
+                newClassification.setReplicatedBy(metadataCollectionId);
+            }
+        }
+        catch (PropertyErrorException  error)
+        {
+            throw error;
+        }
+        catch (Exception   error)
         {
             throw new ClassificationErrorException(OMRSErrorCode.INVALID_CLASSIFICATION_FOR_ENTITY.getMessageDefinition(repositoryName,
                                                                                                                         classificationName,
