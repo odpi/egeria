@@ -7,10 +7,8 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.handlers.AssetHandler;
-import org.odpi.openmetadata.commonservices.odf.metadatamanagement.handlers.AnnotationHandler;
-import org.odpi.openmetadata.commonservices.odf.metadatamanagement.handlers.DiscoveryAnalysisReportHandler;
-import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.*;
+import org.odpi.openmetadata.accessservices.discoveryengine.rest.*;
+import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -56,6 +54,7 @@ public class DiscoveryEngineRESTServices
      *  UserNotAuthorizedException user not authorized to issue this request.
      *  PropertyServerException there was a problem that occurred within the property server.
      */
+    @SuppressWarnings(value = "unused")
     public GUIDListResponse getAssets(String          serverName,
                                       String          userId,
                                       int             startFrom,
@@ -71,11 +70,16 @@ public class DiscoveryEngineRESTServices
 
         try
         {
-            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            AssetHandler<OpenMetadataAPIDummyBean> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            response.setGUIDs(handler.assetGUIDsScan(userId, null, null, startFrom, pageSize, methodName));
+            response.setGUIDs(handler.getBeanGUIDsByType(userId,
+                                                         OpenMetadataAPIMapper.ASSET_TYPE_GUID,
+                                                         OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                         startFrom,
+                                                         pageSize,
+                                                         methodName));
         }
         catch (InvalidParameterException error)
         {
@@ -121,6 +125,7 @@ public class DiscoveryEngineRESTServices
                                                       int      pageSize)
     {
         final String   methodName = "getAssetsByQualifiedName";
+        final String   nameParameterName = "name";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -129,15 +134,18 @@ public class DiscoveryEngineRESTServices
 
         try
         {
-            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            AssetHandler<OpenMetadataAPIDummyBean> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            response.setGUIDs(handler.getAssetGUIDsByQualifiedName(userId,
-                                                                   name,
-                                                                   startFrom,
-                                                                   pageSize,
-                                                                   methodName));
+            response.setGUIDs(handler.getBeanGUIDsByQualifiedName(userId,
+                                                                  OpenMetadataAPIMapper.ASSET_TYPE_GUID,
+                                                                  OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                                  name,
+                                                                  nameParameterName,
+                                                                  startFrom,
+                                                                  pageSize,
+                                                                  methodName));
         }
         catch (InvalidParameterException error)
         {
@@ -183,6 +191,7 @@ public class DiscoveryEngineRESTServices
                                              int      pageSize)
     {
         final String   methodName = "getAssetsByName";
+        final String   nameParameterName = "name";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -191,12 +200,15 @@ public class DiscoveryEngineRESTServices
 
         try
         {
-            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            AssetHandler<OpenMetadataAPIDummyBean> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             response.setGUIDs(handler.getAssetGUIDsByName(userId,
+                                                          OpenMetadataAPIMapper.ASSET_TYPE_GUID,
+                                                          OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                                           name,
+                                                          nameParameterName,
                                                           startFrom,
                                                           pageSize,
                                                           methodName));
@@ -246,6 +258,7 @@ public class DiscoveryEngineRESTServices
                                         int      pageSize)
     {
         final String   methodName = "findAssets";
+        final String   searchStringParameterName = "findAssets";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -254,15 +267,18 @@ public class DiscoveryEngineRESTServices
 
         try
         {
-            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            AssetHandler<OpenMetadataAPIDummyBean> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            response.setGUIDs(handler.findAssetGUIDs(userId,
-                                                     searchString,
-                                                     startFrom,
-                                                     pageSize,
-                                                     methodName));
+            response.setGUIDs(handler.findBeanGUIDs(userId,
+                                                    OpenMetadataAPIMapper.ASSET_TYPE_GUID,
+                                                    OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                    searchString,
+                                                    searchStringParameterName,
+                                                    startFrom,
+                                                    pageSize,
+                                                    methodName));
         }
         catch (InvalidParameterException error)
         {
@@ -307,6 +323,7 @@ public class DiscoveryEngineRESTServices
                                                  int      pageSize)
     {
         final String   methodName = "findAssetsByEndpoint";
+        final String   networkAddressParameterName = "findAssetsByEndpoint";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -315,12 +332,13 @@ public class DiscoveryEngineRESTServices
 
         try
         {
-            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            AssetHandler<OpenMetadataAPIDummyBean> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             response.setGUIDs(handler.getAssetGUIDsByEndpoint(userId,
                                                               networkAddress,
+                                                              networkAddressParameterName,
                                                               startFrom,
                                                               pageSize,
                                                               methodName));
@@ -436,9 +454,9 @@ public class DiscoveryEngineRESTServices
             }
             else
             {
-                DiscoveryAnalysisReportHandler handler = instanceHandler.getDiscoveryAnalysisReportHandler(userId,
-                                                                                                           serverName,
-                                                                                                           methodName);
+                DiscoveryAnalysisReportHandler<DiscoveryAnalysisReport> handler = instanceHandler.getDiscoveryAnalysisReportHandler(userId,
+                                                                                                                                    serverName,
+                                                                                                                                    methodName);
 
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -448,7 +466,7 @@ public class DiscoveryEngineRESTServices
                                                                        requestBody.getDescription(),
                                                                        requestBody.getCreationDate(),
                                                                        requestBody.getAnalysisParameters(),
-                                                                       requestBody.getDiscoveryRequestStatus(),
+                                                                       requestBody.getDiscoveryRequestStatus().getOpenTypeOrdinal(),
                                                                        assetGUID,
                                                                        requestBody.getDiscoveryEngineGUID(),
                                                                        requestBody.getDiscoveryServiceGUID(),
@@ -510,14 +528,25 @@ public class DiscoveryEngineRESTServices
             {
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
+            else
+            {
+                DiscoveryAnalysisReportHandler<DiscoveryAnalysisReport> handler = instanceHandler.getDiscoveryAnalysisReportHandler(userId,
+                                                                                                                                    serverName,
+                                                                                                                                    methodName);
 
-            DiscoveryAnalysisReportHandler handler = instanceHandler.getDiscoveryAnalysisReportHandler(userId,
-                                                                                                       serverName,
-                                                                                                       methodName);
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            handler.updateDiscoveryAnalysisReport(userId, discoveryReportGUID, requestBody);
+                handler.updateDiscoveryAnalysisReport(userId,
+                                                      discoveryReportGUID,
+                                                      requestBody.getQualifiedName(),
+                                                      requestBody.getDisplayName(),
+                                                      requestBody.getDescription(),
+                                                      requestBody.getCreationDate(),
+                                                      requestBody.getAnalysisParameters(),
+                                                      requestBody.getDiscoveryRequestStatus().getOpenTypeOrdinal(),
+                                                      requestBody.getAdditionalProperties(),
+                                                      methodName);
+            }
         }
         catch (InvalidParameterException error)
         {
@@ -567,9 +596,9 @@ public class DiscoveryEngineRESTServices
 
         try
         {
-            DiscoveryAnalysisReportHandler handler = instanceHandler.getDiscoveryAnalysisReportHandler(userId,
-                                                                                                       serverName,
-                                                                                                       methodName);
+            DiscoveryAnalysisReportHandler<DiscoveryAnalysisReport> handler = instanceHandler.getDiscoveryAnalysisReportHandler(userId,
+                                                                                                                                serverName,
+                                                                                                                                methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -622,7 +651,7 @@ public class DiscoveryEngineRESTServices
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            AnnotationHandler handler = instanceHandler.getAnnotationHandler(userId, serverName, methodName);
+            AnnotationHandler<Annotation> handler = instanceHandler.getAnnotationHandler(userId, serverName, methodName);
 
             response.setNames(handler.getTypesOfAnnotation());
         }
@@ -658,7 +687,7 @@ public class DiscoveryEngineRESTServices
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            AnnotationHandler handler = instanceHandler.getAnnotationHandler(userId, serverName, methodName);
+            AnnotationHandler<Annotation> handler = instanceHandler.getAnnotationHandler(userId, serverName, methodName);
 
             response.setStringMap(handler.getTypesOfAnnotationDescriptions());
         }
@@ -712,18 +741,27 @@ public class DiscoveryEngineRESTServices
 
         try
         {
-            DiscoveryAnalysisReportHandler handler = instanceHandler.getDiscoveryAnalysisReportHandler(userId,
-                                                                                                       serverName,
-                                                                                                       methodName);
+            AnnotationHandler<Annotation> handler = instanceHandler.getAnnotationHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            response.setAnnotations(handler.getAnnotationsForAssetByStatus(userId,
-                                                                           assetGUID,
-                                                                           status,
-                                                                           startingFrom,
-                                                                           maximumResults,
-                                                                           methodName));
+            if (status == null)
+            {
+                response.setAnnotations(handler.getAnnotationsForAsset(userId,
+                                                                       assetGUID,
+                                                                       startingFrom,
+                                                                       maximumResults,
+                                                                       methodName));
+            }
+            else
+            {
+                response.setAnnotations(handler.getAnnotationsForAssetByStatus(userId,
+                                                                               assetGUID,
+                                                                               status.getOpenTypeOrdinal(),
+                                                                               startingFrom,
+                                                                               maximumResults,
+                                                                               methodName));
+            }
         }
         catch (InvalidParameterException error)
         {
@@ -777,15 +815,12 @@ public class DiscoveryEngineRESTServices
 
         try
         {
-            DiscoveryAnalysisReportHandler handler = instanceHandler.getDiscoveryAnalysisReportHandler(userId,
-                                                                                                       serverName,
-                                                                                                       methodName);
+            AnnotationHandler<Annotation> handler = instanceHandler.getAnnotationHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             response.setAnnotations(handler.getDiscoveryReportAnnotations(userId,
                                                                           discoveryReportGUID,
-                                                                          null,
                                                                           startingFrom,
                                                                           maximumResults,
                                                                           methodName));
@@ -842,15 +877,12 @@ public class DiscoveryEngineRESTServices
 
         try
         {
-            AnnotationHandler handler = instanceHandler.getAnnotationHandler(userId,
-                                                                             serverName,
-                                                                             methodName);
+            AnnotationHandler<Annotation> handler = instanceHandler.getAnnotationHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             response.setAnnotations(handler.getExtendedAnnotations(userId,
                                                                    annotationGUID,
-                                                                   null,
                                                                    startingFrom,
                                                                    maximumResults,
                                                                    methodName));
@@ -904,15 +936,11 @@ public class DiscoveryEngineRESTServices
 
         try
         {
-            AnnotationHandler handler = instanceHandler.getAnnotationHandler(userId,
-                                                                             serverName,
-                                                                             methodName);
+            AnnotationHandler<Annotation> handler = instanceHandler.getAnnotationHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            response.setAnnotation(handler.getAnnotation(userId,
-                                                         annotationGUID,
-                                                         methodName));
+            response.setAnnotation(handler.getAnnotation(userId, annotationGUID, methodName));
         }
         catch (InvalidParameterException error)
         {
@@ -969,9 +997,7 @@ public class DiscoveryEngineRESTServices
                 restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
             }
 
-            DiscoveryAnalysisReportHandler handler = instanceHandler.getDiscoveryAnalysisReportHandler(userId,
-                                                                                                       serverName,
-                                                                                                       methodName);
+            AnnotationHandler<Annotation> handler = instanceHandler.getAnnotationHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -1030,9 +1056,7 @@ public class DiscoveryEngineRESTServices
 
         try
         {
-            AnnotationHandler handler = instanceHandler.getAnnotationHandler(userId,
-                                                                             serverName,
-                                                                             methodName);
+            AnnotationHandler<Annotation> handler = instanceHandler.getAnnotationHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -1091,9 +1115,7 @@ public class DiscoveryEngineRESTServices
 
         try
         {
-            AnnotationHandler handler = instanceHandler.getAnnotationHandler(userId,
-                                                                             serverName,
-                                                                             methodName);
+            AnnotationHandler<Annotation> handler = instanceHandler.getAnnotationHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -1135,6 +1157,7 @@ public class DiscoveryEngineRESTServices
      *  UserNotAuthorizedException the user id not authorized to issue this request
      *  PropertyServerException there was a problem deleting the annotation from the annotation store.
      */
+    @SuppressWarnings(value = "unused")
     public VoidResponse  deleteAnnotation(String          serverName, 
                                           String          userId, 
                                           String          annotationGUID, 
