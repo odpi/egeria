@@ -93,7 +93,7 @@ public class RepositoryErrorHandler
                                InstanceProperties   retrievedProperties,
                                String               methodName) throws InvalidParameterException
     {
-        if ((validatingProperty != null) && (retrievedProperties != null))
+        if ((validatingPropertyName != null) && (validatingProperty != null) && (retrievedProperties != null))
         {
             Map<String, InstancePropertyValue> instancePropertyValueMap = retrievedProperties.getInstanceProperties();
             InstancePropertyValue retrievedPropertyValue = instancePropertyValueMap.get(validatingPropertyName);
@@ -115,21 +115,121 @@ public class RepositoryErrorHandler
 
 
     /**
-     * Verify whether an instance is of a particular type or not.
+     * Verify that the external source supplied is able to update/delete the instance.  This is determined by the metadata provenance of
+     * the instance.
      *
      * @param userId calling user
+     * @param instanceHeader header of the instance
+     * @param externalSourceGUID unique identifier for the external source - or null for local
+     * @param externalSourceName unique name for the external source - optional - supplied for error messages
+     * @param methodName calling method
+     *
+     * @throws UserNotAuthorizedException the provenance does not allow the update
+     */
+    void validateProvenance(String              userId,
+                            InstanceAuditHeader instanceHeader,
+                            String              uniqueIdentifier,
+                            String              externalSourceGUID,
+                            String              externalSourceName,
+                            String              methodName) throws UserNotAuthorizedException
+    {
+        /*
+         * If no header is provided then just return.
+         */
+        if (instanceHeader == null)
+        {
+            return;
+        }
+
+        if (instanceHeader.getInstanceProvenanceType() == InstanceProvenanceType.LOCAL_COHORT)
+        {
+            /*
+             * Local cohort instances can be updated by any caller provided they have the right security (tested elsewhere).
+             */
+            return;
+        }
+
+        /*
+         * The instance is owned by some sort of external process.  This means we need to be fussy about the external identifiers of the caller.
+         */
+        if (externalSourceGUID != null)
+        {
+            if (! externalSourceGUID.equals(instanceHeader.getMetadataCollectionId()))
+            {
+                throw new UserNotAuthorizedException(
+                        RepositoryHandlerErrorCode.WRONG_EXTERNAL_SOURCE.getMessageDefinition(methodName,
+                                                                                              externalSourceGUID,
+                                                                                              externalSourceName,
+                                                                                              instanceHeader.getType().getTypeDefCategory().getName(),
+                                                                                              uniqueIdentifier,
+                                                                                              instanceHeader.getInstanceProvenanceType().getName(),
+                                                                                              instanceHeader.getMetadataCollectionId(),
+                                                                                              instanceHeader.getMetadataCollectionName()),
+                        this.getClass().getName(),
+                        methodName,
+                        userId);
+            }
+        }
+        else /* local cohort caller */
+        {
+            throw new UserNotAuthorizedException(
+                    RepositoryHandlerErrorCode.LOCAL_CANNOT_CHANGE_EXTERNAL.getMessageDefinition(methodName,
+                                                                                                 instanceHeader.getType().getTypeDefCategory().getName(),
+                                                                                                 uniqueIdentifier,
+                                                                                                 instanceHeader.getInstanceProvenanceType().getName(),
+                                                                                                 instanceHeader.getMetadataCollectionId(),
+                                                                                                 instanceHeader.getMetadataCollectionName(),
+                                                                                                 userId),
+                        this.getClass().getName(),
+                        methodName,
+                    userId);
+
+        }
+    }
+
+
+    /**
+     * Verify whether an instance is of a particular type or not.
+     *
      * @param instanceHeader the entity or relationship header.
-     * @param guidParameterName name of the parameter containing the guid.
      * @param expectedTypeName name of the type to test for
      * @param methodName calling method
      *
-     * @return boolean flag
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     */
+    void validateInstanceType(InstanceHeader instanceHeader,
+                              String         expectedTypeName,
+                              String         methodName) throws InvalidParameterException
+    {
+        if (instanceHeader != null)
+        {
+            InstanceType type = instanceHeader.getType();
+            if (type != null)
+            {
+                if (! repositoryHelper.isTypeOf(methodName, type.getTypeDefName(), expectedTypeName))
+                {
+                    this.handleWrongTypeForGUIDException(instanceHeader.getGUID(),
+                                                         methodName,
+                                                         type.getTypeDefName(),
+                                                         expectedTypeName);
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Verify whether an instance is of a particular type or not.
+     *
+     * @param instanceHeader the entity or relationship header.
+     * @param expectedTypeGUID unique identifier of the type to test for
+     * @param expectedTypeName unique name of the type to test for
+     * @param methodName calling method
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      */
-    void validateInstanceType(String         userId,
-                              InstanceHeader instanceHeader,
-                              String         guidParameterName,
+    void validateInstanceType(InstanceHeader instanceHeader,
+                              String         expectedTypeGUID,
                               String         expectedTypeName,
                               String         methodName) throws InvalidParameterException
     {
@@ -257,7 +357,7 @@ public class RepositoryErrorHandler
 
 
     /**
-     * Throw an exception if the supplied userId is not authorized to perform a request
+     * Throw an exception if the supplied property is not supported
      *
      * @param error  caught exception
      * @param methodName  name of the method making the call
@@ -278,6 +378,55 @@ public class RepositoryErrorHandler
                                             methodName,
                                             error,
                                             propertyName);
+    }
+
+
+    /**
+     * Throw an exception if the supplied parameter is invalid.
+     *
+     * @param methodName  name of the method making the call
+     * @param parameterName  name of the parameter in error
+     * @param parameterValue value of the parameter
+     *
+     * @throws InvalidParameterException invalid property
+     */
+    public void handleUnsupportedParameter(String     methodName,
+                                           String     parameterName,
+                                           String     parameterValue) throws InvalidParameterException
+    {
+        throw new InvalidParameterException(RepositoryHandlerErrorCode.INVALID_PARAMETER.getMessageDefinition(parameterName,
+                                                                                                              methodName,
+                                                                                                              serviceName,
+                                                                                                              serverName,
+                                                                                                              parameterValue),
+                                            this.getClass().getName(),
+                                            methodName,
+                                            parameterName);
+    }
+
+
+    /**
+     * Throw an exception if the supplied userId is not authorized to perform a request
+     *
+     * @param error  caught exception
+     * @param methodName  name of the method making the call
+     * @param typeName  name of the property in error
+     *
+     * @throws InvalidParameterException invalid property
+     */
+    public void handleUnsupportedType(Throwable  error,
+                                      String     methodName,
+                                      String     typeName) throws InvalidParameterException
+    {
+        throw new InvalidParameterException(RepositoryHandlerErrorCode.INVALID_TYPE.getMessageDefinition(typeName,
+                                                                                                         methodName,
+                                                                                                         serviceName,
+                                                                                                         serverName,
+                                                                                                         error.getMessage()),
+                                            this.getClass().getName(),
+                                            methodName,
+                                            error,
+                                            typeName);
     }
 
 
@@ -404,7 +553,7 @@ public class RepositoryErrorHandler
 
 
     /**
-     * Throw an exception if multiple relationships are returned when not expected.
+     * Throw an exception if multiple entities are returned when not expected.
      *
      * @param name  requested name for the entity
      * @param nameParameterName  name of the parameter
@@ -443,6 +592,33 @@ public class RepositoryErrorHandler
                                           methodName);
     }
 
+
+    /**
+     * Throw an exception if multiple entities are returned when not expected.
+     *
+     * @param name  requested name for the entity
+     * @param nameParameterName  name of the parameter
+     * @param entityTypeName  name of the entity's type
+     * @param returnedEntityGUIDs list of entities returned
+     * @param methodName  name of the method making the call
+     *
+     * @throws PropertyServerException unexpected response from property server
+     */
+    public  void handleAmbiguousName(String             name,
+                                     String             nameParameterName,
+                                     String             entityTypeName,
+                                     List<String>       returnedEntityGUIDs,
+                                     String             methodName) throws PropertyServerException
+    {
+        throw new PropertyServerException(RepositoryHandlerErrorCode.MULTIPLE_ENTITIES_FOUND.getMessageDefinition(entityTypeName,
+                                                                                                                name,
+                                                                                                                returnedEntityGUIDs.toString(),
+                                                                                                                methodName,
+                                                                                                                nameParameterName,
+                                                                                                                serverName),
+                                          this.getClass().getName(),
+                                          methodName);
+    }
 
     /**
      * Throw an exception if no relationships are returned when not expected.
@@ -484,11 +660,18 @@ public class RepositoryErrorHandler
                                InstanceProperties properties,
                                String             methodName) throws PropertyServerException
     {
+        String propertiesString = "<null>";
+
+        if (properties != null)
+        {
+            propertiesString = properties.toString();
+        }
+
         throw new PropertyServerException(RepositoryHandlerErrorCode.NULL_ENTITY_RETURNED.getMessageDefinition(methodName,
                                                                                                                serverName,
                                                                                                                entityTypeName,
                                                                                                                entityTypeGUID,
-                                                                                                               properties.toString()),
+                                                                                                               propertiesString),
                                           this.getClass().getName(),
                                           methodName);
 
@@ -512,12 +695,19 @@ public class RepositoryErrorHandler
                                                 InstanceProperties properties,
                                                 String             methodName) throws PropertyServerException
     {
+        String propertiesString = "<null>";
+
+        if (properties != null)
+        {
+            propertiesString = properties.toString();
+        }
+
         throw new PropertyServerException(RepositoryHandlerErrorCode.NULL_ENTITY_RETURNED_FOR_CLASSIFICATION.getMessageDefinition(methodName,
                                                                                                                                   serverName,
                                                                                                                                   entityGUID,
                                                                                                                                   classificationTypeName,
                                                                                                                                   classificationTypeGUID,
-                                                                                                                                  properties.toString()),
+                                                                                                                                  propertiesString),
                                           this.getClass().getName(),
                                           methodName);
     }
