@@ -27,40 +27,57 @@ platform and clients.
 
 The packages are as follows:
 
-* **[frameworks](frameworks)** - the frameworks define the interfaces for pluggable components such
-as connectors, discovery services and governance actions.  These
-components provide much of the customization offered by the open metadata and governance
-implementation.
+
+* **[access-services](access-services)** - the access services provide domain-specific services for data tools, engines
+and platforms that for maintaining and retrieving metadata.  The access services run in either the metadata access
+point server or metadata server on the OMAG Server Platform.  They call the repository services
+and the common services.
+
+* **[adapters](adapters)** - the adapters provide the pre-written pluggable components that fit into the frameworks
+(see below).  These components allow calls to third party technology to be made from the Egeria
+OMAS Server Platform.  Some of these components are to support the operation of Egeria and others are to enable
+Egeria to connect to third party technology to exchange metadata or govern its assets.
+
+* **[admin-services](admin-services)** - the admin services provides the APIs for configuring
+and operating Open Metadata and Governance (OMAG) Servers that run on the OMAG Server Platform.
 
 * **[common-services](common-services)** - a variety of common services from First Failure Data Capture (FFDC),
 multi-tenancy (for the platform) along with metadata security and management.  Some of these services are
 client-side and other server-side.
 
+* **[engine-services](engine-services)** - the engine services support the hosting of different types of
+governance engines that can be hosted in the engine host governance server on the OMAG Server Platform.
+
+* **[frameworks](frameworks)** - the frameworks define the interfaces for pluggable components such
+as connectors, discovery services and governance actions.  These
+components provide much of the customization offered by the open metadata and governance
+implementation.
+
+* **[governance-servers](governance-servers)** - the governance server services provide the 
+server frameworks that support the different types of governance servers that can run in the OMAG Server Platform.
+
+* **[integration-services](integration-services)** - the integration services support the hosting of
+integration connectors to drive the exchange of metadata with third party technologies.
+These services run in the integration daemon governance server on top of the OMAG Server Platform.
+
 * **[platform-services](platform-services)** - the platform services provides the APIs for
 configuring the Open Metadata and Governance (OMAG) Server Platform and discovering information about the
 OMAG Servers that it is hosting.
-
-* **[admin-services](admin-services)** - the admin services provides the APIs for configuring
-and operating Open Metadata and Governance (OMAG) Servers that run on the OMAG Server Platform.
 
 * **[repository-services](repository-services)** - the repository services provides the events, interfaces and
 implementation of the metadata exchange and federation capabilities for a metadata
 repository that supports the open metadata standards.
 
-* **[access-services](access-services)** - the access services provide domain-specific services for data tools, engines
-and platforms that manage the function and support the work of the people engaged with the
-organization.
-
-* **[adapters](adapters)** - the adapters provide the pre-written pluggable components to the frameworks.
-
-* **[governance-services](governance-servers)** - the governance services pull combinations
-of the services together to
-support different integration patterns with third party technology.
+* **[server-chassis](server-chassis)** - the server chassis is the base component for the OMAG Server Platform.
+It includes the web server that receives the REST API requests for both the OMAG Server Platform
+and the servers that run on it.
 
 * **[user-interfaces](user-interfaces)** - basic user interfaces to demonstrate the power of the open
 metadata and governance capabilities.
 
-
+* **[view-services](view-services)** - the view services support the REST API interfaces
+called by the user interfaces.  These services run in a view server on the OMAG Server Platform.
+ 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 Copyright Contributors to the ODPi Egeria project.
