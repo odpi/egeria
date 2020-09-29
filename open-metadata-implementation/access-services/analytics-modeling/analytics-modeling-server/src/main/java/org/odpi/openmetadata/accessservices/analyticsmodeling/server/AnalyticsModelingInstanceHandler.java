@@ -9,14 +9,15 @@ import org.odpi.openmetadata.adminservices.configuration.registration.AccessServ
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.PropertyServerException;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.UserNotAuthorizedException;
-import org.odpi.openmetadata.commonservices.multitenant.OCFOMASServiceInstanceHandler;
+import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstanceHandler;
 
 /**
  * AnalyticsModelingInstanceHandler retrieves information from the instance map for the
  * access service instances. The instance map is thread-safe. Instances are
  * added and removed by the AnalyticsModelingAdmin class.
  */
-class AnalyticsModelingInstanceHandler extends OCFOMASServiceInstanceHandler {
+class AnalyticsModelingInstanceHandler extends OMASServiceInstanceHandler
+{
 
 	/**
 	 * Default constructor registers the access service
