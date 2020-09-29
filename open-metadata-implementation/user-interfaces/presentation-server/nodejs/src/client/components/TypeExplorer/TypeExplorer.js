@@ -10,10 +10,10 @@ import React, {useEffect, useRef, useState}     from "react";
 import InteractionContextProvider      from "./contexts/InteractionContext";
 
 /* 
- * Import the DEFAULT export from the RepositoryContext module - which is actually the RepositoryServerContextProvider
+ * Import the DEFAULT export from the RequestContext module - which is actually the RequestContextProvider
  * Naming it explicitly for clarity that this is the provider not the context.
  */
-import RepositoryServerContextProvider from "./contexts/RepositoryServerContext";
+import RequestContextProvider          from "./contexts/RequestContext";
 
 /* 
  * Import the DEFAULT export from the TypesContext module - which is actually the TypesContextProvider
@@ -27,7 +27,8 @@ import TypesContextProvider            from "./contexts/TypesContext";
  */
 import FocusContextProvider            from "./contexts/FocusContext";
 
-import ConnectionDetails               from "./components/connection-details/ConnectionDetails";
+import ServerSelector                           from "./components/resource-selection/ServerSelector";
+
 
 import FocusControls                   from "./components/focus-controls/FocusControls";
 
@@ -123,50 +124,51 @@ export default function TypeExplorer() {
     <div className="tex-container" ref={containerDiv}>
 
       <InteractionContextProvider>
-        <RepositoryServerContextProvider>
-          <TypesContextProvider>
-            <FocusContextProvider>
+        <RequestContextProvider>
+            <TypesContextProvider>
+              <FocusContextProvider>
 
-              <div className="tex-top">
+                <div className="tex-top">
 
-                <div className="title">
-                  <p>Type Explorer</p>
+                  <div className="title">
+                    <p>Type Explorer</p>
 
-                  <input type="image"  src={QuestionMarkImage}
-                     onClick = { () => displayReadme() }  >
-                  </input>
+                    <input type="image"  src={QuestionMarkImage}
+                       onClick = { () => displayReadme() }  >
+                    </input>
 
-                  <ReadmeHandler   status              = { readmeStatus }
-                                   readme              = { readme }
-                                   onCancel            = { cancelReadmeModal }
-                                   onSubmit            = { submitReadmeModal } />
+                    <ReadmeHandler   status              = { readmeStatus }
+                                     readme              = { readme }
+                                     onCancel            = { cancelReadmeModal }
+                                     onSubmit            = { submitReadmeModal } />
+                  </div>
+
+                  <div className="tex-top-left">
+                    <ServerSelector />
+                  </div>
+
+                  <div className="tex-top-middle">
+                    <FocusControls />
+                  </div>        
                 </div>
 
-                <div className="tex-top-left">
-                  <ConnectionDetails />
+                <div className="tex-content">
+
+                  <div className="tex-lhs">
+                    <hr />
+                    <DetailsPanel />
+                  </div>
+
+                  <div className="tex-rhs">
+                    <DiagramManager height={workingHeight-270} width={workingWidth-500}/>
+                  </div>
+
                 </div>
 
-                <div className="tex-top-middle">
-                  <FocusControls />
-                </div>        
-              </div>
-
-              <div className="tex-content">
-
-                <div className="tex-lhs">
-                  <hr />
-                  <DetailsPanel />
-                </div>
-
-                <div className="tex-rhs">
-                  <DiagramManager height={workingHeight-270} width={workingWidth-500}/>
-                </div>
-
-              </div>
-
-            </FocusContextProvider>
-          </TypesContextProvider>
-        </RepositoryServerContextProvider>
+              </FocusContextProvider>
+            </TypesContextProvider>
+     
+          </RequestContextProvider>
       </InteractionContextProvider>
     </div>
 

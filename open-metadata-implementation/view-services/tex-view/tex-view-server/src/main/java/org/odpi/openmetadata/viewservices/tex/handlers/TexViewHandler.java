@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.viewservices.tex.handlers;
 
 
+import org.odpi.openmetadata.adminservices.configuration.properties.ResourceEndpointConfig;
+import org.odpi.openmetadata.commonservices.ffdc.OMAGCommonErrorCode;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
@@ -36,6 +38,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorEx
 import org.odpi.openmetadata.viewservices.tex.api.properties.ClassificationExplorer;
 import org.odpi.openmetadata.viewservices.tex.api.properties.EntityExplorer;
 import org.odpi.openmetadata.viewservices.tex.api.properties.RelationshipExplorer;
+import org.odpi.openmetadata.viewservices.tex.api.properties.ResourceEndpoint;
 import org.odpi.openmetadata.viewservices.tex.api.properties.TypeExplorer;
 
 import org.slf4j.Logger;
@@ -60,6 +63,138 @@ public class TexViewHandler
      * Specify a constant for the (max) length to which labels will be truncated.
      */
     private static final int TRUNCATED_STRING_LENGTH = 24;
+
+
+    /*
+    * viewServiceOptions should have been validated in the Admin layer.
+    * The viewServiceOptions contains a list of resource endpoints that the
+    * view service can connect to. It is formatted like this:
+    * "resourceEndpoints" : [
+                {
+                    resourceCategory   : "Platform",
+                    resourceName       : "Platform2",
+                    resourceRootURL    : "https://localhost:9443"
+                },
+                {
+                    resourceCategory   : "Platform",
+                    resourceName       : "Platform1",
+                    resourceRootURL    : "https://localhost:8082"
+                },
+                {
+                    resourceCategory   : "Server",
+                    resourceName       : "Metadata_Server1",
+                    resourceRootURL    : "https://localhost:8082"
+                },
+                {
+                    resourceCategory   : "Server",
+                    resourceName       : "Metadata_Server2",
+                    resourceRootURL    : "https://localhost:9443"
+                }
+            ]
+    */
+    private Map<String, ResourceEndpoint>  configuredPlatforms = null;  // map is keyed using platformRootURL
+    private Map<String, ResourceEndpoint>  configuredServerInstances   = null;  // map is keyed using serverName+platformRootURL so each instance is unique
+
+
+
+    public TexViewHandler(List<ResourceEndpointConfig>  resourceEndpoints) {
+
+
+        /*
+         * Populate map of resources with their endpoints....
+         */
+
+        // TODO - It would be desirable to add validation rules to ensure uniqueness etc.
+
+        if (resourceEndpoints != null && !resourceEndpoints.isEmpty()) {
+            configuredPlatforms         = new HashMap<>();
+            configuredServerInstances   = new HashMap<>();
+
+            resourceEndpoints.forEach(res -> {
+
+                String resCategory   = res.getResourceCategory();
+                ResourceEndpoint rep = new ResourceEndpoint(res);
+
+                String resName = null;
+
+                switch (resCategory) {
+                    case "Platform":
+                        resName = res.getPlatformName();
+                        configuredPlatforms.put(resName, rep);
+                        break;
+
+                    case "Server":
+                        resName = res.getServerInstanceName();
+                        configuredServerInstances.put(resName, rep);
+                        break;
+
+                    default:
+                        // Unsupported category is ignored
+                        break;
+
+                }
+            });
+        }
+    }
+
+    /**
+     * getResourceEndpoints - returns a list of the configured resource endpoints. Does not include discovered resource endpoints.
+     *
+     * @param userId  userId under which the request is performed
+     * @param methodName The name of the method being invoked
+     * This method will return the resource endpoints that have been configured for the view service
+     *
+     */
+    public Map<String, List<ResourceEndpoint>> getResourceEndpoints(String userId, String methodName)
+
+    {
+
+        List<ResourceEndpoint> platformList = new ArrayList<>();
+        List<ResourceEndpoint> serverList   = new ArrayList<>();
+
+        platformList.addAll(configuredPlatforms.values());
+        serverList.addAll(configuredServerInstances.values());
+
+        Map<String, List<ResourceEndpoint>> returnMap = new HashMap<>();
+        returnMap.put("platformList",platformList);
+        returnMap.put("serverList",serverList);
+        return returnMap;
+    }
+
+
+
+    /**
+     * resolvePlatformRootURL
+     *
+     * This method will look up the configured root URL for the named platform.
+     *
+     * @param platformName
+     * @return resolved platform URL Root
+     * @throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException
+     */
+    private String resolvePlatformRootURL(String platformName, String methodName) throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException
+
+    {
+        String platformRootURL = null;
+
+        if (platformName != null) {
+            ResourceEndpoint resource = configuredPlatforms.get(platformName);
+            if (resource != null) {
+                platformRootURL = resource.getResourceRootURL();
+            }
+        }
+        if (platformName == null || platformRootURL == null) {
+            throw new org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException(OMAGCommonErrorCode.VIEW_SERVICE_NULL_PLATFORM_NAME.getMessageDefinition(),
+                                                                                                 this.getClass().getName(),
+                                                                                                 methodName,
+                                                                                                 "platformName");
+        }
+
+        return platformRootURL;
+    }
+
+
+
 
 
     /**

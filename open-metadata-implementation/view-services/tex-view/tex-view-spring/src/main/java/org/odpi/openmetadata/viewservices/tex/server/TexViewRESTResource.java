@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.viewservices.tex.server;
 
 
+import org.odpi.openmetadata.viewservices.tex.api.rest.TexResourceEndpointListResponse;
 import org.odpi.openmetadata.viewservices.tex.api.rest.TexTypesRequestBody;
 import org.odpi.openmetadata.viewservices.tex.api.rest.TypeExplorerResponse;
 import org.springframework.web.bind.annotation.*;
@@ -33,6 +34,20 @@ public class TexViewRESTResource {
     public TexViewRESTResource() {
     }
 
+    /**
+     * Get the configured resource endpoints
+     *
+     * @param viewServerName   name of the server running the view-service.
+     * @param userId       user account under which to conduct operation.
+     * @return response object containing the list of resource endpoints or exception information
+     */
+
+    @GetMapping("/resource-endpoints")
+    public TexResourceEndpointListResponse getResourceEndpoints(@PathVariable String        viewServerName,
+                                                                @PathVariable String        userId) {
+        return restAPI.getResourceEndpointList(viewServerName, userId);
+
+    }
 
     /**
      * Load type information
