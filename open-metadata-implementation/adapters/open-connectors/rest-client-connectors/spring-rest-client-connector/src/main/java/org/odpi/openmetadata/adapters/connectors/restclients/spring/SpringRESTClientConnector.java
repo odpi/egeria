@@ -31,6 +31,8 @@ import java.util.List;
 
 /**
  * RESTClient is responsible for issuing calls to the server's REST APIs.
+ * It is supported through a connector because there are often changes in this integration and it saves
+ * maintenance work if all Egeria clients use this connector.
  */
 public class SpringRESTClientConnector extends RESTClientConnector
 {
@@ -41,8 +43,13 @@ public class SpringRESTClientConnector extends RESTClientConnector
 
     private static final Logger log = LoggerFactory.getLogger(SpringRESTClientConnector.class);
 
+
     /**
-     * Default constructor
+     * This constructor is work in progress as part of the upgrade of Egeria to use security.
+     *
+     * @throws NoSuchAlgorithmException new exception added as part of the security work - no description provided yet
+     * @throws KeyStoreException new exception added as part of the security work - no description provided yet
+     * @throws KeyManagementException new exception added as part of the security work - no description provided yet
      */
     public SpringRESTClientConnector() throws NoSuchAlgorithmException, KeyStoreException, KeyManagementException
     {
@@ -82,7 +89,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
      * Dummy TrustManager that is happy with any cert
      *
      * @param hostname hostname
-     * @param sslSession ssl ession
+     * @param sslSession ssl session
      * @return boolean result
      */
     private static final TrustManager[] INSECURE_MANAGER = new TrustManager[]{new X509TrustManager() {
