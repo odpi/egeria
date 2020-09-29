@@ -8,7 +8,7 @@ of the methods defined through a [Data Engine Proxy Connector](../data-engine-pr
 
 In essence, this is to carry out the following:
 
-1. Setup connectivity to a [Data Engine OMAS](../../../access-services/data-engine).
+1. Setup connectivity to a [Data Engine OMAS](../../../access-services/data-engine). (See below section [Configuring interface type for Data Engine OMAS](#configuring-interface-type-for-data-engine-omas))
 1. Setup connectivity to a data engine, through the configured data engine connection of
     a [Data Engine Proxy Connector](../data-engine-proxy-connector).
 1. Ensure a `SoftwareServerCapability` exists to represent this data engine via the Data Engine OMAS.
@@ -58,6 +58,21 @@ As a result, you may want to tweak these settings further:
 
 - Reducing `batchWindowInSeconds` if you expect there are huge volumes of changes that occur
     even within a day, you might want to reduce this to hourly or perhaps even less.
+
+## Configuring interface type for Data Engine OMAS
+
+By default the Data Engine Proxy services server will use HTTP REST java client to communicate the changes with Data Engine OMAS. Following settings are required to configure the client:
+
+- `accessServiceRootURL` URL location of the platform hosting Data Engine OMAS
+- `accessServiceServerName` name of the server hosting Data Engine OMAS
+
+Since Data Engine OMAS also supports events based interface, if you prefer this transport mechanism you can choose to use events client implementation by setting 'eventsClientEnabled' to 'true'. 
+
+- `eventsClientEnabled` defines if events client should be used to communicate to Data Engine OMAS. (default is 'false')
+
+> Note: if you set 'eventsClientEnabled' to 'true' behind the scenes HTTP REST client is still initially used to fetch the connectivity details and topic address from the target Data Engine OMAS server configuration. 
+
+
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

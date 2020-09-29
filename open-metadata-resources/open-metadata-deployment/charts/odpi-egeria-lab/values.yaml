@@ -23,7 +23,7 @@ service:
 egeria:
   #logging: OFF
   development: true
-  version: "2.3-SNAPSHOT"
+  version: "2.4-SNAPSHOT"
 
 debug:
   egeriaJVM: false
