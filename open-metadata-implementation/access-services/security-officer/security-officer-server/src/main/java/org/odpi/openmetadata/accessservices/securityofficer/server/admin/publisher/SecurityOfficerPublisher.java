@@ -68,7 +68,8 @@ public class SecurityOfficerPublisher extends OMRSInstanceEventProcessor {
     }
 
     @Override
-    public void processClassifiedEntityEvent(String sourceName, String originatorMetadataCollectionId, String originatorServerName, String originatorServerType, String originatorOrganizationName, EntityDetail entity) {
+    public void processClassifiedEntityEvent(String sourceName, String originatorMetadataCollectionId, String originatorServerName,
+                                             String originatorServerType, String originatorOrganizationName, EntityDetail entity, Classification classification) {
         if (isGlossaryTerm(entity.getType()) && containsGovernanceConfidentialityClassification(entity.getClassifications())) {
             List<SecurityOfficerTagEvent> securityOfficerEvents = securityOfficerEventProcessor.processClassifiedGlossaryTerm(entity);
 
@@ -89,7 +90,9 @@ public class SecurityOfficerPublisher extends OMRSInstanceEventProcessor {
     }
 
     @Override
-    public void processDeclassifiedEntityEvent(String sourceName, String originatorMetadataCollectionId, String originatorServerName, String originatorServerType, String originatorOrganizationName, EntityDetail entity) {
+    public void processDeclassifiedEntityEvent(String sourceName, String originatorMetadataCollectionId, String originatorServerName,
+                                               String originatorServerType, String originatorOrganizationName, EntityDetail entity,
+                                               Classification originalClassification) {
 
         if (isGlossaryTerm(entity.getType()) && containsGovernanceConfidentialityClassification(entity.getClassifications())) {
             List<SecurityOfficerTagEvent> securityOfficerEvents = securityOfficerEventProcessor.processDeClassifiedGlossaryTerm(entity);
@@ -107,7 +110,9 @@ public class SecurityOfficerPublisher extends OMRSInstanceEventProcessor {
     }
 
     @Override
-    public void processReclassifiedEntityEvent(String sourceName, String originatorMetadataCollectionId, String originatorServerName, String originatorServerType, String originatorOrganizationName, EntityDetail entity) {
+    public void processReclassifiedEntityEvent(String sourceName, String originatorMetadataCollectionId, String originatorServerName,
+                                               String originatorServerType, String originatorOrganizationName, EntityDetail entity,
+                                               Classification originalClassification, Classification classification) {
         if (isGlossaryTerm(entity.getType()) && containsGovernanceConfidentialityClassification(entity.getClassifications())) {
             List<SecurityOfficerTagEvent> securityOfficerEvents = securityOfficerEventProcessor.processReClassifiedGlossaryTerm(entity);
 
