@@ -2986,6 +2986,73 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
 
 
     /**
+     * Add the requested classification to a specific entity.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityGUID String unique identifier (guid) for the entity.
+     * @param classificationName String name for the classification.
+     * @param externalSourceGUID unique identifier (guid) for the external source.
+     * @param externalSourceName unique name for the external source.
+     * @param classificationOrigin source of the classification
+     * @param classificationOriginGUID if the classification is propagated, this is the unique identifier of the entity where
+     * @param classificationProperties list of properties to set in the classification.
+     * @return EntityDetail showing the resulting entity header, properties and classifications.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection
+     * @throws ClassificationErrorException the requested classification is either not known or not valid
+     *                                         for the entity.
+     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                characteristics in the TypeDef for this classification type
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
+     */
+    public  EntityDetail classifyEntity(String               userId,
+                                        String               entityGUID,
+                                        String               classificationName,
+                                        String               externalSourceGUID,
+                                        String               externalSourceName,
+                                        ClassificationOrigin classificationOrigin,
+                                        String               classificationOriginGUID,
+                                        InstanceProperties   classificationProperties) throws InvalidParameterException,
+                                                                                              RepositoryErrorException,
+                                                                                              EntityNotKnownException,
+                                                                                              ClassificationErrorException,
+                                                                                              PropertyErrorException,
+                                                                                              UserNotAuthorizedException,
+                                                                                              FunctionNotSupportedException
+    {
+        final String methodName = "classifyEntity (detailed)";
+        final String operationSpecificURL = "instances/entity/{1}/classification/{2}/detailed";
+
+        ClassificationRequest requestBody = new ClassificationRequest();
+        requestBody.setMetadataCollectionId(externalSourceGUID);
+        requestBody.setMetadataCollectionName(externalSourceName);
+        requestBody.setClassificationOrigin(classificationOrigin);
+        requestBody.setClassificationOriginGUID(classificationOriginGUID);
+        requestBody.setClassificationProperties(classificationProperties);
+
+        EntityDetailResponse restResult = this.callEntityDetailPostRESTCall(methodName,
+                                                                            restURLRoot + rootServiceNameInURL + userIdInURL + serviceURLMarker + operationSpecificURL,
+                                                                            requestBody,
+                                                                            userId,
+                                                                            entityGUID,
+                                                                            classificationName);
+
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
+        this.detectAndThrowEntityNotKnownException(methodName, restResult);
+        this.detectAndThrowClassificationErrorException(methodName, restResult);
+        this.detectAndThrowPropertyErrorException(methodName, restResult);
+        this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
+        this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
+        this.detectAndThrowRepositoryErrorException(methodName, restResult);
+
+        return restResult.getEntity();
+    }
+
+
+    /**
      * Remove a specific classification from an entity.
      *
      * @param userId unique identifier for requesting user.
@@ -3932,6 +3999,89 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
 
 
     /**
+     * Retrieve any locally homed classifications assigned to the requested entity.  This method is implemented by repository connectors that are able
+     * to store classifications for entities that are homed in another repository.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityGUID unique identifier of the entity with classifications to retrieve
+     * @return list of all of the classifications for this entity that are homed in this repository
+     * @throws InvalidParameterException the entity is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws EntityNotKnownException the entity is not recognized by this repository
+     * @throws UserNotAuthorizedException to calling user is not authorized to retrieve this metadata
+     * @throws FunctionNotSupportedException this method is not supported
+     */
+    public List<Classification> getHomeClassifications(String userId,
+                                                       String entityGUID) throws InvalidParameterException,
+                                                                                 RepositoryErrorException,
+                                                                                 EntityNotKnownException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 FunctionNotSupportedException
+    {
+        final String methodName = "getHomeClassifications";
+        final String operationSpecificURL = "instances/entity/{1}/home-classifications";
+
+        ClassificationListResponse restResult = this.callClassificationListGetRESTCall(methodName,
+                                                                                       restURLRoot + rootServiceNameInURL + userIdInURL + serviceURLMarker + operationSpecificURL,
+                                                                                       entityGUID,
+                                                                                       userId);
+
+        this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
+        this.detectAndThrowEntityNotKnownException(methodName, restResult);
+        this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
+        this.detectAndThrowRepositoryErrorException(methodName, restResult);
+
+        return restResult.getClassifications();
+    }
+
+
+    /**
+     * Retrieve any locally homed classifications assigned to the requested entity.  This method is implemented by repository connectors that are able
+     * to store classifications for entities that are homed in another repository.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityGUID unique identifier of the entity with classifications to retrieve
+     * @param asOfTime the time used to determine which version of the entity that is desired.
+     * @return list of all of the classifications for this entity that are homed in this repository
+     * @throws InvalidParameterException the entity is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws EntityNotKnownException the entity is not recognized by this repository
+     * @throws UserNotAuthorizedException to calling user is not authorized to retrieve this metadata
+     * @throws FunctionNotSupportedException this method is not supported
+     */
+    public List<Classification> getHomeClassifications(String userId,
+                                                       String entityGUID,
+                                                       Date   asOfTime) throws InvalidParameterException,
+                                                                               RepositoryErrorException,
+                                                                               EntityNotKnownException,
+                                                                               UserNotAuthorizedException,
+                                                                               FunctionNotSupportedException
+    {
+        final String  methodName = "getHomeClassifications (with history)";
+        final String operationSpecificURL = "instances/entity/{1}/home-classifications/history";
+
+        HistoryRequest requestBody = new HistoryRequest();
+        requestBody.setAsOfTime(asOfTime);
+        ClassificationListResponse restResult = this.callClassificationListPostRESTCall(methodName,
+                                                                                        restURLRoot + rootServiceNameInURL + userIdInURL + serviceURLMarker + operationSpecificURL,
+                                                                                        requestBody,
+                                                                                        entityGUID,
+                                                                                        userId);
+
+        this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
+        this.detectAndThrowEntityNotKnownException(methodName, restResult);
+        this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
+        this.detectAndThrowRepositoryErrorException(methodName, restResult);
+
+        return restResult.getClassifications();
+    }
+
+
+    /**
      * Remove a reference copy of the the entity from the local repository.  This method can be used to
      * remove reference copies from the local cohort, repositories that have left the cohort,
      * or entities that have come from open metadata archives.  It is also an opportunity to remove or
@@ -4676,6 +4826,49 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
     {
         return this.callPostRESTCall(methodName,
                                      EntityDetailResponse.class,
+                                     operationSpecificURL,
+                                     requestBody,
+                                     params);
+    }
+
+
+    /**
+     * Issue a GET REST call that returns a ClassificationListResponse object.
+     *
+     * @param methodName name of the method being called
+     * @param operationSpecificURL template of the URL for the REST API call with place-holders for the parameters
+     * @param params a list of parameters that are slotted into the url template
+     * @return EntityDetailResponse
+     * @throws RepositoryErrorException something went wrong with the REST call stack.
+     */
+    private ClassificationListResponse callClassificationListGetRESTCall(String    methodName,
+                                                                         String    operationSpecificURL,
+                                                                         Object... params) throws RepositoryErrorException
+    {
+        return this.callGetRESTCall(methodName,
+                                    ClassificationListResponse.class,
+                                    operationSpecificURL,
+                                    params);
+    }
+
+
+    /**
+     * Issue a POST REST call that returns a ClassificationListResponse object.
+     *
+     * @param methodName name of the method being called
+     * @param operationSpecificURL template of the URL for the REST API call with place-holders for the parameters
+     * @param requestBody request body object
+     * @param params a list of parameters that are slotted into the url template
+     * @return EntityDetailResponse
+     * @throws RepositoryErrorException something went wrong with the REST call stack.
+     */
+    private ClassificationListResponse callClassificationListPostRESTCall(String    methodName,
+                                                                          String    operationSpecificURL,
+                                                                          Object    requestBody,
+                                                                          Object... params) throws RepositoryErrorException
+    {
+        return this.callPostRESTCall(methodName,
+                                     ClassificationListResponse.class,
                                      operationSpecificURL,
                                      requestBody,
                                      params);

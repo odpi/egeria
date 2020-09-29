@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EnumPropertyValue;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSAuditCode;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
@@ -1285,6 +1287,85 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
                                          this.getClass().getName(),
                                          methodName);
         }
+    }
+
+
+    /**
+     * Add the supplied property to an instance properties object.  If the instance property object
+     * supplied is null, a new instance properties object is created.
+     *
+     * @param sourceName name of caller
+     * @param properties properties object to add property to, may be null.
+     * @param propertyName name of property
+     * @param enumTypeGUID unique Id of Enum requested
+     * @param enumTypeName unique name of enum requested
+     * @param ordinal numeric value of property
+     * @param methodName calling method name
+     * @return instance properties object.
+     * @throws TypeErrorException the enum type is not recognized
+     */
+    public InstanceProperties addEnumPropertyToInstance(String             sourceName,
+                                                        InstanceProperties properties,
+                                                        String             propertyName,
+                                                        String             enumTypeGUID,
+                                                        String             enumTypeName,
+                                                        int                ordinal,
+                                                        String             methodName) throws TypeErrorException
+    {
+        final String thisMethodName = "addEnumPropertyToInstance";
+
+        InstanceProperties  resultingProperties;
+
+        log.debug("Adding property " + propertyName + " for " + methodName);
+
+        if (properties == null)
+        {
+            log.debug("First property");
+
+            resultingProperties = new InstanceProperties();
+        }
+        else
+        {
+            resultingProperties = properties;
+        }
+
+        AttributeTypeDef attributeTypeDef = this.getAttributeTypeDef(sourceName, enumTypeGUID, enumTypeName, methodName);
+
+        if (attributeTypeDef instanceof EnumDef)
+        {
+            EnumDef enumDef = (EnumDef)attributeTypeDef;
+
+            List<EnumElementDef> enumDefValues = enumDef.getElementDefs();
+
+            if (enumDefValues != null)
+            {
+                for (EnumElementDef  enumElementDef : enumDefValues)
+                {
+                    if (enumElementDef != null)
+                    {
+                        if (enumElementDef.getOrdinal() == ordinal)
+                        {
+                            EnumPropertyValue enumPropertyValue = new EnumPropertyValue();
+
+                            enumPropertyValue.setOrdinal(ordinal);
+                            enumPropertyValue.setSymbolicName(enumPropertyValue.getSymbolicName());
+                            enumPropertyValue.setDescription(enumPropertyValue.getDescription());
+
+                            resultingProperties.setProperty(propertyName, enumPropertyValue);
+
+                            return resultingProperties;
+                        }
+                    }
+                }
+            }
+        }
+
+        throw new TypeErrorException(OMRSErrorCode.BAD_TYPEDEF.getMessageDefinition(thisMethodName,
+                                                                                    enumTypeName,
+                                                                                    sourceName,
+                                                                                    methodName),
+                                     this.getClass().getName(),
+                                     methodName);
     }
 
 

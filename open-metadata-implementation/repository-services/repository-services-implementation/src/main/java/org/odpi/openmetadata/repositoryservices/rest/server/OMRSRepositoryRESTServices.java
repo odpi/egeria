@@ -5683,6 +5683,91 @@ public class OMRSRepositoryRESTServices
 
 
     /**
+     * Add the requested classification to a specific entity.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param userId unique identifier for requesting user.
+     * @param entityGUID String unique identifier (guid) for the entity.
+     * @param classificationName String name for the classification.
+     * @param classificationRequestBody values for the classification.
+     * @return EntityDetailResponse:
+     * EntityDetail showing the resulting entity header, properties and classifications or
+     * InvalidParameterException one of the parameters is invalid or null or
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored or
+     * EntityNotKnownException the entity identified by the guid is not found in the metadata collection or
+     * ClassificationErrorException the requested classification is either not known or not valid
+     *                                         for the entity or
+     * PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                characteristics in the TypeDef for this classification type or
+     * FunctionNotSupportedException the repository does not support maintenance of metadata.
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public EntityDetailResponse  classifyEntity(String                serverName,
+                                                String                userId,
+                                                String                entityGUID,
+                                                String                classificationName,
+                                                ClassificationRequest classificationRequestBody)
+    {
+        final String methodName = "classifyEntity (detailed)";
+
+        log.debug("Calling method: " + methodName);
+
+        EntityDetailResponse response = new EntityDetailResponse();
+
+        try
+        {
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
+
+            response.setEntity(metadataCollection.classifyEntity(userId,
+                                                                 entityGUID,
+                                                                 classificationName,
+                                                                 classificationRequestBody.getMetadataCollectionId(),
+                                                                 classificationRequestBody.getMetadataCollectionName(),
+                                                                 classificationRequestBody.getClassificationOrigin(),
+                                                                 classificationRequestBody.getClassificationOriginGUID(),
+                                                                 classificationRequestBody.getClassificationProperties()));
+        }
+        catch (RepositoryErrorException  error)
+        {
+            captureRepositoryErrorException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+        catch (InvalidParameterException error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (EntityNotKnownException error)
+        {
+            captureEntityNotKnownException(response, error);
+        }
+        catch (ClassificationErrorException error)
+        {
+            captureClassificationErrorException(response, error);
+        }
+        catch (FunctionNotSupportedException  error)
+        {
+            captureFunctionNotSupportedException(response, error);
+        }
+        catch (PropertyErrorException error)
+        {
+            capturePropertyErrorException(response, error);
+        }
+        catch (Throwable error)
+        {
+            captureThrowable(response, error, userId, serverName, methodName);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
+    }
+
+
+    /**
      * Remove a specific classification from an entity.
      *
      * @param serverName unique identifier for requested server.
@@ -7080,6 +7165,138 @@ public class OMRSRepositoryRESTServices
         catch (InvalidEntityException error)
         {
             captureInvalidEntityException(response, error);
+        }
+        catch (Throwable error)
+        {
+            captureThrowable(response, error, userId, serverName, methodName);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Retrieve any locally homed classifications assigned to the requested entity.  This method is implemented by repository connectors that are able
+     * to store classifications for entities that are homed in another repository.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param userId unique identifier for requesting user.
+     * @param entityGUID unique identifier of the entity with classifications to retrieve
+     * @return list of all of the classifications for this entity that are homed in this repository or
+     * InvalidParameterException the entity is null or
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored or
+     * EntityNotKnownException the entity is not recognized by this repository or
+     * UserNotAuthorizedException to calling user is not authorized to retrieve this metadata or
+     * FunctionNotSupportedException this method is not supported
+     */
+    public ClassificationListResponse getHomeClassifications(String serverName,
+                                                             String userId,
+                                                             String entityGUID)
+    {
+        final String methodName = "getHomeClassifications";
+
+        log.debug("Calling method: " + methodName);
+
+        ClassificationListResponse response = new ClassificationListResponse();
+
+        try
+        {
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
+
+            metadataCollection.getHomeClassifications(userId, entityGUID);
+        }
+        catch (EntityNotKnownException  error)
+        {
+            captureEntityNotKnownException(response, error);
+        }
+        catch (RepositoryErrorException  error)
+        {
+            captureRepositoryErrorException(response, error);
+        }
+        catch (FunctionNotSupportedException  error)
+        {
+            captureFunctionNotSupportedException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+        catch (InvalidParameterException error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (Throwable error)
+        {
+            captureThrowable(response, error, userId, serverName, methodName);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Retrieve any locally homed classifications assigned to the requested entity.  This method is implemented by repository connectors that are able
+     * to store classifications for entities that are homed in another repository.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param userId unique identifier for requesting user.
+     * @param entityGUID unique identifier of the entity with classifications to retrieve
+     * @param requestBody the time used to determine which version of the entity that is desired.
+     * @return list of all of the classifications for this entity that are homed in this repository or
+     * InvalidParameterException the entity is null or
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored or
+     * EntityNotKnownException the entity is not recognized by this repository or
+     * UserNotAuthorizedException to calling user is not authorized to retrieve this metadata or
+     * FunctionNotSupportedException this method is not supported
+     */
+    public ClassificationListResponse getHomeClassifications(String         serverName,
+                                                             String         userId,
+                                                             String         entityGUID,
+                                                             HistoryRequest requestBody)
+    {
+        final String  methodName = "getHomeClassifications (with history)";
+        log.debug("Calling method: " + methodName);
+
+        ClassificationListResponse response = new ClassificationListResponse();
+
+        try
+        {
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
+
+            if (requestBody == null)
+            {
+                metadataCollection.getHomeClassifications(userId, entityGUID);
+            }
+            else
+            {
+                metadataCollection.getHomeClassifications(userId, entityGUID, requestBody.getAsOfTime());
+            }
+        }
+        catch (EntityNotKnownException  error)
+        {
+            captureEntityNotKnownException(response, error);
+        }
+        catch (RepositoryErrorException  error)
+        {
+            captureRepositoryErrorException(response, error);
+        }
+        catch (FunctionNotSupportedException  error)
+        {
+            captureFunctionNotSupportedException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+        catch (InvalidParameterException error)
+        {
+            captureInvalidParameterException(response, error);
         }
         catch (Throwable error)
         {

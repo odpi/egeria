@@ -5,7 +5,7 @@ package org.odpi.openmetadata.repositoryservices.rest.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,23 +16,22 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * RelationshipListResponse holds the response information for an OMRS REST API call that returns a list of
- * relationship objects or an exception.
+ * ClassificationListResponse support an OMRS REST API response that returns a list of Classification objects.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class RelationshipListResponse extends OMRSAPIPagedResponse
+public class ClassificationListResponse extends OMRSAPIPagedResponse
 {
     private static final long    serialVersionUID = 1L;
 
-    private List<Relationship> relationships = null;
+    private List<Classification> classifications = null;
 
 
     /**
      * Default constructor
      */
-    public RelationshipListResponse()
+    public ClassificationListResponse()
     {
         super();
     }
@@ -43,54 +42,54 @@ public class RelationshipListResponse extends OMRSAPIPagedResponse
      *
      * @param template object to copy
      */
-    public RelationshipListResponse(RelationshipListResponse template)
+    public ClassificationListResponse(ClassificationListResponse template)
     {
         super(template);
 
         if (template != null)
         {
-            relationships = template.getRelationships();
+            classifications = template.getClassifications();
         }
     }
 
 
     /**
-     * Return the list of relationships for this response.
+     * Return the list of classifications.
      *
-     * @return list of relationship objects
+     * @return classifications list
      */
-    public List<Relationship> getRelationships()
+    public List<Classification> getClassifications()
     {
-        if (relationships == null)
+        if (classifications == null)
         {
             return null;
         }
-        else if (relationships.isEmpty())
+        else if (classifications.isEmpty())
         {
             return null;
         }
         else
         {
-            List<Relationship>  clonedRelationships = new ArrayList<>();
+            List<Classification>  clonedClassifications = new ArrayList<>();
 
-            for (Relationship  relationship : relationships)
+            for (Classification  classification : classifications)
             {
-                clonedRelationships.add(new Relationship(relationship));
+                clonedClassifications.add(new Classification(classification));
             }
 
-            return clonedRelationships;
+            return clonedClassifications;
         }
     }
 
 
     /**
-     * Set up the list of relationships for this response.
+     * Set up the list of entities.
      *
-     * @param relationships list of relationship objects
+     * @param classifications entity list
      */
-    public void setRelationships(List<Relationship> relationships)
+    public void setClassifications(List<Classification> classifications)
     {
-        this.relationships = relationships;
+        this.classifications = classifications;
     }
 
 
@@ -102,8 +101,8 @@ public class RelationshipListResponse extends OMRSAPIPagedResponse
     @Override
     public String toString()
     {
-        return "RelationshipListResponse{" +
-                "relationships=" + relationships +
+        return "ClassificationListResponse{" +
+                "classifications=" + classifications +
                 ", nextPageURL='" + nextPageURL + '\'' +
                 ", offset=" + offset +
                 ", pageSize=" + pageSize +
@@ -134,7 +133,7 @@ public class RelationshipListResponse extends OMRSAPIPagedResponse
         {
             return true;
         }
-        if (!(objectToCompare instanceof RelationshipListResponse))
+        if (!(objectToCompare instanceof ClassificationListResponse))
         {
             return false;
         }
@@ -142,9 +141,8 @@ public class RelationshipListResponse extends OMRSAPIPagedResponse
         {
             return false;
         }
-        RelationshipListResponse
-                that = (RelationshipListResponse) objectToCompare;
-        return Objects.equals(getRelationships(), that.getRelationships());
+        ClassificationListResponse that = (ClassificationListResponse) objectToCompare;
+        return Objects.equals(getClassifications(), that.getClassifications());
     }
 
 
@@ -157,6 +155,6 @@ public class RelationshipListResponse extends OMRSAPIPagedResponse
     public int hashCode()
     {
 
-        return Objects.hash(super.hashCode(), getRelationships());
+        return Objects.hash(super.hashCode(), getClassifications());
     }
 }

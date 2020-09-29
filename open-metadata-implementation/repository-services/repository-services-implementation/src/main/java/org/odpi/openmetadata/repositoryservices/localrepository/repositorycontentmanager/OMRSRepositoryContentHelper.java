@@ -314,6 +314,40 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
 
 
     /**
+     * Add the supplied property to an instance properties object.  If the instance property object
+     * supplied is null, a new instance properties object is created.
+     *
+     * @param sourceName name of caller
+     * @param properties properties object to add property to, may be null.
+     * @param propertyName name of property
+     * @param enumTypeGUID unique Id of Enum requested
+     * @param enumTypeName unique name of enum requested
+     * @param ordinal numeric value of property
+     * @param methodName calling method name
+     * @return instance properties object.
+     * @throws TypeErrorException the enum type is not recognized
+     */
+    public InstanceProperties addEnumPropertyToInstance(String             sourceName,
+                                                        InstanceProperties properties,
+                                                        String             propertyName,
+                                                        String             enumTypeGUID,
+                                                        String             enumTypeName,
+                                                        int                ordinal,
+                                                        String             methodName) throws TypeErrorException
+    {
+        validateRepositoryContentManager(methodName);
+
+        return repositoryContentManager.addEnumPropertyToInstance(sourceName,
+                                                                  properties,
+                                                                  propertyName,
+                                                                  enumTypeGUID,
+                                                                  enumTypeName,
+                                                                  ordinal,
+                                                                  methodName);
+    }
+
+
+    /**
      * Returns an updated TypeDef that has had the supplied patch applied.  It throws an exception if any part of
      * the patch is incompatible with the original TypeDef.  For example, if there is a mismatch between
      * the type or version that either represents.
@@ -475,22 +509,44 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
                                           String                 userName,
                                           String                 typeName) throws TypeErrorException
     {
+        return this.getSkeletonEntity(sourceName, metadataCollectionId, null, provenanceType, userName, typeName);
+    }
+
+
+    /**
+     * Return an entity with the header and type information filled out.  The caller only needs to add properties
+     * and classifications to complete the set up of the entity.
+     *
+     * @param sourceName           source of the request (used for logging)
+     * @param metadataCollectionId unique identifier for the home metadata collection
+     * @param provenanceType       origin of the entity
+     * @param userName             name of the creator
+     * @param typeName             name of the type
+     * @return partially filled out entity needs classifications and properties
+     * @throws TypeErrorException the type name is not recognized.
+     */
+    public EntityDetail getSkeletonEntity(String                 sourceName,
+                                          String                 metadataCollectionId,
+                                          String                 metadataCollectionName,
+                                          InstanceProvenanceType provenanceType,
+                                          String                 userName,
+                                          String                 typeName) throws TypeErrorException
+    {
         final String methodName = "getSkeletonEntity";
 
         validateRepositoryContentManager(methodName);
 
         EntityDetail entity = new EntityDetail();
 
-        populateSkeletonEntity(
-                entity,
-                UUID.randomUUID().toString(),
-                sourceName,
-                metadataCollectionId,
-                provenanceType,
-                userName,
-                typeName,
-                methodName
-        );
+        populateSkeletonEntity(entity,
+                               UUID.randomUUID().toString(),
+                               sourceName,
+                               metadataCollectionId,
+                               metadataCollectionName,
+                               provenanceType,
+                               userName,
+                               typeName,
+                               methodName);
 
         return entity;
     }
@@ -500,16 +556,18 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
      * Return an entity with the header and type information filled out.  The caller only needs to classifications
      * to complete the set up of the entity.
      *
-     * @param sourceName            source of the request (used for logging)
-     * @param metadataCollectionId  unique identifier for the home metadata collection
-     * @param provenanceType        origin of the entity
-     * @param userName              name of the creator
-     * @param typeName              name of the type
+     * @param sourceName             source of the request (used for logging)
+     * @param metadataCollectionId   unique identifier for the home metadata collection
+     * @param metadataCollectionName unique name for the home metadata collection
+     * @param provenanceType         origin of the entity
+     * @param userName               name of the creator
+     * @param typeName               name of the type
      * @return partially filled out entity needs classifications
      * @throws TypeErrorException  the type name is not recognized.
      */
     public EntitySummary getSkeletonEntitySummary(String                 sourceName,
                                                   String                 metadataCollectionId,
+                                                  String                 metadataCollectionName,
                                                   InstanceProvenanceType provenanceType,
                                                   String                 userName,
                                                   String                 typeName) throws TypeErrorException
@@ -520,16 +578,15 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
 
         EntitySummary entity = new EntitySummary();
 
-        populateSkeletonEntity(
-                entity,
-                UUID.randomUUID().toString(),
-                sourceName,
-                metadataCollectionId,
-                provenanceType,
-                userName,
-                typeName,
-                methodName
-        );
+        populateSkeletonEntity(entity,
+                               UUID.randomUUID().toString(),
+                               sourceName,
+                               metadataCollectionId,
+                               metadataCollectionName,
+                               provenanceType,
+                               userName,
+                               typeName,
+                               methodName);
 
         return entity;
     }
@@ -539,20 +596,22 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
      * Populate the skeleton entity with vital header and type information, regardless of whether it is an EntityDetail
      * or EntitySummary.
      *
-     * @param entity               the skeleton entity to populate
-     * @param guid                 the GUID to give to the entity
-     * @param sourceName           source of the request (used for logging)
-     * @param metadataCollectionId unique identifier for the home metadata collection
-     * @param provenanceType       origin of the entity
-     * @param userName             name of the creator
-     * @param typeName             name of the type
-     * @param methodName           name of the invoking method (used for logging)
+     * @param entity                 the skeleton entity to populate
+     * @param guid                   the GUID to give to the entity
+     * @param sourceName             source of the request (used for logging)
+     * @param metadataCollectionId   unique identifier for the home metadata collection
+     * @param metadataCollectionName unique name for the home metadata collection
+     * @param provenanceType         origin of the entity
+     * @param userName               name of the creator
+     * @param typeName               name of the type
+     * @param methodName             name of the invoking method (used for logging)
      * @throws TypeErrorException  the type name is not recognized.
      */
     private void populateSkeletonEntity(EntitySummary          entity,
                                         String                 guid,
                                         String                 sourceName,
                                         String                 metadataCollectionId,
+                                        String                 metadataCollectionName,
                                         InstanceProvenanceType provenanceType,
                                         String                 userName,
                                         String                 typeName,
@@ -561,6 +620,7 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
         entity.setHeaderVersion(InstanceAuditHeader.CURRENT_AUDIT_HEADER_VERSION);
         entity.setInstanceProvenanceType(provenanceType);
         entity.setMetadataCollectionId(metadataCollectionId);
+        entity.setMetadataCollectionName(metadataCollectionName);
         entity.setCreateTime(new Date());
         entity.setGUID(guid);
         entity.setVersion(1L);
@@ -578,21 +638,56 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
      * and possibility origin information if it is propagated to complete the set up of the classification.
      *
      * @param sourceName             source of the request (used for logging)
+     * @param metadataCollectionId   unique identifier for the home metadata collection
+     * @param provenanceType         origin of the classification
      * @param userName               name of the creator
      * @param classificationTypeName name of the classification type
      * @param entityTypeName         name of the type for the entity that this classification is to be attached to.
      * @return partially filled out classification needs properties and possibly origin information
      * @throws TypeErrorException the type name is not recognized as a classification type.
      */
-    public Classification getSkeletonClassification(String sourceName,
-                                                    String userName,
-                                                    String classificationTypeName,
-                                                    String entityTypeName) throws TypeErrorException
+    public Classification getSkeletonClassification(String                 sourceName,
+                                                    String                 metadataCollectionId,
+                                                    InstanceProvenanceType provenanceType,
+                                                    String                 userName,
+                                                    String                 classificationTypeName,
+                                                    String                 entityTypeName) throws TypeErrorException
+    {
+        return this.getSkeletonClassification(sourceName,
+                                              metadataCollectionId,
+                                              null,
+                                              provenanceType,
+                                              userName,
+                                              classificationTypeName,
+                                              entityTypeName);
+    }
+
+
+    /**
+     * Return a classification with the header and type information filled out.  The caller only needs to add properties
+     * and possibility origin information if it is propagated to complete the set up of the classification.
+     *
+     * @param sourceName              source of the request (used for logging)
+     * @param metadataCollectionId    unique identifier for the home metadata collection
+     * @param metadataCollectionName  unique name for the home metadata collection
+     * @param provenanceType          type of home for the new classification
+     * @param userName                name of the creator
+     * @param classificationTypeName  name of the classification type
+     * @param entityTypeName          name of the type for the entity that this classification is to be attached to.
+     * @return partially filled out classification needs properties and possibly origin information
+     * @throws TypeErrorException  the type name is not recognized as a classification type.
+     */
+    public Classification getSkeletonClassification(String                 sourceName,
+                                                    String                 metadataCollectionId,
+                                                    String                 metadataCollectionName,
+                                                    InstanceProvenanceType provenanceType,
+                                                    String                 userName,
+                                                    String                 classificationTypeName,
+                                                    String                 entityTypeName) throws TypeErrorException
     {
         final String methodName = "getSkeletonClassification";
 
         validateRepositoryContentManager(methodName);
-
 
         if (repositoryContentManager.isValidTypeCategory(sourceName,
                                                          TypeDefCategory.CLASSIFICATION_DEF,
@@ -607,6 +702,9 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
                 Classification classification = new Classification();
 
                 classification.setHeaderVersion(InstanceAuditHeader.CURRENT_AUDIT_HEADER_VERSION);
+                classification.setInstanceProvenanceType(provenanceType);
+                classification.setMetadataCollectionId(metadataCollectionId);
+                classification.setMetadataCollectionName(metadataCollectionName);
                 classification.setName(classificationTypeName);
                 classification.setCreateTime(new Date());
                 classification.setCreatedBy(userName);
@@ -656,6 +754,30 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
                                                 String                 userName,
                                                 String                 typeName) throws TypeErrorException
     {
+        return this.getSkeletonRelationship(sourceName, metadataCollectionId, null, provenanceType, userName, typeName);
+    }
+
+
+    /**
+     * Return a relationship with the header and type information filled out.  The caller only needs to add properties
+     * to complete the set up of the relationship.
+     *
+     * @param sourceName             source of the request (used for logging)
+     * @param metadataCollectionId   unique identifier for the home metadata collection
+     * @param metadataCollectionName unique name for the home metadata collection
+     * @param provenanceType         origin type of the relationship
+     * @param userName               name of the creator
+     * @param typeName               name of the relationship's type
+     * @return partially filled out relationship needs properties
+     * @throws TypeErrorException  the type name is not recognized as a relationship type.
+     */
+    public Relationship getSkeletonRelationship(String                 sourceName,
+                                                String                 metadataCollectionId,
+                                                String                 metadataCollectionName,
+                                                InstanceProvenanceType provenanceType,
+                                                String                 userName,
+                                                String                 typeName) throws TypeErrorException
+    {
         final String methodName = "getSkeletonRelationship";
 
         validateRepositoryContentManager(methodName);
@@ -666,6 +788,7 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
         relationship.setHeaderVersion(InstanceAuditHeader.CURRENT_AUDIT_HEADER_VERSION);
         relationship.setInstanceProvenanceType(provenanceType);
         relationship.setMetadataCollectionId(metadataCollectionId);
+        relationship.setMetadataCollectionName(metadataCollectionName);
         relationship.setCreateTime(new Date());
         relationship.setGUID(guid);
         relationship.setVersion(1L);
@@ -726,8 +849,36 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
                                      InstanceProperties     properties,
                                      List<Classification>   classifications) throws TypeErrorException
     {
+        return this.getNewEntity(sourceName, metadataCollectionId, null, provenanceType, userName, typeName, properties, classifications);
+    }
+
+
+    /**
+     * Return a filled out entity.  It just needs to add the classifications.
+     *
+     * @param sourceName             source of the request (used for logging)
+     * @param metadataCollectionName unique name for the home metadata collection
+     * @param metadataCollectionId   unique identifier for the home metadata collection
+     * @param provenanceType         origin of the entity
+     * @param userName               name of the creator
+     * @param typeName               name of the type
+     * @param properties             properties for the entity
+     * @param classifications        list of classifications for the entity
+     * @return an entity that is filled out
+     * @throws TypeErrorException  the type name is not recognized as an entity type
+     */
+    public EntityDetail getNewEntity(String                 sourceName,
+                                     String                 metadataCollectionId,
+                                     String                 metadataCollectionName,
+                                     InstanceProvenanceType provenanceType,
+                                     String                 userName,
+                                     String                 typeName,
+                                     InstanceProperties     properties,
+                                     List<Classification>   classifications) throws TypeErrorException
+    {
         EntityDetail entity = this.getSkeletonEntity(sourceName,
                                                      metadataCollectionId,
+                                                     metadataCollectionName,
                                                      provenanceType,
                                                      userName,
                                                      typeName);
@@ -758,8 +909,34 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
                                            String                 typeName,
                                            InstanceProperties     properties) throws TypeErrorException
     {
+        return this.getNewRelationship(sourceName, metadataCollectionId, null, provenanceType, userName, typeName, properties);
+    }
+
+
+    /**
+     * Return a filled out relationship which just needs the entity proxies added.
+     *
+     * @param sourceName             source of the request (used for logging)
+     * @param metadataCollectionId   unique identifier for the home metadata collection
+     * @param metadataCollectionName unique name for the home metadata collection
+     * @param provenanceType         origin of the relationship
+     * @param userName               name of the creator
+     * @param typeName               name of the type
+     * @param properties             properties for the relationship
+     * @return a relationship that is filled out
+     * @throws TypeErrorException  the type name is not recognized as a relationship type
+     */
+    public Relationship getNewRelationship(String                 sourceName,
+                                           String                 metadataCollectionId,
+                                           String                 metadataCollectionName,
+                                           InstanceProvenanceType provenanceType,
+                                           String                 userName,
+                                           String                 typeName,
+                                           InstanceProperties     properties) throws TypeErrorException
+    {
         Relationship relationship = this.getSkeletonRelationship(sourceName,
                                                                  metadataCollectionId,
+                                                                 metadataCollectionName,
                                                                  provenanceType,
                                                                  userName,
                                                                  typeName);
@@ -775,22 +952,73 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
      * to complete the set up of the classification.
      *
      * @param sourceName     source of the request (used for logging)
+     * @param metadataCollectionId  unique identifier for the home metadata collection
+     * @param provenanceType        origin of the classification
      * @param userName       name of the creator
      * @param typeName       name of the type
      * @param entityTypeName name of the type for the entity that this classification is to be attached to.
+     * @param classificationOrigin source of the classification
+     * @param classificationOriginGUID if the classification is propagated, this is the unique identifier of the entity where
+     *                                 the classification originated.  Otherwise it is null
      * @param properties     properties for the classification
      * @return partially filled out classification needs properties and possibly origin information
      * @throws TypeErrorException the type name is not recognized as a classification type.
      */
-    public Classification getNewClassification(String               sourceName,
-                                               String               userName,
-                                               String               typeName,
-                                               String               entityTypeName,
-                                               ClassificationOrigin classificationOrigin,
-                                               String               classificationOriginGUID,
-                                               InstanceProperties   properties) throws TypeErrorException
+    public Classification getNewClassification(String                 sourceName,
+                                               String                 metadataCollectionId,
+                                               InstanceProvenanceType provenanceType,
+                                               String                 userName,
+                                               String                 typeName,
+                                               String                 entityTypeName,
+                                               ClassificationOrigin   classificationOrigin,
+                                               String                 classificationOriginGUID,
+                                               InstanceProperties     properties) throws TypeErrorException
+    {
+        return this.getNewClassification(sourceName,
+                                         metadataCollectionId,
+                                         null,
+                                         provenanceType,
+                                         userName,
+                                         typeName,
+                                         entityTypeName,
+                                         classificationOrigin,
+                                         classificationOriginGUID,
+                                         properties);
+    }
+
+
+    /**
+     * Return a classification with the header and type information filled out.  The caller only needs to add properties
+     * to complete the set up of the classification.
+     *
+     * @param sourceName      source of the request (used for logging)
+     * @param metadataCollectionId    unique identifier for the home metadata collection
+     * @param metadataCollectionName  unique name for the home metadata collection
+     * @param provenanceType        origin of the classification
+     * @param userName        name of the creator
+     * @param typeName        name of the type
+     * @param entityTypeName  name of the type for the entity that this classification is to be attached to.
+     * @param classificationOrigin     is this explicitly assigned or propagated
+     * @param classificationOriginGUID  if propagated this the GUID of the origin
+     * @param properties      properties for the classification
+     * @return partially filled out classification needs properties and possibly origin information
+     * @throws TypeErrorException  the type name is not recognized as a classification type.
+     */
+    public Classification getNewClassification(String                 sourceName,
+                                               String                 metadataCollectionId,
+                                               String                 metadataCollectionName,
+                                               InstanceProvenanceType provenanceType,
+                                               String                 userName,
+                                               String                 typeName,
+                                               String                 entityTypeName,
+                                               ClassificationOrigin   classificationOrigin,
+                                               String                 classificationOriginGUID,
+                                               InstanceProperties     properties) throws TypeErrorException
     {
         Classification classification = this.getSkeletonClassification(sourceName,
+                                                                       metadataCollectionId,
+                                                                       metadataCollectionName,
+                                                                       provenanceType,
                                                                        userName,
                                                                        typeName,
                                                                        entityTypeName);
@@ -800,6 +1028,63 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
         classification.setProperties(properties);
 
         return classification;
+    }
+
+
+    /**
+     * Add a classification to an existing entity.
+     *
+     * @param sourceName          source of the request (used for logging)
+     * @param classificationList  entity classifications to update
+     * @param newClassification   classification to add
+     * @param methodName          calling method
+     * @return updated entity
+     */
+    public List<Classification> addClassificationToList(String                 sourceName,
+                                                        List<Classification>   classificationList,
+                                                        Classification         newClassification,
+                                                        String                 methodName)
+    {
+        if (newClassification != null)
+        {
+            /*
+             * Duplicate classifications are not allowed so a hash map is used to remove duplicates.
+             */
+            Map<String, Classification> entityClassificationsMap = new HashMap<>();
+
+            if (classificationList != null)
+            {
+                for (Classification existingClassification : classificationList)
+                {
+                    if (existingClassification != null)
+                    {
+                        entityClassificationsMap.put(existingClassification.getName(), existingClassification);
+                    }
+                }
+            }
+
+            entityClassificationsMap.put(newClassification.getName(), newClassification);
+
+            if (entityClassificationsMap.isEmpty())
+            {
+                return null;
+            }
+            else
+            {
+                return new ArrayList<>(entityClassificationsMap.values());
+            }
+
+        }
+        else
+        {
+            final String thisMethodName = "addClassificationToList";
+
+            throw new OMRSLogicErrorException(OMRSErrorCode.NULL_CLASSIFICATION_CREATED.getMessageDefinition(sourceName,
+                                                                                                             thisMethodName,
+                                                                                                             methodName),
+                                              this.getClass().getName(),
+                                              methodName);
+        }
     }
 
 
@@ -817,40 +1102,15 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
                                                   Classification newClassification,
                                                   String         methodName)
     {
-        EntityDetail updatedEntity = new EntityDetail(entity);
 
         if (newClassification != null)
         {
-            /*
-             * Duplicate classifications are not allowed so a hash map is used to remove duplicates.
-             */
-            Map<String, Classification> entityClassificationsMap = new HashMap<>();
-            List<Classification>        entityClassifications    = updatedEntity.getClassifications();
+            EntityDetail updatedEntity = new EntityDetail(entity);
 
-            if (entityClassifications != null)
-            {
-                for (Classification existingClassification : entityClassifications)
-                {
-                    if (existingClassification != null)
-                    {
-                        entityClassificationsMap.put(existingClassification.getName(), existingClassification);
-                    }
-                }
-            }
-
-            entityClassificationsMap.put(newClassification.getName(), newClassification);
-
-            if (entityClassificationsMap.isEmpty())
-            {
-                updatedEntity.setClassifications(null);
-            }
-            else
-            {
-                entityClassifications = new ArrayList<>(entityClassificationsMap.values());
-
-                updatedEntity.setClassifications(entityClassifications);
-            }
-
+            updatedEntity.setClassifications(this.addClassificationToList(sourceName,
+                                                                          entity.getClassifications(),
+                                                                          newClassification,
+                                                                          methodName));
             return updatedEntity;
         }
         else
@@ -876,18 +1136,16 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
      * @return located classification
      * @throws ClassificationErrorException the classification is not attached to the entity
      */
-    public Classification getClassificationFromEntity(String       sourceName,
-                                                      EntityDetail entity,
-                                                      String       classificationName,
-                                                      String       methodName) throws ClassificationErrorException
+    public Classification getClassificationFromEntity(String        sourceName,
+                                                      EntitySummary entity,
+                                                      String        classificationName,
+                                                      String        methodName) throws ClassificationErrorException
     {
         final String thisMethodName = "getClassificationFromEntity";
 
         if ((entity == null) || (classificationName == null))
         {
-            throw new OMRSLogicErrorException(OMRSErrorCode.VALIDATION_LOGIC_ERROR.getMessageDefinition(sourceName,
-                                                                                                        thisMethodName,
-                                                                                                        methodName),
+            throw new OMRSLogicErrorException(OMRSErrorCode.HELPER_LOGIC_ERROR.getMessageDefinition(sourceName, thisMethodName, methodName),
                                               this.getClass().getName(),
                                               methodName);
         }
@@ -911,6 +1169,58 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
                                                                                                         entity.getGUID()),
                                                this.getClass().getName(),
                                                methodName);
+    }
+
+
+
+    /**
+     * Return the classifications from the requested metadata collection. If the metadata collection is not set up in the header of the
+     * classification it is assumed that it is homed locally.
+     *
+     * @param sourceName         source of the request (used for logging)
+     * @param entity             entity to update
+     * @param metadataCollectionId metadata collection to retrieve
+     * @param methodName         calling method
+     * @return located classification
+     */
+    public List<Classification> getHomeClassificationsFromEntity(String       sourceName,
+                                                                 EntityDetail entity,
+                                                                 String       metadataCollectionId,
+                                                                 String       methodName)
+    {
+        final String thisMethodName = "getHomeClassificationsFromEntity";
+
+        if ((entity == null) || (metadataCollectionId == null))
+        {
+            throw new OMRSLogicErrorException(OMRSErrorCode.HELPER_LOGIC_ERROR.getMessageDefinition(sourceName, thisMethodName, methodName),
+                                              this.getClass().getName(),
+                                              methodName);
+        }
+
+        List<Classification> entityClassifications = entity.getClassifications();
+        List<Classification> homeClassifications = new ArrayList<>();
+
+        if (entityClassifications != null)
+        {
+            for (Classification entityClassification : entityClassifications)
+            {
+                if (metadataCollectionId.equals(entityClassification.getMetadataCollectionId()))
+                {
+                    homeClassifications.add(entityClassification);
+                }
+                else if (entityClassification.getMetadataCollectionId() == null)
+                {
+                    homeClassifications.add(entityClassification);
+                }
+            }
+        }
+
+        if (homeClassifications.isEmpty())
+        {
+            return null;
+        }
+
+        return homeClassifications;
     }
 
 
