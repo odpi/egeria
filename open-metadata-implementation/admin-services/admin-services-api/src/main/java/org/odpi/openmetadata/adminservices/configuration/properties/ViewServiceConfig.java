@@ -34,17 +34,6 @@ public class ViewServiceConfig extends OMAGServerClientConfig
 {
     private static final long    serialVersionUID = 1L;
 
-<<<<<<< HEAD
-    private int                            viewServiceId         = 0;
-    private String                         viewAdminClass        = null;
-    private String                         viewServiceName       = null;
-    private String                         viewServiceFullName   = null;
-    private String                         viewURLMarker         = null;
-    private String                         viewDescription       = null;
-    private String                         viewWiki              = null;
-    private ServiceOperationalStatus       viewOperationalStatus = null;
-    private Map<String, Object>            viewOptions           = null;
-=======
     private int                            viewServiceId                = 0;
     private String                         viewServiceAdminClass        = null;
     private String                         viewServiceName              = null;
@@ -54,7 +43,6 @@ public class ViewServiceConfig extends OMAGServerClientConfig
     private String                         viewServiceWiki              = null;
     private ServiceOperationalStatus       viewServiceOperationalStatus = null;
     private Map<String, Object>            viewServiceOptions           = null;
->>>>>>> 118af316ba5a64828b26add56aa9f07299e09247
 
 
     /**
@@ -78,16 +66,6 @@ public class ViewServiceConfig extends OMAGServerClientConfig
         if (template != null)
         {
             viewServiceId = template.getViewServiceId();
-<<<<<<< HEAD
-            viewAdminClass = template.getViewServiceAdminClass();
-            viewServiceName = template.getViewServiceName();
-            viewServiceFullName = template.getViewServiceFullName();
-            viewURLMarker = template.getViewServiceURLMarker();
-            viewDescription = template.getViewServiceDescription();
-            viewWiki = template.getViewServiceWiki();
-            viewOperationalStatus = template.getViewServiceOperationalStatus();
-            viewOptions = template.getViewServiceOptions();
-=======
             viewServiceAdminClass = template.getViewServiceAdminClass();
             viewServiceFullName = template.getViewServiceFullName();
             viewServiceName = template.getViewServiceName();
@@ -95,7 +73,6 @@ public class ViewServiceConfig extends OMAGServerClientConfig
             viewServiceWiki = template.getViewServiceWiki();
             viewServiceOperationalStatus = template.getViewServiceOperationalStatus();
             viewServiceOptions = template.getViewServiceOptions();
->>>>>>> 118af316ba5a64828b26add56aa9f07299e09247
         }
     }
 
@@ -345,21 +322,11 @@ public class ViewServiceConfig extends OMAGServerClientConfig
                 ", viewServiceAdminClass='" + viewServiceAdminClass + '\'' +
                 ", viewServiceName='" + viewServiceName + '\'' +
                 ", viewServiceFullName='" + viewServiceFullName + '\'' +
-<<<<<<< HEAD
-                ", viewURLMarker='" + viewURLMarker + '\'' +
-                ", viewDescription='" + viewDescription + '\'' +
-                ", viewWiki='" + viewWiki + '\'' +
-                ", viewOperationalStatus=" + viewOperationalStatus +
-                ", viewOptions=" + viewOptions +
-                ", OMAGServerPlatformRootURL='" + getOMAGServerPlatformRootURL() + '\'' +
-                ", OMAGServerName='" + getOMAGServerName() + '\'' +
-=======
                 ", viewServiceURLMarker='" + viewServiceURLMarker + '\'' +
                 ", viewServiceDescription='" + viewServiceDescription + '\'' +
                 ", viewServiceWiki='" + viewServiceWiki + '\'' +
                 ", viewServiceOperationalStatus=" + viewServiceOperationalStatus +
                 ", viewServiceOptions=" + viewServiceOptions +
->>>>>>> 118af316ba5a64828b26add56aa9f07299e09247
                 '}';
     }
 
