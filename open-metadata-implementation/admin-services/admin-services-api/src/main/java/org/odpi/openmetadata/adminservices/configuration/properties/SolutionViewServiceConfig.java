@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adminservices.configuration.properties;
 
+import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceRegistration;
+
 import java.util.Objects;
 
 /*
@@ -28,6 +30,17 @@ public class SolutionViewServiceConfig extends ViewServiceConfig {
         super(template);
         /* There is nothing else to copy yet... */
     }
+
+    /**
+     * Call the superclass to set up the default values for a view service using a view service description.
+     *
+     * @param viewRegistration fixed properties about the view service
+     */
+    public SolutionViewServiceConfig(ViewServiceRegistration viewRegistration)
+    {
+        super(viewRegistration);
+    }
+
 
 
     /**
