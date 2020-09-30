@@ -40,8 +40,21 @@ public class AssetClassification extends AssetPropertyBase
              * Build and throw exception.  This should not happen likely to be a problem in the
              * repository connector.
              */
-            throw new OCFRuntimeException(OCFErrorCode.NULL_CLASSIFICATION_NAME.getMessageDefinition(super.getParentAssetName(),
-                                                                                                     super.getParentAssetTypeName()),
+            String parentName = super.getParentAssetName();
+            String parentTypeName = super.getParentAssetTypeName();
+
+            if (parentName == null)
+            {
+                parentName = "<null>";
+            }
+
+            if (parentTypeName == null)
+            {
+                parentTypeName = "<null>";
+            }
+
+            throw new OCFRuntimeException(OCFErrorCode.NULL_CLASSIFICATION_NAME.getMessageDefinition(parentName,
+                                                                                                     parentTypeName),
                                           this.getClass().getName(),
                                           "validateName");
         }

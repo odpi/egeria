@@ -37,7 +37,7 @@ public class AnalyticsModelingInstanceHandler extends OMASServiceInstanceHandler
 	 * @throws AnalyticsModelingCheckedException if server is not initialized.
 	 */
 
-	DatabaseContextHandler getDatabaseContextHandler(String serverName, String userId, String serviceOperationName)
+    public DatabaseContextHandler getDatabaseContextHandler(String serverName, String userId, String serviceOperationName)
 			throws AnalyticsModelingCheckedException {
 		
 		try {
