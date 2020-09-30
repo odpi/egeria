@@ -50,11 +50,11 @@ Components included are:
  ```
 $ docker ps                                                                                                                                                                                                                                                                                                                            [10:43:05]
 CONTAINER ID        IMAGE                       COMMAND                  CREATED             STATUS              PORTS                                                             NAMES
-668a0cb4c603        odpi/jupyter:2.3-SNAPSHOT   "tini -g -- start.sh…"   4 minutes ago       Up 4 minutes        0.0.0.0:18888->8888/tcp                                           tutorials_notebook_1
-dd0061d76740        odpi/egeria:2.3-SNAPSHOT    "/usr/local/s2i/run"     4 minutes ago       Up 4 minutes        5005/tcp, 8080/tcp, 8443/tcp, 8778/tcp, 0.0.0.0:19446->9443/tcp   tutorials_factory_1
-b4529b10242e        odpi/egeria:2.3-SNAPSHOT    "/usr/local/s2i/run"     4 minutes ago       Up 4 minutes        5005/tcp, 8080/tcp, 8443/tcp, 8778/tcp, 0.0.0.0:19443->9443/tcp   tutorials_core_1
-9ca6fac8eeb4        odpi/egeria:2.3-SNAPSHOT    "/usr/local/s2i/run"     4 minutes ago       Up 4 minutes        5005/tcp, 8080/tcp, 8443/tcp, 8778/tcp, 0.0.0.0:19445->9443/tcp   tutorials_dev_1
-edd729d03841        odpi/egeria:2.3-SNAPSHOT    "/usr/local/s2i/run"     4 minutes ago       Up 4 minutes        5005/tcp, 8080/tcp, 8443/tcp, 8778/tcp, 0.0.0.0:19444->9443/tcp   tutorials_datalake_1
+668a0cb4c603        odpi/jupyter:2.4-SNAPSHOT   "tini -g -- start.sh…"   4 minutes ago       Up 4 minutes        0.0.0.0:18888->8888/tcp                                           tutorials_notebook_1
+dd0061d76740        odpi/egeria:2.4-SNAPSHOT    "/usr/local/s2i/run"     4 minutes ago       Up 4 minutes        5005/tcp, 8080/tcp, 8443/tcp, 8778/tcp, 0.0.0.0:19446->9443/tcp   tutorials_factory_1
+b4529b10242e        odpi/egeria:2.4-SNAPSHOT    "/usr/local/s2i/run"     4 minutes ago       Up 4 minutes        5005/tcp, 8080/tcp, 8443/tcp, 8778/tcp, 0.0.0.0:19443->9443/tcp   tutorials_core_1
+9ca6fac8eeb4        odpi/egeria:2.4-SNAPSHOT    "/usr/local/s2i/run"     4 minutes ago       Up 4 minutes        5005/tcp, 8080/tcp, 8443/tcp, 8778/tcp, 0.0.0.0:19445->9443/tcp   tutorials_dev_1
+edd729d03841        odpi/egeria:2.4-SNAPSHOT    "/usr/local/s2i/run"     4 minutes ago       Up 4 minutes        5005/tcp, 8080/tcp, 8443/tcp, 8778/tcp, 0.0.0.0:19444->9443/tcp   tutorials_datalake_1
 ea3884c6ceb8        bitnami/kafka:latest        "/opt/bitnami/script…"   4 minutes ago       Up 4 minutes        0.0.0.0:19092->9092/tcp                                           tutorials_kafka_1
 b076f6ddc67c        bitnami/zookeeper:latest    "/opt/bitnami/script…"   4 minutes ago       Up 4 minutes        2888/tcp, 3888/tcp, 8080/tcp, 0.0.0.0:12181->2181/tcp             tutorials_zookeeper_1
 
@@ -81,7 +81,7 @@ issue or incompatability.
 $ docker logs tutorials_core_1                                                                                                                                                                                                                                                                                                         [10:43:39]
 /usr/local/s2i/run: line 15: /opt/jboss/container/maven/default//scl-enable-maven: No such file or directory
 Starting the Java application using /opt/jboss/container/java/run/run-java.sh ...
-INFO exec  java -XX:+UseParallelOldGC -XX:MinHeapFreeRatio=10 -XX:MaxHeapFreeRatio=20 -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -XX:MaxMetaspaceSize=100m -XX:+ExitOnOutOfMemoryError -cp "." -jar /deployments/server/server-chassis-spring-2.3-SNAPSHOT.jar  
+INFO exec  java -XX:+UseParallelOldGC -XX:MinHeapFreeRatio=10 -XX:MaxHeapFreeRatio=20 -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -XX:MaxMetaspaceSize=100m -XX:+ExitOnOutOfMemoryError -cp "." -jar /deployments/server/server-chassis-spring-2.4-SNAPSHOT.jar  
  ODPi Egeria
     ____   __  ___ ___    ______   _____                                 ____   _         _     ___
    / __ \ /  |/  //   |  / ____/  / ___/ ___   ____ _   __ ___   ____   / _  \ / / __    / /  / _ /__   ____ _  _

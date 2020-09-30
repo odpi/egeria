@@ -67,7 +67,7 @@
           class: ConnectorType
           connectorProviderClassName: "{{ config.value.lineage_graph_provider }}"
         configurationProperties: "{{ config.value.configurationProperties}}"
-      jobIntervalInSeconds: "{{ config.value.jobIntervalInSeconds }}"
+      jobIntervalInSeconds: "{{ config.value.job_interval_seconds | default(60, true) }}"
   when: config.value.mode == 'open-lineage-service'
 
 - name: "{{ config.key }} data engine proxy service connectivity"
@@ -91,7 +91,9 @@
         userId: "{{ config.value.user_id }}"
         clearPassword: "{{ config.value.clear_password }}"
         configurationProperties: "{{ config.value.configuration_properties }}"
-      pollIntervalInSeconds: "{{ config.value.pool_interval_seconds }}"
+      pollIntervalInSeconds: "{{ config.value.pool_interval_seconds | default(60, true) }}"
+      batchWindowInSeconds: "{{ config.value.batch_window_seconds | default(86400, true) }}",
+      eventsClientEnabled: "{{ config.value.events_client_enabled | default(false, true) }}"
   when: config.value.mode == 'data-engine-proxy-service'
 
 - name: "{{ config.key }} set auditlog"
