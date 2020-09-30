@@ -11,10 +11,10 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
+import org.odpi.openmetadata.viewservices.glossaryauthor.handlers.BreadCrumbHandler;
+import org.odpi.openmetadata.viewservices.glossaryauthor.properties.BreadCrumb;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -412,6 +412,62 @@ public class GlossaryAuthorViewGlossaryRESTServices extends BaseGlossaryAuthorVi
                 response.addResult(termResponse);
             }
 
+        } catch (Throwable error) {
+            response = getResponseForError(error, auditLog, className, methodName);
+        }
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+    /**
+     * Get BreadCrumbTrail.
+     *
+     * The user interface experience can start with a particular Glossary, navigate to a child Category, then to another child category then to a categories term.
+     * When such a user interface navigation occurs, it is helpful for the user to be displayed a 'breadcrumb' trail of where they have been, showing how nested they are in
+     * the glossary artifacts. The Get BreadcrumbTrail API returns information that allows the user interface to easy construct a trail of breadcrumbs.
+     * Each breadcrumb contains
+     * <ul>
+     *  <li> a displayName that is intended to be shown to the user</li>
+     *  <li> a guid that uniquely identifies a breadcrumb but is not intended to be shown to the user</li>
+     *  <li> a types, allowing the user interface to display an appropriate icon.
+     *  <li> a path that can be used to determine all the elements in the breadcrumb </li>
+     * </ul>
+     * @param serverName       local UI server name
+     * @param userId           user identifier
+     * @param guid             Glossary guid.
+     * @param rootCategoryGuid Root Category guid
+     * @param leafCategoryGuid Leaf Category Guid
+     * @param termGuid         Term Guid.
+     * @return a response which when successful contains a list of breadcrumbs corresponding to the supplied guids.
+     *
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> FunctionNotSupportedException        Function not supported</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * </ul>
+     */
+    public SubjectAreaOMASAPIResponse<BreadCrumb> getBreadCrumbTrail(
+            String serverName,
+            String userId,
+            String guid,
+            String rootCategoryGuid,
+            String leafCategoryGuid,
+            String termGuid) {
+        final String methodName = "getBreadCrumbTrail";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        SubjectAreaOMASAPIResponse<BreadCrumb> response = new SubjectAreaOMASAPIResponse<>();
+        AuditLog auditLog = null;
+
+        try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
+            BreadCrumbHandler breadCrumbHandler = new BreadCrumbHandler(clients, userId);
+            List<BreadCrumb> breadCrumbs = breadCrumbHandler.getBreadCrumbTrail(guid, rootCategoryGuid, leafCategoryGuid, termGuid);
+            response.addAllResults(breadCrumbs);
         } catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, methodName);
         }
