@@ -131,7 +131,7 @@ services:
             - datalake
         image: '${egeria_repo}/egeria-presentation-server:${egeria_version}'
         environment:
-            - EGERIA_PRESENTATIONSERVER_SERVER_coco={"remoteServerName":"cocoView1","remoteURL":"datalake:9443"}
+          - EGERIA_PRESENTATIONSERVER_SERVER_coco={"remoteServerName":"cocoView1","remoteURL":"https://datalake:9443"}
         ports:
             - '18091:8091'
         networks:
