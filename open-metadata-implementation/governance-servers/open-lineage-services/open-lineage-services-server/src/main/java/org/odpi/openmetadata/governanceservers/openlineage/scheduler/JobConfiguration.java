@@ -55,7 +55,9 @@ public class JobConfiguration {
      */
     public void stop() {
         try {
-            this.scheduler.shutdown();
+            if(scheduler != null) {
+                this.scheduler.shutdown();
+            }
         } catch (SchedulerException e) {
             log.error("Exception while attempting to shutdown the scheduler instance, the message is: {}", e.getMessage());
         }
