@@ -194,12 +194,14 @@ public class RepositoryErrorHandler
      * @param instanceHeader the entity or relationship header.
      * @param expectedTypeName name of the type to test for
      * @param methodName calling method
+     * @param localMethodName name of repository handler method
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      */
     void validateInstanceType(InstanceHeader instanceHeader,
                               String         expectedTypeName,
-                              String         methodName) throws InvalidParameterException
+                              String         methodName,
+                              String         localMethodName) throws InvalidParameterException
     {
         if (instanceHeader != null)
         {
@@ -211,43 +213,13 @@ public class RepositoryErrorHandler
                     this.handleWrongTypeForGUIDException(instanceHeader.getGUID(),
                                                          methodName,
                                                          type.getTypeDefName(),
-                                                         expectedTypeName);
+                                                         expectedTypeName,
+                                                         localMethodName);
                 }
             }
         }
     }
 
-
-    /**
-     * Verify whether an instance is of a particular type or not.
-     *
-     * @param instanceHeader the entity or relationship header.
-     * @param expectedTypeGUID unique identifier of the type to test for
-     * @param expectedTypeName unique name of the type to test for
-     * @param methodName calling method
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     */
-    void validateInstanceType(InstanceHeader instanceHeader,
-                              String         expectedTypeGUID,
-                              String         expectedTypeName,
-                              String         methodName) throws InvalidParameterException
-    {
-        if (instanceHeader != null)
-        {
-            InstanceType type = instanceHeader.getType();
-            if (type != null)
-            {
-                if (! repositoryHelper.isTypeOf(methodName, type.getTypeDefName(), expectedTypeName))
-                {
-                    this.handleWrongTypeForGUIDException(instanceHeader.getGUID(),
-                                                         methodName,
-                                                         type.getTypeDefName(),
-                                                         expectedTypeName);
-                }
-            }
-        }
-    }
 
 
     /**
@@ -281,6 +253,7 @@ public class RepositoryErrorHandler
         return false;
     }
 
+
     /**
      * Throw an exception if the supplied guid returned an entity of the wrong type
      *
@@ -288,19 +261,22 @@ public class RepositoryErrorHandler
      * @param methodName  name of the method making the call.
      * @param actualType  type of retrieved entity
      * @param expectedType  type the entity should be
+     * @param localMethodName name of repository handler method
      * @throws InvalidParameterException the guid is for the wrong type of object
      */
     void handleWrongTypeForGUIDException(String guid,
                                          String methodName,
                                          String actualType,
-                                         String expectedType) throws InvalidParameterException
+                                         String expectedType,
+                                         String localMethodName) throws InvalidParameterException
     {
         final String  defaultGUIDParameterName = "guid";
 
-        throw new InvalidParameterException(RepositoryHandlerErrorCode.INSTANCE_WRONG_TYPE_FOR_GUID.getMessageDefinition(methodName,
+        throw new InvalidParameterException(RepositoryHandlerErrorCode.INSTANCE_WRONG_TYPE_FOR_GUID.getMessageDefinition(localMethodName,
                                                                                                                          guid,
                                                                                                                          actualType,
-                                                                                                                         expectedType),
+                                                                                                                         expectedType,
+                                                                                                                         methodName),
                                             this.getClass().getName(),
                                             methodName,
                                             defaultGUIDParameterName);

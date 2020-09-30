@@ -78,7 +78,8 @@ public enum RepositoryHandlerErrorCode implements ExceptionMessageSet
             "Retry the request with a relationship created with this user, or request that the user who created " +
                                     "the relationship issues the delete request."),
     INSTANCE_WRONG_TYPE_FOR_GUID(404, "OMAG-REPOSITORY-HANDLER-404-001",
-            "The {0} method has retrieved a object for unique identifier (guid) {1} which is of type {2} rather than type {3}",
+            "The {0} method has retrieved a object for unique identifier (guid) {1} which is of type {2} rather than type {3} on behalf " +
+                    "of method {4}",
             "The service is not able to return the requested object.",
             "Check that the unique identifier is correct and the metadata server(s) supporting the service is running."),
     OMRS_NOT_INITIALIZED(404, "OMAG-REPOSITORY-HANDLER-404-002",

@@ -118,11 +118,13 @@ public class RepositoryHandler
                                         String                  guidParameterName) throws UserNotAuthorizedException,
                                                                                           PropertyServerException
     {
+        final String localMethodName = "isEntityKnown";
+
         try
         {
             EntitySummary entity = metadataCollection.getEntitySummary(userId, guid);
 
-            errorHandler.validateInstanceType(entity, entityTypeName, methodName);
+            errorHandler.validateInstanceType(entity, entityTypeName, methodName, localMethodName);
 
             return entity;
         }
@@ -1734,6 +1736,8 @@ public class RepositoryHandler
                                                  String                 methodName) throws UserNotAuthorizedException,
                                                                                            PropertyServerException
     {
+        final String localMethodName = "getEntitiesForType";
+
         try
         {
             List<EntityDetail> results = metadataCollection.findEntitiesByProperty(userId,
@@ -1762,7 +1766,7 @@ public class RepositoryHandler
                 {
                     if (entity != null)
                     {
-                        errorHandler.validateInstanceType(entity, entityTypeGUID, entityTypeName, methodName);
+                        errorHandler.validateInstanceType(entity, entityTypeName, methodName, localMethodName);
                     }
                 }
                 return results;
@@ -2032,6 +2036,8 @@ public class RepositoryHandler
                                                                              UserNotAuthorizedException,
                                                                              PropertyServerException
     {
+        final String localMethodName = "getAttachedEntityFromUser";
+
         RepositoryRelatedEntitiesIterator iterator = new RepositoryRelatedEntitiesIterator(this,
                                                                                            userId,
                                                                                            startingEntityGUID,
@@ -2053,7 +2059,7 @@ public class RepositoryHandler
             {
                 if ((userId.equals(entity.getCreatedBy()) || (userId.equals(entity.getUpdatedBy())) || ((entity.getMaintainedBy() != null) && (entity.getMaintainedBy().contains(userId)))))
                 {
-                    errorHandler.validateInstanceType(entity, attachedEntityTypeGUID, attachedEntityTypeName, methodName);
+                    errorHandler.validateInstanceType(entity, attachedEntityTypeName, methodName, localMethodName);
                     return entity;
                 }
             }
@@ -2095,6 +2101,8 @@ public class RepositoryHandler
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
     {
+        final String localMethodName = "getAttachedEntitiesFromUser";
+
         List<EntityDetail> results = new ArrayList<>();
 
         RepositoryRelatedEntitiesIterator iterator = new RepositoryRelatedEntitiesIterator(this,
@@ -2115,7 +2123,7 @@ public class RepositoryHandler
             {
                 if ((userId.equals(entity.getCreatedBy()) || (userId.equals(entity.getUpdatedBy())) || ((entity.getMaintainedBy() != null) && (entity.getMaintainedBy().contains(userId)))))
                 {
-                    errorHandler.validateInstanceType(entity, attachedEntityTypeGUID, attachedEntityTypeName, methodName);
+                    errorHandler.validateInstanceType(entity, attachedEntityTypeName, methodName, localMethodName);
                     results.add(entity);
                 }
             }
@@ -2244,6 +2252,8 @@ public class RepositoryHandler
                                      Relationship relationship,
                                      String       methodName) throws InvalidParameterException
     {
+        final String localMethodName = "getOtherEnd";
+
         if (relationship != null)
         {
             EntityProxy requiredEnd = relationship.getEntityOneProxy();
@@ -2254,7 +2264,7 @@ public class RepositoryHandler
                 startingEnd = relationship.getEntityOneProxy();
             }
 
-            errorHandler.validateInstanceType(startingEnd, startingEntityTypeName, methodName);
+            errorHandler.validateInstanceType(startingEnd, startingEntityTypeName, methodName, localMethodName);
 
             return requiredEnd;
         }
@@ -2318,6 +2328,8 @@ public class RepositoryHandler
                                                      String                 methodName) throws UserNotAuthorizedException,
                                                                                                PropertyServerException
     {
+        final String localMethodName = "getEntityForRelationshipType";
+
         try
         {
             List<Relationship> relationships = metadataCollection.getRelationshipsForEntity(userId,
@@ -2344,7 +2356,7 @@ public class RepositoryHandler
                         startingEnd = relationship.getEntityOneProxy();
                     }
 
-                    errorHandler.validateInstanceType(startingEnd, startingEntityTypeName, methodName);
+                    errorHandler.validateInstanceType(startingEnd, startingEntityTypeName, methodName, localMethodName);
 
                     return this.getEntityForRelationship(userId, requiredEnd, methodName);
                 }
@@ -2395,11 +2407,13 @@ public class RepositoryHandler
                                                                                     UserNotAuthorizedException,
                                                                                     PropertyServerException
     {
+        final String localMethodName = "getEntityByGUID";
+
         try
         {
             EntityDetail entity = metadataCollection.getEntityDetail(userId, guid);
 
-            errorHandler.validateInstanceType(entity, entityTypeName, methodName);
+            errorHandler.validateInstanceType(entity, entityTypeName, methodName, localMethodName);
 
             return entity;
         }
@@ -2751,15 +2765,15 @@ public class RepositoryHandler
         try
         {
             return metadataCollection.findEntitiesByPropertyValue(userId,
-                                                             entityTypeGUID,
-                                                             searchCriteria,
-                                                             startingFrom,
-                                                             null,
-                                                             null,
-                                                             asOfTime,
-                                                             sequencingProperty,
-                                                             sequencingOrder,
-                                                             pageSize);
+                                                                  entityTypeGUID,
+                                                                  searchCriteria,
+                                                                  startingFrom,
+                                                                  null,
+                                                                  null,
+                                                                  asOfTime,
+                                                                  sequencingProperty,
+                                                                  sequencingOrder,
+                                                                  pageSize);
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
         {
@@ -2858,14 +2872,14 @@ public class RepositoryHandler
                                                 String                 methodName) throws UserNotAuthorizedException,
                                                                                           PropertyServerException
     {
-            return getEntitiesByType(userId,
-                    entityTypeGUID,
-                    startingFrom,
-                    pageSize,
-                    null,
-                    null,
-                    null,
-                    methodName);
+        return getEntitiesByType(userId,
+                                 entityTypeGUID,
+                                 startingFrom,
+                                 pageSize,
+                                 null,
+                                 null,
+                                 null,
+                                 methodName);
     }
 
     /**
@@ -2885,15 +2899,15 @@ public class RepositoryHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem retrieving the entity.
      */
-    public List<EntityDetail> getEntitiesByType(String userId,
-                                                String entityTypeGUID,
-                                                int startingFrom,
-                                                int pageSize,
-                                                Date asOfTime,
-                                                String sequencingProperty,
+    public List<EntityDetail> getEntitiesByType(String          userId,
+                                                String          entityTypeGUID,
+                                                int             startingFrom,
+                                                int             pageSize,
+                                                Date            asOfTime,
+                                                String          sequencingProperty,
                                                 SequencingOrder sequencingOrder,
-                                                String methodName) throws UserNotAuthorizedException,
-                                                                                          PropertyServerException
+                                                String          methodName) throws UserNotAuthorizedException,
+                                                                                   PropertyServerException
     {
         try
         {
@@ -3018,6 +3032,8 @@ public class RepositoryHandler
                                                      String                 methodName) throws UserNotAuthorizedException,
                                                                                                PropertyServerException
     {
+        final String localMethodName = "getRelationshipsByType";
+
         try
         {
             List<Relationship> relationships = metadataCollection.getRelationshipsForEntity(userId,
@@ -3047,7 +3063,7 @@ public class RepositoryHandler
             {
                 if (relationship != null)
                 {
-                    errorHandler.validateInstanceType(relationship, relationshipTypeGUID, methodName);
+                    errorHandler.validateInstanceType(relationship, relationshipTypeName, methodName, localMethodName);
                     this.getOtherEnd(startingEntityGUID, startingEntityTypeName, relationship, methodName);
 
                     results.add(relationship);
@@ -3110,6 +3126,8 @@ public class RepositoryHandler
                                                      String                 methodName) throws UserNotAuthorizedException,
                                                                                                PropertyServerException
     {
+        final String localMethodName = "getRelationshipsByType";
+
         try
         {
             List<Relationship> relationships = metadataCollection.getRelationshipsForEntity(userId,
@@ -3139,7 +3157,7 @@ public class RepositoryHandler
             {
                 if (relationship != null)
                 {
-                    errorHandler.validateInstanceType(relationship, relationshipTypeGUID, methodName);
+                    errorHandler.validateInstanceType(relationship, relationshipTypeGUID, methodName, localMethodName);
                     this.getOtherEnd(startingEntityGUID, relationship);
 
                     results.add(relationship);
@@ -3860,13 +3878,14 @@ public class RepositoryHandler
                                    String methodName) throws UserNotAuthorizedException,
                                                              PropertyServerException
     {
+        final String localMethodName = "removeRelationship";
         try
         {
             Relationship relationship = metadataCollection.getRelationship(userId, relationshipGUID);
 
             if (relationship != null)
             {
-                errorHandler.validateInstanceType(relationship, relationshipTypeName, methodName);
+                errorHandler.validateInstanceType(relationship, relationshipTypeName, methodName, localMethodName);
 
                 removeRelationship(userId, externalSourceGUID, externalSourceName, relationship, methodName);
             }
