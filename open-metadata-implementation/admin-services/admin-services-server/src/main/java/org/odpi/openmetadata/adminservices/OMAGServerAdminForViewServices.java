@@ -3,8 +3,10 @@
 package org.odpi.openmetadata.adminservices;
 
 import org.odpi.openmetadata.adminservices.configuration.OMAGViewServiceRegistration;
+import org.odpi.openmetadata.adminservices.configuration.properties.IntegrationViewServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerClientConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
+import org.odpi.openmetadata.adminservices.configuration.properties.SolutionViewServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.ViewServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.CommonServicesDescription;
 import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
@@ -313,11 +315,44 @@ public class OMAGServerAdminForViewServices {
     private ViewServiceConfig createViewServiceConfig(ViewServiceRegistration     registration,
                                                       ViewServiceConfig           requestedViewServiceConfig)
     {
-        ViewServiceConfig viewServiceConfig = new ViewServiceConfig(registration);
+
+        ViewServiceConfig viewServiceConfig = null;
+
+        if (requestedViewServiceConfig instanceof IntegrationViewServiceConfig) {
+            /*
+             * The requested configuration is for an Integration View Service
+             */
+            IntegrationViewServiceConfig requestedIntegrationViewServiceConfig = (IntegrationViewServiceConfig)requestedViewServiceConfig;
+            IntegrationViewServiceConfig createdViewServiceConfig = new IntegrationViewServiceConfig(registration);
+            createdViewServiceConfig.setResourceEndpoints(requestedIntegrationViewServiceConfig.getResourceEndpoints());
+            viewServiceConfig = (ViewServiceConfig) createdViewServiceConfig;
+        }
+        else if (requestedViewServiceConfig instanceof SolutionViewServiceConfig) {
+            /*
+             * The requested configuration is for a Solution View Service
+             */
+            SolutionViewServiceConfig requestedSolutionViewServiceConfig = (SolutionViewServiceConfig)requestedViewServiceConfig;
+            SolutionViewServiceConfig createdViewServiceConfig = new SolutionViewServiceConfig(registration);
+            createdViewServiceConfig.setOMAGServerPlatformRootURL(requestedSolutionViewServiceConfig.getOMAGServerPlatformRootURL());
+            createdViewServiceConfig.setOMAGServerName(requestedSolutionViewServiceConfig.getOMAGServerName());
+            viewServiceConfig = (ViewServiceConfig) createdViewServiceConfig;
+        }
+        else {
+            /*
+             * Assume that the requested configuration is a vanilla view service configuration
+             */
+            ViewServiceConfig createdViewServiceConfig = new ViewServiceConfig(registration);
+            createdViewServiceConfig.setOMAGServerPlatformRootURL(requestedViewServiceConfig.getOMAGServerPlatformRootURL());
+            createdViewServiceConfig.setOMAGServerName(requestedViewServiceConfig.getOMAGServerName());
+            viewServiceConfig = createdViewServiceConfig;
+        }
+
+        /*
+         * Always copy the view service options if any are present
+         */
         Map<String, Object> viewOptions = requestedViewServiceConfig.getViewServiceOptions();
         viewServiceConfig.setViewServiceOptions(viewOptions);
-        viewServiceConfig.setOMAGServerPlatformRootURL(requestedViewServiceConfig.getOMAGServerPlatformRootURL());
-        viewServiceConfig.setOMAGServerName(requestedViewServiceConfig.getOMAGServerName());
+
         return viewServiceConfig;
     }
 

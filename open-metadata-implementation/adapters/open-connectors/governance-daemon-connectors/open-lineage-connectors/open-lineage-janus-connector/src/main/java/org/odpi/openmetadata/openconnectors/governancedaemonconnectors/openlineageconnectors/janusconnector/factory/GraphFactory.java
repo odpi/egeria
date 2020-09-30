@@ -11,6 +11,7 @@ import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.apache.tinkerpop.gremlin.structure.io.gryo.GryoMapper;
+import org.apache.tinkerpop.gremlin.tinkergraph.structure.TinkerIoRegistryV3d0;
 import org.janusgraph.core.JanusGraph;
 import org.janusgraph.core.schema.JanusGraphManagement;
 import org.janusgraph.graphdb.tinkerpop.JanusGraphIoRegistry;
@@ -267,7 +268,9 @@ public class GraphFactory extends IndexingFactory {
         String methodName = "createCluster";
         try {
 
-            GryoMapper.Builder builder = GryoMapper.build().addRegistry(JanusGraphIoRegistry.getInstance()); //TODO: Check for replacement
+            GryoMapper.Builder builder = GryoMapper.build()
+                    .addRegistry(TinkerIoRegistryV3d0.instance())
+                    .addRegistry(JanusGraphIoRegistry.instance()); //TODO: Check for replacement
             Cluster.Builder clusterBuilder = Cluster.build()
                     .serializer(new GryoMessageSerializerV3d0(builder)); //TODO: Check this setting. Binary serializer was not working.
             if (properties.get(LineageGraphRemoteConnectorProvider.CLUSTER_PORT) != null)
