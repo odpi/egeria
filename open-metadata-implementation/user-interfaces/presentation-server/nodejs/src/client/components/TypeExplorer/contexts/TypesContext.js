@@ -6,9 +6,9 @@ import React, { createContext, useContext, useState }   from "react";
 
 import PropTypes                                        from "prop-types";
 
-import { RepositoryServerContext }                      from "./RepositoryServerContext";
+//import { RepositoryServerContext }                      from "./RepositoryServerContext";
 
-
+import { RequestContext }                               from "./RequestContext";
 
 
 export const TypesContext = createContext();
@@ -19,7 +19,9 @@ export const TypesContextConsumer = TypesContext.Consumer;
 
 const TypesContextProvider = (props) => {
 
-  const repositoryServerContext    = useContext(RepositoryServerContext);
+  //const repositoryServerContext    = useContext(RepositoryServerContext);
+
+  const requestContext    = useContext(RequestContext);
 
   /*
    * tex object is initially empty
@@ -32,8 +34,12 @@ const TypesContextProvider = (props) => {
    * loadTypeInfo function is an asynchronous function that triggers loading of types and (in _loadTypeInfo) sets the state for tex,
    * which can then be accessed by getter functions below
    */
-  const loadTypeInfo = () => {
-    repositoryServerContext.repositoryPOST("types", null, _loadTypeInfo);
+  const loadTypeInfo = (serverName, platformName) => {
+
+      //setOperationState({state:"loading", name: serverName});
+      requestContext.callPOST("server", serverName,  "server/"+serverName,
+        { serverName : serverName, platformName : platformName }, _loadTypeInfo);
+    //repositoryServerContext.repositoryPOST("types", null, _loadTypeInfo);
   };
 
   const _loadTypeInfo = (json) => {

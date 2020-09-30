@@ -4,17 +4,9 @@
 
 import React, { useContext, useState }                    from "react";
 
-/* 
- * Import the DEFAULT export from the RequestContext module - which is actually the RequestContextProvider
- * Naming it explicitly for clarity that this is the provider not the context.
- */
 import { RequestContext }                                 from "../../contexts/RequestContext";
 
-/* 
- * Import the DEFAULT export from the TypesContext module - which is actually the TypesContextProvider
- * Naming it explicitly for clarity that this is the provider not the context.
- */
-import { TypesContext }                                   from "./contexts/TypesContext";
+import { TypesContext }                                   from "../../contexts/TypesContext";
 
 import "./resource-selector.scss"
 
@@ -95,14 +87,14 @@ export default function ServerSelector() {
     let serverInstance = availableServers[serverInstanceName];
     let serverName     = serverInstance.serverName;
     let platformName   = serverInstance.platformName;
-    let description    = serverInstance.description;
+    //let description    = serverInstance.description;
 
     // TODO add parameters to loadTypeInfo below....
     
     /*
      *  ...this operation initiates the load of type information from the specified repository server
      */
-    typesContext.loadTypeInfo()
+    typesContext.loadTypeInfo(serverName, platformName);
   }
 
 
