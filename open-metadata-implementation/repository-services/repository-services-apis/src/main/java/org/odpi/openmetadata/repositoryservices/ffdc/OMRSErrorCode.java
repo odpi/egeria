@@ -501,11 +501,13 @@ public enum OMRSErrorCode implements ExceptionMessageSet
             "The build of the archive terminates.",
             "Verify the definition of the elements being added to the archive. Once the definitions have been corrected, rerun the request."),
     DUPLICATE_ENDDEF1_NAME_IN_ARCHIVE(400, "OMRS-ARCHIVE-BUILDER-400-007",
-            "endDef2 type {0} and EndDef1 name {1} in RelationshipDef {2} are incorrect, because entity {0} already has a {1} attribute or is referred to in an existing relationshipDef with an endDef with name {1}.",
+            "RelationshipEndDef1 type {0} and EndDef1 name {1} in RelationshipDef {2} are incorrect, because another entity or " +
+                    "relationship endDef is already using this attribute name",
             "The build of the archive terminates.",
             "Verify the definition of the types being added to the archive. Once the definitions have been corrected, rerun the request."),
     DUPLICATE_ENDDEF2_NAME_IN_ARCHIVE(400, "OMRS-ARCHIVE-BUILDER-400-008",
-            "EndDef1 type {0} and EndDef2 name {1} in RelationshipDef {2} are incorrect, because entity {0} already has a {1} attribute or is referred to in an existing relationshipDef with an endDef with name {1}.",
+            "RelationshipEndDef2 type {0} and EndDef2 name {1} in RelationshipDef {2} are incorrect, because another entity or " +
+                    "relationship endDef is already using this attribute name",
             "The build of the archive terminates.",
             "Verify the definition of the types being added to the archive. Once the definitions have been corrected, rerun the request."),
     DUPLICATE_RELATIONSHIP_ATTR_IN_ARCHIVE(400, "OMRS-ARCHIVE-BUILDER-400-009",
