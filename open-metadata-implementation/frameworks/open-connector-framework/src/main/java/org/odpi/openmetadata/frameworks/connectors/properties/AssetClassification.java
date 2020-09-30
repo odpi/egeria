@@ -131,7 +131,7 @@ public class AssetClassification extends AssetPropertyBase
              * Build and throw exception.  This should not happen likely to be a problem in the
              * repository connector.
              */
-            throw new OCFRuntimeException(OCFErrorCode.NULL_CLASSIFICATION_NAME.getMessageDefinition("<Unknown>"),
+            throw new OCFRuntimeException(OCFErrorCode.NULL_CLASSIFICATION_NAME.getMessageDefinition("<Unknown>", "<Unknown>"),
                                           this.getClass().getName(),
                                           "Copy Constructor");
         }
