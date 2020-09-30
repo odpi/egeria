@@ -18,9 +18,11 @@ import org.odpi.openmetadata.governanceservers.openlineage.handlers.OpenLineageH
 import org.odpi.openmetadata.governanceservers.openlineage.listeners.OpenLineageInTopicListener;
 import org.odpi.openmetadata.governanceservers.openlineage.server.OpenLineageServerInstance;
 import org.odpi.openmetadata.governanceservers.openlineage.services.StoringServices;
+import org.odpi.openmetadata.governanceservers.openlineage.scheduler.JobConfiguration;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicListener;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,6 +44,7 @@ public class OpenLineageServerOperationalServices {
     private OMRSAuditLog auditLog = null;
     private LineageGraph lineageGraphConnector;
     private OpenMetadataTopicConnector inTopicConnector;
+    private JobConfiguration backgroundJob;
     private int jobIntervalInSeconds;
 
     /**
@@ -101,7 +104,10 @@ public class OpenLineageServerOperationalServices {
                 OpenLineageServerAuditCode.ERROR_OBTAINING_IN_TOPIC_CONNECTOR);
 
         initializeAndStartConnectors();
+
         OpenLineageHandler openLineageHandler = new OpenLineageHandler(lineageGraphConnector);
+
+        initializeAndStartBackgroundJob();
 
         this.openLineageServerInstance = new
                 OpenLineageServerInstance(
@@ -111,6 +117,10 @@ public class OpenLineageServerOperationalServices {
                 openLineageHandler);
 
         logRecord(OpenLineageServerAuditCode.SERVER_INITIALIZED, actionDescription);
+    }
+
+    private void initializeAndStartBackgroundJob() {
+        this.backgroundJob = new JobConfiguration(lineageGraphConnector, jobIntervalInSeconds);
     }
 
     /**
@@ -207,7 +217,7 @@ public class OpenLineageServerOperationalServices {
         final String methodName = "startIntopicConnector";
         final OpenLineageServerAuditCode auditCode = OpenLineageServerAuditCode.ERROR_STARTING_IN_TOPIC_CONNECTOR;
         inTopicConnector.setAuditLog(auditLog);
-        StoringServices storingServices = new StoringServices(lineageGraphConnector, jobIntervalInSeconds);
+        StoringServices storingServices = new StoringServices(lineageGraphConnector);
         OpenMetadataTopicListener openLineageInTopicListener = new OpenLineageInTopicListener(storingServices, auditLog);
         inTopicConnector.registerListener(openLineageInTopicListener);
         try {
@@ -310,6 +320,9 @@ public class OpenLineageServerOperationalServices {
         String actionDescription = "Shutting down the open lineage Services server.";
         logRecord(OpenLineageServerAuditCode.SERVER_SHUTTING_DOWN, actionDescription);
 
+
+        stopBackgroundJob();
+
         disconnectInTopicConnector();
 
         disconnectGraphConnector(lineageGraphConnector,
@@ -322,6 +335,14 @@ public class OpenLineageServerOperationalServices {
 
         logRecord(OpenLineageServerAuditCode.SERVER_SHUTDOWN, actionDescription);
         return true;
+    }
+
+    /**
+     *  Triggers stop sequence on the background job implementation
+     */
+    private void stopBackgroundJob() {
+        if (backgroundJob != null)
+            backgroundJob.stop();
     }
 
 
