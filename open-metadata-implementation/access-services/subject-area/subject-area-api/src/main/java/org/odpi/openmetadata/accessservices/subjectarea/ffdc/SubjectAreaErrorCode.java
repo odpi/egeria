@@ -306,10 +306,10 @@ public enum SubjectAreaErrorCode implements ExceptionMessageSet {
 
 
     /**
-     * The constructor for AssetConsumerErrorCode expects to be passed one of the enumeration rows defined in
-     * AssetConsumerErrorCode above.   For example:
+     * The constructor for SubjectAreaErrorCode expects to be passed one of the enumeration rows defined in
+     * SubjectAreaErrorCode above. For example:
      *
-     *     AssetConsumerErrorCode   errorCode = AssetConsumerErrorCode.SERVER_NOT_AVAILABLE;
+     *     SubjectAreaErrorCode   errorCode = SubjectAreaErrorCode.NULL_GUID;
      *
      * This will expand out to the 5 parameters shown below.
      *
