@@ -51,54 +51,6 @@ public class AssetBuilder extends ReferenceableBuilder
     }
 
 
-    /**
-     * Constructor supporting all properties but origin.
-     *
-     * @param qualifiedName unique name
-     * @param displayName new value for the display name.
-     * @param description new description for the asset.
-     * @param owner name of the owner
-     * @param ownerType type of owner
-     * @param zoneMembership list of zones that this asset belongs to.
-     * @param actionDescription description of the last change to the asset.
-     * @param additionalProperties additional properties
-     * @param extendedProperties  properties from the subtype.
-     * @param repositoryHelper helper methods
-     * @param serviceName name of this OMAS
-     * @param serverName name of local server
-     */
-    @Deprecated
-    @SuppressWarnings(value = "unused")
-    public AssetBuilder(String               qualifiedName,
-                        String               displayName,
-                        String               description,
-                        String               owner,
-                        OwnerType            ownerType,
-                        List<String>         zoneMembership,
-                        String               actionDescription,
-                        Map<String, String>  additionalProperties,
-                        Map<String, Object>  extendedProperties,
-                        OMRSRepositoryHelper repositoryHelper,
-                        String               serviceName,
-                        String               serverName)
-    {
-        super(qualifiedName,
-              additionalProperties,
-              AssetMapper.ASSET_TYPE_NAME,
-              AssetMapper.ASSET_TYPE_GUID,
-              extendedProperties,
-              null,
-              repositoryHelper,
-              serviceName,
-              serverName);
-
-        this.displayName = displayName;
-        this.description = description;
-        this.owner = owner;
-        this.ownerType = ownerType;
-        this.zoneMembership = zoneMembership;
-    }
-
 
     /**
      * Constructor supporting all properties.
@@ -124,7 +76,7 @@ public class AssetBuilder extends ReferenceableBuilder
                         OwnerType            ownerType,
                         List<String>         zoneMembership,
                         Map<String, String>  origin,
-                        LatestChange         latestChange,
+                        String               latestChange,
                         Map<String, String>  additionalProperties,
                         Map<String, Object>  extendedProperties,
                         OMRSRepositoryHelper repositoryHelper,
