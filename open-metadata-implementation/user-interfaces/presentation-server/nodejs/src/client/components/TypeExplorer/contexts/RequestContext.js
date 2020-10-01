@@ -86,7 +86,7 @@ const RequestContextProvider = (props) => {
       return null;
     }
     
-    const url = identificationContext.getRestURL("dino") + "/" + uri;
+    const url = identificationContext.getRestURL("tex") + "/" + uri;
     
     /* 
      * Add any (optional) bodyParms to the baseBody
@@ -123,7 +123,7 @@ const RequestContextProvider = (props) => {
       return;
     }
       
-    const url = identificationContext.getRestURL("dino") + "/" + uri;
+    const url = identificationContext.getRestURL("tex") + "/" + uri;
   
     /* 
      * No body needed

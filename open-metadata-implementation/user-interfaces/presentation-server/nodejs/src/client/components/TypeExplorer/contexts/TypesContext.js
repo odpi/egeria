@@ -10,6 +10,8 @@ import PropTypes                                        from "prop-types";
 
 import { RequestContext }                               from "./RequestContext";
 
+import { IdentificationContext }                        from "../../../contexts/IdentificationContext";
+
 
 export const TypesContext = createContext();
 
@@ -23,6 +25,8 @@ const TypesContextProvider = (props) => {
 
   const requestContext    = useContext(RequestContext);
 
+  const identificationContext    = useContext(IdentificationContext);
+
   /*
    * tex object is initially empty
    */
@@ -34,12 +38,11 @@ const TypesContextProvider = (props) => {
    * loadTypeInfo function is an asynchronous function that triggers loading of types and (in _loadTypeInfo) sets the state for tex,
    * which can then be accessed by getter functions below
    */
-  const loadTypeInfo = (serverName, platformName) => {
+  const loadTypeInfo = (serverName,platformName ) => {
 
-      //setOperationState({state:"loading", name: serverName});
-      requestContext.callPOST("server", serverName,  "server/"+serverName,
-        { serverName : serverName, platformName : platformName }, _loadTypeInfo);
-    //repositoryServerContext.repositoryPOST("types", null, _loadTypeInfo);
+    requestContext.callPOST("types", serverName,  "server/"+serverName, 
+    { serverName : serverName, platformName : platformName }, _loadTypeInfo);
+
   };
 
   const _loadTypeInfo = (json) => {
