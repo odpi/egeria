@@ -112,7 +112,7 @@ export default function ServerSelector() {
   return (
     <div className="resource-controls">
 
-      <p>Select Server</p>
+      <p className="descriptive-text">Select Server</p>
 
       <select className="server-selector"
               id="serverSelector"
