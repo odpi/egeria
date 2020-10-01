@@ -1,10 +1,13 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-
 ## ODPi Egeria Site organization
-  
-The Egeria content is organized into the following modules:
+
+The Egeria content is organized across a number of repositories:
+
+### Egeria Core repository
+
+The Egeria core repository contains the core Egeria functionality, and is organized into the following modules:
 
 * **[developer-resources](developer-resources)** - contains useful files and documentation for an Egeria developer.
 * **[open-metadata-conformance-suite](open-metadata-conformance-suite)** - implementation of the tests that determine if a vendor or open source technology is compliant with the open metadata and governance standards.
@@ -90,6 +93,20 @@ The Egeria content is organized into the following modules:
   * **[open-metadata-tutorials](open-metadata-resources/open-metadata-tutorials)** - contains tutorials for managing your own ODPi Egeria environment.
 * **[open-metadata-test](open-metadata-test)** - supports additional test cases beyond unit test.
 
+### Egeria connectors repositories
+
+Egeria connectors repositories contain the code that allow non-Egeria technologies to connect into Egeria:
+
+- [Hadoop Ecosystem connectors](https://github.com/odpi/egeria-connector-hadoop-ecosystem) houses the connectors for
+    various Hadoop ecosystem components, like Apache Atlas and Apache Ranger.
+- [IBM Information Server connectors](https://github.com/odpi/egeria-connector-ibm-information-server) houses the
+    connectors for IBM Information Server components, like Information Governance Catalog, DataStage and Information
+    Analyzer.
+
+### Egeria samples repository
+
+The samples repository contains samples of using Egeria in various ways: Ansible roles, sample data and metadata,
+documented demonstrations, and so on at https://github.com/odpi/egeria-samples
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
