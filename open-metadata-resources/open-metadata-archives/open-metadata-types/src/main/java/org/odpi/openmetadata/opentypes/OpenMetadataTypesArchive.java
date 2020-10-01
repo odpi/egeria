@@ -1198,12 +1198,14 @@ public class OpenMetadataTypesArchive
     {
         final String guid            = "084cd115-5d0d-4f12-8093-697526a120ea";
         final String name            = "GovernanceDomainDescription";
-        final String description     = "A description of a governance domain along with an identifier for using in governance definitions.";
+        final String description     = "A description of a governance domain along with an identifier for use in governance definitions.";
         final String descriptionGUID = null;
+
+        final String superTypeName   = "Referenceable";
 
         EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
                                                                 name,
-                                                                null,
+                                                                this.archiveBuilder.getEntityDef(superTypeName),
                                                                 description,
                                                                 descriptionGUID);
 
@@ -1216,7 +1218,7 @@ public class OpenMetadataTypesArchive
         final String attribute1Name            = "domainIdentifier";
         final String attribute1Description     = "Identifier used in governance definitions to show which governance domain they belong to.";
         final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "display name";
+        final String attribute2Name            = "displayName";
         final String attribute2Description     = "Name of the domain in common use.";
         final String attribute2DescriptionGUID = null;
         final String attribute3Name            = "description";
@@ -1247,10 +1249,11 @@ public class OpenMetadataTypesArchive
         final String name            = "GovernanceClassificationLevel";
         final String description     = "A value to represent a specific level in a governance classification definition.";
         final String descriptionGUID = null;
+        final String superTypeName   = "Referenceable";
 
         EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
                                                                 name,
-                                                                null,
+                                                                this.archiveBuilder.getEntityDef(superTypeName),
                                                                 description,
                                                                 descriptionGUID);
 
