@@ -176,7 +176,7 @@ public class RelationalDataHandler<DATABASE,
                                                                   publishZones,
                                                                   auditLog);
 
-        this.errorHandler = new RepositoryErrorHandler(repositoryHelper, serviceName, serverName);
+        this.errorHandler = new RepositoryErrorHandler(repositoryHelper, serviceName, serverName, auditLog);
     }
 
 

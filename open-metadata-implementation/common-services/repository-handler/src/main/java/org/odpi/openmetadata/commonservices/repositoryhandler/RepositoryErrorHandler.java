@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.repositoryhandler;
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -21,6 +22,7 @@ public class RepositoryErrorHandler
     private String               serviceName;
     private String               serverName;
     private OMRSRepositoryHelper repositoryHelper;
+    private AuditLog             auditLog = null;
 
     /**
      * Typical constructor providing access to the repository connector for this access service.
@@ -36,6 +38,26 @@ public class RepositoryErrorHandler
         this.repositoryHelper = repositoryHelper;
         this.serviceName = serviceName;
         this.serverName = serverName;
+    }
+
+
+    /**
+     * Typical constructor providing access to the repository connector for this access service.
+     *
+     * @param repositoryHelper  access to the repository helper.
+     * @param serviceName  name of this access service
+     * @param serverName  name of this server
+     * @param auditLog logging destination
+     */
+    public RepositoryErrorHandler(OMRSRepositoryHelper repositoryHelper,
+                                  String               serviceName,
+                                  String               serverName,
+                                  AuditLog             auditLog)
+    {
+        this.repositoryHelper = repositoryHelper;
+        this.serviceName = serviceName;
+        this.serverName = serverName;
+        this.auditLog = auditLog;
     }
 
     /**
@@ -418,14 +440,48 @@ public class RepositoryErrorHandler
     public void handleRepositoryError(Throwable  error,
                                       String     methodName) throws PropertyServerException
     {
+        final String localMethodName = "handleRepositoryError";
+
+        handleRepositoryError(error, methodName, localMethodName);
+    }
+
+
+    /**
+     * Throw an exception if an unexpected repository error is received
+     *
+     * @param error  caught exception
+     * @param methodName  name of the method making the call.
+     *
+     * @throws PropertyServerException unexpected exception from property server
+     */
+    public void handleRepositoryError(Throwable  error,
+                                      String     methodName,
+                                      String     localMethodName) throws PropertyServerException
+    {
+        if (auditLog != null)
+        {
+            auditLog.logException(methodName,
+                                  RepositoryHandlerAuditCode.PROPERTY_SERVER_ERROR.getMessageDefinition(error.getMessage(),
+                                                                                                        methodName,
+                                                                                                        serviceName,
+                                                                                                        serverName,
+                                                                                                        error.getClass().getName(),
+                                                                                                        localMethodName),
+                                  error);
+        }
+
         throw new PropertyServerException(RepositoryHandlerErrorCode.PROPERTY_SERVER_ERROR.getMessageDefinition(error.getMessage(),
                                                                                                                 methodName,
                                                                                                                 serviceName,
                                                                                                                 serverName,
-                                                                                                                error.getClass().getName()),
+                                                                                                                error.getClass().getName(),
+                                                                                                                localMethodName),
                                           this.getClass().getName(),
                                           methodName);
     }
+
+
+
 
 
     /**

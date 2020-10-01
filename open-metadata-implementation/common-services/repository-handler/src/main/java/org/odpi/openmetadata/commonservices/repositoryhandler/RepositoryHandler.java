@@ -74,6 +74,8 @@ public class RepositoryHandler
                                                                                                UserNotAuthorizedException,
                                                                                                PropertyServerException
     {
+        final String localMethodName = "validateEntityGUID";
+
         try
         {
             return metadataCollection.getEntitySummary(userId, guid);
@@ -92,7 +94,7 @@ public class RepositoryHandler
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
 
         return null;
@@ -138,7 +140,7 @@ public class RepositoryHandler
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
 
         return null;
@@ -359,6 +361,8 @@ public class RepositoryHandler
                                 String                  methodName) throws UserNotAuthorizedException,
                                                                            PropertyServerException
     {
+        final String localMethodName = "createEntity";
+
         try
         {
             EntityDetail newEntity;
@@ -397,7 +401,7 @@ public class RepositoryHandler
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
 
         return null;
@@ -552,6 +556,8 @@ public class RepositoryHandler
                                                                                            UserNotAuthorizedException,
                                                                                            PropertyServerException
     {
+        final String localMethodName = "updateEntityProperties";
+
         if (originalEntity != null)
         {
             errorHandler.validateProvenance(userId,
@@ -596,7 +602,7 @@ public class RepositoryHandler
             }
             catch (Throwable error)
             {
-                errorHandler.handleRepositoryError(error, methodName);
+                errorHandler.handleRepositoryError(error, methodName, localMethodName);
             }
         }
 
@@ -673,6 +679,8 @@ public class RepositoryHandler
                                                                                         UserNotAuthorizedException,
                                                                                         PropertyServerException
     {
+        final String localMethodName = "updateEntityClassifications";
+
         try
         {
             if ((entityClassifications == null) || (entityClassifications.isEmpty()))
@@ -796,7 +804,7 @@ public class RepositoryHandler
         }
         catch (Exception   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
     }
 
@@ -880,6 +888,8 @@ public class RepositoryHandler
                                        String                  methodName) throws UserNotAuthorizedException,
                                                                                   PropertyServerException
     {
+        final String localMethodName = "updateEntityProperties";
+
         errorHandler.validateProvenance(userId,
                                         entityHeader,
                                         entityHeader.getGUID(),
@@ -907,7 +917,7 @@ public class RepositoryHandler
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
     }
 
@@ -936,6 +946,8 @@ public class RepositoryHandler
                                       String                  methodName) throws UserNotAuthorizedException,
                                                                                  PropertyServerException
     {
+        final String localMethodName = "updateEntityStatus(deprecated)";
+
         try
         {
             EntityDetail newEntity = metadataCollection.updateEntityStatus(userId,
@@ -956,7 +968,7 @@ public class RepositoryHandler
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
     }
 
@@ -992,6 +1004,7 @@ public class RepositoryHandler
                                                                                  PropertyServerException
     {
         final String guidParameterName = "entityGUID";
+        final String localMethodName = "updateEntityStatus";
 
         EntityDetail entity = this.getEntityByGUID(userId, entityGUID, guidParameterName, entityTypeName, methodName);
 
@@ -1022,7 +1035,7 @@ public class RepositoryHandler
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
     }
 
@@ -1051,6 +1064,8 @@ public class RepositoryHandler
                                         String                  methodName) throws UserNotAuthorizedException,
                                                                                    PropertyServerException
     {
+        final String localMethodName = "updateEntity(deprecated)";
+
         try
         {
             EntityDetail newEntity = metadataCollection.updateEntityProperties(userId,
@@ -1073,7 +1088,7 @@ public class RepositoryHandler
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
 
         return null;
@@ -1103,6 +1118,8 @@ public class RepositoryHandler
                                           String                  methodName) throws UserNotAuthorizedException,
                                                                                      PropertyServerException
     {
+        final String localMethodName = "classifyEntity(deprecated)";
+
         try
         {
             EntityDetail newEntity = metadataCollection.classifyEntity(userId,
@@ -1129,7 +1146,7 @@ public class RepositoryHandler
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
 
         return null;
@@ -1166,6 +1183,8 @@ public class RepositoryHandler
                                           String                  methodName) throws UserNotAuthorizedException,
                                                                                      PropertyServerException
     {
+        final String localMethodName = "classifyEntity";
+
         try
         {
             EntityDetail newEntity = metadataCollection.classifyEntity(userId,
@@ -1196,7 +1215,7 @@ public class RepositoryHandler
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
 
         return null;
@@ -1230,6 +1249,8 @@ public class RepositoryHandler
                                     String                  methodName) throws UserNotAuthorizedException,
                                                                                PropertyServerException
     {
+        final String localMethodName = "reclassifyEntity";
+
         errorHandler.validateProvenance(userId,
                                         existingClassificationHeader,
                                         externalSourceGUID,
@@ -1258,7 +1279,7 @@ public class RepositoryHandler
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
     }
 
@@ -1288,10 +1309,12 @@ public class RepositoryHandler
                                     String                  methodName) throws UserNotAuthorizedException,
                                                                                PropertyServerException
     {
+        final String localMethodName = "declassifyEntity";
+
         errorHandler.validateProvenance(userId,
                                         existingClassificationHeader,
+                                        entityGUID,
                                         externalSourceGUID,
-                                        entityGUID + "(" + classificationTypeName + ")",
                                         externalSourceName,
                                         methodName);
         try
@@ -1315,7 +1338,7 @@ public class RepositoryHandler
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
     }
 
@@ -1347,6 +1370,7 @@ public class RepositoryHandler
                                                                   PropertyServerException
     {
         final String guidParameterName = "obsoleteEntityGUID";
+        final String localMethodName   = "removeEntity(deprecated)";
 
         try
         {
@@ -1372,7 +1396,7 @@ public class RepositoryHandler
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
 
         try
@@ -1385,7 +1409,7 @@ public class RepositoryHandler
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
     }
 
@@ -1424,6 +1448,8 @@ public class RepositoryHandler
                                                                  UserNotAuthorizedException,
                                                                  PropertyServerException
     {
+        final String localMethodName = "removeEntity";
+
         try
         {
             EntityDetail obsoleteEntity = this.getEntityByGUID(userId,
@@ -1462,7 +1488,7 @@ public class RepositoryHandler
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
     }
 
@@ -1494,6 +1520,8 @@ public class RepositoryHandler
                                                                 UserNotAuthorizedException,
                                                                 PropertyServerException
     {
+        final String localMethodName = "removeEntityOnLastUse";
+
         try
         {
             List<Relationship> relationships = metadataCollection.getRelationshipsForEntity(userId,
@@ -1516,12 +1544,18 @@ public class RepositoryHandler
                                             entityTypeName,
                                             methodName);
             }
-        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException error) {
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException error)
+        {
             errorHandler.handleUnknownEntity(error, obsoleteEntityGUID, entityTypeName, methodName, guidParameterName);
-        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error) {
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
+        {
             errorHandler.handleUnauthorizedUser(userId, methodName);
-        } catch (Throwable error) {
-            errorHandler.handleRepositoryError(error, methodName);
+        }
+        catch (Throwable error)
+        {
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
     }
 
@@ -1552,6 +1586,8 @@ public class RepositoryHandler
                                         String methodName) throws UserNotAuthorizedException,
                                                                   PropertyServerException
     {
+        final String localMethodName = "isolateAndRemoveEntity";
+
         this.removeAllRelationshipsOfType(userId,
                                           externalSourceGUID,
                                           externalSourceName,
@@ -1571,26 +1607,51 @@ public class RepositoryHandler
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
     }
 
+
+    /**
+     * Remove an entity from the open metadata repository after checking that is is not connected to
+     * anything else.  The repository handler helps to ensure that all relationships are deleted explicitly
+     * ensuring the events are created and making it easier for third party repositories to keep track of
+     * changes rather than have to implement the implied deletes from the logical graph.
+     *
+     * @param userId calling user
+     * @param obsoleteEntityGUID unique identifier of the entity
+     * @param entityTypeGUID type of entity to delete
+     * @param entityTypeName name of the entity's type
+     * @param methodName name of calling method
+     *
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    @Deprecated
     public void removeIsolatedEntity(String           userId,
                                      String           obsoleteEntityGUID,
                                      String           entityTypeGUID,
                                      String           entityTypeName,
                                      String           methodName) throws UserNotAuthorizedException,
-                                                                         PropertyServerException {
-        // Todo - validate that the entity is in fact isolated.
-        try {
-            try {
-                metadataCollection.deleteEntity(userId, entityTypeGUID, entityTypeName, obsoleteEntityGUID);
-            } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException error) {
-                this.purgeEntity(userId, obsoleteEntityGUID, entityTypeGUID, entityTypeName, methodName);
+                                                                         PropertyServerException
+    {
+        final String localMethodName = "removeIsolatedEntity";
 
+        // Todo - validate that the entity is in fact isolated.
+        try
+        {
+            try
+            {
+                metadataCollection.deleteEntity(userId, entityTypeGUID, entityTypeName, obsoleteEntityGUID);
             }
-        } catch (Throwable error) {
-            errorHandler.handleRepositoryError(error, methodName);
+            catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException error)
+            {
+                this.purgeEntity(userId, obsoleteEntityGUID, entityTypeGUID, entityTypeName, methodName);
+            }
+        }
+        catch (Throwable error)
+        {
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
     }
 
@@ -1614,6 +1675,8 @@ public class RepositoryHandler
                              String           methodName) throws UserNotAuthorizedException,
                                                                  PropertyServerException
     {
+        final String localMethodName = "purgeEntity";
+
         try
         {
             metadataCollection.purgeEntity(userId, entityTypeGUID, entityTypeName, obsoleteEntityGUID);
@@ -1630,7 +1693,7 @@ public class RepositoryHandler
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
     }
 
@@ -1645,11 +1708,14 @@ public class RepositoryHandler
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public void  restoreEntity(String           userId,
+    @Deprecated
+    public void  restoreEntity(String userId,
                                String deletedEntityGUID,
                                String methodName) throws UserNotAuthorizedException,
                                                          PropertyServerException
     {
+        final String localMethodName = "restoreEntity(deprecated)";
+
         try
         {
             metadataCollection.restoreEntity(userId, deletedEntityGUID);
@@ -1660,57 +1726,53 @@ public class RepositoryHandler
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
     }
 
 
     /**
-     * Remove an entity attached to an starting entity. There should be only one instance
-     * of this relationship.
+     * Restore the requested entity to the state it was before it was deleted.
      *
-     * @param userId calling user
+     * @param userId unique identifier for requesting user.
      * @param externalSourceGUID unique identifier (guid) for the external source, or null for local.
      * @param externalSourceName unique name for the external source.
-     * @param startingEntityGUID unique identifier of the starting entity
-     * @param startingEntityTypeName name of starting entity's type
-     * @param startingRelationshipTypeGUID unique identifier for the relationship's type
-     * @param startingRelationshipTypeName unique name for the relationship's type
-     * @param attachedEntityTypeGUID unique identifier for the attached entity's type
-     * @param attachedEntityTypeName name of the attached entity's type
+     * @param deletedEntityGUID String unique identifier (guid) for the entity.
      * @param methodName name of calling method
      *
-     * @throws UserNotAuthorizedException user not authorized to issue this request.
-     * @throws PropertyServerException problem accessing the property server
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
      */
-    public void removeUniqueEntityTypeFromAnchor(String userId,
-                                                 String externalSourceGUID,
-                                                 String externalSourceName,
-                                                 String startingEntityGUID,
-                                                 String startingEntityTypeName,
-                                                 String startingRelationshipTypeGUID,
-                                                 String startingRelationshipTypeName,
-                                                 String attachedEntityTypeGUID,
-                                                 String attachedEntityTypeName,
-                                                 String methodName) throws UserNotAuthorizedException,
-                                                                           PropertyServerException
+    public void  restoreEntity(String userId,
+                               String externalSourceGUID,
+                               String externalSourceName,
+                               String deletedEntityGUID,
+                               String methodName) throws UserNotAuthorizedException,
+                                                         PropertyServerException
     {
-        EntityDetail entity = getEntityForRelationshipType(userId,
-                                                           startingEntityGUID,
-                                                           startingEntityTypeName,
-                                                           startingRelationshipTypeGUID,
-                                                           startingRelationshipTypeName,
-                                                           methodName);
+        final String localMethodName = "restoreEntity";
 
-        if (entity != null)
+        try
         {
-            this.isolateAndRemoveEntity(userId,
-                                        externalSourceGUID,
-                                        externalSourceName,
-                                        entity.getGUID(),
-                                        attachedEntityTypeGUID,
-                                        attachedEntityTypeName,
-                                        methodName);
+            EntityDetail entity = metadataCollection.restoreEntity(userId, deletedEntityGUID);
+
+            if (entity != null)
+            {
+                errorHandler.validateProvenance(userId,
+                                                entity,
+                                                deletedEntityGUID,
+                                                externalSourceGUID,
+                                                externalSourceName,
+                                                methodName);
+            }
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
+        {
+            errorHandler.handleUnauthorizedUser(userId, methodName);
+        }
+        catch (Throwable   error)
+        {
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
     }
 
@@ -1779,7 +1841,7 @@ public class RepositoryHandler
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
 
         return null;
@@ -1811,6 +1873,8 @@ public class RepositoryHandler
                                                              String                 methodName) throws UserNotAuthorizedException,
                                                                                                        PropertyServerException
     {
+        final String localMethodName = "getEntitiesForRelationshipType";
+
         List<EntityDetail> results = new ArrayList<>();
 
         try
@@ -1849,7 +1913,7 @@ public class RepositoryHandler
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
 
         if (results.isEmpty())
@@ -1883,6 +1947,8 @@ public class RepositoryHandler
                                                                String methodName) throws    UserNotAuthorizedException,
                                                                                             PropertyServerException
     {
+        final String localMethodName = "getEntitiesForClassificationType";
+
         try
         {
             List<EntityDetail> entitiesByClassification = metadataCollection.findEntitiesByClassification(userId,
@@ -1912,7 +1978,7 @@ public class RepositoryHandler
         }
         catch (Exception error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
 
         return new ArrayList<>();
@@ -1946,6 +2012,8 @@ public class RepositoryHandler
                                                             String                 methodName) throws UserNotAuthorizedException,
                                                                                                        PropertyServerException
     {
+        final String localMethodName = "getEntitiesForRelationshipEnd";
+
         List<EntityDetail> results = new ArrayList<>();
 
         try
@@ -1994,7 +2062,7 @@ public class RepositoryHandler
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
 
         if (results.isEmpty())
@@ -2288,6 +2356,8 @@ public class RepositoryHandler
                                                   String                 methodName) throws UserNotAuthorizedException,
                                                                                             PropertyServerException
     {
+        final String localMethodName = "getEntityForRelationship";
+
         try
         {
             return metadataCollection.getEntityDetail(userId, requiredEnd.getGUID());
@@ -2298,7 +2368,7 @@ public class RepositoryHandler
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
 
         return null;
@@ -2376,7 +2446,7 @@ public class RepositoryHandler
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
 
         return null;
@@ -2431,7 +2501,7 @@ public class RepositoryHandler
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
 
         return null;
@@ -2461,6 +2531,8 @@ public class RepositoryHandler
                                                                              UserNotAuthorizedException,
                                                                              PropertyServerException
     {
+        final String localMethodName = "isEntityATypeOf";
+
         try
         {
             EntityDetail entity = metadataCollection.getEntityDetail(userId, guid);
@@ -2481,12 +2553,11 @@ public class RepositoryHandler
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
 
         return false;
     }
-
 
 
     /**
@@ -2507,6 +2578,8 @@ public class RepositoryHandler
                                                String                 methodName) throws UserNotAuthorizedException,
                                                                                          PropertyServerException
     {
+        final String localMethodName = "getEntityByName";
+
         try
         {
             return metadataCollection.findEntitiesByProperty(userId,
@@ -2527,7 +2600,7 @@ public class RepositoryHandler
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
 
         return null;
@@ -2556,6 +2629,8 @@ public class RepositoryHandler
                                                  String                 methodName) throws UserNotAuthorizedException,
                                                                                            PropertyServerException
     {
+        final String localMethodName = "getEntitiesByName";
+
         try
         {
             return metadataCollection.findEntitiesByProperty(userId,
@@ -2576,7 +2651,7 @@ public class RepositoryHandler
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
 
         return null;
@@ -2606,6 +2681,8 @@ public class RepositoryHandler
                                                           String                 methodName) throws UserNotAuthorizedException,
                                                                                                     PropertyServerException
     {
+        final String localMethodName = "getEntitiesByAllProperties";
+
         try
         {
             return metadataCollection.findEntitiesByProperty(userId,
@@ -2626,7 +2703,7 @@ public class RepositoryHandler
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
 
         return null;
@@ -2654,6 +2731,8 @@ public class RepositoryHandler
                                                                 String                 methodName) throws UserNotAuthorizedException,
                                                                                                           PropertyServerException
     {
+        final String localMethodName = "getEntitiesWithoutPropertyValues";
+
         try
         {
             return metadataCollection.findEntitiesByProperty(userId,
@@ -2674,7 +2753,7 @@ public class RepositoryHandler
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
 
         return null;
@@ -2703,6 +2782,8 @@ public class RepositoryHandler
                                                   String     methodName) throws UserNotAuthorizedException,
                                                                                 PropertyServerException
     {
+        final String localMethodName = "getEntitiesByValue";
+
         try
         {
             return metadataCollection.findEntitiesByPropertyValue(userId,
@@ -2722,7 +2803,7 @@ public class RepositoryHandler
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
 
         return null;
@@ -2762,6 +2843,7 @@ public class RepositoryHandler
                                                           String          methodName) throws UserNotAuthorizedException,
                                                                                              PropertyServerException
     {
+        final String localMethodName = "getEntitiesByPropertyValue";
         try
         {
             return metadataCollection.findEntitiesByPropertyValue(userId,
@@ -2781,7 +2863,7 @@ public class RepositoryHandler
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
 
         return null;
@@ -2812,6 +2894,8 @@ public class RepositoryHandler
                                                String                 methodName) throws UserNotAuthorizedException,
                                                                                          PropertyServerException
     {
+        final String localMethodName = "getUniqueEntityByName";
+
         try
         {
             List<EntityDetail> returnedEntities = metadataCollection.findEntitiesByProperty(userId,
@@ -2845,7 +2929,7 @@ public class RepositoryHandler
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
 
         return null;
@@ -2882,6 +2966,7 @@ public class RepositoryHandler
                                  methodName);
     }
 
+
     /**
      * Return the requested entities that match the requested type.
      *
@@ -2909,6 +2994,8 @@ public class RepositoryHandler
                                                 String          methodName) throws UserNotAuthorizedException,
                                                                                    PropertyServerException
     {
+        final String localMethodName = "getEntitiesByType";
+
         try
         {
             return metadataCollection.findEntitiesByProperty(userId,
@@ -2929,7 +3016,7 @@ public class RepositoryHandler
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
 
         return null;
@@ -2970,6 +3057,7 @@ public class RepositoryHandler
                                            methodName);
     }
 
+
     /**
      * Return the current version of a requested relationship.
      *
@@ -2987,6 +3075,8 @@ public class RepositoryHandler
                                               String                 methodName) throws UserNotAuthorizedException,
                                                                                         PropertyServerException
     {
+        final String localMethodName = "getRelationshipByGUID";
+
         try
         {
             return metadataCollection.getRelationship(userId, relationshipGUID);
@@ -2997,7 +3087,7 @@ public class RepositoryHandler
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
 
         return null;
@@ -3083,7 +3173,7 @@ public class RepositoryHandler
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
 
         return null;
@@ -3177,7 +3267,7 @@ public class RepositoryHandler
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
 
         return null;
@@ -3253,6 +3343,8 @@ public class RepositoryHandler
                                                              String                 methodName) throws UserNotAuthorizedException,
                                                                                                         PropertyServerException
     {
+        final String localMethodName = "getRequiredRelationshipsByType";
+
         try
         {
             List<Relationship> relationships = metadataCollection.getRelationshipsForEntity(userId,
@@ -3278,7 +3370,7 @@ public class RepositoryHandler
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
 
         return null;
@@ -3417,6 +3509,8 @@ public class RepositoryHandler
                                                           String methodName) throws UserNotAuthorizedException,
                                                                                     PropertyServerException
     {
+        final String localMethodName = "getPagedRelationshipsByType";
+
         try
         {
             List<Relationship> relationships = metadataCollection.getRelationshipsForEntity(userId,
@@ -3442,7 +3536,7 @@ public class RepositoryHandler
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
 
         return null;
@@ -3474,6 +3568,8 @@ public class RepositoryHandler
                                                     String                 methodName) throws UserNotAuthorizedException,
                                                                                               PropertyServerException
     {
+        final String localMethodName = "getUniqueRelationshipByType";
+
         try
         {
             List<Relationship> relationships = this.getRelationshipsByType(userId,
@@ -3505,7 +3601,7 @@ public class RepositoryHandler
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
 
         return null;
@@ -3540,6 +3636,8 @@ public class RepositoryHandler
                                                     String                 methodName) throws UserNotAuthorizedException,
                                                                                               PropertyServerException
     {
+        final String localMethodName = "getUniqueRelationshipByType";
+
         try
         {
             List<Relationship> relationships = this.getRelationshipsByType(userId,
@@ -3602,7 +3700,7 @@ public class RepositoryHandler
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
 
         return null;
@@ -3668,6 +3766,8 @@ public class RepositoryHandler
                                            String                  methodName) throws UserNotAuthorizedException,
                                                                                       PropertyServerException
     {
+        final String localMethodName = "createRelationship";
+
         try
         {
             if (externalSourceGUID == null)
@@ -3698,7 +3798,7 @@ public class RepositoryHandler
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
 
         return null;
@@ -3830,25 +3930,35 @@ public class RepositoryHandler
                                    String                  methodName) throws UserNotAuthorizedException,
                                                                               PropertyServerException
     {
-        try {
-            try {
+        final String localMethodName = "removeRelationship";
+
+        try
+        {
+            try
+            {
                 metadataCollection.deleteRelationship(userId,
-                        relationshipTypeGUID,
-                        relationshipTypeName,
-                        relationshipGUID);
-            } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException error) {
+                                                      relationshipTypeGUID,
+                                                      relationshipTypeName,
+                                                      relationshipGUID);
+            }
+            catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException error)
+            {
                 this.purgeRelationship(userId, relationshipTypeGUID, relationshipTypeName, relationshipGUID, methodName);
                 auditLog.logMessage(methodName,
-                        RepositoryHandlerAuditCode.RELATIONSHIP_PURGED.getMessageDefinition(relationshipGUID,
-                                relationshipTypeName,
-                                relationshipTypeGUID,
-                                methodName,
-                                metadataCollection.getMetadataCollectionId(userId)));
+                                    RepositoryHandlerAuditCode.RELATIONSHIP_PURGED.getMessageDefinition(relationshipGUID,
+                                                                                                        relationshipTypeName,
+                                                                                                        relationshipTypeGUID,
+                                                                                                        methodName,
+                                                                                                        metadataCollection.getMetadataCollectionId(userId)));
             }
-        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error) {
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
+        {
             errorHandler.handleUnauthorizedUser(userId, methodName);
-        } catch (Throwable error) {
-            errorHandler.handleRepositoryError(error, methodName);
+        }
+        catch (Throwable error)
+        {
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
     }
 
@@ -3879,6 +3989,7 @@ public class RepositoryHandler
                                                              PropertyServerException
     {
         final String localMethodName = "removeRelationship";
+
         try
         {
             Relationship relationship = metadataCollection.getRelationship(userId, relationshipGUID);
@@ -3900,7 +4011,7 @@ public class RepositoryHandler
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
     }
 
@@ -3928,6 +4039,8 @@ public class RepositoryHandler
                                     String       methodName) throws UserNotAuthorizedException,
                                                                     PropertyServerException
     {
+        final String localMethodName = "removeRelationship";
+
         errorHandler.validateProvenance(userId,
                                         relationship,
                                         relationship.getGUID(),
@@ -3956,7 +4069,7 @@ public class RepositoryHandler
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
     }
 
@@ -3980,6 +4093,8 @@ public class RepositoryHandler
                                   String methodName) throws UserNotAuthorizedException,
                                                                               PropertyServerException
     {
+        final String localMethodName = "purgeRelationship";
+
         try
         {
             metadataCollection.purgeRelationship(userId,
@@ -3993,9 +4108,10 @@ public class RepositoryHandler
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
     }
+
 
     /**
      * Restore the requested relationship to the state it was before it was deleted.
@@ -4007,11 +4123,14 @@ public class RepositoryHandler
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public void restoreRelationship(String           userId,
+    @Deprecated
+    public void restoreRelationship(String userId,
                                     String deletedRelationshipGUID,
                                     String methodName) throws UserNotAuthorizedException,
                                                               PropertyServerException
     {
+        final String localMethodName = "restoreRelationship(deprecated)";
+
         try
         {
             metadataCollection.restoreRelationship(userId, deletedRelationshipGUID);
@@ -4022,9 +4141,53 @@ public class RepositoryHandler
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
     }
+
+
+    /**
+     * Restore the requested relationship to the state it was before it was deleted.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param deletedRelationshipGUID String unique identifier (guid) for the relationship.
+     * @param methodName name of calling method
+     *
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void restoreRelationship(String userId,
+                                    String externalSourceGUID,
+                                    String externalSourceName,
+                                    String deletedRelationshipGUID,
+                                    String methodName) throws UserNotAuthorizedException,
+                                                              PropertyServerException
+    {
+        final String localMethodName = "restoreRelationship";
+
+        try
+        {
+            Relationship relationship = metadataCollection.restoreRelationship(userId, deletedRelationshipGUID);
+            if (relationship != null)
+            {
+                errorHandler.validateProvenance(userId,
+                                                relationship,
+                                                deletedRelationshipGUID,
+                                                externalSourceGUID,
+                                                externalSourceName,
+                                                methodName);
+            }
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
+        {
+            errorHandler.handleUnauthorizedUser(userId, methodName);
+        }
+        catch (Throwable   error)
+        {
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
+        }
+    }
+
 
     /**
      * Remove all relationships of a certain type starting at a particular entity.
@@ -4147,6 +4310,8 @@ public class RepositoryHandler
                                              String             methodName) throws UserNotAuthorizedException,
                                                                                    PropertyServerException
     {
+        final String localMethodName = "updateRelationshipProperties";
+
         /*
          * This avoids any unnecessary updates
          */
@@ -4176,7 +4341,7 @@ public class RepositoryHandler
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
     }
 
@@ -4200,6 +4365,8 @@ public class RepositoryHandler
                                              String                 methodName) throws UserNotAuthorizedException,
                                                                                        PropertyServerException
     {
+        final String localMethodName = "updateRelationshipProperties";
+
         try
         {
             metadataCollection.updateRelationshipProperties(userId,
@@ -4212,7 +4379,7 @@ public class RepositoryHandler
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
     }
 
@@ -4239,6 +4406,8 @@ public class RepositoryHandler
                                              String             methodName) throws UserNotAuthorizedException,
                                                                                    PropertyServerException
     {
+        final String localMethodName = "updateRelationshipProperties";
+
         try
         {
             Relationship relationship = metadataCollection.getRelationship(userId, relationshipGUID);
@@ -4258,13 +4427,13 @@ public class RepositoryHandler
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
     }
 
 
     /**
-     * Update the properties in the requested relationship.
+     * Update the status in the requested relationship.
      *
      * @param userId calling user
      * @param relationshipGUID unique identifier of the relationship.
@@ -4274,17 +4443,18 @@ public class RepositoryHandler
      * @throws PropertyServerException there is a problem communicating with the repository.
      * @throws UserNotAuthorizedException security access problem
      */
+    @Deprecated
     public void updateRelationshipStatus(String                 userId,
                                          String                 relationshipGUID,
                                          InstanceStatus         instanceStatus,
                                          String                 methodName) throws UserNotAuthorizedException,
                                                                                        PropertyServerException
     {
+        final String localMethodName = "updateRelationshipStatus(deprecated)";
+
         try
         {
-            metadataCollection.updateEntityStatus(userId,
-                                               relationshipGUID,
-                                               instanceStatus);
+            metadataCollection.updateRelationshipStatus(userId, relationshipGUID, instanceStatus);
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException  error)
         {
@@ -4292,9 +4462,55 @@ public class RepositoryHandler
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
     }
+
+
+    /**
+     * Update the status in the requested relationship.
+     *
+     * @param userId calling user
+     * @param relationshipGUID unique identifier of the relationship.
+     * @param instanceStatus new InstanceStatus for the entity.
+     * @param methodName name of calling method.
+     *
+     * @throws PropertyServerException there is a problem communicating with the repository.
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void updateRelationshipStatus(String         userId,
+                                         String         externalSourceGUID,
+                                         String         externalSourceName,
+                                         String         relationshipGUID,
+                                         InstanceStatus instanceStatus,
+                                         String         methodName) throws UserNotAuthorizedException,
+                                                                           PropertyServerException
+    {
+        final String localMethodName = "updateRelationshipStatus";
+
+        try
+        {
+            Relationship relationship = this.getRelationshipByGUID(userId, relationshipGUID, methodName);
+
+            errorHandler.validateProvenance(userId,
+                                            relationship,
+                                            relationshipGUID,
+                                            externalSourceGUID,
+                                            externalSourceName,
+                                            methodName);
+
+            metadataCollection.updateRelationshipStatus(userId, relationshipGUID, instanceStatus);
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException  error)
+        {
+            errorHandler.handleUnauthorizedUser(userId, methodName);
+        }
+        catch (Throwable   error)
+        {
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
+        }
+    }
+
 
 
     /**
@@ -4499,20 +4715,20 @@ public class RepositoryHandler
                                                Date                 asOfTime,
                                                int                  level,
                                                String               methodName) throws UserNotAuthorizedException,
-                PropertyServerException
+                                                                                       PropertyServerException
     {
+        final String localMethodName = "getEntityNeighborhood";
+
         try
         {
-            return metadataCollection.getEntityNeighborhood(
-                    userId,
-                    entityGUID,
-                    entityTypeGUIDs,
-                    relationshipTypeGUIDs,
-                    limitResultsByStatus,
-                    limitResultsByClassification,
-                    asOfTime,
-                    level
-            );
+            return metadataCollection.getEntityNeighborhood(userId,
+                                                            entityGUID,
+                                                            entityTypeGUIDs,
+                                                            relationshipTypeGUIDs,
+                                                            limitResultsByStatus,
+                                                            limitResultsByClassification,
+                                                            asOfTime,
+                                                            level);
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException  error)
         {
@@ -4520,10 +4736,12 @@ public class RepositoryHandler
         }
         catch (Throwable   error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
+
         return null;
     }
+
 
     /**
      * Return the metadata collection for the repository.  This is used by services that need function that is not
