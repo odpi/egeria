@@ -72,25 +72,20 @@ export default function ServerSelector() {
 
   // TODO update comments - there is no resourcesContext any more...
   /*
-   * Handler for change to server selector - the server eentries are really server instances
+   * Handler for change to server selector - the server entries are really server instances
    * and are keyed (in availableServers) by serverInstanceName, which is what is used to display them in the 
    * selector.
    */
   const serverSelected = (evt) => {
+
     let serverInstanceName = evt.target.value;
     /*
-     * When the server is selected need to ask resourcesContext to load it.
-     * The selector needs to pass to the resources context the real server name and the 
-     * the name of the platform on which to find it. These are both in the configured 
-     * server entry.
+     * When the server is selected Tex will retrieve the types for that server.
      */
     let serverInstance = availableServers[serverInstanceName];
     let serverName     = serverInstance.serverName;
     let platformName   = serverInstance.platformName;
-    //let description    = serverInstance.description;
 
-    // TODO add parameters to loadTypeInfo below....
-    
     /*
      *  ...this operation initiates the load of type information from the specified repository server
      */
@@ -106,42 +101,6 @@ export default function ServerSelector() {
     selector.blur();
   }
 
-  /*
-   * It's important to reset (clear) the selector if the focus changes to anything other than the selected
-   * option - including (and especially) if an option from a different selector is chosen. This is to ensure
-   * that if/when the user navigates back to this selector, if they click on the same (previously selected) 
-   * option then we will see it as a change. Otherwise the user action will be ignored and the focus will 
-   * not change.
-   */
- 
- //
- //  let selectorValue;
- // useEffect(
- //   () => {
- //     
- //     const focus = resourcesContext.focus;
- //   
- //     /*
- //     * If the focus is a server then ensure we track the current focus
- //      */
- //    if (focus.category === "server") {
- //       selectorValue = (focus.name === "") ? "none" : focus.name;
- //       const selector = document.getElementById("serverSelector");
- //       if (selector)
- //         selector.value = selectorValue;
- //     }
- //     else {
- //       /* 
- //        * If the focus is not a server we need to clear the server selector
- //        */
- //       selectorValue = "none";
- //       const selector = document.getElementById("serverSelector");
- //       if (selector)
- //         selector.value = selectorValue;
- //     }
- //   },
- //   [resourcesContext.focus]
- // )
  
   const serverNameList = Object.keys(availableServers);
   const serverNameListSorted = serverNameList.sort(function (a, b) {
@@ -153,9 +112,8 @@ export default function ServerSelector() {
   return (
     <div className="resource-controls">
 
-      <p>Direct Server Links</p>
+      <p>Select Server</p>
 
-      <label htmlFor="serverSelector">Servers: </label>
       <select className="server-selector"
               id="serverSelector"
               name="serverSelector"
