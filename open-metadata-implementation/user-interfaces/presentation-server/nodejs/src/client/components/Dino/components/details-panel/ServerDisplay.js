@@ -143,7 +143,7 @@ export default function ServerDisplay() {
     setIncAuditTrailOption(!incAuditTrailOption);
   }
 
-/* 
+  /* 
    * Always accept the operation name because operation name is needed even in the case where json is null
    */
   const reportFailedOperation = (operation, json) => {
