@@ -7,7 +7,7 @@ const getServerInfoFromEnv = () => {
   let modifiableServers = {};
   // capitals as Windows can be case sensitive.
   const env_prefix = "EGERIA_PRESENTATIONSERVER_SERVER_";
-  console.log(process.env);
+  // console.log(process.env);
 
   const env = process.env;
   

@@ -108,7 +108,6 @@ open-metadata-test/open-metadata-fvt/open-types-fvt/open-types-test/src/**
 # Ignore Presentation Server generated output and downloaded content
 open-metadata-implementation/user-interfaces/presentation-server/nodejs/dist/**
 open-metadata-implementation/user-interfaces/presentation-server/nodejs/node_modules/**
-open-metadata-implementation/user-interfaces/presentation-server/nodejs/package-lock.json
 open-metadata-implementation/user-interfaces/presentation-server/nodejs/.vscode
 open-metadata-implementation/user-interfaces/presentation-server/nodejs/*.log
 open-metadata-implementation/user-interfaces/presentation-server/nodejs/yarn.lock
@@ -118,13 +117,11 @@ open-metadata-implementation/user-interfaces/presentation-server/nodejs/.env
 open-metadata-implementation/user-interfaces/presentation-server/cra-client/node_modules
 open-metadata-implementation/user-interfaces/presentation-server/cra-client/.env
 open-metadata-implementation/user-interfaces/presentation-server/cra-client/build
-open-metadata-implementation/user-interfaces/presentation-server/cra-client/package-lock.json
 open-metadata-implementation/user-interfaces/presentation-server/cra-client/.vscode
 open-metadata-implementation/user-interfaces/presentation-server/cra-client/*.log
 open-metadata-implementation/user-interfaces/presentation-server/cra-client/yarn.lock
 open-metadata-implementation/user-interfaces/presentation-server/cra-server/node_modules
 open-metadata-implementation/user-interfaces/presentation-server/cra-server/.env
-open-metadata-implementation/user-interfaces/presentation-server/cra-server/package-lock.json
 open-metadata-implementation/user-interfaces/presentation-server/cra-server/.vscode
 open-metadata-implementation/user-interfaces/presentation-server/cra-server/*.log
 open-metadata-implementation/user-interfaces/presentation-server/cra-server/yarn.lock

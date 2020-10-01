@@ -20,7 +20,7 @@
  */
 const serverNameMiddleWare = (req, res, next) => {
 
-  console.log("before " + req.url);
+  // console.log("before " + req.url);
   const segmentArray = req.url.split("/");
   const segmentNumber = segmentArray.length;
 
@@ -33,7 +33,7 @@ const serverNameMiddleWare = (req, res, next) => {
       // TODO once we have development webpack, maybe the client should send a /js/ or a /static/ segment after the servername so we know to keep the subsequent segments.
 
       const lastSegment = segmentArray.slice(-1);
-      console.log("Last segment is " + lastSegment);
+      // console.log("Last segment is " + lastSegment);
       if (
         lastSegment == "bundle.js" ||
         lastSegment == "favicon.ico" ||
@@ -47,7 +47,7 @@ const serverNameMiddleWare = (req, res, next) => {
       req.query.serverName = segment1;
     }
   }
-  console.log("after " + req.url);
+  // console.log("after " + req.url);
   next();
 
 }

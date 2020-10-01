@@ -11,8 +11,8 @@ const passportConfiguration = (passport) => {
    */
   passport.use(
     new LocalStrategy(function (username, password, cb) {
-      console.log("username: " + username);
-      console.log("password: " + password);
+      // console.log("username: " + username);
+      // console.log("password: " + password);
       db.users.findByUsername(username, function (err, user) {
         if (err) {
           return cb(err);
@@ -35,7 +35,7 @@ const passportConfiguration = (passport) => {
   // serializing, and querying the user record by ID from the database when
   // deserializing.
   passport.serializeUser(function (user, cb) {
-    console.log("serializeUser called with user " + user);
+    // console.log("serializeUser called with user " + user);
     cb(null, user.id);
   });
   /**
