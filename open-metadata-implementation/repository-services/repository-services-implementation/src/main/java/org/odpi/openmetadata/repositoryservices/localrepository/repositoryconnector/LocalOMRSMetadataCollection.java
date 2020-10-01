@@ -6295,4 +6295,27 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                            homeMetadataCollectionId);
 
     }
+    
+    @Override
+    public void saveInstanceReferenceCopies(String          userId,
+            InstanceGraph   instances) throws InvalidParameterException,
+                                              RepositoryErrorException,
+                                              TypeErrorException,
+                                              EntityNotKnownException,
+                                              PropertyErrorException,
+                                              EntityConflictException,
+                                              RelationshipConflictException,
+                                              InvalidEntityException,
+                                              InvalidRelationshipException,
+                                              FunctionNotSupportedException,
+                                              UserNotAuthorizedException {
+        if (realMetadataCollection.isAutomicallySplitBatchMessages()) {
+            super.saveInstanceReferenceCopies(userId, instances);
+        }
+        else {
+            //delegate processing to the real metadata collection
+            realMetadataCollection.saveInstanceReferenceCopies(userId, instances);
+        }
+    }
+
 }
