@@ -18,6 +18,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.platformservices.client.PlatformServicesClient;
 
+import org.odpi.openmetadata.platformservices.rest.ServerStatusResponse;
 import org.odpi.openmetadata.platformservices.properties.ServerStatus;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogReport;
 import org.odpi.openmetadata.repositoryservices.clients.AuditLogServicesClient;
@@ -765,16 +766,16 @@ public class DinoViewHandler
                                                         serverName);
             }
             catch (OMAGNotAuthorizedException exc) {
-                    // Wrap the OMAG exception
-                    throw new UserNotAuthorizedException(exc,
-                                                         serverName);
+                // Wrap the OMAG exception
+                throw new UserNotAuthorizedException(exc,
+                                                     serverName);
             }
             catch (OMAGConfigurationErrorException exc) {
-                    // Wrap the OMAG exception
-                    throw new PropertyServerException(exc);
+                // Wrap the OMAG exception
+                throw new PropertyServerException(exc);
             }
 
-            // Fetch the server status (including history)
+            // Fetch the various aspects of server status (including history)
             ServerStatus serverStatus = platformServicesClient.getServerStatus(userId, serverName);
             serverOverview.setServerStatus(serverStatus);
 
