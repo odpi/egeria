@@ -6,11 +6,8 @@ import React, { createContext, useContext, useState }   from "react";
 
 import PropTypes                                        from "prop-types";
 
-//import { RepositoryServerContext }                      from "./RepositoryServerContext";
-
 import { RequestContext }                               from "./RequestContext";
 
-import { IdentificationContext }                        from "../../../contexts/IdentificationContext";
 
 
 export const TypesContext = createContext();
@@ -21,11 +18,9 @@ export const TypesContextConsumer = TypesContext.Consumer;
 
 const TypesContextProvider = (props) => {
 
-  //const repositoryServerContext    = useContext(RepositoryServerContext);
-
   const requestContext    = useContext(RequestContext);
 
-  const identificationContext    = useContext(IdentificationContext);
+
 
   /*
    * tex object is initially empty
@@ -41,27 +36,45 @@ const TypesContextProvider = (props) => {
   const loadTypeInfo = (serverName,platformName ) => {
 
     requestContext.callPOST("server", serverName,  "types", 
-    { serverName : serverName, platformName : platformName, enterpriseOption : false }, _loadTypeInfo);
-         // TODO - need to manage enterpriseOption properly - currently hard coded to false.
+    { serverName : serverName, platformName : platformName, enterpriseOption : requestContext.enterpriseOption }, _loadTypeInfo);
+         // TODO - check this handles enterpriseOption properly - currently setting/getting in requestContext.
   };
 
   const _loadTypeInfo = (json) => {
     
     if (json !== null) {
-      let typeExplorer = json.typeExplorer;
-      if (typeExplorer !== null) {
-        setTex(typeExplorer);
-        return;
+      if (json.relatedHTTPCode === 200 ) {
+        let typeExplorer = json.typeExplorer;
+        if (typeExplorer !== null) {
+          setTex(typeExplorer);
+          return;
+        }
       }
     }   
     /*
      * On failure ...     
      */
-    alert("Could not get types from repository server");
+    //alert("Could not get types from repository server");
+    reportFailedOperation("loadTypeInfo",json);
   }
   
         
-
+/* 
+   * Always accept the operation name because operation name is needed even in the case where json is null
+   */
+  const reportFailedOperation = (operation, json) => {
+    if (json !== null) {      
+      const relatedHTTPCode = json.relatedHTTPCode;
+      const exceptionMessage = json.exceptionErrorMessage;
+      /*
+       * TODO - could be changed to cross-UI means of user notification... for now rely on alerts
+       */
+      alert("Operation "+operation+" failed with status "+relatedHTTPCode+" and message "+exceptionMessage);
+    }
+    else {
+      alert("Operation "+operation+" did not get a response from the view server");
+    }
+  }
 
 
   /*

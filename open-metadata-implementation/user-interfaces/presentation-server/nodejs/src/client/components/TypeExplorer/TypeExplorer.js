@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
-import React, {useEffect, useRef, useState}     from "react";
+import React, {useEffect, useRef, useState, useContext}     from "react";
 
 /* 
  * Import the DEFAULT export from the InteractionContext module - which is actually the InteractionContextProvider
@@ -29,6 +29,7 @@ import FocusContextProvider            from "./contexts/FocusContext";
 
 import ServerSelector                           from "./components/resource-selection/ServerSelector";
 
+import EnterpriseControl                           from "./components/resource-selection/EnterpriseControl";
 
 import FocusControls                   from "./components/focus-controls/FocusControls";
 
@@ -42,11 +43,14 @@ import QuestionMarkImage                        from "./question-mark-32.png";
 
 import ReadmeMarkdown                           from './README.md';
 
+
 import "./tex.scss";
 
 
 
 export default function TypeExplorer() {
+
+  
 
   const containerDiv = useRef();
 
@@ -58,6 +62,8 @@ export default function TypeExplorer() {
 
   const [readme, setReadme]             = useState( { markdown : '' } );
   const [readmeStatus, setReadmeStatus] = useState("idle");
+
+  
 
   let workingHeight = cltHeight - 50;
   let workingWidth  = cltWidth - 265;
@@ -91,6 +97,7 @@ export default function TypeExplorer() {
     setReadmeStatus("idle");
   };
 
+  
   /*
    * useEffect to set size of container... 
    */
@@ -141,6 +148,9 @@ export default function TypeExplorer() {
                                      readme              = { readme }
                                      onCancel            = { cancelReadmeModal }
                                      onSubmit            = { submitReadmeModal } />
+
+                    <EnterpriseControl/>
+                 
                   </div>
 
                   <div className="tex-top-left">

@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 
 
-import React, { createContext, useContext } from "react";
+import React, { createContext, useContext, useState } from "react";
 
 import PropTypes                                      from "prop-types";
 
@@ -28,8 +28,16 @@ const RequestContextProvider = (props) => {
 
   
   const identificationContext = useContext(IdentificationContext);
+
+  const [enterpriseOption, setEnterpriseOption] = useState(false);  
   
-  
+  /*
+   * Handler for change to enterprise option checkbox
+   */
+  const updateEnterpriseOption = () => {
+    setEnterpriseOption(!enterpriseOption);
+  }
+
 
   /*
    * Define the basic body parameters that are common to requests to the platform or server
@@ -147,7 +155,9 @@ const RequestContextProvider = (props) => {
       value={{
         callPOST,
         callGET,
-        buildBaseBody
+        buildBaseBody,
+        updateEnterpriseOption,
+        enterpriseOption
       }}
     >      
     {props.children}
