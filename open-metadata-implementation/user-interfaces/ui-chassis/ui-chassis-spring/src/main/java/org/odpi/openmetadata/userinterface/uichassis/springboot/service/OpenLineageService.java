@@ -36,6 +36,8 @@ public class OpenLineageService {
 
     public static final String EDGES_LABEL = "edges";
     public static final String NODES_LABEL = "nodes";
+    private static final String TABULAR_COLUMN = "TabularColumn";
+    private static final String TABULAR_SCHEMA_TYPE = "TabularSchemaType";
     private final OpenLineageClient openLineageClient;
     private static final Logger LOG = LoggerFactory.getLogger(OpenLineageService.class);
 
@@ -110,7 +112,7 @@ public class OpenLineageService {
      * @param includeProcesses if true includes processes in the response
      * @return map of nodes and edges describing the glossary terms linked to the asset
      */
-    public Map<String, List> getGlossaryLineage(String userId,
+    public Map<String, List> getVerticalLineage(String userId,
                                                 String guid,
                                                 boolean includeProcesses) {
         try {
@@ -179,6 +181,9 @@ public class OpenLineageService {
             setNodesLevel(startList, new ArrayList<>(nodes), new ArrayList<>(edges));
         }
 
+        if (isQueriedNodeTabularColumn(guid, nodes)) {
+            adjustGraphForTabularColumn(edges, nodes);
+        }
         graphData.put(EDGES_LABEL, edges);
         graphData.put(NODES_LABEL, nodes);
 
@@ -248,4 +253,46 @@ public class OpenLineageService {
         node.setProperties(currentNode.getProperties());
         return node;
     }
+
+    private boolean isQueriedNodeTabularColumn(String guid, List<Node> nodes) {
+        return nodes.stream().anyMatch(node -> node.getId().equals(guid) && node.getGroup().equals(TABULAR_COLUMN));
+    }
+
+    /**
+    * For vertical lineage the TabularSchemaType node should be removed when querying a TabularColumn
+     * so the relationship appears between the TabularColumn and DataFile
+     *
+     * @param edges the edges of the graph
+     * @param nodes nodes of the graph
+    * */
+    private void adjustGraphForTabularColumn(List<Edge> edges, List<Node> nodes) {
+        List<Edge> edgesToRemove = new ArrayList<>();
+        List<Node> nodesToRemove = new ArrayList<>();
+        for (Node node : nodes) {
+            if (node.getGroup().equals(TABULAR_SCHEMA_TYPE)) {
+                nodesToRemove.add(node);
+                String newFrom = "";
+                List<String> newTo = new ArrayList<>();
+                for (Edge edge : edges) {
+                    if (edge.getTo().equals(node.getId())) {
+                        edgesToRemove.add(edge);
+                        newFrom = edge.getFrom();
+                    }
+                }
+                for (Edge edge : edges) {
+                    if (edge.getFrom().equals(node.getId())) {
+                        edgesToRemove.add(edge);
+                        newTo.add(edge.getTo());
+                    }
+                }
+                for (String newTos : newTo) {
+                    edges.add(new Edge(newFrom, newTos));
+                }
+
+            }
+        }
+        nodes.removeAll(nodesToRemove);
+        edges.removeAll(edgesToRemove);
+    }
+
 }

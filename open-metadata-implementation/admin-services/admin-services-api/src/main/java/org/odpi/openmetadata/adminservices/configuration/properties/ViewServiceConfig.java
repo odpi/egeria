@@ -87,6 +87,7 @@ public class ViewServiceConfig extends OMAGServerClientConfig
     {
         this.viewServiceId = viewRegistration.getViewServiceCode();
         this.viewServiceName = viewRegistration.getViewServiceName();
+        this.viewServiceFullName = viewRegistration.getViewServiceFullName();
         this.viewServiceURLMarker = viewRegistration.getViewServiceURLMarker();
         this.viewServiceAdminClass = viewRegistration.getViewServiceAdminClassName();
         this.viewServiceDescription = viewRegistration.getViewServiceDescription();

@@ -38,7 +38,7 @@ public class GlossaryFVT {
 
     public GlossaryFVT(String url, String serverName, String userId) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         SubjectAreaRestClient client = new SubjectAreaRestClient(serverName, url);
-        subjectAreaGlossary = new SubjectAreaGlossaryClient(client);
+        subjectAreaGlossary = new SubjectAreaGlossaryClient<>(client);
         this.serverName = serverName;
         this.userId = userId;
         createdGlossariesSet = new HashSet<>();
@@ -51,7 +51,7 @@ public class GlossaryFVT {
         runIt(url, FVTConstants.SERVER_NAME2, FVTConstants.USERID);
     }
 
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         try {
             String url = RunAllFVTOn2Servers.getUrl(args);
             runWith2Servers(url);
