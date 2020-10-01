@@ -90,6 +90,15 @@ export default function ServerSelector() {
     
   }
 
+  /*
+   * Enable user to click on the same server again...
+   */
+  const selectorFocus = (evt) => {
+    let selector = evt.target;
+    selector.selectedIndex = -1;
+    selector.blur();
+  }
+
 
   /*
    * It's important to reset (clear) the selector if the focus changes to anything other than the selected
@@ -139,7 +148,12 @@ export default function ServerSelector() {
       <p>Direct Server Links</p>
 
       <label htmlFor="serverSelector">Servers: </label>
-      <select className="server-selector" id="serverSelector" name="serverSelector"  onChange = { serverSelected }  size = "5" >
+      <select className="server-selector"
+              id="serverSelector"
+              name="serverSelector"
+              onChange = { serverSelected }
+              onFocus= { selectorFocus }  // Enable re-click of same entry in selector
+              size = "5" >
         {
           serverNameListSorted.length === 0 && 
           ( <option value="dummy" disabled defaultValue>No servers yet - please add one!</option> )
