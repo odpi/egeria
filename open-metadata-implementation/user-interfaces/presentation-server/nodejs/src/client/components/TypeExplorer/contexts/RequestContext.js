@@ -110,7 +110,7 @@ const RequestContextProvider = (props) => {
 
 
   /* 
-   * This method wil GET from the view service appending the supplied URI to a multi-tenant URL.
+   * This method will GET from the view service appending the supplied URI to a multi-tenant URL.
    * It should be called with the tail portion of the URI. This is only used for a light-weight 
    * GET operations and there are no operation-specific body parameters. These could be added if
    * needed.

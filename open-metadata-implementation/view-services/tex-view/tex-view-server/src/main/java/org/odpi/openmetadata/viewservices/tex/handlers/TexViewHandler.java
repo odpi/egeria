@@ -172,7 +172,7 @@ public class TexViewHandler
      * @return resolved platform URL Root
      * @throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException
      */
-    private String resolvePlatformRootURL(String platformName, String methodName) throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException
+    private String resolvePlatformRootURL(String platformName, String methodName) throws InvalidParameterException
 
     {
         String platformRootURL = null;
@@ -184,10 +184,10 @@ public class TexViewHandler
             }
         }
         if (platformName == null || platformRootURL == null) {
-            throw new org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException(OMAGCommonErrorCode.VIEW_SERVICE_NULL_PLATFORM_NAME.getMessageDefinition(),
-                                                                                                 this.getClass().getName(),
-                                                                                                 methodName,
-                                                                                                 "platformName");
+            throw new InvalidParameterException(OMAGCommonErrorCode.VIEW_SERVICE_NULL_PLATFORM_NAME.getMessageDefinition(),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                "platformName");
         }
 
         return platformRootURL;
@@ -208,7 +208,7 @@ public class TexViewHandler
      * Retrieve type information from the repository server
      * @param userId  userId under which the request is performed
      * @param repositoryServerName The name of the repository server to interrogate
-     * @param repositoryServerRootURL The URL root of the repository server to interrogate
+     * @param platformName The name of the platform running the repository server to interrogate
      * @param enterpriseOption Whether the query is at cohort level or server specific
      * @param methodName The name of the method being invoked
      * @return response containing the TypeExplorer object.
@@ -222,7 +222,7 @@ public class TexViewHandler
      */
     public TypeExplorer getTypeExplorer(String    userId,
                                         String    repositoryServerName,
-                                        String    repositoryServerRootURL,
+                                        String    platformName,
                                         boolean   enterpriseOption,
                                         String    methodName)
     throws
@@ -231,6 +231,8 @@ public class TexViewHandler
         UserNotAuthorizedException
 
     {
+
+        String platformRootURL = resolvePlatformRootURL(platformName, methodName);
 
         try {
 
@@ -241,9 +243,9 @@ public class TexViewHandler
             MetadataCollectionServicesClient repositoryServicesClient;
 
             if (!enterpriseOption) {
-                repositoryServicesClient = this.getLocalRepositoryServicesClient(repositoryServerName, repositoryServerRootURL);
+                repositoryServicesClient = this.getLocalRepositoryServicesClient(repositoryServerName, platformRootURL);
             } else {
-                repositoryServicesClient = this.getEnterpriseRepositoryServicesClient(repositoryServerName, repositoryServerRootURL);
+                repositoryServicesClient = this.getEnterpriseRepositoryServicesClient(repositoryServerName, platformRootURL);
             }
 
             TypeExplorer tex = new TypeExplorer();
@@ -366,5 +368,8 @@ public class TexViewHandler
 
         return client;
     }
+
+
+
 
 }

@@ -86,6 +86,7 @@ public class TexViewRESTServices {
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
 
         return response;
+
     }
 
 
@@ -112,6 +113,10 @@ public class TexViewRESTServices {
 
         TypeExplorerResponse response = new TypeExplorerResponse();
 
+        // The serverName parameter to the RequestSummary is the target server not the server running the VS
+        //RequestSummary request = new RequestSummary(requestBody.getPlatformName(), null, methodName);
+        //response.setRequestSummary(request);
+
         AuditLog auditLog = null;
 
         try {
@@ -122,7 +127,7 @@ public class TexViewRESTServices {
 
                 response.setTypeExplorer(handler.getTypeExplorer(userId,
                                                                  requestBody.getServerName(),
-                                                                 requestBody.getServerRootURL(),
+                                                                 requestBody.getPlatformName(),
                                                                  requestBody.getEnterpriseOption(),
                                                                  methodName));
             }
@@ -141,6 +146,7 @@ public class TexViewRESTServices {
         restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
+
     }
 
 

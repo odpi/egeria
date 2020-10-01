@@ -40,9 +40,9 @@ const TypesContextProvider = (props) => {
    */
   const loadTypeInfo = (serverName,platformName ) => {
 
-    requestContext.callPOST("types", serverName,  "server/"+serverName, 
-    { serverName : serverName, platformName : platformName }, _loadTypeInfo);
-
+    requestContext.callPOST("server", serverName,  "types", 
+    { serverName : serverName, platformName : platformName, enterpriseOption : false }, _loadTypeInfo);
+         // TODO - need to manage enterpriseOption properly - currently hard coded to false.
   };
 
   const _loadTypeInfo = (json) => {
