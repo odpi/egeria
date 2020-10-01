@@ -131,7 +131,8 @@ public enum RepositoryHandlerErrorCode implements ExceptionMessageSet
             "This may be a logic error or a configuration error (such as the cohort does not contain the correct members.  Look for errors in the " +
                                                     "server's audit log and console to understand and correct the source of any error."),
     PROPERTY_SERVER_ERROR(500, "OMAG-REPOSITORY-HANDLER-500-001",
-                          "An unexpected error was returned by the metadata server during {1} request for open metadata access service {2} on server {3}; message was {0}",
+                          "An unexpected error {4} was returned by the metadata server during {1} request for open metadata access service {2} on " +
+                                  "server {3}; message was {0}",
                           "The system is unable to process the request because of an internal error.",
                           "Verify the sanity of the server.  This is probably a logic error.  If you can not work out what happened, ask the ODPi Egeria community for help."),
     ;

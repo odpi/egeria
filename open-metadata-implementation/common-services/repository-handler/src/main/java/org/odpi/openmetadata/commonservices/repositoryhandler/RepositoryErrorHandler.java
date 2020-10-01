@@ -421,7 +421,8 @@ public class RepositoryErrorHandler
         throw new PropertyServerException(RepositoryHandlerErrorCode.PROPERTY_SERVER_ERROR.getMessageDefinition(error.getMessage(),
                                                                                                                 methodName,
                                                                                                                 serviceName,
-                                                                                                                serverName),
+                                                                                                                serverName,
+                                                                                                                error.getClass().getName()),
                                           this.getClass().getName(),
                                           methodName);
     }

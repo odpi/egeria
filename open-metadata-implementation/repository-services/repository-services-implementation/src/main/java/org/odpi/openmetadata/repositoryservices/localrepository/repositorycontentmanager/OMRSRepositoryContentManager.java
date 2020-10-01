@@ -521,41 +521,59 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
     {
         final String methodName = "isTypeOf";
 
-        log.debug("IsTypeOf: sourceName = " + sourceName + "; actualTypeName = " + actualTypeName + "; expectedTypeName = " + expectedTypeName);
+        log.debug("isTypeOf: sourceName = " + sourceName + "; actualTypeName = " + actualTypeName + "; expectedTypeName = " + expectedTypeName);
 
-        if ((expectedTypeName != null) && (actualTypeName != null))
+        if (expectedTypeName == null)
         {
             /*
-             * Do the obvious first.
+             * If the expected type name is null, it means that any type is allowed.
              */
-            if (actualTypeName.equals(expectedTypeName))
-            {
-                log.debug("Simple match success");
-                return true;
-            }
+            return true;
+        }
 
-            /*
-             * Looking for a match in the superTypes.
-             */
-            List<TypeDefLink>   typeHierarchy = this.getSuperTypes(sourceName, actualTypeName, methodName);
+        /*
+         * If the actual type is null then the object retrieved is a bit weird.  It is treated as not
+         * matching on type.
+         */
+        if (actualTypeName == null)
+        {
+            return false;
+        }
 
-            if (typeHierarchy != null)
+        /*
+         * Do the obvious first.
+         */
+        if (actualTypeName.equals(expectedTypeName))
+        {
+            log.debug("Simple match success");
+            return true;
+        }
+
+        /*
+         * Looking for a match in the superTypes.
+         */
+        List<TypeDefLink>   typeHierarchy = this.getSuperTypes(sourceName, actualTypeName, methodName);
+
+        if (typeHierarchy != null)
+        {
+            for (TypeDefLink superType : typeHierarchy)
             {
-                for (TypeDefLink superType : typeHierarchy)
+                if (superType != null)
                 {
-                    if (superType != null)
+                    if (expectedTypeName.equals(superType.getName()))
                     {
-                        if (expectedTypeName.equals(superType.getName()))
-                        {
-                            log.debug("SuperType match success");
-                            return true;
-                        }
-                        log.debug("No match with " + superType.getName());
+                        log.debug("SuperType match success");
+                        return true;
                     }
+
+                    log.debug("No match with " + superType.getName());
                 }
             }
         }
 
+        /*
+         * No match found
+         */
         return false;
     }
 
@@ -579,35 +597,51 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
 
         log.debug("IsTypeOfByGUID: sourceName = " + sourceName + "; actualTypeName = " + actualTypeName + "; expectedTypeGUID = " + expectedTypeGUID);
 
-        if ((expectedTypeGUID != null) && (actualTypeGUID != null))
+        if (expectedTypeGUID == null)
         {
             /*
-             * Do the obvious first.
+             * If the expected type GUID is null, it means that any type is allowed.
              */
-            if (actualTypeGUID.equals(expectedTypeGUID))
-            {
-                log.debug("Simple match success");
-                return true;
-            }
+            log.debug("Any type will do");
+            return true;
+        }
 
-            /*
-             * Looking for a match in the superTypes.
-             */
-           List<TypeDefLink>   typeHierarchy = this.getSuperTypes(sourceName, actualTypeName, methodName);
+        /*
+         * If the actual type is null then the object retrieved is a bit weird.  It is treated as not
+         * matching on type.
+         */
+        if (actualTypeGUID == null)
+        {
+            log.debug("No type to test against");
+            return false;
+        }
 
-            if (typeHierarchy != null)
+        /*
+         * Do the obvious first.
+         */
+        if (actualTypeGUID.equals(expectedTypeGUID))
+        {
+            log.debug("Simple match success");
+            return true;
+        }
+
+        /*
+         * Looking for a match in the superTypes.
+         */
+       List<TypeDefLink>   typeHierarchy = this.getSuperTypes(sourceName, actualTypeName, methodName);
+
+        if (typeHierarchy != null)
+        {
+            for (TypeDefLink superType : typeHierarchy)
             {
-                for (TypeDefLink superType : typeHierarchy)
+                if (superType != null)
                 {
-                    if (superType != null)
+                    if (expectedTypeGUID.equals(superType.getGUID()))
                     {
-                        if (expectedTypeGUID.equals(superType.getGUID()))
-                        {
-                            log.debug("SuperType match success");
-                            return true;
-                        }
-                        log.debug("No match with " + superType.getGUID());
+                        log.debug("SuperType match success");
+                        return true;
                     }
+                    log.debug("No match with " + superType.getGUID());
                 }
             }
         }
