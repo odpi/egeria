@@ -2269,6 +2269,13 @@
             </dependency>
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
+                <artifactId>open-metadata-assemblies</artifactId>
+                <version>${open-metadata.version}</version>
+                <type>pom</type>
+                <classifier>presentation-server</classifier>
+            </dependency>
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
                 <artifactId>open-metadata-labs</artifactId>
                 <version>${open-metadata.version}</version>
             </dependency>

@@ -112,15 +112,28 @@ services:
         depends_on:
             - datalake
         image: '${egeria_repo}/egeria:${egeria_version}'
-        command: /bin/bash -c "java -jar /opt/egeria/user-interface/ui-chassis-spring-${egeria_version}.jar"
         environment:
             - OMAS_SERVER_URL=https://datalake:9443
             - OMAS_SERVER_NAME=cocoMDS4
             - OPEN_LINEAGE_SERVER_URL=https://datalake:9443
             - OPEN_LINEAGE_SERVER_NAME=open-lineage
             - OPEN_LINEAGE_GRAPH_SOURCE=MAIN
+            - JAVA_APP_JAR=user-interface/ui-chassis-spring-${egeria_version}.jar
         ports:
             - '18443:8443'
+        networks:
+            cocopharma:
+        env_file:
+            - '.env'
+
+    presentation:
+        depends_on:
+            - datalake
+        image: '${egeria_repo}/egeria-presentation-server:${egeria_version}'
+        environment:
+          - EGERIA_PRESENTATIONSERVER_SERVER_coco={"remoteServerName":"cocoView1","remoteURL":"https://datalake:9443"}
+        ports:
+            - '18091:8091'
         networks:
             cocopharma:
         env_file:
