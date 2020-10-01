@@ -49,7 +49,7 @@ export default function DiagramManager(props) {
     let diagram;
 
     if (typesContext.getEntityTypes() === null) {
-        diagram = <p>Diagrams appear here once server details are set...</p>
+        diagram = <p>Diagrams appear here when server has been selected...</p>
     }
     else {
       switch (selectedDiagram) {
