@@ -73,7 +73,7 @@ spec:
           resources: {}
           env:
             - name: EGERIA_PRESENTATIONSERVER_SERVER_coco
-              value: "{\"remoteServerName\":\"cocoView1\",\"remoteURL\":\"https://{{ include "myapp.name" . }}-datalake:9443\"}"
+              value: "{\"remoteServerName\":\"cocoView1\",\"remoteURL\":\"https://{{ .Release.Name }}-datalake:9443\"}"
       restartPolicy: Always
 
 status: {}
