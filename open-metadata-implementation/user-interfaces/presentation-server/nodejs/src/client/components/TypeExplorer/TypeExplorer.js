@@ -124,7 +124,6 @@ export default function TypeExplorer() {
   )
 
 
-  
 
   return (
 
