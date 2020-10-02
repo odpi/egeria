@@ -296,7 +296,7 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
 
         if ((incomingEventsList != null) && (!incomingEventsList.isEmpty()))
         {
-            log.debug("Checking for events.  Number of found events: {0}", incomingEventsList.size());
+            log.debug("Checking for events.  Number of found events: {}", incomingEventsList.size());
             newEvents = new ArrayList<>(incomingEventsList);
 
             // empty incomingEventsList otherwise same events will be sent again
@@ -460,7 +460,5 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
 
             return lastException;
         }
-
-
     }
 }
