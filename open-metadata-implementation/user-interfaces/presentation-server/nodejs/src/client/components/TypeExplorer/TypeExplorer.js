@@ -1,41 +1,41 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
-import React, {useEffect, useRef, useState, useContext}     from "react";
+import React, {useEffect, useRef, useState}     from "react";
 
 /* 
  * Import the DEFAULT export from the InteractionContext module - which is actually the InteractionContextProvider
  * Naming it explicitly for clarity that this is the provider not the context.
  */
-import InteractionContextProvider      from "./contexts/InteractionContext";
+import InteractionContextProvider               from "./contexts/InteractionContext";
 
 /* 
  * Import the DEFAULT export from the RequestContext module - which is actually the RequestContextProvider
  * Naming it explicitly for clarity that this is the provider not the context.
  */
-import RequestContextProvider          from "./contexts/RequestContext";
+import RequestContextProvider                   from "./contexts/RequestContext";
 
 /* 
  * Import the DEFAULT export from the TypesContext module - which is actually the TypesContextProvider
  * Naming it explicitly for clarity that this is the provider not the context.
  */
-import TypesContextProvider            from "./contexts/TypesContext";
+import TypesContextProvider                     from "./contexts/TypesContext";
 
 /* 
  * Import the DEFAULT export from the FocusContext module - which is actually the FocusContextProvider
  * Naming it explicitly for clarity that this is the provider not the context.
  */
-import FocusContextProvider            from "./contexts/FocusContext";
+import FocusContextProvider                     from "./contexts/FocusContext";
 
 import ServerSelector                           from "./components/resource-selection/ServerSelector";
 
-import EnterpriseControl                           from "./components/resource-selection/EnterpriseControl";
+import EnterpriseControl                        from "./components/resource-selection/EnterpriseControl";
 
-import FocusControls                   from "./components/focus-controls/FocusControls";
+import FocusControls                            from "./components/focus-controls/FocusControls";
 
-import DetailsPanel                    from "./components/details-panel/DetailsPanel";
+import DetailsPanel                             from "./components/details-panel/DetailsPanel";
 
-import DiagramManager                  from "./components/diagram/DiagramManager";
+import DiagramManager                           from "./components/diagram/DiagramManager";
 
 import ReadmeHandler                            from "./ReadmeHandler";
 
