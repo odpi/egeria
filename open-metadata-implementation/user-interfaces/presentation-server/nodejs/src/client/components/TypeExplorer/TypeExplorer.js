@@ -177,7 +177,6 @@ export default function TypeExplorer() {
 
               </FocusContextProvider>
             </TypesContextProvider>
-     
           </RequestContextProvider>
       </InteractionContextProvider>
     </div>
