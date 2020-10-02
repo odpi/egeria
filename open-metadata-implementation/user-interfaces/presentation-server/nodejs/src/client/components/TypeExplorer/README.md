@@ -3,7 +3,6 @@
 The Type Explorer (Tex) interface provides a way to explore the Egeria type system. It can be used to retrieve the types supported by a chosen server. The type information is then displayed both textually (on the left side) and diagrammatically (on the right side) with a choice of diagrams. One of the diagrams shows the entity inheritance tree and the other diagram shows the types of relationships that an entity type supports.
 
 ![Tex Interface](image1)
-TODO replace image
 
 ### Deployment
 The Tex interface runs under the Presentation Server component of Egeria, and it uses the Type Explorer (Tex) View Service in order to retrieve the information you ask for. For details of the Presentation Server and View Server please refer to their readme information.
@@ -70,10 +69,8 @@ There are two diagrams, one that shows the entity inheritance hierarchy and anot
 The entity inheritance diagram is shown as a set of expandable/collapsible trees. There are multiple trees because not all entity types inherit from a common root. The entity inheritance diagram will be displayed as soon as the server's types have been retrieved, as it does not require that an entity type is chosen as the focus type. The user can select an entity type to focus (by clicking in the diagram or from the type selector) to see the details of that type and highlight it in the diagram.
 
 ![Inheritance Diagram](image2)
-TODO replace image
 
 The other diagram is the neighborhood diagram, which is displayed as a radial plot showing the types of relationship that the focus entity type supports. The user needs to have selected a focus entity type in order for the neighborhood diagram to be displayed. For each supported relationship type shownb in the neighborhood diagram, the entity type of the neighboring entity is shown (at the outer end of the radial plot). The user can select any of the entity or relationship types in the neighborhood diagram to change the focus to that type see more details about it.
 
 ![Neighborhood Diagram](image3)
-TODO replace image
 

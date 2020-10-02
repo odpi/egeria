@@ -37,7 +37,6 @@ const TypesContextProvider = (props) => {
 
     requestContext.callPOST("server", serverName,  "types", 
     { serverName : serverName, platformName : platformName, enterpriseOption : requestContext.enterpriseOption }, _loadTypeInfo);
-         // TODO - check this handles enterpriseOption properly - currently setting/getting in requestContext.
   };
 
   const _loadTypeInfo = (json) => {
@@ -54,7 +53,6 @@ const TypesContextProvider = (props) => {
     /*
      * On failure ...     
      */
-    //alert("Could not get types from repository server");
     reportFailedOperation("loadTypeInfo",json);
   }
   

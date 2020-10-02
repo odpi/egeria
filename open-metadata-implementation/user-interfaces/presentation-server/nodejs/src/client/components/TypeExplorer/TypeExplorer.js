@@ -117,7 +117,7 @@ export default function TypeExplorer() {
     */
   useEffect(
     () => {
-      // Get the content of the markdown file and save it in 'readme'.
+      /* Get the content of the markdown file and save it in 'readme' */
       fetch(ReadmeMarkdown).then(res => res.text()).then(text => setReadme({ markdown: text }));
     }, 
     [] /* run effect once only */

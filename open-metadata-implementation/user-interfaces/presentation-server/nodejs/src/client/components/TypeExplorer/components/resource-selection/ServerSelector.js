@@ -70,7 +70,6 @@ export default function ServerSelector() {
     getServers();
   }
 
-  // TODO update comments - there is no resourcesContext any more...
   /*
    * Handler for change to server selector - the server entries are really server instances
    * and are keyed (in availableServers) by serverInstanceName, which is what is used to display them in the 

@@ -42,7 +42,7 @@ export default function ReadmeHandler(props) {
     props.onSubmit();
   }
 
-  const tranformImageURI = (uri) => {
+  const transformImageURI = (uri) => {
     return imageRefs[uri];
   }
 
@@ -83,7 +83,7 @@ export default function ReadmeHandler(props) {
       let resultsDisplay = (         
 
         <div>
-          <ReactMarkdown source={readme.markdown} transformImageUri={tranformImageURI}/>
+          <ReactMarkdown source={readme.markdown} transformImageUri={transformImageURI}/>
         </div>
       );
 
@@ -93,7 +93,7 @@ export default function ReadmeHandler(props) {
         <div className="dialog-text">
           
           <p  className="dialog-text">
-          README for Egeria Dino user interface:
+          README for Egeria Tex user interface:
           </p>    
    
           <hr></hr>
