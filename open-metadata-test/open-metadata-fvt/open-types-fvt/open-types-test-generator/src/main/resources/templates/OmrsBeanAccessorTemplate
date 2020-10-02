@@ -27,7 +27,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 // omrs bean entity specific imports
 <$$$
 import org.odpi.openmetadata.fvt.opentypes.entities.<$$uEntityName$$>.<$$uEntityName$$>;
-import org.odpi.openmetadata.fvt.opentypes.entities.<$$uEntityName$$>.<$$uEntityName$$>References;
 import org.odpi.openmetadata.fvt.opentypes.entities.<$$uEntityName$$>.<$$uEntityName$$>Mapper;
 $$$>
 // omrs bean relationships specific imports
