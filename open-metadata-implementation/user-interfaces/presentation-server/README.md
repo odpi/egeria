@@ -40,7 +40,7 @@ There are 2 types of capabilities exposed in the Presentation Server.
  serverName.
 * The value of the environment variable is a json payload with 2 named properties
     * `remoteServerName` the remote view server name.
-    * `remoteURL` the server root url for the view server. 
+    * `remoteURL` the platform root url for the view server. 
 * An example of the environment variable you would specify for a UI tenant with server name `aaa` with a remote server name
 `  cocoView1` and remote URL of `https://localhost:9443 ` is
  ` EGERIA_PRESENTATIONSERVER_SERVER_aaa={"remoteServerName":"cocoView1","remoteURL":"https://localhost:9443"}`
@@ -56,7 +56,7 @@ There are 2 types of capabilities exposed in the Presentation Server.
 
 ## Access UI using the browser. 
  * Enter 'https://localhost:8091/<tenant-name>/login' on the UI to access the tenanted UI (<tenant-name> is the serverName used by the presentation server). The Ui will prompt for a login; some of the 
- Coco Pharmaceutical personnas have been enabled here - use user 'faith' and password 'admin'. If there is an environment variable :
+ Coco Pharmaceutical personnas have been enabled here - use user 'faithbroker' and password 'admin'. If there is an environment variable :
   ` EGERIA_PRESENTATIONSERVER_SERVER_aaa={"remoteServerName":"cocoView1","remoteURL":"https://localhost:9443"}`
   then the browser url to use to login is `https://localhost:8091/aaa`. All browser requests for this tenant will be issued using urls starting
   `https://localhost:8091/aaa`. 
@@ -69,7 +69,7 @@ There are 2 types of capabilities exposed in the Presentation Server.
  * The current latest client code is in the client folder.
  * The new work is being developed in the cra-client directory and may contain out of date Presentation Server source code. 
 
-## There is ongoing work to enhance the ability to easily run the new services in a demo environment
+## There is ongoing work to enable easy running of the new Presentation Server and view services in a demo environment
  * The Coco Pharmaceuticals 'lab' tutorial environment will now configure the view services, and allow a user to experiment with the Presentation Server
  * The 'egeria-server-config' notebook has code added to configure the view services - so once this & egeria-server-start is run, Presentation Server is available.
  * The Presentation Server code is built under maven (mvn clean install) & added to a new assembly (open-metadata-distribution/open-metadata-assemblies) as part of the overall build.
