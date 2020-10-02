@@ -54,7 +54,6 @@ export default function DiagramManager(props) {
     else {
       switch (selectedDiagram) {
         case "Entity Inheritance":
-          //diagram = <div>EntityInheritance Diagram will be drawn here</div>
           diagram = <EntityInheritanceDiagram outerHeight={height} outerWidth={width}/>
           break;
         case "Neighborhood":

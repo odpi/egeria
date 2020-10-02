@@ -141,7 +141,7 @@ public class TexViewAdmin extends ViewServiceAdmin {
                                   error);
 
             super.throwUnexpectedInitializationException(actionDescription,
-                                                         ViewServiceDescription.DINO.getViewServiceFullName(),
+                                                         ViewServiceDescription.TYPE_EXPLORER.getViewServiceFullName(),
                                                          error);
         }
 
@@ -190,7 +190,7 @@ public class TexViewAdmin extends ViewServiceAdmin {
             try {
 
                 /*
-                 * Dino cannot operate without any endpoints.
+                 * Tex cannot operate without any endpoints.
                  * Check if resourceEndpoints is null and if so throw am exception, which will be caught and logged by logBadConfigProperties, which will throw OMAGConfigurationErrorException...
                  */
                 if (resourceEndpoints == null) {
