@@ -404,13 +404,15 @@ public class OmrsBeanGenerator {
             outputFileWriter = new FileWriter(topReferenceFileName);
             reader = new BufferedReader(new FileReader(TOP_REFERENCE_TEMPLATE));
             String line = reader.readLine();
-            while (line != null) {
-                Map<String, String> replacementMap = new HashMap<>();
-                replacementMap.put("package", ENTITIES + "." + entityName);
-                replacementMap.put("name", org.odpi.openmetadata.fvt.opentypes.utils.GeneratorUtilities.lowercase1stLetter(entityName));
-                replacementMap.put("uname", GeneratorUtilities.uppercase1stLetter(entityName));
-                writeTopReferenceAttributesToFile(omrsBeanAttributes, replacementMap, outputFileWriter, reader, line);
-                line = reader.readLine();
+            if (omrsBeanAttributes !=null && omrsBeanAttributes.size() > 0) {
+                while (line != null) {
+                    Map<String, String> replacementMap = new HashMap<>();
+                    replacementMap.put("package", ENTITIES + "." + entityName);
+                    replacementMap.put("name", org.odpi.openmetadata.fvt.opentypes.utils.GeneratorUtilities.lowercase1stLetter(entityName));
+                    replacementMap.put("uname", GeneratorUtilities.uppercase1stLetter(entityName));
+                    writeTopReferenceAttributesToFile(omrsBeanAttributes, replacementMap, outputFileWriter, reader, line);
+                    line = reader.readLine();
+                }
             }
         } finally {
             closeReaderAndFileWriter(outputFileWriter, reader);

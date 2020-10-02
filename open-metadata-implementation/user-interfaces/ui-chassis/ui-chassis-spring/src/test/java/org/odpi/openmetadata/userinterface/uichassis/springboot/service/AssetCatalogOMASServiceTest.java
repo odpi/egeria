@@ -53,7 +53,7 @@ class AssetCatalogOMASServiceTest {
 
     @Test
     @DisplayName("Asset Details")
-    void testGetAssetDetails() throws PropertyServerException, org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException {
+    void testGetAssetDetails() throws PropertyServerException, InvalidParameterException {
         AssetDescriptionResponse expectedResponse = mockAssetDescriptionResponse();
         when(assetCatalog.getAssetDetails(anyString(), anyString(), anyString())).thenReturn(expectedResponse);
         AssetDescription response = assetCatalogOMASService.getAssetDetails(user, assetId, typeDef);
@@ -62,7 +62,7 @@ class AssetCatalogOMASServiceTest {
 
     @Test
     @DisplayName("Asset Universe")
-    void testGetAssetUniverse() throws PropertyServerException, org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException {
+    void testGetAssetUniverse() throws PropertyServerException, InvalidParameterException {
         AssetDescriptionResponse expectedResponse = mockAssetDescriptionResponse();
         when(assetCatalog.getAssetUniverse(anyString(), anyString(), anyString())).thenReturn(expectedResponse);
         AssetDescription response = assetCatalogOMASService.getAssetUniverse(user, assetId, typeDef);
@@ -80,7 +80,7 @@ class AssetCatalogOMASServiceTest {
 
     @Test
     @DisplayName("Asset Classification")
-    void testGetClassificationForAsset() throws PropertyServerException, org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException {
+    void testGetClassificationForAsset() throws PropertyServerException, InvalidParameterException {
         ClassificationListResponse expectedResponse = mockClassificationsResponse();
         when(assetCatalog.getClassificationsForAsset(anyString(), anyString(), anyString(), anyString())).thenReturn(expectedResponse);
         List<Classification> resultList = assetCatalogOMASService.getClassificationsForAsset(user, assetId, typeDef, CONFIDENTIALITY);
