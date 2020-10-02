@@ -11,6 +11,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperti
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectorTypeProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryeventmapper.OMRSRepositoryEventMapperConnector;
 import org.odpi.openmetadata.repositoryservices.eventmanagement.OMRSRepositoryEventExchangeRule;
@@ -36,6 +37,7 @@ public class LocalOMRSConnectorProvider extends ConnectorProvider
     private LocalOMRSRepositoryConnector       localRepositoryConnector        = null;
     private ConnectorTypeProperties            connectorTypeProperties         = null;
     private ConnectorType                      connectorType                   = null;
+    private final boolean                      enableBulkInstanceGraphProcessing;
 
 
     /**
@@ -49,13 +51,16 @@ public class LocalOMRSConnectorProvider extends ConnectorProvider
      * @param outboundRepositoryEventManager event manager to call for outbound events.
      * @param repositoryContentManager repositoryContentManager for supporting OMRS in managing TypeDefs.
      * @param saveExchangeRule rule to determine what events to save to the local repository.
+     * @param enableBulkInstanceGraphProcessing whether or not to allow the {@link OMRSMetadataCollection}
+     *          to process the instance graph as a whole
      */
     public LocalOMRSConnectorProvider(String                             localMetadataCollectionId,
                                       Connection                         localRepositoryRemoteConnection,
                                       OMRSRepositoryEventMapperConnector realEventMapper,
                                       OMRSRepositoryEventManager         outboundRepositoryEventManager,
                                       OMRSRepositoryContentManager       repositoryContentManager,
-                                      OMRSRepositoryEventExchangeRule    saveExchangeRule)
+                                      OMRSRepositoryEventExchangeRule    saveExchangeRule,
+                                      boolean enableBulkInstanceGraphProcessing)
     {
         this.localMetadataCollectionId = localMetadataCollectionId;
         this.localRepositoryRemoteConnection = localRepositoryRemoteConnection;
@@ -63,6 +68,7 @@ public class LocalOMRSConnectorProvider extends ConnectorProvider
         this.outboundRepositoryEventManager = outboundRepositoryEventManager;
         this.repositoryContentManager = repositoryContentManager;
         this.saveExchangeRule = saveExchangeRule;
+        this.enableBulkInstanceGraphProcessing = enableBulkInstanceGraphProcessing;
     }
 
 
@@ -72,6 +78,7 @@ public class LocalOMRSConnectorProvider extends ConnectorProvider
      */
     public LocalOMRSConnectorProvider()
     {
+        this.enableBulkInstanceGraphProcessing = false;
     }
 
 
@@ -178,7 +185,8 @@ public class LocalOMRSConnectorProvider extends ConnectorProvider
                                                                         realEventMapper,
                                                                         outboundRepositoryEventManager,
                                                                         repositoryContentManager,
-                                                                        saveExchangeRule);
+                                                                        saveExchangeRule,
+                                                                        enableBulkInstanceGraphProcessing);
             localRepositoryConnector.initialize(this.getNewConnectorGUID(),
                                                 new ConnectionProperties(localRepositoryRemoteConnection));
         }

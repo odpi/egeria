@@ -2895,20 +2895,4 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
             }
         }
     }
-    
-    /**
-     * Whether or not batch messages should automatically be split
-     * up into their component EntityDetails and References.
-     * 
-     * If this returns true, {@link #saveInstanceReferenceCopies(String, InstanceGraph)}
-     * will never be called, and instead {@link #saveEntityReferenceCopy(String, EntityDetail)}
-     * and {@link #saveRelationshipReferenceCopy(String, Relationship)} will
-     * be called with the individual {@link EntityDetail} and {@link Relationship}
-     * instances from the {@link InstanceGraph}
-     * 
-     * @return
-     */
-    public boolean isAutomicallySplitBatchMessages() {
-        return true;
-    }
 }
