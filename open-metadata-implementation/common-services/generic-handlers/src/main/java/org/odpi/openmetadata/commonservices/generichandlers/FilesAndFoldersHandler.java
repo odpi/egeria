@@ -1162,7 +1162,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
 
             if (fileSystemGUID == null)
             {
-                fileSystemGUID = fileSystemHandler.createFileSystem(userId,
+                fileSystemGUID = fileSystemHandler.createFileSystem(localServerUserId,
                                                                     externalSourceGUID,
                                                                     externalSourceName,
                                                                     fileSystemName,
