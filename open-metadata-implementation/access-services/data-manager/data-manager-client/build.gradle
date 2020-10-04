@@ -7,6 +7,7 @@
 dependencies {
     implementation project(':open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-api')
     implementation project(':open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-client')
+    implementation project(':open-metadata-implementation:repository-services:repository-services-api')
     implementation project(':open-metadata-implementation:common-services:ffdc-services')
     implementation project(':open-metadata-implementation:access-services:data-manager:data-manager-api')
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
