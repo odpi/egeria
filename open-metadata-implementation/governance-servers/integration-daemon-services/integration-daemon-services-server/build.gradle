@@ -14,7 +14,7 @@ dependencies {
     implementation project(':open-metadata-implementation:common-services:multi-tenant')
     implementation project(':open-metadata-implementation:integration-services:catalog-integrator:catalog-integrator-server')
     implementation project(':open-metadata-implementation:integration-services:database-integrator:database-integrator-server')
-    implementation project(':open-metadata-implementation:integration-services:files-integrator:catalog-files-server')
+    implementation project(':open-metadata-implementation:integration-services:files-integrator:files-integrator-server')
     implementation project(':open-metadata-implementation:integration-services:organization-integrator:organization-integrator-server')
     implementation 'org.slf4j:slf4j-api:1.7.30'
     implementation 'com.fasterxml.jackson.core:jackson-annotations:2.11.1'
