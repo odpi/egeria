@@ -23,7 +23,7 @@ public abstract class OpenMetadataConformanceWorkbenchWorkPad
     protected String              tutType;
     protected int                 maxPageSize;
 
-    protected Boolean             workbenchComplete;
+    protected boolean             workbenchComplete;
 
     protected List<OpenMetadataConformanceTestEvidence>  testEvidenceList = new ArrayList<>();
 

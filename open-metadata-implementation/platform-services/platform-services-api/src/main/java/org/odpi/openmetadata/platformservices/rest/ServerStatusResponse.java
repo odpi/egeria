@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
 import org.odpi.openmetadata.platformservices.properties.OMAGServerInstanceHistory;
-import org.odpi.openmetadata.platformservices.properties.ServerStatus;
 
 import java.util.*;
 
@@ -24,7 +23,11 @@ public class ServerStatusResponse extends FFDCResponseBase
 {
     private static final long    serialVersionUID = 1L;
 
-    ServerStatus serverStatus = null;
+    private String                          serverName      = null;
+    private boolean                         isActive        = true;
+    private Date                            serverStartTime = null;
+    private Date                            serverEndTime   = null;
+    private List<OMAGServerInstanceHistory> serverHistory   = null;
 
 
     /**
@@ -47,31 +50,132 @@ public class ServerStatusResponse extends FFDCResponseBase
 
         if (template != null)
         {
-            serverStatus = template.getServerStatus();
+            serverName = template.getServerName();
+            isActive = template.isActive();
+            serverStartTime = template.getServerStartTime();
+            serverEndTime = template.getServerEndTime();
+            serverHistory = template.getServerHistory();
         }
     }
 
-
     /**
-     * Return the status of the server
+     * Return the name of the server where the services are running.
      *
-     * @return name of server
+     * @return name of server		      * @return name of server
      */
-    public ServerStatus getServerStatus()
+    public String getServerName()
     {
-        return serverStatus;
+        return serverName;
     }
 
 
     /**
-     * Set the status of the server
+     * Set up the name of the server where the services are running.
      *
-     * @param serverStatus of server
+     * @param serverName name of server
      */
-    public void setServerStatus(ServerStatus serverStatus)
+    public void setServerName(String serverName)
     {
-        this.serverStatus = serverStatus;
+        this.serverName = serverName;
     }
+
+
+    /**
+     * Is the server instance currently running?
+     *
+     * @return boolean
+     */
+    public boolean isActive()
+    {
+        return isActive;
+    }
+
+
+    /**
+     * Set up whether the server is currently running.
+     *
+     * @param active boolean
+     */
+    public void setActive(boolean active)
+    {
+        isActive = active;
+    }
+
+    /**
+     * Return the time that the server last started.
+     *
+     * @return date/time
+     */
+    public Date getServerStartTime()
+    {
+        return serverStartTime;
+    }
+
+
+    /**
+     * Set up the time that the server last started.
+     *
+     * @param serverStartTime date/time
+     */
+    public void setServerStartTime(Date serverStartTime)
+    {
+        this.serverStartTime = serverStartTime;
+    }
+
+
+    /**
+     * Return the time that the server last ended - it is null if the server is currently active.
+     *
+     * @return date/time or null
+     */
+    public Date getServerEndTime()
+    {
+        return serverEndTime;
+    }
+
+
+    /**
+     * Set up the time that the server last ended - it is null if the server is currently active.
+     *
+     * @param serverEndTime date/time
+     */
+    public void setServerEndTime(Date serverEndTime)
+    {
+        this.serverEndTime = serverEndTime;
+    }
+
+
+    /**
+     * Return the list of start and stop times for the previous restarts of the server.
+     *
+     * @return server history
+     */
+    public List<OMAGServerInstanceHistory> getServerHistory()
+    {
+        if (serverHistory == null)
+        {
+            return null;
+        }
+        else if (serverHistory.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return new ArrayList<>(serverHistory);
+        }
+    }
+
+    /**
+     * Set up the list of start and stop times for the previous restarts of the server.
+     *
+     * @param serverHistory server history
+     */
+    public void setServerHistory(List<OMAGServerInstanceHistory> serverHistory)
+    {
+        this.serverHistory = serverHistory;
+    }
+
 
 
     /**
@@ -83,7 +187,11 @@ public class ServerStatusResponse extends FFDCResponseBase
     public String toString()
     {
         return "ServerStatusResponse{" +
-                "serverStatus='" + serverStatus + '\'' +
+                "serverName='" + serverName + '\'' +
+                ", isActive=" + isActive +
+                ", serverStartTime=" + serverStartTime +
+                ", serverEndTime=" + serverEndTime +
+                ", serverHistory=" + serverHistory +
                 ", relatedHTTPCode=" + getRelatedHTTPCode() +
                 ", exceptionClassName='" + getExceptionClassName() + '\'' +
                 ", exceptionErrorMessage='" + getExceptionErrorMessage() + '\'' +
@@ -116,7 +224,12 @@ public class ServerStatusResponse extends FFDCResponseBase
             return false;
         }
         ServerStatusResponse that = (ServerStatusResponse) objectToCompare;
-        return getServerStatus() == that.getServerStatus() ;
+        return isActive() == that.isActive() &&
+              Objects.equals(getServerName(), that.getServerName()) &&
+              Objects.equals(getServerStartTime(), that.getServerStartTime()) &&
+              Objects.equals(getServerEndTime(), that.getServerEndTime()) &&
+              Objects.equals(getServerHistory(), that.getServerHistory());
+
     }
 
 
@@ -128,6 +241,6 @@ public class ServerStatusResponse extends FFDCResponseBase
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getServerStatus());
+        return Objects.hash(super.hashCode(), getServerName(), isActive(), getServerStartTime(), getServerEndTime(), getServerHistory());
     }
 }
