@@ -30,6 +30,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>asset-consumer-fvt</module>
+        <module>data-manager-fvt</module>
         <module>subject-area-fvt</module>
     </modules>
 

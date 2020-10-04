@@ -1,0 +1,27 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright Contributors to the ODPi Egeria project.
+ */
+
+
+dependencies {
+    implementation project(':open-metadata-implementation:access-services:data-manager:data-manager-api')
+    implementation project(':open-metadata-implementation:access-services:data-manager:data-manager-client')
+    implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
+    implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
+    implementation project(':open-metadata-implementation:repository-services:repository-services-apis')
+    implementation project(':open-metadata-implementation:admin-services:admin-services-api')
+    implementation project(':open-metadata-test:open-metadata-fvt:access-services-fvt:fvt-utilities')
+    testImplementation project(':open-metadata-distribution:open-metadata-assemblies')
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.2'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.11.1'
+    testCompile("org.junit.jupiter:junit-jupiter-params:5.4.2")
+
+
+}
+
+description = 'Data Manager OMAS FVT'
+
+java {
+    withJavadocJar()
+}
