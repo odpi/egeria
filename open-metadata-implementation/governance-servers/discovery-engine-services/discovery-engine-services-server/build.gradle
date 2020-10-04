@@ -17,6 +17,7 @@ dependencies {
     implementation project(':open-metadata-implementation:governance-servers:discovery-engine-services:discovery-engine-services-api')
     implementation project(':open-metadata-implementation:common-services:multi-tenant')
     implementation project(':open-metadata-implementation:adapters:open-connectors:discovery-service-connectors')
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.11.1'
 }
 
 description = 'Discovery Engine Services Server-side'
