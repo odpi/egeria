@@ -451,6 +451,33 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
      * @param methodName calling method
      * @throws UserNotAuthorizedException the authorization check failed
      */
+    protected void throwUnauthorizedAssetCreate(String   userId,
+                                                Asset    asset,
+                                                String   methodName) throws UserNotAuthorizedException
+    {
+        if (auditLog != null)
+        {
+            auditLog.logMessage(methodName,
+                                OpenMetadataSecurityAuditCode.UNAUTHORIZED_ASSET_CREATE.getMessageDefinition(userId, asset.getTypeName()));
+        }
+
+        throw new UserNotAuthorizedException(OpenMetadataSecurityErrorCode.UNAUTHORIZED_ASSET_CREATE.getMessageDefinition(userId,
+                                                                                                                          asset.getTypeName()),
+                                             this.getClass().getName(),
+                                             methodName,
+                                             userId);
+    }
+
+
+    /**
+     * Write an audit log message and throw exception to record an
+     * unauthorized access.
+     *
+     * @param userId calling user
+     * @param asset asset being accessed
+     * @param methodName calling method
+     * @throws UserNotAuthorizedException the authorization check failed
+     */
     protected void throwIncompleteAsset(String   userId,
                                         Asset    asset,
                                         String   methodName) throws UserNotAuthorizedException
@@ -910,7 +937,7 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
     {
         final String  methodName = "validateUserForAssetCreate";
 
-        throwUnauthorizedAssetChange(userId, asset, methodName);
+        throwUnauthorizedAssetCreate(userId, asset, methodName);
     }
 
 
