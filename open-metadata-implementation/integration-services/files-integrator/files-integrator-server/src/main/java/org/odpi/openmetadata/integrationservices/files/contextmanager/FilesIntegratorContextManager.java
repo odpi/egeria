@@ -6,7 +6,7 @@ package org.odpi.openmetadata.integrationservices.files.contextmanager;
 import org.odpi.openmetadata.accessservices.datamanager.client.DataManagerEventClient;
 import org.odpi.openmetadata.accessservices.datamanager.client.FilesAndFoldersClient;
 import org.odpi.openmetadata.accessservices.datamanager.client.MetadataSourceClient;
-import org.odpi.openmetadata.accessservices.datamanager.client.DataManagerRESTClient;
+import org.odpi.openmetadata.accessservices.datamanager.client.rest.DataManagerRESTClient;
 import org.odpi.openmetadata.accessservices.datamanager.properties.FileSystemProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;

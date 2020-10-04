@@ -6,7 +6,7 @@ package org.odpi.openmetadata.integrationservices.database.contextmanager;
 import org.odpi.openmetadata.accessservices.datamanager.client.DatabaseManagerClient;
 import org.odpi.openmetadata.accessservices.datamanager.client.DataManagerEventClient;
 import org.odpi.openmetadata.accessservices.datamanager.client.MetadataSourceClient;
-import org.odpi.openmetadata.accessservices.datamanager.client.DataManagerRESTClient;
+import org.odpi.openmetadata.accessservices.datamanager.client.rest.DataManagerRESTClient;
 import org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseManagerProperties;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
