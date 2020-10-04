@@ -7578,7 +7578,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                           methodName);
             }
 
-            if (attachingElementAnchorEntity != null)
+            if ((attachingElementAnchorEntity != null) && (! attachingElementAnchorEntity.getGUID().equals(startingElementAnchorEntity.getGUID())))
             {
                 int latestChangeTarget = OpenMetadataAPIMapper.ATTACHMENT_RELATIONSHIP_LATEST_CHANGE_TARGET_ORDINAL;
 
