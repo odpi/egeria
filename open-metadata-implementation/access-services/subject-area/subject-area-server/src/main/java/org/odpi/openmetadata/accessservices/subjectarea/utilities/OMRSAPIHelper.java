@@ -201,15 +201,12 @@ public class OMRSAPIHelper {
 
         try {
            return Optional.ofNullable(
-                   getRepositoryHandler().updateEntity(
+                   getRepositoryHandler().updateEntityProperties(
                     userId,
-                    null,
-                    null,
                     entityDetail.getGUID(),
                     entityDetail.getType().getTypeDefGUID(),
                     entityDetail.getType().getTypeDefName(),
                     entityDetail.getProperties(),
-                    null,
                     restAPIName)
            );
         } catch (PropertyServerException | UserNotAuthorizedException e) {
@@ -335,7 +332,6 @@ public class OMRSAPIHelper {
             getRepositoryHandler().classifyEntity(
                     userId,
                     entityGUID,
-                    classificationTypeGUID,
                     classificationName,
                     instanceProperties,
                     restAPIName
@@ -360,10 +356,7 @@ public class OMRSAPIHelper {
         try {
             getRepositoryHandler().declassifyEntity(
                     userId,
-                    null,
-                    null,
                     entityGUID,
-                    null,
                     classificationName,
                     null,
                     restAPIName

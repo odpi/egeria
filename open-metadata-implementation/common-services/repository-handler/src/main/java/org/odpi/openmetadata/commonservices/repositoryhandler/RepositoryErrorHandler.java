@@ -141,7 +141,9 @@ public class RepositoryErrorHandler
      * the instance.
      *
      * @param userId calling user
-     * @param instanceHeader header of the instance
+     * @param instanceHeader header of the entity, relationship or classification
+     * @param uniqueIdentifier identifier of the owning entity or relationship - ie if the header is a classification, the unique identifier is
+     *                         from the entity.
      * @param externalSourceGUID unique identifier for the external source - or null for local
      * @param externalSourceName unique name for the external source - optional - supplied for error messages
      * @param methodName calling method
@@ -178,13 +180,23 @@ public class RepositoryErrorHandler
         {
             if (! externalSourceGUID.equals(instanceHeader.getMetadataCollectionId()))
             {
+                /*
+                 * Subject Area OMAS manufactures entities that do not fill out the provenance information.
+                 */
+                InstanceProvenanceType instanceProvenanceType = InstanceProvenanceType.LOCAL_COHORT;
+
+                if ((instanceHeader.getInstanceProvenanceType() != null))
+                {
+                    instanceProvenanceType = instanceHeader.getInstanceProvenanceType();
+                }
+
                 throw new UserNotAuthorizedException(
                         RepositoryHandlerErrorCode.WRONG_EXTERNAL_SOURCE.getMessageDefinition(methodName,
                                                                                               externalSourceGUID,
                                                                                               externalSourceName,
                                                                                               instanceHeader.getType().getTypeDefCategory().getName(),
                                                                                               uniqueIdentifier,
-                                                                                              instanceHeader.getInstanceProvenanceType().getName(),
+                                                                                              instanceProvenanceType.getName(),
                                                                                               instanceHeader.getMetadataCollectionId(),
                                                                                               instanceHeader.getMetadataCollectionName()),
                         this.getClass().getName(),
@@ -192,13 +204,23 @@ public class RepositoryErrorHandler
                         userId);
             }
         }
-        else /* local cohort caller */
+        else /* local cohort caller updating a non-local entity */
         {
+            /*
+             * Subject Area OMAS manufactures entities that do not fill out the provenance information.
+             */
+            InstanceProvenanceType instanceProvenanceType = InstanceProvenanceType.LOCAL_COHORT;
+
+            if ((instanceHeader.getInstanceProvenanceType() != null))
+            {
+                instanceProvenanceType = instanceHeader.getInstanceProvenanceType();
+            }
+
             throw new UserNotAuthorizedException(
                     RepositoryHandlerErrorCode.LOCAL_CANNOT_CHANGE_EXTERNAL.getMessageDefinition(methodName,
                                                                                                  instanceHeader.getType().getTypeDefCategory().getName(),
                                                                                                  uniqueIdentifier,
-                                                                                                 instanceHeader.getInstanceProvenanceType().getName(),
+                                                                                                 instanceProvenanceType.getName(),
                                                                                                  instanceHeader.getMetadataCollectionId(),
                                                                                                  instanceHeader.getMetadataCollectionName(),
                                                                                                  userId),

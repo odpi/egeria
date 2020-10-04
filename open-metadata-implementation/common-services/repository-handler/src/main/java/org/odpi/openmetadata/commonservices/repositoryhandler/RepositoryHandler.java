@@ -482,6 +482,50 @@ public class RepositoryHandler
      * Update the properties of an existing entity in the open metadata repository.
      *
      * @param userId calling user
+     * @param entityGUID unique identifier of entity to update
+     * @param entityTypeGUID type of entity to create
+     * @param entityTypeName name of the entity's type
+     * @param updateProperties properties for the entity
+     * @param methodName name of calling method
+     * @return updated entity
+     *
+     * @throws InvalidParameterException problem with the GUID
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    @Deprecated
+    public EntityDetail  updateEntityProperties(String                  userId,
+                                                String                  entityGUID,
+                                                String                  entityTypeGUID,
+                                                String                  entityTypeName,
+                                                InstanceProperties      updateProperties,
+                                                String                  methodName) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
+    {
+        final String guidParameterName = "entityGUID";
+
+        EntityDetail originalEntity = this.getEntityByGUID(userId,
+                                                           entityGUID,
+                                                           guidParameterName,
+                                                           entityTypeName,
+                                                           methodName);
+
+        return updateEntityProperties(userId,
+                                      entityGUID,
+                                      originalEntity,
+                                      entityTypeGUID,
+                                      entityTypeName,
+                                      updateProperties,
+                                      methodName);
+    }
+
+
+
+    /**
+     * Update the properties of an existing entity in the open metadata repository.
+     *
+     * @param userId calling user
      * @param externalSourceGUID unique identifier (guid) for the external source, or null for local.
      * @param externalSourceName unique name for the external source.
      * @param entityGUID unique identifier of entity to update
@@ -523,6 +567,80 @@ public class RepositoryHandler
                                       entityTypeName,
                                       updateProperties,
                                       methodName);
+    }
+
+
+    /**
+     * Update the properties of an existing entity in the open metadata repository.
+     *
+     * @param userId calling user
+     * @param entityGUID unique identifier of entity to update
+     * @param originalEntity entity retrieved from repository
+     * @param entityTypeGUID type of entity to create
+     * @param entityTypeName name of the entity's type
+     * @param newProperties properties for the entity
+     * @param methodName name of calling method
+     * @return updated entity
+     *
+     * @throws InvalidParameterException problem with the GUID
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    @Deprecated
+    public EntityDetail  updateEntityProperties(String                  userId,
+                                                String                  entityGUID,
+                                                EntityDetail            originalEntity,
+                                                String                  entityTypeGUID,
+                                                String                  entityTypeName,
+                                                InstanceProperties      newProperties,
+                                                String                  methodName) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
+    {
+        final String localMethodName = "updateEntityProperties";
+
+        if (originalEntity != null)
+        {
+            /*
+             * If there are no properties to change then nothing more to do
+             */
+            if ((newProperties == null) && (originalEntity.getProperties() == null))
+            {
+                return originalEntity;
+            }
+
+            /*
+             * If nothing has changed in the properties then nothing to do
+             */
+            if ((newProperties != null) && (newProperties.equals(originalEntity.getProperties())))
+            {
+                return originalEntity;
+            }
+
+            try
+            {
+                EntityDetail newEntity = metadataCollection.updateEntityProperties(userId, entityGUID, newProperties);
+                if (newEntity == null)
+                {
+                    errorHandler.handleNoEntity(entityTypeGUID,
+                                                entityTypeName,
+                                                newProperties,
+                                                methodName);
+                }
+
+                return newEntity;
+            }
+            catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
+            {
+                errorHandler.handleUnauthorizedUser(userId, methodName);
+            }
+            catch (Throwable error)
+            {
+                errorHandler.handleRepositoryError(error, methodName, localMethodName);
+            }
+        }
+
+        return null;
     }
 
 
@@ -611,8 +729,7 @@ public class RepositoryHandler
 
 
     /**
-     * Update an existing entity in the open metadata repository.  Both the properties and the classifications are updated
-     * to the supplied values.
+     * Update just the specific list of classifications on an existing entity in the open metadata repository.
      *
      * @param userId calling user
      * @param externalSourceGUID unique identifier (guid) for the external source, or null for local.
@@ -620,22 +737,22 @@ public class RepositoryHandler
      * @param entityGUID unique identifier of entity to update
      * @param entityTypeGUID type of entity to create
      * @param entityTypeName name of the entity's type
-     * @param classifications classifications for the entity
+     * @param newClassifications classifications for the entity
      * @param methodName name of calling method
      * @throws InvalidParameterException problem with the GUID
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public void updateEntityClassifications(String                  userId,
-                                            String                  externalSourceGUID,
-                                            String                  externalSourceName,
-                                            String                  entityGUID,
-                                            String                  entityTypeGUID,
-                                            String                  entityTypeName,
-                                            List<Classification>    classifications,
-                                            String                  methodName) throws InvalidParameterException,
-                                                                                       UserNotAuthorizedException,
-                                                                                       PropertyServerException
+    public void updateSelectedEntityClassifications(String                  userId,
+                                                    String                  externalSourceGUID,
+                                                    String                  externalSourceName,
+                                                    String                  entityGUID,
+                                                    String                  entityTypeGUID,
+                                                    String                  entityTypeName,
+                                                    List<Classification>    newClassifications,
+                                                    String                  methodName) throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException
     {
         final String guidParameterName = "entityGUID";
 
@@ -644,13 +761,49 @@ public class RepositoryHandler
          */
         EntityDetail entity = this.getEntityByGUID(userId, entityGUID, guidParameterName, entityTypeName, methodName);
 
-        updateEntityClassifications(userId,
-                                    externalSourceGUID,
-                                    externalSourceName,
-                                    entityGUID,
-                                    entity.getClassifications(),
-                                    classifications,
-                                    methodName);
+        if ((entity != null) && (newClassifications != null) && (! newClassifications.isEmpty()))
+        {
+            if ((entity.getClassifications() == null) || (entity.getClassifications().isEmpty()))
+            {
+                updateEntityClassifications(userId,
+                                            externalSourceGUID,
+                                            externalSourceName,
+                                            entityGUID,
+                                            entity.getClassifications(),
+                                            newClassifications,
+                                            methodName);
+            }
+            else
+            {
+                Map<String, Classification> classificationMap = new HashMap<>();
+
+                for (Classification classification : entity.getClassifications())
+                {
+                    if ((classification != null) && (classification.getName() != null))
+                    {
+                        classificationMap.put(classification.getName(), classification);
+                    }
+                }
+
+                for (Classification classification : newClassifications)
+                {
+                    if ((classification != null) && (classification.getName() != null))
+                    {
+                        classificationMap.put(classification.getName(), classification);
+                    }
+                }
+
+                List<Classification> fullClassificationList = new ArrayList<>(classificationMap.values());
+
+                updateEntityClassifications(userId,
+                                            externalSourceGUID,
+                                            externalSourceName,
+                                            entityGUID,
+                                            fullClassificationList,
+                                            newClassifications,
+                                            methodName);
+            }
+        }
     }
 
 
@@ -662,7 +815,7 @@ public class RepositoryHandler
      * @param externalSourceGUID unique identifier (guid) for the external source, or null for local.
      * @param externalSourceName unique name for the external source.
      * @param entityGUID entity to update
-     * @param entityClassifications existing classifications
+     * @param existingEntityClassifications existing classifications
      * @param classifications classifications for the entity
      * @param methodName name of calling method
      * @throws InvalidParameterException problem with the GUID
@@ -673,7 +826,7 @@ public class RepositoryHandler
                                              String                  externalSourceGUID,
                                              String                  externalSourceName,
                                              String                  entityGUID,
-                                             List<Classification>    entityClassifications,
+                                             List<Classification>    existingEntityClassifications,
                                              List<Classification>    classifications,
                                              String                  methodName) throws InvalidParameterException,
                                                                                         UserNotAuthorizedException,
@@ -683,7 +836,7 @@ public class RepositoryHandler
 
         try
         {
-            if ((entityClassifications == null) || (entityClassifications.isEmpty()))
+            if ((existingEntityClassifications == null) || (existingEntityClassifications.isEmpty()))
             {
                 if ((classifications != null) && (! classifications.isEmpty()))
                 {
@@ -717,7 +870,7 @@ public class RepositoryHandler
                 /*
                  * All of the classifications are deleted
                  */
-                for (Classification  obsoleteClassification : entityClassifications)
+                for (Classification  obsoleteClassification : existingEntityClassifications)
                 {
                     if (obsoleteClassification != null)
                     {
@@ -736,7 +889,7 @@ public class RepositoryHandler
             {
                 Map<String, Classification> entityClassificationMap = new HashMap<>();
 
-                for (Classification entityClassification : entityClassifications)
+                for (Classification entityClassification : existingEntityClassifications)
                 {
                     if ((entityClassification != null) && (entityClassification.getName() != null))
                     {
@@ -765,7 +918,22 @@ public class RepositoryHandler
                         }
                         else /* new and old match */
                         {
-                            if (!classification.getProperties().equals(matchingEntityClassification.getProperties()))
+                            if (classification.getProperties() == null)
+                            {
+                                if (matchingEntityClassification.getProperties() != null)
+                                {
+                                    this.reclassifyEntity(userId,
+                                                          externalSourceGUID,
+                                                          externalSourceName,
+                                                          entityGUID,
+                                                          null,
+                                                          classification.getName(),
+                                                          matchingEntityClassification,
+                                                          null, // clears all properties
+                                                          methodName);
+                                }
+                            }
+                            else if (!classification.getProperties().equals(matchingEntityClassification.getProperties()))
                             {
                                 this.reclassifyEntity(userId,
                                                       externalSourceGUID,
@@ -807,6 +975,246 @@ public class RepositoryHandler
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
     }
+
+    /**
+     * Update an existing entity in the open metadata repository.  Both the properties and the classifications are updated
+     * to the supplied values.
+     *
+     * @param userId calling user
+     * @param entityGUID entity to update
+     * @param existingEntityClassifications existing classifications
+     * @param classifications classifications for the entity
+     * @param methodName name of calling method
+     * @throws InvalidParameterException problem with the GUID
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    @Deprecated
+    private void updateEntityClassifications(String                  userId,
+                                             String                  entityGUID,
+                                             List<Classification>    existingEntityClassifications,
+                                             List<Classification>    classifications,
+                                             String                  methodName) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
+    {
+        final String localMethodName = "updateEntityClassifications";
+
+        try
+        {
+            if ((existingEntityClassifications == null) || (existingEntityClassifications.isEmpty()))
+            {
+                if ((classifications != null) && (! classifications.isEmpty()))
+                {
+                    /*
+                     * All of the classifications are new
+                     */
+                    for (Classification  newClassification : classifications)
+                    {
+                        if (newClassification != null)
+                        {
+                            this.classifyEntity(userId,
+                                                entityGUID,
+                                                newClassification.getName(),
+                                                newClassification.getProperties(),
+                                                methodName);
+                        }
+                    }
+                }
+
+                /*
+                 * If both the existing and new classifications are null then nothing to do.
+                 */
+            }
+            else if ((classifications == null) || (classifications.isEmpty()))
+            {
+                /*
+                 * All of the classifications are deleted
+                 */
+                for (Classification  obsoleteClassification : existingEntityClassifications)
+                {
+                    if (obsoleteClassification != null)
+                    {
+                        this.declassifyEntity(userId,
+                                              entityGUID,
+                                              obsoleteClassification.getName(),
+                                              obsoleteClassification,
+                                              methodName);
+                    }
+                }
+            }
+            else /* there are existing classifications as well as new ones */
+            {
+                Map<String, Classification> entityClassificationMap = new HashMap<>();
+
+                for (Classification entityClassification : existingEntityClassifications)
+                {
+                    if ((entityClassification != null) && (entityClassification.getName() != null))
+                    {
+                        entityClassificationMap.put(entityClassification.getName(), entityClassification);
+                    }
+                }
+
+                for (Classification classification : classifications)
+                {
+                    if ((classification != null) && (classification.getName() != null))
+                    {
+                        Classification matchingEntityClassification = entityClassificationMap.get(classification.getName());
+
+                        if (matchingEntityClassification == null)
+                        {
+                            this.classifyEntity(userId,
+                                                entityGUID,
+                                                classification.getName(),
+                                                classification.getProperties(),
+                                                methodName);
+                        }
+                        else /* new and old match */
+                        {
+                            if (classification.getProperties() == null)
+                            {
+                                if (matchingEntityClassification.getProperties() != null)
+                                {
+                                    this.reclassifyEntity(userId,
+                                                          entityGUID,
+                                                          classification.getName(),
+                                                          matchingEntityClassification,
+                                                          null, // clears all properties
+                                                          methodName);
+                                }
+                            }
+                            else if (!classification.getProperties().equals(matchingEntityClassification.getProperties()))
+                            {
+                                this.reclassifyEntity(userId,
+                                                      entityGUID,
+                                                      classification.getName(),
+                                                      matchingEntityClassification,
+                                                      classification.getProperties(),
+                                                      methodName);
+                            }
+
+                            entityClassificationMap.remove(classification.getName());
+                        }
+                    }
+
+                    /*
+                     * Whatever is left in the map needs to be removed
+                     */
+                    for (String entityClassificationName : entityClassificationMap.keySet())
+                    {
+                        if (entityClassificationName != null)
+                        {
+                            this.declassifyEntity(userId,
+                                                  entityGUID,
+                                                  classification.getName(),
+                                                  entityClassificationMap.get(entityClassificationName),
+                                                  methodName);
+                        }
+                    }
+                }
+            }
+        }
+        catch (Exception   error)
+        {
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
+        }
+    }
+
+
+    /**
+     * Retrieve a specific classification for an entity. Null is returned if the entity is not classified
+     * in this way.
+     *
+     * @param userId calling user
+     * @param entityGUID unique identity of the entity - if this entity is not known then an exception occurs
+     * @param classificationName name of the classification
+     * @param methodName calling method
+     * @return located classification or null if not found
+     * @throws InvalidParameterException invalid parameter (probably the guid)
+     * @throws UserNotAuthorizedException calling user does not have appropriate permissions
+     * @throws PropertyServerException internal error
+     */
+    private Classification getClassificationForEntity(String userId,
+                                                      String entityGUID,
+                                                      String classificationName,
+                                                      String methodName) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
+    {
+        final String entityGUIDParameterName = "entityGUID";
+
+        EntityDetail entity = this.getEntityByGUID(userId,
+                                                   entityGUID,
+                                                   entityGUIDParameterName,
+                                                   null, // any type allowed
+                                                   methodName);
+
+
+        if (entity != null)
+        {
+            if ((classificationName != null) && (entity.getClassifications() != null))
+            {
+                for (Classification classification : entity.getClassifications())
+                {
+                    if (classification != null)
+                    {
+                        if (classificationName.equals(classification.getName()))
+                        {
+                            return classification;
+                        }
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Update an existing entity in the open metadata repository.  Both the properties and the classifications are updated
+     * to the supplied values.
+     *
+     * @param userId calling user
+     * @param entityGUID unique identifier entity to update
+     * @param entityTypeGUID type of entity to create
+     * @param entityTypeName name of the entity's type
+     * @param properties properties for the entity
+     * @param classifications classifications for entity
+     * @param methodName name of calling method
+     *
+     * @return returned entity containing the update
+     * @throws InvalidParameterException problem with the GUID
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    @Deprecated
+    public EntityDetail updateEntity(String                  userId,
+                                     String                  entityGUID,
+                                     String                  entityTypeGUID,
+                                     String                  entityTypeName,
+                                     InstanceProperties      properties,
+                                     List<Classification>    classifications,
+                                     String                  methodName) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
+    {
+        EntityDetail entity = this.updateEntityProperties(userId,
+                                                          entityGUID,
+                                                          entityTypeGUID,
+                                                          entityTypeName,
+                                                          properties,
+                                                          methodName);
+
+        this.updateEntityClassifications(userId,
+                                         entity.getGUID(),
+                                         entity.getClassifications(),
+                                         classifications,
+                                         methodName);
+
+        return entity;
+    }
+
 
     /**
      * Update an existing entity in the open metadata repository.  Both the properties and the classifications are updated
@@ -890,15 +1298,16 @@ public class RepositoryHandler
     {
         final String localMethodName = "updateEntityProperties";
 
-        errorHandler.validateProvenance(userId,
-                                        entityHeader,
-                                        entityHeader.getGUID(),
-                                        externalSourceGUID,
-                                        externalSourceName,
-                                        methodName);
 
         try
         {
+            errorHandler.validateProvenance(userId,
+                                            entityHeader,
+                                            entityHeader.getGUID(),
+                                            externalSourceGUID,
+                                            externalSourceName,
+                                            methodName);
+
             EntityDetail newEntity = metadataCollection.updateEntityProperties(userId,
                                                                                entityHeader.getGUID(),
                                                                                properties);
@@ -911,6 +1320,14 @@ public class RepositoryHandler
                                             methodName);
             }
         }
+        catch (UserNotAuthorizedException error)
+        {
+            /*
+             * This comes from validateProvenance.  The call to validate provenance is in the try..catch
+             * in case the caller has passed bad parameters.
+             */
+            throw error;
+        }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
         {
             errorHandler.handleUnauthorizedUser(userId, methodName);
@@ -920,6 +1337,7 @@ public class RepositoryHandler
             errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
     }
+
 
 
     /**
@@ -1008,15 +1426,15 @@ public class RepositoryHandler
 
         EntityDetail entity = this.getEntityByGUID(userId, entityGUID, guidParameterName, entityTypeName, methodName);
 
-        errorHandler.validateProvenance(userId,
-                                        entity,
-                                        entityGUID,
-                                        externalSourceGUID,
-                                        externalSourceName,
-                                        methodName);
-
         try
         {
+            errorHandler.validateProvenance(userId,
+                                            entity,
+                                            entityGUID,
+                                            externalSourceGUID,
+                                            externalSourceName,
+                                            methodName);
+
             EntityDetail newEntity = metadataCollection.updateEntityStatus(userId,
                                                                            entityGUID,
                                                                            instanceStatus);
@@ -1028,6 +1446,14 @@ public class RepositoryHandler
                                             null,
                                             methodName);
             }
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            /*
+             * This comes from validateProvenance.  The call to validate provenance is in the try..catch
+             * in case the caller has passed bad parameters.
+             */
+            throw error;
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
         {
@@ -1100,7 +1526,63 @@ public class RepositoryHandler
      *
      * @param userId calling user
      * @param entityGUID unique identifier of entity to update
-     * @param classificationTypeGUID type of classification to create
+     * @param classificationName name of the classification's type
+     * @param properties properties for the classification
+     * @param methodName name of calling method
+     * @return updated entity
+     *
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    @Deprecated
+    public EntityDetail    classifyEntity(String                  userId,
+                                          String                  entityGUID,
+                                          String                  classificationName,
+                                          InstanceProperties      properties,
+                                          String                  methodName) throws UserNotAuthorizedException,
+                                                                                     PropertyServerException
+    {
+        final String localMethodName = "classifyEntity(deprecated)";
+
+        try
+        {
+            EntityDetail newEntity = metadataCollection.classifyEntity(userId,
+                                                                       entityGUID,
+                                                                       classificationName,
+                                                                       properties);
+
+            if (newEntity == null)
+            {
+                errorHandler.handleNoEntityForClassification(entityGUID,
+                                                             null,
+                                                             classificationName,
+                                                             properties,
+                                                             methodName);
+            }
+            else
+            {
+                return newEntity;
+            }
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
+        {
+            errorHandler.handleUnauthorizedUser(userId, methodName);
+        }
+        catch (Throwable   error)
+        {
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Add a new classification to an existing entity in the open metadata repository.
+     *
+     * @param userId calling user
+     * @param entityGUID unique identifier of entity to update
+     * @param classificationTypeGUID identifier of the classification's type
      * @param classificationTypeName name of the classification's type
      * @param properties properties for the classification
      * @param methodName name of calling method
@@ -1226,6 +1708,80 @@ public class RepositoryHandler
      * Update the properties of an existing classification to an existing entity in the open metadata repository.
      *
      * @param userId calling user
+     * @param entityGUID unique identifier of entity to update
+     * @param classificationTypeName name of the classification's type
+     * @param existingClassificationHeader current value of classification
+     * @param newProperties properties for the classification
+     * @param methodName name of calling method
+     *
+     * @throws InvalidParameterException invalid parameters passed - probably GUID
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    @Deprecated
+    public void    reclassifyEntity(String                  userId,
+                                    String                  entityGUID,
+                                    String                  classificationTypeName,
+                                    InstanceAuditHeader     existingClassificationHeader,
+                                    InstanceProperties      newProperties,
+                                    String                  methodName) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
+    {
+        final String localMethodName = "reclassifyEntity";
+
+        InstanceAuditHeader auditHeader = existingClassificationHeader;
+
+        if (auditHeader == null)
+        {
+            auditHeader = this.getClassificationForEntity(userId, entityGUID, classificationTypeName, methodName);
+        }
+
+        /*
+         * OK to reclassify.
+         */
+        if (auditHeader != null)
+        {
+            try
+            {
+                EntityDetail newEntity = metadataCollection.updateEntityClassification(userId,
+                                                                                       entityGUID,
+                                                                                       classificationTypeName,
+                                                                                       newProperties);
+
+                if (newEntity == null)
+                {
+                    errorHandler.handleNoEntityForClassification(entityGUID,
+                                                                 null,
+                                                                 classificationTypeName,
+                                                                 newProperties,
+                                                                 methodName);
+                }
+            }
+            catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
+            {
+                errorHandler.handleUnauthorizedUser(userId, methodName);
+            }
+            catch (Throwable error)
+            {
+                errorHandler.handleRepositoryError(error, methodName, localMethodName);
+            }
+        }
+        else /* should be a classify */
+        {
+            this.classifyEntity(userId,
+                                entityGUID,
+                                classificationTypeName,
+                                newProperties,
+                                methodName);
+        }
+    }
+
+
+    /**
+     * Update the properties of an existing classification to an existing entity in the open metadata repository.
+     *
+     * @param userId calling user
      * @param externalSourceGUID unique identifier (guid) for the external source, or null for local.
      * @param externalSourceName unique name for the external source.
      * @param entityGUID unique identifier of entity to update
@@ -1235,6 +1791,7 @@ public class RepositoryHandler
      * @param newProperties properties for the classification
      * @param methodName name of calling method
      *
+     * @throws InvalidParameterException invalid parameters passed - probably GUID
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
@@ -1246,40 +1803,137 @@ public class RepositoryHandler
                                     String                  classificationTypeName,
                                     InstanceAuditHeader     existingClassificationHeader,
                                     InstanceProperties      newProperties,
-                                    String                  methodName) throws UserNotAuthorizedException,
+                                    String                  methodName) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
                                                                                PropertyServerException
     {
         final String localMethodName = "reclassifyEntity";
 
-        errorHandler.validateProvenance(userId,
-                                        existingClassificationHeader,
-                                        externalSourceGUID,
-                                        entityGUID + "(" + classificationTypeName + ")",
-                                        externalSourceName,
-                                        methodName);
-        try
-        {
-            EntityDetail newEntity = metadataCollection.updateEntityClassification(userId,
-                                                                                   entityGUID,
-                                                                                   classificationTypeName,
-                                                                                   newProperties);
+        InstanceAuditHeader auditHeader = existingClassificationHeader;
 
-            if (newEntity == null)
+        if (auditHeader == null)
+        {
+            auditHeader = this.getClassificationForEntity(userId, entityGUID, classificationTypeName, methodName);
+        }
+
+        /*
+         * OK to reclassify.
+         */
+        if (auditHeader != null)
+        {
+            try
             {
-                errorHandler.handleNoEntityForClassification(entityGUID,
-                                                             classificationTypeGUID,
-                                                             classificationTypeName,
-                                                             newProperties,
-                                                             methodName);
+                errorHandler.validateProvenance(userId,
+                                                existingClassificationHeader,
+                                                entityGUID,
+                                                externalSourceGUID,
+                                                externalSourceName,
+                                                methodName);
+
+                EntityDetail newEntity = metadataCollection.updateEntityClassification(userId,
+                                                                                       entityGUID,
+                                                                                       classificationTypeName,
+                                                                                       newProperties);
+
+                if (newEntity == null)
+                {
+                    errorHandler.handleNoEntityForClassification(entityGUID,
+                                                                 classificationTypeGUID,
+                                                                 classificationTypeName,
+                                                                 newProperties,
+                                                                 methodName);
+                }
+            }
+            catch (UserNotAuthorizedException error)
+            {
+                /*
+                 * This comes from validateProvenance.  The call to validate provenance is in the try..catch
+                 * in case the caller has passed bad parameters.
+                 */
+                throw error;
+            }
+            catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
+            {
+                errorHandler.handleUnauthorizedUser(userId, methodName);
+            }
+            catch (Throwable error)
+            {
+                errorHandler.handleRepositoryError(error, methodName, localMethodName);
             }
         }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
+        else /* should be a classify */
         {
-            errorHandler.handleUnauthorizedUser(userId, methodName);
+            this.classifyEntity(userId,
+                                externalSourceGUID,
+                                externalSourceName,
+                                entityGUID,
+                                classificationTypeGUID,
+                                classificationTypeName,
+                                ClassificationOrigin.ASSIGNED,
+                                null,
+                                newProperties,
+                                methodName);
         }
-        catch (Throwable   error)
+    }
+
+
+    /**
+     * Remove an existing classification from an existing entity in the open metadata repository.
+     *
+     * @param userId calling user
+     * @param entityGUID unique identifier of entity to update
+     * @param classificationTypeName name of the classification's type
+     * @param existingClassificationHeader current value of classification
+     * @param methodName name of calling method
+     *
+     * @throws InvalidParameterException one of the parameters is invalid = probably the GUID
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    @Deprecated
+    public void    declassifyEntity(String                  userId,
+                                    String                  entityGUID,
+                                    String                  classificationTypeName,
+                                    InstanceAuditHeader     existingClassificationHeader,
+                                    String                  methodName) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
+    {
+        final String localMethodName = "declassifyEntity";
+
+        InstanceAuditHeader auditHeader = existingClassificationHeader;
+
+        if (auditHeader == null)
         {
-            errorHandler.handleRepositoryError(error, methodName, localMethodName);
+            auditHeader = this.getClassificationForEntity(userId, entityGUID, classificationTypeName, methodName);
+        }
+
+        /*
+         * Nothing to do if the classification is already gone.
+         */
+        if (auditHeader != null)
+        {
+            try
+            {
+                EntityDetail newEntity = metadataCollection.declassifyEntity(userId, entityGUID, classificationTypeName);
+
+                if (newEntity == null)
+                {
+                    errorHandler.handleNoEntityForClassification(entityGUID,
+                                                                 null,
+                                                                 classificationTypeName,
+                                                                 null,
+                                                                 methodName);
+                }
+            }
+            catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
+            {
+                errorHandler.handleUnauthorizedUser(userId, methodName);
+            }
+            catch (Exception error)
+            {
+                errorHandler.handleRepositoryError(error, methodName, localMethodName);
+            }
         }
     }
 
@@ -1296,6 +1950,7 @@ public class RepositoryHandler
      * @param existingClassificationHeader current value of classification
      * @param methodName name of calling method
      *
+     * @throws InvalidParameterException one of the parameters is invalid = probably the GUID
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
@@ -1306,39 +1961,62 @@ public class RepositoryHandler
                                     String                  classificationTypeGUID,
                                     String                  classificationTypeName,
                                     InstanceAuditHeader     existingClassificationHeader,
-                                    String                  methodName) throws UserNotAuthorizedException,
+                                    String                  methodName) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
                                                                                PropertyServerException
     {
         final String localMethodName = "declassifyEntity";
 
-        errorHandler.validateProvenance(userId,
-                                        existingClassificationHeader,
-                                        entityGUID,
-                                        externalSourceGUID,
-                                        externalSourceName,
-                                        methodName);
-        try
-        {
-            EntityDetail newEntity = metadataCollection.declassifyEntity(userId,
-                                                                         entityGUID,
-                                                                         classificationTypeName);
+        InstanceAuditHeader auditHeader = existingClassificationHeader;
 
-            if (newEntity == null)
+        if (auditHeader == null)
+        {
+            auditHeader = this.getClassificationForEntity(userId, entityGUID, classificationTypeName, methodName);
+        }
+
+        /*
+         * Nothing to do if the classification is already gone.
+         */
+        if (auditHeader != null)
+        {
+            try
             {
-                errorHandler.handleNoEntityForClassification(entityGUID,
-                                                             classificationTypeGUID,
-                                                             classificationTypeName,
-                                                             null,
-                                                             methodName);
+                errorHandler.validateProvenance(userId,
+                                                auditHeader,
+                                                entityGUID,
+                                                externalSourceGUID,
+                                                externalSourceName,
+                                                methodName);
+
+                EntityDetail newEntity = metadataCollection.declassifyEntity(userId,
+                                                                             entityGUID,
+                                                                             classificationTypeName);
+
+                if (newEntity == null)
+                {
+                    errorHandler.handleNoEntityForClassification(entityGUID,
+                                                                 classificationTypeGUID,
+                                                                 classificationTypeName,
+                                                                 null,
+                                                                 methodName);
+                }
             }
-        }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
-        {
-            errorHandler.handleUnauthorizedUser(userId, methodName);
-        }
-        catch (Throwable   error)
-        {
-            errorHandler.handleRepositoryError(error, methodName, localMethodName);
+            catch (UserNotAuthorizedException error)
+            {
+                /*
+                 * This comes from validateProvenance.  The call to validate provenance is in the try..catch
+                 * in case the caller has passed bad parameters.
+                 */
+                throw error;
+            }
+            catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
+            {
+                errorHandler.handleUnauthorizedUser(userId, methodName);
+            }
+            catch (Exception error)
+            {
+                errorHandler.handleRepositoryError(error, methodName, localMethodName);
+            }
         }
     }
 
@@ -1765,6 +2443,14 @@ public class RepositoryHandler
                                                 externalSourceName,
                                                 methodName);
             }
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            /*
+             * This comes from validateProvenance.  The call to validate provenance is in the try..catch
+             * in case the caller has passed bad parameters.
+             */
+            throw error;
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
         {
@@ -4041,19 +4727,27 @@ public class RepositoryHandler
     {
         final String localMethodName = "removeRelationship";
 
-        errorHandler.validateProvenance(userId,
-                                        relationship,
-                                        relationship.getGUID(),
-                                        externalSourceGUID,
-                                        externalSourceName,
-                                        methodName);
-
         try
         {
+            errorHandler.validateProvenance(userId,
+                                            relationship,
+                                            relationship.getGUID(),
+                                            externalSourceGUID,
+                                            externalSourceName,
+                                            methodName);
+
             metadataCollection.deleteRelationship(userId,
                                                   relationship.getType().getTypeDefGUID(),
                                                   relationship.getType().getTypeDefName(),
                                                   relationship.getGUID());
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            /*
+             * This comes from validateProvenance.  The call to validate provenance is in the try..catch
+             * in case the caller has passed bad parameters.
+             */
+            throw error;
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException  error)
         {
@@ -4177,6 +4871,14 @@ public class RepositoryHandler
                                                 externalSourceName,
                                                 methodName);
             }
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            /*
+             * This comes from validateProvenance.  The call to validate provenance is in the try..catch
+             * in case the caller has passed bad parameters.
+             */
+            throw error;
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
         {
@@ -4322,18 +5024,26 @@ public class RepositoryHandler
             return;
         }
 
-        errorHandler.validateProvenance(userId,
-                                        relationship,
-                                        relationship.getGUID(),
-                                        externalSourceGUID,
-                                        externalSourceName,
-                                        methodName);
-
         try
         {
+            errorHandler.validateProvenance(userId,
+                                            relationship,
+                                            relationship.getGUID(),
+                                            externalSourceGUID,
+                                            externalSourceName,
+                                            methodName);
+
             metadataCollection.updateRelationshipProperties(userId,
                                                             relationship.getGUID(),
                                                             relationshipProperties);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            /*
+             * This comes from validateProvenance.  The call to validate provenance is in the try..catch
+             * in case the caller has passed bad parameters.
+             */
+            throw error;
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException  error)
         {
@@ -4500,6 +5210,13 @@ public class RepositoryHandler
                                             methodName);
 
             metadataCollection.updateRelationshipStatus(userId, relationshipGUID, instanceStatus);
+        }
+        catch (UserNotAuthorizedException | PropertyServerException error)
+        {
+            /*
+             * These exceptions have already been correctly mapped.
+             */
+            throw error;
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException  error)
         {
