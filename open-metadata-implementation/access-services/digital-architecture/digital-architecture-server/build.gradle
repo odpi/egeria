@@ -14,8 +14,7 @@ dependencies {
     implementation project(':open-metadata-implementation:access-services:digital-architecture:digital-architecture-api')
     implementation project(':open-metadata-implementation:common-services:multi-tenant')
     implementation project(':open-metadata-implementation:common-services:ffdc-services')
-    implementation project(':open-metadata-implementation:common-services:repository-handler')
-    implementation project(':open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-handlers')
+    implementation project(':open-metadata-implementation:common-services:generic-handlers')
     implementation 'com.fasterxml.jackson.core:jackson-annotations:2.11.1'
 
 }

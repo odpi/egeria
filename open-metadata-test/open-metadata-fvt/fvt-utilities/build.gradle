@@ -1,0 +1,17 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright Contributors to the ODPi Egeria project.
+ */
+
+
+dependencies {
+    implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.11.1'
+
+}
+
+description = 'FVT Utilities'
+
+java {
+    withJavadocJar()
+}
