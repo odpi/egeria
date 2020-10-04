@@ -2,10 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetconsumer.converters;
 
-import org.odpi.openmetadata.accessservices.assetconsumer.elements.MetadataElement;
-import org.odpi.openmetadata.accessservices.assetconsumer.properties.AssetProperties;
+import org.odpi.openmetadata.accessservices.assetconsumer.elements.AssetElement;
 import org.odpi.openmetadata.accessservices.assetconsumer.properties.OwnerType;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
@@ -33,68 +33,122 @@ public class AssetConverter<B> extends AssetConsumerOMASConverter<B>
     }
 
 
-
     /**
-     * Extract the properties from the entity.  Each DataManager OMAS converter implements this method.
-     * The top level fills in the header
+     * Using the supplied instances, return a new instance of the bean. This is used for beans that have
+     * contain a combination of the properties from an entity and a that os a connected relationship.
      *
-     * @param metadataElement output bean
+     * @param beanClass name of the class to create
      * @param entity entity containing the properties
-     * @param relationship optional relationship containing the properties
+     * @param methodName calling method
+     * @return bean populated with properties from the instances supplied
+     * @throws PropertyServerException there is a problem instantiating the bean
      */
-    public void updateMetadataElement(MetadataElement metadataElement, EntityDetail entity, Relationship relationship)
+    public B getNewBean(Class<B>     beanClass,
+                        EntityDetail entity,
+                        String       methodName) throws PropertyServerException
     {
-        metadataElement.setElementHeader(this.getMetadataElementHeader(entity));
-
-        if (metadataElement instanceof AssetProperties)
+        try
         {
-            AssetProperties bean = (AssetProperties) metadataElement;
-
             /*
-             * The initial set of values come from the entity.
+             * This is initial confirmation that the generic converter has been initialized with an appropriate bean class.
              */
-            InstanceProperties instanceProperties = new InstanceProperties(entity.getProperties());
+            B returnBean = beanClass.newInstance();
 
-            bean.setQualifiedName(this.removeQualifiedName(instanceProperties));
-            bean.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-            bean.setDisplayName(this.removeDisplayName(instanceProperties));
-            bean.setDescription(this.removeDescription(instanceProperties));
+            if (returnBean instanceof AssetElement)
+            {
+                AssetElement bean = (AssetElement) returnBean;
 
-            /* Note this value should be in the classification */
-            bean.setOwner(this.removeOwner(instanceProperties));
-            /* Note this value should be in the classification */
-            bean.setOwnerType(this.removeOwnerTypeFromProperties(instanceProperties));
-            /* Note this value should be in the classification */
-            bean.setZoneMembership(this.removeZoneMembership(instanceProperties));
+                bean.setElementHeader(super.getMetadataElementHeader(beanClass, entity, methodName));
 
-            /*
-             * Any remaining properties are returned in the extended properties.  They are
-             * assumed to be defined in a subtype.
-             */
-            bean.setTypeName(typeName);
-            bean.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
+                InstanceProperties instanceProperties = null;
 
-            /*
-             * The values in the classifications override the values in the main properties of the Asset's entity.
-             * Having these properties in the main entity is deprecated.
-             */
-            instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_ZONES_CLASSIFICATION_NAME, entity);
+                /*
+                 * The initial set of values come from the entity.
+                 */
+                if (entity != null)
+                {
+                    instanceProperties = new InstanceProperties(entity.getProperties());
+                }
 
-            bean.setZoneMembership(this.getZoneMembership(instanceProperties));
 
-            instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_OWNERSHIP_CLASSIFICATION_NAME, entity);
+                bean.setQualifiedName(this.removeQualifiedName(instanceProperties));
+                bean.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
+                bean.setDisplayName(this.removeDisplayName(instanceProperties));
+                bean.setDescription(this.removeDescription(instanceProperties));
 
-            bean.setOwner(this.getOwner(instanceProperties));
-            bean.setOwnerType(this.getOwnerTypeFromProperties(instanceProperties));
+                /* Note this value should be in the classification */
+                bean.setOwner(this.removeOwner(instanceProperties));
+                /* Note this value should be in the classification */
+                bean.setOwnerType(this.removeOwnerTypeFromProperties(instanceProperties));
+                /* Note this value should be in the classification */
+                bean.setZoneMembership(this.removeZoneMembership(instanceProperties));
 
-            instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_ORIGIN_CLASSIFICATION_NAME, entity);
+                /*
+                 * Any remaining properties are returned in the extended properties.  They are
+                 * assumed to be defined in a subtype.
+                 */
+                bean.setTypeName(typeName);
+                bean.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
 
-            bean.setOriginOrganizationGUID(this.getOriginOrganizationGUID(instanceProperties));
-            bean.setOriginBusinessCapabilityGUID(this.getOriginBusinessCapabilityGUID(instanceProperties));
-            bean.setOtherOriginValues(this.getOtherOriginValues(instanceProperties));
+                /*
+                 * The values in the classifications override the values in the main properties of the Asset's entity.
+                 * Having these properties in the main entity is deprecated.
+                 */
+                instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_ZONES_CLASSIFICATION_NAME, entity);
+
+                bean.setZoneMembership(this.getZoneMembership(instanceProperties));
+
+                instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_OWNERSHIP_CLASSIFICATION_NAME, entity);
+
+                bean.setOwner(this.getOwner(instanceProperties));
+                bean.setOwnerType(this.getOwnerTypeFromProperties(instanceProperties));
+
+                instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_ORIGIN_CLASSIFICATION_NAME, entity);
+
+                bean.setOriginOrganizationGUID(this.getOriginOrganizationGUID(instanceProperties));
+                bean.setOriginBusinessCapabilityGUID(this.getOriginBusinessCapabilityGUID(instanceProperties));
+                bean.setOtherOriginValues(this.getOtherOriginValues(instanceProperties));
+
+                instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.DATA_STORE_ENCODING_CLASSIFICATION_NAME, entity);
+
+                /*
+                 * Any remaining properties are returned in the extended properties.  They are
+                 * assumed to be defined in a subtype.
+                 */
+                bean.setTypeName(typeName);
+                bean.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
+            }
+
+            return returnBean;
         }
+        catch (IllegalAccessException | InstantiationException | ClassCastException error)
+        {
+            super.handleInvalidBeanClass(beanClass.getName(), error, methodName);
+        }
+
+        return null;
     }
 
+
+
+    /**
+     * Using the supplied instances, return a new instance of the bean. This is used for beans that have
+     * contain a combination of the properties from an entity and a that os a connected relationship.
+     *
+     * @param beanClass name of the class to create
+     * @param entity entity containing the properties
+     * @param relationship relationship containing the properties
+     * @param methodName calling method
+     * @return bean populated with properties from the instances supplied
+     * @throws PropertyServerException there is a problem instantiating the bean
+     */
+    public B getNewBean(Class<B>     beanClass,
+                        EntityDetail entity,
+                        Relationship relationship,
+                        String       methodName) throws PropertyServerException
+    {
+        return getNewBean(beanClass, entity, methodName);
+    }
 
     /**
      * Retrieve and delete the OwnerType enum property from the instance properties of an entity

@@ -38,14 +38,12 @@ public class DiscoveryEnginePropertiesConverter<B> extends DiscoveryEngineOMASCo
      *
      * @param beanClass name of the class to create
      * @param entity entity containing the properties
-     * @param relationship relationship containing the properties
      * @param methodName calling method
      * @return bean populated with properties from the instances supplied
      * @throws PropertyServerException there is a problem instantiating the bean
      */
     public B getNewBean(Class<B>     beanClass,
                         EntityDetail entity,
-                        Relationship relationship,
                         String       methodName) throws PropertyServerException
     {
         try
@@ -96,5 +94,25 @@ public class DiscoveryEnginePropertiesConverter<B> extends DiscoveryEngineOMASCo
         }
 
         return null;
+    }
+
+
+    /**
+     * Using the supplied instances, return a new instance of the bean. This is used for beans that have
+     * contain a combination of the properties from an entity and a that os a connected relationship.
+     *
+     * @param beanClass name of the class to create
+     * @param entity entity containing the properties
+     * @param relationship relationship containing the properties
+     * @param methodName calling method
+     * @return bean populated with properties from the instances supplied
+     * @throws PropertyServerException there is a problem instantiating the bean
+     */
+    public B getNewBean(Class<B>     beanClass,
+                        EntityDetail entity,
+                        Relationship relationship,
+                        String       methodName) throws PropertyServerException
+    {
+        return getNewBean(beanClass, entity, methodName);
     }
 }

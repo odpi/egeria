@@ -2,11 +2,13 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetconsumer.converters;
 
+import org.odpi.openmetadata.accessservices.assetconsumer.elements.MeaningElement;
 import org.odpi.openmetadata.accessservices.assetconsumer.elements.MetadataElement;
 import org.odpi.openmetadata.accessservices.assetconsumer.properties.AssetProperties;
 import org.odpi.openmetadata.accessservices.assetconsumer.properties.MeaningProperties;
 import org.odpi.openmetadata.accessservices.assetconsumer.properties.OwnerType;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
@@ -67,5 +69,87 @@ public class MeaningConverter<B> extends AssetConsumerOMASConverter<B>
             bean.setTypeName(typeName);
             bean.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
         }
+    }
+
+
+
+    /**
+     * Using the supplied instances, return a new instance of the bean. This is used for beans that have
+     * contain a combination of the properties from an entity and a that os a connected relationship.
+     *
+     * @param beanClass name of the class to create
+     * @param entity entity containing the properties
+     * @param methodName calling method
+     * @return bean populated with properties from the instances supplied
+     * @throws PropertyServerException there is a problem instantiating the bean
+     */
+    public B getNewBean(Class<B>     beanClass,
+                        EntityDetail entity,
+                        String       methodName) throws PropertyServerException
+    {
+        try
+        {
+            /*
+             * This is initial confirmation that the generic converter has been initialized with an appropriate bean class.
+             */
+            B returnBean = beanClass.newInstance();
+
+            if (returnBean instanceof MeaningElement)
+            {
+                MeaningElement bean = (MeaningElement) returnBean;
+
+                bean.setElementHeader(super.getMetadataElementHeader(beanClass, entity, methodName));
+
+                InstanceProperties instanceProperties = null;
+
+                /*
+                 * The initial set of values come from the entity.
+                 */
+                if (entity != null)
+                {
+                    instanceProperties = new InstanceProperties(entity.getProperties());
+                }
+
+                bean.setQualifiedName(this.removeQualifiedName(instanceProperties));
+                bean.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
+                bean.setName(this.removeDisplayName(instanceProperties));
+                bean.setDescription(this.removeDescription(instanceProperties));
+
+                /*
+                 * Any remaining properties are returned in the extended properties.  They are
+                 * assumed to be defined in a subtype.
+                 */
+                bean.setTypeName(typeName);
+                bean.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
+            }
+
+            return returnBean;
+        }
+        catch (IllegalAccessException | InstantiationException | ClassCastException error)
+        {
+            super.handleInvalidBeanClass(beanClass.getName(), error, methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Using the supplied instances, return a new instance of the bean. This is used for beans that have
+     * contain a combination of the properties from an entity and a that os a connected relationship.
+     *
+     * @param beanClass name of the class to create
+     * @param entity entity containing the properties
+     * @param relationship relationship containing the properties
+     * @param methodName calling method
+     * @return bean populated with properties from the instances supplied
+     * @throws PropertyServerException there is a problem instantiating the bean
+     */
+    public B getNewBean(Class<B>     beanClass,
+                        EntityDetail entity,
+                        Relationship relationship,
+                        String       methodName) throws PropertyServerException
+    {
+        return getNewBean(beanClass, entity, methodName);
     }
 }

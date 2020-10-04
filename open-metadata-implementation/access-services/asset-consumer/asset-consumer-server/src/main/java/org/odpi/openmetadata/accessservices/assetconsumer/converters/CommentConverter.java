@@ -2,12 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetconsumer.converters;
 
-import org.odpi.openmetadata.accessservices.assetconsumer.elements.MetadataElement;
-import org.odpi.openmetadata.accessservices.assetconsumer.properties.AssetProperties;
-import org.odpi.openmetadata.accessservices.assetconsumer.properties.CommentProperties;
+import org.odpi.openmetadata.accessservices.assetconsumer.elements.CommentElement;
 import org.odpi.openmetadata.accessservices.assetconsumer.properties.CommentType;
-import org.odpi.openmetadata.accessservices.assetconsumer.properties.OwnerType;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
@@ -35,48 +33,92 @@ public class CommentConverter<B> extends AssetConsumerOMASConverter<B>
     }
 
 
+    /**
+     * Using the supplied instances, return a new instance of the bean. This is used for beans that have
+     * contain a combination of the properties from an entity and a that os a connected relationship.
+     *
+     * @param beanClass name of the class to create
+     * @param entity entity containing the properties
+     * @param relationship relationship containing the properties
+     * @param methodName calling method
+     * @return bean populated with properties from the instances supplied
+     * @throws PropertyServerException there is a problem instantiating the bean
+     */
+    public B getNewBean(Class<B>     beanClass,
+                        EntityDetail entity,
+                        Relationship relationship,
+                        String       methodName) throws PropertyServerException
+    {
+        try
+        {
+            /*
+             * This is initial confirmation that the generic converter has been initialized with an appropriate bean class.
+             */
+            B returnBean = beanClass.newInstance();
+
+            if (returnBean instanceof CommentElement)
+            {
+                CommentElement bean = (CommentElement) returnBean;
+
+                bean.setElementHeader(super.getMetadataElementHeader(beanClass, entity, methodName));
+
+                InstanceProperties instanceProperties = null;
+
+                /*
+                 * The initial set of values come from the entity.
+                 */
+                if (entity != null)
+                {
+                    instanceProperties = new InstanceProperties(entity.getProperties());
+                    bean.setUser(entity.getCreatedBy());
+                }
+
+                bean.setQualifiedName(this.removeQualifiedName(instanceProperties));
+                bean.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
+                bean.setCommentType(this.removeCommentTypeFromProperties(instanceProperties));
+                bean.setCommentText(this.removeCommentText(instanceProperties));
+
+                /*
+                 * Any remaining properties are returned in the extended properties.  They are
+                 * assumed to be defined in a subtype.
+                 */
+                bean.setTypeName(typeName);
+                bean.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
+
+                if (relationship != null)
+                {
+                    instanceProperties = new InstanceProperties(relationship.getProperties());
+
+                    bean.setPublic(this.getIsPublic(instanceProperties));
+                }
+            }
+
+            return returnBean;
+        }
+        catch (IllegalAccessException | InstantiationException | ClassCastException error)
+        {
+            super.handleInvalidBeanClass(beanClass.getName(), error, methodName);
+        }
+
+        return null;
+    }
+
 
     /**
-     * Extract the properties from the entity.  Each DataManager OMAS converter implements this method.
-     * The top level fills in the header
+     * Using the supplied instances, return a new instance of the bean. This is used for beans that have
+     * contain a combination of the properties from an entity and a that os a connected relationship.
      *
-     * @param metadataElement output bean
+     * @param beanClass name of the class to create
      * @param entity entity containing the properties
-     * @param relationship optional relationship containing the properties
+     * @param methodName calling method
+     * @return bean populated with properties from the instances supplied
+     * @throws PropertyServerException there is a problem instantiating the bean
      */
-    public void updateMetadataElement(MetadataElement metadataElement, EntityDetail entity, Relationship relationship)
+    public B getNewBean(Class<B>     beanClass,
+                        EntityDetail entity,
+                        String       methodName) throws PropertyServerException
     {
-        metadataElement.setElementHeader(this.getMetadataElementHeader(entity));
-
-        if (metadataElement instanceof CommentProperties)
-        {
-            CommentProperties bean = (CommentProperties) metadataElement;
-
-            /*
-             * The initial set of values come from the entity.
-             */
-            InstanceProperties instanceProperties = new InstanceProperties(entity.getProperties());
-
-            bean.setQualifiedName(this.removeQualifiedName(instanceProperties));
-            bean.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-            bean.setCommentType(this.removeCommentTypeFromProperties(instanceProperties));
-            bean.setCommentText(this.removeCommentText(instanceProperties));
-            bean.setUser(entity.getCreatedBy());
-
-            /*
-             * Any remaining properties are returned in the extended properties.  They are
-             * assumed to be defined in a subtype.
-             */
-            bean.setTypeName(typeName);
-            bean.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
-
-            if (relationship != null)
-            {
-                instanceProperties = new InstanceProperties(relationship.getProperties());
-
-                bean.setPublic(this.getIsPublic(instanceProperties));
-            }
-        }
+        return getNewBean(beanClass, entity, null, methodName);
     }
 
 

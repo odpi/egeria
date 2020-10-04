@@ -6,6 +6,7 @@ import org.odpi.openmetadata.accessservices.assetconsumer.elements.*;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericConverter;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefLink;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
@@ -39,6 +40,117 @@ public abstract class AssetConsumerOMASConverter<B> extends OpenMetadataAPIGener
     /*===============================
      * Methods to fill out headers and enums
      */
+
+    /**
+     * Extract the properties from the entity.
+     *
+     * @param beanClass name of the class to create
+     * @param entity entity containing the properties
+     * @param methodName calling method
+     * @return filled out element header
+     * @throws PropertyServerException there is a problem in the use of the generic handlers because
+     * the converter has been configured with a type of bean that is incompatible with the handler
+     */
+    ElementHeader getMetadataElementHeader(Class<B>     beanClass,
+                                           EntityDetail entity,
+                                           String       methodName) throws PropertyServerException
+    {
+        if (entity != null)
+        {
+            return getMetadataElementHeader(beanClass,
+                                            entity,
+                                            entity.getClassifications(),
+                                            methodName);
+        }
+        else
+        {
+            super.handleMissingMetadataInstance(beanClass.getName(),
+                                                TypeDefCategory.ENTITY_DEF,
+                                                methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract the properties from the entity.
+     *
+     * @param beanClass name of the class to create
+     * @param header header from the entity containing the properties
+     * @param methodName calling method
+     * @return filled out element header
+     * @throws PropertyServerException there is a problem in the use of the generic handlers because
+     * the converter has been configured with a type of bean that is incompatible with the handler
+     */
+    ElementHeader getMetadataElementHeader(Class<B>             beanClass,
+                                           InstanceHeader       header,
+                                           List<Classification> entityClassifications,
+                                           String               methodName) throws PropertyServerException
+    {
+        if (header != null)
+        {
+            ElementHeader elementHeader = new ElementHeader();
+
+            elementHeader.setGUID(header.getGUID());
+            elementHeader.setClassifications(this.getEntityClassifications(entityClassifications));
+            elementHeader.setType(this.getElementType(header));
+
+            ElementOrigin elementOrigin = new ElementOrigin();
+
+            elementOrigin.setSourceServer(serverName);
+            elementOrigin.setOriginCategory(this.getElementOriginCategory(header.getInstanceProvenanceType()));
+            elementOrigin.setHomeMetadataCollectionId(header.getMetadataCollectionId());
+            elementOrigin.setHomeMetadataCollectionName(header.getMetadataCollectionName());
+            elementOrigin.setLicense(header.getInstanceLicense());
+
+            elementHeader.setOrigin(elementOrigin);
+
+            return elementHeader;
+        }
+        else
+        {
+            super.handleMissingMetadataInstance(beanClass.getName(),
+                                                TypeDefCategory.ENTITY_DEF,
+                                                methodName);
+        }
+
+        return null;
+    }
+
+
+
+    /**
+     * Extract the classifications from the entity.
+     *
+     * @param entityClassifications classifications direct from the entity
+     * @return list of bean classifications
+     */
+    private List<ElementClassification> getEntityClassifications(List<Classification> entityClassifications)
+    {
+        List<ElementClassification> beanClassifications = null;
+
+        if (entityClassifications != null)
+        {
+            beanClassifications = new ArrayList<>();
+
+            for (Classification entityClassification : entityClassifications)
+            {
+                if (entityClassification != null)
+                {
+                    ElementClassification beanClassification = new ElementClassification();
+
+                    beanClassification.setClassificationName(entityClassification.getName());
+                    beanClassification.setClassificationProperties(repositoryHelper.getInstancePropertiesAsMap(entityClassification.getProperties()));
+
+                    beanClassifications.add(beanClassification);
+                }
+            }
+
+        }
+
+        return beanClassifications;
+    }
 
 
     /**

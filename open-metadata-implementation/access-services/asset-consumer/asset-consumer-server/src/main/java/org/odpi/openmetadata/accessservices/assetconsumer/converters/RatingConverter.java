@@ -3,9 +3,11 @@
 package org.odpi.openmetadata.accessservices.assetconsumer.converters;
 
 import org.odpi.openmetadata.accessservices.assetconsumer.elements.MetadataElement;
+import org.odpi.openmetadata.accessservices.assetconsumer.elements.RatingElement;
 import org.odpi.openmetadata.accessservices.assetconsumer.properties.StarRating;
 import org.odpi.openmetadata.accessservices.assetconsumer.properties.RatingProperties;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
@@ -65,6 +67,87 @@ public class RatingConverter<B> extends AssetConsumerOMASConverter<B>
                 bean.setPublic(this.getIsPublic(instanceProperties));
             }
         }
+    }
+
+
+
+    /**
+     * Using the supplied instances, return a new instance of the bean. This is used for beans that have
+     * contain a combination of the properties from an entity and a that os a connected relationship.
+     *
+     * @param beanClass name of the class to create
+     * @param entity entity containing the properties
+     * @param relationship relationship containing the properties
+     * @param methodName calling method
+     * @return bean populated with properties from the instances supplied
+     * @throws PropertyServerException there is a problem instantiating the bean
+     */
+    public B getNewBean(Class<B>     beanClass,
+                        EntityDetail entity,
+                        Relationship relationship,
+                        String       methodName) throws PropertyServerException
+    {
+        try
+        {
+            /*
+             * This is initial confirmation that the generic converter has been initialized with an appropriate bean class.
+             */
+            B returnBean = beanClass.newInstance();
+
+            if (returnBean instanceof RatingElement)
+            {
+                RatingElement bean = (RatingElement) returnBean;
+
+                bean.setElementHeader(super.getMetadataElementHeader(beanClass, entity, methodName));
+
+                InstanceProperties instanceProperties = null;
+
+                /*
+                 * The initial set of values come from the entity.
+                 */
+                if (entity != null)
+                {
+                    instanceProperties = new InstanceProperties(entity.getProperties());
+                }
+
+                bean.setStarRating(this.removeStarRatingFromProperties(instanceProperties));
+                bean.setReview(this.removeReview(instanceProperties));
+                bean.setUser(entity.getCreatedBy());
+
+                if (relationship != null)
+                {
+                    instanceProperties = new InstanceProperties(relationship.getProperties());
+
+                    bean.setPublic(this.getIsPublic(instanceProperties));
+                }
+            }
+
+            return returnBean;
+        }
+        catch (IllegalAccessException | InstantiationException | ClassCastException error)
+        {
+            super.handleInvalidBeanClass(beanClass.getName(), error, methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Using the supplied instances, return a new instance of the bean. This is used for beans that have
+     * contain a combination of the properties from an entity and a that os a connected relationship.
+     *
+     * @param beanClass name of the class to create
+     * @param entity entity containing the properties
+     * @param methodName calling method
+     * @return bean populated with properties from the instances supplied
+     * @throws PropertyServerException there is a problem instantiating the bean
+     */
+    public B getNewBean(Class<B>     beanClass,
+                        EntityDetail entity,
+                        String       methodName) throws PropertyServerException
+    {
+        return getNewBean(beanClass, entity, null, methodName);
     }
 
 

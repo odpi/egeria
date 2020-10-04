@@ -81,6 +81,45 @@ public class ReferenceDataAssetConverter<B> extends DigitalArchitectureOMASConve
 
 
     /**
+     * Using the supplied instances, return a new instance of the bean. This is used for beans that have
+     * contain a combination of the properties from an entity and a that os a connected relationship.
+     *
+     * @param beanClass name of the class to create
+     * @param entity entity containing the properties
+     * @param methodName calling method
+     * @return bean populated with properties from the instances supplied
+     * @throws PropertyServerException there is a problem instantiating the bean
+     */
+    public B getNewBean(Class<B>     beanClass,
+                        EntityDetail entity,
+                        String       methodName) throws PropertyServerException
+    {
+        try
+        {
+            /*
+             * This is initial confirmation that the generic converter has been initialized with an appropriate bean class.
+             */
+            B returnBean = beanClass.newInstance();
+
+            if (returnBean instanceof ReferenceDataAssetElement)
+            {
+                ReferenceDataAssetElement bean = (ReferenceDataAssetElement) returnBean;
+
+                this.updateSimpleMetadataElement(beanClass, bean, entity, methodName);
+            }
+
+            return returnBean;
+        }
+        catch (IllegalAccessException | InstantiationException | ClassCastException error)
+        {
+            super.handleInvalidBeanClass(beanClass.getName(), error, methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
      * Extract the properties from the entity.  Each concrete DataManager OMAS converter implements this method.
      * The top level fills in the header
      *

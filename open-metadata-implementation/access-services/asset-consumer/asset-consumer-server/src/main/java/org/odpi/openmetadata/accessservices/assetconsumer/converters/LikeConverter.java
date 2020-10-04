@@ -2,15 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetconsumer.converters;
 
-import org.odpi.openmetadata.accessservices.assetconsumer.elements.MetadataElement;
-import org.odpi.openmetadata.accessservices.assetconsumer.properties.LikeProperties;
-import org.odpi.openmetadata.accessservices.assetconsumer.properties.RatingProperties;
-import org.odpi.openmetadata.accessservices.assetconsumer.properties.StarRating;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.accessservices.assetconsumer.elements.LikeElement;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-
-import java.util.Map;
 
 
 /**
@@ -35,34 +30,74 @@ public class LikeConverter<B> extends AssetConsumerOMASConverter<B>
 
 
     /**
-     * Extract the properties from the entity.  Each DataManager OMAS converter implements this method.
-     * The top level fills in the header
+     * Using the supplied instances, return a new instance of the bean. This is used for beans that have
+     * contain a combination of the properties from an entity and a that os a connected relationship.
      *
-     * @param metadataElement output bean
+     * @param beanClass name of the class to create
      * @param entity entity containing the properties
-     * @param relationship optional relationship containing the properties
+     * @param relationship relationship containing the properties
+     * @param methodName calling method
+     * @return bean populated with properties from the instances supplied
+     * @throws PropertyServerException there is a problem instantiating the bean
      */
-    public void updateMetadataElement(MetadataElement metadataElement, EntityDetail entity, Relationship relationship)
+    public B getNewBean(Class<B>     beanClass,
+                        EntityDetail entity,
+                        Relationship relationship,
+                        String       methodName) throws PropertyServerException
     {
-        metadataElement.setElementHeader(this.getMetadataElementHeader(entity));
-
-        if (metadataElement instanceof LikeProperties)
+        try
         {
-            LikeProperties bean = (LikeProperties) metadataElement;
-
             /*
-             * The initial set of values come from the entity.
+             * This is initial confirmation that the generic converter has been initialized with an appropriate bean class.
              */
-            InstanceProperties instanceProperties = new InstanceProperties(entity.getProperties());
+            B returnBean = beanClass.newInstance();
 
-            bean.setUser(entity.getCreatedBy());
-
-            if (relationship != null)
+            if (returnBean instanceof LikeElement)
             {
-                instanceProperties = new InstanceProperties(relationship.getProperties());
+                LikeElement bean = (LikeElement) returnBean;
 
-                bean.setPublic(this.getIsPublic(instanceProperties));
+                bean.setElementHeader(super.getMetadataElementHeader(beanClass, entity, methodName));
+
+                InstanceProperties instanceProperties;
+
+                if (entity != null)
+                {
+                    bean.setUser(entity.getCreatedBy());
+                }
+
+                if (relationship != null)
+                {
+                    instanceProperties = new InstanceProperties(relationship.getProperties());
+
+                    bean.setPublic(this.getIsPublic(instanceProperties));
+                }
             }
+
+            return returnBean;
         }
+        catch (IllegalAccessException | InstantiationException | ClassCastException error)
+        {
+            super.handleInvalidBeanClass(beanClass.getName(), error, methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Using the supplied instances, return a new instance of the bean. This is used for beans that have
+     * contain a combination of the properties from an entity and a that os a connected relationship.
+     *
+     * @param beanClass name of the class to create
+     * @param entity entity containing the properties
+     * @param methodName calling method
+     * @return bean populated with properties from the instances supplied
+     * @throws PropertyServerException there is a problem instantiating the bean
+     */
+    public B getNewBean(Class<B>     beanClass,
+                        EntityDetail entity,
+                        String       methodName) throws PropertyServerException
+    {
+        return getNewBean(beanClass, entity, null, methodName);
     }
 }
