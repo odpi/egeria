@@ -227,6 +227,7 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
         npaAccounts.add(cocoMDSxUserId);
         npaAccounts.add(findItDL01UserId);
         npaAccounts.add(fixItDL01UserId);
+        assetOnboarding.addAll(npaAccounts);
 
         List<String> zoneSetUp = new ArrayList<>();
 
