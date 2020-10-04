@@ -6,6 +6,7 @@ package org.odpi.openmetadata.commonservices.ocf.metadatamanagement.handlers;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.*;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
@@ -98,30 +99,36 @@ public class AssetHandler extends ReferenceableHandler
             }
         }
         else
-
         {
-            if (updatedAsset.getZoneMembership() == null)
+            try
             {
-                repositoryHandler.declassifyEntity(userId,
-                                                   null,
-                                                   null,
-                                                   updatedAsset.getGUID(),
-                                                   AssetMapper.ASSET_ZONES_CLASSIFICATION_GUID,
-                                                   AssetMapper.ASSET_ZONES_CLASSIFICATION_NAME,
-                                                   null,
-                                                   methodName);
+                if (updatedAsset.getZoneMembership() == null)
+                {
+                    repositoryHandler.declassifyEntity(userId,
+                                                       null,
+                                                       null,
+                                                       updatedAsset.getGUID(),
+                                                       AssetMapper.ASSET_ZONES_CLASSIFICATION_GUID,
+                                                       AssetMapper.ASSET_ZONES_CLASSIFICATION_NAME,
+                                                       null,
+                                                       methodName);
+                }
+                else if (!(originalAsset.getZoneMembership().equals(updatedAsset.getZoneMembership())))
+                {
+                    repositoryHandler.reclassifyEntity(userId,
+                                                       null,
+                                                       null,
+                                                       updatedAsset.getGUID(),
+                                                       AssetMapper.ASSET_ZONES_CLASSIFICATION_GUID,
+                                                       AssetMapper.ASSET_ZONES_CLASSIFICATION_NAME,
+                                                       null,
+                                                       zoneMembershipProperties,
+                                                       methodName);
+                }
             }
-            else if (!(originalAsset.getZoneMembership().equals(updatedAsset.getZoneMembership())))
+            catch (InvalidParameterException error)
             {
-                repositoryHandler.reclassifyEntity(userId,
-                                                   null,
-                                                   null,
-                                                   updatedAsset.getGUID(),
-                                                   AssetMapper.ASSET_ZONES_CLASSIFICATION_GUID,
-                                                   AssetMapper.ASSET_ZONES_CLASSIFICATION_NAME,
-                                                   null,
-                                                   zoneMembershipProperties,
-                                                   methodName);
+                throw new PropertyServerException(error);
             }
         }
 
@@ -143,28 +150,35 @@ public class AssetHandler extends ReferenceableHandler
         }
         else
         {
-            if (updatedAsset.getOwner() == null)
+            try
             {
-                repositoryHandler.declassifyEntity(userId,
-                                                   null,
-                                                   null,
-                                                   originalAsset.getGUID(),
-                                                   AssetMapper.ASSET_OWNERSHIP_CLASSIFICATION_GUID,
-                                                   AssetMapper.ASSET_OWNERSHIP_CLASSIFICATION_NAME,
-                                                   null,
-                                                   methodName);
+                if (updatedAsset.getOwner() == null)
+                {
+                    repositoryHandler.declassifyEntity(userId,
+                                                       null,
+                                                       null,
+                                                       originalAsset.getGUID(),
+                                                       AssetMapper.ASSET_OWNERSHIP_CLASSIFICATION_GUID,
+                                                       AssetMapper.ASSET_OWNERSHIP_CLASSIFICATION_NAME,
+                                                       null,
+                                                       methodName);
+                }
+                else if (!originalAsset.getOwner().equals(updatedAsset.getOwner()))
+                {
+                    repositoryHandler.reclassifyEntity(userId,
+                                                       null,
+                                                       null,
+                                                       originalAsset.getGUID(),
+                                                       AssetMapper.ASSET_OWNERSHIP_CLASSIFICATION_GUID,
+                                                       AssetMapper.ASSET_OWNERSHIP_CLASSIFICATION_NAME,
+                                                       null,
+                                                       ownerProperties,
+                                                       methodName);
+                }
             }
-            else if (! originalAsset.getOwner().equals(updatedAsset.getOwner()))
+            catch (InvalidParameterException error)
             {
-                repositoryHandler.reclassifyEntity(userId,
-                                                   null,
-                                                   null,
-                                                   originalAsset.getGUID(),
-                                                   AssetMapper.ASSET_OWNERSHIP_CLASSIFICATION_GUID,
-                                                   AssetMapper.ASSET_OWNERSHIP_CLASSIFICATION_NAME,
-                                                   null,
-                                                   ownerProperties,
-                                                   methodName);
+                throw new PropertyServerException(error);
             }
         }
     }
