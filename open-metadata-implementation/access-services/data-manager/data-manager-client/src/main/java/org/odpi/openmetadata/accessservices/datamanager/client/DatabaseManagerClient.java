@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.accessservices.datamanager.client;
 
 import org.odpi.openmetadata.accessservices.datamanager.api.DatabaseManagerInterface;
+import org.odpi.openmetadata.accessservices.datamanager.client.rest.DataManagerRESTClient;
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.*;
 import org.odpi.openmetadata.accessservices.datamanager.properties.*;
 import org.odpi.openmetadata.accessservices.datamanager.rest.*;

@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.accessservices.datamanager.client;
 
 import org.odpi.openmetadata.accessservices.datamanager.api.FilesAndFoldersInterface;
+import org.odpi.openmetadata.accessservices.datamanager.client.rest.DataManagerRESTClient;
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.DataFileElement;
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.FileFolderElement;
 import org.odpi.openmetadata.accessservices.datamanager.properties.*;
@@ -35,7 +36,7 @@ public class FilesAndFoldersClient implements FilesAndFoldersInterface
     private AuditLog auditLog = null;          /* Initialized in constructor */
 
     private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
-    private DataManagerRESTClient restClient;               /* Initialized in constructor */
+    private DataManagerRESTClient   restClient;               /* Initialized in constructor */
 
     private static NullRequestBody nullRequestBody   = new NullRequestBody();
     

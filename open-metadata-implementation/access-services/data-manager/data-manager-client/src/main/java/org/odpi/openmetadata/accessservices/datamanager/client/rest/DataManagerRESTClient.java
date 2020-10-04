@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.datamanager.client;
+package org.odpi.openmetadata.accessservices.datamanager.client.rest;
 
 
 import org.odpi.openmetadata.accessservices.datamanager.rest.*;
@@ -42,8 +42,8 @@ public class DataManagerRESTClient extends OCFRESTClient
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    DataManagerRESTClient(String serverName,
-                          String serverPlatformURLRoot) throws InvalidParameterException
+    public DataManagerRESTClient(String serverName,
+                                 String serverPlatformURLRoot) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot);
     }
@@ -80,10 +80,10 @@ public class DataManagerRESTClient extends OCFRESTClient
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    DataManagerRESTClient(String serverName,
-                          String serverPlatformURLRoot,
-                          String userId,
-                          String password) throws InvalidParameterException
+    public DataManagerRESTClient(String serverName,
+                                 String serverPlatformURLRoot,
+                                 String userId,
+                                 String password) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot, userId, password);
     }
@@ -101,11 +101,11 @@ public class DataManagerRESTClient extends OCFRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    DatabaseColumnResponse callDatabaseColumnGetRESTCall(String    methodName,
-                                                         String    urlTemplate,
-                                                         Object... params) throws InvalidParameterException,
-                                                                                  UserNotAuthorizedException,
-                                                                                  PropertyServerException
+    public DatabaseColumnResponse callDatabaseColumnGetRESTCall(String    methodName,
+                                                                String    urlTemplate,
+                                                                Object... params) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException
     {
         DatabaseColumnResponse restResult = this.callGetRESTCall(methodName, DatabaseColumnResponse.class, urlTemplate, params);
 
@@ -127,11 +127,11 @@ public class DataManagerRESTClient extends OCFRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    DatabaseColumnsResponse callDatabaseColumnsGetRESTCall(String    methodName,
-                                                           String    urlTemplate,
-                                                           Object... params) throws InvalidParameterException,
-                                                                                    UserNotAuthorizedException,
-                                                                                    PropertyServerException
+    public DatabaseColumnsResponse callDatabaseColumnsGetRESTCall(String    methodName,
+                                                                  String    urlTemplate,
+                                                                  Object... params) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
     {
         DatabaseColumnsResponse restResult = this.callGetRESTCall(methodName, DatabaseColumnsResponse.class, urlTemplate, params);
 
@@ -153,11 +153,11 @@ public class DataManagerRESTClient extends OCFRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    DatabaseResponse callDatabaseGetRESTCall(String    methodName,
-                                             String    urlTemplate,
-                                             Object... params) throws InvalidParameterException,
-                                                                      UserNotAuthorizedException,
-                                                                      PropertyServerException
+    public DatabaseResponse callDatabaseGetRESTCall(String    methodName,
+                                                    String    urlTemplate,
+                                                    Object... params) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
     {
         DatabaseResponse restResult = this.callGetRESTCall(methodName, DatabaseResponse.class, urlTemplate, params);
 
@@ -179,11 +179,11 @@ public class DataManagerRESTClient extends OCFRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    DatabasesResponse callDatabasesGetRESTCall(String    methodName,
-                                               String    urlTemplate,
-                                               Object... params) throws InvalidParameterException,
-                                                                        UserNotAuthorizedException,
-                                                                        PropertyServerException
+    public DatabasesResponse callDatabasesGetRESTCall(String    methodName,
+                                                      String    urlTemplate,
+                                                      Object... params) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
     {
         DatabasesResponse restResult = this.callGetRESTCall(methodName, DatabasesResponse.class, urlTemplate, params);
 
@@ -205,11 +205,11 @@ public class DataManagerRESTClient extends OCFRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    DatabaseSchemaResponse callDatabaseSchemaGetRESTCall(String    methodName,
-                                                         String    urlTemplate,
-                                                         Object... params) throws InvalidParameterException,
-                                                                                  UserNotAuthorizedException,
-                                                                                  PropertyServerException
+    public DatabaseSchemaResponse callDatabaseSchemaGetRESTCall(String    methodName,
+                                                                String    urlTemplate,
+                                                                Object... params) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException
     {
         DatabaseSchemaResponse restResult = this.callGetRESTCall(methodName, DatabaseSchemaResponse.class, urlTemplate, params);
 
@@ -231,11 +231,11 @@ public class DataManagerRESTClient extends OCFRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    DatabaseSchemasResponse callDatabaseSchemasGetRESTCall(String    methodName,
-                                                           String    urlTemplate,
-                                                           Object... params) throws InvalidParameterException,
-                                                                                    UserNotAuthorizedException,
-                                                                                    PropertyServerException
+    public DatabaseSchemasResponse callDatabaseSchemasGetRESTCall(String    methodName,
+                                                                  String    urlTemplate,
+                                                                  Object... params) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
     {
         DatabaseSchemasResponse restResult = this.callGetRESTCall(methodName, DatabaseSchemasResponse.class, urlTemplate, params);
 
@@ -257,11 +257,11 @@ public class DataManagerRESTClient extends OCFRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    DatabaseTableResponse callDatabaseTableGetRESTCall(String    methodName,
-                                                       String    urlTemplate,
-                                                       Object... params) throws InvalidParameterException,
-                                                                                UserNotAuthorizedException,
-                                                                                PropertyServerException
+    public DatabaseTableResponse callDatabaseTableGetRESTCall(String    methodName,
+                                                              String    urlTemplate,
+                                                              Object... params) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
     {
         DatabaseTableResponse restResult = this.callGetRESTCall(methodName, DatabaseTableResponse.class, urlTemplate, params);
 
@@ -283,11 +283,11 @@ public class DataManagerRESTClient extends OCFRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    DatabaseTablesResponse callDatabaseTablesGetRESTCall(String    methodName,
-                                                         String    urlTemplate,
-                                                         Object... params) throws InvalidParameterException,
-                                                                                  UserNotAuthorizedException,
-                                                                                  PropertyServerException
+    public DatabaseTablesResponse callDatabaseTablesGetRESTCall(String    methodName,
+                                                                String    urlTemplate,
+                                                                Object... params) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException
     {
         DatabaseTablesResponse restResult = this.callGetRESTCall(methodName, DatabaseTablesResponse.class, urlTemplate, params);
 
@@ -309,11 +309,11 @@ public class DataManagerRESTClient extends OCFRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    DatabaseViewResponse callDatabaseViewGetRESTCall(String    methodName,
-                                                     String    urlTemplate,
-                                                     Object... params) throws InvalidParameterException,
-                                                                              UserNotAuthorizedException,
-                                                                              PropertyServerException
+    public DatabaseViewResponse callDatabaseViewGetRESTCall(String    methodName,
+                                                            String    urlTemplate,
+                                                            Object... params) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
     {
         DatabaseViewResponse restResult = this.callGetRESTCall(methodName, DatabaseViewResponse.class, urlTemplate, params);
 
@@ -335,11 +335,11 @@ public class DataManagerRESTClient extends OCFRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    DatabaseViewsResponse callDatabaseViewsGetRESTCall(String    methodName,
-                                                       String    urlTemplate,
-                                                       Object... params) throws InvalidParameterException,
-                                                                                UserNotAuthorizedException,
-                                                                                PropertyServerException
+    public DatabaseViewsResponse callDatabaseViewsGetRESTCall(String    methodName,
+                                                              String    urlTemplate,
+                                                              Object... params) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
     {
         DatabaseViewsResponse restResult = this.callGetRESTCall(methodName, DatabaseViewsResponse.class, urlTemplate, params);
 
@@ -361,11 +361,11 @@ public class DataManagerRESTClient extends OCFRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    DataFileResponse callDataFileGetRESTCall(String    methodName,
-                                             String    urlTemplate,
-                                             Object... params) throws InvalidParameterException,
-                                                                      UserNotAuthorizedException,
-                                                                      PropertyServerException
+    public DataFileResponse callDataFileGetRESTCall(String    methodName,
+                                                    String    urlTemplate,
+                                                    Object... params) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
     {
         DataFileResponse restResult = this.callGetRESTCall(methodName, DataFileResponse.class, urlTemplate, params);
 
@@ -388,12 +388,12 @@ public class DataManagerRESTClient extends OCFRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    DataFileResponse callDataFilePostRESTCall(String    methodName,
-                                              String    urlTemplate,
-                                              Object    requestBody,
-                                              Object... params) throws InvalidParameterException,
-                                                                       UserNotAuthorizedException,
-                                                                       PropertyServerException
+    public DataFileResponse callDataFilePostRESTCall(String    methodName,
+                                                     String    urlTemplate,
+                                                     Object    requestBody,
+                                                     Object... params) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
     {
         DataFileResponse restResult = this.callPostRESTCall(methodName, DataFileResponse.class, urlTemplate, requestBody, params);
 
@@ -415,11 +415,11 @@ public class DataManagerRESTClient extends OCFRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    DataFilesResponse callDataFilesGetRESTCall(String    methodName,
-                                               String    urlTemplate,
-                                               Object... params) throws InvalidParameterException,
-                                                                        UserNotAuthorizedException,
-                                                                        PropertyServerException
+    public DataFilesResponse callDataFilesGetRESTCall(String    methodName,
+                                                      String    urlTemplate,
+                                                      Object... params) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
     {
         DataFilesResponse restResult = this.callGetRESTCall(methodName, DataFilesResponse.class, urlTemplate, params);
 
@@ -441,11 +441,11 @@ public class DataManagerRESTClient extends OCFRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    FileFolderResponse callFileFolderGetRESTCall(String    methodName,
-                                                 String    urlTemplate,
-                                                 Object... params) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException
+    public FileFolderResponse callFileFolderGetRESTCall(String    methodName,
+                                                        String    urlTemplate,
+                                                        Object... params) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
     {
         FileFolderResponse restResult = this.callGetRESTCall(methodName, FileFolderResponse.class, urlTemplate, params);
 
@@ -468,12 +468,12 @@ public class DataManagerRESTClient extends OCFRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    FileFolderResponse callFileFolderPostRESTCall(String    methodName,
-                                                  String    urlTemplate,
-                                                  Object    requestBody,
-                                                  Object... params) throws InvalidParameterException,
-                                                                           UserNotAuthorizedException,
-                                                                           PropertyServerException
+    public FileFolderResponse callFileFolderPostRESTCall(String    methodName,
+                                                         String    urlTemplate,
+                                                         Object    requestBody,
+                                                         Object... params) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException
     {
         FileFolderResponse restResult = this.callPostRESTCall(methodName, FileFolderResponse.class, urlTemplate, requestBody, params);
 
@@ -495,11 +495,11 @@ public class DataManagerRESTClient extends OCFRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    FileFoldersResponse callFileFoldersGetRESTCall(String    methodName,
-                                                   String    urlTemplate,
-                                                   Object... params) throws InvalidParameterException,
-                                                                            UserNotAuthorizedException,
-                                                                            PropertyServerException
+    public FileFoldersResponse callFileFoldersGetRESTCall(String    methodName,
+                                                          String    urlTemplate,
+                                                          Object... params) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
     {
         FileFoldersResponse restResult = this.callGetRESTCall(methodName, FileFoldersResponse.class, urlTemplate, params);
 

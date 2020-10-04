@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.accessservices.datamanager.client;
 
 import org.odpi.openmetadata.accessservices.datamanager.api.MetadataSourceInterface;
+import org.odpi.openmetadata.accessservices.datamanager.client.rest.DataManagerRESTClient;
 import org.odpi.openmetadata.accessservices.datamanager.properties.*;
 import org.odpi.openmetadata.accessservices.datamanager.rest.DatabaseManagerRequestBody;
 import org.odpi.openmetadata.accessservices.datamanager.rest.FileManagerRequestBody;
@@ -169,7 +170,7 @@ public class MetadataSourceClient extends ConnectedAssetClientBase implements Me
         requestBody.setExternalSourceGUID(externalSourceGUID);
         requestBody.setExternalSourceName(externalSourceName);
 
-        final String          urlTemplate = serverPlatformRootURL + urlTemplatePrefix + "/filesystems";
+        final String urlTemplate = serverPlatformRootURL + urlTemplatePrefix + "/filesystems";
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate,
@@ -288,8 +289,8 @@ public class MetadataSourceClient extends ConnectedAssetClientBase implements Me
      */
     public String getMetadataSourceGUID(String  userId,
                                         String  qualifiedName) throws InvalidParameterException,
-                                                                              UserNotAuthorizedException,
-                                                                              PropertyServerException
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException
     {
         final String methodName                  = "getMetadataSourceGUID";
         final String qualifiedNameParameterName  = "qualifiedName";
