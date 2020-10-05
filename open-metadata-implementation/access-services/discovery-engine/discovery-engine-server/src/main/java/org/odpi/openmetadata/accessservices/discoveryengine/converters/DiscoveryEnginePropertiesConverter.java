@@ -82,7 +82,7 @@ public class DiscoveryEnginePropertiesConverter<B> extends DiscoveryEngineOMASCo
                  * Any remaining properties are returned in the extended properties.  They are
                  * assumed to be defined in a subtype.
                  */
-                bean.setTypeName(typeName);
+                bean.setTypeName(bean.getElementHeader().getType().getElementTypeName());
                 bean.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
             }
 

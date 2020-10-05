@@ -77,7 +77,7 @@ public class ValidValueAssignmentConsumerConverter<B> extends DigitalArchitectur
                  * Any remaining properties are returned in the extended properties.  They are
                  * assumed to be defined in a subtype.
                  */
-                consumer.setTypeName(typeName);
+                consumer.setTypeName(consumer.getElementHeader().getType().getTypeName());
                 consumer.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
 
                 bean.setConsumer(consumer);

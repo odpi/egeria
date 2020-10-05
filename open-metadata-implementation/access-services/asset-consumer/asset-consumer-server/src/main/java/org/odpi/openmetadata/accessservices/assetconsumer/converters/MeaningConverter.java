@@ -37,43 +37,6 @@ public class MeaningConverter<B> extends AssetConsumerOMASConverter<B>
 
 
     /**
-     * Extract the properties from the entity.  Each DataManager OMAS converter implements this method.
-     * The top level fills in the header
-     *
-     * @param metadataElement output bean
-     * @param entity entity containing the properties
-     * @param relationship optional relationship containing the properties
-     */
-    public void updateMetadataElement(MetadataElement metadataElement, EntityDetail entity, Relationship relationship)
-    {
-        metadataElement.setElementHeader(this.getMetadataElementHeader(entity));
-
-        if (metadataElement instanceof MeaningProperties)
-        {
-            MeaningProperties bean = (MeaningProperties) metadataElement;
-
-            /*
-             * The initial set of values come from the entity.
-             */
-            InstanceProperties instanceProperties = new InstanceProperties(entity.getProperties());
-
-            bean.setQualifiedName(this.removeQualifiedName(instanceProperties));
-            bean.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-            bean.setName(this.removeDisplayName(instanceProperties));
-            bean.setDescription(this.removeDescription(instanceProperties));
-
-            /*
-             * Any remaining properties are returned in the extended properties.  They are
-             * assumed to be defined in a subtype.
-             */
-            bean.setTypeName(typeName);
-            bean.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
-        }
-    }
-
-
-
-    /**
      * Using the supplied instances, return a new instance of the bean. This is used for beans that have
      * contain a combination of the properties from an entity and a that os a connected relationship.
      *
@@ -119,7 +82,7 @@ public class MeaningConverter<B> extends AssetConsumerOMASConverter<B>
                  * Any remaining properties are returned in the extended properties.  They are
                  * assumed to be defined in a subtype.
                  */
-                bean.setTypeName(typeName);
+                bean.setTypeName(bean.getElementHeader().getType().getTypeName());
                 bean.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
             }
 

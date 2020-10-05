@@ -3,11 +3,19 @@
 package org.odpi.openmetadata.accessservices.assetowner.properties;
 
 
+import com.fasterxml.jackson.annotation.*;
+
 import java.util.Objects;
+
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
  * FileProperties describes the property of a single data file.
  */
+@JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class FileProperties extends DataStoreProperties
 {
     private static final long    serialVersionUID = 1L;

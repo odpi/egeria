@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.assetowner.properties;
 
 import com.fasterxml.jackson.annotation.*;
+import org.odpi.openmetadata.accessservices.assetowner.metadataelements.AssetElement;
 
 import java.util.*;
 

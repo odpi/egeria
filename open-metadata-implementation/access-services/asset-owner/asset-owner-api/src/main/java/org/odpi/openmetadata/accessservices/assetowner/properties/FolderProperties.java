@@ -3,9 +3,17 @@
 package org.odpi.openmetadata.accessservices.assetowner.properties;
 
 
+import com.fasterxml.jackson.annotation.*;
+
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
+
 /**
  * FolderProperties defines an asset that is a folder.  The qualified name is the fully qualified path name of the folder.
  */
+@JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class FolderProperties extends DataStoreProperties
 {
     private static final long    serialVersionUID = 1L;

@@ -139,7 +139,7 @@ public class ValidValueConverter<B> extends DigitalArchitectureOMASConverter<B>
              * Any remaining properties are returned in the extended properties.  They are
              * assumed to be defined in a subtype.
              */
-            bean.setTypeName(typeName);
+            bean.setTypeName(bean.getElementHeader().getType().getTypeName());
             bean.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
         }
         else

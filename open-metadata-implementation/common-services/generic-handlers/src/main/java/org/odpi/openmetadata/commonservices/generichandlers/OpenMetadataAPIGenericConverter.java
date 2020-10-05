@@ -26,7 +26,6 @@ public abstract class OpenMetadataAPIGenericConverter<B>
     protected OMRSRepositoryHelper   repositoryHelper;
     protected String                 serviceName;
     protected String                 serverName;
-    protected String                 typeName;
 
 
     /**
@@ -376,24 +375,6 @@ public abstract class OpenMetadataAPIGenericConverter<B>
      * The methods that follow are used by the subclasses to extract specific properties from the instance properties.
      * They are used vor all properties except enums which need a specific method in the OMAS converters.
      */
-
-    /**
-     * Extract the type name from the entity (if not null).
-     *
-     * @param entity entity from repository
-     */
-    protected void setTypeName(EntityDetail entity)
-    {
-        if (entity != null)
-        {
-            InstanceType type = entity.getType();
-            if (type != null)
-            {
-                this.typeName = type.getTypeDefName();
-            }
-        }
-    }
-
 
     /**
      * Extract the properties for the requested classification from the entity.

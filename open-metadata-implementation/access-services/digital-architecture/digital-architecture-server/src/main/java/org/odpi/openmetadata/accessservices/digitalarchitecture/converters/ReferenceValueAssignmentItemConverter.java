@@ -77,7 +77,7 @@ public class ReferenceValueAssignmentItemConverter<B> extends DigitalArchitectur
                      * Any remaining properties are returned in the extended properties.  They are
                      * assumed to be defined in a subtype.
                      */
-                    assignedItem.setTypeName(typeName);
+                    assignedItem.setTypeName(assignedItem.getElementHeader().getType().getTypeName());
                     assignedItem.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
 
                     bean.setAssignedItem(assignedItem);
