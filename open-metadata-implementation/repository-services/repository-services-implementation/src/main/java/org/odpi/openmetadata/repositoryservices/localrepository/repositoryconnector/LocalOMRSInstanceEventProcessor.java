@@ -2449,13 +2449,15 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                                                 String     originatorServerName,
                                                 String     originatorMetadataCollectionId)
     {
-        auditLog.logMessage(methodName,
-                            OMRSAuditCode.UNEXPECTED_EXCEPTION_FROM_EVENT.getMessageDefinition(methodName,
-                                                                                               originatorServerName,
-                                                                                               originatorMetadataCollectionId,
-                                                                                               error.getMessage()),
-                            error.toString());
+        auditLog.logException(methodName,
+                              OMRSAuditCode.UNEXPECTED_EXCEPTION_FROM_EVENT.getMessageDefinition(methodName,
+                                                                                                 originatorServerName,
+                                                                                                 originatorMetadataCollectionId,
+                                                                                                 error.getClass().getName(),
+                                                                                                 error.getMessage()),
+                              error);
     }
+
 
     /**
      * Determine if the event should be processed.
