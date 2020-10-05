@@ -130,7 +130,7 @@
         <testng.version>7.3.0</testng.version>
         <slf4j.version>1.7.30</slf4j.version>
         <logback.version>1.2.3</logback.version>
-        <jackson.version>2.11.2</jackson.version>
+        <jackson.version>2.11.3</jackson.version>
         <jackson.databind.version>2.10.0</jackson.databind.version>
         <kafka.version>2.6.0</kafka.version>
         <janus.version>0.5.2</janus.version>
@@ -169,7 +169,7 @@
         <json-sanitizer.version>1.2.1</json-sanitizer.version>
         <googlefindbugs.version>3.0.2</googlefindbugs.version>
         <oss.version>4.9.0</oss.version>
-        <spotbugs-annotations.version>4.1.2</spotbugs-annotations.version>
+        <spotbugs-annotations.version>4.1.3</spotbugs-annotations.version>
         <sleepycat.version>18.3.12</sleepycat.version>
         <joda.version>2.10.6</joda.version>
         <jackson-asl.version>1.9.13</jackson-asl.version>
@@ -178,8 +178,8 @@
         <snakeyaml.version>1.27</snakeyaml.version>
         <springdoc.version>1.4.6</springdoc.version>
         <classgraph.version>4.8.90</classgraph.version>
-        <swagger.version>2.1.4</swagger.version>
-        <groovy.version>3.0.5</groovy.version>
+        <swagger.version>2.1.5</swagger.version>
+        <groovy.version>3.0.6</groovy.version>
         <micrometer-registry-prometheus.version>1.5.5</micrometer-registry-prometheus.version>
         <jcl-over-slf4j.version>1.7.30</jcl-over-slf4j.version>
         <reflections.version>0.9.12</reflections.version>
@@ -199,7 +199,7 @@
         <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
         <maven-pmd.version>3.13.0</maven-pmd.version>
         <owasp.version>6.0.2</owasp.version>
-        <spotbugs-maven.version>4.0.4</spotbugs-maven.version>
+        <spotbugs-maven.version>4.1.3</spotbugs-maven.version>
         <maven-download.version>1.6.0</maven-download.version>
         <maven-antrun.version>3.0.0</maven-antrun.version>
         <spotify-docker-plugin.version>1.4.13</spotify-docker-plugin.version>
@@ -2266,6 +2266,13 @@
                 <version>${open-metadata.version}</version>
                 <classifier>deploy</classifier>
                 <type>pom</type>
+            </dependency>
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>open-metadata-assemblies</artifactId>
+                <version>${open-metadata.version}</version>
+                <type>pom</type>
+                <classifier>presentation-server</classifier>
             </dependency>
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
