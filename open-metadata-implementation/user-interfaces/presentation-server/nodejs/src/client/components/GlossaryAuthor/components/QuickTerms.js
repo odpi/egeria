@@ -3,15 +3,16 @@
 import React, { useState } from "react";
 import Add32 from "../../../images/Egeria_add_32";
 import getNodeType from "./properties/NodeTypes.js";
-import { Form, FormGroup, TextInput, Button } from "carbon-components-react";
+import { Button, Form, FormGroup, TextInput } from "carbon-components-react";
+
 import { issueRestCreate } from "./RestCaller";
 import { useParams } from "react-router-dom";
 
-export default function QuickTerms() {
+export default function QuickTerms(props) {
   const glossaryNodeType = getNodeType("glossary");
-  const termNodeType = getNodeType("term");
   const [terms, setTerms] = useState([]);
-  const [termResponses, setTermResponses] = useState([]);
+  const [termsWithStatus, setTermsWithStatus] = useState([]);
+  const [errorMsg, setErrorMsg] = useState();
 
   const url = getUrl();
   function getUrl() {
@@ -19,9 +20,13 @@ export default function QuickTerms() {
     return glossaryNodeType.url + "/" + guid + "/terms";
   }
   const validateForm = () => {
-    return true;
+    if (terms.length == 0) {
+      return false;
+    } else {
+      return true;
+    }
   };
-  const onAdd = (e) => {
+  const onAdd = () => {
     console.log("onAdd");
     let newTerm = {};
     newTerm.name = "";
@@ -42,80 +47,35 @@ export default function QuickTerms() {
     }
   };
   const onSuccessfulCreate = (json) => {
-    setTermResponses(json.result);
+    let workingTermsWithStatus = [];
+    for (let i = 0; i < terms.length; i++) {
+      let workingTermWithStatus = terms[i];
+      if (terms[i].name.trim() == "") {
+        workingTermWithStatus.status = "Error - blank name";
+      } else if (json.result[i].relatedHTTPCode == "200") {
+        workingTermWithStatus = json.result[i].result[0];
+        workingTermWithStatus.status = "Success";
+      } else {
+        workingTermWithStatus.status = "Error";
+      }
+      workingTermsWithStatus[i] = workingTermWithStatus;
+    }
+    setTermsWithStatus(workingTermsWithStatus);
   };
   //return next term to create
   function onErrorCreate(msg) {
-    //TODO;
+    setErrorMsg(msg);
   }
-
-  // properties that will be displayed be default for a node
-  const mainProperties = [
-    {
-      key: "name",
-      text: "Name",
-    },
-    {
-      key: "description",
-      text: "Description",
-    },
-    {
-      key: "qualifiedName",
-      text: "Qualified Name",
-    },
-  ];
-
-  const [headerData, setHeaderData] = useState(mainProperties);
-  const additionalProperties = calculateAdditionalProperties();
-  let selectedAdditionalProperties = [];
-
-  // calculate the results table header - this will be the default columns plus any additional coliumns the user has specified
-  function calculateHeaderData() {
-    let allProperties = mainProperties;
-    if (
-      selectedAdditionalProperties !== undefined &&
-      selectedAdditionalProperties &&
-      selectedAdditionalProperties.length > 0
-    ) {
-      allProperties = mainProperties.concat(selectedAdditionalProperties);
+  const onClickBack = () => {
+    console.log("Back clicked");
+    if (termsWithStatus.length > 0) {
+      setTerms([]);
+      setTermsWithStatus([]);
+    } else {
+      // go back using the router history
+      props.history.goBack();
     }
-    console.log(allProperties);
-    setHeaderData(allProperties);
-  }
-
-  // Additional attributes can be selected so more columns can be shown
-  // the additional attriniutes are in selectedAdditionalProperties
-  const onAdditionalAttributesChanged = (items) => {
-    console.log("onAdditionalAttributesChanged");
-    console.log(items.selectedItems);
-    selectedAdditionalProperties = [];
-    const selectedItems = items.selectedItems;
-    for (let i = 0; i < selectedItems.length; i++) {
-      let item = {};
-      item.key = selectedItems[i].id;
-      item.text = selectedItems[i].text;
-      selectedAdditionalProperties.push(item);
-    }
-    // render the table by recalculating the header state based on the new values
-    calculateHeaderData();
   };
-  // calculate the columns from the main attributes and the additional attributes.
-  function calculateAdditionalProperties() {
-    let items = [];
-    termNodeType.attributes.map(function (attribute) {
-      if (
-        attribute.key != "name" &&
-        attribute.key != "qualifiedName" &&
-        attribute.key != "description"
-      ) {
-        let item = {};
-        item.id = attribute.key;
-        item.text = attribute.label;
-        items.push(item);
-      }
-    });
-    return items;
-  }
 
   function setTermName(index, name) {
     let workingTerms = terms;
@@ -127,13 +87,25 @@ export default function QuickTerms() {
     workingTerms[index].description = description;
     setTerms(workingTerms);
   }
+  const onSelectRow = (row) => {
+    console.log("onSelectRow " + row);
+  };
 
   return (
     <div>
-      {termResponses.length == 0 && (
+      <div className="row-container">
+        <button onClick={onClickBack} type="button">
+          Back
+        </button>
+      </div>
+      {termsWithStatus.length == 0 && (
         <div>
-          <h3>Quickly add terms.</h3>
-          <Add32 kind="primary" onClick={() => onAdd()} />
+          <div className="row-container">
+            <h3>Quickly add terms.</h3>
+          </div>
+          <div className="row-container">
+            <Add32 kind="primary" onClick={() => onAdd()} />
+          </div>
           <Form>
             <FormGroup>
               {terms.map((item, index) => {
@@ -161,26 +133,86 @@ export default function QuickTerms() {
                   </div>
                 );
               })}
-              <Button
-                type="submit"
-                onClick={onSubmit}
-                disabled={!validateForm()}
-              >
-                Create Terms on Server
-              </Button>
+              <div className="row-container">
+                <Button
+                  type="submit"
+                  onClick={onSubmit}
+                  disabled={!validateForm()}
+                >
+                  Create Terms on Server
+                </Button>
+              </div>
             </FormGroup>
           </Form>
         </div>
       )}
-      {termResponses.length > 0 && (
+      {termsWithStatus.length > 0 && (
         <div>
-          {termResponses.map((item, index) => {
-            return (
-              <div key={index}>
-                Result {index} {item.result.name}  {item.relatedHTTPCode}
+          <div className="row-container">
+            <h3>Terms Added.</h3>
+          </div>
+          <Form>
+            <FormGroup>
+              <div className="bx--form-item">
+                <div className="row-container">
+                  <TextInput
+                    type="text"
+                    defaultValue="Name"
+                    style={{ color: "grey" }}
+                    readOnly
+                  />
+                  <TextInput
+                    type="text"
+                    defaultValue="Description"
+                    style={{ color: "grey" }}
+                    readOnly
+                  />
+
+                  <TextInput
+                    type="text"
+                    defaultValue="Status"
+                    style={{ color: "grey" }}
+                    readOnly
+                  />
+                </div>
               </div>
-            );
-          })}
+              {termsWithStatus.map((item, index) => {
+                return (
+                  <div className="bx--form-item" key={index}>
+                    <div className="row-container">
+                      <TextInput
+                        type="text"
+                        defaultValue={item.name}
+                        readOnly
+                      />
+                      <TextInput
+                        type="text"
+                        defaultValue={item.description}
+                        readOnly
+                      />
+                      {item.status == "Success" && (
+                        <TextInput
+                          type="text"
+                          defaultValue={item.status}
+                          style={{ color: "green" }}
+                          readOnly
+                        />
+                      )}
+                      {item.status != "Success" && (
+                        <TextInput
+                          type="text"
+                          defaultValue={item.status}
+                          style={{ color: "red" }}
+                          readOnly
+                        />
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </FormGroup>
+          </Form>
+          <article style={{ color: "red" }}>{errorMsg}</article>
         </div>
       )}
     </div>
