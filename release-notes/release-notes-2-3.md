@@ -4,15 +4,14 @@
 # Release 2.3 (September 2020)
 
 ## New capabilities & Major changes
- * A new Presentation Server User interface has been added, making use of React & Carbon components
-   - Dino & Presentation Server are still in development
+ * A new Presentation Server User interface has been added, making use of [React](https://reactjs.org/) & [Carbon](https://www.carbondesignsystem.com/) 
+   - Presentation Server is still in development
    - For developers not contributing to Presentation Server, running in a container under Kubernetes or docker-compose is the easiest way to get started
    - See the last section of the [Presentation Server README](https://github.com/odpi/egeria/tree/egeria-release-2.3/open-metadata-implementation/user-interfaces/presentation-server) for instructions on running Presentation Server
-   - This README also documents 'Configuring the Presentation Server' - this is done automatically in our k8s/compose environment. However
+   - For contributors, This README also documents 'Configuring the Presentation Server' - this is done automatically in our k8s/compose environment. However
      if doing this manually note (4th point) that the environment variable is `EGERIA_PRESENTATIONSERVER_SERVER_<name>` where name is the name of the tenant. The examples in the document are correct.
  * The Dino User Interface for presentation server now allows an Egeria operations user to display a graph and details of Egeria resources including
    platforms, servers, services and cohort memberships.
-
  * Type Explorer & Repository Explorer, previously found in the Polymer based UI, are now available
    in Presentation Server.
  * Raise a github issue or Contact the Egeria team via slack  at slack.odpi.com if you experience issues or have questions.
@@ -20,7 +19,7 @@
  * Bug Fixes & ongoing feature work
 
 ## Known Issues
- * The 'presentation-server' & 'subject-area-fvt' maven artifacts have not been published to maven central/JCenter. We plan to fix this in the next release. They can be retrieved from JFrog Artifactory at 'https://odpi.jfrog.io/odpi/egeria-release-local' if needed and it is not possible to build locally.
+ * The 'presentation-server' & 'subject-area-fvt' maven artifacts have not been published to maven central/JCenter. See issue #3675 They can be retrieved from JFrog Artifactory at 'https://odpi.jfrog.io/odpi/egeria-release-local' if needed and it is not possible to build locally.
 
 ## Dependencies
  * Spring has been updated to 2.3.9
