@@ -31,7 +31,6 @@ import static org.testng.Assert.assertEquals;
 
 <$$$
 import org.odpi.openmetadata.fvt.opentypes.entities.<$$uEntityName$$>.<$$uEntityName$$>;
-import org.odpi.openmetadata.fvt.opentypes.entities.<$$uEntityName$$>.<$$uEntityName$$>References;
 $$$>
 
 <$$RELATIONSHIP$
