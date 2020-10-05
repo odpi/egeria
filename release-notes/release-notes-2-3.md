@@ -3,18 +3,29 @@
 
 # Release 2.3 (September 2020)
 
-Below are the highlights of this release:
-
- * Addition of Dino User Interface for presentation server that allows an Egeria operations user to display a graph and details of Egeria resources including
+## New capabilities & Major changes
+ * A new Presentation Server User interface has been added, making use of React & Carbon components
+   - Dino & Presentation Server are still in development
+   - For developers not contributing to Presentation Server, running in a container under Kubernetes or docker-compose is the easiest way to get started
+   - See the last section of the [Presentation Server README](https://github.com/odpi/egeria/tree/egeria-release-2.3/open-metadata-implementation/user-interfaces/presentation-server) for instructions on running Presentation Server
+   - This README also documents 'Configuring the Presentation Server' - this is done automatically in our k8s/compose environment. However
+     if doing this manually note (4th point) that the environment variable is `EGERIA_PRESENTATIONSERVER_SERVER_\<name\>`
+ * The Dino User Interface for presentation server now allows an Egeria operations user to display a graph and details of Egeria resources including
    platforms, servers, services and cohort memberships.
- * TBA
 
-Known Issues
- * TBA
+ * Type Explorer & Repository Explorer, previously found in the Polymer based UI, are now available
+   in Presentation Server.
+ * Raise a github issue or Contact the Egeria team via slack  at slack.odpi.com if you experience issues or have questions.
+ * The Egeria Docker image is now based on Redhat's UBI-8 openjdk-11 image, to improve security & operational support. See issue #3580
+ * Bug Fixes & ongoing feature work
 
-Dependencies
- * TBA
- 
+## Known Issues
+ * The 'presentation-server' & 'subject-area-fvt' maven artifacts have not been published to maven central/JCenter. We plan to fix this in the next release. They can be retrieved from JFrog Artifactory at 'https://odpi.jfrog.io/odpi/egeria-release-local' if needed and it is not possible to build locally.
+
+## Dependencies
+ * Spring has been updated to 2.3.9
+ * Spring Security has been updated to 5.4.0
+ * For a full list run 'mvn dependency:tree' against top level directory and/or review the top level pom.xml
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 Copyright Contributors to the ODPi Egeria project.
