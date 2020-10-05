@@ -5,7 +5,6 @@ package org.odpi.openmetadata.conformance.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.conformance.beans.OpenMetadataConformanceWorkbenchResults;
 import org.odpi.openmetadata.conformance.beans.OpenMetadataConformanceWorkbenchStatus;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;

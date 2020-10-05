@@ -10,7 +10,7 @@ import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.As
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.ClassificationListResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.RelationshipListResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.RelationshipResponse;
-import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 
 /**
@@ -35,7 +35,7 @@ public interface AssetCatalogInterface {
      * @throws PropertyServerException   if a problem occurs while serving the request
      * @throws InvalidParameterException if parameter validation fails
      */
-    AssetDescriptionResponse getAssetDetails(String userId, String assetGUID, String assetType) throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException;
+    AssetDescriptionResponse getAssetDetails(String userId, String assetGUID, String assetType) throws InvalidParameterException, PropertyServerException;
 
     /**
      * Fetch asset's header, classification, properties and relationships
@@ -47,7 +47,7 @@ public interface AssetCatalogInterface {
      * @throws PropertyServerException   if a problem occurs while serving the request
      * @throws InvalidParameterException if parameter validation fails
      */
-    AssetDescriptionResponse getAssetUniverse(String userId, String assetGUID, String assetType) throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException;
+    AssetDescriptionResponse getAssetUniverse(String userId, String assetGUID, String assetType) throws InvalidParameterException, PropertyServerException;
 
     /**
      * Fetch the relationships for a specific asset
@@ -62,7 +62,7 @@ public interface AssetCatalogInterface {
      * @throws PropertyServerException   if a problem occurs while serving the request
      * @throws InvalidParameterException if parameter validation fails
      */
-    RelationshipListResponse getAssetRelationships(String userId, String assetGUID, String assetType, String relationshipType, Integer from, Integer pageSize) throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException;
+    RelationshipListResponse getAssetRelationships(String userId, String assetGUID, String assetType, String relationshipType, Integer from, Integer pageSize) throws InvalidParameterException, PropertyServerException;
 
     /**
      * Fetch the classification for a specific asset
@@ -75,7 +75,7 @@ public interface AssetCatalogInterface {
      * @throws PropertyServerException   if a problem occurs while serving the request
      * @throws InvalidParameterException if parameter validation fails
      */
-    ClassificationListResponse getClassificationsForAsset(String userId, String assetGUID, String assetType, String classificationName) throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException;
+    ClassificationListResponse getClassificationsForAsset(String userId, String assetGUID, String assetType, String classificationName) throws InvalidParameterException, PropertyServerException;
 
     /**
      * Returns a sub-graph of intermediate assets that connected two assets
@@ -87,7 +87,7 @@ public interface AssetCatalogInterface {
      * @throws PropertyServerException   if a problem occurs while serving the request
      * @throws InvalidParameterException if parameter validation fails
      */
-    AssetDescriptionListResponse getLinkingAssets(String userId, String startAssetGUID, String endAssetGUID) throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException;
+    AssetDescriptionListResponse getLinkingAssets(String userId, String startAssetGUID, String endAssetGUID) throws InvalidParameterException, PropertyServerException;
 
     /**
      * Return a sub-graph of relationships that connect two assets
@@ -99,7 +99,7 @@ public interface AssetCatalogInterface {
      * @throws PropertyServerException   if a problem occurs while serving the request
      * @throws InvalidParameterException if parameter validation fails
      */
-    RelationshipListResponse getLinkingRelationships(String userId, String startAssetGUID, String endAssetGUID) throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException;
+    RelationshipListResponse getLinkingRelationships(String userId, String startAssetGUID, String endAssetGUID) throws InvalidParameterException, PropertyServerException;
 
     /**
      * Returns the sub-graph that represents the list of assets that in neighborhood of the given asset
@@ -111,7 +111,7 @@ public interface AssetCatalogInterface {
      * @throws PropertyServerException   if a problem occurs while serving the request
      * @throws InvalidParameterException if parameter validation fails
      */
-    AssetDescriptionListResponse getAssetsFromNeighborhood(String userId, String assetGUID, SearchParameters searchParameters) throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException;
+    AssetDescriptionListResponse getAssetsFromNeighborhood(String userId, String assetGUID, SearchParameters searchParameters) throws InvalidParameterException, PropertyServerException;
 
     /**
      * Return a list of assets matching the search criteria without the full context
@@ -123,7 +123,7 @@ public interface AssetCatalogInterface {
      * @throws PropertyServerException   if a problem occurs while serving the request
      * @throws InvalidParameterException if parameter validation fails
      */
-    AssetListResponse searchByType(String userId, String searchCriteria, SearchParameters searchParameters) throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException;
+    AssetListResponse searchByType(String userId, String searchCriteria, SearchParameters searchParameters) throws InvalidParameterException, PropertyServerException;
 
     /**
      * Return the full context of an asset/glossary term based on its identifier.
@@ -136,7 +136,7 @@ public interface AssetCatalogInterface {
      * @throws PropertyServerException   if a problem occurs while serving the request
      * @throws InvalidParameterException if parameter validation fails
      */
-    AssetResponse getAssetContext(String userId, String assetGUID, String assetType) throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException;
+    AssetResponse getAssetContext(String userId, String assetGUID, String assetType) throws InvalidParameterException, PropertyServerException;
 
 
     /**
@@ -151,7 +151,7 @@ public interface AssetCatalogInterface {
      * @throws PropertyServerException   if a problem occurs while serving the request
      * @throws InvalidParameterException if parameter validation fails
      */
-    RelationshipResponse getRelationshipBetweenEntities(String userId, String entity1GUID, String entity2GUID, String relationshipType) throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException;
+    RelationshipResponse getRelationshipBetweenEntities(String userId, String entity1GUID, String entity2GUID, String relationshipType) throws InvalidParameterException, PropertyServerException;
 
     /**
      * Returns the list with supported types for search, including the sub-types supported
@@ -161,7 +161,5 @@ public interface AssetCatalogInterface {
      * @return list of types and sub-types supported for search
      */
 
-    AssetCatalogSupportedTypes getSupportedTypes(String userId, String type) throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-            org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
-            org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+    AssetCatalogSupportedTypes getSupportedTypes(String userId, String type) throws InvalidParameterException, PropertyServerException;
 }

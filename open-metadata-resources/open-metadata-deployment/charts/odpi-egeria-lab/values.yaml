@@ -11,12 +11,14 @@ service:
     dev: 30082
     factory: 30083
     ui: 30443
+    presentation: 30091
     debug:
       core: 31005
       datalake: 31006
       dev: 31007
       factory: 31008
       ui: 31009
+      #TODO: Debug support for node application (presentation server)
 
 egeria:
   #logging: OFF
@@ -45,6 +47,8 @@ imageDefaults:
 image:
   egeria:
     name: egeria
+  presentation:
+    name: egeria-presentation-server
   configure:
     name: egeria-configure
   jupyter:
