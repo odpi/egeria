@@ -9,7 +9,7 @@
    - For developers not contributing to Presentation Server, running in a container under Kubernetes or docker-compose is the easiest way to get started
    - See the last section of the [Presentation Server README](https://github.com/odpi/egeria/tree/egeria-release-2.3/open-metadata-implementation/user-interfaces/presentation-server) for instructions on running Presentation Server
    - This README also documents 'Configuring the Presentation Server' - this is done automatically in our k8s/compose environment. However
-     if doing this manually note (4th point) that the environment variable is `EGERIA_PRESENTATIONSERVER_SERVER_\<name\>`
+     if doing this manually note (4th point) that the environment variable is `EGERIA_PRESENTATIONSERVER_SERVER_<name>` where name is the name of the tenant. The examples in the document are correct.
  * The Dino User Interface for presentation server now allows an Egeria operations user to display a graph and details of Egeria resources including
    platforms, servers, services and cohort memberships.
 
