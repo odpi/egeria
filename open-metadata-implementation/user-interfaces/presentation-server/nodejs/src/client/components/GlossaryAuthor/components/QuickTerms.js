@@ -5,11 +5,18 @@ import Add32 from "../../../images/Egeria_add_32";
 import getNodeType from "./properties/NodeTypes.js";
 import { Form, FormGroup, TextInput, Button } from "carbon-components-react";
 import { issueRestCreate } from "./RestCaller";
+import { useParams } from "react-router-dom";
 
 export default function QuickTerms() {
+  const currentNodeType = getNodeType("glossary");
   const [terms, setTerms] = useState([]);
-  const restUrl = getNodeType("term").url;
+  const [termResponses, setTermResponses] = useState([]);
 
+  const url = getUrl();
+  function getUrl() {
+    const { guid } = useParams();
+    return currentNodeType.url + "/" + guid + "/terms";
+  }
   const validateForm = () => {
     return true;
   };
@@ -27,24 +34,18 @@ export default function QuickTerms() {
     e.preventDefault();
 
     if (terms.length > 0) {
-      // create body with glossary and list of terms
-      let body = {};
-      let glossary = {};
-      glossary.guid = getGlossaryGuid();
-      body.glossary = glossary;
-      body.terms = terms;
-
-      //TODO issue create using the body we have just created. 
+      console.log("issueUpdate " + url);
+      issueRestCreate(url, terms, onSuccessfulCreate, onErrorCreate);
     } else {
       alert("Nothing to create");
     }
   };
-  function onSuccessfulCreate() {
-    //TODO
+  const onSuccessfulCreate = (json) => {
+    setTermResponses(json.result);
   }
   //return next term to create
   function onErrorCreate(msg) {
-    TODO;
+    //TODO;
   }
 
   const getGlossaryGuid = () => {
@@ -52,10 +53,6 @@ export default function QuickTerms() {
     return result[result.length - 2];
   };
 
-  const issueCreate = (body) => {
-    console.log("issueCreate " + restUrl);
-    issueRestCreate(restUrl, body, onSuccessfulCreate, onErrorCreate);
-  };
   function setTermName(index, name) {
     let workingTerms = terms;
     workingTerms[index].name = name;
@@ -99,6 +96,13 @@ export default function QuickTerms() {
               </div>
             );
           })}
+         
+          {termResponses.map((item, index ) => {
+            return (
+              <div key={index}>Result {index} {item.result.name}{item.relatedHTTPCode}</div>
+            );
+          })}
+         
           <Button type="submit" onClick={onSubmit} disabled={!validateForm()}>
             Create Terms on Server
           </Button>
