@@ -11,9 +11,9 @@ import org.odpi.openmetadata.fvt.utilities.FVTResults;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * DataManagerOMASClientConstructorFVT is the surefire wrapper for ClientConstructorTest.
+ * DataManagerOMASClientConstructorIT is the surefire wrapper for ClientConstructorTest.
  */
-public class DataManagerOMASClientConstructorFVT
+public class DataManagerOMASClientConstructorIT
 {
     @ParameterizedTest
     @ValueSource(strings = {FVTConstants.IN_MEMORY_SERVER, FVTConstants.GRAPH_SERVER})

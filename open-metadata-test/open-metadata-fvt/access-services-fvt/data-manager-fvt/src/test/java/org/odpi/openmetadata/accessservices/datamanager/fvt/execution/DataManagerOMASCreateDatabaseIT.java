@@ -11,9 +11,9 @@ import org.odpi.openmetadata.fvt.utilities.FVTResults;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * DataManagerOMASCreateDatabaseFVT is the surefire wrapper for CreateDatabaseTest.
+ * DataManagerOMASCreateDatabaseIT is the surefire wrapper for CreateDatabaseTest.
  */
-public class DataManagerOMASCreateDatabaseFVT
+public class DataManagerOMASCreateDatabaseIT
 {
     @ParameterizedTest
     @ValueSource(strings = {FVTConstants.IN_MEMORY_SERVER, FVTConstants.GRAPH_SERVER})

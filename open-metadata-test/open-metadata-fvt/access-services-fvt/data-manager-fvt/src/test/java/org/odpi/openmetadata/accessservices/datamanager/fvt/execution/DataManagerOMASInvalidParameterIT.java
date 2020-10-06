@@ -12,9 +12,9 @@ import org.odpi.openmetadata.fvt.utilities.exceptions.FVTTestFailureException;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 /**
- * DataManagerOMASInvalidParameterFVT is the surefire wrapper for InvalidParameterTest.
+ * DataManagerOMASInvalidParameterIT is the surefire wrapper for InvalidParameterTest.
  */
-public class DataManagerOMASInvalidParameterFVT
+public class DataManagerOMASInvalidParameterIT
 {
     @ParameterizedTest
     @ValueSource(strings = {"serverinmem","servergraph"})
