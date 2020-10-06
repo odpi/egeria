@@ -13,7 +13,7 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.6.2'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.2'
     testImplementation 'org.mockito:mockito-core:3.4.2'
-    testImplementation 'org.mockito:mockito-junit-jupiter:3.4.2'
+    testImplementation 'org.mockito:mockito-junit-jupiter:3.5.13'
     implementation 'com.fasterxml.jackson.core:jackson-annotations:2.11.1'
     testImplementation project(':open-metadata-implementation:frameworks:open-connector-framework')
     testImplementation project(':open-metadata-implementation:frameworks:audit-log-framework')
