@@ -13,16 +13,32 @@ update_configs:
       - "planetf1"
       - "grahamwallis"
       - "mandy-chessell"
-  # Explicit references to package.json (see https://github.com/dependabot/feedback/issues/705 )
 
+  - package_manager: "java:gradle"
+    directory: "/"
+    update_schedule: "daily"
+    default_reviewers:
+      - "planetf1"
+      - "grahamwallis"
+      - "mandy-chessell"
   - package_manager: "javascript"
-    directory: "/open-metadata-implementation/user-interfaces/ui-chassis/ui-chassis-spring/src/main/static"
+    directory: "/open-metadata-implementation/user-interface/presentation-server/nodejs/"
     update_schedule: "daily"
     default_reviewers:
       - "grahamwallis"
       - "davidradl"
-
-  # Explicit entries also needed for dockerfile
+  - package_manager: "javascript"
+    directory: "/open-metadata-implementation/user-interface/presentation-server/nodejs/src/cra-client/"
+    update_schedule: "daily"
+    default_reviewers:
+      - "grahamwallis"
+      - "davidradl"
+  - package_manager: "javascript"
+    directory: "/open-metadata-implementation/user-interfaces/ui-chassis/ui-chassis-spring/src/main/static/"
+    update_schedule: "daily"
+    default_reviewers:
+      - "grahamwallis"
+      - "davidradl"
   - package_manager: "docker"
     directory: "/open-metadata-resources/open-metadata-deployment/docker/build-images/apache/ranger"
     update_schedule: "daily"
@@ -60,9 +76,20 @@ update_configs:
       - "cmgrote"
       - "planetf1"
   - package_manager: "docker"
+    directory: "/open-metadata-resources/open-metadata-deployment/docker/configure"
+    update_schedule: "daily"
+    default_reviewers:
+      - "cmgrote"
+      - "planetf1"
+  - package_manager: "docker"
+    directory: "/open-metadata-resources/open-metadata-deployment/docker/presentation-server"
+    update_schedule: "daily"
+    default_reviewers:
+      - "cmgrote"
+      - "planetf1"
+  - package_manager: "docker"
     directory: "/open-metadata-resources/open-metadata-deployment/docker/apache-ranger-admin"
     update_schedule: "daily"
     default_reviewers:
       - "cmgrote"
       - "planetf1"
-
