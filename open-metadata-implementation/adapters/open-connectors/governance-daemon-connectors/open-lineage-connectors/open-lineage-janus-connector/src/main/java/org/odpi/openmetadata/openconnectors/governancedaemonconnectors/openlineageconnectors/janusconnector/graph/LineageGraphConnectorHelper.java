@@ -230,7 +230,7 @@ public class LineageGraphConnectorHelper {
         Graph subGraph = (Graph) g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).bothE(glossaryTermAndClassificationEdges)
                 .subgraph("s").cap("s").next();
 
-        return Optional.of(getLineageVerticesAndEdges(subGraph, false));
+        return Optional.of(getLineageVerticesAndEdges(subGraph, true));
     }
 
     /**
@@ -246,7 +246,7 @@ public class LineageGraphConnectorHelper {
         Graph subGraph = (Graph) g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).bothE(relationalColumnAndClassificationEdges)
                 .subgraph("s").cap("s").next();
 
-        return Optional.of(getLineageVerticesAndEdges(subGraph, false));
+        return Optional.of(getLineageVerticesAndEdges(subGraph, true));
     }
 
     /**
@@ -262,7 +262,7 @@ public class LineageGraphConnectorHelper {
         Graph subGraph = (Graph) g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).bothE(tabularColumnAndClassificationEdges)
                 .subgraph("s").bothV().inE(ASSET_SCHEMA_TYPE).subgraph("s").cap("s").next();
 
-        return Optional.of(getLineageVerticesAndEdges(subGraph, false));
+        return Optional.of(getLineageVerticesAndEdges(subGraph, true));
     }
 
     /**

@@ -27,7 +27,7 @@ public enum ViewServiceDescription implements Serializable {
     TYPE_EXPLORER(1030,
                   "Type Explorer",
                   "Type Explorer OMVS",
-                  "type-explorer",
+                  "tex",
                   "Explore the open metadata types.",
                   //TODO create appropriate wiki
                   "https://odpi.github.io/egeria/open-metadata-implementation/access-services/subject-area/"),
