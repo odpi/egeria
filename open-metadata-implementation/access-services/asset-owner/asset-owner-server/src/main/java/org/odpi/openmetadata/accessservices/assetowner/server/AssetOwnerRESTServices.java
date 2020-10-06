@@ -29,11 +29,8 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 
 /**
- * AssetOwner provides the generic client-side interface for the Asset Owner Open Metadata Access Service (OMAS).
- * There are other clients that provide specialized methods for specific types of Asset.
- *
- * This client is initialized with the URL and name of the server that is running the Asset Owner OMAS.
- * This server is responsible for locating and managing the asset owner's definitions exchanged with this client.
+ * AssetOwnerRESTServices provides part of the server-side support for the Asset Owner Open Metadata Access Service (OMAS).
+ * There are other REST services that provide specialized methods for specific types of Asset.
  */
 public class AssetOwnerRESTServices
 {
@@ -1353,6 +1350,7 @@ public class AssetOwnerRESTServices
      * @param serverName name of the server instance to connect to
      * @param userId calling user
      * @param assetGUID unique identifier for the asset to update
+     * @param requestBody null request body
      *
      * @return void or
      * InvalidParameterException full path or userId is null or
@@ -1396,6 +1394,7 @@ public class AssetOwnerRESTServices
      * @param serverName name of the server instance to connect to
      * @param userId calling user
      * @param assetGUID unique identifier for the asset to update
+     * @param requestBody null request body
      *
      * @return void or
      * InvalidParameterException full path or userId is null or
