@@ -25,7 +25,7 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-core:2.11.1'
     implementation 'org.apache.commons:commons-lang3:3.11'
     testImplementation 'org.testng:testng:7.1.0'
-    testImplementation 'org.mockito:mockito-junit-jupiter:3.4.2'
+    testImplementation 'org.mockito:mockito-junit-jupiter:3.5.13'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.2'
     testImplementation 'org.mockito:mockito-core:3.4.2'
     implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
