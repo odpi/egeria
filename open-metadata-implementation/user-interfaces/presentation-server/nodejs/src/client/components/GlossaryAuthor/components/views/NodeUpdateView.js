@@ -18,15 +18,15 @@ import {
   TextInput,
 } from "carbon-components-react";
 
-import { GlossaryAuthorContext } from "../../contexts/GlossaryAuthorContext";
+import { GlossaryAuthorCRUDContext } from "../../contexts/GlossaryAuthorCRUDContext";
 import Info16 from "@carbon/icons-react/lib/information/16";
 import Close16 from "../../../../images/Egeria_close_16";
 
 function NodeUpdateView(props) {
   console.log("NodeUpdateView");
 
-  const glossaryAuthorContext = useContext(GlossaryAuthorContext);
-  console.log("NodeUpdateView glossaryAuthorContext", glossaryAuthorContext);
+  const glossaryAuthorCRUDContext = useContext(GlossaryAuthorCRUDContext);
+  console.log("NodeUpdateView glossaryAuthorCRUDContext", glossaryAuthorCRUDContext);
 
   const [errorMsg, setErrorMsg] = useState();
   const [updateBody, setUpdateBody] = useState({});
@@ -42,18 +42,18 @@ function NodeUpdateView(props) {
   const handleOnClose = (e) => {
     console.log("GlossaryAuthor connectivity handleClick(()");
     e.preventDefault();
-    glossaryAuthorContext.doCancelUpdate();
+    glossaryAuthorCRUDContext.doCancelUpdate();
   };
 
   const handleUpdate = (e) => {
     console.log("handleUpdate(()");
     e.preventDefault();
     let body = updateBody;
-    const nodeType = glossaryAuthorContext.currentNodeType;
+    const nodeType = glossaryAuthorCRUDContext.currentNodeType;
     body.nodeType = nodeType.typeName;
     if (nodeType.hasGlossary) {
       let glossary = {};
-      glossary.guid = glossaryAuthorContext.myGlossary.systemAttributes.guid;
+      glossary.guid = glossaryAuthorCRUDContext.myGlossary.systemAttributes.guid;
       body.glossary = glossary;
     }
     props.onUpdate(body);
@@ -71,7 +71,7 @@ function NodeUpdateView(props) {
   const getSystemDataRowData = () => {
     let rowData = [];
     const systemAttributes =
-      glossaryAuthorContext.selectedNode.systemAttributes;
+      glossaryAuthorCRUDContext.selectedNode.systemAttributes;
     for (var prop in systemAttributes) {
       let row = {};
       row.id = prop;
@@ -108,14 +108,14 @@ function NodeUpdateView(props) {
         <div>
           <h4>
             Update{" "}
-            {glossaryAuthorContext.currentNodeType
-              ? glossaryAuthorContext.currentNodeType.typeName
+            {glossaryAuthorCRUDContext.currentNodeType
+              ? glossaryAuthorCRUDContext.currentNodeType.typeName
               : ""}
             <Info16 />
           </h4>
         </div>
-        {glossaryAuthorContext.selectedNode &&
-          glossaryAuthorContext.currentNodeType.attributes.map((item) => {
+        {glossaryAuthorCRUDContext.selectedNode &&
+          glossaryAuthorCRUDContext.currentNodeType.attributes.map((item) => {
             return (
               <div className="bx--form-item" key={item.key}>
                 <label htmlFor={createLabelId(item.key)} className="bx--label">
@@ -125,9 +125,8 @@ function NodeUpdateView(props) {
                   id={createLabelId(item.key)}
                   type="text"
                   className="bx--text-input"
-                  defaultValue={glossaryAuthorContext.selectedNode[item.key]}
-                  key={glossaryAuthorContext.selectedNode[item.key]}
-                  //value={glossaryAuthorContext.selectedNode[item.key]?glossaryAuthorContext.selectedNode[item.key]:""}
+                  defaultValue={glossaryAuthorCRUDContext.selectedNode[item.key]}
+                  key={glossaryAuthorCRUDContext.selectedNode[item.key]}
                   onChange={(e) => setAttribute(item, e.target.value)}
                   placeholder={item.label}
                 />

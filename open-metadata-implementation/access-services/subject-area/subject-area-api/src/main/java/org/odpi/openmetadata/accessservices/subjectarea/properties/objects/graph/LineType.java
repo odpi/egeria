@@ -24,8 +24,8 @@ public enum LineType {
     TypedBy,
     Synonym,
     Antonym,
-    Isa,
-    IsaTypeOf,
+    IsA,
+    IsATypeOf,
     RelatedTerm,
     HasA,
     // category category

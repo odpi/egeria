@@ -1,38 +1,22 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Release 2.2 (Planned August 2020)
+# Release 2.2 (August 2020)
 
-Release 2.2 focuses on providing the secured self-service data access point
-for a data lake.  There are two main features:
+Below are the highlights of this release:
 
-  * **Metadata Controlled Security** where security tags based on the metadata attachments to the assets
-    drive the enforcement engine managing access control
-  * **Data Virtualization Configuration** where the data virtualization engine that is providing
-    the endpoint for the self-service access point.
+ * Additional connectors are now placed in our assembly under server/lib without dependencies. If you need to use a connector that requires additional dependencies that are not already part of the server chassis, you will need to add those libraries here.
+ * The [docker](https://hub.docker.com/repository/docker/odpi/egeria/tags?page=1&name=2.2) image has been updated to use a later openjdk alpine base image due to incompatabilities with our JanusGraph support in the old images for java 8.
+ * In the VDC chart, 2 new values have been added, 'ibmigc.connectorversion' and 'atlas.connectorversion'. In this release these are set to use the 2.1 connectors, since the connectors run to a different release cycle than the main Egeria code. Once new connectors are released you can update these values to get the latest connectors 
+ * Further code to support lineage has been added, but in this release it remains in development and is not yet ready for use in production.
+ * User interface improvements.
+ * Ongoing bug fixes and refactoring especially in subject-area omas.
 
-Below are the highlights:
+Known Issues
+ * In the VDC helm chart, the Apache Atlas initialization job fails to complete. This is due to a problem with the Apache Atlas server and Apache SOLR. See https://github.com/odpi/egeria/issues/3587 for more information.
 
-* There are new access services:
-   * The [Governance Engine OMAS](../open-metadata-implementation/access-services/governance-engine) supports the security sync server (below).
-   * The [Security Officer OMAS](../open-metadata-implementation/access-services/security-officer) supports the assigning of security tags to assets and their schemas.
-   * The [Information View OMAS](../open-metadata-implementation/access-services/information-view) supports the virtualizer server (below).
-   
-* There are new governance servers:
-   * The [Security Sync Server](../open-metadata-implementation/governance-servers/security-sync-services) exchanges security configuration with enforcement engines such as Apache Ranger.
-     It calls the Governance Engine OMAS.
-   * The [Security Officer Server](../open-metadata-implementation/governance-servers/security-officer-services) determines the security tags for assets.
-     It calls the Security Officer OMAS.
-   * The [Virtualizer Server](../open-metadata-implementation/governance-servers/virtualization-services) supports the automatic configuration of a data virtualization platform based on the
-     Assets that are being cataloged in open metadata.  It consumes notifications
-     from the Information View OMAS and stores details of the views it is creating
-     through the Data Platform OMAS.   
-
-* New [tutorials](../open-metadata-resources/open-metadata-tutorials),
-  [hands-on labs](../open-metadata-resources/open-metadata-labs),
-  [samples](../open-metadata-resources/open-metadata-samples) and 
-  [open metadata archives](../open-metadata-resources/open-metadata-archives) will demonstrate the new
-  capability.
+Dependencies
+ * Spring Boot is updated to 2.3.3 .
    
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

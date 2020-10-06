@@ -3,5 +3,5 @@
 ---
 dependencies:
   - name: kafka
-    version: 6.1.6
+    version: 11.8.4
     repository: https://charts.bitnami.com/bitnami
