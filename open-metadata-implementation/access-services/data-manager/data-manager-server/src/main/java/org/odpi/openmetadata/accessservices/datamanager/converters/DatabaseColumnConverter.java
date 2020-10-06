@@ -4,8 +4,6 @@ package org.odpi.openmetadata.accessservices.datamanager.converters;
 
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseColumnElement;
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseColumnTypeElement;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.MetadataElement;
-import org.odpi.openmetadata.accessservices.datamanager.properties.TabularColumnProperties;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -93,8 +91,8 @@ public class DatabaseColumnConverter<B> extends DataManagerOMASConverter<B>
                     bean.setSortOrder(this.removeSortOrder(instanceProperties));
                     bean.setMinimumLength(this.removeMinimumLength(instanceProperties));
                     bean.setLength(this.removeLength(instanceProperties));
-                    bean.setSignificantDigits(this.removeSignificantDigits(instanceProperties));
-                    bean.setNullable(this.removeIsNullable(instanceProperties));
+                    bean.setPrecision(this.removeSignificantDigits(instanceProperties));
+                    bean.setIsNullable(this.removeIsNullable(instanceProperties));
                     bean.setNativeJavaClass(this.removeNativeClass(instanceProperties));
                     bean.setAliases(this.removeAliases(instanceProperties));
 

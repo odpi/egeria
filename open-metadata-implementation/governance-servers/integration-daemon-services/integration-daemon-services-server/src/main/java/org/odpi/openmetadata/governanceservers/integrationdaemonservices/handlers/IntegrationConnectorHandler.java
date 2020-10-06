@@ -79,7 +79,7 @@ public class IntegrationConnectorHandler implements Serializable
         this.metadataSourceQualifiedName = integrationConnectorConfig.getMetadataSourceQualifiedName();
         this.minSecondsBetweenRefresh    = integrationConnectorConfig.getRefreshTimeInterval();
         this.connection                  = integrationConnectorConfig.getConnection();
-        this.needDedicatedThread         = integrationConnectorConfig.isUsesBlockingCalls();
+        this.needDedicatedThread         = integrationConnectorConfig.getUsesBlockingCalls();
         this.contextManager              = contextManager;
         this.auditLog                    = auditLog;
 

@@ -6,9 +6,7 @@ package org.odpi.openmetadata.accessservices.datamanager.metadataelements;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseTableProperties;
 import org.odpi.openmetadata.accessservices.datamanager.properties.SchemaTypeProperties;
-import org.odpi.openmetadata.accessservices.datamanager.properties.TabularSchemaTypeProperties;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -94,7 +92,7 @@ public class DatabaseTableTypeElement extends SchemaTypeProperties implements Me
                 ", usage='" + getUsage() + '\'' +
                 ", encodingStandard='" + getEncodingStandard() + '\'' +
                 ", namespace='" + getNamespace() + '\'' +
-                ", deprecated=" + isDeprecated() +
+                ", deprecated=" + getIsDeprecated() +
                 ", displayName='" + getDisplayName() + '\'' +
                 ", description='" + getDescription() + '\'' +
                 ", qualifiedName='" + getQualifiedName() + '\'' +

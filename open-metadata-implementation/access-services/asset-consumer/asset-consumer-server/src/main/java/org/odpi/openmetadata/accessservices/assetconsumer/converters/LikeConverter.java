@@ -69,7 +69,7 @@ public class LikeConverter<B> extends AssetConsumerOMASConverter<B>
                 {
                     instanceProperties = new InstanceProperties(relationship.getProperties());
 
-                    bean.setPublic(this.getIsPublic(instanceProperties));
+                    bean.setIsPublic(this.getIsPublic(instanceProperties));
                 }
             }
 

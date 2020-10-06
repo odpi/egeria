@@ -5,7 +5,6 @@ package org.odpi.openmetadata.accessservices.digitalarchitecture.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.ReferenceableElement;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -44,7 +43,7 @@ public class ValidValueAssignmentProperties implements Serializable
     {
         if (template != null)
         {
-            strictRequirement = template.isStrictRequirement();
+            strictRequirement = template.getStrictRequirement();
         }
     }
 
@@ -54,7 +53,7 @@ public class ValidValueAssignmentProperties implements Serializable
      *
      * @return boolean
      */
-    public boolean isStrictRequirement()
+    public boolean getStrictRequirement()
     {
         return strictRequirement;
     }

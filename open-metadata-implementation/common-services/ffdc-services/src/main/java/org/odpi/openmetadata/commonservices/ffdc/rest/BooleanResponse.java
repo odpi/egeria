@@ -46,7 +46,7 @@ public class BooleanResponse extends FFDCResponseBase
 
         if (template != null)
         {
-            flag = template.isFlag();
+            flag = template.getFlag();
         }
     }
 
@@ -56,7 +56,7 @@ public class BooleanResponse extends FFDCResponseBase
      *
      * @return boolean
      */
-    public boolean isFlag()
+    public boolean getFlag()
     {
         return flag;
     }
@@ -120,7 +120,7 @@ public class BooleanResponse extends FFDCResponseBase
         }
         BooleanResponse
                 that = (BooleanResponse) objectToCompare;
-        return isFlag() == that.isFlag();
+        return getFlag() == that.getFlag();
     }
 
 
@@ -132,6 +132,6 @@ public class BooleanResponse extends FFDCResponseBase
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), isFlag());
+        return Objects.hash(super.hashCode(), getFlag());
     }
 }

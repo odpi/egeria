@@ -348,7 +348,7 @@ public class AssetConsumerRESTServices
                                  null,
                                  guid,
                                  guidParameterName,
-                                 requestBody.isPublic(),
+                                 requestBody.getIsPublic(),
                                  methodName);
             }
             else
@@ -464,7 +464,7 @@ public class AssetConsumerRESTServices
                                                            guidParameterName,
                                                            commentType,
                                                            requestBody.getCommentText(),
-                                                           requestBody.isPublic(),
+                                                           requestBody.getIsPublic(),
                                                            methodName));
             }
             else
@@ -533,7 +533,7 @@ public class AssetConsumerRESTServices
                                                           guidParameterName,
                                                           commentType,
                                                           requestBody.getCommentText(),
-                                                          requestBody.isPublic(),
+                                                          requestBody.getIsPublic(),
                                                           methodName));
             }
             else
@@ -601,7 +601,7 @@ public class AssetConsumerRESTServices
                                       guidParameterName,
                                       commentType,
                                       requestBody.getCommentText(),
-                                      requestBody.isPublic(),
+                                      requestBody.getIsPublic(),
                                       methodName);
             }
             else
@@ -987,7 +987,7 @@ public class AssetConsumerRESTServices
                                                    null,
                                                    requestBody.getName(),
                                                    requestBody.getDescription(),
-                                                   requestBody.isPublic(),
+                                                   requestBody.getIsPublic(),
                                                    methodName));
             }
             else
@@ -1388,7 +1388,7 @@ public class AssetConsumerRESTServices
 
         if (requestBody != null)
         {
-            isPublic = requestBody.isPublic();
+            isPublic = requestBody.getIsPublic();
         }
 
         VoidResponse  response = new VoidResponse();
@@ -1451,7 +1451,7 @@ public class AssetConsumerRESTServices
 
         if (requestBody != null)
         {
-            isPublic = requestBody.isPublic();
+            isPublic = requestBody.getIsPublic();
         }
 
         VoidResponse  response = new VoidResponse();

@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.assetowner.properties;
 
 import com.fasterxml.jackson.annotation.*;
+import org.odpi.openmetadata.accessservices.assetowner.metadataelements.SchemaAttributeElement;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +23,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         include = JsonTypeInfo.As.PROPERTY,
         property = "class")
 @JsonSubTypes({
+        @JsonSubTypes.Type(value = SchemaAttributeElement.class, name = "SchemaAttributeElement"),
         @JsonSubTypes.Type(value = TabularColumnProperties.class, name = "TabularColumnProperties")
               })
 public class SchemaAttributeProperties extends SchemaElementProperties
@@ -84,13 +86,13 @@ public class SchemaAttributeProperties extends SchemaElementProperties
             elementPosition = template.getElementPosition();
             minCardinality = template.getMinCardinality();
             maxCardinality = template.getMaxCardinality();
-            allowsDuplicateValues = template.isAllowsDuplicateValues();
-            orderedValues = template.isOrderedValues();
+            allowsDuplicateValues = template.getAllowsDuplicateValues();
+            orderedValues = template.getOrderedValues();
             sortOrder = template.getSortOrder();
             minimumLength = template.getMinimumLength();
             length = template.getLength();
             significantDigits = template.getSignificantDigits();
-            isNullable = template.isNullable();
+            isNullable = template.getIsNullable();
             defaultValueOverride = template.getDefaultValueOverride();
             attributeType = template.getAttributeType();
             attributeRelationships = template.getAttributeRelationships();
@@ -168,7 +170,7 @@ public class SchemaAttributeProperties extends SchemaElementProperties
      *
      * @return boolean flag
      */
-    public boolean isAllowsDuplicateValues()
+    public boolean getAllowsDuplicateValues()
     {
         return allowsDuplicateValues;
     }
@@ -190,7 +192,7 @@ public class SchemaAttributeProperties extends SchemaElementProperties
      *
      * @return boolean flag
      */
-    public boolean isOrderedValues()
+    public boolean getOrderedValues()
     {
         return orderedValues;
     }
@@ -300,7 +302,7 @@ public class SchemaAttributeProperties extends SchemaElementProperties
      *
      * @return boolean
      */
-    public boolean isNullable()
+    public boolean getIsNullable()
     {
         return isNullable;
     }
@@ -311,7 +313,7 @@ public class SchemaAttributeProperties extends SchemaElementProperties
      *
      * @param nullable boolean
      */
-    public void setNullable(boolean nullable)
+    public void setIsNullable(boolean nullable)
     {
         isNullable = nullable;
     }
@@ -457,7 +459,7 @@ public class SchemaAttributeProperties extends SchemaElementProperties
                 ", attributeRelationships=" + attributeRelationships +
                 ", nativeJavaClass='" + nativeJavaClass + '\'' +
                 ", aliases=" + aliases +
-                ", deprecated=" + isDeprecated() +
+                ", deprecated=" + getIsDeprecated() +
                 ", displayName='" + getDisplayName() + '\'' +
                 ", description='" + getDescription() + '\'' +
                 ", qualifiedName='" + getQualifiedName() + '\'' +

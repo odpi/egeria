@@ -51,7 +51,7 @@ public class ValidValueProperties extends ReferenceableProperties
             usage = template.getUsage();
             scope = template.getScope();
             preferredValue = template.getPreferredValue();
-            isDeprecated = template.isDeprecated();
+            isDeprecated = template.getIsDeprecated();
         }
     }
 
@@ -173,7 +173,7 @@ public class ValidValueProperties extends ReferenceableProperties
      *
      * @return boolean flag
      */
-    public boolean isDeprecated()
+    public boolean getIsDeprecated()
     {
         return isDeprecated;
     }
@@ -184,7 +184,7 @@ public class ValidValueProperties extends ReferenceableProperties
      *
      * @param deprecated boolean flag
      */
-    public void setDeprecated(boolean deprecated)
+    public void setIsDeprecated(boolean deprecated)
     {
         isDeprecated = deprecated;
     }

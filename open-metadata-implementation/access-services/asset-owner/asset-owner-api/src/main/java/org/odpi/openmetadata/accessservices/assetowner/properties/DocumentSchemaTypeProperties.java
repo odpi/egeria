@@ -85,7 +85,7 @@ public class DocumentSchemaTypeProperties extends ComplexSchemaTypeProperties
                 ", queries=" + getQueries() +
                 ", displayName='" + getDisplayName() + '\'' +
                 ", description='" + getDescription() + '\'' +
-                ", deprecated=" + isDeprecated() +
+                ", deprecated=" + getIsDeprecated() +
                 ", typeName='" + getTypeName() + '\'' +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +

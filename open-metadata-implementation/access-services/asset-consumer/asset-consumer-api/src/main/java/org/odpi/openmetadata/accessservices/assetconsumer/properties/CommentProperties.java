@@ -58,7 +58,7 @@ public class CommentProperties extends ReferenceableProperties
             commentType = template.getCommentType();
             user        = template.getUser();
             commentText = template.getCommentText();
-            isPublic    = template.isPublic;
+            isPublic    = template.getIsPublic();
         }
     }
 
@@ -130,24 +130,24 @@ public class CommentProperties extends ReferenceableProperties
 
 
     /**
-     * Return if this like is private ot the creating user.
+     * Return whether the comment is private to the creating user or not.
      *
      * @return boolean
      */
-    public boolean isPublic()
+    public boolean getIsPublic()
     {
         return isPublic;
     }
 
 
     /**
-     * Set up whether the like is private to the creating user or not.
+     * Set up whether the comment is private to the creating user or not.
      *
-     * @param aPublic boolean
+     * @param isPublic boolean
      */
-    public void setPublic(boolean aPublic)
+    public void setIsPublic(boolean isPublic)
     {
-        isPublic = aPublic;
+        this.isPublic = isPublic;
     }
 
 
@@ -164,7 +164,7 @@ public class CommentProperties extends ReferenceableProperties
                 ", commentText='" + commentText + '\'' +
                 ", user='" + user + '\'' +
                 ", isPublic=" + isPublic +
-                ", public=" + isPublic() +
+                ", public=" + getIsPublic() +
                 ", typeName='" + getTypeName() + '\'' +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +
@@ -198,7 +198,7 @@ public class CommentProperties extends ReferenceableProperties
         CommentProperties comment = (CommentProperties) objectToCompare;
         return getCommentType() == comment.getCommentType() &&
                 Objects.equals(getCommentText(), comment.getCommentText()) &&
-                Objects.equals(isPublic(), comment.isPublic()) &&
+                Objects.equals(getIsPublic(), comment.getIsPublic()) &&
                 Objects.equals(getUser(), comment.getUser());
     }
 }

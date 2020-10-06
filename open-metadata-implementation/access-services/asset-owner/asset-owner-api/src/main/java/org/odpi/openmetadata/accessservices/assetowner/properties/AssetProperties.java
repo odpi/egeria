@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.accessservices.assetowner.properties;
 
 import com.fasterxml.jackson.annotation.*;
-import org.odpi.openmetadata.accessservices.assetowner.metadataelements.AssetElement;
 
 import java.util.*;
 
@@ -11,7 +10,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * Asset holds asset properties that are used for displaying details of
+ * AssetProperties holds asset properties that are used for displaying details of
  * an asset in summary lists or hover text.  It includes the following properties:
  * <ul>
  *     <li>type - metadata type information for the asset</li>
@@ -21,7 +20,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  *     management organization and should be used (when available) on audit logs and error messages.
  *     (qualifiedName from Referenceable - model 0010)</li>
  *     <li>displayName - A consumable name for the asset.  Often a shortened form of the assetQualifiedName
- *     for use on user interfaces and messages.   The assetDisplayName should be only be used for audit logs and error
+ *     for use on user interfaces and messages.   The assetDisplayName should only be used for audit logs and error
  *     messages if the assetQualifiedName is not set. (Sourced from attribute name within Asset - model 0010)</li>
  *     <li>shortDescription - short description about the asset.
  *     (Sourced from assetSummary within ConnectionsToAsset - model 0205)</li>

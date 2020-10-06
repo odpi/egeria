@@ -15,7 +15,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * SchemaAttributeRelationship defines a relationship between 2 SchemaAttributes.
+ * SchemaAttributeRelationshipProperties defines a relationship between 2 SchemaAttributes.
  * It is used in network type schemas such as a graph
  * or to show relationships such as foreign key relationships in relational schemas.
  */
@@ -189,7 +189,7 @@ public class SchemaAttributeRelationshipProperties implements Serializable
     @Override
     public String toString()
     {
-        return "SchemaAttributeRelationship{" +
+        return "SchemaAttributeRelationshipProperties{" +
                 "linkGUID='" + linkGUID + '\'' +
                 ", linkType='" + linkType + '\'' +
                 ", linkedAttributeName='" + linkedAttributeName + '\'' +

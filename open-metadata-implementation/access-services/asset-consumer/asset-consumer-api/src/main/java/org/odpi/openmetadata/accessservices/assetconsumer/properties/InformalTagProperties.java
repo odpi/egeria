@@ -61,8 +61,8 @@ public class InformalTagProperties implements Serializable
     {
         if (template != null)
         {
-            isPublic = template.isPublic();
-            isPrivateTag = template.isPrivateTag();
+            isPublic = template.getIsPublic();
+            isPrivateTag = template.getIsPrivateTag();
             user = template.getUser();
             name = template.getName();
             description = template.getDescription();
@@ -75,7 +75,7 @@ public class InformalTagProperties implements Serializable
      *
      * @return boolean
      */
-    public boolean isPublic()
+    public boolean getIsPublic()
     {
         return isPublic;
     }
@@ -86,7 +86,7 @@ public class InformalTagProperties implements Serializable
      *
      * @param aPublic boolean
      */
-    public void setPublic(boolean aPublic)
+    public void setIsPublic(boolean aPublic)
     {
         isPublic = aPublic;
     }
@@ -98,7 +98,7 @@ public class InformalTagProperties implements Serializable
      *
      * @return boolean is private flag
      */
-    public boolean isPrivateTag() {
+    public boolean getIsPrivateTag() {
         return isPrivateTag;
     }
 
@@ -109,7 +109,7 @@ public class InformalTagProperties implements Serializable
      *
      * @param privateTag indicator of a private tag
      */
-    public void setPrivateTag(boolean privateTag)
+    public void setIsPrivateTag(boolean privateTag)
     {
         isPrivateTag = privateTag;
     }
@@ -220,8 +220,8 @@ public class InformalTagProperties implements Serializable
             return false;
         }
         InformalTagProperties that = (InformalTagProperties) objectToCompare;
-        return isPublic() == that.isPublic() &&
-                isPrivateTag() == that.isPrivateTag() &&
+        return getIsPublic() == that.getIsPublic() &&
+                getIsPrivateTag() == that.getIsPrivateTag() &&
                 Objects.equals(getName(), that.getName()) &&
                 Objects.equals(getDescription(), that.getDescription()) &&
                 Objects.equals(getUser(), that.getUser());

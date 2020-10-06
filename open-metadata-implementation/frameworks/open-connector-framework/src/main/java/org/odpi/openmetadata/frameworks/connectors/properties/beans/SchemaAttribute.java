@@ -36,7 +36,7 @@ public class SchemaAttribute extends SchemaElement
     protected DataItemSortOrder sortOrder             = null;
     protected int               minimumLength         = 0;
     protected int               length                = 0;
-    protected int               significantDigits     = 0;
+    protected int               precision             = 0;
     protected boolean           isNullable            = true;
 
 
@@ -73,22 +73,22 @@ public class SchemaAttribute extends SchemaElement
 
         if (template != null)
         {
-            elementPosition = template.getElementPosition();
-            cardinality = template.getCardinality();
-            minCardinality = template.getMinCardinality();
-            maxCardinality = template.getMaxCardinality();
-            allowsDuplicateValues = template.isAllowsDuplicateValues();
-            orderedValues = template.isOrderedValues();
-            sortOrder = template.getSortOrder();
-            minimumLength = template.getMinimumLength();
-            length = template.getLength();
-            significantDigits = template.getSignificantDigits();
-            isNullable = template.isNullable();
-            defaultValueOverride = template.getDefaultValueOverride();
-            attributeType = template.getAttributeType();
+            elementPosition        = template.getElementPosition();
+            cardinality            = template.getCardinality();
+            minCardinality         = template.getMinCardinality();
+            maxCardinality         = template.getMaxCardinality();
+            allowsDuplicateValues  = template.getAllowsDuplicateValues();
+            orderedValues          = template.getOrderedValues();
+            sortOrder              = template.getSortOrder();
+            minimumLength          = template.getMinimumLength();
+            length                 = template.getLength();
+            precision              = template.getPrecision();
+            isNullable             = template.getIsNullable();
+            defaultValueOverride   = template.getDefaultValueOverride();
+            attributeType          = template.getAttributeType();
             attributeRelationships = template.getAttributeRelationships();
-            nativeJavaClass = template.getNativeJavaClass();
-            aliases = template.getAliases();
+            nativeJavaClass        = template.getNativeJavaClass();
+            aliases                = template.getAliases();
         }
     }
 
@@ -296,7 +296,7 @@ public class SchemaAttribute extends SchemaElement
      *
      * @return boolean flag
      */
-    public boolean isAllowsDuplicateValues()
+    public boolean getAllowsDuplicateValues()
     {
         return allowsDuplicateValues;
     }
@@ -318,7 +318,7 @@ public class SchemaAttribute extends SchemaElement
      *
      * @return boolean flag
      */
-    public boolean isOrderedValues()
+    public boolean getOrderedValues()
     {
         return orderedValues;
     }
@@ -406,20 +406,20 @@ public class SchemaAttribute extends SchemaElement
      *
      * @return int
      */
-    public int getSignificantDigits()
+    public int getPrecision()
     {
-        return significantDigits;
+        return precision;
     }
 
 
     /**
      * Set up the number of significant digits to the right of decimal point.
      *
-     * @param significantDigits int
+     * @param precision int
      */
-    public void setSignificantDigits(int significantDigits)
+    public void setPrecision(int precision)
     {
-        this.significantDigits = significantDigits;
+        this.precision = precision;
     }
 
 
@@ -428,7 +428,7 @@ public class SchemaAttribute extends SchemaElement
      *
      * @return boolean
      */
-    public boolean isNullable()
+    public boolean getIsNullable()
     {
         return isNullable;
     }
@@ -439,7 +439,7 @@ public class SchemaAttribute extends SchemaElement
      *
      * @param nullable boolean
      */
-    public void setNullable(boolean nullable)
+    public void setIsNullable(boolean nullable)
     {
         isNullable = nullable;
     }
@@ -591,7 +591,7 @@ public class SchemaAttribute extends SchemaElement
                 ", sortOrder=" + sortOrder +
                 ", minimumLength=" + minimumLength +
                 ", length=" + length +
-                ", significantDigits=" + significantDigits +
+                ", significantDigits=" + precision +
                 ", isNullable=" + isNullable +
                 ", attributeType=" + attributeType +
                 ", attributeRelationships=" + attributeRelationships +
@@ -599,7 +599,7 @@ public class SchemaAttribute extends SchemaElement
                 ", expression='" + expression + '\'' +
                 ", nativeJavaClass='" + nativeJavaClass + '\'' +
                 ", aliases=" + aliases +
-                ", deprecated=" + isDeprecated() +
+                ", deprecated=" + getIsDeprecated() +
                 ", displayName='" + getDisplayName() + '\'' +
                 ", description='" + getDescription() + '\'' +
                 ", anchorGUID='" + getAnchorGUID() + '\'' +
@@ -645,7 +645,7 @@ public class SchemaAttribute extends SchemaElement
                 orderedValues == that.orderedValues &&
                 minimumLength == that.minimumLength &&
                 length == that.length &&
-                significantDigits == that.significantDigits &&
+                precision == that.precision &&
                 isNullable == that.isNullable &&
                 isCalculatedValue == that.isCalculatedValue &&
                 Objects.equals(cardinality, that.cardinality) &&
@@ -668,7 +668,7 @@ public class SchemaAttribute extends SchemaElement
     public int hashCode()
     {
         return Objects.hash(super.hashCode(), elementPosition, cardinality, minCardinality, maxCardinality, allowsDuplicateValues, orderedValues,
-                            defaultValueOverride, sortOrder, minimumLength, length, significantDigits, isNullable, attributeType,
+                            defaultValueOverride, sortOrder, minimumLength, length, precision, isNullable, attributeType,
                             attributeRelationships, isCalculatedValue, expression, nativeJavaClass, aliases);
     }
 }

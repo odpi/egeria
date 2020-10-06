@@ -92,7 +92,7 @@ public class TabularColumnTypeElement extends SchemaTypeProperties implements Me
                 ", usage='" + getUsage() + '\'' +
                 ", encodingStandard='" + getEncodingStandard() + '\'' +
                 ", namespace='" + getNamespace() + '\'' +
-                ", deprecated=" + isDeprecated() +
+                ", deprecated=" + getIsDeprecated() +
                 ", displayName='" + getDisplayName() + '\'' +
                 ", description='" + getDescription() + '\'' +
                 ", qualifiedName='" + getQualifiedName() + '\'' +

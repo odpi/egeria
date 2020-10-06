@@ -112,7 +112,7 @@ public class SimpleSchemaTypeProperties extends SchemaTypeProperties
                 ", usage='" + getUsage() + '\'' +
                 ", encodingStandard='" + getEncodingStandard() + '\'' +
                 ", namespace='" + getNamespace() + '\'' +
-                ", deprecated=" + isDeprecated() +
+                ", deprecated=" + getIsDeprecated() +
                 ", displayName='" + getDisplayName() + '\'' +
                 ", description='" + getDescription() + '\'' +
                 ", qualifiedName='" + getQualifiedName() + '\'' +

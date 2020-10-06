@@ -85,7 +85,7 @@ public class EnumSchemaTypeProperties extends SimpleSchemaTypeProperties
                 ", namespace='" + getNamespace() + '\'' +
                 ", displayName='" + getDisplayName() + '\'' +
                 ", description='" + getDescription() + '\'' +
-                ", deprecated=" + isDeprecated() +
+                ", deprecated=" + getIsDeprecated() +
                 ", typeName='" + getTypeName() + '\'' +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +

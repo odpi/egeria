@@ -73,13 +73,13 @@ public class InformalTagConverter<B> extends AssetConsumerOMASConverter<B>
 
                 bean.setName(this.removeTagName(instanceProperties));
                 bean.setDescription(this.removeTagDescription(instanceProperties));
-                bean.setPrivateTag(this.removeIsPublic(instanceProperties));
+                bean.setIsPrivateTag(this.removeIsPublic(instanceProperties));
 
                 if (relationship != null)
                 {
                     instanceProperties = new InstanceProperties(relationship.getProperties());
 
-                    bean.setPublic(this.getIsPublic(instanceProperties));
+                    bean.setIsPublic(this.getIsPublic(instanceProperties));
                 }
             }
 

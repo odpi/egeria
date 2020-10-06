@@ -19,8 +19,7 @@ public class FeedbackRequestBody extends AssetConsumerOMASAPIRequestBody
 {
     private static final long    serialVersionUID = 1L;
 
-    // todo this default should be false - need to fix up the problem with passing boolean values over REST APIs
-    private boolean    isPublic  = true;
+    private boolean    isPublic  = false;
 
 
     /**
@@ -42,7 +41,7 @@ public class FeedbackRequestBody extends AssetConsumerOMASAPIRequestBody
 
         if (template != null)
         {
-            this.isPublic = template.isPublic();
+            this.isPublic = template.getIsPublic();
         }
     }
 
@@ -54,7 +53,7 @@ public class FeedbackRequestBody extends AssetConsumerOMASAPIRequestBody
      *
      * @return boolean
      */
-    public boolean isPublic()
+    public boolean getIsPublic()
     {
         return isPublic;
     }
@@ -65,7 +64,7 @@ public class FeedbackRequestBody extends AssetConsumerOMASAPIRequestBody
      *
      * @param aPrivate boolean
      */
-    public void setPublic(boolean aPrivate)
+    public void setIsPublic(boolean aPrivate)
     {
         isPublic = aPrivate;
     }
@@ -103,7 +102,7 @@ public class FeedbackRequestBody extends AssetConsumerOMASAPIRequestBody
             return false;
         }
         FeedbackRequestBody that = (FeedbackRequestBody) objectToCompare;
-        return isPublic() == that.isPublic();
+        return getIsPublic() == that.getIsPublic();
     }
 
 
@@ -116,6 +115,6 @@ public class FeedbackRequestBody extends AssetConsumerOMASAPIRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(isPublic());
+        return Objects.hash(getIsPublic());
     }
 }

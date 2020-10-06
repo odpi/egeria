@@ -84,8 +84,8 @@ public class InformalTagElement extends InformalTagProperties implements Metadat
     {
         return "InformalTagElement{" +
                 "elementHeader=" + elementHeader +
-                ", public=" + isPublic() +
-                ", privateTag=" + isPrivateTag() +
+                ", public=" + getIsPublic() +
+                ", privateTag=" + getIsPrivateTag() +
                 ", user='" + getUser() + '\'' +
                 ", name='" + getName() + '\'' +
                 ", description='" + getDescription() + '\'' +

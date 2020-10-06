@@ -102,7 +102,7 @@ public class ValidValuesRESTServices
                                                              requestBody.getDescription(),
                                                              requestBody.getUsage(),
                                                              requestBody.getScope(),
-                                                             requestBody.isDeprecated(),
+                                                             requestBody.getIsDeprecated(),
                                                              requestBody.getAdditionalProperties(),
                                                              requestBody.getExtendedProperties(),
                                                              methodName));
@@ -172,7 +172,7 @@ public class ValidValuesRESTServices
                                                                     requestBody.getUsage(),
                                                                     requestBody.getScope(),
                                                                     requestBody.getPreferredValue(),
-                                                                    requestBody.isDeprecated(),
+                                                                    requestBody.getIsDeprecated(),
                                                                     requestBody.getAdditionalProperties(),
                                                                     requestBody.getExtendedProperties(),
                                                                     methodName));
@@ -244,7 +244,7 @@ public class ValidValuesRESTServices
                                          requestBody.getUsage(),
                                          requestBody.getScope(),
                                          requestBody.getPreferredValue(),
-                                         requestBody.isDeprecated(),
+                                         requestBody.getIsDeprecated(),
                                          requestBody.getAdditionalProperties(),
                                          requestBody.getExtendedProperties(),
                                          methodName);
@@ -681,7 +681,7 @@ public class ValidValuesRESTServices
         boolean strictRequirement = false;
         if (requestBody != null)
         {
-            strictRequirement = requestBody.isStrictRequirement();
+            strictRequirement = requestBody.getStrictRequirement();
         }
 
         try
@@ -2004,7 +2004,7 @@ public class ValidValuesRESTServices
             validValueElement.setQualifiedName(validValue.getQualifiedName());
             validValueElement.setDisplayName(validValue.getDisplayName());
             validValueElement.setDescription(validValue.getDescription());
-            validValueElement.setDeprecated(validValue.isDeprecated());
+            validValueElement.setIsDeprecated(validValue.getIsDeprecated());
             validValueElement.setScope(validValue.getScope());
             validValueElement.setUsage(validValue.getUsage());
             validValueElement.setPreferredValue(validValue.getPreferredValue());

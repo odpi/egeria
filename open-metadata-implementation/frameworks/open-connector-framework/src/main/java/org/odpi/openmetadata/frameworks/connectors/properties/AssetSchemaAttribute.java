@@ -159,7 +159,7 @@ public class AssetSchemaAttribute extends AssetReferenceable
      */
     public boolean allowsDuplicateValues()
     {
-        return schemaAttributeBean.isAllowsDuplicateValues();
+        return schemaAttributeBean.getAllowsDuplicateValues();
     }
 
 
@@ -170,7 +170,7 @@ public class AssetSchemaAttribute extends AssetReferenceable
      */
     public boolean hasOrderedValues()
     {
-        return schemaAttributeBean.isOrderedValues();
+        return schemaAttributeBean.getOrderedValues();
     }
 
 

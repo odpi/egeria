@@ -79,7 +79,7 @@ public class RatingConverter<B> extends OCFConverter<B>
                 {
                     instanceProperties = new InstanceProperties(relationship.getProperties());
 
-                    bean.setPublic(this.getIsPublic(instanceProperties));
+                    bean.setIsPublic(this.getIsPublic(instanceProperties));
                 }
             }
 
@@ -128,7 +128,7 @@ public class RatingConverter<B> extends OCFConverter<B>
      */
     private StarRating getStarRatingFromProperties(InstanceProperties   properties)
     {
-        StarRating starRating = StarRating.NOT_RECOMMENDED;
+        StarRating starRating = StarRating.NO_RECOMMENDATION;
 
         if (properties != null)
         {
@@ -145,7 +145,7 @@ public class RatingConverter<B> extends OCFConverter<B>
                     switch (enumPropertyValue.getOrdinal())
                     {
                         case 0:
-                            starRating = StarRating.NOT_RECOMMENDED;
+                            starRating = StarRating.NO_RECOMMENDATION;
                             break;
 
                         case 1:

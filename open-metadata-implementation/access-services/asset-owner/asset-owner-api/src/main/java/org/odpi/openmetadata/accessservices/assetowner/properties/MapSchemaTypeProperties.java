@@ -12,7 +12,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * MapSchemaType describes a schema element of type map.  It stores the type of schema element for the domain
+ * MapSchemaTypeProperties describes a schema element of type map.  It stores the type of schema element for the domain
  * (eg property name) for the map and the schema element for the range (eg property value) for the map.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
@@ -121,7 +121,7 @@ public class MapSchemaTypeProperties extends SchemaTypeProperties
                 ", queries=" + getQueries() +
                 ", displayName='" + getDisplayName() + '\'' +
                 ", description='" + getDescription() + '\'' +
-                ", deprecated=" + isDeprecated() +
+                ", deprecated=" + getIsDeprecated() +
                 ", typeName='" + getTypeName() + '\'' +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +

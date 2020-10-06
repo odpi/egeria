@@ -87,8 +87,8 @@ public class TabularColumnConverter<B> extends DataManagerOMASConverter<B>
                 bean.setSortOrder(this.removeSortOrder(instanceProperties));
                 bean.setMinimumLength(this.removeMinimumLength(instanceProperties));
                 bean.setLength(this.removeLength(instanceProperties));
-                bean.setSignificantDigits(this.removeSignificantDigits(instanceProperties));
-                bean.setNullable(this.removeIsNullable(instanceProperties));
+                bean.setPrecision(this.removeSignificantDigits(instanceProperties));
+                bean.setIsNullable(this.removeIsNullable(instanceProperties));
                 bean.setNativeJavaClass(this.removeNativeClass(instanceProperties));
                 bean.setAliases(this.removeAliases(instanceProperties));
 

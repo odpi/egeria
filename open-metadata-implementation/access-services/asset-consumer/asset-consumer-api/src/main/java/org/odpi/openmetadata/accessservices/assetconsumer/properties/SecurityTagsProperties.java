@@ -14,7 +14,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * SecurityTags holds the list of labels and properties used by a security enforcement engine to control access
+ * SecurityTagsProperties holds the list of labels and properties used by a security enforcement engine to control access
  * and visibility to the contents of the real-world object described by the Referenceable.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)

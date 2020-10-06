@@ -5,9 +5,6 @@ package org.odpi.openmetadata.accessservices.datamanager.properties;
 
 import com.fasterxml.jackson.annotation.*;
 
-import java.util.List;
-import java.util.Objects;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -60,17 +57,17 @@ public class DatabaseTableProperties extends SchemaAttributeProperties
                 "elementPosition=" + getElementPosition() +
                 ", minCardinality=" + getMinCardinality() +
                 ", maxCardinality=" + getMaxCardinality() +
-                ", allowsDuplicateValues=" + isAllowsDuplicateValues() +
-                ", orderedValues=" + isOrderedValues() +
+                ", allowsDuplicateValues=" + getAllowsDuplicateValues() +
+                ", orderedValues=" + getOrderedValues() +
                 ", sortOrder=" + getSortOrder() +
                 ", minimumLength=" + getMinimumLength() +
                 ", length=" + getLength() +
-                ", significantDigits=" + getSignificantDigits() +
-                ", nullable=" + isNullable() +
+                ", significantDigits=" + getPrecision() +
+                ", nullable=" + getIsNullable() +
                 ", defaultValueOverride='" + getDefaultValueOverride() + '\'' +
                 ", nativeJavaClass='" + getNativeJavaClass() + '\'' +
                 ", aliases=" + getAliases() +
-                ", deprecated=" + isDeprecated() +
+                ", deprecated=" + getIsDeprecated() +
                 ", displayName='" + getDisplayName() + '\'' +
                 ", description='" + getDescription() + '\'' +
                 ", qualifiedName='" + getQualifiedName() + '\'' +

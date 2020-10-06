@@ -46,7 +46,7 @@ public class TestInformalTag
         testObject.setName("TestName");
         testObject.setUser("TestUser");
         testObject.setDescription("TestDescription");
-        testObject.setPrivateTag(true);
+        testObject.setIsPrivateTag(true);
 
         return testObject;
     }
@@ -67,7 +67,7 @@ public class TestInformalTag
         assertTrue(resultObject.getName().equals("TestName"));
         assertTrue(resultObject.getDescription().equals("TestDescription"));
         assertTrue(resultObject.getUser().equals("TestUser"));
-        assertTrue(resultObject.isPrivateTag() == true);
+        assertTrue(resultObject.getIsPrivateTag() == true);
     }
 
 
@@ -86,7 +86,7 @@ public class TestInformalTag
         assertTrue(nullObject.getName() == null);
         assertTrue(nullObject.getUser() == null);
         assertTrue(nullObject.getDescription() == null);
-        assertTrue(nullObject.isPrivateTag() == false);
+        assertTrue(nullObject.getIsPrivateTag() == false);
 
         nullObject = new InformalTag(null);
 
@@ -98,7 +98,7 @@ public class TestInformalTag
         assertTrue(nullObject.getName() == null);
         assertTrue(nullObject.getUser() == null);
         assertTrue(nullObject.getDescription() == null);
-        assertTrue(nullObject.isPrivateTag() == false);
+        assertTrue(nullObject.getIsPrivateTag() == false);
     }
 
 

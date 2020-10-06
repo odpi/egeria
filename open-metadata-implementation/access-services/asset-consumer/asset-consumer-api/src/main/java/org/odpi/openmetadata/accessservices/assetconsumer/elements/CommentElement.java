@@ -87,7 +87,7 @@ public class CommentElement extends CommentProperties implements MetadataElement
                 ", commentType=" + getCommentType() +
                 ", commentText='" + getCommentText() + '\'' +
                 ", user='" + getUser() + '\'' +
-                ", public=" + isPublic() +
+                ", public=" + getIsPublic() +
                 ", typeName='" + getTypeName() + '\'' +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +

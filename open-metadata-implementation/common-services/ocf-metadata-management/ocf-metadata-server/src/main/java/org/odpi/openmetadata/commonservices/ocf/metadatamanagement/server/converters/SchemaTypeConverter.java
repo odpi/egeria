@@ -395,7 +395,7 @@ public class SchemaTypeConverter<B> extends OCFConverter<B>
     {
         bean.setDisplayName(this.removeDisplayName(instanceProperties));
         bean.setDescription(this.removeDescription(instanceProperties));
-        bean.setDeprecated(this.removeIsDeprecated(instanceProperties));
+        bean.setIsDeprecated(this.removeIsDeprecated(instanceProperties));
         bean.setVersionNumber(this.removeVersionNumber(instanceProperties));
         bean.setAuthor(this.removeAuthor(instanceProperties));
         bean.setUsage(this.removeUsage(instanceProperties));

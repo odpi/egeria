@@ -89,7 +89,7 @@ public class ValidValueElement extends ValidValueProperties implements MetadataE
                 ", usage='" + getUsage() + '\'' +
                 ", scope='" + getScope() + '\'' +
                 ", preferredValue='" + getPreferredValue() + '\'' +
-                ", deprecated=" + isDeprecated() +
+                ", deprecated=" + getIsDeprecated() +
                 ", typeName='" + getTypeName() + '\'' +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +

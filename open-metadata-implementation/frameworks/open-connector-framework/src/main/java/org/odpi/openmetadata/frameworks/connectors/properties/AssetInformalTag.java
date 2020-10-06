@@ -110,7 +110,7 @@ public class AssetInformalTag extends AssetElementHeader
      */
     public boolean isPublic()
     {
-        return informalTagBean.isPublic();
+        return informalTagBean.getIsPublic();
     }
 
 
@@ -120,7 +120,7 @@ public class AssetInformalTag extends AssetElementHeader
      *
      * @return boolean is private flag
      */
-    public boolean isPrivateTag() { return informalTagBean.isPrivateTag(); }
+    public boolean isPrivateTag() { return informalTagBean.getIsPrivateTag(); }
 
 
     /**

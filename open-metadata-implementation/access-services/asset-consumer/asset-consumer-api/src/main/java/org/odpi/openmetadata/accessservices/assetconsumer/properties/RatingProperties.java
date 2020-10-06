@@ -13,7 +13,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * Stores information about a rating connected to an asset.  Ratings provide informal feedback on the quality of assets
+ * RatingProperties stores information about a rating connected to an asset.  Ratings provide informal feedback on the quality of assets
  * and can be added at any time.
  *
  * Ratings have the userId of the person who added it, a star rating and an optional review comment.

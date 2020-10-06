@@ -87,13 +87,13 @@ public class SchemaAttributeElement extends SchemaAttributeProperties implements
                 ", elementPosition=" + getElementPosition() +
                 ", minCardinality=" + getMinCardinality() +
                 ", maxCardinality=" + getMaxCardinality() +
-                ", allowsDuplicateValues=" + isAllowsDuplicateValues() +
-                ", orderedValues=" + isOrderedValues() +
+                ", allowsDuplicateValues=" + getAllowsDuplicateValues() +
+                ", orderedValues=" + getOrderedValues() +
                 ", sortOrder=" + getSortOrder() +
                 ", minimumLength=" + getMinimumLength() +
                 ", length=" + getLength() +
                 ", significantDigits=" + getSignificantDigits() +
-                ", nullable=" + isNullable() +
+                ", nullable=" + getIsNullable() +
                 ", defaultValueOverride='" + getDefaultValueOverride() + '\'' +
                 ", attributeType=" + getAttributeType() +
                 ", attributeRelationships=" + getAttributeRelationships() +
@@ -101,7 +101,7 @@ public class SchemaAttributeElement extends SchemaAttributeProperties implements
                 ", aliases=" + getAliases() +
                 ", displayName='" + getDisplayName() + '\'' +
                 ", description='" + getDescription() + '\'' +
-                ", deprecated=" + isDeprecated() +
+                ", deprecated=" + getIsDeprecated() +
                 ", typeName='" + getTypeName() + '\'' +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +

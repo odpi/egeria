@@ -7,11 +7,9 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -37,6 +35,7 @@ public class IntegrationConnectorConfig extends AdminServicesConfigHeader
 {
     private static final long    serialVersionUID = 1L;
 
+    private String     connectorId                 = UUID.randomUUID().toString();
     private String     connectorName               = null;
     private Connection connection                  = null;
     private String     metadataSourceQualifiedName = null;
@@ -63,12 +62,35 @@ public class IntegrationConnectorConfig extends AdminServicesConfigHeader
 
         if (template != null)
         {
+            connectorId                 = template.getConnectorId();
             connectorName               = template.getConnectorName();
             connection                  = template.getConnection();
             metadataSourceQualifiedName = template.getMetadataSourceQualifiedName();
             refreshTimeInterval         = template.getRefreshTimeInterval();
-            usesBlockingCalls           = template.isUsesBlockingCalls();
+            usesBlockingCalls           = template.getUsesBlockingCalls();
         }
+    }
+
+
+    /**
+     * Return the unique identifier of this connector.
+     *
+     * @return string guid
+     */
+    public String getConnectorId()
+    {
+        return connectorId;
+    }
+
+
+    /**
+     * Set up the unique identifier of this connector.
+     *
+     * @param connectorId string guid
+     */
+    public void setConnectorId(String connectorId)
+    {
+        this.connectorId = connectorId;
     }
 
 
@@ -176,7 +198,7 @@ public class IntegrationConnectorConfig extends AdminServicesConfigHeader
      *
      * @return boolean flag
      */
-    public boolean isUsesBlockingCalls()
+    public boolean getUsesBlockingCalls()
     {
         return usesBlockingCalls;
     }
@@ -202,7 +224,8 @@ public class IntegrationConnectorConfig extends AdminServicesConfigHeader
     public String toString()
     {
         return "IntegrationConnectorConfig{" +
-                "connectorName='" + connectorName + '\'' +
+                "connectorId='" + connectorId + '\'' +
+                ", connectorName='" + connectorName + '\'' +
                 ", connection=" + connection +
                 ", metadataSourceQualifiedName='" + metadataSourceQualifiedName + '\'' +
                 ", refreshTimeInterval=" + refreshTimeInterval +
@@ -232,6 +255,7 @@ public class IntegrationConnectorConfig extends AdminServicesConfigHeader
         return refreshTimeInterval == that.refreshTimeInterval &&
                 usesBlockingCalls == that.usesBlockingCalls &&
                 Objects.equals(metadataSourceQualifiedName, that.metadataSourceQualifiedName) &&
+                Objects.equals(connectorId, that.connectorId) &&
                 Objects.equals(connectorName, that.connectorName) &&
                 Objects.equals(connection, that.connection);
     }
@@ -245,6 +269,6 @@ public class IntegrationConnectorConfig extends AdminServicesConfigHeader
     @Override
     public int hashCode()
     {
-        return Objects.hash(connectorName, connection, metadataSourceQualifiedName, refreshTimeInterval, usesBlockingCalls);
+        return Objects.hash(connectorId, connectorName, connection, metadataSourceQualifiedName, refreshTimeInterval, usesBlockingCalls);
     }
 }

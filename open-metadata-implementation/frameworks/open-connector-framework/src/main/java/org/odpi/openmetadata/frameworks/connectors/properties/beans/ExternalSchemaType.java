@@ -112,7 +112,7 @@ public class ExternalSchemaType extends SchemaType
                 ", usage='" + getUsage() + '\'' +
                 ", encodingStandard='" + getEncodingStandard() + '\'' +
                 ", namespace='" + getNamespace() + '\'' +
-                ", deprecated=" + isDeprecated() +
+                ", deprecated=" + getIsDeprecated() +
                 ", displayName='" + getDisplayName() + '\'' +
                 ", description='" + getDescription() + '\'' +
                 ", anchorGUID='" + getAnchorGUID() + '\'' +

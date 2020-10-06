@@ -50,7 +50,7 @@ public class TestAssetInformalTag
         testObject.setUser("TestUser");
         testObject.setName("TestName");
         testObject.setDescription("TestDescription");
-        testObject.setPrivateTag(true);
+        testObject.setIsPrivateTag(true);
 
         return new AssetInformalTag(testObject);
     }
@@ -73,7 +73,7 @@ public class TestAssetInformalTag
         testObject.setUser("TestUser");
         testObject.setName("TestName");
         testObject.setDescription("TestDescription");
-        testObject.setPrivateTag(true);
+        testObject.setIsPrivateTag(true);
 
         return new AssetInformalTag(testObject);
     }
@@ -96,7 +96,7 @@ public class TestAssetInformalTag
         testObject.setUser("TestUser");
         testObject.setName("TestName");
         testObject.setDescription("TestDescription");
-        testObject.setPrivateTag(false);
+        testObject.setIsPrivateTag(false);
 
         return new AssetInformalTag(testObject);
     }

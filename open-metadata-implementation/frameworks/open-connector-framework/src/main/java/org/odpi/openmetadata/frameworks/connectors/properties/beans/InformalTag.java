@@ -62,8 +62,8 @@ public class InformalTag extends ElementHeader
 
         if (template != null)
         {
-            isPublic = template.isPublic();
-            isPrivateTag = template.isPrivateTag();
+            isPublic = template.getIsPublic();
+            isPrivateTag = template.getIsPrivateTag();
             user = template.getUser();
             name = template.getName();
             description = template.getDescription();
@@ -76,7 +76,7 @@ public class InformalTag extends ElementHeader
      *
      * @return boolean
      */
-    public boolean isPublic()
+    public boolean getIsPublic()
     {
         return isPublic;
     }
@@ -87,7 +87,7 @@ public class InformalTag extends ElementHeader
      *
      * @param aPublic boolean
      */
-    public void setPublic(boolean aPublic)
+    public void setIsPublic(boolean aPublic)
     {
         isPublic = aPublic;
     }
@@ -99,7 +99,7 @@ public class InformalTag extends ElementHeader
      *
      * @return boolean is private flag
      */
-    public boolean isPrivateTag() {
+    public boolean getIsPrivateTag() {
         return isPrivateTag;
     }
 
@@ -110,7 +110,7 @@ public class InformalTag extends ElementHeader
      *
      * @param privateTag indicator of a private tag
      */
-    public void setPrivateTag(boolean privateTag)
+    public void setIsPrivateTag(boolean privateTag)
     {
         isPrivateTag = privateTag;
     }
@@ -225,8 +225,8 @@ public class InformalTag extends ElementHeader
             return false;
         }
         InformalTag that = (InformalTag) objectToCompare;
-        return isPublic() == that.isPublic() &&
-                isPrivateTag() == that.isPrivateTag() &&
+        return getIsPublic() == that.getIsPublic() &&
+                getIsPrivateTag() == that.getIsPrivateTag() &&
                 Objects.equals(getName(), that.getName()) &&
                 Objects.equals(getDescription(), that.getDescription()) &&
                 Objects.equals(getUser(), that.getUser());

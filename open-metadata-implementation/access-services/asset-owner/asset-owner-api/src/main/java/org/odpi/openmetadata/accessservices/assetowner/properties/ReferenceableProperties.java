@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.accessservices.assetowner.properties;
 
 import com.fasterxml.jackson.annotation.*;
+import org.odpi.openmetadata.accessservices.assetowner.metadataelements.ReferenceableElement;
 
 import java.io.Serializable;
 import java.util.*;
@@ -22,8 +23,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes(
         {
+                @JsonSubTypes.Type(value = ReferenceableElement.class, name = "ReferenceableElement"),
                 @JsonSubTypes.Type(value = AssetProperties.class, name = "AssetProperties"),
                 @JsonSubTypes.Type(value = MeaningProperties.class, name = "MeaningProperties"),
+                @JsonSubTypes.Type(value = SoftwareServerCapabilityProperties.class, name = "SoftwareServerCapabilityProperties"),
                 @JsonSubTypes.Type(value = SchemaElementProperties.class, name = "SchemaElementProperties")
         })
 public abstract class ReferenceableProperties implements Serializable

@@ -98,7 +98,7 @@ public abstract class AssetSchemaElement extends AssetReferenceable
             return false;
         }
 
-        return this.schemaElementBean.isDeprecated();
+        return this.schemaElementBean.getIsDeprecated();
     }
 
 

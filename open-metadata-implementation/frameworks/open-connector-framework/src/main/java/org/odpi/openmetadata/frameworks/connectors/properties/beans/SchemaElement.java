@@ -72,7 +72,7 @@ public abstract class SchemaElement extends Referenceable
 
         if (template != null)
         {
-            isDeprecated = template.isDeprecated();
+            isDeprecated = template.getIsDeprecated();
             displayName = template.getDisplayName();
             description = template.getDescription();
             anchorGUID = template.getAnchorGUID();
@@ -85,7 +85,7 @@ public abstract class SchemaElement extends Referenceable
      *
      * @return boolean flag
      */
-    public boolean isDeprecated()
+    public boolean getIsDeprecated()
     {
         return isDeprecated;
     }
@@ -96,7 +96,7 @@ public abstract class SchemaElement extends Referenceable
      *
      * @param deprecated boolean flag
      */
-    public void setDeprecated(boolean deprecated)
+    public void setIsDeprecated(boolean deprecated)
     {
         isDeprecated = deprecated;
     }

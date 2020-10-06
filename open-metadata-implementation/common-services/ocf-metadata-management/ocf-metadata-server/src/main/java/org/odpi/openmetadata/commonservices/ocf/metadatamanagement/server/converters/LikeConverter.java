@@ -71,7 +71,7 @@ public class LikeConverter<B> extends OCFConverter<B>
                 {
                     InstanceProperties instanceProperties = new InstanceProperties(relationship.getProperties());
 
-                    bean.setPublic(this.getIsPublic(instanceProperties));
+                    bean.setIsPublic(this.getIsPublic(instanceProperties));
                 }
             }
 

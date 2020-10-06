@@ -6,13 +6,9 @@ package org.odpi.openmetadata.accessservices.datamanager.metadataelements;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseColumnProperties;
-import org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseForeignKeyProperties;
-import org.odpi.openmetadata.accessservices.datamanager.properties.DatabasePrimaryKeyProperties;
 import org.odpi.openmetadata.accessservices.datamanager.properties.SchemaTypeProperties;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -96,7 +92,7 @@ public class DatabaseColumnTypeElement extends SchemaTypeProperties implements M
                 ", usage='" + getUsage() + '\'' +
                 ", encodingStandard='" + getEncodingStandard() + '\'' +
                 ", namespace='" + getNamespace() + '\'' +
-                ", deprecated=" + isDeprecated() +
+                ", deprecated=" + getIsDeprecated() +
                 ", displayName='" + getDisplayName() + '\'' +
                 ", description='" + getDescription() + '\'' +
                 ", qualifiedName='" + getQualifiedName() + '\'' +

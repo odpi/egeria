@@ -83,7 +83,7 @@ public class SchemaAttributeConverter<B> extends OCFConverter<B>
                 bean.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
                 bean.setDisplayName(this.removeDisplayName(instanceProperties));
                 bean.setDescription(this.removeDescription(instanceProperties));
-                bean.setDeprecated(this.removeIsDeprecated(instanceProperties));
+                bean.setIsDeprecated(this.removeIsDeprecated(instanceProperties));
                 /* Note this value should be in the classification */
                 bean.setAnchorGUID(this.removeAnchorGUID(instanceProperties));
                 bean.setElementPosition(this.removePosition(instanceProperties));
@@ -94,8 +94,8 @@ public class SchemaAttributeConverter<B> extends OCFConverter<B>
                 bean.setDefaultValueOverride(this.removeDefaultValueOverride(instanceProperties));
                 bean.setMinimumLength(this.removeMinimumLength(instanceProperties));
                 bean.setLength(this.removeLength(instanceProperties));
-                bean.setSignificantDigits(this.removeSignificantDigits(instanceProperties));
-                bean.setNullable(this.removeIsNullable(instanceProperties));
+                bean.setPrecision(this.removeSignificantDigits(instanceProperties));
+                bean.setIsNullable(this.removeIsNullable(instanceProperties));
                 bean.setNativeJavaClass(this.removeNativeClass(instanceProperties));
                 bean.setAliases(this.removeAliases(instanceProperties));
                 bean.setSortOrder(this.removeSortOrder(instanceProperties));

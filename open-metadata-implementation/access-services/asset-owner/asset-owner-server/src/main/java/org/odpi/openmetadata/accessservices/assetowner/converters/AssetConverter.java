@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetowner.converters;
 import org.odpi.openmetadata.accessservices.assetowner.metadataelements.AssetElement;
+import org.odpi.openmetadata.accessservices.assetowner.properties.AssetProperties;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
@@ -54,6 +55,7 @@ public class AssetConverter<B> extends AssetOwnerOMASConverter<B>
             if (returnBean instanceof AssetElement)
             {
                 AssetElement bean = (AssetElement) returnBean;
+                AssetProperties assetProperties = new AssetProperties();
 
                 bean.setElementHeader(super.getMetadataElementHeader(beanClass, entity, methodName));
 
@@ -67,24 +69,24 @@ public class AssetConverter<B> extends AssetOwnerOMASConverter<B>
                     instanceProperties = new InstanceProperties(entity.getProperties());
                 }
 
-                bean.setQualifiedName(this.removeQualifiedName(instanceProperties));
-                bean.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-                bean.setDisplayName(this.removeDisplayName(instanceProperties));
-                bean.setDescription(this.removeDescription(instanceProperties));
+                assetProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
+                assetProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
+                assetProperties.setDisplayName(this.removeName(instanceProperties));
+                assetProperties.setDescription(this.removeDescription(instanceProperties));
 
                 /* Note this value should be in the classification */
-                bean.setOwner(this.removeOwner(instanceProperties));
+                assetProperties.setOwner(this.removeOwner(instanceProperties));
                 /* Note this value should be in the classification */
-                bean.setOwnerType(this.removeOwnerTypeFromProperties(instanceProperties));
+                assetProperties.setOwnerType(this.removeOwnerTypeFromProperties(instanceProperties));
                 /* Note this value should be in the classification */
-                bean.setZoneMembership(this.removeZoneMembership(instanceProperties));
+                assetProperties.setZoneMembership(this.removeZoneMembership(instanceProperties));
 
                 /*
                  * Any remaining properties are returned in the extended properties.  They are
                  * assumed to be defined in a subtype.
                  */
-                bean.setTypeName(bean.getElementHeader().getType().getTypeName());
-                bean.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
+                assetProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
+                assetProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
 
                 /*
                  * The values in the classifications override the values in the main properties of the Asset's entity.
@@ -92,18 +94,20 @@ public class AssetConverter<B> extends AssetOwnerOMASConverter<B>
                  */
                 instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_ZONES_CLASSIFICATION_NAME, entity);
 
-                bean.setZoneMembership(this.getZoneMembership(instanceProperties));
+                assetProperties.setZoneMembership(this.getZoneMembership(instanceProperties));
 
                 instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_OWNERSHIP_CLASSIFICATION_NAME, entity);
 
-                bean.setOwner(this.getOwner(instanceProperties));
-                bean.setOwnerType(this.getOwnerTypeFromProperties(instanceProperties));
+                assetProperties.setOwner(this.getOwner(instanceProperties));
+                assetProperties.setOwnerType(this.getOwnerTypeFromProperties(instanceProperties));
 
                 instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_ORIGIN_CLASSIFICATION_NAME, entity);
 
-                bean.setOriginOrganizationGUID(this.getOriginOrganizationGUID(instanceProperties));
-                bean.setOriginBusinessCapabilityGUID(this.getOriginBusinessCapabilityGUID(instanceProperties));
-                bean.setOtherOriginValues(this.getOtherOriginValues(instanceProperties));
+                assetProperties.setOriginOrganizationGUID(this.getOriginOrganizationGUID(instanceProperties));
+                assetProperties.setOriginBusinessCapabilityGUID(this.getOriginBusinessCapabilityGUID(instanceProperties));
+                assetProperties.setOtherOriginValues(this.getOtherOriginValues(instanceProperties));
+
+                bean.setAssetProperties(assetProperties);
             }
 
             return returnBean;

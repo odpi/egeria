@@ -3,12 +3,7 @@
 package org.odpi.openmetadata.accessservices.assetowner.properties;
 
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-
-import java.util.List;
-import java.util.Map;
+import com.fasterxml.jackson.annotation.*;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -21,13 +16,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
+
 public class FileSystemProperties extends SoftwareServerCapabilityProperties
 {
     private static final long    serialVersionUID = 1L;
-
-    private static String FILE_SYSTEM_CLASSIFICATION_NAME = "FileSystemProperties";
-    private static String FORMAT_PROPERTY_NAME            = "format";
-    private static String ENCRYPTION_PROPERTY_NAME        = "encryption";
 
     private String              fileSystemType = null;
     private String              version = null;

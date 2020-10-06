@@ -313,7 +313,7 @@ public class SchemaType extends SchemaElement
                 ", usage='" + usage + '\'' +
                 ", encodingStandard='" + encodingStandard + '\'' +
                 ", namespace='" + namespace + '\'' +
-                ", deprecated=" + isDeprecated() +
+                ", deprecated=" + getIsDeprecated() +
                 ", displayName='" + getDisplayName() + '\'' +
                 ", description='" + getDescription() + '\'' +
                 ", qualifiedName='" + getQualifiedName() + '\'' +

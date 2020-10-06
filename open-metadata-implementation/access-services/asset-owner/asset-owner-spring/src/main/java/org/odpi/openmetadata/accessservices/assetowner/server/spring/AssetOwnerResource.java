@@ -614,6 +614,7 @@ public class AssetOwnerResource
      * @param serverName name of the server instance to connect to
      * @param userId calling user
      * @param assetGUID unique identifier for the asset to update
+     * @param requestBody null request body
      *
      * @return void or
      * InvalidParameterException full path or userId is null or
@@ -637,6 +638,7 @@ public class AssetOwnerResource
      * @param serverName name of the server instance to connect to
      * @param userId calling user
      * @param assetGUID unique identifier for the asset to update
+     * @param requestBody null request body
      *
      * @return void or
      * InvalidParameterException full path or userId is null or

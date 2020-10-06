@@ -23,7 +23,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes(
         {
-                @JsonSubTypes.Type(value = CommentRequestBody.class, name = "CommentRequestBody"),
                 @JsonSubTypes.Type(value = ValidValuesRequestBody.class, name = "ValidValuesRequestBody")
         })
 public class ReferenceableRequestBody extends AssetOwnerOMASAPIRequestBody

@@ -41,11 +41,37 @@ public class DocumentSchemaAttributeProperties extends SchemaAttributeProperties
     }
 
 
-
     /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
      */
-
+    @Override
+    public String toString()
+    {
+        return "DocumentSchemaAttributeProperties{" +
+                "elementPosition=" + getElementPosition() +
+                ", minCardinality=" + getMinCardinality() +
+                ", maxCardinality=" + getMaxCardinality() +
+                ", allowsDuplicateValues=" + getAllowsDuplicateValues() +
+                ", orderedValues=" + getOrderedValues() +
+                ", sortOrder=" + getSortOrder() +
+                ", minimumLength=" + getMinimumLength() +
+                ", length=" + getLength() +
+                ", significantDigits=" + getSignificantDigits() +
+                ", nullable=" + getIsNullable() +
+                ", defaultValueOverride='" + getDefaultValueOverride() + '\'' +
+                ", attributeType=" + getAttributeType() +
+                ", attributeRelationships=" + getAttributeRelationships() +
+                ", nativeJavaClass='" + getNativeJavaClass() + '\'' +
+                ", aliases=" + getAliases() +
+                ", displayName='" + getDisplayName() + '\'' +
+                ", description='" + getDescription() + '\'' +
+                ", deprecated=" + getIsDeprecated() +
+                ", typeName='" + getTypeName() + '\'' +
+                ", qualifiedName='" + getQualifiedName() + '\'' +
+                ", additionalProperties=" + getAdditionalProperties() +
+                ", extendedProperties=" + getExtendedProperties() +
+                '}';
+    }
 }

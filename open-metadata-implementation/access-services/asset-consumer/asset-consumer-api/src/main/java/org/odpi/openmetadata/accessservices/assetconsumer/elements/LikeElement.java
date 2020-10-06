@@ -85,7 +85,7 @@ public class LikeElement extends LikeProperties implements MetadataElement, Seri
         return "LikeElement{" +
                 "elementHeader=" + elementHeader +
                 ", user='" + getUser() + '\'' +
-                ", public=" + isPublic() +
+                ", public=" + getIsPublic() +
                 '}';
     }
 
