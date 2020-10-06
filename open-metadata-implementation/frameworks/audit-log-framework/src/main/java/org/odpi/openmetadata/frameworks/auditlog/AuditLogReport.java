@@ -70,7 +70,7 @@ public class AuditLogReport implements Serializable
      *
      * @param reportingComponent component id, name, description and doc URL
      */
-    public void setReportingComponent(ComponentDescription reportingComponent)
+    public void setReportingComponent(AuditLogReportingComponent reportingComponent)
     {
         this.reportingComponent = new AuditLogReportingComponent(reportingComponent);
     }

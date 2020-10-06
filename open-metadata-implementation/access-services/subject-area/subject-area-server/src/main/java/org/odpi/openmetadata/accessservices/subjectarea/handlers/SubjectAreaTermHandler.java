@@ -91,6 +91,7 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
                 ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.GLOSSARY_TERM_CREATE_WITHOUT_NAME.getMessageDefinition();
                 throw new InvalidParameterException(messageDefinition, className, methodName, "Name", null);
             } else {
+                setUniqueQualifiedNameIfBlank(suppliedTerm);
                 TermMapper termMapper = mappersFactory.get(TermMapper.class);
                 EntityDetail termEntityDetail = termMapper.map(suppliedTerm);
                 GlossarySummary suppliedGlossary = suppliedTerm.getGlossary();
@@ -262,8 +263,8 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
             InputValidator.validateNodeType(className, methodName, suppliedTerm.getNodeType(), NodeType.Term, NodeType.Activity);
 
             response = getTermByGuid(userId, guid);
-            if (response.getHead() != null) {
-                Term currentTerm = response.getHead();
+            if (response.head().isPresent()) {
+                Term currentTerm = response.head().get();
 
                 Set<String> currentClassificationNames = getCurrentClassificationNames(currentTerm);
 

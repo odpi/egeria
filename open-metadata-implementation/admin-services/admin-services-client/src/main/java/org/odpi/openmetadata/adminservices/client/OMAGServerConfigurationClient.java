@@ -23,7 +23,7 @@ import java.util.Map;
  * OMAGServerConfigurationClient provides services to configure an OMAG Server.
  * It is abstract because it is extended by the concrete types of server.
  */
-public abstract class OMAGServerConfigurationClient
+public class OMAGServerConfigurationClient
 {
     protected String adminUserId;              /* Initialized in constructor */
     protected String serverName;               /* Initialized in constructor */
@@ -44,7 +44,7 @@ public abstract class OMAGServerConfigurationClient
      * @throws OMAGInvalidParameterException there is a problem creating the client-side components to issue any
      *                                       REST API calls.
      */
-    OMAGServerConfigurationClient(String adminUserId,
+    public OMAGServerConfigurationClient(String adminUserId,
                                   String serverName,
                                   String serverPlatformRootURL) throws OMAGInvalidParameterException
     {
@@ -80,7 +80,7 @@ public abstract class OMAGServerConfigurationClient
      * @throws OMAGInvalidParameterException there is a problem creating the client-side components to issue any
      *                                       REST API calls.
      */
-    OMAGServerConfigurationClient(String adminUserId,
+    public OMAGServerConfigurationClient(String adminUserId,
                                   String serverName,
                                   String serverPlatformRootURL,
                                   String connectionUserId,
@@ -692,6 +692,30 @@ public abstract class OMAGServerConfigurationClient
     {
         final String methodName  = "getOMAGServerConfig";
         final String urlTemplate = "/open-metadata/admin-services/users/{0}/servers/{1}/configuration";
+
+        OMAGServerConfigResponse restResult = restClient.callOMAGServerConfigGetRESTCall(methodName,
+                                                                                         serverPlatformRootURL + urlTemplate,
+                                                                                         adminUserId,
+                                                                                         serverName);
+
+        return restResult.getOMAGServerConfig();
+    }
+
+
+    /**
+     * Return the complete set of configuration properties in use by a running instance of the server.
+     *
+     * @return OMAGServerConfig properties
+     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws OMAGConfigurationErrorException unusual state in the admin server.
+     */
+    public OMAGServerConfig getOMAGServerInstanceConfig() throws OMAGNotAuthorizedException,
+                                                         OMAGInvalidParameterException,
+                                                         OMAGConfigurationErrorException
+    {
+        final String methodName  = "getOMAGServerConfig";
+        final String urlTemplate = "/open-metadata/admin-services/users/{0}/servers/{1}/instance/configuration";
 
         OMAGServerConfigResponse restResult = restClient.callOMAGServerConfigGetRESTCall(methodName,
                                                                                          serverPlatformRootURL + urlTemplate,

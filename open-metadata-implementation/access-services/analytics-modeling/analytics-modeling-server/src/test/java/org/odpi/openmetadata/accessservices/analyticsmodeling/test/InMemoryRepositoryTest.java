@@ -273,7 +273,7 @@ public class InMemoryRepositoryTest {
     	}
     	
     	if (vendorType != null) {
-    		setColumnNoteLogProperty(columnEntity, Constants.DATA_UNDERSCORE_TYPE, vendorType);
+    		setColumnNoteLogProperty(columnEntity, Constants.TYPE, vendorType);
      	}
    	
         return columnEntity;

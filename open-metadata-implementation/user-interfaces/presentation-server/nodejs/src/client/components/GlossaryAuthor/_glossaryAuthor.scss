@@ -22,7 +22,10 @@
   display          : flex;
   flex-flow        : row;
 }
-
+.row-container {
+  display          : flex;
+  flex-flow        : row;
+}
 .search-options-container {
   height           : 100%;
   width            : 300px;
@@ -124,8 +127,6 @@
   display: flex;
   justify-content: flex-end;
 }
-
-
 
 @keyframes shake {
   0% { transform: translate(1px, 1px) rotate(0deg); }

@@ -13,6 +13,7 @@ import Home from "./components/Home";
 import GlossaryAuthor from "./components/GlossaryAuthor/GlossaryAuthor";
 import RepositoryExplorer from "./components/RepositoryExplorer/RepositoryExplorer";
 import TypeExplorer from "./components/TypeExplorer/TypeExplorer";
+import Dino from "./components/Dino/Dino";
 import ServerAuthor from "./components/ServerAuthor/ServerAuthor";
 import { IdentificationContext } from "./contexts/IdentificationContext";
 
@@ -28,15 +29,16 @@ import {
   SideNavLink
 } from "carbon-components-react/lib/components/UIShell";
 
-export default function Frame(props) {
+export default function Frame() {
   const identificationContext = useContext(IdentificationContext);
   console.log("Frame context", {identificationContext});
   const rootUrl = identificationContext.getBrowserURL("");
   const homeUrl = identificationContext.getBrowserURL("home");
-  const glossaryUrl = identificationContext.getBrowserURL("glossary-author");
+  const glossaryAuthorUrl = identificationContext.getBrowserURL("glossary-author");
   const rexUrl = identificationContext.getBrowserURL("repository-explorer");
   const typeUrl = identificationContext.getBrowserURL("type-explorer");
   const serverUrl = identificationContext.getBrowserURL("server-author");
+  const dinoUrl = identificationContext.getBrowserURL("dino");
 
   return (
     <div className="container">
@@ -82,7 +84,7 @@ export default function Frame(props) {
                   <SideNavLink
                     renderIcon={EgeriaGlossAuth32}
                     element={Link}
-                    to={glossaryUrl}
+                    to={glossaryAuthorUrl}
                   >
                     Glossary Author
                   </SideNavLink>
@@ -94,6 +96,9 @@ export default function Frame(props) {
                   </SideNavLink>
                   <SideNavLink element={Link} to={serverUrl}>
                     Server Author
+                  </SideNavLink>
+                  <SideNavLink element={Link} to={dinoUrl}>
+                    Dino
                   </SideNavLink>
                 </SideNavItems>
               </SideNav>
@@ -108,8 +113,8 @@ export default function Frame(props) {
                   <Route path={homeUrl}>
                     <Home />
                   </Route>
-                  <Route path={glossaryUrl}>
-                    <GlossaryAuthor />
+                  <Route path={glossaryAuthorUrl}>
+                    <GlossaryAuthor/>
                   </Route>
                   <Route path={rexUrl}>
                     <RepositoryExplorer />
@@ -119,6 +124,9 @@ export default function Frame(props) {
                   </Route>
                   <Route path={serverUrl}>
                     <ServerAuthor />
+                  </Route>
+                  <Route path={dinoUrl}>
+                    <Dino />
                   </Route>
                 </section>
               </div>

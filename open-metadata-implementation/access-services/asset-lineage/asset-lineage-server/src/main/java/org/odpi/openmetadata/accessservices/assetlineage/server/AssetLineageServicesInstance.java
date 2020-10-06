@@ -16,6 +16,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * AssetLineageServicesInstance caches references to OMRS objects for a specific server.
@@ -41,7 +42,7 @@ public class AssetLineageServicesInstance extends OCFOMASServiceInstance {
      */
     public AssetLineageServicesInstance(OMRSRepositoryConnector repositoryConnector,
                                         List<String> supportedZones,
-                                        List<String> lineageClassificationTypes,
+                                        Set<String> lineageClassificationTypes,
                                         String localServerUserId, AuditLog auditLog) throws NewInstanceException {
         super(myDescription.getAccessServiceFullName(),
                 repositoryConnector,

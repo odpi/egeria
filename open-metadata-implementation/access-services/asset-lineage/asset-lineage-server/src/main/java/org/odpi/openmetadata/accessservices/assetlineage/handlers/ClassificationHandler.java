@@ -30,7 +30,7 @@ public class ClassificationHandler {
      *
      * @param invalidParameterHandler the invalid parameter handler
      */
-    public ClassificationHandler(InvalidParameterHandler invalidParameterHandler, List<String> lineageClassificationTypes, OMRSRepositoryHelper repositoryHelper) {
+    public ClassificationHandler(InvalidParameterHandler invalidParameterHandler, Set<String> lineageClassificationTypes, OMRSRepositoryHelper repositoryHelper) {
         this.invalidParameterHandler = invalidParameterHandler;
         this.handlerHelper = new HandlerHelper(invalidParameterHandler, repositoryHelper, null, lineageClassificationTypes);
     }

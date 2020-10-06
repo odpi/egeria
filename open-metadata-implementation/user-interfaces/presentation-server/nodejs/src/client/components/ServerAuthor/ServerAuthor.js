@@ -35,7 +35,7 @@ export default function ServerAuthor() {
   const [newServerLocalUserId, setNewServerLocalUserId] = useState("");
   const [newServerLocalPassword, setNewServerLocalPassword] = useState("");
   const [newServerAccessServices, setNewServerAccessServices] = useState([]);
-  const [newServerRepository, setNewServerRepository] = useState("");
+  const [newServerRepository, setNewServerRepository] = useState("in-memory-repository");
   const [newServerMaxPageSize, setNewServerMaxPageSize] = useState(1000);
   const [notificationKind, setNotificationKind] = useState("");
   const [notificationTitle, setNotificationTitle] = useState("");
