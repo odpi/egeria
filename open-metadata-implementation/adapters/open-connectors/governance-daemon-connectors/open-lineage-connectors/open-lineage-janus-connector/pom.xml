@@ -7,7 +7,7 @@
     <parent>
         <artifactId>open-lineage-connectors</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>2.3-SNAPSHOT</version>
+        <version>2.4-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -158,6 +158,11 @@
         <dependency>
             <groupId>org.apache.tinkerpop</groupId>
             <artifactId>gremlin-driver</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.tinkerpop</groupId>
+            <artifactId>tinkergraph-gremlin</artifactId>
         </dependency>
 
     </dependencies>

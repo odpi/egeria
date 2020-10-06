@@ -32,9 +32,10 @@ public class DataEngineProxyConfig extends AdminServicesConfigHeader
     private Connection dataEngineConnection    = null;
     private int        pollIntervalInSeconds   = 60;
     private int        batchWindowInSeconds    = 86400;
+    private boolean    eventsClientEnabled     = false;
 
     /**
-     * Default constuctor
+     * Default constructor
      */
     public DataEngineProxyConfig() {
         super();
@@ -146,5 +147,22 @@ public class DataEngineProxyConfig extends AdminServicesConfigHeader
         return Objects.hash(getAccessServiceRootURL(), getAccessServiceServerName(),
                 getDataEngineConnection(), getPollIntervalInSeconds());
     }
+
+    /**
+     * Configuration parameter controlling events client usage in the Data Engine Proxy server
+     * @return true if enabled
+     */
+    public boolean isEventsClientEnabled() {
+        return eventsClientEnabled;
+    }
+
+    /**
+     * Sets configuration parameter controlling events client usage in the Data Engine Proxy server
+     * @param eventsClientEnabled
+     */
+    public void setEventsClientEnabled(boolean eventsClientEnabled) {
+        this.eventsClientEnabled = eventsClientEnabled;
+    }
+
 
 }

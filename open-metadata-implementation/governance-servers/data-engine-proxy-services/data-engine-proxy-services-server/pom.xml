@@ -9,7 +9,7 @@
     <parent>
         <artifactId>data-engine-proxy-services</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>2.3-SNAPSHOT</version>
+        <version>2.4-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -69,6 +69,18 @@
             <artifactId>slf4j-api</artifactId>
             <scope>compile</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>ocf-metadata-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>data-engine-topic-connectors</artifactId>
+        </dependency>
+
+
     </dependencies>
 
 </project>

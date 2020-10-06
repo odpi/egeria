@@ -222,16 +222,15 @@ public class LineageGraphConnectorHelper {
      * assignments and various relationships between glossary terms. Classifications are included
      *
      * @param guid guid to extract vertical lineage for
-     * @param includeProcesses include processes
      *
      * @return a subgraph in an Open Lineage specific format.
      */
-    private Optional<LineageVerticesAndEdges> glossaryVerticalLineage(String guid, boolean includeProcesses) {
+    private Optional<LineageVerticesAndEdges> glossaryVerticalLineage(String guid) {
 
         Graph subGraph = (Graph) g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).bothE(glossaryTermAndClassificationEdges)
                 .subgraph("s").cap("s").next();
 
-        return Optional.of(getLineageVerticesAndEdges(subGraph, includeProcesses));
+        return Optional.of(getLineageVerticesAndEdges(subGraph, true));
     }
 
     /**
@@ -239,16 +238,15 @@ public class LineageGraphConnectorHelper {
      * assignments. Classifications are included
      *
      * @param guid guid to extract vertical lineage for
-     * @param includeProcesses include processes
      *
      * @return a subgraph in an Open Lineage specific format.
      */
-    private Optional<LineageVerticesAndEdges> relationalColumnVerticalLineage(String guid, boolean includeProcesses) {
+    private Optional<LineageVerticesAndEdges> relationalColumnVerticalLineage(String guid) {
 
         Graph subGraph = (Graph) g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).bothE(relationalColumnAndClassificationEdges)
                 .subgraph("s").cap("s").next();
 
-        return Optional.of(getLineageVerticesAndEdges(subGraph, includeProcesses));
+        return Optional.of(getLineageVerticesAndEdges(subGraph, true));
     }
 
     /**
@@ -256,16 +254,15 @@ public class LineageGraphConnectorHelper {
      * assignments. Classifications are included
      *
      * @param guid guid to extract vertical lineage for
-     * @param includeProcesses include processes
      *
      * @return a subgraph in an Open Lineage specific format.
      */
-    private Optional<LineageVerticesAndEdges> tabularColumnVerticalLineage(String guid, boolean includeProcesses) {
+    private Optional<LineageVerticesAndEdges> tabularColumnVerticalLineage(String guid ) {
 
         Graph subGraph = (Graph) g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).bothE(tabularColumnAndClassificationEdges)
                 .subgraph("s").bothV().inE(ASSET_SCHEMA_TYPE).subgraph("s").cap("s").next();
 
-        return Optional.of(getLineageVerticesAndEdges(subGraph, includeProcesses));
+        return Optional.of(getLineageVerticesAndEdges(subGraph, true));
     }
 
     /**
@@ -273,20 +270,19 @@ public class LineageGraphConnectorHelper {
      * {@link #glossaryVerticalLineage}, {@link #tabularColumnVerticalLineage}, {@link #relationalColumnVerticalLineage}
      *
      * @param guid guid to extract vertical lineage for
-     * @param includeProcesses include processes
      *
      * @return a subgraph in an Open Lineage specific format
      */
-    public Optional<LineageVerticesAndEdges> verticalLineage(String guid, boolean includeProcesses) {
+    public Optional<LineageVerticesAndEdges> verticalLineage(String guid) {
 
         String label = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).label().next();
         switch (label){
             case GLOSSARY_TERM:
-                return glossaryVerticalLineage(guid, includeProcesses);
+                return glossaryVerticalLineage(guid);
             case RELATIONAL_COLUMN:
-                return relationalColumnVerticalLineage(guid, includeProcesses);
+                return relationalColumnVerticalLineage(guid);
             case TABULAR_COLUMN:
-                return tabularColumnVerticalLineage(guid, includeProcesses);
+                return tabularColumnVerticalLineage(guid);
             default:
                 return Optional.empty();
         }
