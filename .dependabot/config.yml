@@ -76,12 +76,6 @@ update_configs:
       - "cmgrote"
       - "planetf1"
   - package_manager: "docker"
-    directory: "/open-metadata-resources/open-metadata-deployment/docker/configure"
-    update_schedule: "daily"
-    default_reviewers:
-      - "cmgrote"
-      - "planetf1"
-  - package_manager: "docker"
     directory: "/open-metadata-resources/open-metadata-deployment/docker/presentation-server"
     update_schedule: "daily"
     default_reviewers:
