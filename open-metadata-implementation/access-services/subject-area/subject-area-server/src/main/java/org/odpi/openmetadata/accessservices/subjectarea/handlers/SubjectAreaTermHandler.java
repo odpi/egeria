@@ -8,13 +8,18 @@ import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectA
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.GovernanceActions;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineType;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.NodeType;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.CategorySummary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.GlossarySummary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.Categorization;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.TermAnchor;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
+import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.entities.CategoryMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.entities.TermMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.relationships.TermAnchorMapper;
+import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.relationships.TermCategorizationMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
 import org.odpi.openmetadata.accessservices.subjectarea.validators.InputValidator;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
@@ -25,10 +30,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -38,6 +40,9 @@ import java.util.stream.Collectors;
  */
 public class SubjectAreaTermHandler extends SubjectAreaHandler {
     private static final String className = SubjectAreaTermHandler.class.getName();
+    private TermAnchorMapper termAnchorMapper;
+    private TermCategorizationMapper termCategorizationMapper;
+    private CategoryMapper categoryMapper;
 
     /**
      * Construct the Subject Area Term Handler
@@ -46,7 +51,11 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
      * @param oMRSAPIHelper           omrs API helper
      */
     public SubjectAreaTermHandler(OMRSAPIHelper oMRSAPIHelper) {
+
         super(oMRSAPIHelper);
+        termAnchorMapper = mappersFactory.get(TermAnchorMapper.class);
+        termCategorizationMapper = mappersFactory.get(TermCategorizationMapper.class);
+        categoryMapper = mappersFactory.get(CategoryMapper.class);
     }
 
     /**
@@ -95,17 +104,34 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
                 TermMapper termMapper = mappersFactory.get(TermMapper.class);
                 EntityDetail termEntityDetail = termMapper.map(suppliedTerm);
                 GlossarySummary suppliedGlossary = suppliedTerm.getGlossary();
+                List<CategorySummary> suppliedCategorysummaries = suppliedTerm.getCategories();
 
                 String glossaryGuid = validateGlossarySummaryDuringCreation(userId, methodName, suppliedGlossary);
+                validateCategoriesDuringCreation(userId,methodName,suppliedCategorysummaries);
                 createdTermGuid = oMRSAPIHelper.callOMRSAddEntity(methodName, userId, termEntityDetail);
                 if (createdTermGuid != null) {
                     TermAnchor termAnchor = new TermAnchor();
                     termAnchor.getEnd1().setNodeGuid(glossaryGuid);
                     termAnchor.getEnd2().setNodeGuid(createdTermGuid);
-                    TermAnchorMapper termAnchorMapper = mappersFactory.get(TermAnchorMapper.class);
+
                     Relationship relationship = termAnchorMapper.map(termAnchor);
                     oMRSAPIHelper.callOMRSAddRelationship(methodName, userId, relationship);
                     response = getTermByGuid(userId, createdTermGuid);
+                    if (response.getRelatedHTTPCode() == 200) {
+                        if (suppliedCategorysummaries != null && suppliedCategorysummaries.size() >0) {
+                            for (CategorySummary categorySummary : suppliedCategorysummaries) {
+                                Categorization categorization = new Categorization();
+                                categorization.getEnd1().setNodeGuid(categorySummary.getGuid());
+                                categorization.getEnd2().setNodeGuid(createdTermGuid);
+                                relationship = termCategorizationMapper.map(categorization);
+                                oMRSAPIHelper.callOMRSAddRelationship(methodName, userId, relationship);
+                                response = getTermByGuid(userId, createdTermGuid);
+                                if (response.getRelatedHTTPCode() != 200) {
+                                    break;
+                                }
+                            }
+                        }
+                    }
                 }
             }
         } catch (SubjectAreaCheckedException | PropertyServerException | UserNotAuthorizedException | InvalidParameterException e) {
@@ -118,6 +144,46 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
         }
 
         return response;
+    }
+    /**
+     * This method validates that any Categories supplied to a Term create exist.
+     *
+     * @param userId           userId under which the request is performed
+     * @param methodName       method making the call
+     * @param suppliedCategories categories to validate.
+
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws SubjectAreaCheckedException standard exception Subject Area OMAS services
+     */
+    protected void validateCategoriesDuringCreation(String userId,
+                                                    String methodName,
+                                                    List<CategorySummary> suppliedCategories) throws UserNotAuthorizedException,
+                                                                                                    PropertyServerException,
+                                                                                                    InvalidParameterException,
+                                                                                                    SubjectAreaCheckedException
+    {
+        /*
+         * If there are categories supplied then they need to specify a guid that is exists and is for a Category or
+         * a child of Category.
+         */
+        if (suppliedCategories != null) {
+            for (CategorySummary categorySummary:suppliedCategories) {
+                String guid = categorySummary.getGuid();
+                // find by guid
+                Optional<EntityDetail> entityDetail = oMRSAPIHelper.callOMRSGetEntityByGuid(userId, guid, CATEGORY_TYPE_NAME, methodName);
+                if (!entityDetail.isPresent()) {
+                    ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.  TERM_CREATE_WITH_BAD_CATEGORIES.getMessageDefinition();
+                    throw new InvalidParameterException(
+                            messageDefinition,
+                            className,
+                            methodName,
+                            "categories",
+                            null);
+                }
+            }
+        }
     }
 
     /**
@@ -143,7 +209,7 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
             if (entityDetail.isPresent()) {
                 TermMapper termMapper = mappersFactory.get(TermMapper.class);
                 Term term = termMapper.map(entityDetail.get());
-                setGlossary(userId, term, methodName);
+                setSummaryObjects(userId, term, methodName);
                 response.addResult(term);
             }
         } catch (SubjectAreaCheckedException | PropertyServerException | UserNotAuthorizedException | InvalidParameterException e) {
@@ -177,7 +243,7 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
             List<Term> foundTerms = findEntities(userId, TERM_TYPE_NAME, findRequest, TermMapper.class, methodName);
             if (foundTerms != null) {
                 for (Term term : foundTerms) {
-                    setGlossary(userId, term, methodName);
+                    setSummaryObjects(userId, term, methodName);
                     response.addResult(term);
                 }
             } else {
@@ -189,23 +255,47 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
         return response;
     }
 
-
-    private void setGlossary(String userId, Term term, String methodName) throws SubjectAreaCheckedException,
-                                                                                 PropertyServerException,
-                                                                                 UserNotAuthorizedException,
-                                                                                 InvalidParameterException
+    /**
+     * Set the summary objects into the Term. This means if we find a relationship to a Glossary (TermAnchor) or a relationship
+     * to a Category (TermCategorization) then represent those relationships are summary objects.
+     *
+     * @param userId             unique identifier for requesting user, under which the request is performed
+     * @param term               Term on which to set the summary objects
+     * @param methodName         rest API
+     * @throws SubjectAreaCheckedException
+     * @throws PropertyServerException
+     * @throws UserNotAuthorizedException
+     * @throws InvalidParameterException
+     */
+    private void setSummaryObjects(String userId, Term term, String methodName) throws SubjectAreaCheckedException,
+                                                                                       PropertyServerException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       InvalidParameterException
     {
         final String guid = term.getSystemAttributes().getGUID();
         List<Relationship> relationships = oMRSAPIHelper.getRelationshipsByType(userId, guid, TERM_TYPE_NAME, TERM_ANCHOR_RELATIONSHIP_NAME, methodName);
         if (CollectionUtils.isNotEmpty(relationships)) {
+            List<CategorySummary> categorySummaryList = new ArrayList<>();
             for (Relationship relationship : relationships) {
-                TermAnchorMapper termAnchorMapper = mappersFactory.get(TermAnchorMapper.class);
+
                 TermAnchor termAnchor = termAnchorMapper.map(relationship);
-                GlossarySummary glossarySummary = getGlossarySummary(methodName, userId, termAnchor);
-                if (glossarySummary != null) {
-                    term.setGlossary(glossarySummary);
-                    break;
+                if (termAnchor == null) {
+                    Categorization categorization = termCategorizationMapper.map(relationship);
+                    if (categorization !=null) {
+                        CategorySummary categorySummary= new CategorySummary();
+                        categorySummary.setGuid(categorization.getGuid());
+                        categorySummaryList.add(categorySummary);
+                    }
+                } else {
+                    GlossarySummary glossarySummary = getGlossarySummary(methodName, userId, termAnchor);
+                    if (glossarySummary != null) {
+                        term.setGlossary(glossarySummary);
+
+                    }
                 }
+            }
+            if (categorySummaryList.size() > 0) {
+                term.setCategories(categorySummaryList);
             }
         }
     }
@@ -240,7 +330,6 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
      * qualified names to mismatch the Term name.
      * Status is not updated using this call.
      *
-
      * @param userId           unique identifier for requesting user, under which the request is performed
      * @param guid             guid of the term to update
      * @param suppliedTerm term to be updated
@@ -295,15 +384,61 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
                             oMRSAPIHelper.callOMRSDeClassifyEntity(methodName, userId, guid, deClassifyName);
                         }
                     }
+                    SubjectAreaOMASAPIResponse<Line> lineResponse = getTermRelationships(userId, guid, new FindRequest());
+                    List<Line> lines= lineResponse.results();
+
+                    Map<String, String> categorizationToCategoryGuidMap = new HashMap<>();
+                    List<CategorySummary> suppliedCategories = suppliedTerm.getCategories();
+                    for (Line line:lines) {
+                        if (line.getLineType().equals(LineType.TermCategorization)) {
+                            categorizationToCategoryGuidMap.put(line.getGuid(),line.getEnd1().getNodeGuid());
+                        }
+                    }
+                    Set<String> deleteCategorizationGuidSet = new HashSet<>();
+
+                    if (isReplace) {
+                        deleteCategorizationGuidSet = categorizationToCategoryGuidMap.keySet();
+                    } else {
+                        // only delete the ones that match the supplied categories
+                        for (CategorySummary suppliedCategory :suppliedCategories) {
+                            String categorizationGuid = categorizationToCategoryGuidMap.get(suppliedCategory.getGuid());
+                            if (categorizationGuid != null) {
+                                deleteCategorizationGuidSet.add(categorizationGuid);
+                            }
+                        }
+                    }
+                    // delete categorizations
+                    if (deleteCategorizationGuidSet !=null && deleteCategorizationGuidSet.size() >0) {
+                        for (String categorizationGuidToDelete : deleteCategorizationGuidSet) {
+                            String typeDefGuid = termCategorizationMapper.getTypeDefGuid();
+                            oMRSAPIHelper.callOMRSDeleteRelationship(methodName, userId, typeDefGuid, "TermCategorization", categorizationGuidToDelete);
+                        }
+                    }
+                    // add any supplied ones
+                    if (suppliedCategories != null && suppliedCategories.size() >0) {
+                        for (CategorySummary categorySummary : suppliedCategories) {
+                            addCategorizationRelationship(userId, suppliedTerm, methodName, categorySummary.getGuid());
+                        }
+                    }
                 }
-                    response = getTermByGuid(userId, guid);
+                response = getTermByGuid(userId, guid);
             }
 
-        } catch (SubjectAreaCheckedException | PropertyServerException | UserNotAuthorizedException e) {
+        } catch (SubjectAreaCheckedException | PropertyServerException | UserNotAuthorizedException | InvalidParameterException e) {
             response.setExceptionInfo(e, className);
         }
 
         return response;
+    }
+
+    private void addCategorizationRelationship(String userId, Term suppliedTerm, String methodName, String categoryGuid) throws SubjectAreaCheckedException, PropertyServerException, UserNotAuthorizedException, InvalidParameterException {
+        Optional<EntityDetail> entityDetail = oMRSAPIHelper.callOMRSGetEntityByGuid(userId, categoryGuid, categoryMapper.getTypeName(), methodName);
+        if (entityDetail.isPresent()) {
+            Categorization categorization = new Categorization();
+            categorization.getEnd1().setNodeGuid(entityDetail.get().getGUID());
+            categorization.getEnd2().setNodeGuid(suppliedTerm.getSystemAttributes().getGUID());
+            oMRSAPIHelper.callOMRSAddRelationship(methodName, userId, termCategorizationMapper.map(categorization));
+        }
     }
 
     private Set<String> getCurrentClassificationNames(Term currentTerm) {
