@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.viewservices.tex.server;
 
 
+import org.odpi.openmetadata.viewservices.tex.api.rest.TexResourceEndpointListResponse;
 import org.odpi.openmetadata.viewservices.tex.api.rest.TexTypesRequestBody;
 import org.odpi.openmetadata.viewservices.tex.api.rest.TypeExplorerResponse;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +19,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
  */
 
 @RestController
-@RequestMapping("/servers/{serverName}/open-metadata/view-services/tex/users/{userId}")
+@RequestMapping("/servers/{viewServerName}/open-metadata/view-services/tex/users/{userId}")
 
 @Tag(name="Tex OMVS", description="Explore type information in a repository or cohort for visualization of graphs of related types.", externalDocs=@ExternalDocumentation(description="Tex View Service (OMVS)",url="https://egeria.odpi.org/open-metadata-implementation/view-services/tex-view/"))
 
@@ -33,22 +34,36 @@ public class TexViewRESTResource {
     public TexViewRESTResource() {
     }
 
+    /**
+     * Get the configured resource endpoints
+     *
+     * @param viewServerName   name of the server running the view-service.
+     * @param userId       user account under which to conduct operation.
+     * @return response object containing the list of resource endpoints or exception information
+     */
+
+    @GetMapping("/resource-endpoints")
+    public TexResourceEndpointListResponse getResourceEndpoints(@PathVariable String        viewServerName,
+                                                                @PathVariable String        userId) {
+        return restAPI.getResourceEndpointList(viewServerName, userId);
+
+    }
 
     /**
      * Load type information
      * <p>
      * Load type information from the repository server. This is used to populate filters.
      *
-     * @param serverName   name of the server running the view-service.
+     * @param viewServerName   name of the server running the view-service.
      * @param userId       user account under which to conduct operation.
      * @param body         request body containing parameters to formulate repository request
      * @return response object containing the repository's type information or exception information
      */
     @PostMapping("/types")
-    public TypeExplorerResponse getTypeExplorer(@PathVariable String              serverName,
+    public TypeExplorerResponse getTypeExplorer(@PathVariable String              viewServerName,
                                                 @PathVariable String              userId,
                                                 @RequestBody  TexTypesRequestBody body) {
-        return restAPI.getTypeExplorer(serverName, userId, body);
+        return restAPI.getTypeExplorer(viewServerName, userId, body);
 
     }
 

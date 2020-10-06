@@ -10,14 +10,18 @@ import { InteractionContext }                 from "./contexts/InteractionContex
 
 import ReactMarkdown                          from 'react-markdown';
 
-import TopologyDiagramImage                   from './TopologyDiagram.png';
-import DinoInterfaceImage                     from './DinoInterface.png';
 
-import "./dino.scss";
+import TexInterfaceImage                      from './TexInterface.png';
+import EntityInheritanceDiagramImage          from './InheritanceDiagram.png';
+import NeighborhoodDiagramImage               from './NeighborhoodDiagram.png';
+
+
+import "./tex.scss";
 
 const imageRefs = {
-    image1 : DinoInterfaceImage,
-    image2 : TopologyDiagramImage
+    image1 : TexInterfaceImage,
+    image2 : EntityInheritanceDiagramImage,
+    image3 : NeighborhoodDiagramImage
 };
 
 
@@ -89,7 +93,7 @@ export default function ReadmeHandler(props) {
         <div className="dialog-text">
           
           <p  className="dialog-text">
-          README for Egeria Dino user interface:
+          README for Egeria Tex user interface:
           </p>    
    
           <hr></hr>
