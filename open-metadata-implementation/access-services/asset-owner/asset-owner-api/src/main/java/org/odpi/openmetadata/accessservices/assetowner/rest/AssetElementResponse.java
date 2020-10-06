@@ -17,7 +17,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * AssetElementResponse is the response structure used on the OMAS REST API calls that return a
- * asset bean object as a response.
+ * AssetElement bean object as a response.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -26,7 +26,7 @@ public class AssetElementResponse extends AssetOwnerOMASAPIResponse
 {
     private static final long    serialVersionUID = 1L;
 
-    private AssetElement asset                   = null;
+    private AssetElement asset = null;
 
 
     /**
