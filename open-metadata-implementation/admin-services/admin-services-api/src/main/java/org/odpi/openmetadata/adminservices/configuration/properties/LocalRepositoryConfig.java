@@ -10,13 +10,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceGraph;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary;
-import org.odpi.openmetadata.repositoryservices.events.OMRSEvent;
-import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEventType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,14 +57,6 @@ import java.util.Objects;
  *         APIs that can change metadata in the repository without going through the OMRS interfaces.
  *         It maps the proprietary events from the local repository to the OMRS Events.
  *     </li>
- *     <li>
- *         enableBulkInstanceGraphProcessing -  If true, the whole {@link InstanceGraph} from  
- *         {@link OMRSInstanceEventType#BATCH_INSTANCES_EVENT} messages is passed to the 
- *         {@link OMRSMetadataCollection}, allowing the graph to be processed
- *         as a whole.  If false, instance event messages of type {@link OMRSInstanceEventType#BATCH_INSTANCES_EVENT} 
- *         split up into separate {@link EntityDetail} and {@link Relationship} instances that are passed individually to
- *         the {@link OMRSMetadataCollection}.  Defaults to false.
- *     </li>
  * </ul>
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
@@ -80,18 +66,16 @@ public class LocalRepositoryConfig extends AdminServicesConfigHeader
 {
     private static final long    serialVersionUID = 1L;
 
-    private String                   metadataCollectionId              = null;
-    private String                   metadataCollectionName            = null;
-    private LocalRepositoryMode      localRepositoryMode               = null;
-    private Connection               localRepositoryLocalConnection    = null;
-    private Connection               localRepositoryRemoteConnection   = null;
-    private OpenMetadataExchangeRule eventsToSaveRule                  = null;
-    private List<TypeDefSummary>     selectedTypesToSave               = null;
-    private OpenMetadataExchangeRule eventsToSendRule                  = null;
-    private List<TypeDefSummary>     selectedTypesToSend               = null;
-    private Connection               eventMapperConnection             = null;
-    //false by default for backward compatibility
-    private boolean                  enableBulkInstanceGraphProcessing = false;
+    private String                   metadataCollectionId            = null;
+    private String                   metadataCollectionName          = null;
+    private LocalRepositoryMode      localRepositoryMode             = null;
+    private Connection               localRepositoryLocalConnection  = null;
+    private Connection               localRepositoryRemoteConnection = null;
+    private OpenMetadataExchangeRule eventsToSaveRule                = null;
+    private List<TypeDefSummary>     selectedTypesToSave             = null;
+    private OpenMetadataExchangeRule eventsToSendRule                = null;
+    private List<TypeDefSummary>     selectedTypesToSend             = null;
+    private Connection               eventMapperConnection           = null;
 
 
     /**
@@ -125,7 +109,6 @@ public class LocalRepositoryConfig extends AdminServicesConfigHeader
             this.eventsToSendRule = template.getEventsToSendRule();
             this.selectedTypesToSend = template.getSelectedTypesToSend();
             this.eventMapperConnection = template.getEventMapperConnection();
-            this.enableBulkInstanceGraphProcessing = template.enableBulkInstanceGraphProcessing;
         }
     }
 
@@ -407,23 +390,6 @@ public class LocalRepositoryConfig extends AdminServicesConfigHeader
         this.eventMapperConnection = eventMapperConnection;
     }
 
-    /**
-     *  If true, the whole {@link InstanceGraph} from 
-     *  {@link OMRSInstanceEventType#BATCH_INSTANCES_EVENT}
-     *  messages is passed to the {@link OMRSMetadataCollection}, allowing the graph to be processed
-     *  as a whole.  
-     *  
-     *  If false, instance event messages of type {@link OMRSInstanceEventType#BATCH_INSTANCES_EVENT} split up into separate
-     *  {@link EntityDetail} and {@link Relationship} instances that are passed individually to
-     *  the {@link OMRSMetadataCollection}. 
-     *  
-     *  Defaults to false.
-     *  
-     * @return
-     */
-    public boolean isEnableBulkInstanceGraphProcessing()  {
-        return enableBulkInstanceGraphProcessing;
-    }
 
     /**
      * Standard toString method.
@@ -475,8 +441,7 @@ public class LocalRepositoryConfig extends AdminServicesConfigHeader
                 Objects.equals(selectedTypesToSave, that.selectedTypesToSave) &&
                 eventsToSendRule == that.eventsToSendRule &&
                 Objects.equals(selectedTypesToSend, that.selectedTypesToSend) &&
-                Objects.equals(eventMapperConnection, that.eventMapperConnection) &&
-                Objects.equals(enableBulkInstanceGraphProcessing, that.enableBulkInstanceGraphProcessing);
+                Objects.equals(eventMapperConnection, that.eventMapperConnection);
     }
 
 
@@ -491,7 +456,6 @@ public class LocalRepositoryConfig extends AdminServicesConfigHeader
         return Objects.hash(getMetadataCollectionId(), getMetadataCollectionName(), getLocalRepositoryMode(),
                             getLocalRepositoryLocalConnection(), getLocalRepositoryRemoteConnection(),
                             getEventsToSaveRule(), getSelectedTypesToSave(),
-                            getEventsToSendRule(), getSelectedTypesToSend(), getEventMapperConnection(), 
-                            isEnableBulkInstanceGraphProcessing());
+                            getEventsToSendRule(), getSelectedTypesToSend(), getEventMapperConnection());
     }
 }

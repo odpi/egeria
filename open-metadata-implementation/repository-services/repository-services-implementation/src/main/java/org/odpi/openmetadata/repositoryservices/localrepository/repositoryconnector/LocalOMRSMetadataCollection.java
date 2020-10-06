@@ -34,7 +34,6 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
     private String                       localServerType;
     private String                       localOrganizationName;
     private boolean                      produceEventsForRealConnector;
-    private final boolean                enableBulkInstanceGraphProcessing;
     private OMRSRepositoryEventProcessor outboundRepositoryEventProcessor;
     private OMRSTypeDefManager           localTypeDefManager;
 
@@ -59,8 +58,6 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * @param produceEventsForRealConnector flag indicating whether the local connector should handle the outbound
      *                                      events for the real connector
      * @param typeDefManager manager of in-memory cache of type definitions (TypeDefs).
-     * @param enableBulkInstanceGraphProcessing whether or not to pass {@link InstanceGraph}s
-     *      directly to the real {@link OMRSMetadataCollection} in {@link #saveInstanceReferenceCopies(String, InstanceGraph)}
      */
      LocalOMRSMetadataCollection(LocalOMRSRepositoryConnector parentConnector,
                                  String                       repositoryName,
@@ -73,8 +70,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                  OMRSMetadataCollection       realMetadataCollection,
                                  OMRSRepositoryEventProcessor outboundRepositoryEventProcessor,
                                  boolean                      produceEventsForRealConnector,
-                                 OMRSTypeDefManager           typeDefManager,
-                                 boolean                      enableBulkInstanceGraphProcessing)
+                                 OMRSTypeDefManager           typeDefManager)
     {
         /*
          * The super class manages the local metadata collection id.  This is a locally managed value.
@@ -105,7 +101,6 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         this.produceEventsForRealConnector = produceEventsForRealConnector;
         this.outboundRepositoryEventProcessor = outboundRepositoryEventProcessor;
         this.localTypeDefManager = typeDefManager;
-        this.enableBulkInstanceGraphProcessing = enableBulkInstanceGraphProcessing;
     }
 
 
@@ -6303,27 +6298,22 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
     
     @Override
     public void saveInstanceReferenceCopies(String          userId,
-            InstanceGraph   instances) throws InvalidParameterException,
-                                              RepositoryErrorException,
-                                              TypeErrorException,
-                                              EntityNotKnownException,
-                                              PropertyErrorException,
-                                              EntityConflictException,
-                                              RelationshipConflictException,
-                                              InvalidEntityException,
-                                              InvalidRelationshipException,
-                                              FunctionNotSupportedException,
-                                              UserNotAuthorizedException {
-        if (enableBulkInstanceGraphProcessing) {
-            //delegate processing to the real metadata collection
-            realMetadataCollection.saveInstanceReferenceCopies(userId, instances);
-        }
-        else {
-            //use default implementation, which splits the InstanceGraph up
-            //into its contained EntityDetail and Relationships instances
-            //and passes them to the real metadata collection one at a time
-            super.saveInstanceReferenceCopies(userId, instances);
-        }
+                                            InstanceGraph   instances) throws InvalidParameterException,
+                                                                              RepositoryErrorException,
+                                                                              TypeErrorException,
+                                                                              EntityNotKnownException,
+                                                                              PropertyErrorException,
+                                                                              EntityConflictException,
+                                                                              RelationshipConflictException,
+                                                                              InvalidEntityException,
+                                                                              InvalidRelationshipException,
+                                                                              UserNotAuthorizedException,
+                                                                              FunctionNotSupportedException
+    {
+      
+        //delegate processing to the real metadata collection
+        realMetadataCollection.saveInstanceReferenceCopies(userId, instances);
+      
     }
 
 }

@@ -133,7 +133,7 @@ public class InMemoryRepositoryTest {
                 localRepositoryEventManager,
                 localRepositoryContentManager,
                 new OMRSRepositoryEventExchangeRule(OpenMetadataExchangeRule.ALL,
-                        null), false)
+                        null))
                 .getConnector(connection);
 
 

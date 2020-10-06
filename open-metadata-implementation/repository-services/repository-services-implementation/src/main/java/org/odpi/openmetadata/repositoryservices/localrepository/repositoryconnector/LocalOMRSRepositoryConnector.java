@@ -46,7 +46,6 @@ public class LocalOMRSRepositoryConnector extends OMRSRepositoryConnector implem
     private OMRSRepositoryConnector             realLocalConnector;
     private OMRSRepositoryEventMapperConnector  realEventMapper;
     private boolean                             produceEventsForRealConnector = true;
-    private final boolean enableBulkInstanceGraphProcessing;
 
 
     /**
@@ -63,9 +62,7 @@ public class LocalOMRSRepositoryConnector extends OMRSRepositoryConnector implem
                                            OMRSRepositoryEventMapperConnector realEventMapper,
                                            OMRSRepositoryEventManager         outboundRepositoryEventManager,
                                            OMRSRepositoryContentManager       repositoryContentManager,
-                                           OMRSRepositoryEventExchangeRule    saveExchangeRule,
-                                           boolean enableBulkInstanceGraphProcessing
-                                           )
+                                           OMRSRepositoryEventExchangeRule    saveExchangeRule)
     {
         this.realLocalConnector = realLocalConnector;
         this.realEventMapper = realEventMapper;
@@ -80,7 +77,6 @@ public class LocalOMRSRepositoryConnector extends OMRSRepositoryConnector implem
          */
         this.typeDefManager = repositoryContentManager;
         this.incomingTypeDefEventProcessor = repositoryContentManager;
-        this.enableBulkInstanceGraphProcessing = enableBulkInstanceGraphProcessing;
 
         /*
          * Incoming events are processed directly with real local connector to avoid the outbound event
@@ -377,8 +373,7 @@ public class LocalOMRSRepositoryConnector extends OMRSRepositoryConnector implem
                                                                  realLocalConnector.getMetadataCollection(),
                                                                  outboundRepositoryEventManager,
                                                                  produceEventsForRealConnector,
-                                                                 typeDefManager,
-                                                                 enableBulkInstanceGraphProcessing);
+                                                                 typeDefManager);
 
             LocalOMRSInstanceEventProcessor  localOMRSInstanceEventProcessor
                     = new LocalOMRSInstanceEventProcessor(metadataCollectionId,

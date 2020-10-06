@@ -696,8 +696,7 @@ public class OMRSOperationalServices
                                                    localRepositoryEventManager,
                                                    localRepositoryContentManager,
                                                    new OMRSRepositoryEventExchangeRule(localRepositoryConfig.getEventsToSaveRule(),
-                                                                                       localRepositoryConfig.getSelectedTypesToSave()),
-                                                   localRepositoryConfig.isEnableBulkInstanceGraphProcessing());
+                                                                                       localRepositoryConfig.getSelectedTypesToSave()));
 
 
             /*
