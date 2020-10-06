@@ -155,7 +155,7 @@ public class Term extends GovernedNode implements Serializable {
     }
     /**
      * The Categories that categorize this Term
-     * @return Category Summary
+     * @return Category Summaries
      */
     public List<CategorySummary> getCategories() {
         return categories;
@@ -179,11 +179,14 @@ public class Term extends GovernedNode implements Serializable {
         sb.append("Abbreviation=").append(this.abbreviation);
         sb.append("Usage=").append(this.usage);
         sb.append("Glossary").append(this.glossary);
-        sb.append("Categories: {");
-        for (CategorySummary categorySummary: this.categories) {
-            sb.append("Category="+categorySummary);
+        if (this.categories != null && this.categories.size() >0) {
+            sb.append("Categories: [");
+            for (CategorySummary categorySummary : this.categories) {
+                sb.append("Category=" + categorySummary);
+            }
+            sb.append("]");
         }
-        sb.append("}");
+        sb.append(getGovernanceActions());
         sb.append(", SpineInformation=[");
 
         if (isSpineObject) {
@@ -211,17 +214,21 @@ public class Term extends GovernedNode implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         Term term = (Term) o;
+
         return isSpineObject == term.isSpineObject &&
                 isSpineAttribute == term.isSpineAttribute &&
                 isObjectIdentifier == term.isObjectIdentifier &&
-                categories.equals(term.categories) &&
+                Objects.equals(categories,term.categories) &&
                 Objects.equals(summary, term.summary) &&
+                Objects.equals(abbreviation, term.abbreviation) &&
+                Objects.equals(usage, term.usage) &&
+                Objects.equals(getGovernanceActions(), term.getGovernanceActions()) &&
                 Objects.equals(glossary, term.glossary);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), summary, glossary, isSpineObject, isSpineAttribute, isObjectIdentifier, categories);
+        return Objects.hash(super.hashCode(), summary, usage, abbreviation, glossary, isSpineObject, isSpineAttribute, isObjectIdentifier, categories, getGovernanceActions());
     }
 
     protected void processClassification(Classification classification) {

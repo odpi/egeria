@@ -400,10 +400,12 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
                         deleteCategorizationGuidSet = categorizationToCategoryGuidMap.keySet();
                     } else {
                         // only delete the ones that match the supplied categories
-                        for (CategorySummary suppliedCategory :suppliedCategories) {
-                            String categorizationGuid = categorizationToCategoryGuidMap.get(suppliedCategory.getGuid());
-                            if (categorizationGuid != null) {
-                                deleteCategorizationGuidSet.add(categorizationGuid);
+                        if (suppliedCategories !=null && suppliedCategories.size() >0) {
+                            for (CategorySummary suppliedCategory : suppliedCategories) {
+                                String categorizationGuid = categorizationToCategoryGuidMap.get(suppliedCategory.getGuid());
+                                if (categorizationGuid != null) {
+                                    deleteCategorizationGuidSet.add(categorizationGuid);
+                                }
                             }
                         }
                     }
