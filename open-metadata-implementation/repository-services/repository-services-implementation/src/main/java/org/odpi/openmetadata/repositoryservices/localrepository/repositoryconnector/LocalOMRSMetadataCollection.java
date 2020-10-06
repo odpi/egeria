@@ -1374,8 +1374,11 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
      */
     private void  setLocalProvenanceThroughoutEntity(EntityDetail   entity)
     {
-        setLocalProvenance(entity);
-        setLocalProvenanceInEntityClassifications(entity.getClassifications());
+        if (entity != null)
+        {
+            setLocalProvenance(entity);
+            setLocalProvenanceInEntityClassifications(entity.getClassifications());
+        }
     }
 
 
