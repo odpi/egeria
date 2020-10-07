@@ -187,7 +187,7 @@
         <glassfish.json.version>1.1.4</glassfish.json.version>
         <javassist.version>3.27.0-GA</javassist.version>
         <httpcore.version>4.4.13</httpcore.version>
-        <httpclient.version>4.5.12</httpclient.version>
+        <httpclient.version>4.5.13</httpclient.version>
 
         <!-- Versions of plugins -->
         <enunciate-maven-plugin.version>2.10.1</enunciate-maven-plugin.version>
