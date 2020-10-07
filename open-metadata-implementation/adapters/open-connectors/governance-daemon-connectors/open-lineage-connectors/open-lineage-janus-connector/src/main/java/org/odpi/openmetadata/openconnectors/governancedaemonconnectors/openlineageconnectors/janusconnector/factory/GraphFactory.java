@@ -159,7 +159,7 @@ public class GraphFactory extends IndexingFactory {
 
             createIndexes(janusGraph);
         } catch (Exception e) {
-            log.error("{} failed  during graph initialize operation with error: ", e);
+            log.error("Failed  during graph initialize operation", e);
             JanusConnectorErrorCode errorCode = JanusConnectorErrorCode.GRAPH_INITIALIZATION_ERROR;
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(e.getMessage(), methodName, GraphFactory.class.getName());
             throw mapConnectorException(methodName, errorMessage, errorCode);
@@ -198,7 +198,7 @@ public class GraphFactory extends IndexingFactory {
             client.submit(indexCommandEdgeLabel);
 
         } catch (Exception e) {
-            log.error("{} failed  during graph initialize operation with error: ", e);
+            log.error("Failed  during graph initialize operation ", e);
             JanusConnectorErrorCode errorCode = JanusConnectorErrorCode.GRAPH_INITIALIZATION_ERROR;
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(e.getMessage(), methodName, GraphFactory.class.getName());
             throw mapConnectorException(methodName, errorMessage, errorCode);
