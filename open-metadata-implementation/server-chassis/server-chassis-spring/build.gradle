@@ -32,7 +32,7 @@ dependencies {
     implementation project(':open-metadata-implementation:admin-services:admin-services-server')
     implementation project(':open-metadata-implementation:common-services:ffdc-services')
     implementation project(':open-metadata-implementation:admin-services:admin-services-api')
-    implementation 'org.springframework.boot:spring-boot-starter-web:2.3.1.RELEASE'
+    implementation 'org.springframework.boot:spring-boot-starter-web:2.3.4.RELEASE'
     implementation 'ch.qos.logback:logback-classic:1.2.3'
     implementation 'ch.qos.logback:logback-core:1.2.3'
     implementation project(':open-metadata-implementation:adapters:authentication-plugins:http-helper')
