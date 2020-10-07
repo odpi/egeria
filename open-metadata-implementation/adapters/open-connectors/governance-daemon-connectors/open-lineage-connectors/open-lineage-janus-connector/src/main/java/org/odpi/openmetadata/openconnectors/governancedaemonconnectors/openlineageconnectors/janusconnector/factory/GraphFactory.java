@@ -259,6 +259,7 @@ public class GraphFactory extends IndexingFactory {
 
     /**
      * Creates cluster instance by directly mapping connector configuration properties to commons Configuration that uses standardized Thinker-pop Settings.
+     * More information on how to configure Gremlin Driver: https://tinkerpop.apache.org/docs/current/reference/#_configuration
      *
      * @return Cluster object to be used by gremlin driver client.
      */
