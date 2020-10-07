@@ -85,6 +85,16 @@ export default function PlatformSelector() {
     resourcesContext.loadPlatform(platformName);
   }
 
+  /*
+   * Enable user to click on the same server again...
+   */
+  const selectorFocus = (evt) => {
+    let selector = evt.target;
+    selector.selectedIndex = -1;
+    selector.blur();
+  }
+
+
 
   /*
    * It's important to reset (clear) the selector if the focus changes to anything other than the selected
@@ -132,8 +142,12 @@ export default function PlatformSelector() {
       <p>Accessible Platforms</p>
 
       <label htmlFor="platformSelector">Platforms: </label>
-      <select className="platform-selector" id="platformSelector" name="platformSelector"        
-              onChange = { platformSelected }  size = "5" >
+      <select className="platform-selector"
+              id="platformSelector"
+              name="platformSelector"  
+              onChange = { platformSelected }
+              onFocus= { selectorFocus }  // Enable re-click of same entry in selector
+              size = "5" >
       {
         platformNameListSorted.length === 0 && 
         ( <option value="dummy" disabled defaultValue>No platforms yet - please add one!</option> )

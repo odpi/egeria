@@ -26,13 +26,13 @@ public enum ViewServiceDescription implements Serializable
     TYPE_EXPLORER(5002,
                   "Type Explorer",
                   "Type Explorer OMVS",
-                  "type-explorer",
-                  "Explore the open metadata types.",
+                  "tex",
+                  "Explore the open metadata types in a repository or cohort.",
                   "https://egeria.odpi.org/open-metadata-implementation/view-services/tex-view/"),
 
     DINO(5003,
-                  "Dino",
-                  "Dino OMVS",
+                  "Dynamic Infrastructure and Operations",
+                  "Dynamic Infrastructure and Operations OMVS",
                   "dino",
                   "Explore and operate an open metadata ecosystem.",
                   "https://egeria.odpi.org/open-metadata-implementation/view-services/dino-view/");

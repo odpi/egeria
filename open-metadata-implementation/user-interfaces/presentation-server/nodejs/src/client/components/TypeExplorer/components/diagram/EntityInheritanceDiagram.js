@@ -23,6 +23,7 @@ import "./diagram.scss";
 
 export default function EntityInheritanceDiagram(props) {
 
+
  
   const typesContext = useContext(TypesContext);
 
@@ -583,7 +584,7 @@ export default function EntityInheritanceDiagram(props) {
 
   useEffect(
     () => {
-      if ( d3Container.current && typesContext.tex) {       
+      if ( d3Container.current && typesContext.tex) {
         /* 
          * Initial rendering...
          * Get the entity types and create and render the trees (one per root)
@@ -599,7 +600,7 @@ export default function EntityInheritanceDiagram(props) {
 
       }
     },
-    [d3Container.current, typesContext.tex]
+    [typesContext.tex]
   )
 
   useEffect(

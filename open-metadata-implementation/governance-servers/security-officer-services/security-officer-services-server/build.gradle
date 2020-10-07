@@ -5,8 +5,8 @@
 
 
 dependencies {
-    implementation 'org.springframework:spring-web:5.2.7.RELEASE'
-    implementation 'com.fasterxml.jackson.core:jackson-core:2.11.1'
+    implementation 'org.springframework:spring-web:5.2.9.RELEASE'
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.11.3'
     implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.1'
