@@ -15,16 +15,17 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * ValidValueElement contains the properties and header for a referenceable entity retrieved from the metadata repository.
+ * ValidValueElement contains the properties and header for a valid value definition or set entity retrieved from the metadata repository.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ValidValueElement extends ValidValueProperties implements MetadataElement, Serializable
+public class ValidValueElement implements MetadataElement, Serializable
 {
     private static final long serialVersionUID = 1L;
 
-    private ElementHeader elementHeader = null;
+    private ElementHeader        elementHeader = null;
+    private ValidValueProperties validValueProperties = null;
 
 
     /**
@@ -46,6 +47,7 @@ public class ValidValueElement extends ValidValueProperties implements MetadataE
         if (template != null)
         {
             elementHeader = template.getElementHeader();
+            validValueProperties = template.getValidValueProperties();
         }
     }
 
@@ -75,6 +77,28 @@ public class ValidValueElement extends ValidValueProperties implements MetadataE
 
 
     /**
+     * Return the properties for a valid value definition or set.
+     *
+     * @return properties bean
+     */
+    public ValidValueProperties getValidValueProperties()
+    {
+        return validValueProperties;
+    }
+
+
+    /**
+     * Set up the properties for a valid values definition of set.
+     *
+     * @param validValueProperties properties bean
+     */
+    public void setValidValueProperties(ValidValueProperties validValueProperties)
+    {
+        this.validValueProperties = validValueProperties;
+    }
+
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -84,16 +108,7 @@ public class ValidValueElement extends ValidValueProperties implements MetadataE
     {
         return "ValidValueElement{" +
                 "elementHeader=" + elementHeader +
-                ", displayName='" + getDisplayName() + '\'' +
-                ", description='" + getDescription() + '\'' +
-                ", usage='" + getUsage() + '\'' +
-                ", scope='" + getScope() + '\'' +
-                ", preferredValue='" + getPreferredValue() + '\'' +
-                ", deprecated=" + getIsDeprecated() +
-                ", typeName='" + getTypeName() + '\'' +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", extendedProperties=" + getExtendedProperties() +
+                ", validValueProperties=" + validValueProperties +
                 '}';
     }
 
@@ -120,7 +135,8 @@ public class ValidValueElement extends ValidValueProperties implements MetadataE
             return false;
         }
         ValidValueElement that = (ValidValueElement) objectToCompare;
-        return Objects.equals(elementHeader, that.elementHeader);
+        return Objects.equals(elementHeader, that.elementHeader) &&
+                Objects.equals(validValueProperties, that.validValueProperties);
     }
 
 
@@ -132,6 +148,6 @@ public class ValidValueElement extends ValidValueProperties implements MetadataE
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader);
+        return Objects.hash(super.hashCode(), elementHeader, validValueProperties);
     }
 }

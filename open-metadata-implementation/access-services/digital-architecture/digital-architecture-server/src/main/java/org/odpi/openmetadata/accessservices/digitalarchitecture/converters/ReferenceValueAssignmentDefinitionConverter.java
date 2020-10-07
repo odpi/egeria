@@ -2,10 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.digitalarchitecture.converters;
 
-import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.MetadataElement;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.ReferenceValueAssignmentDefinitionElement;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.ValidValueElement;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;

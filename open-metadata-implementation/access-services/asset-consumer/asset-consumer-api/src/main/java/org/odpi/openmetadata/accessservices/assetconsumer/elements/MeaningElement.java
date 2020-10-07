@@ -15,16 +15,17 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * MeaningElement contains the properties and header for a referenceable entity retrieved from the metadata repository.
+ * MeaningElement contains the properties and header for a GlossaryTerm entity retrieved from the metadata repository.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class MeaningElement extends MeaningProperties implements MetadataElement, Serializable
+public class MeaningElement implements MetadataElement, Serializable
 {
     private static final long     serialVersionUID = 1L;
 
-    private ElementHeader elementHeader = null;
+    private ElementHeader     elementHeader = null;
+    private MeaningProperties meaningProperties = null;
 
 
     /**
@@ -46,6 +47,7 @@ public class MeaningElement extends MeaningProperties implements MetadataElement
         if (template != null)
         {
             elementHeader = template.getElementHeader();
+            meaningProperties = template.getMeaningProperties();
         }
     }
 
@@ -75,6 +77,28 @@ public class MeaningElement extends MeaningProperties implements MetadataElement
 
 
     /**
+     * Return the properties for a meaning.
+     *
+     * @return properties bean
+     */
+    public MeaningProperties getMeaningProperties()
+    {
+        return meaningProperties;
+    }
+
+
+    /**
+     * Set up the properties for a meaning.
+     *
+     * @param meaningProperties properties bean
+     */
+    public void setMeaningProperties(MeaningProperties meaningProperties)
+    {
+        this.meaningProperties = meaningProperties;
+    }
+
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -84,12 +108,7 @@ public class MeaningElement extends MeaningProperties implements MetadataElement
     {
         return "MeaningElement{" +
                 "elementHeader=" + elementHeader +
-                ", name='" + getName() + '\'' +
-                ", description='" + getDescription() + '\'' +
-                ", typeName='" + getTypeName() + '\'' +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", extendedProperties=" + getExtendedProperties() +
+                ", meaningProperties=" + meaningProperties +
                 '}';
     }
 
@@ -116,7 +135,8 @@ public class MeaningElement extends MeaningProperties implements MetadataElement
             return false;
         }
         MeaningElement that = (MeaningElement) objectToCompare;
-        return Objects.equals(elementHeader, that.elementHeader);
+        return Objects.equals(elementHeader, that.elementHeader) &&
+                Objects.equals(meaningProperties, that.meaningProperties);
     }
 
 
@@ -128,6 +148,6 @@ public class MeaningElement extends MeaningProperties implements MetadataElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader);
+        return Objects.hash(super.hashCode(), elementHeader, meaningProperties);
     }
 }

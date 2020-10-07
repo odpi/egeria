@@ -4,8 +4,10 @@ package org.odpi.openmetadata.accessservices.datamanager.converters;
 
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseTableElement;
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.SchemaTypeElement;
+import org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseTableProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.List;
@@ -13,7 +15,7 @@ import java.util.List;
 
 /**
  * DatabaseTableConverter transfers the relevant properties from some Open Metadata Repository Services (OMRS)
- * EntityDetail object into an SchemaAttribute bean.
+ * EntityDetail object into an DatabaseTable bean.
  */
 public class DatabaseTableConverter<B> extends DataManagerOMASConverter<B>
 {
@@ -62,46 +64,56 @@ public class DatabaseTableConverter<B> extends DataManagerOMASConverter<B>
             if (returnBean instanceof DatabaseTableElement)
             {
                 DatabaseTableElement bean = (DatabaseTableElement) returnBean;
+                DatabaseTableProperties databaseTableProperties = new DatabaseTableProperties();
 
-                /*
-                 * Check that the entity is of the correct type.
-                 */
-                bean.setElementHeader(this.getMetadataElementHeader(beanClass, schemaAttributeEntity, methodName));
-
-                /*
-                 * The initial set of values come from the entity.
-                 */
-                InstanceProperties instanceProperties = new InstanceProperties(schemaAttributeEntity.getProperties());
-
-                bean.setQualifiedName(this.removeQualifiedName(instanceProperties));
-                bean.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-                bean.setDisplayName(this.removeDisplayName(instanceProperties));
-                bean.setDescription(this.removeDescription(instanceProperties));
-
-                bean.setElementPosition(this.removePosition(instanceProperties));
-                bean.setMinCardinality(this.removeMinCardinality(instanceProperties));
-                bean.setMaxCardinality(this.removeMaxCardinality(instanceProperties));
-                bean.setAllowsDuplicateValues(this.removeAllowsDuplicateValues(instanceProperties));
-                bean.setOrderedValues(this.removeOrderedValues(instanceProperties));
-                bean.setDefaultValueOverride(this.removeDefaultValueOverride(instanceProperties));
-                bean.setSortOrder(this.removeSortOrder(instanceProperties));
-                bean.setMinimumLength(this.removeMinimumLength(instanceProperties));
-                bean.setLength(this.removeLength(instanceProperties));
-                bean.setPrecision(this.removeSignificantDigits(instanceProperties));
-                bean.setIsNullable(this.removeIsNullable(instanceProperties));
-                bean.setNativeJavaClass(this.removeNativeClass(instanceProperties));
-                bean.setAliases(this.removeAliases(instanceProperties));
-
-                /*
-                 * Any remaining properties are returned in the extended properties.  They are
-                 * assumed to be defined in a subtype.
-                 */
-                bean.setTypeName(bean.getElementHeader().getType().getTypeName());
-                bean.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
-
-                if (schemaType instanceof SchemaTypeElement)
+                if (schemaAttributeEntity != null)
                 {
-                    bean.setSchemaType(((SchemaTypeElement) schemaType).getSchemaTypeProperties());
+                    /*
+                     * Check that the entity is of the correct type.
+                     */
+                    bean.setElementHeader(this.getMetadataElementHeader(beanClass, schemaAttributeEntity, methodName));
+
+                    /*
+                     * The initial set of values come from the entity.
+                     */
+                    InstanceProperties instanceProperties = new InstanceProperties(schemaAttributeEntity.getProperties());
+
+                    databaseTableProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
+                    databaseTableProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
+                    databaseTableProperties.setDisplayName(this.removeDisplayName(instanceProperties));
+                    databaseTableProperties.setDescription(this.removeDescription(instanceProperties));
+
+                    databaseTableProperties.setElementPosition(this.removePosition(instanceProperties));
+                    databaseTableProperties.setMinCardinality(this.removeMinCardinality(instanceProperties));
+                    databaseTableProperties.setMaxCardinality(this.removeMaxCardinality(instanceProperties));
+                    databaseTableProperties.setAllowsDuplicateValues(this.removeAllowsDuplicateValues(instanceProperties));
+                    databaseTableProperties.setOrderedValues(this.removeOrderedValues(instanceProperties));
+                    databaseTableProperties.setDefaultValueOverride(this.removeDefaultValueOverride(instanceProperties));
+                    databaseTableProperties.setSortOrder(this.removeSortOrder(instanceProperties));
+                    databaseTableProperties.setMinimumLength(this.removeMinimumLength(instanceProperties));
+                    databaseTableProperties.setLength(this.removeLength(instanceProperties));
+                    databaseTableProperties.setPrecision(this.removePrecision(instanceProperties));
+                    databaseTableProperties.setIsNullable(this.removeIsNullable(instanceProperties));
+                    databaseTableProperties.setNativeJavaClass(this.removeNativeClass(instanceProperties));
+                    databaseTableProperties.setAliases(this.removeAliases(instanceProperties));
+
+                    /*
+                     * Any remaining properties are returned in the extended properties.  They are
+                     * assumed to be defined in a subtype.
+                     */
+                    databaseTableProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
+                    databaseTableProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
+
+                    if (schemaType instanceof SchemaTypeElement)
+                    {
+                        databaseTableProperties.setSchemaType(((SchemaTypeElement) schemaType).getSchemaTypeProperties());
+                    }
+
+                    bean.setDatabaseTableProperties(databaseTableProperties);
+                }
+                else
+                {
+                    handleMissingMetadataInstance(beanClass.getName(), TypeDefCategory.ENTITY_DEF, methodName);
                 }
             }
 

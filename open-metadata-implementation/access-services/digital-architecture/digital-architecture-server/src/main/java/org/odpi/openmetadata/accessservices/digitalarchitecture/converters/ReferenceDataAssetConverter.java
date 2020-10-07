@@ -2,9 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.digitalarchitecture.converters;
 
-import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.MetadataElement;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.ReferenceDataAssetElement;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.ValidValueElement;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.properties.OwnerCategory;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.properties.ReferenceDataAssetProperties;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
@@ -13,7 +11,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
-import java.util.List;
 import java.util.Map;
 
 
@@ -137,56 +134,56 @@ public class ReferenceDataAssetConverter<B> extends DigitalArchitectureOMASConve
         if (entity != null)
         {
             bean.setElementHeader(this.getMetadataElementHeader(beanClass, entity, methodName));
+            ReferenceDataAssetProperties referenceDataAssetProperties = new ReferenceDataAssetProperties();
 
-            if (entity != null)
-            {
-                /*
-                 * The initial set of values come from the entity.
-                 */
-                InstanceProperties instanceProperties = new InstanceProperties(entity.getProperties());
+            /*
+             * The initial set of values come from the entity.
+             */
+            InstanceProperties instanceProperties = new InstanceProperties(entity.getProperties());
 
-                bean.setQualifiedName(this.removeQualifiedName(instanceProperties));
-                bean.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-                bean.setDisplayName(this.removeDisplayName(instanceProperties));
-                bean.setDescription(this.removeDescription(instanceProperties));
+            referenceDataAssetProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
+            referenceDataAssetProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
+            referenceDataAssetProperties.setDisplayName(this.removeName(instanceProperties));
+            referenceDataAssetProperties.setDescription(this.removeDescription(instanceProperties));
 
-                /* Note this value should be in the classification */
-                bean.setOwner(this.removeOwner(instanceProperties));
-                /* Note this value should be in the classification */
-                bean.setOwnerCategory(this.removeOwnerCategoryFromProperties(instanceProperties));
-                /* Note this value should be in the classification */
-                bean.setZoneMembership(this.removeZoneMembership(instanceProperties));
+            /* Note this value should be in the classification */
+            referenceDataAssetProperties.setOwner(this.removeOwner(instanceProperties));
+            /* Note this value should be in the classification */
+            referenceDataAssetProperties.setOwnerCategory(this.removeOwnerCategoryFromProperties(instanceProperties));
+            /* Note this value should be in the classification */
+            referenceDataAssetProperties.setZoneMembership(this.removeZoneMembership(instanceProperties));
 
-                /*
-                 * Any remaining properties are returned in the extended properties.  They are
-                 * assumed to be defined in a subtype.
-                 */
-                bean.setTypeName(bean.getElementHeader().getType().getTypeName());
-                bean.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
+            /*
+             * Any remaining properties are returned in the extended properties.  They are
+             * assumed to be defined in a subtype.
+             */
+            referenceDataAssetProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
+            referenceDataAssetProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
 
-                /*
-                 * The values in the classifications override the values in the main properties of the Asset's entity.
-                 * Having these properties in the main entity is deprecated.
-                 */
-                instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_ZONES_CLASSIFICATION_NAME, entity);
+            /*
+             * The values in the classifications override the values in the main properties of the Asset's entity.
+             * Having these properties in the main entity is deprecated.
+             */
+            instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_ZONES_CLASSIFICATION_NAME, entity);
 
-                bean.setZoneMembership(this.getZoneMembership(instanceProperties));
+            referenceDataAssetProperties.setZoneMembership(this.getZoneMembership(instanceProperties));
 
-                instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_OWNERSHIP_CLASSIFICATION_NAME, entity);
+            instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_OWNERSHIP_CLASSIFICATION_NAME, entity);
 
-                bean.setOwner(this.getOwner(instanceProperties));
-                bean.setOwnerCategory(this.getOwnerCategoryFromProperties(instanceProperties));
+            referenceDataAssetProperties.setOwner(this.getOwner(instanceProperties));
+            referenceDataAssetProperties.setOwnerCategory(this.getOwnerCategoryFromProperties(instanceProperties));
 
-                instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_ORIGIN_CLASSIFICATION_NAME, entity);
+            instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_ORIGIN_CLASSIFICATION_NAME, entity);
 
-                bean.setOriginOrganizationGUID(this.getOriginOrganizationGUID(instanceProperties));
-                bean.setOriginBusinessCapabilityGUID(this.getOriginBusinessCapabilityGUID(instanceProperties));
-                bean.setOtherOriginValues(this.getOtherOriginValues(instanceProperties));
-            }
-            else
-            {
-                handleMissingMetadataInstance(beanClass.getName(), TypeDefCategory.ENTITY_DEF, methodName);
-            }
+            referenceDataAssetProperties.setOriginOrganizationGUID(this.getOriginOrganizationGUID(instanceProperties));
+            referenceDataAssetProperties.setOriginBusinessCapabilityGUID(this.getOriginBusinessCapabilityGUID(instanceProperties));
+            referenceDataAssetProperties.setOtherOriginValues(this.getOtherOriginValues(instanceProperties));
+
+            bean.setReferenceDataAssetProperties(referenceDataAssetProperties);
+        }
+        else
+        {
+            handleMissingMetadataInstance(beanClass.getName(), TypeDefCategory.ENTITY_DEF, methodName);
         }
     }
 

@@ -15,16 +15,17 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * Like contains the properties and header for a Rating entity retrieved from the metadata repository.
+ * LikeElement contains the properties and header for a Like entity retrieved from the metadata repository.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class LikeElement extends LikeProperties implements MetadataElement, Serializable
+public class LikeElement implements MetadataElement, Serializable
 {
     private static final long     serialVersionUID = 1L;
 
-    private ElementHeader elementHeader = null;
+    private ElementHeader  elementHeader = null;
+    private LikeProperties likeProperties = null;
 
 
     /**
@@ -46,6 +47,7 @@ public class LikeElement extends LikeProperties implements MetadataElement, Seri
         if (template != null)
         {
             elementHeader = template.getElementHeader();
+            likeProperties = template.getLikeProperties();
         }
     }
 
@@ -75,6 +77,27 @@ public class LikeElement extends LikeProperties implements MetadataElement, Seri
 
 
     /**
+     * Return the properties for the like.
+     *
+     * @return properties bean
+     */
+    public LikeProperties getLikeProperties()
+    {
+        return likeProperties;
+    }
+
+
+    /**
+     * Set up the properties for the like.
+     *
+     * @param likeProperties properties bean
+     */
+    public void setLikeProperties(LikeProperties likeProperties)
+    {
+        this.likeProperties = likeProperties;
+    }
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -84,11 +107,9 @@ public class LikeElement extends LikeProperties implements MetadataElement, Seri
     {
         return "LikeElement{" +
                 "elementHeader=" + elementHeader +
-                ", user='" + getUser() + '\'' +
-                ", public=" + getIsPublic() +
+                ", likeProperties=" + likeProperties +
                 '}';
     }
-
 
 
     /**
@@ -113,7 +134,8 @@ public class LikeElement extends LikeProperties implements MetadataElement, Seri
             return false;
         }
         LikeElement that = (LikeElement) objectToCompare;
-        return Objects.equals(elementHeader, that.elementHeader);
+        return Objects.equals(elementHeader, that.elementHeader) &&
+                Objects.equals(likeProperties, that.likeProperties);
     }
 
 
@@ -125,6 +147,6 @@ public class LikeElement extends LikeProperties implements MetadataElement, Seri
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader);
+        return Objects.hash(super.hashCode(), elementHeader, likeProperties);
     }
 }

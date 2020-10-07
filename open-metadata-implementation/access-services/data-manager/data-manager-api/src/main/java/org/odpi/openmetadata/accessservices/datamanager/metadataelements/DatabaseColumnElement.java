@@ -23,12 +23,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class DatabaseColumnElement extends DatabaseColumnProperties implements MetadataElement,
-                                                                               Serializable
+public class DatabaseColumnElement  implements MetadataElement, Serializable
 {
     private static final long serialVersionUID = 1L;
 
     private ElementHeader                elementHeader = null;
+    private DatabaseColumnProperties     databaseColumnProperties = null;
 
     /*
      * Filled out when this column is a primary key
@@ -59,11 +59,14 @@ public class DatabaseColumnElement extends DatabaseColumnProperties implements M
      */
     public DatabaseColumnElement(DatabaseColumnElement template)
     {
-        super(template);
-
         if (template != null)
         {
-            elementHeader = template.getElementHeader();
+            elementHeader                 = template.getElementHeader();
+            databaseColumnProperties      = template.getDatabaseColumnProperties();
+            primaryKeyProperties          = template.getPrimaryKeyProperties();
+            foreignKeyProperties          = template.getForeignKeyProperties();
+            referencedColumnGUID          = template.getReferencedColumnGUID();
+            referencedColumnQualifiedName = template.getReferencedColumnQualifiedName();
         }
     }
 
@@ -89,6 +92,28 @@ public class DatabaseColumnElement extends DatabaseColumnProperties implements M
     public void setElementHeader(ElementHeader elementHeader)
     {
         this.elementHeader = elementHeader;
+    }
+
+
+    /**
+     * Return the principle properties for the database column.
+     *
+     * @return properties bean
+     */
+    public DatabaseColumnProperties getDatabaseColumnProperties()
+    {
+        return databaseColumnProperties;
+    }
+
+
+    /**
+     * Set up the principle properties for the database column.
+     *
+     * @param databaseColumnProperties properties bean
+     */
+    public void setDatabaseColumnProperties(DatabaseColumnProperties databaseColumnProperties)
+    {
+        this.databaseColumnProperties = databaseColumnProperties;
     }
 
 
@@ -194,35 +219,11 @@ public class DatabaseColumnElement extends DatabaseColumnProperties implements M
     {
         return "DatabaseColumnElement{" +
                 "elementHeader=" + elementHeader +
+                ", databaseColumnProperties=" + databaseColumnProperties +
                 ", primaryKeyProperties=" + primaryKeyProperties +
                 ", foreignKeyProperties=" + foreignKeyProperties +
                 ", referencedColumnGUID='" + referencedColumnGUID + '\'' +
                 ", referencedColumnQualifiedName='" + referencedColumnQualifiedName + '\'' +
-                ", formula='" + getFormula() + '\'' +
-                ", queries=" + getQueries() +
-                ", dataType='" + getDataType() + '\'' +
-                ", defaultValue='" + getDefaultValue() + '\'' +
-                ", elementPosition=" + getElementPosition() +
-                ", minCardinality=" + getMinCardinality() +
-                ", maxCardinality=" + getMaxCardinality() +
-                ", allowsDuplicateValues=" + getAllowsDuplicateValues() +
-                ", orderedValues=" + getOrderedValues() +
-                ", sortOrder=" + getSortOrder() +
-                ", minimumLength=" + getMinimumLength() +
-                ", length=" + getLength() +
-                ", significantDigits=" + getPrecision() +
-                ", nullable=" + getIsNullable() +
-                ", defaultValueOverride='" + getDefaultValueOverride() + '\'' +
-                ", nativeJavaClass='" + getNativeJavaClass() + '\'' +
-                ", aliases=" + getAliases() +
-                ", deprecated=" + getIsDeprecated() +
-                ", displayName='" + getDisplayName() + '\'' +
-                ", description='" + getDescription() + '\'' +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", vendorProperties=" + getVendorProperties() +
-                ", typeName='" + getTypeName() + '\'' +
-                ", extendedProperties=" + getExtendedProperties() +
                 '}';
     }
 
@@ -249,7 +250,8 @@ public class DatabaseColumnElement extends DatabaseColumnProperties implements M
             return false;
         }
         DatabaseColumnElement that = (DatabaseColumnElement) objectToCompare;
-        return Objects.equals(elementHeader, that.elementHeader) &&
+        return Objects.equals(elementHeader, that.elementHeader)  &&
+                Objects.equals(databaseColumnProperties, that.databaseColumnProperties) &&
                 Objects.equals(primaryKeyProperties, that.primaryKeyProperties) &&
                 Objects.equals(foreignKeyProperties, that.foreignKeyProperties) &&
                 Objects.equals(referencedColumnGUID, that.referencedColumnGUID) &&
@@ -265,7 +267,7 @@ public class DatabaseColumnElement extends DatabaseColumnProperties implements M
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader, primaryKeyProperties, foreignKeyProperties,
+        return Objects.hash(super.hashCode(), elementHeader, databaseColumnProperties, primaryKeyProperties, foreignKeyProperties,
                             referencedColumnGUID, referencedColumnQualifiedName);
     }
 }

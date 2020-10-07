@@ -78,7 +78,7 @@ public class AssetElement implements MetadataElement, Serializable
     /**
      * Retrieve details of the asset itself.
      *
-     * @return asset properties
+     * @return  properties bean
      */
     public AssetProperties getAssetProperties()
     {
@@ -89,7 +89,7 @@ public class AssetElement implements MetadataElement, Serializable
     /**
      * Save details of the asset itself
      *
-     * @param assetProperties asset properties
+     * @param assetProperties properties bean
      */
     public void setAssetProperties(AssetProperties assetProperties)
     {

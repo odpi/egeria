@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.digitalarchitecture.converters;
 
 import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.ValidValueElement;
+import org.odpi.openmetadata.accessservices.digitalarchitecture.properties.ValidValueProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
@@ -69,6 +70,7 @@ public class ValidValueConverter<B> extends DigitalArchitectureOMASConverter<B>
         return null;
     }
 
+
     /**
      * Using the supplied instances, return a new instance of the bean. This is used for beans that have
      * contain a combination of the properties from an entity and a that os a connected relationship.
@@ -124,23 +126,26 @@ public class ValidValueConverter<B> extends DigitalArchitectureOMASConverter<B>
         if (entity != null)
         {
             bean.setElementHeader(this.getMetadataElementHeader(beanClass, entity, methodName));
+            ValidValueProperties validValueProperties = new ValidValueProperties();
 
             InstanceProperties instanceProperties = new InstanceProperties(entity.getProperties());
 
-            bean.setQualifiedName(this.removeQualifiedName(instanceProperties));
-            bean.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-            bean.setDisplayName(this.removeName(instanceProperties));
-            bean.setDescription(this.removeDescription(instanceProperties));
-            bean.setUsage(this.removeUsage(instanceProperties));
-            bean.setScope(this.removeScope(instanceProperties));
-            bean.setPreferredValue(this.removePreferredValue(instanceProperties));
+            validValueProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
+            validValueProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
+            validValueProperties.setDisplayName(this.removeName(instanceProperties));
+            validValueProperties.setDescription(this.removeDescription(instanceProperties));
+            validValueProperties.setUsage(this.removeUsage(instanceProperties));
+            validValueProperties.setScope(this.removeScope(instanceProperties));
+            validValueProperties.setPreferredValue(this.removePreferredValue(instanceProperties));
 
             /*
              * Any remaining properties are returned in the extended properties.  They are
              * assumed to be defined in a subtype.
              */
-            bean.setTypeName(bean.getElementHeader().getType().getTypeName());
-            bean.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
+            validValueProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
+            validValueProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
+
+            bean.setValidValueProperties(validValueProperties);
         }
         else
         {

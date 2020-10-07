@@ -3,11 +3,13 @@
 package org.odpi.openmetadata.accessservices.datamanager.converters;
 
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.FileSystemElement;
+import org.odpi.openmetadata.accessservices.datamanager.properties.FileSystemProperties;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 /**
@@ -55,34 +57,44 @@ public class FileSystemConverter<B> extends DataManagerOMASConverter<B>
             if (returnBean instanceof FileSystemElement)
             {
                 FileSystemElement bean = (FileSystemElement) returnBean;
+                FileSystemProperties fileSystemProperties = new FileSystemProperties();
 
-                bean.setElementHeader(this.getMetadataElementHeader(beanClass, entity, methodName));
+                if (entity != null)
+                {
+                    bean.setElementHeader(this.getMetadataElementHeader(beanClass, entity, methodName));
 
-                /*
-                 * The initial set of values come from the entity.
-                 */
-                InstanceProperties instanceProperties = new InstanceProperties(entity.getProperties());
+                    /*
+                     * The initial set of values come from the entity.
+                     */
+                    InstanceProperties instanceProperties = new InstanceProperties(entity.getProperties());
 
-                bean.setQualifiedName(this.removeQualifiedName(instanceProperties));
-                bean.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-                bean.setDisplayName(this.removeName(instanceProperties));
-                bean.setDescription(this.removeDescription(instanceProperties));
-                bean.setTypeDescription(this.removeCapabilityType(instanceProperties));
-                bean.setVersion(this.removeVersion(instanceProperties));
-                bean.setPatchLevel(this.removePatchLevel(instanceProperties));
-                bean.setSource(this.removeSource(instanceProperties));
+                    fileSystemProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
+                    fileSystemProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
+                    fileSystemProperties.setDisplayName(this.removeName(instanceProperties));
+                    fileSystemProperties.setDescription(this.removeDescription(instanceProperties));
+                    fileSystemProperties.setTypeDescription(this.removeCapabilityType(instanceProperties));
+                    fileSystemProperties.setVersion(this.removeVersion(instanceProperties));
+                    fileSystemProperties.setPatchLevel(this.removePatchLevel(instanceProperties));
+                    fileSystemProperties.setSource(this.removeSource(instanceProperties));
 
-                /*
-                 * Any remaining properties are returned in the extended properties.  They are
-                 * assumed to be defined in a subtype.
-                 */
-                bean.setTypeName(bean.getElementHeader().getType().getTypeName());
-                bean.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
+                    /*
+                     * Any remaining properties are returned in the extended properties.  They are
+                     * assumed to be defined in a subtype.
+                     */
+                    fileSystemProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
+                    fileSystemProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
 
-                instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.FILE_SYSTEM_CLASSIFICATION_TYPE_NAME, entity);
+                    instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.FILE_SYSTEM_CLASSIFICATION_TYPE_NAME, entity);
 
-                bean.setFormat(this.getFormat(instanceProperties));
-                bean.setEncryption(this.getEncryption(instanceProperties));
+                    fileSystemProperties.setFormat(this.getFormat(instanceProperties));
+                    fileSystemProperties.setEncryption(this.getEncryption(instanceProperties));
+
+                    bean.setFileSystemProperties(fileSystemProperties);
+                }
+                else
+                {
+                    handleMissingMetadataInstance(beanClass.getName(), TypeDefCategory.ENTITY_DEF, methodName);
+                }
             }
 
             return returnBean;

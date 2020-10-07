@@ -3,16 +3,18 @@
 package org.odpi.openmetadata.accessservices.assetconsumer.converters;
 
 import org.odpi.openmetadata.accessservices.assetconsumer.elements.InformalTagElement;
+import org.odpi.openmetadata.accessservices.assetconsumer.properties.InformalTagProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 
 /**
  * InformalTagConverter provides common methods for transferring relevant properties from an Open Metadata Repository Services (OMRS)
- * EntityDetail object into a bean that inherits from InformalTagProperties.
+ * EntityDetail object into an InformalTagElement bean.
  */
 public class InformalTagConverter<B> extends AssetConsumerOMASConverter<B>
 {
@@ -57,10 +59,11 @@ public class InformalTagConverter<B> extends AssetConsumerOMASConverter<B>
             if (returnBean instanceof InformalTagElement)
             {
                 InformalTagElement bean = (InformalTagElement) returnBean;
+                InformalTagProperties informalTagProperties = new InformalTagProperties();
 
                 bean.setElementHeader(super.getMetadataElementHeader(beanClass, entity, methodName));
 
-                InstanceProperties instanceProperties = null;
+                InstanceProperties instanceProperties;
 
                 /*
                  * The initial set of values come from the entity.
@@ -68,19 +71,25 @@ public class InformalTagConverter<B> extends AssetConsumerOMASConverter<B>
                 if (entity != null)
                 {
                     instanceProperties = new InstanceProperties(entity.getProperties());
-                    bean.setUser(entity.getCreatedBy());
-                }
+                    informalTagProperties.setUser(entity.getCreatedBy());
 
-                bean.setName(this.removeTagName(instanceProperties));
-                bean.setDescription(this.removeTagDescription(instanceProperties));
-                bean.setIsPrivateTag(this.removeIsPublic(instanceProperties));
+                    informalTagProperties.setName(this.removeTagName(instanceProperties));
+                    informalTagProperties.setDescription(this.removeTagDescription(instanceProperties));
+                    informalTagProperties.setIsPrivateTag(this.removeIsPublic(instanceProperties));
+                }
+                else
+                {
+                    handleMissingMetadataInstance(beanClass.getName(), TypeDefCategory.ENTITY_DEF, methodName);
+                }
 
                 if (relationship != null)
                 {
                     instanceProperties = new InstanceProperties(relationship.getProperties());
 
-                    bean.setIsPublic(this.getIsPublic(instanceProperties));
+                    informalTagProperties.setIsPublic(this.getIsPublic(instanceProperties));
                 }
+
+                bean.setInformalTagProperties(informalTagProperties);
             }
 
             return returnBean;

@@ -22,12 +22,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class SoftwareServerCapabilityElement extends SoftwareServerCapabilitiesProperties implements MetadataElement,
-                                                                                                     Serializable
+public class SoftwareServerCapabilityElement implements MetadataElement, Serializable
 {
     private static final long     serialVersionUID = 1L;
 
-    private ElementHeader elementHeader = null;
+    private ElementHeader                        elementHeader = null;
+    private SoftwareServerCapabilitiesProperties softwareServerCapabilitiesProperties = null;
 
 
     /**
@@ -46,11 +46,10 @@ public class SoftwareServerCapabilityElement extends SoftwareServerCapabilitiesP
      */
     public SoftwareServerCapabilityElement(SoftwareServerCapabilityElement template)
     {
-        super(template);
-
         if (template != null)
         {
             elementHeader = template.getElementHeader();
+            softwareServerCapabilitiesProperties = template.getSoftwareServerCapabilitiesProperties();
         }
     }
 
@@ -80,6 +79,28 @@ public class SoftwareServerCapabilityElement extends SoftwareServerCapabilitiesP
 
 
     /**
+     * Return the properties of the software server capability.
+     *
+     * @return properties bean
+     */
+    public SoftwareServerCapabilitiesProperties getSoftwareServerCapabilitiesProperties()
+    {
+        return softwareServerCapabilitiesProperties;
+    }
+
+
+    /**
+     * Set up the properties of the software server capability.
+     *
+     * @param softwareServerCapabilitiesProperties properties bean
+     */
+    public void setSoftwareServerCapabilitiesProperties(SoftwareServerCapabilitiesProperties softwareServerCapabilitiesProperties)
+    {
+        this.softwareServerCapabilitiesProperties = softwareServerCapabilitiesProperties;
+    }
+
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -89,17 +110,7 @@ public class SoftwareServerCapabilityElement extends SoftwareServerCapabilitiesP
     {
         return "SoftwareServerCapabilityElement{" +
                 "elementHeader=" + elementHeader +
-                ", displayName='" + getDisplayName() + '\'' +
-                ", description='" + getDescription() + '\'' +
-                ", typeDescription='" + getTypeDescription() + '\'' +
-                ", version='" + getVersion() + '\'' +
-                ", patchLevel='" + getPatchLevel() + '\'' +
-                ", source='" + getSource() + '\'' +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", vendorProperties=" + getVendorProperties() +
-                ", typeName='" + getTypeName() + '\'' +
-                ", extendedProperties=" + getExtendedProperties() +
+                ", softwareServerCapabilitiesProperties=" + softwareServerCapabilitiesProperties +
                 '}';
     }
 
@@ -126,7 +137,8 @@ public class SoftwareServerCapabilityElement extends SoftwareServerCapabilitiesP
             return false;
         }
         SoftwareServerCapabilityElement that = (SoftwareServerCapabilityElement) objectToCompare;
-        return Objects.equals(elementHeader, that.elementHeader);
+        return Objects.equals(elementHeader, that.elementHeader) &&
+                Objects.equals(softwareServerCapabilitiesProperties, that.softwareServerCapabilitiesProperties);
     }
 
 
@@ -138,6 +150,6 @@ public class SoftwareServerCapabilityElement extends SoftwareServerCapabilitiesP
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader);
+        return Objects.hash(super.hashCode(), elementHeader, softwareServerCapabilitiesProperties);
     }
 }

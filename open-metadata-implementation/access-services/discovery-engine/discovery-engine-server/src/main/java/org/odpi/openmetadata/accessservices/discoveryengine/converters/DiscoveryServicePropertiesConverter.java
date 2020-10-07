@@ -82,7 +82,7 @@ public class DiscoveryServicePropertiesConverter<B> extends DiscoveryEngineOMASC
 
                     bean.setQualifiedName(this.removeQualifiedName(instanceProperties));
                     bean.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-                    bean.setDisplayName(this.removeDisplayName(instanceProperties));
+                    bean.setDisplayName(this.removeName(instanceProperties));
                     bean.setDescription(this.removeDescription(instanceProperties));
 
                     /* Note this value should be in the classification */

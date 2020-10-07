@@ -47,6 +47,7 @@ public class SchemaTypeElement implements MetadataElement, Serializable
         if (template != null)
         {
             elementHeader = template.getElementHeader();
+            schemaTypeProperties = template.getSchemaTypeProperties();
         }
     }
 

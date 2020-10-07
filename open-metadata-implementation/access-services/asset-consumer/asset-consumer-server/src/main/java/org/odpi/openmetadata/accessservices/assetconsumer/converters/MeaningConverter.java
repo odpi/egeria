@@ -10,6 +10,7 @@ import org.odpi.openmetadata.accessservices.assetconsumer.properties.OwnerType;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.Map;
@@ -17,7 +18,7 @@ import java.util.Map;
 
 /**
  * MeaningConverter provides common methods for transferring relevant properties from an Open Metadata Repository Services (OMRS)
- * EntityDetail object into a bean that inherits from MeaningProperties.
+ * EntityDetail object into a MeaningElement bean.
  */
 public class MeaningConverter<B> extends AssetConsumerOMASConverter<B>
 {
@@ -60,6 +61,7 @@ public class MeaningConverter<B> extends AssetConsumerOMASConverter<B>
             if (returnBean instanceof MeaningElement)
             {
                 MeaningElement bean = (MeaningElement) returnBean;
+                MeaningProperties meaningProperties = new MeaningProperties();
 
                 bean.setElementHeader(super.getMetadataElementHeader(beanClass, entity, methodName));
 
@@ -71,19 +73,25 @@ public class MeaningConverter<B> extends AssetConsumerOMASConverter<B>
                 if (entity != null)
                 {
                     instanceProperties = new InstanceProperties(entity.getProperties());
+
+                    meaningProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
+                    meaningProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
+                    meaningProperties.setName(this.removeDisplayName(instanceProperties));
+                    meaningProperties.setDescription(this.removeDescription(instanceProperties));
+
+                    /*
+                     * Any remaining properties are returned in the extended properties.  They are
+                     * assumed to be defined in a subtype.
+                     */
+                    meaningProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
+                    meaningProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
+
+                    bean.setMeaningProperties(meaningProperties);
                 }
-
-                bean.setQualifiedName(this.removeQualifiedName(instanceProperties));
-                bean.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-                bean.setName(this.removeDisplayName(instanceProperties));
-                bean.setDescription(this.removeDescription(instanceProperties));
-
-                /*
-                 * Any remaining properties are returned in the extended properties.  They are
-                 * assumed to be defined in a subtype.
-                 */
-                bean.setTypeName(bean.getElementHeader().getType().getTypeName());
-                bean.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
+                else
+                {
+                    handleMissingMetadataInstance(beanClass.getName(), TypeDefCategory.ENTITY_DEF, methodName);
+                }
             }
 
             return returnBean;

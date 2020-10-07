@@ -4,6 +4,8 @@ package org.odpi.openmetadata.accessservices.datamanager.converters;
 
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseColumnElement;
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseColumnTypeElement;
+import org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseColumnProperties;
+import org.odpi.openmetadata.accessservices.datamanager.properties.SchemaTypeProperties;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -16,7 +18,7 @@ import java.util.List;
 
 /**
  * TabularColumnConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
- * EntityDetail object into a TabularColumnElement bean.
+ * EntityDetail object into a DatabaseColumn bean.
  */
 public class DatabaseColumnConverter<B> extends DataManagerOMASConverter<B>
 {
@@ -63,7 +65,8 @@ public class DatabaseColumnConverter<B> extends DataManagerOMASConverter<B>
             B returnBean = beanClass.newInstance();
             if (returnBean instanceof DatabaseColumnElement)
             {
-                DatabaseColumnElement bean = (DatabaseColumnElement) returnBean;
+                DatabaseColumnElement bean                         = (DatabaseColumnElement) returnBean;
+                DatabaseColumnProperties  databaseColumnProperties = new DatabaseColumnProperties();
 
                 if (schemaAttributeEntity != null)
                 {
@@ -77,43 +80,45 @@ public class DatabaseColumnConverter<B> extends DataManagerOMASConverter<B>
                      */
                     InstanceProperties instanceProperties = new InstanceProperties(schemaAttributeEntity.getProperties());
 
-                    bean.setQualifiedName(this.removeQualifiedName(instanceProperties));
-                    bean.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-                    bean.setDisplayName(this.removeDisplayName(instanceProperties));
-                    bean.setDescription(this.removeDescription(instanceProperties));
+                    databaseColumnProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
+                    databaseColumnProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
+                    databaseColumnProperties.setDisplayName(this.removeDisplayName(instanceProperties));
+                    databaseColumnProperties.setDescription(this.removeDescription(instanceProperties));
 
-                    bean.setElementPosition(this.removePosition(instanceProperties));
-                    bean.setMinCardinality(this.removeMinCardinality(instanceProperties));
-                    bean.setMaxCardinality(this.removeMaxCardinality(instanceProperties));
-                    bean.setAllowsDuplicateValues(this.removeAllowsDuplicateValues(instanceProperties));
-                    bean.setOrderedValues(this.removeOrderedValues(instanceProperties));
-                    bean.setDefaultValueOverride(this.removeDefaultValueOverride(instanceProperties));
-                    bean.setSortOrder(this.removeSortOrder(instanceProperties));
-                    bean.setMinimumLength(this.removeMinimumLength(instanceProperties));
-                    bean.setLength(this.removeLength(instanceProperties));
-                    bean.setPrecision(this.removeSignificantDigits(instanceProperties));
-                    bean.setIsNullable(this.removeIsNullable(instanceProperties));
-                    bean.setNativeJavaClass(this.removeNativeClass(instanceProperties));
-                    bean.setAliases(this.removeAliases(instanceProperties));
+                    databaseColumnProperties.setElementPosition(this.removePosition(instanceProperties));
+                    databaseColumnProperties.setMinCardinality(this.removeMinCardinality(instanceProperties));
+                    databaseColumnProperties.setMaxCardinality(this.removeMaxCardinality(instanceProperties));
+                    databaseColumnProperties.setAllowsDuplicateValues(this.removeAllowsDuplicateValues(instanceProperties));
+                    databaseColumnProperties.setOrderedValues(this.removeOrderedValues(instanceProperties));
+                    databaseColumnProperties.setDefaultValueOverride(this.removeDefaultValueOverride(instanceProperties));
+                    databaseColumnProperties.setSortOrder(this.removeSortOrder(instanceProperties));
+                    databaseColumnProperties.setMinimumLength(this.removeMinimumLength(instanceProperties));
+                    databaseColumnProperties.setLength(this.removeLength(instanceProperties));
+                    databaseColumnProperties.setPrecision(this.removePrecision(instanceProperties));
+                    databaseColumnProperties.setIsNullable(this.removeIsNullable(instanceProperties));
+                    databaseColumnProperties.setNativeJavaClass(this.removeNativeClass(instanceProperties));
+                    databaseColumnProperties.setAliases(this.removeAliases(instanceProperties));
 
                     /*
                      * Any remaining properties are returned in the extended properties.  They are
                      * assumed to be defined in a subtype.
                      */
-                    bean.setTypeName(bean.getElementHeader().getType().getTypeName());
-                    bean.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
+                    databaseColumnProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
+                    databaseColumnProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
 
                     instanceProperties = new InstanceProperties(super.getClassificationProperties(OpenMetadataAPIMapper.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION_TYPE_NAME,
                                                                                                   schemaAttributeEntity));
 
-                    bean.setDataType(this.removeDataType(instanceProperties));
-                    bean.setDefaultValue(this.removeDefaultValue(instanceProperties));
-                    bean.setFixedValue(this.removeFixedValue(instanceProperties));
+                    databaseColumnProperties.setDataType(this.removeDataType(instanceProperties));
+                    databaseColumnProperties.setDefaultValue(this.removeDefaultValue(instanceProperties));
+                    databaseColumnProperties.setFixedValue(this.removeFixedValue(instanceProperties));
 
                     if (schemaType instanceof DatabaseColumnTypeElement)
                     {
-                        bean.setSchemaType((DatabaseColumnTypeElement) schemaType);
+                        databaseColumnProperties.setSchemaType((SchemaTypeProperties) schemaType);
                     }
+
+                    bean.setDatabaseColumnProperties(databaseColumnProperties);
                 }
                 else
                 {

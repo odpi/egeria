@@ -43,7 +43,7 @@ public class SchemaAttributeProperties extends SchemaElementProperties
     private DataItemSortOrder sortOrder             = null;
     private int               minimumLength         = 0;
     private int               length                = 0;
-    private int               significantDigits     = 0;
+    private int               precision             = 0;
     private boolean           isNullable            = true;
 
     /*
@@ -83,21 +83,21 @@ public class SchemaAttributeProperties extends SchemaElementProperties
 
         if (template != null)
         {
-            elementPosition = template.getElementPosition();
-            minCardinality = template.getMinCardinality();
-            maxCardinality = template.getMaxCardinality();
-            allowsDuplicateValues = template.getAllowsDuplicateValues();
-            orderedValues = template.getOrderedValues();
-            sortOrder = template.getSortOrder();
-            minimumLength = template.getMinimumLength();
-            length = template.getLength();
-            significantDigits = template.getSignificantDigits();
-            isNullable = template.getIsNullable();
-            defaultValueOverride = template.getDefaultValueOverride();
-            attributeType = template.getAttributeType();
+            elementPosition        = template.getElementPosition();
+            minCardinality         = template.getMinCardinality();
+            maxCardinality         = template.getMaxCardinality();
+            allowsDuplicateValues  = template.getAllowsDuplicateValues();
+            orderedValues          = template.getOrderedValues();
+            sortOrder              = template.getSortOrder();
+            minimumLength          = template.getMinimumLength();
+            length                 = template.getLength();
+            precision              = template.getPrecision();
+            isNullable             = template.getIsNullable();
+            defaultValueOverride   = template.getDefaultValueOverride();
+            attributeType          = template.getAttributeType();
             attributeRelationships = template.getAttributeRelationships();
-            nativeJavaClass = template.getNativeJavaClass();
-            aliases = template.getAliases();
+            nativeJavaClass        = template.getNativeJavaClass();
+            aliases                = template.getAliases();
         }
     }
 
@@ -280,20 +280,20 @@ public class SchemaAttributeProperties extends SchemaElementProperties
      *
      * @return int
      */
-    public int getSignificantDigits()
+    public int getPrecision()
     {
-        return significantDigits;
+        return precision;
     }
 
 
     /**
      * Set up the number of significant digits to the right of decimal point.
      *
-     * @param significantDigits int
+     * @param precision int
      */
-    public void setSignificantDigits(int significantDigits)
+    public void setPrecision(int precision)
     {
-        this.significantDigits = significantDigits;
+        this.precision = precision;
     }
 
 
@@ -515,7 +515,7 @@ public class SchemaAttributeProperties extends SchemaElementProperties
     public int hashCode()
     {
         return Objects.hash(super.hashCode(), elementPosition, minCardinality, maxCardinality, allowsDuplicateValues, orderedValues,
-                            defaultValueOverride, sortOrder, minimumLength, length, significantDigits, isNullable, attributeType,
+                            defaultValueOverride, sortOrder, minimumLength, length, precision, isNullable, attributeType,
                             attributeRelationships, nativeJavaClass, aliases);
     }
 }

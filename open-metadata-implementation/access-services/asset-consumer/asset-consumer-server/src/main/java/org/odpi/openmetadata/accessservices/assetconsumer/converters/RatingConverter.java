@@ -2,13 +2,13 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetconsumer.converters;
 
-import org.odpi.openmetadata.accessservices.assetconsumer.elements.MetadataElement;
 import org.odpi.openmetadata.accessservices.assetconsumer.elements.RatingElement;
 import org.odpi.openmetadata.accessservices.assetconsumer.properties.StarRating;
 import org.odpi.openmetadata.accessservices.assetconsumer.properties.RatingProperties;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.Map;
@@ -16,7 +16,7 @@ import java.util.Map;
 
 /**
  * RatingConverter provides common methods for transferring relevant properties from an Open Metadata Repository Services (OMRS)
- * EntityDetail object into a bean that inherits from RatingProperties.
+ * EntityDetail object into a RatingElement bean.
  */
 public class RatingConverter<B> extends AssetConsumerOMASConverter<B>
 {
@@ -33,42 +33,6 @@ public class RatingConverter<B> extends AssetConsumerOMASConverter<B>
     {
         super(repositoryHelper, serviceName, serverName);
     }
-
-
-    /**
-     * Extract the properties from the entity.  Each DataManager OMAS converter implements this method.
-     * The top level fills in the header
-     *
-     * @param metadataElement output bean
-     * @param entity entity containing the properties
-     * @param relationship optional relationship containing the properties
-     */
-    public void updateMetadataElement(MetadataElement metadataElement, EntityDetail entity, Relationship relationship)
-    {
-        metadataElement.setElementHeader(this.getMetadataElementHeader(entity));
-
-        if (metadataElement instanceof RatingProperties)
-        {
-            RatingProperties bean = (RatingProperties) metadataElement;
-
-            /*
-             * The initial set of values come from the entity.
-             */
-            InstanceProperties instanceProperties = new InstanceProperties(entity.getProperties());
-
-            bean.setStarRating(this.removeStarRatingFromProperties(instanceProperties));
-            bean.setReview(this.removeReview(instanceProperties));
-            bean.setUser(entity.getCreatedBy());
-
-            if (relationship != null)
-            {
-                instanceProperties = new InstanceProperties(relationship.getProperties());
-
-                bean.setPublic(this.getIsPublic(instanceProperties));
-            }
-        }
-    }
-
 
 
     /**
@@ -97,10 +61,11 @@ public class RatingConverter<B> extends AssetConsumerOMASConverter<B>
             if (returnBean instanceof RatingElement)
             {
                 RatingElement bean = (RatingElement) returnBean;
+                RatingProperties ratingProperties = new RatingProperties();
 
                 bean.setElementHeader(super.getMetadataElementHeader(beanClass, entity, methodName));
 
-                InstanceProperties instanceProperties = null;
+                InstanceProperties instanceProperties;
 
                 /*
                  * The initial set of values come from the entity.
@@ -108,18 +73,24 @@ public class RatingConverter<B> extends AssetConsumerOMASConverter<B>
                 if (entity != null)
                 {
                     instanceProperties = new InstanceProperties(entity.getProperties());
-                }
 
-                bean.setStarRating(this.removeStarRatingFromProperties(instanceProperties));
-                bean.setReview(this.removeReview(instanceProperties));
-                bean.setUser(entity.getCreatedBy());
+                    ratingProperties.setStarRating(this.removeStarRatingFromProperties(instanceProperties));
+                    ratingProperties.setReview(this.removeReview(instanceProperties));
+                    ratingProperties.setUser(entity.getCreatedBy());
+                }
+                else
+                {
+                    handleMissingMetadataInstance(beanClass.getName(), TypeDefCategory.ENTITY_DEF, methodName);
+                }
 
                 if (relationship != null)
                 {
                     instanceProperties = new InstanceProperties(relationship.getProperties());
 
-                    bean.setPublic(this.getIsPublic(instanceProperties));
+                    ratingProperties.setPublic(this.getIsPublic(instanceProperties));
                 }
+
+                bean.setRatingProperties(ratingProperties);
             }
 
             return returnBean;

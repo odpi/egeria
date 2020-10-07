@@ -3,16 +3,18 @@
 package org.odpi.openmetadata.accessservices.assetowner.converters;
 
 import org.odpi.openmetadata.accessservices.assetowner.metadataelements.ValidValueElement;
+import org.odpi.openmetadata.accessservices.assetowner.properties.ValidValueProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 
 /**
  * ValidValueConverter provides common methods for transferring relevant properties from an Open Metadata Repository Services (OMRS)
- * EntityDetail object into a bean that inherits from ValidValuesProperties.
+ * EntityDetail object into a ValidValueElement bean.
  */
 public class ValidValueConverter<B> extends AssetOwnerOMASConverter<B>
 {
@@ -52,34 +54,44 @@ public class ValidValueConverter<B> extends AssetOwnerOMASConverter<B>
              */
             B returnBean = beanClass.newInstance();
 
-            if ((returnBean instanceof ValidValueElement) && (entity != null))
+            if (returnBean instanceof ValidValueElement)
             {
                 ValidValueElement bean = (ValidValueElement) returnBean;
+                ValidValueProperties validValueProperties = new ValidValueProperties();
 
-                /*
-                 * Check that the entity is of the correct type.
-                 */
-                bean.setElementHeader(this.getMetadataElementHeader(beanClass, entity, methodName));
+                if (entity != null)
+                {
+                    /*
+                     * Check that the entity is of the correct type.
+                     */
+                    bean.setElementHeader(this.getMetadataElementHeader(beanClass, entity, methodName));
 
-                /*
-                 * The property values come from the entity.
-                 */
-                InstanceProperties instanceProperties = new InstanceProperties(entity.getProperties());
+                    /*
+                     * The property values come from the entity.
+                     */
+                    InstanceProperties instanceProperties = new InstanceProperties(entity.getProperties());
 
-                bean.setQualifiedName(this.removeQualifiedName(instanceProperties));
-                bean.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-                bean.setDisplayName(this.removeDisplayName(instanceProperties));
-                bean.setDescription(this.removeDescription(instanceProperties));
-                bean.setUsage(this.removeUsage(instanceProperties));
-                bean.setScope(this.removeScope(instanceProperties));
-                bean.setPreferredValue(this.removePreferredValue(instanceProperties));
+                    validValueProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
+                    validValueProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
+                    validValueProperties.setDisplayName(this.removeName(instanceProperties));
+                    validValueProperties.setDescription(this.removeDescription(instanceProperties));
+                    validValueProperties.setUsage(this.removeUsage(instanceProperties));
+                    validValueProperties.setScope(this.removeScope(instanceProperties));
+                    validValueProperties.setPreferredValue(this.removePreferredValue(instanceProperties));
 
-                /*
-                 * Any remaining properties are returned in the extended properties.  They are
-                 * assumed to be defined in a subtype.
-                 */
-                bean.setTypeName(bean.getElementHeader().getType().getTypeName());
-                bean.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
+                    /*
+                     * Any remaining properties are returned in the extended properties.  They are
+                     * assumed to be defined in a subtype.
+                     */
+                    validValueProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
+                    validValueProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
+
+                    bean.setValidValueProperties(validValueProperties);
+                }
+                else
+                {
+                    handleMissingMetadataInstance(beanClass.getName(), TypeDefCategory.ENTITY_DEF, methodName);
+                }
             }
 
             return returnBean;

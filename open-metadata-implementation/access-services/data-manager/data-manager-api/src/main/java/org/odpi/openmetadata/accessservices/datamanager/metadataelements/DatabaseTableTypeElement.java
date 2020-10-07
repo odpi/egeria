@@ -21,11 +21,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class DatabaseTableTypeElement extends SchemaTypeProperties implements MetadataElement, Serializable
+public class DatabaseTableTypeElement implements MetadataElement, Serializable
 {
     private static final long     serialVersionUID = 1L;
 
-    private ElementHeader elementHeader = null;
+    private ElementHeader        elementHeader = null;
+    private SchemaTypeProperties databaseTableTypeProperties = null;
 
 
     /**
@@ -44,11 +45,10 @@ public class DatabaseTableTypeElement extends SchemaTypeProperties implements Me
      */
     public DatabaseTableTypeElement(DatabaseTableTypeElement template)
     {
-        super(template);
-
         if (template != null)
         {
             elementHeader = template.getElementHeader();
+            databaseTableTypeProperties = template.getDatabaseTableTypeProperties();
         }
     }
 
@@ -78,6 +78,28 @@ public class DatabaseTableTypeElement extends SchemaTypeProperties implements Me
 
 
     /**
+     * Return the properties for the database table's type.
+     *
+     * @return properties bean
+     */
+    public SchemaTypeProperties getDatabaseTableTypeProperties()
+    {
+        return databaseTableTypeProperties;
+    }
+
+
+    /**
+     * Set up the properties for the database table's type.
+     *
+     * @param databaseTableTypeProperties properties bean
+     */
+    public void setDatabaseTableTypeProperties(SchemaTypeProperties databaseTableTypeProperties)
+    {
+        this.databaseTableTypeProperties = databaseTableTypeProperties;
+    }
+
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -87,19 +109,7 @@ public class DatabaseTableTypeElement extends SchemaTypeProperties implements Me
     {
         return "DatabaseTableTypeElement{" +
                 "elementHeader=" + elementHeader +
-                ", versionNumber='" + getVersionNumber() + '\'' +
-                ", author='" + getAuthor() + '\'' +
-                ", usage='" + getUsage() + '\'' +
-                ", encodingStandard='" + getEncodingStandard() + '\'' +
-                ", namespace='" + getNamespace() + '\'' +
-                ", deprecated=" + getIsDeprecated() +
-                ", displayName='" + getDisplayName() + '\'' +
-                ", description='" + getDescription() + '\'' +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", vendorProperties=" + getVendorProperties() +
-                ", typeName='" + getTypeName() + '\'' +
-                ", extendedProperties=" + getExtendedProperties() +
+                ", databaseTableTypeProperties=" + databaseTableTypeProperties +
                 '}';
     }
 
@@ -126,7 +136,8 @@ public class DatabaseTableTypeElement extends SchemaTypeProperties implements Me
             return false;
         }
         DatabaseTableTypeElement that = (DatabaseTableTypeElement) objectToCompare;
-        return Objects.equals(elementHeader, that.elementHeader);
+        return Objects.equals(elementHeader, that.elementHeader) &&
+                Objects.equals(databaseTableTypeProperties, that.databaseTableTypeProperties);
     }
 
 
@@ -138,6 +149,6 @@ public class DatabaseTableTypeElement extends SchemaTypeProperties implements Me
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader);
+        return Objects.hash(super.hashCode(), elementHeader, databaseTableTypeProperties);
     }
 }

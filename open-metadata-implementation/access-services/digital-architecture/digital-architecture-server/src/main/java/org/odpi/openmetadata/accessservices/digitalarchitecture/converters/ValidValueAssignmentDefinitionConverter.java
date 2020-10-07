@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.digitalarchitecture.converters;
 
 import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.*;
+import org.odpi.openmetadata.accessservices.digitalarchitecture.properties.ValidValueProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;

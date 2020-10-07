@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.digitalarchitecture.converters;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.MetadataElement;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.ReferenceableElement;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.ValidValueAssignmentConsumerElement;
+import org.odpi.openmetadata.accessservices.digitalarchitecture.properties.ReferenceableProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -62,6 +63,7 @@ public class ValidValueAssignmentConsumerConverter<B> extends DigitalArchitectur
             {
                 ValidValueAssignmentConsumerElement bean = (ValidValueAssignmentConsumerElement) returnBean;
                 ReferenceableElement                consumer = new ReferenceableElement();
+                ReferenceableProperties             referenceableProperties = new ReferenceableProperties();
 
                 consumer.setElementHeader(this.getMetadataElementHeader(beanClass, entity, methodName));
 
@@ -70,16 +72,17 @@ public class ValidValueAssignmentConsumerConverter<B> extends DigitalArchitectur
                  */
                 InstanceProperties instanceProperties = new InstanceProperties(entity.getProperties());
 
-                consumer.setQualifiedName(this.removeQualifiedName(instanceProperties));
-                consumer.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
+                referenceableProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
+                referenceableProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
 
                 /*
                  * Any remaining properties are returned in the extended properties.  They are
                  * assumed to be defined in a subtype.
                  */
-                consumer.setTypeName(consumer.getElementHeader().getType().getTypeName());
-                consumer.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
+                referenceableProperties.setTypeName(consumer.getElementHeader().getType().getTypeName());
+                referenceableProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
 
+                consumer.setReferenceableProperties(referenceableProperties);
                 bean.setConsumer(consumer);
 
                 if (relationship != null)

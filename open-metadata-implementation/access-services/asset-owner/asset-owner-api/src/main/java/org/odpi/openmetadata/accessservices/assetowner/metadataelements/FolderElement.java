@@ -20,11 +20,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class FolderElement extends FolderProperties implements MetadataElement, Serializable
+public class FolderElement implements MetadataElement, Serializable
 {
     private static final long serialVersionUID = 1L;
 
     private ElementHeader elementHeader = null;
+    private FolderProperties folderProperties = null;
 
 
     /**
@@ -46,6 +47,7 @@ public class FolderElement extends FolderProperties implements MetadataElement, 
         if (template != null)
         {
             elementHeader = template.getElementHeader();
+            folderProperties = template.getFolderProperties();
         }
     }
 
@@ -75,6 +77,28 @@ public class FolderElement extends FolderProperties implements MetadataElement, 
 
 
     /**
+     * Return the properties for the folder.
+     *
+     * @return bean properties
+     */
+    public FolderProperties getFolderProperties()
+    {
+        return folderProperties;
+    }
+
+
+    /**
+     * Set up the properties for a folder.
+     *
+     * @param folderProperties bean properties
+     */
+    public void setFolderProperties(FolderProperties folderProperties)
+    {
+        this.folderProperties = folderProperties;
+    }
+
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -82,20 +106,9 @@ public class FolderElement extends FolderProperties implements MetadataElement, 
     @Override
     public String toString()
     {
-        return "AssetElement{" +
+        return "FolderElement{" +
                 "elementHeader=" + elementHeader +
-                ", displayName='" + getDisplayName() + '\'' +
-                ", description='" + getDescription() + '\'' +
-                ", owner='" + getOwner() + '\'' +
-                ", ownerType=" + getOwnerType() +
-                ", zoneMembership=" + getZoneMembership() +
-                ", originOrganizationGUID='" + getOriginOrganizationGUID() + '\'' +
-                ", originBusinessCapabilityGUID='" + getOriginBusinessCapabilityGUID() + '\'' +
-                ", otherOriginValues=" + getOtherOriginValues() +
-                ", typeName='" + getTypeName() + '\'' +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", extendedProperties=" + getExtendedProperties() +
+                ", folderProperties=" + folderProperties +
                 '}';
     }
 
@@ -122,7 +135,8 @@ public class FolderElement extends FolderProperties implements MetadataElement, 
             return false;
         }
         FolderElement that = (FolderElement) objectToCompare;
-        return Objects.equals(elementHeader, that.elementHeader);
+        return Objects.equals(elementHeader, that.elementHeader) &&
+                Objects.equals(folderProperties, that.folderProperties);
     }
 
 
@@ -134,6 +148,6 @@ public class FolderElement extends FolderProperties implements MetadataElement, 
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader);
+        return Objects.hash(super.hashCode(), elementHeader, folderProperties);
     }
 }

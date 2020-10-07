@@ -4,19 +4,21 @@ package org.odpi.openmetadata.accessservices.assetowner.converters;
 import org.odpi.openmetadata.accessservices.assetowner.metadataelements.SchemaAttributeElement;
 import org.odpi.openmetadata.accessservices.assetowner.metadataelements.SchemaTypeElement;
 import org.odpi.openmetadata.accessservices.assetowner.properties.DataItemSortOrder;
+import org.odpi.openmetadata.accessservices.assetowner.properties.SchemaAttributeProperties;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.List;
 
 
 /**
- * SchemaElementConverter provides common methods for transferring relevant properties from an Open Metadata Repository Services (OMRS)
- * EntityDetail object into a bean that inherits from SchemaElementProperties.
+ * SchemaAttributeConverter provides common methods for transferring relevant properties from an Open Metadata Repository Services (OMRS)
+ * EntityDetail object into a SchemaAttributeElement bean.
  */
 public class SchemaAttributeConverter<B> extends AssetOwnerOMASConverter<B>
 {
@@ -65,40 +67,50 @@ public class SchemaAttributeConverter<B> extends AssetOwnerOMASConverter<B>
             if (returnBean instanceof SchemaAttributeElement)
             {
                 SchemaAttributeElement bean = (SchemaAttributeElement) returnBean;
+                SchemaAttributeProperties schemaAttributeProperties = new SchemaAttributeProperties();
 
-                /*
-                 * Check that the entity is of the correct type.
-                 */
-                bean.setElementHeader(this.getMetadataElementHeader(beanClass, schemaAttributeEntity, methodName));
-
-                /*
-                 * The initial set of values come from the entity properties.  The super class properties are removed from a copy of the entities
-                 * properties, leaving any subclass properties to be stored in extended properties.
-                 */
-                InstanceProperties instanceProperties = new InstanceProperties(schemaAttributeEntity.getProperties());
-
-                bean.setQualifiedName(this.removeQualifiedName(instanceProperties));
-                bean.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-                bean.setDisplayName(this.removeDisplayName(instanceProperties));
-                bean.setDescription(this.removeDescription(instanceProperties));
-                bean.setIsDeprecated(this.removeIsDeprecated(instanceProperties));
-                bean.setElementPosition(this.removePosition(instanceProperties));
-                bean.setMinCardinality(this.removeMinCardinality(instanceProperties));
-                bean.setMaxCardinality(this.removeMaxCardinality(instanceProperties));
-                bean.setAllowsDuplicateValues(this.removeAllowsDuplicateValues(instanceProperties));
-                bean.setOrderedValues(this.removeOrderedValues(instanceProperties));
-                bean.setDefaultValueOverride(this.removeDefaultValueOverride(instanceProperties));
-                bean.setMinimumLength(this.removeMinimumLength(instanceProperties));
-                bean.setLength(this.removeLength(instanceProperties));
-                bean.setSignificantDigits(this.removeSignificantDigits(instanceProperties));
-                bean.setIsNullable(this.removeIsNullable(instanceProperties));
-                bean.setNativeJavaClass(this.removeNativeClass(instanceProperties));
-                bean.setAliases(this.removeAliases(instanceProperties));
-                bean.setSortOrder(this.removeSortOrder(instanceProperties));
-
-                if (schemaType instanceof SchemaTypeElement)
+                if (schemaAttributeEntity != null)
                 {
-                    bean.setAttributeType(((SchemaTypeElement) schemaType).getSchemaTypeProperties());
+                    /*
+                     * Check that the entity is of the correct type.
+                     */
+                    bean.setElementHeader(this.getMetadataElementHeader(beanClass, schemaAttributeEntity, methodName));
+
+                    /*
+                     * The initial set of values come from the entity properties.  The super class properties are removed from a copy of the entities
+                     * properties, leaving any subclass properties to be stored in extended properties.
+                     */
+                    InstanceProperties instanceProperties = new InstanceProperties(schemaAttributeEntity.getProperties());
+
+                    schemaAttributeProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
+                    schemaAttributeProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
+                    schemaAttributeProperties.setDisplayName(this.removeDisplayName(instanceProperties));
+                    schemaAttributeProperties.setDescription(this.removeDescription(instanceProperties));
+                    schemaAttributeProperties.setIsDeprecated(this.removeIsDeprecated(instanceProperties));
+                    schemaAttributeProperties.setElementPosition(this.removePosition(instanceProperties));
+                    schemaAttributeProperties.setMinCardinality(this.removeMinCardinality(instanceProperties));
+                    schemaAttributeProperties.setMaxCardinality(this.removeMaxCardinality(instanceProperties));
+                    schemaAttributeProperties.setAllowsDuplicateValues(this.removeAllowsDuplicateValues(instanceProperties));
+                    schemaAttributeProperties.setOrderedValues(this.removeOrderedValues(instanceProperties));
+                    schemaAttributeProperties.setDefaultValueOverride(this.removeDefaultValueOverride(instanceProperties));
+                    schemaAttributeProperties.setMinimumLength(this.removeMinimumLength(instanceProperties));
+                    schemaAttributeProperties.setLength(this.removeLength(instanceProperties));
+                    schemaAttributeProperties.setPrecision(this.removePrecision(instanceProperties));
+                    schemaAttributeProperties.setIsNullable(this.removeIsNullable(instanceProperties));
+                    schemaAttributeProperties.setNativeJavaClass(this.removeNativeClass(instanceProperties));
+                    schemaAttributeProperties.setAliases(this.removeAliases(instanceProperties));
+                    schemaAttributeProperties.setSortOrder(this.removeSortOrder(instanceProperties));
+
+                    if (schemaType instanceof SchemaTypeElement)
+                    {
+                        schemaAttributeProperties.setAttributeType(((SchemaTypeElement) schemaType).getSchemaTypeProperties());
+                    }
+
+                    bean.setSchemaAttributeProperties(schemaAttributeProperties);
+                }
+                else
+                {
+                    handleMissingMetadataInstance(beanClass.getName(), TypeDefCategory.ENTITY_DEF, methodName);
                 }
             }
 

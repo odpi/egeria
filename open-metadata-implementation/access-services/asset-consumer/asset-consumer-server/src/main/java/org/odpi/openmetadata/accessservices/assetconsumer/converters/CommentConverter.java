@@ -3,10 +3,12 @@
 package org.odpi.openmetadata.accessservices.assetconsumer.converters;
 
 import org.odpi.openmetadata.accessservices.assetconsumer.elements.CommentElement;
+import org.odpi.openmetadata.accessservices.assetconsumer.properties.CommentProperties;
 import org.odpi.openmetadata.accessservices.assetconsumer.properties.CommentType;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.Map;
@@ -59,10 +61,11 @@ public class CommentConverter<B> extends AssetConsumerOMASConverter<B>
             if (returnBean instanceof CommentElement)
             {
                 CommentElement bean = (CommentElement) returnBean;
+                CommentProperties commentProperties = new CommentProperties();
 
                 bean.setElementHeader(super.getMetadataElementHeader(beanClass, entity, methodName));
 
-                InstanceProperties instanceProperties = null;
+                InstanceProperties instanceProperties;
 
                 /*
                  * The initial set of values come from the entity.
@@ -70,27 +73,34 @@ public class CommentConverter<B> extends AssetConsumerOMASConverter<B>
                 if (entity != null)
                 {
                     instanceProperties = new InstanceProperties(entity.getProperties());
-                    bean.setUser(entity.getCreatedBy());
+                    commentProperties.setUser(entity.getCreatedBy());
+
+
+                    commentProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
+                    commentProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
+                    commentProperties.setCommentType(this.removeCommentTypeFromProperties(instanceProperties));
+                    commentProperties.setCommentText(this.removeCommentText(instanceProperties));
+
+                    /*
+                     * Any remaining properties are returned in the extended properties.  They are
+                     * assumed to be defined in a subtype.
+                     */
+                    commentProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
+                    commentProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
                 }
-
-                bean.setQualifiedName(this.removeQualifiedName(instanceProperties));
-                bean.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-                bean.setCommentType(this.removeCommentTypeFromProperties(instanceProperties));
-                bean.setCommentText(this.removeCommentText(instanceProperties));
-
-                /*
-                 * Any remaining properties are returned in the extended properties.  They are
-                 * assumed to be defined in a subtype.
-                 */
-                bean.setTypeName(bean.getElementHeader().getType().getTypeName());
-                bean.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
+                else
+                {
+                    handleMissingMetadataInstance(beanClass.getName(), TypeDefCategory.ENTITY_DEF, methodName);
+                }
 
                 if (relationship != null)
                 {
                     instanceProperties = new InstanceProperties(relationship.getProperties());
 
-                    bean.setIsPublic(this.getIsPublic(instanceProperties));
+                    commentProperties.setIsPublic(this.getIsPublic(instanceProperties));
                 }
+
+                bean.setCommentProperties(commentProperties);
             }
 
             return returnBean;

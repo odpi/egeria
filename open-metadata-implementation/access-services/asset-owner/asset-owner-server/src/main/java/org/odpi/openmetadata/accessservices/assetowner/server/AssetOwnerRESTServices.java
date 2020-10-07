@@ -154,7 +154,6 @@ public class AssetOwnerRESTServices
                                            String           typeName,
                                            AssetProperties  requestBody)
     {
-        final String qualifiedNameParameterName = "requestBody.getQualifiedName";
         final String methodName                 = "addAssetToCatalog";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
@@ -186,7 +185,6 @@ public class AssetOwnerRESTServices
                                                                  null,
                                                                  null,
                                                                  requestBody.getQualifiedName(),
-                                                                 qualifiedNameParameterName,
                                                                  requestBody.getDisplayName(),
                                                                  requestBody.getDescription(),
                                                                  requestBody.getZoneMembership(),
@@ -530,7 +528,7 @@ public class AssetOwnerRESTServices
                                                schemaAttribute.getSortOrder().getOpenTypeOrdinal(),
                                                schemaAttribute.getMinimumLength(),
                                                schemaAttribute.getLength(),
-                                               schemaAttribute.getSignificantDigits(),
+                                               schemaAttribute.getPrecision(),
                                                schemaAttribute.getIsNullable(),
                                                schemaAttribute.getNativeJavaClass(),
                                                schemaAttribute.getAliases(),

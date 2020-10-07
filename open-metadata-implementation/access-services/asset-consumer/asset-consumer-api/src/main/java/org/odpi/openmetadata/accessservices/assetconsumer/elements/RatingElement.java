@@ -20,11 +20,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class RatingElement extends RatingProperties implements MetadataElement, Serializable
+public class RatingElement implements MetadataElement, Serializable
 {
     private static final long     serialVersionUID = 1L;
 
-    private ElementHeader elementHeader = null;
+    private ElementHeader    elementHeader = null;
+    private RatingProperties ratingProperties = null;
 
 
     /**
@@ -46,6 +47,7 @@ public class RatingElement extends RatingProperties implements MetadataElement, 
         if (template != null)
         {
             elementHeader = template.getElementHeader();
+            ratingProperties = template.getRatingProperties();
         }
     }
 
@@ -75,6 +77,28 @@ public class RatingElement extends RatingProperties implements MetadataElement, 
 
 
     /**
+     * Return the properties for the rating.
+     *
+     * @return properties bean
+     */
+    public RatingProperties getRatingProperties()
+    {
+        return ratingProperties;
+    }
+
+
+    /**
+     * Set up the properties for the rating.
+     *
+     * @param ratingProperties properties bean
+     */
+    public void setRatingProperties(RatingProperties ratingProperties)
+    {
+        this.ratingProperties = ratingProperties;
+    }
+
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -84,10 +108,7 @@ public class RatingElement extends RatingProperties implements MetadataElement, 
     {
         return "RatingElement{" +
                 "elementHeader=" + elementHeader +
-                ", user='" + getUser() + '\'' +
-                ", starRating=" + getStarRating() +
-                ", review='" + getReview() + '\'' +
-                ", public=" + isPublic() +
+                ", ratingProperties=" + ratingProperties +
                 '}';
     }
 
@@ -114,7 +135,8 @@ public class RatingElement extends RatingProperties implements MetadataElement, 
             return false;
         }
         RatingElement that = (RatingElement) objectToCompare;
-        return Objects.equals(elementHeader, that.elementHeader);
+        return Objects.equals(elementHeader, that.elementHeader) &&
+                Objects.equals(ratingProperties, that.ratingProperties);
     }
 
 
@@ -126,6 +148,6 @@ public class RatingElement extends RatingProperties implements MetadataElement, 
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader);
+        return Objects.hash(super.hashCode(), elementHeader, ratingProperties);
     }
 }

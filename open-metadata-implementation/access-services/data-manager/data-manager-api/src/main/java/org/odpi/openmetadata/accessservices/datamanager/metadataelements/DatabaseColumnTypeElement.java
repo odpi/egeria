@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.accessservices.datamanager.properties.SchemaTypeProperties;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -20,12 +21,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class DatabaseColumnTypeElement extends SchemaTypeProperties implements MetadataElement,
-                                                                               Serializable
+public class DatabaseColumnTypeElement implements MetadataElement, Serializable
 {
     private static final long serialVersionUID = 1L;
 
-    private ElementHeader                elementHeader = null;
+    private ElementHeader        elementHeader = null;
+    private SchemaTypeProperties databaseColumnTypeProperties = null;
 
 
     /**
@@ -44,11 +45,10 @@ public class DatabaseColumnTypeElement extends SchemaTypeProperties implements M
      */
     public DatabaseColumnTypeElement(DatabaseColumnTypeElement template)
     {
-        super(template);
-
         if (template != null)
         {
             elementHeader = template.getElementHeader();
+            databaseColumnTypeProperties = template.getDatabaseColumnTypeProperties();
         }
     }
 
@@ -78,6 +78,28 @@ public class DatabaseColumnTypeElement extends SchemaTypeProperties implements M
 
 
     /**
+     * Return the properties for the database column type.
+     *
+     * @return properties bean
+     */
+    public SchemaTypeProperties getDatabaseColumnTypeProperties()
+    {
+        return databaseColumnTypeProperties;
+    }
+
+
+    /**
+     * Set up the properties for the database column type.
+     *
+     * @param databaseColumnTypeProperties properties bean
+     */
+    public void setDatabaseColumnTypeProperties(SchemaTypeProperties databaseColumnTypeProperties)
+    {
+        this.databaseColumnTypeProperties = databaseColumnTypeProperties;
+    }
+
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -87,19 +109,7 @@ public class DatabaseColumnTypeElement extends SchemaTypeProperties implements M
     {
         return "DatabaseColumnTypeElement{" +
                 "elementHeader=" + elementHeader +
-                ", versionNumber='" + getVersionNumber() + '\'' +
-                ", author='" + getAuthor() + '\'' +
-                ", usage='" + getUsage() + '\'' +
-                ", encodingStandard='" + getEncodingStandard() + '\'' +
-                ", namespace='" + getNamespace() + '\'' +
-                ", deprecated=" + getIsDeprecated() +
-                ", displayName='" + getDisplayName() + '\'' +
-                ", description='" + getDescription() + '\'' +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", vendorProperties=" + getVendorProperties() +
-                ", typeName='" + getTypeName() + '\'' +
-                ", extendedProperties=" + getExtendedProperties() +
+                ", databaseColumnTypeProperties=" + databaseColumnTypeProperties +
                 '}';
     }
 
@@ -110,7 +120,21 @@ public class DatabaseColumnTypeElement extends SchemaTypeProperties implements M
      * @param objectToCompare test object
      * @return result of comparison
      */
-
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
+        {
+            return true;
+        }
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        {
+            return false;
+        }
+        DatabaseColumnTypeElement that = (DatabaseColumnTypeElement) objectToCompare;
+        return Objects.equals(elementHeader, that.elementHeader) &&
+                Objects.equals(databaseColumnTypeProperties, that.databaseColumnTypeProperties);
+    }
 
 
     /**
@@ -118,5 +142,9 @@ public class DatabaseColumnTypeElement extends SchemaTypeProperties implements M
      *
      * @return int hash code
      */
-
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(elementHeader, databaseColumnTypeProperties);
+    }
 }

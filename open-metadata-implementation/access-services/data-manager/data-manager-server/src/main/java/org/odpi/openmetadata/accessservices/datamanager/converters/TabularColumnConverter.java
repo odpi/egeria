@@ -4,10 +4,12 @@ package org.odpi.openmetadata.accessservices.datamanager.converters;
 
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.SchemaTypeElement;
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.TabularColumnElement;
+import org.odpi.openmetadata.accessservices.datamanager.properties.TabularColumnProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.List;
@@ -59,55 +61,66 @@ public class TabularColumnConverter<B> extends DataManagerOMASConverter<B>
              * This is initial confirmation that the generic converter has been initialized with an appropriate bean class.
              */
             B returnBean = beanClass.newInstance();
+
             if (returnBean instanceof TabularColumnElement)
             {
                 TabularColumnElement bean = (TabularColumnElement) returnBean;
+                TabularColumnProperties tabularColumnProperties = new TabularColumnProperties();
 
-                /*
-                 * Check that the entity is of the correct type.
-                 */
-                bean.setElementHeader(this.getMetadataElementHeader(beanClass, schemaAttributeEntity, methodName));
-
-                /*
-                 * The initial set of values come from the entity.
-                 */
-                InstanceProperties instanceProperties = new InstanceProperties(schemaAttributeEntity.getProperties());
-
-                bean.setQualifiedName(this.removeQualifiedName(instanceProperties));
-                bean.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-                bean.setDisplayName(this.removeDisplayName(instanceProperties));
-                bean.setDescription(this.removeDescription(instanceProperties));
-
-                bean.setElementPosition(this.removePosition(instanceProperties));
-                bean.setMinCardinality(this.removeMinCardinality(instanceProperties));
-                bean.setMaxCardinality(this.removeMaxCardinality(instanceProperties));
-                bean.setAllowsDuplicateValues(this.removeAllowsDuplicateValues(instanceProperties));
-                bean.setOrderedValues(this.removeOrderedValues(instanceProperties));
-                bean.setDefaultValueOverride(this.removeDefaultValueOverride(instanceProperties));
-                bean.setSortOrder(this.removeSortOrder(instanceProperties));
-                bean.setMinimumLength(this.removeMinimumLength(instanceProperties));
-                bean.setLength(this.removeLength(instanceProperties));
-                bean.setPrecision(this.removeSignificantDigits(instanceProperties));
-                bean.setIsNullable(this.removeIsNullable(instanceProperties));
-                bean.setNativeJavaClass(this.removeNativeClass(instanceProperties));
-                bean.setAliases(this.removeAliases(instanceProperties));
-
-                instanceProperties = new InstanceProperties(schemaAttributeEntity.getProperties());
-
-                bean.setDataType(this.removeDataType(instanceProperties));
-                bean.setDefaultValue(this.removeDefaultValue(instanceProperties));
-                bean.setFixedValue(this.removeFixedValue(instanceProperties));
-
-                /*
-                 * Any remaining properties are returned in the extended properties.  They are
-                 * assumed to be defined in a subtype.
-                 */
-                bean.setTypeName(bean.getElementHeader().getType().getTypeName());
-                bean.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
-
-                if (schemaType instanceof SchemaTypeElement)
+                if (schemaAttributeEntity != null)
                 {
-                    bean.setSchemaType(((SchemaTypeElement) schemaType).getSchemaTypeProperties());
+                    /*
+                     * Check that the entity is of the correct type.
+                     */
+                    bean.setElementHeader(this.getMetadataElementHeader(beanClass, schemaAttributeEntity, methodName));
+
+                    /*
+                     * The initial set of values come from the entity.
+                     */
+                    InstanceProperties instanceProperties = new InstanceProperties(schemaAttributeEntity.getProperties());
+
+                    tabularColumnProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
+                    tabularColumnProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
+                    tabularColumnProperties.setDisplayName(this.removeDisplayName(instanceProperties));
+                    tabularColumnProperties.setDescription(this.removeDescription(instanceProperties));
+
+                    tabularColumnProperties.setElementPosition(this.removePosition(instanceProperties));
+                    tabularColumnProperties.setMinCardinality(this.removeMinCardinality(instanceProperties));
+                    tabularColumnProperties.setMaxCardinality(this.removeMaxCardinality(instanceProperties));
+                    tabularColumnProperties.setAllowsDuplicateValues(this.removeAllowsDuplicateValues(instanceProperties));
+                    tabularColumnProperties.setOrderedValues(this.removeOrderedValues(instanceProperties));
+                    tabularColumnProperties.setDefaultValueOverride(this.removeDefaultValueOverride(instanceProperties));
+                    tabularColumnProperties.setSortOrder(this.removeSortOrder(instanceProperties));
+                    tabularColumnProperties.setMinimumLength(this.removeMinimumLength(instanceProperties));
+                    tabularColumnProperties.setLength(this.removeLength(instanceProperties));
+                    tabularColumnProperties.setPrecision(this.removePrecision(instanceProperties));
+                    tabularColumnProperties.setIsNullable(this.removeIsNullable(instanceProperties));
+                    tabularColumnProperties.setNativeJavaClass(this.removeNativeClass(instanceProperties));
+                    tabularColumnProperties.setAliases(this.removeAliases(instanceProperties));
+
+                    instanceProperties = new InstanceProperties(schemaAttributeEntity.getProperties());
+
+                    tabularColumnProperties.setDataType(this.removeDataType(instanceProperties));
+                    tabularColumnProperties.setDefaultValue(this.removeDefaultValue(instanceProperties));
+                    tabularColumnProperties.setFixedValue(this.removeFixedValue(instanceProperties));
+
+                    /*
+                     * Any remaining properties are returned in the extended properties.  They are
+                     * assumed to be defined in a subtype.
+                     */
+                    tabularColumnProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
+                    tabularColumnProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
+
+                    if (schemaType instanceof SchemaTypeElement)
+                    {
+                        tabularColumnProperties.setSchemaType(((SchemaTypeElement) schemaType).getSchemaTypeProperties());
+                    }
+
+                    bean.setTabularColumnProperties(tabularColumnProperties);
+                }
+                else
+                {
+                    handleMissingMetadataInstance(beanClass.getName(), TypeDefCategory.ENTITY_DEF, methodName);
                 }
             }
 

@@ -16,7 +16,7 @@ import java.util.List;
 
 /**
  * SchemaTypeConverter provides common methods for transferring relevant properties from an Open Metadata Repository Services (OMRS)
- * EntityDetail object into a bean that inherits from SchemaTypeProperties.
+ * EntityDetail object into a SchemaTypeElement bean.
  */
 public class SchemaTypeConverter<B> extends AssetOwnerOMASConverter<B>
 {

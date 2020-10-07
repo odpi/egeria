@@ -6,7 +6,6 @@ package org.odpi.openmetadata.accessservices.assetowner.metadataelements;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.assetowner.properties.AssetProperties;
 import org.odpi.openmetadata.accessservices.assetowner.properties.FileProperties;
 
 import java.io.Serializable;
@@ -21,12 +20,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class FileElement extends FileProperties implements MetadataElement,
-                                                           Serializable
+public class FileElement implements MetadataElement, Serializable
 {
     private static final long serialVersionUID = 1L;
 
-    private ElementHeader elementHeader = null;
+    private ElementHeader  elementHeader = null;
+    private FileProperties fileProperties = null;
 
 
     /**
@@ -48,6 +47,7 @@ public class FileElement extends FileProperties implements MetadataElement,
         if (template != null)
         {
             elementHeader = template.getElementHeader();
+            fileProperties = template.getFileProperties();
         }
     }
 
@@ -77,6 +77,28 @@ public class FileElement extends FileProperties implements MetadataElement,
 
 
     /**
+     * Return the properties that describe the file.
+     *
+     * @return properties bean
+     */
+    public FileProperties getFileProperties()
+    {
+        return fileProperties;
+    }
+
+
+    /**
+     * Set up the file properties.
+     *
+     * @param fileProperties properties bean
+     */
+    public void setFileProperties(FileProperties fileProperties)
+    {
+        this.fileProperties = fileProperties;
+    }
+
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -84,20 +106,9 @@ public class FileElement extends FileProperties implements MetadataElement,
     @Override
     public String toString()
     {
-        return "AssetElement{" +
+        return "FileElement{" +
                 "elementHeader=" + elementHeader +
-                ", displayName='" + getDisplayName() + '\'' +
-                ", description='" + getDescription() + '\'' +
-                ", owner='" + getOwner() + '\'' +
-                ", ownerType=" + getOwnerType() +
-                ", zoneMembership=" + getZoneMembership() +
-                ", originOrganizationGUID='" + getOriginOrganizationGUID() + '\'' +
-                ", originBusinessCapabilityGUID='" + getOriginBusinessCapabilityGUID() + '\'' +
-                ", otherOriginValues=" + getOtherOriginValues() +
-                ", typeName='" + getTypeName() + '\'' +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", extendedProperties=" + getExtendedProperties() +
+                ", fileProperties=" + fileProperties +
                 '}';
     }
 
@@ -124,7 +135,8 @@ public class FileElement extends FileProperties implements MetadataElement,
             return false;
         }
         FileElement that = (FileElement) objectToCompare;
-        return Objects.equals(elementHeader, that.elementHeader);
+        return Objects.equals(elementHeader, that.elementHeader) &&
+                Objects.equals(fileProperties, that.fileProperties);
     }
 
 
@@ -136,6 +148,6 @@ public class FileElement extends FileProperties implements MetadataElement,
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader);
+        return Objects.hash(super.hashCode(), elementHeader, fileProperties);
     }
 }

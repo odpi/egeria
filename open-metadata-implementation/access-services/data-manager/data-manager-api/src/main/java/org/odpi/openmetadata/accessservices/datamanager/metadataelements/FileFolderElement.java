@@ -20,12 +20,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class FileFolderElement extends FileFolderProperties implements MetadataElement,
-                                                                       Serializable
+public class FileFolderElement implements MetadataElement, Serializable
 {
     private static final long     serialVersionUID = 1L;
 
-    private ElementHeader elementHeader = null;
+    private ElementHeader        elementHeader = null;
+    private FileFolderProperties fileFolderProperties = null;
 
 
     /**
@@ -44,11 +44,10 @@ public class FileFolderElement extends FileFolderProperties implements MetadataE
      */
     public FileFolderElement(FileFolderElement template)
     {
-        super(template);
-
         if (template != null)
         {
             elementHeader = template.getElementHeader();
+            fileFolderProperties = template.getFileFolderProperties();
         }
     }
 
@@ -78,6 +77,27 @@ public class FileFolderElement extends FileFolderProperties implements MetadataE
 
 
     /**
+     * Return the properties for the file folder.
+     *
+     * @return file folder properties
+     */
+    public FileFolderProperties getFileFolderProperties()
+    {
+        return fileFolderProperties;
+    }
+
+
+    /**
+     * Set up the properties for the file folder.
+     *
+     * @param fileFolderProperties file folder properties
+     */
+    public void setFileFolderProperties(FileFolderProperties fileFolderProperties)
+    {
+        this.fileFolderProperties = fileFolderProperties;
+    }
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -87,22 +107,7 @@ public class FileFolderElement extends FileFolderProperties implements MetadataE
     {
         return "FileFolderElement{" +
                 "elementHeader=" + elementHeader +
-                ", createTime=" + getCreateTime() +
-                ", modifiedTime=" + getModifiedTime() +
-                ", encodingType='" + getEncodingType() + '\'' +
-                ", encodingLanguage='" + getEncodingLanguage() + '\'' +
-                ", encodingDescription='" + getEncodingDescription() + '\'' +
-                ", displayName='" + getDisplayName() + '\'' +
-                ", description='" + getDescription() + '\'' +
-                ", owner='" + getOwner() + '\'' +
-                ", ownerCategory=" + getOwnerCategory() +
-                ", zoneMembership=" + getZoneMembership() +
-                ", origin=" + getOtherOriginValues() +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", vendorProperties=" + getVendorProperties() +
-                ", typeName='" + getTypeName() + '\'' +
-                ", extendedProperties=" + getExtendedProperties() +
+                ", fileFolderProperties=" + fileFolderProperties +
                 '}';
     }
 
@@ -129,7 +134,8 @@ public class FileFolderElement extends FileFolderProperties implements MetadataE
             return false;
         }
         FileFolderElement that = (FileFolderElement) objectToCompare;
-        return Objects.equals(elementHeader, that.elementHeader);
+        return Objects.equals(elementHeader, that.elementHeader) &&
+                Objects.equals(fileFolderProperties, that.fileFolderProperties);
     }
 
 
@@ -141,6 +147,6 @@ public class FileFolderElement extends FileFolderProperties implements MetadataE
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader);
+        return Objects.hash(super.hashCode(), elementHeader, fileFolderProperties);
     }
 }

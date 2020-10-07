@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.accessservices.datamanager.converters;
 
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseElement;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.MetadataElement;
 import org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseProperties;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -56,6 +55,7 @@ public class DatabaseConverter<B> extends DataManagerOMASConverter<B>
             if (returnBean instanceof DatabaseElement)
             {
                 DatabaseElement bean = (DatabaseElement) returnBean;
+                DatabaseProperties databaseProperties = new DatabaseProperties();
 
                 if (entity != null)
                 {
@@ -66,24 +66,24 @@ public class DatabaseConverter<B> extends DataManagerOMASConverter<B>
                      */
                     InstanceProperties instanceProperties = new InstanceProperties(entity.getProperties());
 
-                    bean.setQualifiedName(this.removeQualifiedName(instanceProperties));
-                    bean.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-                    bean.setDisplayName(this.removeDisplayName(instanceProperties));
-                    bean.setDescription(this.removeDescription(instanceProperties));
+                    databaseProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
+                    databaseProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
+                    databaseProperties.setDisplayName(this.removeName(instanceProperties));
+                    databaseProperties.setDescription(this.removeDescription(instanceProperties));
 
                     /* Note this value should be in the classification */
-                    bean.setOwner(this.removeOwner(instanceProperties));
+                    databaseProperties.setOwner(this.removeOwner(instanceProperties));
                     /* Note this value should be in the classification */
-                    bean.setOwnerCategory(this.removeOwnerCategoryFromProperties(instanceProperties));
+                    databaseProperties.setOwnerCategory(this.removeOwnerCategoryFromProperties(instanceProperties));
                     /* Note this value should be in the classification */
-                    bean.setZoneMembership(this.removeZoneMembership(instanceProperties));
+                    databaseProperties.setZoneMembership(this.removeZoneMembership(instanceProperties));
 
                     /*
                      * Any remaining properties are returned in the extended properties.  They are
                      * assumed to be defined in a subtype.
                      */
-                    bean.setTypeName(bean.getElementHeader().getType().getTypeName());
-                    bean.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
+                    databaseProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
+                    databaseProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
 
                     /*
                      * The values in the classifications override the values in the main properties of the Asset's entity.
@@ -91,25 +91,27 @@ public class DatabaseConverter<B> extends DataManagerOMASConverter<B>
                      */
                     instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_ZONES_CLASSIFICATION_NAME, entity);
 
-                    bean.setZoneMembership(this.getZoneMembership(instanceProperties));
+                    databaseProperties.setZoneMembership(this.getZoneMembership(instanceProperties));
 
                     instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_OWNERSHIP_CLASSIFICATION_NAME, entity);
 
-                    bean.setOwner(this.getOwner(instanceProperties));
-                    bean.setOwnerCategory(this.getOwnerCategoryFromProperties(instanceProperties));
+                    databaseProperties.setOwner(this.getOwner(instanceProperties));
+                    databaseProperties.setOwnerCategory(this.getOwnerCategoryFromProperties(instanceProperties));
 
                     instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_ORIGIN_CLASSIFICATION_NAME, entity);
 
-                    bean.setOriginOrganizationGUID(this.getOriginOrganizationGUID(instanceProperties));
-                    bean.setOriginBusinessCapabilityGUID(this.getOriginBusinessCapabilityGUID(instanceProperties));
-                    bean.setOtherOriginValues(this.getOtherOriginValues(instanceProperties));
+                    databaseProperties.setOriginOrganizationGUID(this.getOriginOrganizationGUID(instanceProperties));
+                    databaseProperties.setOriginBusinessCapabilityGUID(this.getOriginBusinessCapabilityGUID(instanceProperties));
+                    databaseProperties.setOtherOriginValues(this.getOtherOriginValues(instanceProperties));
 
                     instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.DATA_STORE_ENCODING_CLASSIFICATION_NAME, entity);
 
-                    bean.setEncodingType(this.getDataStoreEncodingType(instanceProperties));
-                    bean.setEncodingLanguage(this.getDataStoreEncodingLanguage(instanceProperties));
-                    bean.setEncodingDescription(this.getDataStoreEncodingDescription(instanceProperties));
-                    bean.setEncodingProperties(this.getEncodingProperties(instanceProperties));
+                    databaseProperties.setEncodingType(this.getDataStoreEncodingType(instanceProperties));
+                    databaseProperties.setEncodingLanguage(this.getDataStoreEncodingLanguage(instanceProperties));
+                    databaseProperties.setEncodingDescription(this.getDataStoreEncodingDescription(instanceProperties));
+                    databaseProperties.setEncodingProperties(this.getEncodingProperties(instanceProperties));
+
+                    bean.setDatabaseProperties(databaseProperties);
                 }
                 else
                 {

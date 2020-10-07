@@ -3,14 +3,16 @@
 package org.odpi.openmetadata.accessservices.assetconsumer.converters;
 
 import org.odpi.openmetadata.accessservices.assetconsumer.elements.LikeElement;
+import org.odpi.openmetadata.accessservices.assetconsumer.properties.LikeProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 
 /**
  * LikeConverter provides common methods for transferring relevant properties from an Open Metadata Repository Services (OMRS)
- * EntityDetail object into a bean that inherits from RatingProperties.
+ * EntityDetail object into a RatingElement bean.
  */
 public class LikeConverter<B> extends AssetConsumerOMASConverter<B>
 {
@@ -55,6 +57,7 @@ public class LikeConverter<B> extends AssetConsumerOMASConverter<B>
             if (returnBean instanceof LikeElement)
             {
                 LikeElement bean = (LikeElement) returnBean;
+                LikeProperties likeProperties = new LikeProperties();
 
                 bean.setElementHeader(super.getMetadataElementHeader(beanClass, entity, methodName));
 
@@ -62,15 +65,21 @@ public class LikeConverter<B> extends AssetConsumerOMASConverter<B>
 
                 if (entity != null)
                 {
-                    bean.setUser(entity.getCreatedBy());
+                    likeProperties.setUser(entity.getCreatedBy());
+                }
+                else
+                {
+                    handleMissingMetadataInstance(beanClass.getName(), TypeDefCategory.ENTITY_DEF, methodName);
                 }
 
                 if (relationship != null)
                 {
                     instanceProperties = new InstanceProperties(relationship.getProperties());
 
-                    bean.setIsPublic(this.getIsPublic(instanceProperties));
+                    likeProperties.setIsPublic(this.getIsPublic(instanceProperties));
                 }
+
+                bean.setLikeProperties(likeProperties);
             }
 
             return returnBean;

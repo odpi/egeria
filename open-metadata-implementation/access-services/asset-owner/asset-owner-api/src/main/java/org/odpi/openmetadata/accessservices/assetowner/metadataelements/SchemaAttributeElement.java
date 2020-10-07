@@ -15,16 +15,17 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * SchemaAttributeElement contains the properties and header for a reference data asset retrieved from the metadata repository.
+ * SchemaAttributeElement contains the properties and header for a schema attribute retrieved from the metadata repository.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class SchemaAttributeElement extends SchemaAttributeProperties implements MetadataElement, Serializable
+public class SchemaAttributeElement implements MetadataElement, Serializable
 {
     private static final long serialVersionUID = 1L;
 
-    private ElementHeader elementHeader = null;
+    private ElementHeader             elementHeader = null;
+    private SchemaAttributeProperties schemaAttributeProperties = null;
 
 
     /**
@@ -46,6 +47,7 @@ public class SchemaAttributeElement extends SchemaAttributeProperties implements
         if (template != null)
         {
             elementHeader = template.getElementHeader();
+            schemaAttributeProperties = template.getSchemaAttributeProperties();
         }
     }
 
@@ -75,6 +77,28 @@ public class SchemaAttributeElement extends SchemaAttributeProperties implements
 
 
     /**
+     * Return the properties for a schema attribute.
+     *
+     * @return properties bean
+     */
+    public SchemaAttributeProperties getSchemaAttributeProperties()
+    {
+        return schemaAttributeProperties;
+    }
+
+
+    /**
+     * Set up the properties for a schema attribute.
+     *
+     * @param schemaAttributeProperties properties bean
+     */
+    public void setSchemaAttributeProperties(SchemaAttributeProperties schemaAttributeProperties)
+    {
+        this.schemaAttributeProperties = schemaAttributeProperties;
+    }
+
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -84,28 +108,7 @@ public class SchemaAttributeElement extends SchemaAttributeProperties implements
     {
         return "SchemaAttributeElement{" +
                 "elementHeader=" + elementHeader +
-                ", elementPosition=" + getElementPosition() +
-                ", minCardinality=" + getMinCardinality() +
-                ", maxCardinality=" + getMaxCardinality() +
-                ", allowsDuplicateValues=" + getAllowsDuplicateValues() +
-                ", orderedValues=" + getOrderedValues() +
-                ", sortOrder=" + getSortOrder() +
-                ", minimumLength=" + getMinimumLength() +
-                ", length=" + getLength() +
-                ", significantDigits=" + getSignificantDigits() +
-                ", nullable=" + getIsNullable() +
-                ", defaultValueOverride='" + getDefaultValueOverride() + '\'' +
-                ", attributeType=" + getAttributeType() +
-                ", attributeRelationships=" + getAttributeRelationships() +
-                ", nativeJavaClass='" + getNativeJavaClass() + '\'' +
-                ", aliases=" + getAliases() +
-                ", displayName='" + getDisplayName() + '\'' +
-                ", description='" + getDescription() + '\'' +
-                ", deprecated=" + getIsDeprecated() +
-                ", typeName='" + getTypeName() + '\'' +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", extendedProperties=" + getExtendedProperties() +
+                ", schemaAttributeProperties=" + schemaAttributeProperties +
                 '}';
     }
 
@@ -132,7 +135,8 @@ public class SchemaAttributeElement extends SchemaAttributeProperties implements
             return false;
         }
         SchemaAttributeElement that = (SchemaAttributeElement) objectToCompare;
-        return Objects.equals(elementHeader, that.elementHeader);
+        return Objects.equals(elementHeader, that.elementHeader) &&
+                Objects.equals(schemaAttributeProperties, that.schemaAttributeProperties);
     }
 
 
@@ -144,6 +148,6 @@ public class SchemaAttributeElement extends SchemaAttributeProperties implements
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader);
+        return Objects.hash(super.hashCode(), elementHeader, schemaAttributeProperties);
     }
 }

@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.accessservices.datamanager.properties.SchemaTypeProperties;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -20,13 +21,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class TabularColumnTypeElement extends SchemaTypeProperties implements MetadataElement,
-                                                                              Serializable
+public class TabularColumnTypeElement  implements MetadataElement, Serializable
 {
     private static final long serialVersionUID = 1L;
 
     private ElementHeader                elementHeader = null;
-
+    private SchemaTypeProperties         tabularColumnTypeProperties = null;
 
     /**
      * Default constructor
@@ -44,8 +44,6 @@ public class TabularColumnTypeElement extends SchemaTypeProperties implements Me
      */
     public TabularColumnTypeElement(TabularColumnTypeElement template)
     {
-        super(template);
-
         if (template != null)
         {
             elementHeader = template.getElementHeader();
@@ -78,6 +76,28 @@ public class TabularColumnTypeElement extends SchemaTypeProperties implements Me
 
 
     /**
+     * Return the properties for the tabular column's type.
+     *
+     * @return properties bean
+     */
+    public SchemaTypeProperties getTabularColumnTypeProperties()
+    {
+        return tabularColumnTypeProperties;
+    }
+
+
+    /**
+     * Set up the properties for the tabular column's type.
+     *
+     * @param tabularColumnTypeProperties properties bean
+     */
+    public void setTabularColumnTypeProperties(SchemaTypeProperties tabularColumnTypeProperties)
+    {
+        this.tabularColumnTypeProperties = tabularColumnTypeProperties;
+    }
+
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -85,21 +105,9 @@ public class TabularColumnTypeElement extends SchemaTypeProperties implements Me
     @Override
     public String toString()
     {
-        return "DatabaseColumnTypeElement{" +
+        return "TabularColumnTypeElement{" +
                 "elementHeader=" + elementHeader +
-                ", versionNumber='" + getVersionNumber() + '\'' +
-                ", author='" + getAuthor() + '\'' +
-                ", usage='" + getUsage() + '\'' +
-                ", encodingStandard='" + getEncodingStandard() + '\'' +
-                ", namespace='" + getNamespace() + '\'' +
-                ", deprecated=" + getIsDeprecated() +
-                ", displayName='" + getDisplayName() + '\'' +
-                ", description='" + getDescription() + '\'' +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", vendorProperties=" + getVendorProperties() +
-                ", typeName='" + getTypeName() + '\'' +
-                ", extendedProperties=" + getExtendedProperties() +
+                ", tabularColumnTypeProperties=" + tabularColumnTypeProperties +
                 '}';
     }
 
@@ -110,7 +118,21 @@ public class TabularColumnTypeElement extends SchemaTypeProperties implements Me
      * @param objectToCompare test object
      * @return result of comparison
      */
-
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
+        {
+            return true;
+        }
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        {
+            return false;
+        }
+        TabularColumnTypeElement that = (TabularColumnTypeElement) objectToCompare;
+        return Objects.equals(elementHeader, that.elementHeader) &&
+                Objects.equals(tabularColumnTypeProperties, that.tabularColumnTypeProperties);
+    }
 
 
     /**
@@ -118,5 +140,9 @@ public class TabularColumnTypeElement extends SchemaTypeProperties implements Me
      *
      * @return int hash code
      */
-
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(elementHeader, tabularColumnTypeProperties);
+    }
 }

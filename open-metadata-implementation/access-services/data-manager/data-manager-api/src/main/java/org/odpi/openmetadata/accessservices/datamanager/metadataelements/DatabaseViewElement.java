@@ -21,12 +21,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class DatabaseViewElement extends DatabaseViewProperties implements MetadataElement,
-                                                                           Serializable
+public class DatabaseViewElement implements MetadataElement, Serializable
 {
     private static final long     serialVersionUID = 1L;
 
     private ElementHeader elementHeader = null;
+    private DatabaseViewProperties databaseViewProperties = null;
 
 
     /**
@@ -45,11 +45,10 @@ public class DatabaseViewElement extends DatabaseViewProperties implements Metad
      */
     public DatabaseViewElement(DatabaseViewElement template)
     {
-        super(template);
-
         if (template != null)
         {
             elementHeader = template.getElementHeader();
+            databaseViewProperties = template.getDatabaseViewProperties();
         }
     }
 
@@ -79,6 +78,28 @@ public class DatabaseViewElement extends DatabaseViewProperties implements Metad
 
 
     /**
+     * Return the properties of the database view.
+     *
+     * @return properties bean
+     */
+    public DatabaseViewProperties getDatabaseViewProperties()
+    {
+        return databaseViewProperties;
+    }
+
+
+    /**
+     * Set up the properties of the database view.
+     *
+     * @param databaseViewProperties properties bean
+     */
+    public void setDatabaseViewProperties(DatabaseViewProperties databaseViewProperties)
+    {
+        this.databaseViewProperties = databaseViewProperties;
+    }
+
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -88,29 +109,7 @@ public class DatabaseViewElement extends DatabaseViewProperties implements Metad
     {
         return "DatabaseViewElement{" +
                 "elementHeader=" + elementHeader +
-                ", formula='" + getFormula() + '\'' +
-                ", queries=" + getQueries() +
-                ", elementPosition=" + getElementPosition() +
-                ", minCardinality=" + getMinCardinality() +
-                ", maxCardinality=" + getMaxCardinality() +
-                ", allowsDuplicateValues=" + getAllowsDuplicateValues() +
-                ", orderedValues=" + getOrderedValues() +
-                ", sortOrder=" + getSortOrder() +
-                ", minimumLength=" + getMinimumLength() +
-                ", length=" + getLength() +
-                ", significantDigits=" + getPrecision() +
-                ", nullable=" + getIsNullable() +
-                ", defaultValueOverride='" + getDefaultValueOverride() + '\'' +
-                ", nativeJavaClass='" + getNativeJavaClass() + '\'' +
-                ", aliases=" + getAliases() +
-                ", deprecated=" + getIsDeprecated() +
-                ", displayName='" + getDisplayName() + '\'' +
-                ", description='" + getDescription() + '\'' +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", vendorProperties=" + getVendorProperties() +
-                ", typeName='" + getTypeName() + '\'' +
-                ", extendedProperties=" + getExtendedProperties() +
+                ", databaseViewProperties=" + databaseViewProperties +
                 '}';
     }
 
@@ -137,7 +136,8 @@ public class DatabaseViewElement extends DatabaseViewProperties implements Metad
             return false;
         }
         DatabaseViewElement that = (DatabaseViewElement) objectToCompare;
-        return Objects.equals(elementHeader, that.elementHeader);
+        return Objects.equals(elementHeader, that.elementHeader) &&
+                Objects.equals(databaseViewProperties, that.databaseViewProperties);
     }
 
 
@@ -149,6 +149,6 @@ public class DatabaseViewElement extends DatabaseViewProperties implements Metad
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader);
+        return Objects.hash(super.hashCode(), elementHeader, databaseViewProperties);
     }
 }

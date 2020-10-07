@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.digitalarchitecture.converters;
 
 import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.ReferenceValueAssignmentItemElement;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.ReferenceableElement;
+import org.odpi.openmetadata.accessservices.digitalarchitecture.properties.ReferenceableProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -60,6 +61,7 @@ public class ReferenceValueAssignmentItemConverter<B> extends DigitalArchitectur
             {
                 ReferenceValueAssignmentItemElement bean         = (ReferenceValueAssignmentItemElement) returnBean;
                 ReferenceableElement                assignedItem = new ReferenceableElement();
+                ReferenceableProperties             referenceableProperties = new ReferenceableProperties();
 
                 if (entity != null)
                 {
@@ -70,16 +72,17 @@ public class ReferenceValueAssignmentItemConverter<B> extends DigitalArchitectur
                      */
                     InstanceProperties instanceProperties = new InstanceProperties(entity.getProperties());
 
-                    assignedItem.setQualifiedName(this.removeQualifiedName(instanceProperties));
-                    assignedItem.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
+                    referenceableProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
+                    referenceableProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
 
                     /*
                      * Any remaining properties are returned in the extended properties.  They are
                      * assumed to be defined in a subtype.
                      */
-                    assignedItem.setTypeName(assignedItem.getElementHeader().getType().getTypeName());
-                    assignedItem.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
+                    referenceableProperties.setTypeName(assignedItem.getElementHeader().getType().getTypeName());
+                    referenceableProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
 
+                    assignedItem.setReferenceableProperties(referenceableProperties);
                     bean.setAssignedItem(assignedItem);
 
                     if (relationship != null)

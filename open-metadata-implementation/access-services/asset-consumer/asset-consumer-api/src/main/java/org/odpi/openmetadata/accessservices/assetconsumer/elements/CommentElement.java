@@ -15,16 +15,17 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * CommentElement contains the properties and header for a referenceable entity retrieved from the metadata repository.
+ * CommentElement contains the properties and header for a comment entity retrieved from the metadata repository.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class CommentElement extends CommentProperties implements MetadataElement, Serializable
+public class CommentElement implements MetadataElement, Serializable
 {
     private static final long     serialVersionUID = 1L;
 
-    private ElementHeader elementHeader = null;
+    private ElementHeader     elementHeader = null;
+    private CommentProperties commentProperties = null;
 
 
     /**
@@ -46,6 +47,7 @@ public class CommentElement extends CommentProperties implements MetadataElement
         if (template != null)
         {
             elementHeader = template.getElementHeader();
+            commentProperties = template.getCommentProperties();
         }
     }
 
@@ -75,6 +77,28 @@ public class CommentElement extends CommentProperties implements MetadataElement
 
 
     /**
+     * Return the properties for the comment.
+     *
+     * @return properties bean
+     */
+    public CommentProperties getCommentProperties()
+    {
+        return commentProperties;
+    }
+
+
+    /**
+     * Set up the properties for the comment.
+     *
+     * @param commentProperties properties bean
+     */
+    public void setCommentProperties(CommentProperties commentProperties)
+    {
+        this.commentProperties = commentProperties;
+    }
+
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -84,14 +108,7 @@ public class CommentElement extends CommentProperties implements MetadataElement
     {
         return "CommentElement{" +
                 "elementHeader=" + elementHeader +
-                ", commentType=" + getCommentType() +
-                ", commentText='" + getCommentText() + '\'' +
-                ", user='" + getUser() + '\'' +
-                ", public=" + getIsPublic() +
-                ", typeName='" + getTypeName() + '\'' +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", extendedProperties=" + getExtendedProperties() +
+                ", commentProperties=" + commentProperties +
                 '}';
     }
 
@@ -118,7 +135,8 @@ public class CommentElement extends CommentProperties implements MetadataElement
             return false;
         }
         CommentElement that = (CommentElement) objectToCompare;
-        return Objects.equals(elementHeader, that.elementHeader);
+        return Objects.equals(elementHeader, that.elementHeader) &&
+                Objects.equals(commentProperties, that.commentProperties);
     }
 
 
@@ -130,6 +148,6 @@ public class CommentElement extends CommentProperties implements MetadataElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader);
+        return Objects.hash(super.hashCode(), elementHeader, commentProperties);
     }
 }

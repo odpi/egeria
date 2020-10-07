@@ -21,12 +21,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class TabularColumnElement extends TabularColumnProperties implements MetadataElement,
-                                                                             Serializable
+public class TabularColumnElement implements MetadataElement, Serializable
 {
     private static final long serialVersionUID = 1L;
 
-    private ElementHeader                elementHeader = null;
+    private ElementHeader           elementHeader = null;
+    private TabularColumnProperties tabularColumnProperties = null;
+
 
     /**
      * Default constructor
@@ -44,8 +45,6 @@ public class TabularColumnElement extends TabularColumnProperties implements Met
      */
     public TabularColumnElement(TabularColumnElement template)
     {
-        super(template);
-
         if (template != null)
         {
             elementHeader = template.getElementHeader();
@@ -76,6 +75,29 @@ public class TabularColumnElement extends TabularColumnProperties implements Met
         this.elementHeader = elementHeader;
     }
 
+
+    /**
+     * Return the tabular column.
+     *
+     * @return properties bean
+     */
+    public TabularColumnProperties getTabularColumnProperties()
+    {
+        return tabularColumnProperties;
+    }
+
+
+    /**
+     * Set up the tabular column.
+     *
+     * @param tabularColumnProperties properties bean
+     */
+    public void setTabularColumnProperties(TabularColumnProperties tabularColumnProperties)
+    {
+        this.tabularColumnProperties = tabularColumnProperties;
+    }
+
+
     /**
      * JSON-style toString
      *
@@ -86,33 +108,7 @@ public class TabularColumnElement extends TabularColumnProperties implements Met
     {
         return "TabularColumnElement{" +
                 "elementHeader=" + elementHeader +
-                ", dataType='" + getDataType() + '\'' +
-                ", defaultValue='" + getDefaultValue() + '\'' +
-                ", fixedValue='" + getFixedValue() + '\'' +
-                ", externalTypeGUID='" + getExternalTypeGUID() + '\'' +
-                ", validValuesSetGUID='" + getValidValuesSetGUID() + '\'' +
-                ", elementPosition=" + getElementPosition() +
-                ", minCardinality=" + getMinCardinality() +
-                ", maxCardinality=" + getMaxCardinality() +
-                ", allowsDuplicateValues=" + getAllowsDuplicateValues() +
-                ", orderedValues=" + getOrderedValues() +
-                ", sortOrder=" + getSortOrder() +
-                ", minimumLength=" + getMinimumLength() +
-                ", length=" + getLength() +
-                ", significantDigits=" + getPrecision() +
-                ", nullable=" + getIsNullable() +
-                ", defaultValueOverride='" + getDefaultValueOverride() + '\'' +
-                ", nativeJavaClass='" + getNativeJavaClass() + '\'' +
-                ", aliases=" + getAliases() +
-                ", schemaType=" + getSchemaType() +
-                ", deprecated=" + getIsDeprecated() +
-                ", displayName='" + getDisplayName() + '\'' +
-                ", description='" + getDescription() + '\'' +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", vendorProperties=" + getVendorProperties() +
-                ", typeName='" + getTypeName() + '\'' +
-                ", extendedProperties=" + getExtendedProperties() +
+                ", tabularColumnProperties=" + tabularColumnProperties +
                 '}';
     }
 
@@ -139,7 +135,8 @@ public class TabularColumnElement extends TabularColumnProperties implements Met
             return false;
         }
         TabularColumnElement that = (TabularColumnElement) objectToCompare;
-        return Objects.equals(elementHeader, that.elementHeader);
+        return Objects.equals(elementHeader, that.elementHeader) &&
+                Objects.equals(tabularColumnProperties, that.tabularColumnProperties);
     }
 
 
@@ -151,6 +148,6 @@ public class TabularColumnElement extends TabularColumnProperties implements Met
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader);
+        return Objects.hash(super.hashCode(), elementHeader, tabularColumnProperties);
     }
 }

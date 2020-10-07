@@ -3,18 +3,21 @@
 
 package org.odpi.openmetadata.accessservices.governanceprogram.metadataelements;
 
+
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceZoneProperties;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
  * GovernanceZoneElement is the bean used to return a governance zone definition stored in the open metadata repositories.
  */
-public class GovernanceZoneElement extends GovernanceZoneProperties
+public class GovernanceZoneElement implements Serializable
 {
     private static final long serialVersionUID = 1L;
 
-    private ElementHeader elementHeader = null;
+    private ElementHeader            elementHeader            = null;
+    private GovernanceZoneProperties governanceZoneProperties = null;
 
 
     /**
@@ -36,6 +39,7 @@ public class GovernanceZoneElement extends GovernanceZoneProperties
         if (template != null)
         {
             elementHeader = template.getElementHeader();
+            governanceZoneProperties = template.getGovernanceZoneProperties();
         }
     }
 
@@ -63,6 +67,28 @@ public class GovernanceZoneElement extends GovernanceZoneProperties
 
 
     /**
+     * Return the properties of the governance zone.
+     *
+     * @return properties bean
+     */
+    public GovernanceZoneProperties getGovernanceZoneProperties()
+    {
+        return governanceZoneProperties;
+    }
+
+
+    /**
+     * Set up the properties of the governance zone.
+     *
+     * @param governanceZoneProperties properties bean
+     */
+    public void setGovernanceZoneProperties(GovernanceZoneProperties governanceZoneProperties)
+    {
+        this.governanceZoneProperties = governanceZoneProperties;
+    }
+
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -72,13 +98,7 @@ public class GovernanceZoneElement extends GovernanceZoneProperties
     {
         return "GovernanceZoneElement{" +
                 "elementHeader=" + elementHeader +
-                ", displayName='" + getDisplayName() + '\'' +
-                ", description='" + getDescription() + '\'' +
-                ", criteria='" + getCriteria() + '\'' +
-                ", typeName='" + getTypeName() + '\'' +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", extendedProperties=" + getExtendedProperties() +
+                ", governanceZoneProperties=" + governanceZoneProperties +
                 '}';
     }
 
@@ -100,12 +120,9 @@ public class GovernanceZoneElement extends GovernanceZoneProperties
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
-        {
-            return false;
-        }
         GovernanceZoneElement that = (GovernanceZoneElement) objectToCompare;
-        return Objects.equals(elementHeader, that.elementHeader);
+        return Objects.equals(elementHeader, that.elementHeader) &&
+                Objects.equals(governanceZoneProperties, that.governanceZoneProperties);
     }
 
 
@@ -117,6 +134,6 @@ public class GovernanceZoneElement extends GovernanceZoneProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader);
+        return Objects.hash(super.hashCode(), elementHeader, governanceZoneProperties);
     }
 }

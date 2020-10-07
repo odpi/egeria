@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.datamanager.converters;
 
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseSchemaElement;
+import org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseSchemaProperties;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -60,30 +61,31 @@ public class DatabaseSchemaConverter<B> extends DataManagerOMASConverter<B>
                 if (entity != null)
                 {
                     bean.setElementHeader(this.getMetadataElementHeader(beanClass, entity, methodName));
+                    DatabaseSchemaProperties databaseSchemaProperties = new DatabaseSchemaProperties();
 
                     /*
                      * The initial set of values come from the entity.
                      */
                     InstanceProperties instanceProperties = new InstanceProperties(entity.getProperties());
 
-                    bean.setQualifiedName(this.removeQualifiedName(instanceProperties));
-                    bean.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-                    bean.setDisplayName(this.removeDisplayName(instanceProperties));
-                    bean.setDescription(this.removeDescription(instanceProperties));
+                    databaseSchemaProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
+                    databaseSchemaProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
+                    databaseSchemaProperties.setDisplayName(this.removeName(instanceProperties));
+                    databaseSchemaProperties.setDescription(this.removeDescription(instanceProperties));
 
                     /* Note this value should be in the classification */
-                    bean.setOwner(this.removeOwner(instanceProperties));
+                    databaseSchemaProperties.setOwner(this.removeOwner(instanceProperties));
                     /* Note this value should be in the classification */
-                    bean.setOwnerCategory(this.removeOwnerCategoryFromProperties(instanceProperties));
+                    databaseSchemaProperties.setOwnerCategory(this.removeOwnerCategoryFromProperties(instanceProperties));
                     /* Note this value should be in the classification */
-                    bean.setZoneMembership(this.removeZoneMembership(instanceProperties));
+                    databaseSchemaProperties.setZoneMembership(this.removeZoneMembership(instanceProperties));
 
                     /*
                      * Any remaining properties are returned in the extended properties.  They are
                      * assumed to be defined in a subtype.
                      */
-                    bean.setTypeName(bean.getElementHeader().getType().getTypeName());
-                    bean.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
+                    databaseSchemaProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
+                    databaseSchemaProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
 
                     /*
                      * The values in the classifications override the values in the main properties of the Asset's entity.
@@ -91,18 +93,20 @@ public class DatabaseSchemaConverter<B> extends DataManagerOMASConverter<B>
                      */
                     instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_ZONES_CLASSIFICATION_NAME, entity);
 
-                    bean.setZoneMembership(this.getZoneMembership(instanceProperties));
+                    databaseSchemaProperties.setZoneMembership(this.getZoneMembership(instanceProperties));
 
                     instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_OWNERSHIP_CLASSIFICATION_NAME, entity);
 
-                    bean.setOwner(this.getOwner(instanceProperties));
-                    bean.setOwnerCategory(this.getOwnerCategoryFromProperties(instanceProperties));
+                    databaseSchemaProperties.setOwner(this.getOwner(instanceProperties));
+                    databaseSchemaProperties.setOwnerCategory(this.getOwnerCategoryFromProperties(instanceProperties));
 
                     instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_ORIGIN_CLASSIFICATION_NAME, entity);
 
-                    bean.setOriginOrganizationGUID(this.getOriginOrganizationGUID(instanceProperties));
-                    bean.setOriginBusinessCapabilityGUID(this.getOriginBusinessCapabilityGUID(instanceProperties));
-                    bean.setOtherOriginValues(this.getOtherOriginValues(instanceProperties));
+                    databaseSchemaProperties.setOriginOrganizationGUID(this.getOriginOrganizationGUID(instanceProperties));
+                    databaseSchemaProperties.setOriginBusinessCapabilityGUID(this.getOriginBusinessCapabilityGUID(instanceProperties));
+                    databaseSchemaProperties.setOtherOriginValues(this.getOtherOriginValues(instanceProperties));
+
+                    bean.setDatabaseSchemaProperties(databaseSchemaProperties);
                 }
                 else
                 {

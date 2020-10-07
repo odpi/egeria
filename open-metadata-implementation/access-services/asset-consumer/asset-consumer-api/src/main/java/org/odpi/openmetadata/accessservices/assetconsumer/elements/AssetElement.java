@@ -20,11 +20,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class AssetElement extends AssetProperties implements MetadataElement, Serializable
+public class AssetElement implements MetadataElement, Serializable
 {
     private static final long serialVersionUID = 1L;
 
-    private ElementHeader elementHeader = null;
+    private ElementHeader  elementHeader = null;
+    private AssetProperties assetProperties = null;
 
 
     /**
@@ -46,6 +47,7 @@ public class AssetElement extends AssetProperties implements MetadataElement, Se
         if (template != null)
         {
             elementHeader = template.getElementHeader();
+            assetProperties = template.getAssetProperties();
         }
     }
 
@@ -73,6 +75,27 @@ public class AssetElement extends AssetProperties implements MetadataElement, Se
         this.elementHeader = elementHeader;
     }
 
+    /**
+     * Retrieve details of the asset itself.
+     *
+     * @return asset properties
+     */
+    public AssetProperties getAssetProperties()
+    {
+        return assetProperties;
+    }
+
+
+    /**
+     * Save details of the asset itself
+     *
+     * @param assetProperties asset properties
+     */
+    public void setAssetProperties(AssetProperties assetProperties)
+    {
+        this.assetProperties = assetProperties;
+    }
+
 
     /**
      * JSON-style toString
@@ -84,18 +107,7 @@ public class AssetElement extends AssetProperties implements MetadataElement, Se
     {
         return "AssetElement{" +
                 "elementHeader=" + elementHeader +
-                ", displayName='" + getDisplayName() + '\'' +
-                ", description='" + getDescription() + '\'' +
-                ", owner='" + getOwner() + '\'' +
-                ", ownerType=" + getOwnerType() +
-                ", zoneMembership=" + getZoneMembership() +
-                ", originOrganizationGUID='" + getOriginOrganizationGUID() + '\'' +
-                ", originBusinessCapabilityGUID='" + getOriginBusinessCapabilityGUID() + '\'' +
-                ", otherOriginValues=" + getOtherOriginValues() +
-                ", typeName='" + getTypeName() + '\'' +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", extendedProperties=" + getExtendedProperties() +
+                ", assetProperties=" + assetProperties +
                 '}';
     }
 
@@ -117,12 +129,9 @@ public class AssetElement extends AssetProperties implements MetadataElement, Se
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
-        {
-            return false;
-        }
         AssetElement that = (AssetElement) objectToCompare;
-        return Objects.equals(elementHeader, that.elementHeader);
+        return Objects.equals(elementHeader, that.elementHeader) &&
+                Objects.equals(assetProperties, that.assetProperties);
     }
 
 
@@ -134,6 +143,6 @@ public class AssetElement extends AssetProperties implements MetadataElement, Se
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader);
+        return Objects.hash(elementHeader, assetProperties);
     }
 }

@@ -132,7 +132,6 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
                                                                       PropertyServerException
     {
         final String methodName = "createDiscoveryEngine";
-        final String qualifiedNameParameter = "qualifiedName";
 
         return discoveryEngineHandler.createSoftwareServerCapability(userId,
                                                                      null,
@@ -141,7 +140,6 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
                                                                      OpenMetadataAPIMapper.DISCOVERY_ENGINE_TYPE_NAME,
                                                                      null,
                                                                      qualifiedName,
-                                                                     qualifiedNameParameter,
                                                                      displayName,
                                                                      description,
                                                                      null,
@@ -382,13 +380,11 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
                                                                           PropertyServerException
     {
         final String methodName = "createDiscoveryService";
-        final String qualifiedNameParameter = "qualifiedName";
 
         return discoveryServiceHandler.createAssetWithConnectionInRepository(userId,
                                                                              null,
                                                                              null,
                                                                              qualifiedName,
-                                                                             qualifiedNameParameter,
                                                                              displayName,
                                                                              description,
                                                                              null,

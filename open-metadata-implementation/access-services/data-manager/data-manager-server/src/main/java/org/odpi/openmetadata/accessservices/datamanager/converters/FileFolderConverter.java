@@ -3,11 +3,13 @@
 package org.odpi.openmetadata.accessservices.datamanager.converters;
 
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.FileFolderElement;
+import org.odpi.openmetadata.accessservices.datamanager.properties.FileFolderProperties;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 /**
@@ -29,7 +31,6 @@ public class FileFolderConverter<B> extends DataManagerOMASConverter<B>
     {
         super(repositoryHelper, serviceName, serverName);
     }
-
 
 
     /**
@@ -56,58 +57,68 @@ public class FileFolderConverter<B> extends DataManagerOMASConverter<B>
             if (returnBean instanceof FileFolderElement)
             {
                 FileFolderElement bean = (FileFolderElement) returnBean;
+                FileFolderProperties fileFolderProperties = new FileFolderProperties();
 
-                bean.setElementHeader(this.getMetadataElementHeader(beanClass, entity, methodName));
+                if (entity != null)
+                {
+                    bean.setElementHeader(this.getMetadataElementHeader(beanClass, entity, methodName));
 
-                /*
-                 * The initial set of values come from the entity.
-                 */
-                InstanceProperties instanceProperties = new InstanceProperties(entity.getProperties());
+                    /*
+                     * The initial set of values come from the entity.
+                     */
+                    InstanceProperties instanceProperties = new InstanceProperties(entity.getProperties());
 
-                bean.setQualifiedName(this.removeQualifiedName(instanceProperties));
-                bean.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-                bean.setDisplayName(this.removeDisplayName(instanceProperties));
-                bean.setDescription(this.removeDescription(instanceProperties));
+                    fileFolderProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
+                    fileFolderProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
+                    fileFolderProperties.setDisplayName(this.removeName(instanceProperties));
+                    fileFolderProperties.setDescription(this.removeDescription(instanceProperties));
 
-                /* Note this value should be in the classification */
-                bean.setOwner(this.removeOwner(instanceProperties));
-                /* Note this value should be in the classification */
-                bean.setOwnerCategory(this.removeOwnerCategoryFromProperties(instanceProperties));
-                /* Note this value should be in the classification */
-                bean.setZoneMembership(this.removeZoneMembership(instanceProperties));
+                    /* Note this value should be in the classification */
+                    fileFolderProperties.setOwner(this.removeOwner(instanceProperties));
+                    /* Note this value should be in the classification */
+                    fileFolderProperties.setOwnerCategory(this.removeOwnerCategoryFromProperties(instanceProperties));
+                    /* Note this value should be in the classification */
+                    fileFolderProperties.setZoneMembership(this.removeZoneMembership(instanceProperties));
 
-                /*
-                 * Any remaining properties are returned in the extended properties.  They are
-                 * assumed to be defined in a subtype.
-                 */
-                bean.setTypeName(bean.getElementHeader().getType().getTypeName());
-                bean.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
+                    /*
+                     * Any remaining properties are returned in the extended properties.  They are
+                     * assumed to be defined in a subtype.
+                     */
+                    fileFolderProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
+                    fileFolderProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
 
-                /*
-                 * The values in the classifications override the values in the main properties of the Asset's entity.
-                 * Having these properties in the main entity is deprecated.
-                 */
-                instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_ZONES_CLASSIFICATION_NAME, entity);
+                    /*
+                     * The values in the classifications override the values in the main properties of the Asset's entity.
+                     * Having these properties in the main entity is deprecated.
+                     */
+                    instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_ZONES_CLASSIFICATION_NAME, entity);
 
-                bean.setZoneMembership(this.getZoneMembership(instanceProperties));
+                    fileFolderProperties.setZoneMembership(this.getZoneMembership(instanceProperties));
 
-                instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_OWNERSHIP_CLASSIFICATION_NAME, entity);
+                    instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_OWNERSHIP_CLASSIFICATION_NAME, entity);
 
-                bean.setOwner(this.getOwner(instanceProperties));
-                bean.setOwnerCategory(this.getOwnerCategoryFromProperties(instanceProperties));
+                    fileFolderProperties.setOwner(this.getOwner(instanceProperties));
+                    fileFolderProperties.setOwnerCategory(this.getOwnerCategoryFromProperties(instanceProperties));
 
-                instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_ORIGIN_CLASSIFICATION_NAME, entity);
+                    instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_ORIGIN_CLASSIFICATION_NAME, entity);
 
-                bean.setOriginOrganizationGUID(this.getOriginOrganizationGUID(instanceProperties));
-                bean.setOriginBusinessCapabilityGUID(this.getOriginBusinessCapabilityGUID(instanceProperties));
-                bean.setOtherOriginValues(this.getOtherOriginValues(instanceProperties));
+                    fileFolderProperties.setOriginOrganizationGUID(this.getOriginOrganizationGUID(instanceProperties));
+                    fileFolderProperties.setOriginBusinessCapabilityGUID(this.getOriginBusinessCapabilityGUID(instanceProperties));
+                    fileFolderProperties.setOtherOriginValues(this.getOtherOriginValues(instanceProperties));
 
-                instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.DATA_STORE_ENCODING_CLASSIFICATION_NAME, entity);
+                    instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.DATA_STORE_ENCODING_CLASSIFICATION_NAME, entity);
 
-                bean.setEncodingType(this.getDataStoreEncodingType(instanceProperties));
-                bean.setEncodingLanguage(this.getDataStoreEncodingLanguage(instanceProperties));
-                bean.setEncodingDescription(this.getDataStoreEncodingDescription(instanceProperties));
-                bean.setEncodingProperties(this.getEncodingProperties(instanceProperties));
+                    fileFolderProperties.setEncodingType(this.getDataStoreEncodingType(instanceProperties));
+                    fileFolderProperties.setEncodingLanguage(this.getDataStoreEncodingLanguage(instanceProperties));
+                    fileFolderProperties.setEncodingDescription(this.getDataStoreEncodingDescription(instanceProperties));
+                    fileFolderProperties.setEncodingProperties(this.getEncodingProperties(instanceProperties));
+
+                    bean.setFileFolderProperties(fileFolderProperties);
+                }
+                else
+                {
+                    handleMissingMetadataInstance(beanClass.getName(), TypeDefCategory.ENTITY_DEF, methodName);
+                }
             }
 
             return returnBean;

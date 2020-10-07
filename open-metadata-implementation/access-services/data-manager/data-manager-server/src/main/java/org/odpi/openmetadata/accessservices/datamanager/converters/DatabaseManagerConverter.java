@@ -2,11 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.datamanager.converters;
 
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseSchemaElement;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.MetadataElement;
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.SoftwareServerCapabilityElement;
 import org.odpi.openmetadata.accessservices.datamanager.properties.DatabaseManagerProperties;
-import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -59,6 +56,7 @@ public class DatabaseManagerConverter<B> extends DataManagerOMASConverter<B>
             if (returnBean instanceof SoftwareServerCapabilityElement)
             {
                 SoftwareServerCapabilityElement bean = (SoftwareServerCapabilityElement) returnBean;
+                DatabaseManagerProperties databaseManagerProperties = new DatabaseManagerProperties();
 
                 if (entity != null)
                 {
@@ -66,21 +64,23 @@ public class DatabaseManagerConverter<B> extends DataManagerOMASConverter<B>
 
                     InstanceProperties instanceProperties = new InstanceProperties(entity.getProperties());
 
-                    bean.setQualifiedName(this.removeQualifiedName(instanceProperties));
-                    bean.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-                    bean.setDisplayName(this.removeName(instanceProperties));
-                    bean.setDescription(this.removeDescription(instanceProperties));
-                    bean.setTypeDescription(this.removeCapabilityType(instanceProperties));
-                    bean.setVersion(this.removeVersion(instanceProperties));
-                    bean.setPatchLevel(this.removePatchLevel(instanceProperties));
-                    bean.setSource(this.removeSource(instanceProperties));
+                    databaseManagerProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
+                    databaseManagerProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
+                    databaseManagerProperties.setDisplayName(this.removeName(instanceProperties));
+                    databaseManagerProperties.setDescription(this.removeDescription(instanceProperties));
+                    databaseManagerProperties.setTypeDescription(this.removeCapabilityType(instanceProperties));
+                    databaseManagerProperties.setVersion(this.removeVersion(instanceProperties));
+                    databaseManagerProperties.setPatchLevel(this.removePatchLevel(instanceProperties));
+                    databaseManagerProperties.setSource(this.removeSource(instanceProperties));
 
                     /*
                      * Any remaining properties are returned in the extended properties.  They are
                      * assumed to be defined in a subtype.
                      */
-                    bean.setTypeName(bean.getElementHeader().getType().getTypeName());
-                    bean.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
+                    databaseManagerProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
+                    databaseManagerProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
+
+                    bean.setSoftwareServerCapabilitiesProperties(databaseManagerProperties);
                 }
                 else
                 {

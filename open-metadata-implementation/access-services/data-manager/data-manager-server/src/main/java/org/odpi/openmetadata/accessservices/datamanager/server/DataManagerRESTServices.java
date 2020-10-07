@@ -182,7 +182,6 @@ public class DataManagerRESTServices
                                                     FileManagerRequestBody requestBody)
     {
         final String methodName = "createFileSystemInCatalog";
-        final String qualifiedNameParameterName = "qualifiedName";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -206,7 +205,6 @@ public class DataManagerRESTServices
                                                                         OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
                                                                         OpenMetadataAPIMapper.FILE_MANAGER_CLASSIFICATION_TYPE_NAME,
                                                                         requestBody.getQualifiedName(),
-                                                                        qualifiedNameParameterName,
                                                                         requestBody.getDisplayName(),
                                                                         requestBody.getDescription(),
                                                                         requestBody.getTypeDescription(),
@@ -259,7 +257,6 @@ public class DataManagerRESTServices
                                                        DatabaseManagerRequestBody requestBody)
     {
         final String methodName = "createDataManagerIntegrator";
-        final String qualifiedNameParameterName = "qualifiedName";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -280,7 +277,6 @@ public class DataManagerRESTServices
                                                                     OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
                                                                     OpenMetadataAPIMapper.DATABASE_MANAGER_CLASSIFICATION_TYPE_NAME,
                                                                     requestBody.getQualifiedName(),
-                                                                    qualifiedNameParameterName,
                                                                     requestBody.getDisplayName(),
                                                                     requestBody.getDescription(),
                                                                     requestBody.getTypeDescription(),

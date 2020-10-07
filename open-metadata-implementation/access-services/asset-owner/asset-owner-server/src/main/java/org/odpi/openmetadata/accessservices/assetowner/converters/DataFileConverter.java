@@ -3,11 +3,13 @@
 package org.odpi.openmetadata.accessservices.assetowner.converters;
 
 import org.odpi.openmetadata.accessservices.assetowner.metadataelements.FileElement;
+import org.odpi.openmetadata.accessservices.assetowner.properties.FileProperties;
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 /**
@@ -55,10 +57,11 @@ public class DataFileConverter<B> extends AssetOwnerOMASConverter<B>
             if (returnBean instanceof FileElement)
             {
                 FileElement bean = (FileElement) returnBean;
+                FileProperties fileProperties = new FileProperties();
 
                 bean.setElementHeader(super.getMetadataElementHeader(beanClass, entity, methodName));
 
-                InstanceProperties instanceProperties = null;
+                InstanceProperties instanceProperties;
 
                 /*
                  * The initial set of values come from the entity.
@@ -66,52 +69,58 @@ public class DataFileConverter<B> extends AssetOwnerOMASConverter<B>
                 if (entity != null)
                 {
                     instanceProperties = new InstanceProperties(entity.getProperties());
+
+                    fileProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
+                    fileProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
+                    fileProperties.setDisplayName(this.removeName(instanceProperties));
+                    fileProperties.setDescription(this.removeDescription(instanceProperties));
+
+                    /* Note this value should be in the classification */
+                    fileProperties.setOwner(this.removeOwner(instanceProperties));
+                    /* Note this value should be in the classification */
+                    fileProperties.setOwnerType(this.removeOwnerTypeFromProperties(instanceProperties));
+                    /* Note this value should be in the classification */
+                    fileProperties.setZoneMembership(this.removeZoneMembership(instanceProperties));
+
+                    /*
+                     * Any remaining properties are returned in the extended properties.  They are
+                     * assumed to be defined in a subtype.
+                     */
+                    fileProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
+                    fileProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
+
+                    /*
+                     * The values in the classifications override the values in the main properties of the Asset's entity.
+                     * Having these properties in the main entity is deprecated.
+                     */
+                    instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_ZONES_CLASSIFICATION_NAME, entity);
+
+                    fileProperties.setZoneMembership(this.getZoneMembership(instanceProperties));
+
+                    instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_OWNERSHIP_CLASSIFICATION_NAME, entity);
+
+                    fileProperties.setOwner(this.getOwner(instanceProperties));
+                    fileProperties.setOwnerType(this.getOwnerTypeFromProperties(instanceProperties));
+
+                    instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_ORIGIN_CLASSIFICATION_NAME, entity);
+
+                    fileProperties.setOriginOrganizationGUID(this.getOriginOrganizationGUID(instanceProperties));
+                    fileProperties.setOriginBusinessCapabilityGUID(this.getOriginBusinessCapabilityGUID(instanceProperties));
+                    fileProperties.setOtherOriginValues(this.getOtherOriginValues(instanceProperties));
+
+                    instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.DATA_STORE_ENCODING_CLASSIFICATION_NAME, entity);
+
+                    fileProperties.setEncodingType(this.getDataStoreEncodingType(instanceProperties));
+                    fileProperties.setEncodingLanguage(this.getDataStoreEncodingLanguage(instanceProperties));
+                    fileProperties.setEncodingDescription(this.getDataStoreEncodingDescription(instanceProperties));
+                    fileProperties.setEncodingProperties(this.getEncodingProperties(instanceProperties));
+
+                    bean.setFileProperties(fileProperties);
                 }
-
-                bean.setQualifiedName(this.removeQualifiedName(instanceProperties));
-                bean.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-                bean.setDisplayName(this.removeDisplayName(instanceProperties));
-                bean.setDescription(this.removeDescription(instanceProperties));
-
-                /* Note this value should be in the classification */
-                bean.setOwner(this.removeOwner(instanceProperties));
-                /* Note this value should be in the classification */
-                bean.setOwnerType(this.removeOwnerTypeFromProperties(instanceProperties));
-                /* Note this value should be in the classification */
-                bean.setZoneMembership(this.removeZoneMembership(instanceProperties));
-
-                /*
-                 * Any remaining properties are returned in the extended properties.  They are
-                 * assumed to be defined in a subtype.
-                 */
-                bean.setTypeName(bean.getElementHeader().getType().getTypeName());
-                bean.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
-
-                /*
-                 * The values in the classifications override the values in the main properties of the Asset's entity.
-                 * Having these properties in the main entity is deprecated.
-                 */
-                instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_ZONES_CLASSIFICATION_NAME, entity);
-
-                bean.setZoneMembership(this.getZoneMembership(instanceProperties));
-
-                instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_OWNERSHIP_CLASSIFICATION_NAME, entity);
-
-                bean.setOwner(this.getOwner(instanceProperties));
-                bean.setOwnerType(this.getOwnerTypeFromProperties(instanceProperties));
-
-                instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.ASSET_ORIGIN_CLASSIFICATION_NAME, entity);
-
-                bean.setOriginOrganizationGUID(this.getOriginOrganizationGUID(instanceProperties));
-                bean.setOriginBusinessCapabilityGUID(this.getOriginBusinessCapabilityGUID(instanceProperties));
-                bean.setOtherOriginValues(this.getOtherOriginValues(instanceProperties));
-
-                instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.DATA_STORE_ENCODING_CLASSIFICATION_NAME, entity);
-
-                bean.setEncodingType(this.getDataStoreEncodingType(instanceProperties));
-                bean.setEncodingLanguage(this.getDataStoreEncodingLanguage(instanceProperties));
-                bean.setEncodingDescription(this.getDataStoreEncodingDescription(instanceProperties));
-                bean.setEncodingProperties(this.getEncodingProperties(instanceProperties));
+                else
+                {
+                    handleMissingMetadataInstance(beanClass.getName(), TypeDefCategory.ENTITY_DEF, methodName);
+                }
             }
 
             return returnBean;

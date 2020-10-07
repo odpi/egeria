@@ -15,16 +15,17 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * InformalTagElement contains the properties and header for a referenceable entity retrieved from the metadata repository.
+ * InformalTagElement contains the properties and header for a InformalTag entity retrieved from the metadata repository.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class InformalTagElement extends InformalTagProperties implements MetadataElement, Serializable
+public class InformalTagElement implements MetadataElement, Serializable
 {
     private static final long     serialVersionUID = 1L;
 
-    private ElementHeader elementHeader = null;
+    private ElementHeader         elementHeader = null;
+    private InformalTagProperties informalTagProperties = null;
 
 
     /**
@@ -46,6 +47,7 @@ public class InformalTagElement extends InformalTagProperties implements Metadat
         if (template != null)
         {
             elementHeader = template.getElementHeader();
+            informalTagProperties = template.getInformalTagProperties();
         }
     }
 
@@ -75,6 +77,29 @@ public class InformalTagElement extends InformalTagProperties implements Metadat
 
 
     /**
+     * Return the properties of the informal tag.
+     *
+     * @return properties bean
+     */
+    public InformalTagProperties getInformalTagProperties()
+    {
+        return informalTagProperties;
+    }
+
+
+    /**
+     * Set up the properties of the informal tag.
+     *
+     * @param informalTagProperties properties bean
+     *
+     */
+    public void setInformalTagProperties(InformalTagProperties informalTagProperties)
+    {
+        this.informalTagProperties = informalTagProperties;
+    }
+
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -84,11 +109,7 @@ public class InformalTagElement extends InformalTagProperties implements Metadat
     {
         return "InformalTagElement{" +
                 "elementHeader=" + elementHeader +
-                ", public=" + getIsPublic() +
-                ", privateTag=" + getIsPrivateTag() +
-                ", user='" + getUser() + '\'' +
-                ", name='" + getName() + '\'' +
-                ", description='" + getDescription() + '\'' +
+                ", informalTagProperties=" + informalTagProperties +
                 '}';
     }
 
@@ -115,7 +136,8 @@ public class InformalTagElement extends InformalTagProperties implements Metadat
             return false;
         }
         InformalTagElement that = (InformalTagElement) objectToCompare;
-        return Objects.equals(elementHeader, that.elementHeader);
+        return Objects.equals(elementHeader, that.elementHeader) &&
+                Objects.equals(informalTagProperties, that.informalTagProperties);
     }
 
 
@@ -127,6 +149,6 @@ public class InformalTagElement extends InformalTagProperties implements Metadat
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader);
+        return Objects.hash(super.hashCode(), elementHeader, informalTagProperties);
     }
 }

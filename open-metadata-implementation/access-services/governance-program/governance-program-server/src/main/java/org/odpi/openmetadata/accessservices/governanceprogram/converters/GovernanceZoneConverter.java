@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.governanceprogram.converters;
 
 
 import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceZoneElement;
+import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceZoneProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
@@ -60,27 +61,29 @@ public class GovernanceZoneConverter<B> extends GovernanceProgramOMASConverter<B
                 if (entity != null)
                 {
                     bean.setElementHeader(this.getMetadataElementHeader(beanClass, entity, methodName));
-
+                    GovernanceZoneProperties governanceZoneProperties = new GovernanceZoneProperties();
 
                     /*
                      * The initial set of values come from the entity.
                      */
                     InstanceProperties instanceProperties = new InstanceProperties(entity.getProperties());
 
-                    bean.setQualifiedName(this.removeQualifiedName(instanceProperties));
-                    bean.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
-                    bean.setDisplayName(this.removeDisplayName(instanceProperties));
-                    bean.setDescription(this.removeDescription(instanceProperties));
-                    bean.setCriteria(this.removeCriteria(instanceProperties));
-                    bean.setScope(this.removeScope(instanceProperties));
-                    bean.setDomainIdentifier(this.removeDomainIdentifier(instanceProperties));
+                    governanceZoneProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
+                    governanceZoneProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
+                    governanceZoneProperties.setDisplayName(this.removeDisplayName(instanceProperties));
+                    governanceZoneProperties.setDescription(this.removeDescription(instanceProperties));
+                    governanceZoneProperties.setCriteria(this.removeCriteria(instanceProperties));
+                    governanceZoneProperties.setScope(this.removeScope(instanceProperties));
+                    governanceZoneProperties.setDomainIdentifier(this.removeDomainIdentifier(instanceProperties));
 
                     /*
                      * Any remaining properties are returned in the extended properties.  They are
                      * assumed to be defined in a subtype.
                      */
-                    bean.setTypeName(bean.getElementHeader().getType().getTypeName());
-                    bean.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
+                    governanceZoneProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
+                    governanceZoneProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
+
+                    bean.setGovernanceZoneProperties(governanceZoneProperties);
                 }
                 else
                 {

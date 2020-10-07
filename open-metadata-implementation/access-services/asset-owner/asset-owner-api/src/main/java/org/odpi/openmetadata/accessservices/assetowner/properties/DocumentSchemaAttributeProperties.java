@@ -58,7 +58,7 @@ public class DocumentSchemaAttributeProperties extends SchemaAttributeProperties
                 ", sortOrder=" + getSortOrder() +
                 ", minimumLength=" + getMinimumLength() +
                 ", length=" + getLength() +
-                ", significantDigits=" + getSignificantDigits() +
+                ", significantDigits=" + getPrecision() +
                 ", nullable=" + getIsNullable() +
                 ", defaultValueOverride='" + getDefaultValueOverride() + '\'' +
                 ", attributeType=" + getAttributeType() +
