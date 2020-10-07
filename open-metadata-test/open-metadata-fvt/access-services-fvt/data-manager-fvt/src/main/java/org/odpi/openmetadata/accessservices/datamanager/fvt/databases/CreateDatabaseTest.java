@@ -224,7 +224,8 @@ public class CreateDatabaseTest
                 throw new FVTUnexpectedCondition(testCaseName, activityName + "(no GUID for Create)");
             }
 
-            DatabaseElement retrievedDatabase = client.getDatabaseByGUID(userId, databaseGUID);
+            DatabaseElement retrievedElement = client.getDatabaseByGUID(userId, databaseGUID);
+            DatabaseProperties retrievedDatabase = retrievedElement.getDatabaseProperties();
 
             if (retrievedDatabase == null)
             {
@@ -269,7 +270,8 @@ public class CreateDatabaseTest
                                                  " elements)");
             }
 
-            retrievedDatabase = databaseList.get(0);
+            retrievedElement = databaseList.get(0);
+            retrievedDatabase = retrievedElement.getDatabaseProperties();
 
             if (! retrievedDatabase.getQualifiedName().equals(databaseName))
             {

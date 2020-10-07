@@ -191,7 +191,7 @@
                 </executions>
                 <configuration>
                     <!-- Catch the case where we haven't run tests - may point to a coding or environment issue -->
-                    <failIfNoTests>false</failIfNoTests>
+                    <failIfNoTests>true</failIfNoTests>
                 </configuration>
             </plugin>
 
