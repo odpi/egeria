@@ -26,13 +26,13 @@ dependencies {
     //TODO: readd implementation 'org.springframework.boot:spring-boot-starter-actuator:2.3.1.RELEASE'
     implementation 'org.springframework.boot:spring-boot-starter-validation:2.3.1.RELEASE'
     //TODO: implementation 'io.micrometer:micrometer-registry-prometheus:1.5.2'
-    implementation 'org.springframework:spring-beans:5.2.7.RELEASE'
+    implementation 'org.springframework:spring-beans:5.2.9.RELEASE'
     //implementation 'javax.validation:validation-api:2.0.1.Final'
     implementation 'org.springframework:spring-context:5.2.7.RELEASE'
     implementation project(':open-metadata-implementation:admin-services:admin-services-server')
     implementation project(':open-metadata-implementation:common-services:ffdc-services')
     implementation project(':open-metadata-implementation:admin-services:admin-services-api')
-    implementation 'org.springframework.boot:spring-boot-starter-web:2.3.1.RELEASE'
+    implementation 'org.springframework.boot:spring-boot-starter-web:2.3.4.RELEASE'
     implementation 'ch.qos.logback:logback-classic:1.2.3'
     implementation 'ch.qos.logback:logback-core:1.2.3'
     implementation project(':open-metadata-implementation:adapters:authentication-plugins:http-helper')

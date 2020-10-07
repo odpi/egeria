@@ -5,9 +5,9 @@
 
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-web:2.3.1.RELEASE'
+    implementation 'org.springframework.boot:spring-boot-starter-web:2.3.4.RELEASE'
     implementation 'org.springframework.boot:spring-boot-starter-security:2.3.1.RELEASE'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.3.1.RELEASE'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.3.4.RELEASE'
     implementation 'org.springframework.security:spring-security-ldap:5.3.3.RELEASE'
     implementation 'io.jsonwebtoken:jjwt:0.9.1'
     implementation 'com.h2database:h2:1.4.200'
@@ -30,7 +30,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-actuator:2.3.1.RELEASE'
     implementation 'io.micrometer:micrometer-registry-prometheus:1.5.2'
     implementation 'jakarta.persistence:jakarta.persistence-api:2.2.3'
-    implementation 'org.springframework:spring-beans:5.2.7.RELEASE'
+    implementation 'org.springframework:spring-beans:5.2.9.RELEASE'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.1'
     implementation 'javax.xml.bind:jaxb-api:2.3.1'
     implementation 'com.fasterxml.jackson.core:jackson-annotations:2.11.1'
@@ -39,7 +39,7 @@ dependencies {
     implementation project(':open-metadata-implementation:access-services:asset-catalog:asset-catalog-api')
     implementation 'org.springframework.security:spring-security-web:5.3.3.RELEASE'
     implementation project(':open-metadata-implementation:access-services:subject-area:subject-area-api')
-    implementation 'com.fasterxml.jackson.core:jackson-core:2.11.1'
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.11.3'
     implementation project(':open-metadata-implementation:governance-servers:open-lineage-services:open-lineage-services-client')
     implementation project(':open-metadata-implementation:governance-servers:open-lineage-services:open-lineage-services-api')
     implementation project(':open-metadata-implementation:common-services:ffdc-services')
@@ -50,11 +50,11 @@ dependencies {
     implementation project(':open-metadata-implementation:access-services:glossary-view:glossary-view-client')
     implementation project(':open-metadata-implementation:access-services:glossary-view:glossary-view-api')
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.2'
-    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.6.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
     testImplementation 'org.junit.platform:junit-platform-runner:1.6.2'
     testImplementation 'org.mockito:mockito-junit-jupiter:3.5.13'
     testImplementation 'org.mockito:mockito-inline:3.5.13'
-    testImplementation 'org.mockito:mockito-core:3.4.2'
+    testImplementation 'org.mockito:mockito-core:3.5.13'
     testImplementation 'junit:junit:4.13'
 }
 
