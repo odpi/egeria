@@ -1,5 +1,5 @@
 {
-  "name": "cra-server",
+  "name": "presentation-server",
   "version": "1.0.0",
   "description": "Egeria Presentation Server",
   "main": "index.js",
@@ -12,8 +12,7 @@
   },
   "contributors": [
     {
-      "name": "Jacob Madsen",
-      "email": "jmmadsen16@gmail.com"
+      "name": "SPDX-License-Identifier: Apache-2.0 Copyright Contributors to the ODPi Egeria project."
     }
   ],
   "license": "Apache-2.0",

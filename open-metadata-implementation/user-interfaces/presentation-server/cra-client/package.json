@@ -1,5 +1,5 @@
 {
-  "name": "cra-client",
+  "name": "presentation-server-client",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -31,8 +31,7 @@
   },
   "contributors": [
     {
-      "name": "Jacob Madsen",
-      "email": "jmmadsen16@gmail.com"
+      "name": "SPDX-License-Identifier: Apache-2.0 Copyright Contributors to the ODPi Egeria project."
     }
   ],
   "license": "Apache-2.0",
