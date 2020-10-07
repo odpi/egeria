@@ -302,7 +302,7 @@ public class SchemaTypeBuilder extends ReferenceableBuilder
      *
      * @param formula expression, possibly with place holders to insert the values returned from the queries
      */
-    public void setDerivedProperties(String                             formula)
+    public void setDerivedProperties(String formula)
     {
         this.formula = formula;
     }
@@ -457,44 +457,4 @@ public class SchemaTypeBuilder extends ReferenceableBuilder
 
         return properties;
     }
-
-
-    /**
-     * Return the supplied bean properties that represent a name in an InstanceProperties object.
-     *
-     * @param methodName name of the calling method
-     * @return InstanceProperties object
-     */
-    @Override
-    public InstanceProperties getNameInstanceProperties(String  methodName)
-    {
-        InstanceProperties properties = super.getNameInstanceProperties(methodName);
-
-        if (displayName != null)
-        {
-            String literalName = repositoryHelper.getExactMatchRegex(displayName);
-
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME,
-                                                                      literalName,
-                                                                      methodName);
-        }
-
-        return properties;
-    }
-
-
-    /**
-     * Return the supplied bean properties that represent a name in an InstanceProperties object.
-     *
-     * @param methodName name of the calling method
-     * @return InstanceProperties object
-     */
-    @Override
-    public InstanceProperties getQualifiedNameInstanceProperties(String  methodName)
-    {
-        return super.getNameInstanceProperties(methodName);
-    }
-
 }

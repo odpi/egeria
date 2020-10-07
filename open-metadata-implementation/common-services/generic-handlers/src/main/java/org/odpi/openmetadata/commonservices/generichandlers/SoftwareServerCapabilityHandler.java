@@ -110,8 +110,6 @@ public class SoftwareServerCapabilityHandler<B> extends ReferenceableHandler<B>
                                                                              UserNotAuthorizedException,
                                                                              PropertyServerException
     {
-        final String uniqueParameterName = "uniqueName";
-
         SoftwareServerCapabilityBuilder builder = new SoftwareServerCapabilityBuilder(uniqueName,
                                                                                       displayName,
                                                                                       description,
@@ -159,7 +157,6 @@ public class SoftwareServerCapabilityHandler<B> extends ReferenceableHandler<B>
      * @param specializedTypeName unique name of the software server capability type
      * @param classificationName name of classification if any
      * @param uniqueName qualified name for the software server capability
-     * @param uniqueNameParameterName parameter supplying the unique name
      * @param displayName short display name
      * @param description description of the file system
      * @param type type of file system
@@ -183,7 +180,6 @@ public class SoftwareServerCapabilityHandler<B> extends ReferenceableHandler<B>
                                                    String               specializedTypeName,
                                                    String               classificationName,
                                                    String               uniqueName,
-                                                   String               uniqueNameParameterName,
                                                    String               displayName,
                                                    String               description,
                                                    String               type,

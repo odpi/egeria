@@ -19,7 +19,7 @@ import java.util.Map;
 public class SchemaAttributeBuilder extends ReferenceableBuilder
 {
     private String            displayName;
-    private String            description           = null;
+    private String            description;
     private int               elementPosition       = 0;
     private int               minCardinality        = 0;
     private int               maxCardinality        = 0;
@@ -38,32 +38,6 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
     private String            formula               = null;
 
     private SchemaTypeBuilder schemaTypeBuilder     = null;
-
-
-    /**
-     * Minimal constructor
-     *
-     * @param qualifiedName unique name
-     * @param displayName new value for the display name.
-     * @param repositoryHelper helper methods
-     * @param serviceName name of this OMAS
-     * @param serverName name of local server
-     */
-    public SchemaAttributeBuilder(String               qualifiedName,
-                                  String               displayName,
-                                  OMRSRepositoryHelper repositoryHelper,
-                                  String               serviceName,
-                                  String               serverName)
-    {
-        super(qualifiedName,
-              OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_GUID,
-              OpenMetadataAPIMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
-              repositoryHelper,
-              serviceName,
-              serverName);
-
-        this.displayName = displayName;
-    }
 
 
     /**
@@ -239,11 +213,11 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
      * @throws InvalidParameterException calculated value is not supported in the local repository, or any repository
      *                                   connected by an open metadata repository cohort
      */
-    public void setCalculatedValue(String userId,
-                                   String externalSourceGUID,
-                                   String externalSourceName,
-                                   String formula,
-                                   String methodName) throws InvalidParameterException
+    void setCalculatedValue(String userId,
+                            String externalSourceGUID,
+                            String externalSourceName,
+                            String formula,
+                            String methodName) throws InvalidParameterException
     {
         try
         {
@@ -452,45 +426,5 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
         }
 
         return properties;
-    }
-
-
-
-    /**
-     * Return the supplied bean properties that represent a name in an InstanceProperties object.
-     *
-     * @param methodName name of the calling method
-     * @return InstanceProperties object
-     */
-    @Override
-    public InstanceProperties getNameInstanceProperties(String  methodName)
-    {
-        InstanceProperties properties = super.getNameInstanceProperties(methodName);
-
-        if (displayName != null)
-        {
-            String literalName = repositoryHelper.getExactMatchRegex(displayName);
-
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.ATTRIBUTE_NAME_PROPERTY_NAME,
-                                                                      literalName,
-                                                                      methodName);
-        }
-
-        return properties;
-    }
-
-
-    /**
-     * Return the supplied bean properties that represent a name in an InstanceProperties object.
-     *
-     * @param methodName name of the calling method
-     * @return InstanceProperties object
-     */
-    @Override
-    public InstanceProperties getQualifiedNameInstanceProperties(String  methodName)
-    {
-        return super.getNameInstanceProperties(methodName);
     }
 }

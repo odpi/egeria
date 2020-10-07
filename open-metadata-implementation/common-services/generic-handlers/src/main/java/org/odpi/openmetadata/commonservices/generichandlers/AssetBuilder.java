@@ -29,9 +29,9 @@ public class AssetBuilder extends ReferenceableBuilder
      * @param serviceName name of this OMAS
      * @param serverName name of local server
      */
-    public AssetBuilder(OMRSRepositoryHelper repositoryHelper,
-                        String               serviceName,
-                        String               serverName)
+    AssetBuilder(OMRSRepositoryHelper repositoryHelper,
+                 String               serviceName,
+                 String               serverName)
     {
         super(OpenMetadataAPIMapper.ASSET_TYPE_GUID,
               OpenMetadataAPIMapper.ASSET_TYPE_NAME,
@@ -55,16 +55,16 @@ public class AssetBuilder extends ReferenceableBuilder
      * @param serviceName name of this OMAS
      * @param serverName name of local server
      */
-    public AssetBuilder(String               qualifiedName,
-                        String               displayName,
-                        String               description,
-                        Map<String, String>  additionalProperties,
-                        String               typeGUID,
-                        String               typeName,
-                        Map<String, Object>  extendedProperties,
-                        OMRSRepositoryHelper repositoryHelper,
-                        String               serviceName,
-                        String               serverName)
+    AssetBuilder(String               qualifiedName,
+                 String               displayName,
+                 String               description,
+                 Map<String, String>  additionalProperties,
+                 String               typeGUID,
+                 String               typeName,
+                 Map<String, Object>  extendedProperties,
+                 OMRSRepositoryHelper repositoryHelper,
+                 String               serviceName,
+                 String               serverName)
     {
         super(qualifiedName,
               additionalProperties,
@@ -90,9 +90,9 @@ public class AssetBuilder extends ReferenceableBuilder
      * @throws InvalidParameterException AssetZones is not supported in the local repository, or any repository
      *                                   connected by an open metadata repository cohort
      */
-    public void setAssetZones(String       userId,
-                              List<String> zoneMembership,
-                              String       methodName) throws InvalidParameterException
+    void setAssetZones(String       userId,
+                       List<String> zoneMembership,
+                       String       methodName) throws InvalidParameterException
     {
         try
         {
@@ -151,10 +151,10 @@ public class AssetBuilder extends ReferenceableBuilder
      * @throws InvalidParameterException AssetOwnership is not supported in the local repository, or any repository
      *                                   connected by an open metadata repository cohort
      */
-    public void setAssetOwnership(String userId,
-                                  String owner,
-                                  int    ownerType,
-                                  String methodName) throws InvalidParameterException
+    void setAssetOwnership(String userId,
+                           String owner,
+                           int    ownerType,
+                           String methodName) throws InvalidParameterException
     {
         try
         {
@@ -259,11 +259,11 @@ public class AssetBuilder extends ReferenceableBuilder
      *
      * @throws InvalidParameterException entity not known, null userId or guid
      */
-    public void  setAssetOrigin(String                userId,
-                                String                organizationGUID,
-                                String                businessCapabilityGUID,
-                                Map<String, String>   otherOriginValues,
-                                String                methodName) throws InvalidParameterException
+    void  setAssetOrigin(String                userId,
+                         String                organizationGUID,
+                         String                businessCapabilityGUID,
+                         Map<String, String>   otherOriginValues,
+                         String                methodName) throws InvalidParameterException
     {
         try
         {
@@ -345,8 +345,8 @@ public class AssetBuilder extends ReferenceableBuilder
      *
      * @throws InvalidParameterException entity not known, null userId or guid
      */
-    public void  setReferenceData(String userId,
-                                  String methodName) throws InvalidParameterException
+    void  setReferenceData(String userId,
+                           String methodName) throws InvalidParameterException
     {
         try
         {
@@ -379,63 +379,6 @@ public class AssetBuilder extends ReferenceableBuilder
     public InstanceProperties getInstanceProperties(String  methodName) throws InvalidParameterException
     {
         InstanceProperties properties = super.getInstanceProperties(methodName);
-
-        if (displayName != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.NAME_PROPERTY_NAME,
-                                                                      displayName,
-                                                                      methodName);
-        }
-
-        if (description != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
-                                                                      description,
-                                                                      methodName);
-        }
-
-        return properties;
-    }
-
-
-    /**
-     * Return the supplied bean properties that represent a name in an InstanceProperties object.
-     *
-     * @param methodName name of the calling method
-     * @return InstanceProperties object
-     */
-    public InstanceProperties getNameInstanceProperties(String  methodName)
-    {
-        InstanceProperties properties = super.getNameInstanceProperties(methodName);
-
-        if (displayName != null)
-        {
-            String literalName = repositoryHelper.getExactMatchRegex(displayName);
-
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.NAME_PROPERTY_NAME,
-                                                                      literalName,
-                                                                      methodName);
-        }
-
-        return properties;
-    }
-
-
-    /**
-     * Return the supplied bean properties that represent a name in an InstanceProperties object.
-     *
-     * @param methodName name of the calling method
-     * @return InstanceProperties object
-     */
-    public InstanceProperties getSearchInstanceProperties(String  methodName)
-    {
-        InstanceProperties properties = super.getSearchInstanceProperties(methodName);
 
         if (displayName != null)
         {

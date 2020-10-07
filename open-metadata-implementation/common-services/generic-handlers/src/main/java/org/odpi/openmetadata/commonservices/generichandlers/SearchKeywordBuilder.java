@@ -13,29 +13,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 public class SearchKeywordBuilder extends OpenMetadataAPIGenericBuilder
 {
     private String keyword;
-    private String description = null;
-
-    /**
-     * Constructor used for constructing search arguments on private keywords.
-     *
-     * @param keyword name of the keyword
-     * @param repositoryHelper helper methods
-     * @param serviceName name of this OMAS
-     * @param serverName name of local server
-     */
-    public SearchKeywordBuilder(String keyword,
-                                OMRSRepositoryHelper repositoryHelper,
-                                String               serviceName,
-                                String               serverName)
-    {
-        super(OpenMetadataAPIMapper.SEARCH_KEYWORD_TYPE_GUID,
-              OpenMetadataAPIMapper.SEARCH_KEYWORD_TYPE_NAME,
-              repositoryHelper,
-              serviceName,
-              serverName);
-
-        this.keyword = keyword;
-    }
+    private String description;
 
 
     /**
@@ -47,11 +25,11 @@ public class SearchKeywordBuilder extends OpenMetadataAPIGenericBuilder
      * @param serviceName name of this OMAS
      * @param serverName name of local server
      */
-    public SearchKeywordBuilder(String keyword,
-                                String               description,
-                                OMRSRepositoryHelper repositoryHelper,
-                                String               serviceName,
-                                String               serverName)
+    SearchKeywordBuilder(String               keyword,
+                         String               description,
+                         OMRSRepositoryHelper repositoryHelper,
+                         String               serviceName,
+                         String               serverName)
     {
         super(OpenMetadataAPIMapper.SEARCH_KEYWORD_TYPE_GUID,
               OpenMetadataAPIMapper.SEARCH_KEYWORD_TYPE_NAME,
@@ -62,46 +40,6 @@ public class SearchKeywordBuilder extends OpenMetadataAPIGenericBuilder
         this.keyword     = keyword;
         this.description = description;
     }
-    
-
-    /**
-     * Return the supplied bean properties in an InstanceProperties object.
-     *
-     * @param methodName name of the calling method
-     * @return InstanceProperties object
-     * @throws InvalidParameterException there is a problem with the properties
-     */
-    public InstanceProperties getNameInstanceProperties(String  methodName) throws InvalidParameterException
-    {
-        InstanceProperties properties = super.getInstanceProperties(methodName);
-
-        if (keyword != null)
-        {
-            String literalName = repositoryHelper.getExactMatchRegex(keyword);
-
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.KEYWORD_PROPERTY_NAME,
-                                                                      literalName,
-                                                                      methodName);
-        }
-
-        return properties;
-    }
-    
-
-    /**
-     * Return the supplied bean properties in an InstanceProperties object.
-     *
-     * @param methodName name of the calling method
-     * @return InstanceProperties object
-     * @throws InvalidParameterException there is a problem with the properties
-     */
-    public InstanceProperties getSearchInstanceProperties(String  methodName) throws InvalidParameterException
-    {
-        return getInstanceProperties(methodName);
-    }
-
 
     /**
      * Return the supplied bean properties in an InstanceProperties object.

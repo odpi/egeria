@@ -58,17 +58,17 @@ public class GovernanceZoneBuilder extends ReferenceableBuilder
      * @param serviceName name of this OMAS
      * @param serverName name of local server
      */
-    public GovernanceZoneBuilder(String               qualifiedName,
-                                 String               displayName,
-                                 String               description,
-                                 String               criteria,
-                                 String               scope,
-                                 int                  domainIdentifier,
-                                 Map<String, String>  additionalProperties,
-                                 Map<String, Object>  extendedProperties,
-                                 OMRSRepositoryHelper repositoryHelper,
-                                 String               serviceName,
-                                 String               serverName)
+    GovernanceZoneBuilder(String               qualifiedName,
+                          String               displayName,
+                          String               description,
+                          String               criteria,
+                          String               scope,
+                          int                  domainIdentifier,
+                          Map<String, String>  additionalProperties,
+                          Map<String, Object>  extendedProperties,
+                          OMRSRepositoryHelper repositoryHelper,
+                          String               serviceName,
+                          String               serverName)
     {
         super(qualifiedName,
               additionalProperties,
@@ -142,6 +142,4 @@ public class GovernanceZoneBuilder extends ReferenceableBuilder
 
         return properties;
     }
-
-
 }

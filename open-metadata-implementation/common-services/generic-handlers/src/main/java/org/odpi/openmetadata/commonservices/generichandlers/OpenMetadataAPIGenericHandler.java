@@ -5178,7 +5178,7 @@ public class OpenMetadataAPIGenericHandler<B>
                     /*
                      * Valid entity to return since no exception occurred.
                      */
-                    return converter.getNewBean(beanClass, entity, methodName);
+                    return converter.getNewBean(beanClass, entity, relationship, methodName);
                 }
             }
         }
@@ -6382,7 +6382,7 @@ public class OpenMetadataAPIGenericHandler<B>
 
 
     /**
-     * Return the list of ent of the requested type.
+     * Return the list of entities of the requested type.
      *
      * @param userId the name of the calling user
      * @param resultTypeGUID unique identifier of the type that the results should match with

@@ -387,7 +387,6 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
      * @param externalSourceName name of the software server capability entity that represented the external source
      * @param pathName qualified name for the file system
-     * @param pathNameParameterName name of parameter supplying the pathName
      * @param displayName short display name
      * @param description description of the file system
      * @param typeName type of file system
@@ -403,7 +402,6 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                 String     externalSourceGUID,
                                 String     externalSourceName,
                                 String     pathName,
-                                String     pathNameParameterName,
                                 String     displayName,
                                 String     description,
                                 String     typeName,
@@ -427,7 +425,6 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                      externalSourceGUID,
                                                      externalSourceName,
                                                      pathName,
-                                                     pathNameParameterName,
                                                      displayName,
                                                      description,
                                                      null,
@@ -452,7 +449,6 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
      * @param externalSourceName name of the software server capability entity that represented the external source
      * @param fileType file extension name
      * @param pathName qualified name for the file system
-     * @param pathNameParameterName name of parameter supplying the pathName
      * @param displayName short display name
      * @param description description of the file system
      * @param typeName type of file system
@@ -470,7 +466,6 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                    String              externalSourceName,
                                    String              fileType,
                                    String              pathName,
-                                   String              pathNameParameterName,
                                    String              displayName,
                                    String              description,
                                    String              typeName,
@@ -503,7 +498,6 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                    externalSourceGUID,
                                                    externalSourceName,
                                                    pathName,
-                                                   pathNameParameterName,
                                                    displayName,
                                                    description,
                                                    null,
@@ -559,7 +553,6 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                          folderName,
                                          null,
                                          OpenMetadataAPIMapper.FILE_FOLDER_TYPE_NAME,
-                                         null,
                                          methodName);
 
         if (connectToGUID != null)
@@ -1327,7 +1320,6 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                     externalSourceName,
                                                     fileType,
                                                     pathName,
-                                                    pathParameterName,
                                                     displayName,
                                                     description,
                                                     OpenMetadataAPIMapper.DATA_FILE_TYPE_NAME,
@@ -1402,7 +1394,6 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                    externalSourceGUID,
                                                    externalSourceName,
                                                    pathName,
-                                                   pathParameterName,
                                                    displayName,
                                                    description,
                                                    OpenMetadataAPIMapper.DATA_FOLDER_TYPE_NAME,
@@ -1513,7 +1504,6 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                                    externalSourceGUID,
                                                                    externalSourceName,
                                                                    fullPath,
-                                                                   pathParameterName,
                                                                    displayName,
                                                                    description,
                                                                    null,
@@ -1601,7 +1591,6 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                     externalSourceName,
                                                     fileType,
                                                     fullPath,
-                                                    pathParameterName,
                                                     displayName,
                                                     description,
                                                     OpenMetadataAPIMapper.AVRO_FILE_TYPE_NAME,
@@ -1701,7 +1690,6 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                     externalSourceName,
                                                     fileType,
                                                     fullPath,
-                                                    pathParameterName,
                                                     displayName,
                                                     description,
                                                     OpenMetadataAPIMapper.CSV_FILE_TYPE_NAME,

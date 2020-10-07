@@ -85,9 +85,9 @@ public class SoftwareServerCapabilityBuilder extends ReferenceableBuilder
      * @param methodName calling method
      * @throws InvalidParameterException no support for his open metadata type
      */
-    public void setCapabilityTypeClassification(String userId,
-                                                String classificationName,
-                                                String methodName) throws InvalidParameterException
+    void setCapabilityTypeClassification(String userId,
+                                         String classificationName,
+                                         String methodName) throws InvalidParameterException
     {
         try
         {
@@ -119,10 +119,10 @@ public class SoftwareServerCapabilityBuilder extends ReferenceableBuilder
      * @param methodName name of the calling method
      * @throws InvalidParameterException classification not supported
      */
-    public void setFileSystemClassification(String userId,
-                                            String format,
-                                            String encryption,
-                                            String methodName) throws InvalidParameterException
+    void setFileSystemClassification(String userId,
+                                     String format,
+                                     String encryption,
+                                     String methodName) throws InvalidParameterException
     {
         InstanceProperties properties = null;
 
@@ -226,31 +226,6 @@ public class SoftwareServerCapabilityBuilder extends ReferenceableBuilder
                                                                       properties,
                                                                       OpenMetadataAPIMapper.CAPABILITY_SOURCE_PROPERTY_NAME,
                                                                       source,
-                                                                      methodName);
-        }
-
-        return properties;
-    }
-
-
-    /**
-     * Return the supplied bean properties that represent a name in an InstanceProperties object.
-     *
-     * @param methodName name of the calling method
-     * @return InstanceProperties object
-     */
-    public InstanceProperties getNameInstanceProperties(String  methodName)
-    {
-        InstanceProperties properties = super.getNameInstanceProperties(methodName);
-
-        if (displayName != null)
-        {
-            String literalName = repositoryHelper.getExactMatchRegex(displayName);
-
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME,
-                                                                      literalName,
                                                                       methodName);
         }
 

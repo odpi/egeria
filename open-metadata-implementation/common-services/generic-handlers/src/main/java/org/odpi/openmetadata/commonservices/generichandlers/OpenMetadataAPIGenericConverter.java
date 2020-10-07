@@ -95,7 +95,9 @@ public abstract class OpenMetadataAPIGenericConverter<B>
                         Relationship relationship,
                         String       methodName) throws PropertyServerException
     {
-        return getNewBean(beanClass, entity, methodName);
+        handleUnimplementedConverterMethod(beanClass.getName(), this.getClass().getName(), methodName);
+
+        return null;
     }
 
 
@@ -117,7 +119,9 @@ public abstract class OpenMetadataAPIGenericConverter<B>
                                List<Relationship> relationships,
                                String             methodName) throws PropertyServerException
     {
-        return getNewBean(beanClass, primaryEntity, methodName);
+        handleUnimplementedConverterMethod(beanClass.getName(), this.getClass().getName(), methodName);
+
+        return null;
     }
 
 
@@ -142,7 +146,9 @@ public abstract class OpenMetadataAPIGenericConverter<B>
                                List<Relationship> relationships,
                                String             methodName) throws PropertyServerException
     {
-        return getNewComplexBean(beanClass, primaryEntity, relationships, methodName);
+        handleUnimplementedConverterMethod(beanClass.getName(), this.getClass().getName(), methodName);
+
+        return null;
     }
 
 
@@ -226,9 +232,9 @@ public abstract class OpenMetadataAPIGenericConverter<B>
      * the converter has been called with a method that is unexpected for the specific type of
      * bean that this converter is implemented for.
      */
-    protected void handleUnimplementedConverterMethod(String beanClassName,
-                                                      String converterClassName,
-                                                      String methodName) throws PropertyServerException
+    private void handleUnimplementedConverterMethod(String beanClassName,
+                                                    String converterClassName,
+                                                    String methodName) throws PropertyServerException
     {
         throw new PropertyServerException(GenericHandlersErrorCode.MISSING_CONVERTER_METHOD.getMessageDefinition(serviceName,
                                                                                                                  methodName,
@@ -320,10 +326,10 @@ public abstract class OpenMetadataAPIGenericConverter<B>
      * @throws PropertyServerException there is a problem in the use of the generic handlers because
      * the converter has been configured with a type of bean that is incompatible with the handler
      */
-    protected void validateInstanceType(String              expectedTypeName,
-                                        String              beanClassName,
-                                        InstanceAuditHeader instanceAuditHeader,
-                                        String              methodName) throws PropertyServerException
+    void validateInstanceType(String              expectedTypeName,
+                              String              beanClassName,
+                              InstanceAuditHeader instanceAuditHeader,
+                              String              methodName) throws PropertyServerException
     {
         String actualTypeName = "<null>";
 
@@ -350,10 +356,10 @@ public abstract class OpenMetadataAPIGenericConverter<B>
      * @throws PropertyServerException there is a problem in the use of the generic handlers because
      * the converter has been configured with a type of bean that is incompatible with the handler
      */
-    protected void validateInstanceType(String              expectedTypeName,
-                                        String              beanClassName,
-                                        String              actualTypeName,
-                                        String              methodName) throws PropertyServerException
+    protected void validateInstanceType(String expectedTypeName,
+                                        String beanClassName,
+                                        String actualTypeName,
+                                        String methodName) throws PropertyServerException
     {
 
         if (repositoryHelper.isTypeOf(serviceName, actualTypeName, expectedTypeName))
@@ -1829,16 +1835,26 @@ public abstract class OpenMetadataAPIGenericConverter<B>
      * @param instanceProperties properties from entity
      * @return integer - default 0
      */
-    protected int removeSignificantDigits(InstanceProperties  instanceProperties)
+    protected int removePrecision(InstanceProperties  instanceProperties)
     {
-        final String methodName = "removeSignificantDigits";
+        final String methodName = "removePrecision";
 
         if (instanceProperties != null)
         {
-            return repositoryHelper.removeIntProperty(serviceName,
-                                                      OpenMetadataAPIMapper.SIGNIFICANT_DIGITS_PROPERTY_NAME,
-                                                      instanceProperties,
-                                                      methodName);
+            int retrievedValue = repositoryHelper.removeIntProperty(serviceName,
+                                                                    OpenMetadataAPIMapper.PRECISION_PROPERTY_NAME,
+                                                                    instanceProperties,
+                                                                    methodName);
+
+            if (retrievedValue == 0)
+            {
+                retrievedValue = repositoryHelper.removeIntProperty(serviceName,
+                                                                    OpenMetadataAPIMapper.SIGNIFICANT_DIGITS_PROPERTY_NAME,
+                                                                    instanceProperties,
+                                                                    methodName);
+            }
+
+            return retrievedValue;
         }
 
         return 0;

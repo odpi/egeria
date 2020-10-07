@@ -448,7 +448,6 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param externalSourceGUID unique identifier of software server capability representing the caller
      * @param externalSourceName unique name of software server capability representing the caller
      * @param qualifiedName unique name for this asset
-     * @param qualifiedNameParameterName name of parameter passing the qualified name
      * @param displayName the stored display name property for the asset
      * @param description the stored description property associated with the asset
      * @param zoneMembership initial zones for the asset - or null to allow the security module to set it up
@@ -473,7 +472,6 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                            String               externalSourceGUID,
                                            String               externalSourceName,
                                            String               qualifiedName,
-                                           String               qualifiedNameParameterName,
                                            String               displayName,
                                            String               description,
                                            List<String>         zoneMembership,
@@ -529,7 +527,6 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
      * @param externalSourceGUID unique identifier of software server capability representing the caller
      * @param externalSourceName unique name of software server capability representing the caller
      * @param qualifiedName unique name for this asset
-     * @param qualifiedNameParameterName name of parameter passing the qualified name
      * @param displayName the stored display name property for the asset
      * @param description the stored description property associated with the asset
      * @param zoneMembership initial zones for the asset - or null to allow the security module to set it up
@@ -556,7 +553,6 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                          String               externalSourceGUID,
                                                          String               externalSourceName,
                                                          String               qualifiedName,
-                                                         String               qualifiedNameParameterName,
                                                          String               displayName,
                                                          String               description,
                                                          List<String>         zoneMembership,
@@ -581,7 +577,6 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                                         externalSourceGUID,
                                                         externalSourceName,
                                                         qualifiedName,
-                                                        qualifiedNameParameterName,
                                                         displayName,
                                                         description,
                                                         zoneMembership,

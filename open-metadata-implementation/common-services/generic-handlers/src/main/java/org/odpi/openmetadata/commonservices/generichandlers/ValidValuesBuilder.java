@@ -15,34 +15,11 @@ import java.util.Map;
 public class ValidValuesBuilder extends ReferenceableBuilder
 {
     private String  displayName;
-
-    private String  description    = null;
-    private String  usage          = null;
-    private String  scope          = null;
-    private String  preferredValue = null;
-    private boolean isDeprecated   = false;
-
-
-
-    /**
-     * Minimal constructor
-     *
-     * @param qualifiedName unique name
-     * @param displayName new value for the display name.
-     * @param repositoryHelper helper methods
-     * @param serviceName name of this OMAS
-     * @param serverName name of local server
-     */
-    public ValidValuesBuilder(String               qualifiedName,
-                              String               displayName,
-                              OMRSRepositoryHelper repositoryHelper,
-                              String               serviceName,
-                              String               serverName)
-    {
-        super(qualifiedName, repositoryHelper, serviceName, serverName);
-
-        this.displayName = displayName;
-    }
+    private String  description;
+    private String  usage;
+    private String  scope;
+    private String  preferredValue;
+    private boolean isDeprecated;
 
 
     /**
@@ -61,18 +38,18 @@ public class ValidValuesBuilder extends ReferenceableBuilder
      * @param serviceName name of this OMAS
      * @param serverName name of local server
      */
-    public ValidValuesBuilder(String               qualifiedName,
-                              String               displayName,
-                              String               description,
-                              String               usage,
-                              String               scope,
-                              String               preferredValue,
-                              boolean              isDeprecated,
-                              Map<String, String>  additionalProperties,
-                              Map<String, Object>  extendedProperties,
-                              OMRSRepositoryHelper repositoryHelper,
-                              String               serviceName,
-                              String               serverName)
+    ValidValuesBuilder(String               qualifiedName,
+                       String               displayName,
+                       String               description,
+                       String               usage,
+                       String               scope,
+                       String               preferredValue,
+                       boolean              isDeprecated,
+                       Map<String, String>  additionalProperties,
+                       Map<String, Object>  extendedProperties,
+                       OMRSRepositoryHelper repositoryHelper,
+                       String               serviceName,
+                       String               serverName)
     {
         super(qualifiedName,
               additionalProperties,
@@ -156,44 +133,5 @@ public class ValidValuesBuilder extends ReferenceableBuilder
                                                                    methodName);
 
         return properties;
-    }
-
-
-    /**
-     * Return the supplied bean properties that represent a name in an InstanceProperties object.
-     *
-     * @param methodName name of the calling method
-     * @return InstanceProperties object
-     */
-    @Override
-    public InstanceProperties getNameInstanceProperties(String  methodName)
-    {
-        InstanceProperties properties = super.getNameInstanceProperties(methodName);
-
-        if (displayName != null)
-        {
-            String literalName = repositoryHelper.getExactMatchRegex(displayName);
-
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME,
-                                                                      literalName,
-                                                                      methodName);
-        }
-
-        return properties;
-    }
-
-
-    /**
-     * Return the supplied bean properties that represent a name in an InstanceProperties object.
-     *
-     * @param methodName name of the calling method
-     * @return InstanceProperties object
-     */
-    @Override
-    public InstanceProperties getQualifiedNameInstanceProperties(String  methodName)
-    {
-        return super.getNameInstanceProperties(methodName);
     }
 }

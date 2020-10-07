@@ -20,7 +20,10 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorExceptio
 import java.util.*;
 
 /**
- * RelationalDataHandler manages the assets and schemas for relational data.
+ * RelationalDataHandler manages the assets and schemas for relational data.  It is build on the AssetHandler
+ * and the SchemaAttributeHandler.  Its role is to maintain a simple interface that covers databases,
+ * database schemas, database tables and columns.  It automatically creates and links in the schema type
+ * information in the structure and keeps it linked together.
  */
 public class RelationalDataHandler<DATABASE,
                                    DATABASE_SCHEMA,
@@ -44,8 +47,7 @@ public class RelationalDataHandler<DATABASE,
 
 
     /**
-     * Construct the relational data handler with information needed to work with assets, schemas,
-     * software server capability and connection objects.
+     * Construct the relational data handler with information needed to work with assets and schemas.
      *
      * @param databaseConverter specific converter for the DATABASE bean class
      * @param databaseClass name of bean class that is represented by the generic class DATABASE
@@ -53,7 +55,7 @@ public class RelationalDataHandler<DATABASE,
      * @param databaseSchemaClass name of bean class that is represented by the generic class DATABASE_SCHEMA
      * @param databaseTableConverter specific converter for the DATABASE_TABLE bean class
      * @param databaseTableClass name of bean class that is represented by the generic class DATABASE_TABLE
-      * @param databaseViewConverter specific converter for the DATABASE_VIEW bean class
+     * @param databaseViewConverter specific converter for the DATABASE_VIEW bean class
      * @param databaseViewClass name of bean class that is represented by the generic class DATABASE_VIEW
      * @param databaseColumnConverter specific converter for the DATABASE_COLUMN bean class
      * @param databaseColumnClass name of bean class that is represented by the generic class DATABASE_COLUMN
@@ -295,7 +297,6 @@ public class RelationalDataHandler<DATABASE,
                                                                       databaseManagerGUID,
                                                                       databaseManagerName,
                                                                       qualifiedName,
-                                                                      qualifiedNameParameterName,
                                                                       displayName,
                                                                       description,
                                                                       zoneMembership,
@@ -873,7 +874,6 @@ public class RelationalDataHandler<DATABASE,
                                                                                   databaseManagerGUID,
                                                                                   databaseManagerName,
                                                                                   qualifiedName,
-                                                                                  qualifiedNameParameterName,
                                                                                   displayName,
                                                                                   description,
                                                                                   zoneMembership,
@@ -1378,7 +1378,7 @@ public class RelationalDataHandler<DATABASE,
      * @param extendedProperties properties from any subtype
      * @param vendorProperties additional properties relating to the source of the database technology
      * @param methodName calling method
-
+     *
      * @return unique identifier of the new metadata element for the database table
      *
      * @throws InvalidParameterException  one of the parameters is invalid

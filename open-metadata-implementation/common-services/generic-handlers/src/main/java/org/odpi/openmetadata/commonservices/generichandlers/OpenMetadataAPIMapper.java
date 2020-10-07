@@ -899,6 +899,7 @@ public class OpenMetadataAPIMapper
     public static final String MIN_LENGTH_PROPERTY_NAME                 = "minimumLength";         /* from SchemaAttribute entity */
     public static final String LENGTH_PROPERTY_NAME                     = "length";                /* from SchemaAttribute entity */
     public static final String SIGNIFICANT_DIGITS_PROPERTY_NAME         = "significantDigits";     /* from SchemaAttribute entity */
+    public static final String PRECISION_PROPERTY_NAME                  = "precision";             /* from SchemaAttribute entity */
     public static final String IS_NULLABLE_PROPERTY_NAME                = "isNullable";            /* from SchemaAttribute entity */
 
     public static final String ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_GUID = "2d955049-e59b-45dd-8e62-cde1add59f9e";  /* from Area 5 */

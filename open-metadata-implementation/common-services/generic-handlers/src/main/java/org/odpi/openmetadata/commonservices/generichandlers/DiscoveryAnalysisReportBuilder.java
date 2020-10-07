@@ -19,9 +19,9 @@ public class DiscoveryAnalysisReportBuilder extends ReferenceableBuilder
 {
     private String                 displayName;
     private String                 description;
-    private Date                   creationDate           = null;
-    private Map<String, String>    analysisParameters     = null;
-    private int                    discoveryRequestStatus = 0;
+    private Date                   creationDate;
+    private Map<String, String>    analysisParameters;
+    private int                    discoveryRequestStatus;
 
 
 
@@ -40,17 +40,17 @@ public class DiscoveryAnalysisReportBuilder extends ReferenceableBuilder
      * @param serviceName name of this OMAS
      * @param serverName name of local server
      */
-    public DiscoveryAnalysisReportBuilder(String                 qualifiedName,
-                                          String                 displayName,
-                                          String                 description,
-                                          Date                   creationDate,
-                                          Map<String, String>    analysisParameters,
-                                          int                    discoveryRequestStatus,
-                                          Map<String, String>    additionalProperties,
-                                          Map<String, Object>    extendedProperties,
-                                          OMRSRepositoryHelper   repositoryHelper,
-                                          String                 serviceName,
-                                          String                 serverName)
+    DiscoveryAnalysisReportBuilder(String                 qualifiedName,
+                                   String                 displayName,
+                                   String                 description,
+                                   Date                   creationDate,
+                                   Map<String, String>    analysisParameters,
+                                   int                    discoveryRequestStatus,
+                                   Map<String, String>    additionalProperties,
+                                   Map<String, Object>    extendedProperties,
+                                   OMRSRepositoryHelper   repositoryHelper,
+                                   String                 serviceName,
+                                   String                 serverName)
     {
         super(qualifiedName,
               additionalProperties,
@@ -132,31 +132,6 @@ public class DiscoveryAnalysisReportBuilder extends ReferenceableBuilder
             throw new InvalidParameterException(error, OpenMetadataAPIMapper.DISCOVERY_SERVICE_STATUS_PROPERTY_NAME);
         }
 
-
-        return properties;
-    }
-
-
-    /**
-     * Return the supplied bean properties that represent a name in an InstanceProperties object.
-     *
-     * @param methodName name of the calling method
-     * @return InstanceProperties object
-     */
-    public InstanceProperties getNameInstanceProperties(String  methodName)
-    {
-        InstanceProperties properties = super.getNameInstanceProperties(methodName);
-
-        if (displayName != null)
-        {
-            String literalName = repositoryHelper.getExactMatchRegex(displayName);
-
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME,
-                                                                      literalName,
-                                                                      methodName);
-        }
 
         return properties;
     }

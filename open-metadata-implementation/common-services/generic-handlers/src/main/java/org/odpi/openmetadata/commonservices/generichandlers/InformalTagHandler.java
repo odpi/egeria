@@ -213,7 +213,6 @@ public class InformalTagHandler<B> extends OpenMetadataAPIGenericHandler<B>
         InformalTagBuilder builder = new InformalTagBuilder(tagName,
                                                             tagDescription,
                                                             isPublic,
-                                                            userId,
                                                             repositoryHelper,
                                                             serviceName,
                                                             serverName);
