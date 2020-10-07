@@ -7,7 +7,7 @@
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web:2.3.4.RELEASE'
     implementation 'org.springframework.boot:spring-boot-starter-security:2.3.1.RELEASE'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.3.1.RELEASE'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.3.4.RELEASE'
     implementation 'org.springframework.security:spring-security-ldap:5.3.3.RELEASE'
     implementation 'io.jsonwebtoken:jjwt:0.9.1'
     implementation 'com.h2database:h2:1.4.200'
