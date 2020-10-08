@@ -9,11 +9,11 @@ dependencies {
     implementation 'org.janusgraph:janusgraph-driver:0.5.2'
     implementation 'org.slf4j:slf4j-api:1.7.30'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.1'
-    implementation 'com.fasterxml.jackson.core:jackson-core:2.11.1'
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.11.3'
     implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
     implementation project(':open-metadata-implementation:repository-services:repository-services-apis')
-    implementation 'org.apache.tinkerpop:gremlin-core:3.4.7'
+    implementation 'org.apache.tinkerpop:gremlin-core:3.4.8'
     implementation 'org.apache.commons:commons-collections4:4.4'
     runtimeOnly 'org.janusgraph:janusgraph-cassandra:0.5.2'
     runtimeOnly 'org.janusgraph:janusgraph-berkeleyje:0.5.2'

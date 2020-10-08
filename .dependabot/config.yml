@@ -22,13 +22,13 @@ update_configs:
       - "grahamwallis"
       - "mandy-chessell"
   - package_manager: "javascript"
-    directory: "/open-metadata-implementation/user-interface/presentation-server/nodejs/"
+    directory: "/open-metadata-implementation/user-interfaces/presentation-server/nodejs/"
     update_schedule: "daily"
     default_reviewers:
       - "grahamwallis"
       - "davidradl"
   - package_manager: "javascript"
-    directory: "/open-metadata-implementation/user-interface/presentation-server/nodejs/src/cra-client/"
+    directory: "/open-metadata-implementation/user-interfaces/presentation-server/nodejs/src/cra-client/"
     update_schedule: "daily"
     default_reviewers:
       - "grahamwallis"
