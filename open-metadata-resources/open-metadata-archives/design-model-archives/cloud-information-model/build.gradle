@@ -10,7 +10,7 @@ dependencies {
     implementation project(':open-metadata-implementation:repository-services:repository-services-archive-utilities')
     implementation 'com.github.jsonld-java:jsonld-java:0.13.0'
     implementation 'ch.qos.logback:logback-classic:1.2.3'
-    testImplementation 'org.testng:testng:7.1.0'
+    testImplementation 'org.testng:testng:7.3.0'
     implementation 'com.fasterxml.jackson.core:jackson-annotations:2.11.1'
 
 }

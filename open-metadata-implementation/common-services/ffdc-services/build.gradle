@@ -17,7 +17,7 @@ dependencies {
     implementation 'org.apache.commons:commons-lang3:3.11'
     implementation 'org.springframework:spring-core:5.2.7.RELEASE'
     testImplementation project(':open-metadata-test:open-metadata-ut')
-    testImplementation 'org.testng:testng:7.1.0'
+    testImplementation 'org.testng:testng:7.3.0'
 }
 
 description = 'FFDC Common Services'
