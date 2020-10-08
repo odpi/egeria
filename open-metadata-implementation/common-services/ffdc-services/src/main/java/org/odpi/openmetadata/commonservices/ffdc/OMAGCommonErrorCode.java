@@ -7,7 +7,8 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
 
 
 /**
- * The OMAGCommonErrorCode is used to define first failure data capture (FFDC) for common errors.
+ * The OMAGCommonErrorCode is used to define first failure data capture (FFDC) for common errors.  It belongs to the FFDC Services module
+ * and should not be used by other modules.
  *
  * The 5 fields in the enum are:
  * <ul>
