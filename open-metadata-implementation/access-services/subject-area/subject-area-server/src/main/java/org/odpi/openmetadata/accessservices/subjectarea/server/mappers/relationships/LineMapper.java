@@ -27,11 +27,7 @@ public abstract class LineMapper<L extends Line> implements ILineMapper<L> {
     }
 
     public L map(Relationship relationship) {
-        System.err.println("LineMapper.map");
-        System.err.println("relationship guid="+relationship.getGUID()+",end1="+relationship.getEntityOneProxy().getGUID()+",end2="+relationship.getEntityTwoProxy().getGUID());
         L line = getLineInstance();
-
-
         line.setSystemAttributes(SubjectAreaUtils.createSystemAttributes(relationship));
         EntityProxy proxy1 = relationship.getEntityOneProxy();
         if (proxy1 != null) {
