@@ -136,10 +136,15 @@
         <janus.version>0.5.2</janus.version>
         <gremlin.version>3.4.8</gremlin.version>
         <netty.version>4.1.52.Final</netty.version>
+
         <spring-boot.version>2.3.3.RELEASE</spring-boot.version>
         <spring.version>5.2.9.RELEASE</spring.version>
         <spring-security.version>5.4.1</spring-security.version>
         <spring-data.version>2.3.4.RELEASE</spring-data.version>
+
+        <servo-core.version>0.10.1</servo-core.version>
+        <netflix-zuul.version>2.2.5.RELEASE</netflix-zuul.version>
+
         <tomcat.version>9.0.37</tomcat.version>
         <commons-io.version>2.8.0</commons-io.version>
         <commons-collections4.version>4.4</commons-collections4.version>
@@ -1426,14 +1431,14 @@
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
-            
+
              <dependency>
                 <groupId>org.odpi.egeria</groupId>
                 <artifactId>analytics-modeling-spring</artifactId>
                 <scope>runtime</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
-            
+
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
                 <artifactId>information-view-api</artifactId>
@@ -2293,6 +2298,24 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-autoconfigure</artifactId>
                 <version>${spring-boot.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-netflix-zuul</artifactId>
+                <version>${netflix-zuul.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-netflix-zuul</artifactId>
+                <version>${netflix-zuul.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.netflix.servo</groupId>
+                <artifactId>servo-core</artifactId>
+                <version>${servo-core.version}</version>
             </dependency>
 
             <dependency>
