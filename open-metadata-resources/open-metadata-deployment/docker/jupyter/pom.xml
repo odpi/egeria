@@ -28,7 +28,6 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>open-metadata-assemblies</artifactId>
-            <classifier>deploy</classifier>
             <type>pom</type>
         </dependency>
     </dependencies>
