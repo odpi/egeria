@@ -12,7 +12,7 @@
     "carbon-components": "^10.16.0",
     "carbon-components-react": "^7.16.0",
     "carbon-icons": "^7.0.7",
-    "d3": "^5.16.0",
+    "d3": "^6.2.0",
     "node-sass": "^4.14.1",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
