@@ -5,7 +5,7 @@
 
 
 dependencies {
-    implementation 'org.springframework:spring-web:5.2.7.RELEASE'
+    implementation 'org.springframework:spring-web:5.2.9.RELEASE'
     implementation project(':open-metadata-implementation:access-services:information-view:information-view-server')
     implementation project(':open-metadata-implementation:access-services:information-view:information-view-api')
     implementation 'org.springframework:spring-context:5.2.7.RELEASE'
