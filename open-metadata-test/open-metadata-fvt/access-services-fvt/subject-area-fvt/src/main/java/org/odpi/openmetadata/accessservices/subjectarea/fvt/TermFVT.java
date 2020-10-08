@@ -335,7 +335,7 @@ public class TermFVT {
 
         // update with null categories should change nothing
         createdTerm4cats2.setCategories(null);
-        Term updatedTerm4cats2 = updateTerm(createdTerm4cats2.getSystemAttributes().getGUID(),createdTerm4cats);
+        Term updatedTerm4cats2 = updateTerm(createdTerm4cats2.getSystemAttributes().getGUID(),createdTerm4cats2);
         if (updatedTerm4cats2.getCategories().size() != 2) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected 2 categories returned");
         }

@@ -388,15 +388,14 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
                             oMRSAPIHelper.callOMRSDeClassifyEntity(methodName, userId, guid, deClassifyName);
                         }
                     }
-                    SubjectAreaOMASAPIResponse<Line> lineResponse = getTermRelationships(userId, guid, new FindRequest());
-                    List<Line> lines= lineResponse.results();
 
                     List<CategorySummary> suppliedCategories = suppliedTerm.getCategories();
-
                     if (suppliedCategories==null && !isReplace) {
-                        // in the update case do not change anything if no categories have been supplied.
+                        // in the update case with null categories supplied then do not change anything.
                     } else {
                         Set<String> deleteCategorizationGuidSet = new HashSet<>();
+                        SubjectAreaOMASAPIResponse<Line> lineResponse = getTermRelationships(userId, guid, new FindRequest());
+                        List<Line> lines= lineResponse.results();
                         /*
                          * The supplied categories may not be completely filled out.
                          * we will accept a guid (i.e. that of the category) and ignore the rest.
@@ -408,7 +407,7 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
                         }
 
                         // always replace the categories if categories are supplied
-                        // delete categorizations
+                        // delete any existing categorizations
                         if (deleteCategorizationGuidSet != null && deleteCategorizationGuidSet.size() > 0) {
                             for (String categorizationGuidToDelete : deleteCategorizationGuidSet) {
                                 String typeDefGuid = termCategorizationMapper.getTypeDefGuid();
