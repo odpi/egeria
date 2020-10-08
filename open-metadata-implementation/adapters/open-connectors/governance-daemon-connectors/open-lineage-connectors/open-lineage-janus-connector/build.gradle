@@ -23,7 +23,7 @@ dependencies {
     testImplementation 'junit:junit:4.13'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
     testRuntimeOnly 'org.janusgraph:janusgraph-inmemory:0.5.2'
-    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.11.1'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.11.3'
     implementation 'org.apache.commons:commons-collections4:4.4'
 
 }

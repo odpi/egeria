@@ -12,7 +12,7 @@ dependencies {
     implementation 'org.springframework:spring-web:5.2.9.RELEASE'
     implementation 'org.codehaus.plexus:plexus-utils:3.3.0'
     implementation 'org.springframework:spring-core:5.2.7.RELEASE'
-    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.11.1'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.11.3'
 
 }
 

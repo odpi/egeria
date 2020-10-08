@@ -12,7 +12,7 @@ dependencies {
     implementation 'ch.qos.logback:logback-classic:1.2.3'
     implementation project(':open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-client')
     implementation project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:basic-file-connector')
-    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.11.1'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.11.3'
 
 }
 

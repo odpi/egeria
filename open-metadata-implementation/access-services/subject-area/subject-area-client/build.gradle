@@ -13,7 +13,7 @@ dependencies {
     implementation project(':open-metadata-implementation:repository-services:repository-services-apis')
     implementation 'org.reflections:reflections:0.9.12'
     implementation 'org.springframework:spring-core:5.2.7.RELEASE'
-    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.11.1'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.11.3'
 
 }
 
