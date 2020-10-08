@@ -25,7 +25,7 @@ dependencies {
     implementation 'org.springframework.security:spring-security-core:5.3.3.RELEASE'
     implementation 'org.springframework:spring-web:5.2.7.RELEASE'
     implementation 'org.springframework.data:spring-data-jpa:2.3.4.RELEASE'
-    implementation 'org.apache.tomcat.embed:tomcat-embed-core:9.0.36'
+    implementation 'org.apache.tomcat.embed:tomcat-embed-core:9.0.38'
     implementation 'org.springframework.boot:spring-boot:2.3.1.RELEASE'
     implementation 'org.springframework.boot:spring-boot-starter-actuator:2.3.4.RELEASE'
     implementation 'io.micrometer:micrometer-registry-prometheus:1.5.2'
