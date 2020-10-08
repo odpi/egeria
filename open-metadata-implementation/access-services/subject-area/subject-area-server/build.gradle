@@ -16,7 +16,7 @@ dependencies {
     implementation project(':open-metadata-implementation:common-services:multi-tenant')
     implementation project(':open-metadata-implementation:common-services:ffdc-services')
     implementation project(':open-metadata-implementation:common-services:repository-handler')
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.1'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.3'
     implementation 'org.reflections:reflections:0.9.12'
     implementation 'org.apache.commons:commons-collections4:4.4'
     testImplementation 'org.testng:testng:7.1.0'

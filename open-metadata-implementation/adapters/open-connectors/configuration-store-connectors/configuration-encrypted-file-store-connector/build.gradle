@@ -11,7 +11,7 @@ dependencies {
     implementation project(':open-metadata-implementation:admin-services:admin-services-api')
     implementation 'org.slf4j:slf4j-api:1.7.30'
     implementation 'commons-io:commons-io:2.8.0'
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.1'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.3'
 }
 
 description = 'Encrypted Configuration File Store Connector'

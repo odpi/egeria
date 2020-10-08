@@ -9,7 +9,7 @@ dependencies {
     implementation 'org.quartz-scheduler:quartz:2.3.2'
     implementation project(':open-metadata-implementation:admin-services:admin-services-api')
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.1'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.3'
     implementation project(':open-metadata-implementation:repository-services:repository-services-apis')
     implementation 'org.slf4j:slf4j-api:1.7.30'
     implementation project(':open-metadata-implementation:governance-servers:open-lineage-services:open-lineage-services-api')
