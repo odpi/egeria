@@ -188,6 +188,7 @@
         <javassist.version>3.27.0-GA</javassist.version>
         <httpcore.version>4.4.13</httpcore.version>
         <httpclient.version>4.5.13</httpclient.version>
+        <hbase.client.version>2.3.2</hbase.client.version>
 
         <!-- Versions of plugins -->
         <enunciate-maven-plugin.version>2.10.1</enunciate-maven-plugin.version>
@@ -517,6 +518,19 @@
                 <artifactId>janusgraph-cql</artifactId>
                 <version>${janus.version}</version>
                 <scope>runtime</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.janusgraph</groupId>
+                <artifactId>janusgraph-hbase</artifactId>
+                <version>${janus.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.hbase</groupId>
+                <artifactId>hbase-shaded-client</artifactId>
+                <version>${hbase.client.version}</version>
             </dependency>
 
             <dependency>
