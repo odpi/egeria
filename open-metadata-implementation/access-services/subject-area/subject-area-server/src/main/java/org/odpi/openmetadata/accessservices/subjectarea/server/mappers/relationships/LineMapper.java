@@ -27,13 +27,18 @@ public abstract class LineMapper<L extends Line> implements ILineMapper<L> {
     }
 
     public L map(Relationship relationship) {
+        System.err.println("LineMapper.map");
+        System.err.println("relationship guid="+relationship.getGUID()+",end1="+relationship.getEntityOneProxy().getGUID()+",end2="+relationship.getEntityTwoProxy().getGUID());
         L line = getLineInstance();
+
+
         line.setSystemAttributes(SubjectAreaUtils.createSystemAttributes(relationship));
         EntityProxy proxy1 = relationship.getEntityOneProxy();
         if (proxy1 != null) {
             String guid1 = proxy1.getGUID();
             if (guid1 != null) {
                 line.getEnd1().setNodeGuid(guid1);
+                System.err.println("set guid1=" + guid1);
             }
         }
         EntityProxy proxy2 = relationship.getEntityTwoProxy();
@@ -41,8 +46,10 @@ public abstract class LineMapper<L extends Line> implements ILineMapper<L> {
             String guid2 = proxy2.getGUID();
             if (guid2 != null) {
                 line.getEnd2().setNodeGuid(guid2);
+                System.err.println("set guid2=" + guid2);
             }
         }
+        System.err.println("line guid="+line.getGuid()+",end1="+line.getEnd1().getNodeGuid()+",end2="+line.getEnd2().getNodeGuid());
 
 
         // Set properties
@@ -100,6 +107,7 @@ public abstract class LineMapper<L extends Line> implements ILineMapper<L> {
 
             }   // end while
         }
+        System.err.println("line2 guid="+line.getGuid()+",end1="+line.getEnd1().getNodeGuid()+",end2="+line.getEnd2().getNodeGuid());
         return line;
     }
 

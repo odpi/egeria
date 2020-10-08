@@ -21,6 +21,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.entities.
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.relationships.TermAnchorMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.relationships.TermCategorizationMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
+import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
 import org.odpi.openmetadata.accessservices.subjectarea.validators.InputValidator;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -273,24 +274,25 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
                                                                                        InvalidParameterException
     {
         final String guid = term.getSystemAttributes().getGUID();
-        List<Relationship> relationships = oMRSAPIHelper.getRelationshipsByType(userId, guid, TERM_TYPE_NAME, TERM_ANCHOR_RELATIONSHIP_NAME, methodName);
-        if (CollectionUtils.isNotEmpty(relationships)) {
-            List<CategorySummary> categorySummaryList = new ArrayList<>();
-            for (Relationship relationship : relationships) {
-
+        List<Relationship> termAnchorRelationships = oMRSAPIHelper.getRelationshipsByType(userId, guid, TERM_TYPE_NAME, TERM_ANCHOR_RELATIONSHIP_NAME, methodName);
+        if (CollectionUtils.isNotEmpty(termAnchorRelationships)) {
+            for (Relationship relationship : termAnchorRelationships) {
                 TermAnchor termAnchor = termAnchorMapper.map(relationship);
-                if (termAnchor == null) {
-                    Categorization categorization = termCategorizationMapper.map(relationship);
-                    if (categorization !=null) {
-                        CategorySummary categorySummary= new CategorySummary();
-                        categorySummary.setGuid(categorization.getGuid());
+                GlossarySummary glossarySummary = getGlossarySummary(methodName, userId, termAnchor);
+                if (glossarySummary != null) {
+                    term.setGlossary(glossarySummary);
+                }
+            }
+        }
+        List<Relationship> termCategorizationRelationships = oMRSAPIHelper.getRelationshipsByType(userId, guid, TERM_TYPE_NAME, TERM_CATEGORIZATION_RELATIONSHIP_NAME, methodName);
+        if (CollectionUtils.isNotEmpty(termCategorizationRelationships)) {
+            List<CategorySummary> categorySummaryList = new ArrayList<>();
+            for (Relationship relationship : termCategorizationRelationships) {
+                Categorization categorization = termCategorizationMapper.map(relationship);
+                if (categorization !=null) {
+                    CategorySummary categorySummary = getCategorySummary(methodName, userId, categorization);
+                    if (categorySummary !=null) {
                         categorySummaryList.add(categorySummary);
-                    }
-                } else {
-                    GlossarySummary glossarySummary = getGlossarySummary(methodName, userId, termAnchor);
-                    if (glossarySummary != null) {
-                        term.setGlossary(glossarySummary);
-
                     }
                 }
             }
@@ -329,10 +331,12 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
      * If the caller has chosen to incorporate the term qualifiedName in their Term Terms or Categories qualified name, changing the qualified name of the term will cause those
      * qualified names to mismatch the Term name.
      * Status is not updated using this call.
+     * The Categories categorising this Term can be amended using this call. For an update (rather than a replace) with no categories supplied, no changes are made to the categories; otherwise the
+     * supplied categories will replace the existing ones.
      *
      * @param userId           unique identifier for requesting user, under which the request is performed
      * @param guid             guid of the term to update
-     * @param suppliedTerm term to be updated
+     * @param suppliedTerm     term to be updated
      * @param isReplace        flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return a response which when successful contains the updated term
      * when not successful the following Exception responses can occur
@@ -387,39 +391,35 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
                     SubjectAreaOMASAPIResponse<Line> lineResponse = getTermRelationships(userId, guid, new FindRequest());
                     List<Line> lines= lineResponse.results();
 
-                    Map<String, String> categorizationToCategoryGuidMap = new HashMap<>();
                     List<CategorySummary> suppliedCategories = suppliedTerm.getCategories();
-                    for (Line line:lines) {
-                        if (line.getLineType().equals(LineType.TermCategorization)) {
-                            categorizationToCategoryGuidMap.put(line.getGuid(),line.getEnd1().getNodeGuid());
-                        }
-                    }
-                    Set<String> deleteCategorizationGuidSet = new HashSet<>();
 
-                    if (isReplace) {
-                        deleteCategorizationGuidSet = categorizationToCategoryGuidMap.keySet();
+                    if (suppliedCategories==null && !isReplace) {
+                        // in the update case do not change anything if no categories have been supplied.
                     } else {
-                        // only delete the ones that match the supplied categories
-                        if (suppliedCategories !=null && suppliedCategories.size() >0) {
-                            for (CategorySummary suppliedCategory : suppliedCategories) {
-                                String categorizationGuid = categorizationToCategoryGuidMap.get(suppliedCategory.getGuid());
-                                if (categorizationGuid != null) {
-                                    deleteCategorizationGuidSet.add(categorizationGuid);
-                                }
+                        Set<String> deleteCategorizationGuidSet = new HashSet<>();
+                        /*
+                         * The supplied categories may not be completely filled out.
+                         * we will accept a guid (i.e. that of the category) and ignore the rest.
+                         */
+                        for (Line line : lines) {
+                            if (line.getLineType().equals(LineType.TermCategorization)) {
+                                deleteCategorizationGuidSet.add(line.getGuid());
                             }
                         }
-                    }
-                    // delete categorizations
-                    if (deleteCategorizationGuidSet !=null && deleteCategorizationGuidSet.size() >0) {
-                        for (String categorizationGuidToDelete : deleteCategorizationGuidSet) {
-                            String typeDefGuid = termCategorizationMapper.getTypeDefGuid();
-                            oMRSAPIHelper.callOMRSDeleteRelationship(methodName, userId, typeDefGuid, "TermCategorization", categorizationGuidToDelete);
+
+                        // always replace the categories if categories are supplied
+                        // delete categorizations
+                        if (deleteCategorizationGuidSet != null && deleteCategorizationGuidSet.size() > 0) {
+                            for (String categorizationGuidToDelete : deleteCategorizationGuidSet) {
+                                String typeDefGuid = termCategorizationMapper.getTypeDefGuid();
+                                oMRSAPIHelper.callOMRSDeleteRelationship(methodName, userId, typeDefGuid, "TermCategorization", categorizationGuidToDelete);
+                            }
                         }
-                    }
-                    // add any supplied ones
-                    if (suppliedCategories != null && suppliedCategories.size() >0) {
-                        for (CategorySummary categorySummary : suppliedCategories) {
-                            addCategorizationRelationship(userId, suppliedTerm, methodName, categorySummary.getGuid());
+                        // add any supplied ones
+                        if (suppliedCategories != null && suppliedCategories.size() > 0) {
+                            for (CategorySummary categorySummary : suppliedCategories) {
+                                addCategorizationRelationship(userId, suppliedTerm, methodName, categorySummary.getGuid());
+                            }
                         }
                     }
                 }
