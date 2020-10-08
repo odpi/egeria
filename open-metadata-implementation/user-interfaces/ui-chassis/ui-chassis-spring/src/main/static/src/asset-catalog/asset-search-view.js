@@ -11,6 +11,7 @@ import '@vaadin/vaadin-grid/vaadin-grid.js';
 import '@vaadin/vaadin-grid/vaadin-grid-selection-column.js';
 import '@vaadin/vaadin-grid/vaadin-grid-sort-column.js';
 import '@vaadin/vaadin-button/vaadin-button.js';
+import '@vaadin/vaadin-select/vaadin-select';
 import 'multiselect-combo-box/multiselect-combo-box.js';
 import '@polymer/paper-dialog/paper-dialog.js';
 import '@polymer/paper-dialog-behavior/paper-dialog-behavior.js';
@@ -61,7 +62,7 @@ class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
         vaadin-grid {
           flex-grow: 1;
         }
- 
+        
       </style>
 
       <token-ajax id="tokenAjax" last-response="{{searchResp}}"></token-ajax>
@@ -136,6 +137,25 @@ class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
                 <template>[[item.properties.qualifiedName]]</template>
             </vaadin-grid-column>
         </vaadin-grid>
+      <div style="display: flex">
+        <div style="display: inline-block">
+          <vaadin-select id="pageSizeSelect" value="10" style="width: 5em">
+              <template>
+                <vaadin-list-box>
+                  <vaadin-item>10</vaadin-item>
+                  <vaadin-item>20</vaadin-item>
+                  <vaadin-item>50</vaadin-item>
+                  <vaadin-item>100</vaadin-item>
+                </vaadin-list-box>
+              </template>
+            </vaadin-select> metadata / page 
+          </div>
+          <div style="margin: auto"> 
+            <vaadin-button on-tap="_goPrev" ><iron-icon icon="vaadin:backwards"></iron-icon></vaadin-button>
+            Current page: [[currentPage]]
+            <vaadin-button on-tap="_goNext" ><iron-icon icon="vaadin:forward"></iron-icon></vaadin-button>
+          </div>
+      </div>  
       
      
                
@@ -147,6 +167,18 @@ class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
             q: {
                 type: Object,
                 notify: true,
+            },
+            from: {
+                type: Number,
+                value: 0
+            },
+            pageSize: {
+                type: Number,
+                value: 10,
+            },
+            currentPage: {
+                type: Number,
+                computed: '_computeCurrentPage(from,pageSize)'
             },
             searchResp: {
                 type: Array,
@@ -164,6 +196,8 @@ class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
 
     ready() {
         super.ready();
+        this.$.pageSizeSelect.addEventListener('change',(e) => this._pageSizeChanged(e.target.value));
+
         this.$.tokenAjaxTypes.url = '/api/assets/types';
         this.$.tokenAjaxTypes._go();
     }
@@ -194,16 +228,56 @@ class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
         return validSearch;
     }
 
-    _search() {
-        console.debug('searching: '+ this.q);
-        if(  this._validateSearch() ) {
-            var types = [];
+    _goNext() {
+        if(this.items.length >= this.pageSize){
+            this.from += this.pageSize;
+            this._fetch();
+        }else{
+            this.dispatchEvent(new CustomEvent('show-modal', {
+                bubbles: true,
+                composed: true,
+                detail: { message: "Oops! No more metadata for current search!", level: 'error'}}));
+        }
+    }
 
+    _goPrev() {
+        if(this.currentPage > 1){
+            this.from -= this.pageSize;
+            if(this.from < 0) this.from = 0;
+            this._fetch();
+        }
+    }
+
+    _computeCurrentPage(from,pageSize){
+        return Math.ceil(from /pageSize ) + 1;
+    }
+
+    _search() {
+        this.from = 0;
+        this._fetch();
+    }
+
+    _pageSizeChanged(value){
+        this.pageSize = parseInt(value);
+        this.from = 0;
+        if(this.q && 0 !== this.q.trim().length){
+            this._fetch();
+        }
+    }
+
+    _fetch(){
+        if(  this._validateSearch() ) {
+            this.items = [];
+            var types = [];
             this.$.combo.selectedItems.forEach(function (item) {
                 types.push(item.name);
             });
 
             this.$.tokenAjax.url = '/api/assets/search?q=' + this.q + '&types=' + types;
+            if( this.from > 0 )
+                this.$.tokenAjax.url +='&from=' + this.from;
+            if( this.pageSize > 0 )
+                this.$.tokenAjax.url +='&pageSize=' + this.pageSize;
             this.$.tokenAjax._go();
         }
     }
