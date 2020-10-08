@@ -23,7 +23,7 @@ dependencies {
     runtimeOnly 'joda-time:joda-time:2.10.6'
     runtimeOnly 'org.antlr:antlr-runtime:3.5.2'
     runtimeOnly 'org.xerial.snappy:snappy-java:1.1.7.7'
-    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.11.1'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.11.3'
 
 }
 

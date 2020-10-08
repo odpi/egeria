@@ -19,7 +19,7 @@ dependencies {
     implementation project(':open-metadata-implementation:frameworks:open-discovery-framework')
     implementation project(':open-metadata-implementation:adapters:open-connectors:discovery-service-connectors')
     implementation project(':open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-client')
-    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.11.1'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.11.3'
 
 }
 

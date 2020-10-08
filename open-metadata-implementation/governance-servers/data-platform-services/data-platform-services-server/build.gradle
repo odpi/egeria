@@ -14,7 +14,7 @@ dependencies {
     implementation project(':open-metadata-implementation:access-services:data-platform:data-platform-client')
     implementation project(':open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-client')
     implementation project(':open-metadata-implementation:common-services:ffdc-services')
-    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.11.1'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.11.3'
 
 }
 

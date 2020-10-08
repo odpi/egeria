@@ -5,7 +5,7 @@
 
 
 dependencies {
-    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.11.1'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.11.3'
     implementation 'org.apache.commons:commons-collections4:4.4'
     implementation 'org.apache.commons:commons-lang3:3.11'
     implementation 'org.apache.ranger:ranger-plugins-common:1.2.0'

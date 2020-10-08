@@ -12,7 +12,7 @@ dependencies {
     implementation project(':open-metadata-implementation:common-services:ffdc-services')
     testImplementation project(':open-metadata-distribution:open-metadata-assemblies')
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
-    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.11.1'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.11.3'
     testCompile("org.junit.jupiter:junit-jupiter-params:5.7.0")
 
 
