@@ -40,6 +40,7 @@ public class TermFVT {
     private SubjectAreaNodeClient<Term> subjectAreaTerm = null;
     private GlossaryFVT glossaryFVT =null;
     private CategoryFVT categoryFVT =null;
+    private SubjectAreaDefinitionCategoryFVT subjectAreaFVT =null;
     private String userId =null;
     private int existingTermCount = 0;
     /*
@@ -72,6 +73,8 @@ public class TermFVT {
         System.out.println("Create a glossary");
         glossaryFVT = new GlossaryFVT(url,serverName,userId);
         categoryFVT = new CategoryFVT(url, serverName,userId);
+        subjectAreaFVT = new SubjectAreaDefinitionCategoryFVT(url, serverName,userId);
+
         this.userId=userId;
         existingTermCount = findTerms(".*").size();
         System.out.println("existingTermCount " + existingTermCount);
@@ -298,8 +301,8 @@ public class TermFVT {
 
         // test categories
 
-        Category cat1 = categoryFVT.createCategoryWithGlossaryGuid("cat1",glossaryGuid);
-        Category cat2 = categoryFVT.createCategoryWithGlossaryGuid("cat2",glossaryGuid);
+        Category cat1 = categoryFVT.createCategoryWithGlossaryGuid("cat1", glossaryGuid);
+        Category cat2 = subjectAreaFVT.createSubjectAreaDefinitionWithGlossaryGuid("cat2", glossaryGuid);
         Category cat3 = categoryFVT.createCategoryWithGlossaryGuid("cat3",glossaryGuid);
         CategorySummary cat1Summary = new CategorySummary();
         cat1Summary.setGuid(cat1.getSystemAttributes().getGUID());
