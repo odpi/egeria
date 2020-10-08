@@ -1,9 +1,9 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.digitalarchitecture.client;
+package org.odpi.openmetadata.accessservices.digitalarchitecture.client.rest;
 
 import org.odpi.openmetadata.accessservices.digitalarchitecture.rest.*;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.OCFRESTClient;
+import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -11,9 +11,10 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 
 
 /**
- * AssetOwnerRESTClient is responsible for issuing calls to the OMAS REST APIs.
+ * DigitalArchitectureRESTClient is responsible for issuing calls to the OMAS REST APIs and managing exceptions returned in the responses.
+ * It is built on the First Failure Data Capture (FFDC) client that handles the standard exceptions.
  */
-class DigitalArchitectureRESTClient extends OCFRESTClient
+public class DigitalArchitectureRESTClient extends FFDCRESTClient
 {
     /**
      * Constructor for no authentication with audit log.
@@ -25,9 +26,9 @@ class DigitalArchitectureRESTClient extends OCFRESTClient
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    DigitalArchitectureRESTClient(String   serverName,
-                                  String   serverPlatformURLRoot,
-                                  AuditLog auditLog) throws InvalidParameterException
+    public DigitalArchitectureRESTClient(String   serverName,
+                                         String   serverPlatformURLRoot,
+                                         AuditLog auditLog) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot, auditLog);
     }
@@ -41,8 +42,8 @@ class DigitalArchitectureRESTClient extends OCFRESTClient
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    DigitalArchitectureRESTClient(String serverName,
-                                  String serverPlatformURLRoot) throws InvalidParameterException
+    public DigitalArchitectureRESTClient(String serverName,
+                                         String serverPlatformURLRoot) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot);
     }
@@ -59,11 +60,11 @@ class DigitalArchitectureRESTClient extends OCFRESTClient
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    DigitalArchitectureRESTClient(String   serverName,
-                                  String   serverPlatformURLRoot,
-                                  String   userId,
-                                  String   password,
-                                  AuditLog auditLog) throws InvalidParameterException
+    public DigitalArchitectureRESTClient(String   serverName,
+                                         String   serverPlatformURLRoot,
+                                         String   userId,
+                                         String   password,
+                                         AuditLog auditLog) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot, userId, password, auditLog);
     }
@@ -79,10 +80,10 @@ class DigitalArchitectureRESTClient extends OCFRESTClient
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    DigitalArchitectureRESTClient(String serverName,
-                                  String serverPlatformURLRoot,
-                                  String userId,
-                                  String password) throws InvalidParameterException
+    public DigitalArchitectureRESTClient(String serverName,
+                                         String serverPlatformURLRoot,
+                                         String userId,
+                                         String password) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot, userId, password);
     }
@@ -101,11 +102,11 @@ class DigitalArchitectureRESTClient extends OCFRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    ValidValueResponse callValidValueGetRESTCall(String    methodName,
-                                                 String    urlTemplate,
-                                                 Object... params) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException
+    public ValidValueResponse callValidValueGetRESTCall(String    methodName,
+                                                        String    urlTemplate,
+                                                        Object... params) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
     {
         ValidValueResponse restResult = this.callGetRESTCall(methodName, ValidValueResponse.class, urlTemplate, params);
 
@@ -127,11 +128,11 @@ class DigitalArchitectureRESTClient extends OCFRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    ValidValuesResponse callValidValuesGetRESTCall(String    methodName,
-                                                   String    urlTemplate,
-                                                   Object... params) throws InvalidParameterException,
-                                                                            UserNotAuthorizedException,
-                                                                            PropertyServerException
+    public ValidValuesResponse callValidValuesGetRESTCall(String    methodName,
+                                                          String    urlTemplate,
+                                                          Object... params) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
     {
         ValidValuesResponse restResult = this.callGetRESTCall(methodName, ValidValuesResponse.class, urlTemplate, params);
 
@@ -146,6 +147,7 @@ class DigitalArchitectureRESTClient extends OCFRESTClient
      *
      * @param methodName  name of the method being called.
      * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param requestBody properties describing the valid value definition/set
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return ValidValuesResponse
@@ -153,12 +155,12 @@ class DigitalArchitectureRESTClient extends OCFRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    ValidValuesResponse callValidValuesPostRESTCall(String    methodName,
-                                                    String    urlTemplate,
-                                                    Object    requestBody,
-                                                    Object... params) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException
+    public ValidValuesResponse callValidValuesPostRESTCall(String    methodName,
+                                                           String    urlTemplate,
+                                                           Object    requestBody,
+                                                           Object... params) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
     {
         ValidValuesResponse restResult = this.callPostRESTCall(methodName, ValidValuesResponse.class, urlTemplate, requestBody, params);
 
@@ -180,11 +182,11 @@ class DigitalArchitectureRESTClient extends OCFRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    ValidValueAssignmentConsumersResponse callValidValueAssignmentConsumersGetRESTCall(String    methodName,
-                                                                                       String    urlTemplate,
-                                                                                       Object... params) throws InvalidParameterException,
-                                                                                                                UserNotAuthorizedException,
-                                                                                                                PropertyServerException
+    public ValidValueAssignmentConsumersResponse callValidValueAssignmentConsumersGetRESTCall(String    methodName,
+                                                                                              String    urlTemplate,
+                                                                                              Object... params) throws InvalidParameterException,
+                                                                                                                       UserNotAuthorizedException,
+                                                                                                                       PropertyServerException
     {
         ValidValueAssignmentConsumersResponse restResult = this.callGetRESTCall(methodName,
                                                                                 ValidValueAssignmentConsumersResponse.class,
@@ -209,11 +211,11 @@ class DigitalArchitectureRESTClient extends OCFRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    ValidValueAssignmentDefinitionsResponse callValidValueAssignmentDefinitionsGetRESTCall(String    methodName,
-                                                                                           String    urlTemplate,
-                                                                                           Object... params) throws InvalidParameterException,
-                                                                                                                    UserNotAuthorizedException,
-                                                                                                                    PropertyServerException
+    public ValidValueAssignmentDefinitionsResponse callValidValueAssignmentDefinitionsGetRESTCall(String    methodName,
+                                                                                                  String    urlTemplate,
+                                                                                                  Object... params) throws InvalidParameterException,
+                                                                                                                           UserNotAuthorizedException,
+                                                                                                                           PropertyServerException
     {
         ValidValueAssignmentDefinitionsResponse restResult = this.callGetRESTCall(methodName,
                                                                                   ValidValueAssignmentDefinitionsResponse.class,

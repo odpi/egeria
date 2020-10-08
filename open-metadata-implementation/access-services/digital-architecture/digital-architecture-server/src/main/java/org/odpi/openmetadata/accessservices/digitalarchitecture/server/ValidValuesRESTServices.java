@@ -1073,6 +1073,8 @@ public class ValidValuesRESTServices
      * @param serverName name of calling server
      * @param userId calling user
      * @param validValueName qualified name of the valid value.
+     * @param startFrom paging starting point
+     * @param pageSize maximum number of return values.
      *
      * @return Valid value beans or
      * InvalidParameterException one of the parameters is invalid or
