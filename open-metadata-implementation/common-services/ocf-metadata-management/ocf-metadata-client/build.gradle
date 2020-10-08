@@ -6,7 +6,7 @@
 
 dependencies {
     implementation 'org.slf4j:slf4j-api:1.7.30'
-    implementation 'org.springframework:spring-core:5.2.7.RELEASE'
+    implementation 'org.springframework:spring-core:5.2.9.RELEASE'
     implementation project(':open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-api')
     implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
