@@ -36,6 +36,11 @@ public enum TexViewErrorCode implements ExceptionMessageSet
                            "The system is unable to perform the request because the service has not been initialized.",
                            "Initialize the view service retry the request."),
 
+    INVALID_CONFIG_PROPERTY(404, "OMVS-TYPE-EXPLORER-400-002",
+                            "The type explorer view service configuration has an invalid or missing property, property name {0}.",
+                            "The service is unable to initialize because the configuration is not valid or complete.",
+                            "Correct the view service configuration and restart the view server.")
+
     ;
 
     private ExceptionMessageDefinition messageDefinition;
