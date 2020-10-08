@@ -15,7 +15,7 @@ dependencies {
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
     implementation project(':open-metadata-implementation:common-services:ffdc-services')
     implementation 'org.slf4j:slf4j-api:1.7.30'
-    implementation 'org.springframework:spring-core:5.2.7.RELEASE'
+    implementation 'org.springframework:spring-core:5.2.9.RELEASE'
     implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
     testImplementation 'org.mockito:mockito-core:3.5.13'
     testImplementation 'junit:junit:4.13'

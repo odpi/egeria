@@ -9,7 +9,7 @@ dependencies {
     implementation project(':open-metadata-implementation:access-services:asset-catalog:asset-catalog-server')
     implementation project(':open-metadata-implementation:repository-services:repository-services-apis')
     implementation 'org.springframework:spring-web:5.2.9.RELEASE'
-    implementation 'org.springframework:spring-core:5.2.7.RELEASE'
+    implementation 'org.springframework:spring-core:5.2.9.RELEASE'
     implementation 'javax.validation:validation-api:2.0.1.Final'
     implementation 'io.swagger.core.v3:swagger-annotations:2.1.3'
     testImplementation 'org.mockito:mockito-core:3.5.13'
