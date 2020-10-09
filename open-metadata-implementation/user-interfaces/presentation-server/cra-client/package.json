@@ -1,5 +1,5 @@
 {
-  "name": "cra-client",
+  "name": "presentation-server-client",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -29,8 +29,13 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
-  "author": "Jacob Madsen",
-  "license": "ISC",
+  "contributors": [
+    {
+      "name": "SPDX-License-Identifier: Apache-2.0 Copyright Contributors to the ODPi Egeria project."
+    }
+  ],
+  "license": "Apache-2.0",
+  "proxy": "https://localhost:8091",
   "browserslist": {
     "production": [
       ">0.2%",
