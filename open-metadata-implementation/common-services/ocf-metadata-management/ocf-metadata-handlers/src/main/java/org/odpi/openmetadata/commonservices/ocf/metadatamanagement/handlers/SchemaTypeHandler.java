@@ -675,24 +675,21 @@ public class SchemaTypeHandler extends RootHandler
      * @throws PropertyServerException    problem accessing the property server
      */
     @Deprecated
-    public String updateSchemaAttribute(String           userId,
-                                        String           existingSchemaAttributeGUID,
-                                        SchemaAttribute  schemaAttribute) throws InvalidParameterException,
-                                                                                 PropertyServerException,
-                                                                                 UserNotAuthorizedException
+    private String updateSchemaAttribute(String           userId,
+                                         String           existingSchemaAttributeGUID,
+                                         SchemaAttribute  schemaAttribute) throws InvalidParameterException,
+                                                                                  PropertyServerException,
+                                                                                  UserNotAuthorizedException
     {
         final String methodName = "updateSchemaAttribute";
 
         SchemaAttributeBuilder builder = this.getSchemaAttributeBuilder(schemaAttribute);
 
         repositoryHandler.updateEntity(userId,
-                                       null,
-                                       null,
                                        existingSchemaAttributeGUID,
                                        this.getSchemaAttributeTypeGUID(schemaAttribute),
                                        this.getSchemaAttributeTypeName(schemaAttribute),
                                        builder.getInstanceProperties(methodName),
-                                       builder.getEntityClassifications(userId, methodName),
                                        methodName);
 
         return existingSchemaAttributeGUID;
@@ -1164,24 +1161,24 @@ public class SchemaTypeHandler extends RootHandler
      * @throws PropertyServerException    problem accessing the property server
      */
     @Deprecated
-    public void   updateSchemaType(String      userId,
-                                   String      existingSchemaTypeGUID,
-                                   SchemaType  schemaType) throws InvalidParameterException,
-                                                                  PropertyServerException,
-                                                                  UserNotAuthorizedException
+    private String updateSchemaType(String      userId,
+                                    String      existingSchemaTypeGUID,
+                                    SchemaType  schemaType) throws InvalidParameterException,
+                                                                   PropertyServerException,
+                                                                   UserNotAuthorizedException
     {
         final String methodName = "updateSchemaType";
 
         SchemaTypeBuilder schemaTypeBuilder = this.getSchemaTypeBuilder(schemaType);
 
-        repositoryHandler.updateEntityProperties(userId,
-                                                 null,
-                                                 null,
-                                                 existingSchemaTypeGUID,
-                                                 this.getSchemaTypeTypeGUID(schemaType),
-                                                 this.getSchemaTypeTypeName(schemaType),
-                                                 schemaTypeBuilder.getInstanceProperties(methodName),
-                                                 methodName);
+        repositoryHandler.updateEntity(userId,
+                                       existingSchemaTypeGUID,
+                                       this.getSchemaTypeTypeGUID(schemaType),
+                                       this.getSchemaTypeTypeName(schemaType),
+                                       schemaTypeBuilder.getInstanceProperties(methodName),
+                                       methodName);
+
+        return existingSchemaTypeGUID;
     }
 
 
