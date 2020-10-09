@@ -38,7 +38,7 @@ export default function ReadmeHandler(props) {
     props.onSubmit();
   }
 
-  const tranformImageURI = (uri) => {
+  const transformImageURI = (uri) => {
     return imageRefs[uri];
   }
 
@@ -79,7 +79,7 @@ export default function ReadmeHandler(props) {
       let resultsDisplay = (         
 
         <div>
-          <ReactMarkdown source={readme.markdown} transformImageUri={tranformImageURI}/>
+          <ReactMarkdown source={readme.markdown} transformImageUri={transformImageURI}/>
         </div>
       );
 

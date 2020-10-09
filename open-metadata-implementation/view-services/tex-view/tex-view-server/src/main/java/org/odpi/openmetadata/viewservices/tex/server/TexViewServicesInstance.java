@@ -2,12 +2,15 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.viewservices.tex.server;
 
+import org.odpi.openmetadata.adminservices.configuration.properties.ResourceEndpointConfig;
 import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstance;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.viewservices.tex.handlers.TexViewHandler;
+
+import java.util.List;
 
 
 /**
@@ -36,7 +39,8 @@ public class TexViewServicesInstance extends OMVSServiceInstance
     public TexViewServicesInstance(String       serverName,
                                    AuditLog     auditLog,
                                    String       localServerUserId,
-                                   int          maxPageSize)
+                                   int          maxPageSize,
+                                   List<ResourceEndpointConfig> resourceEndpoints)
     {
 
 
@@ -50,7 +54,7 @@ public class TexViewServicesInstance extends OMVSServiceInstance
               null);  // .... and remoteServerURL.
 
 
-        this.texViewHandler = new TexViewHandler();
+        this.texViewHandler = new TexViewHandler(resourceEndpoints);
     }
 
 
