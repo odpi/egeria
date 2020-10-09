@@ -65,11 +65,15 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
                 Ultimate Destination
             </a>
           </vaadin-tab>
-          <vaadin-tab value="glossaryLineage">
-            <a href="[[rootPath]]#/asset-lineage/glossaryLineage/[[routeData.guid]]" tabindex="-1" rel="noopener"> 
-                Glossary Lineage
-            </a>
-          </vaadin-tab>
+          <dom-if if = "[[ _displayVerticalLineageButton(item)]]">
+          <template>
+              <vaadin-tab value="verticalLineage">
+                <a href="[[rootPath]]#/asset-lineage/verticalLineage/[[routeData.guid]]" tabindex="-1" rel="noopener"> 
+                    Vertical Lineage
+                </a>
+              </vaadin-tab>
+          </template>
+          </dom-if>
           <vaadin-tab value="sourceAndDestination">
             <a href="[[rootPath]]#/asset-lineage/sourceAndDestination/[[routeData.guid]]" tabindex="-1" rel="noopener"> 
                 Source and Destination
@@ -77,15 +81,12 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
           </vaadin-tab>
         </vaadin-tabs>
         <ul id="menu"> 
-            <li> 
+            <li>
+            <div hidden = "[[_displayETLJobsToggle(routeData.usecase)]]"> 
                 <paper-toggle-button id="processToggle" checked>
                     ETL Jobs
                 </paper-toggle-button>
-            </li>
-            <li> 
-                <paper-toggle-button id="glossaryTermToggle" disabled>
-                    Glossary Terms
-                </paper-toggle-button>
+            </div>
             </li>
          </ul>
     </div>       
@@ -118,15 +119,14 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
 
             this.$.processToggle.addEventListener('change', () =>
                 this._reload(this.$.useCases.items[this.$.useCases.selected].value, this.$.processToggle.checked));
-            this.$.glossaryTermToggle.addEventListener('changed', () =>
-                this._reload(this.$.useCases.items[this.$.useCases.selected].value, this.$.processToggle.value));
+
     }
 
     static get properties() {
         return {
             usecases:{
                 type: Array,
-                value:['ultimateSource','endToEnd','ultimateDestination','glossaryLineage','sourceAndDestination' ]
+                value:['ultimateSource','endToEnd','ultimateDestination','verticalLineage','sourceAndDestination' ]
             },
             graphData: {
                 type: Object,
@@ -144,7 +144,6 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
                     hierarchical: {
                         enabled: true,
                         levelSeparation: 250,
-                        direction: 'LR'
                     }
                 }
             },
@@ -290,40 +289,6 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
                 };
             }
         }
-        if (!this._hideIncludeGlossaryTerms(this.routeData.usecase) && this.$.glossaryTermMenu.value === "false" ) {
-            var filteredNodes = [];
-            var nodesToRemove = [];
-            var filteredEdges = [];
-            for (var i = 0; i < data.nodes.length; i++) {
-                if (data.nodes[i].group !== "GlossaryTerm") {
-                    filteredNodes.push(data.nodes[i]);
-                } else {
-                    nodesToRemove.push(data.nodes[i])
-                }
-            }
-            for (var j = 0; j < data.edges.length; j++) {
-                var edgeRemoved = false;
-                for (var i = 0; i < nodesToRemove.length; i++) {
-                    if (data.edges[j].from === nodesToRemove[i].id) {
-                        for (var k = 0; k < data.edges.length; k++) {
-                            if (data.edges[k].to === nodesToRemove[i].id) {
-                                edgeRemoved = true;
-                                filteredEdges.push({
-                                    to : data.edges[j].to,
-                                    from : data.edges[k].from,
-                                    label : data.edges[k].label
-                                })
-                            }
-                        }
-                    }
-                }
-                if (edgeRemoved === false) {
-                    filteredEdges.push(data.edges[j])
-                }
-            }
-            data.nodes = filteredNodes;
-            data.edges = filteredEdges;
-        }
         this.$.visgraph.importNodesAndEdges(data.nodes, data.edges);
     }
 
@@ -354,12 +319,12 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
       this.$.tokenAjax._go();
     }
 
-    _glossaryLineage(guid, includeProcesses){
+    _verticalLineage(guid, includeProcesses){
       if (includeProcesses === null || includeProcesses === undefined) {
           includeProcesses  = "true";
       }
       this.$.visgraph.options.groups = this.groups;
-      this.$.tokenAjax.url = '/api/lineage/entities/' + guid + '/glossary-lineage?includeProcesses=' + includeProcesses;
+      this.$.tokenAjax.url = '/api/lineage/entities/' + guid + '/vertical-lineage?includeProcesses=' + includeProcesses;
       this.$.tokenAjax._go();
     }
 
@@ -376,18 +341,23 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
         if (this.routeData.guid !== undefined && this.routeData.guid !== "")
             switch (usecase) {
                 case 'ultimateSource':
+                    this.graphLayout.hierarchical.direction = 'LR'
                     this._ultimateSource(this.routeData.guid, includeProcesses);
                     break;
                 case 'endToEnd':
+                    this.graphLayout.hierarchical.direction = 'LR'
                     this._endToEndLineage(this.routeData.guid, includeProcesses);
                     break;
                 case 'ultimateDestination':
+                    this.graphLayout.hierarchical.direction = 'LR'
                     this._ultimateDestination(this.routeData.guid, includeProcesses);
                     break;
-                case 'glossaryLineage':
-                    this._glossaryLineage(this.routeData.guid, includeProcesses);
+                case 'verticalLineage':
+                    this.graphLayout.hierarchical.direction = 'DU'
+                    this._verticalLineage(this.routeData.guid, includeProcesses);
                     break;
                 case 'sourceAndDestination':
+                    this.graphLayout.hierarchical.direction = 'LR'
                     this._sourceAndDestination(this.routeData.guid, includeProcesses);
                     break;
             }
@@ -397,9 +367,18 @@ class AssetLineageView extends mixinBehaviors([ItemViewBehavior], PolymerElement
         return this.usecases.indexOf(usecase);
     }
 
-    _hideIncludeGlossaryTerms(usecase) {
-        // return !("ultimateDestination" === usecase || "ultimateSource" === usecase) ;
-        return true;
+    _displayETLJobsToggle(useCase) {
+        return useCase === "verticalLineage";
+    }
+
+    _displayVerticalLineageButton(item) {
+        var type = "";
+        if (item === undefined || item.type === undefined || item.type.name === undefined) {
+            return false;
+        } else {
+            type = item.type.name;
+        }
+        return type === 'RelationalColumn' || type === 'TabularColumn' || type === 'GlossaryTerm';
     }
 }
 

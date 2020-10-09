@@ -15,8 +15,8 @@ dependencies {
     implementation project(':open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-client')
     implementation project(':open-metadata-implementation:common-services:odf-metadata-management:odf-metadata-client')
     implementation project(':open-metadata-implementation:common-services:gaf-metadata-management:gaf-metadata-api')
-    implementation 'org.springframework:spring-core:5.2.7.RELEASE'
-    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.11.1'
+    implementation 'org.springframework:spring-core'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations'
 
 }
 

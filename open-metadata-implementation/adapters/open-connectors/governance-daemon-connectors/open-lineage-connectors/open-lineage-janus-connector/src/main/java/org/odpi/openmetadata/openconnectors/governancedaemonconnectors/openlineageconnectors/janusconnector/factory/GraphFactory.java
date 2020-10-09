@@ -2,18 +2,17 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.factory;
 
+import org.apache.commons.configuration.Configuration;
+import org.apache.commons.configuration.ConfigurationConverter;
 import org.apache.tinkerpop.gremlin.driver.Client;
 import org.apache.tinkerpop.gremlin.driver.Cluster;
 import org.apache.tinkerpop.gremlin.driver.remote.DriverRemoteConnection;
-import org.apache.tinkerpop.gremlin.driver.ser.GryoMessageSerializerV3d0;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
-import org.apache.tinkerpop.gremlin.structure.io.gryo.GryoMapper;
 import org.janusgraph.core.JanusGraph;
 import org.janusgraph.core.schema.JanusGraphManagement;
-import org.janusgraph.graphdb.tinkerpop.JanusGraphIoRegistry;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.graph.LineageGraphConnectorProvider;
@@ -26,6 +25,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -48,7 +48,6 @@ public class GraphFactory extends IndexingFactory {
     private Graph graph;
     private GraphTraversalSource g;
     private boolean supportingTransactions;
-    private Map<String,Object> properties;
     private Cluster cluster;
     private Client client;
 
@@ -120,15 +119,14 @@ public class GraphFactory extends IndexingFactory {
     private GraphTraversalSource openRemoteGraph(Map<String, Object> properties) throws JanusConnectorException{
         String methodName = "openRemoteGraph";
         this.supportingTransactions = false;
-        this.properties = properties;
 
         try {
-            cluster = createCluster();
-            client = cluster.connect();
+            cluster = openCluster(properties);
+            client = cluster.connect(); // client is used to access JanusGraph management API
             if (properties.get(LineageGraphRemoteConnectorProvider.SCHEMA_MANAGEMENT_ENABLE)!=null && properties.get(LineageGraphRemoteConnectorProvider.SCHEMA_MANAGEMENT_ENABLE).toString().equalsIgnoreCase("true")) {
                 initializeRemoteGraph(client);
             }
-            return traversal().withRemote(DriverRemoteConnection.using(cluster, this.properties.getOrDefault(LineageGraphRemoteConnectorProvider.SOURCE_NAME,"g").toString()));
+            return traversal().withRemote(DriverRemoteConnection.using(cluster, properties.getOrDefault(LineageGraphRemoteConnectorProvider.SOURCE_NAME,"g").toString()));
         } catch (Exception e) {
             log.error("A connection with the graph database could not be established with the provided configuration", e);
             JanusConnectorErrorCode errorCode = JanusConnectorErrorCode.CANNOT_OPEN_GRAPH_DB;
@@ -161,7 +159,7 @@ public class GraphFactory extends IndexingFactory {
 
             createIndexes(janusGraph);
         } catch (Exception e) {
-            log.error("{} failed  during graph initialize operation with error: ", e);
+            log.error("Failed  during graph initialize operation", e);
             JanusConnectorErrorCode errorCode = JanusConnectorErrorCode.GRAPH_INITIALIZATION_ERROR;
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(e.getMessage(), methodName, GraphFactory.class.getName());
             throw mapConnectorException(methodName, errorMessage, errorCode);
@@ -200,7 +198,7 @@ public class GraphFactory extends IndexingFactory {
             client.submit(indexCommandEdgeLabel);
 
         } catch (Exception e) {
-            log.error("{} failed  during graph initialize operation with error: ", e);
+            log.error("Failed  during graph initialize operation ", e);
             JanusConnectorErrorCode errorCode = JanusConnectorErrorCode.GRAPH_INITIALIZATION_ERROR;
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(e.getMessage(), methodName, GraphFactory.class.getName());
             throw mapConnectorException(methodName, errorMessage, errorCode);
@@ -260,55 +258,16 @@ public class GraphFactory extends IndexingFactory {
     }
 
     /**
-     * Initiates a Cluster connection with the provided configuration
+     * Creates cluster instance by directly mapping connector configuration properties to commons Configuration that uses standardized Thinker-pop Settings.
+     * More information on how to configure Gremlin Driver: https://tinkerpop.apache.org/docs/current/reference/#_configuration
      *
+     * @return Cluster object to be used by gremlin driver client.
      */
-    private Cluster createCluster() throws JanusConnectorException {
-        String methodName = "createCluster";
-        try {
-
-            GryoMapper.Builder builder = GryoMapper.build().addRegistry(JanusGraphIoRegistry.getInstance()); //TODO: Check for replacement
-            Cluster.Builder clusterBuilder = Cluster.build()
-                    .serializer(new GryoMessageSerializerV3d0(builder)); //TODO: Check this setting. Binary serializer was not working.
-            if (properties.get(LineageGraphRemoteConnectorProvider.CLUSTER_PORT) != null)
-                clusterBuilder.port(Integer.parseInt(properties.get(LineageGraphRemoteConnectorProvider.CLUSTER_PORT).toString()));
-            if (properties.get(LineageGraphRemoteConnectorProvider.CLUSTER_HOSTS) != null) {
-                String[] hosts = properties.get(LineageGraphRemoteConnectorProvider.CLUSTER_HOSTS).toString().split(",");
-                clusterBuilder.addContactPoints(hosts);
-            }
-            if (properties.get(LineageGraphRemoteConnectorProvider.CLUSTER_CREDENTIALS_USERNAME) != null && properties.get(LineageGraphRemoteConnectorProvider.CLUSTER_CREDENTIALS_USERNAME) != null)
-                clusterBuilder.credentials(properties.get(LineageGraphRemoteConnectorProvider.CLUSTER_CREDENTIALS_USERNAME).toString(), properties.get(LineageGraphRemoteConnectorProvider.CLUSTER_TRUST_STORE).toString());
-            if (properties.get(LineageGraphRemoteConnectorProvider.CLUSTER_MIN_CONNECTION_POOL_SIZE) != null)
-                clusterBuilder.minConnectionPoolSize(Integer.parseInt(properties.get(LineageGraphRemoteConnectorProvider.CLUSTER_MIN_CONNECTION_POOL_SIZE).toString()));
-            if (properties.get(LineageGraphRemoteConnectorProvider.CLUSTER_MAX_CONNECTION_POOL_SIZE) != null)
-                clusterBuilder.maxConnectionPoolSize(Integer.parseInt(properties.get(LineageGraphRemoteConnectorProvider.CLUSTER_MAX_CONNECTION_POOL_SIZE).toString()));
-            if (properties.get(LineageGraphRemoteConnectorProvider.CLUSTER_MAX_SIMULTANEOUS_USAGE_PER_CONNECTION) != null)
-                clusterBuilder.maxSimultaneousUsagePerConnection(Integer.parseInt(properties.get(LineageGraphRemoteConnectorProvider.CLUSTER_MAX_SIMULTANEOUS_USAGE_PER_CONNECTION).toString()));
-            if (properties.get(LineageGraphRemoteConnectorProvider.CLUSTER_MAX_IN_PROCESS_PER_CONNECTION) != null)
-                clusterBuilder.maxInProcessPerConnection(Integer.parseInt(properties.get(LineageGraphRemoteConnectorProvider.CLUSTER_MAX_IN_PROCESS_PER_CONNECTION).toString()));
-            if (properties.get(LineageGraphRemoteConnectorProvider.CLUSTER_SSL_ENABLE) != null && properties.get(LineageGraphRemoteConnectorProvider.CLUSTER_SSL_ENABLE).toString().equalsIgnoreCase("true")) {
-                clusterBuilder.enableSsl(true);
-                if (properties.get(LineageGraphRemoteConnectorProvider.CLUSTER_KEYSTORE_TYPE) != null)
-                    clusterBuilder.keyStoreType(properties.get(LineageGraphRemoteConnectorProvider.CLUSTER_KEYSTORE_TYPE).toString());
-                if (properties.get(LineageGraphRemoteConnectorProvider.CLUSTER_KEYSTORE) != null)
-                    clusterBuilder.keyStore(properties.get(LineageGraphRemoteConnectorProvider.CLUSTER_KEYSTORE).toString());
-                if (properties.get(LineageGraphRemoteConnectorProvider.CLUSTER_KEYSTORE_PASSWORD) != null)
-                    clusterBuilder.keyStorePassword(properties.get(LineageGraphRemoteConnectorProvider.CLUSTER_KEYSTORE_PASSWORD).toString());
-                if (properties.get(LineageGraphRemoteConnectorProvider.CLUSTER_SSL_SKIP_VALIDATION) != null)
-                    clusterBuilder.sslSkipCertValidation(properties.get(LineageGraphRemoteConnectorProvider.CLUSTER_SSL_SKIP_VALIDATION).toString().equalsIgnoreCase("true"));
-                if (properties.get(LineageGraphRemoteConnectorProvider.CLUSTER_TRUST_STORE) != null)
-                    clusterBuilder.trustStore(properties.get(LineageGraphRemoteConnectorProvider.CLUSTER_TRUST_STORE).toString());
-                if (properties.get(LineageGraphRemoteConnectorProvider.CLUSTER_TRUST_STORE_PASSWORD) != null)
-                    clusterBuilder.trustStorePassword(properties.get(LineageGraphRemoteConnectorProvider.CLUSTER_TRUST_STORE_PASSWORD).toString());
-            }
-            return clusterBuilder.create();
-        }
-        catch (Exception e){
-            log.error("Cluster initiation for remote connection to the graph  failed with error: ", e);
-            JanusConnectorErrorCode errorCode = JanusConnectorErrorCode.GRAPH_CLUSTER_INIT_FAILED;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(e.getMessage(), methodName, GraphFactory.class.getName());
-            throw mapConnectorException(methodName, errorMessage, errorCode);
-        }
+    private Cluster openCluster(Map configurationProperties) {
+        Properties p = new Properties();
+        p.putAll(configurationProperties);
+        Configuration config = ConfigurationConverter.getConfiguration(p);
+        return Cluster.open(config);
     }
 
     /**

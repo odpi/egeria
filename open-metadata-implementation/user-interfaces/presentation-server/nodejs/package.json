@@ -43,6 +43,7 @@
     "react-cookie": "^4.0.3",
     "react-dom": "^16.13.1",
     "react-json-pretty": "^2.2.0",
+    "react-markdown": "^4.3.1",
     "react-router-dom": "^5.2.0",
     "sass-loader": "^8.0.2",
     "use-debounce": "^3.4.3",
@@ -70,6 +71,6 @@
     "url-loader": "^1.0.1",
     "webpack": "4.42.0",
     "webpack-cli": "^3.3.12",
-    "webpack-dev-server": "3.10.3"
+    "webpack-dev-server": "^3.11.0"
   }
 }

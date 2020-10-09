@@ -58,7 +58,7 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
     
     private final long messageProcessingStatusCheckIntervalMs;
     private final long messageProcessingTimeoutMs;
-    private Map<TopicPartition, Queue<KafkaIncomingEvent>> unprocessedEventQueues = new HashMap<>();
+    private final Map<TopicPartition, Queue<KafkaIncomingEvent>> unprocessedEventQueues = new HashMap<>();
     
 
     
@@ -114,7 +114,7 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
         if (value == null) {
             return defaultValue;
         }
-       return Boolean.valueOf(value).booleanValue();
+       return Boolean.parseBoolean(value);
     }
 
 

@@ -63,7 +63,7 @@ public class TermFVT {
     }
     public TermFVT(String url,String serverName,String userId) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         SubjectAreaRestClient client = new SubjectAreaRestClient(serverName, url);
-        subjectAreaTerm = new SubjectAreaTermClient(client);
+        subjectAreaTerm = new SubjectAreaTermClient<>(client);
         System.out.println("Create a glossary");
         glossaryFVT = new GlossaryFVT(url,serverName,userId);
         this.userId=userId;
@@ -283,7 +283,13 @@ public class TermFVT {
         if (createdTerm7.isObjectIdentifier() == false) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected isObjectIdentifier to be true ");
         }
+        // make sure there is a term with the name
+         createTerm(DEFAULT_TEST_TERM_NAME, glossaryGuid);
 
+        Term termForUniqueQFN2= createTerm(DEFAULT_TEST_TERM_NAME, glossaryGuid);
+        if (termForUniqueQFN2 == null || termForUniqueQFN2.equals("")) {
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected qualified name to be set");
+        }
     }
 
     public  Term createTerm(String termName, String glossaryGuid) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {

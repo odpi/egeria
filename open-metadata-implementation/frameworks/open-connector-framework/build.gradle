@@ -5,11 +5,11 @@
 
 
 dependencies {
-    implementation 'org.slf4j:slf4j-api:1.7.30'
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.1'
-    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.11.1'
+    implementation 'org.slf4j:slf4j-api'
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations'
     implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
-    testImplementation 'org.testng:testng:7.1.0'
+    testImplementation 'org.testng:testng'
 }
 
 description = 'Open Connector Framework (OCF)'
