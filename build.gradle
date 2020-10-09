@@ -24,7 +24,6 @@ buildscript {
 plugins {
         //id "nebula.lint" version "16.9.0"
         //id "nebula-aggregate-javadocs'" "
-        id "io.spring.dependency-management" version "1.0.10.RELEASE"
     }
 
 //apply plugin: 'nebula-aggregate-javadocs'
@@ -48,7 +47,6 @@ allprojects {
     //    rules = ['all-dependency'] // TODO: Change to criticalRules when ready to enforce
     //    
     //}
-
 }
 
 /* 
@@ -66,7 +64,6 @@ subprojects {
     apply plugin: 'maven-publish'
 
     // In a few cases we need dependencies from outside the tree - mostly just hadoop binding (and the pom)
-
     // Use JCenter for performance, and our own official build snapshots for gaian/ranger/derby & main egeria BOM for version fixing
     repositories {
         jcenter()
@@ -74,19 +71,9 @@ subprojects {
         //mavenLocal()
         }
 
-    //dependencies {
-    ////    testImplementation 'org.slf4j:slf4j-simple'
-    ////}
-
     /*
      * Dependency Management - to fix versions. Pick up maven build settings for now
      */
-    //TODO: Migrate to native gradle dependency project - but for now this keeps us in-sync with maven
-    //dependencyManagement {
-    //     imports {
-    //          mavenBom 'org.odpi.egeria:egeria:2.4-SNAPSHOT'
-    //     }
-    //}
     dependencies {
         constraints {
             //implementation("com.ibm.gaiandb:gaian":"")
@@ -150,6 +137,7 @@ subprojects {
             implementation("org.codehaus.groovy:groovy-templates:3.0.6")
             implementation("org.codehaus.groovy:groovysh:3.0.6")
             implementation("org.codehaus.plexus:plexus-utils:3.3.0")
+            implementation("org.elasticsearch:elasticsearch:7.9.2")
             implementation("org.hdrhistogram:HdrHistogram:2.1.12")
             implementation("org.janusgraph:janusgraph-core:0.5.2")
             implementation("org.janusgraph:janusgraph-driver:0.5.2")

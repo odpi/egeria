@@ -3,7 +3,6 @@
  * Copyright Contributors to the ODPi Egeria project.
  */
 
-
 dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-core'
     implementation project(':open-metadata-implementation:admin-services:admin-services-api')
