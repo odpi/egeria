@@ -28,19 +28,16 @@ import TypesContextProvider            from "./contexts/TypesContext";
  */
 import InstancesContextProvider        from "./contexts/InstancesContext";
 
-
-
-import ConnectionDetails               from "./components/connection-details/ConnectionDetails";
 import InstanceRetrieval               from "./components/instance-retrieval/InstanceRetrieval";
 import InstanceSearch                  from "./components/instance-retrieval/InstanceSearch";
 import DetailsPanel                    from "./components/details-panel/DetailsPanel";
 import DiagramManager                  from "./components/diagram/DiagramManager";
 import GraphControls                   from "./components/graph-controls/GraphControls";
-import ReadmeHandler                            from "./ReadmeHandler";
-
-import QuestionMarkImage                        from "./question-mark-32.png";
-
-import ReadmeMarkdown                           from './README.md';
+import ServerSelector                  from "./components/resource-selection/ServerSelector";
+import EnterpriseControl               from "./components/resource-selection/EnterpriseControl";
+import HelpHandler                     from "./HelpHandler";
+import QuestionMarkImage               from "./question-mark-32.png";
+import HelpMarkdown                    from './HELP.md';
 
 import "./rex.scss";
 
@@ -54,11 +51,11 @@ export default function RepositoryExplorer() {
   /*
    * Height and width are stateful, so will cause a re-render.
    */
-  const [cltHeight, setCltHeight] = useState(document.documentElement.clientHeight);
-  const [cltWidth, setCltWidth]   = useState(document.documentElement.clientWidth);
+  const [cltHeight, setCltHeight]       = useState(document.documentElement.clientHeight);
+  const [cltWidth, setCltWidth]         = useState(document.documentElement.clientWidth);
 
-  const [readme, setReadme]             = useState( { markdown : '' } );
-  const [readmeStatus, setReadmeStatus] = useState("idle");
+  const [help, setHelp]             = useState( { markdown : '' } );
+  const [helpStatus, setHelpStatus] = useState("idle");
 
   let workingHeight = cltHeight - 50;
   let workingWidth  = cltWidth - 265;
@@ -80,16 +77,16 @@ export default function RepositoryExplorer() {
     containerDiv.current.style.width=""+workingWidth+"px";
   }
 
-  const displayReadme = () => {
-    setReadmeStatus("complete");
+  const displayHelp = () => {
+    setHelpStatus("complete");
   }
 
-  const cancelReadmeModal = () => {
-    setReadmeStatus("idle");
+  const cancelHelpModal = () => {
+    setHelpStatus("idle");
   };
 
-  const submitReadmeModal = () => {
-    setReadmeStatus("idle");
+  const submitHelpModal = () => {
+    setHelpStatus("idle");
   };
 
 
@@ -113,7 +110,7 @@ export default function RepositoryExplorer() {
   useEffect(
     () => {
       // Get the content of the markdown file and save it in 'readme'.
-      fetch(ReadmeMarkdown).then(res => res.text()).then(text => setReadme({ markdown: text }));
+      fetch(HelpMarkdown).then(res => res.text()).then(text => setHelp({ markdown: text }));
     },
     [] /* run effect once only */
   )
@@ -135,18 +132,19 @@ export default function RepositoryExplorer() {
                   <p>Repository Explorer</p>
 
                   <input type="image"  src={QuestionMarkImage}
-                     onClick = { () => displayReadme() }  >
+                     onClick = { () => displayHelp() }  >
                   </input>
 
-                  <ReadmeHandler   status              = { readmeStatus }
-                                   readme              = { readme }
-                                   onCancel            = { cancelReadmeModal }
-                                   onSubmit            = { submitReadmeModal } />
+                  <HelpHandler   status              = { helpStatus }
+                                   help                = { help }
+                                   onCancel            = { cancelHelpModal }
+                                   onSubmit            = { submitHelpModal } />
 
+                  <EnterpriseControl/>
                 </div>
 
                 <div className="rex-top-left">
-                  <ConnectionDetails />
+                  <ServerSelector />
                 </div>
 
                 <div className="rex-top-middle">

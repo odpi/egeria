@@ -1,17 +1,17 @@
-import React, { useContext, useState, useRef } from "react";
-
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
-import PropTypes                       from "prop-types";
+import React, { useContext, useState, useRef } from "react";
 
-import { InstancesContext }            from "../../contexts/InstancesContext";
+import PropTypes                               from "prop-types";
 
-import { RepositoryServerContext }     from "../../contexts/RepositoryServerContext";
+import { InstancesContext }                    from "../../contexts/InstancesContext";
 
-import FilterManager                   from "./FilterManager";
+import { RepositoryServerContext }             from "../../contexts/RepositoryServerContext";
 
-import SearchResultHandler             from "./SearchResultHandler";
+import FilterManager                           from "./FilterManager";
+
+import SearchResultHandler                     from "./SearchResultHandler";
 
 import "./instance-retriever.scss"
 
