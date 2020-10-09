@@ -22,12 +22,12 @@ dependencies {
     implementation 'org.apache.commons:commons-collections4:4.4'
     implementation 'org.springframework:spring-web:5.2.9.RELEASE'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.1'
-    implementation 'com.fasterxml.jackson.core:jackson-core:2.11.1'
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.11.3'
     implementation 'org.apache.commons:commons-lang3:3.11'
     testImplementation 'org.testng:testng:7.1.0'
     testImplementation 'org.mockito:mockito-junit-jupiter:3.5.13'
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.2'
-    testImplementation 'org.mockito:mockito-core:3.4.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testImplementation 'org.mockito:mockito-core:3.5.13'
     implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
     implementation project(':open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-api')
     implementation project(':open-metadata-implementation:access-services:data-engine:data-engine-topic-connectors')

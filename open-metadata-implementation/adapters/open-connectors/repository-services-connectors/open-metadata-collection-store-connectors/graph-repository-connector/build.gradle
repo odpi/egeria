@@ -9,7 +9,7 @@ dependencies {
     implementation 'org.janusgraph:janusgraph-driver:0.5.2'
     implementation 'org.slf4j:slf4j-api:1.7.30'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.1'
-    implementation 'com.fasterxml.jackson.core:jackson-core:2.11.1'
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.11.3'
     implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
     implementation project(':open-metadata-implementation:repository-services:repository-services-apis')
@@ -22,7 +22,7 @@ dependencies {
     runtimeOnly 'org.janusgraph:janusgraph-cql:0.5.2'
     runtimeOnly 'joda-time:joda-time:2.10.6'
     runtimeOnly 'org.antlr:antlr-runtime:3.5.2'
-    runtimeOnly 'org.xerial.snappy:snappy-java:1.1.7.6'
+    runtimeOnly 'org.xerial.snappy:snappy-java:1.1.7.7'
     implementation 'com.fasterxml.jackson.core:jackson-annotations:2.11.1'
 
 }
