@@ -39,8 +39,20 @@ const serverTypes = [
     label: "Security Officer Server"
   },
   {
-    id: "integration-server",
-    label: "Integration Server"
+    id: "data-platform-server",
+    label: "Data Platform Server"
+  },
+  {
+    id: "virtualizer",
+    label: "Virtualizer"
+  },
+  {
+    id: "data-engine-proxy",
+    label: "Data Engine Proxy"
+  },
+  {
+    id: "security-sync-server",
+    label: "Security Sync Server"
   }
 ]
 

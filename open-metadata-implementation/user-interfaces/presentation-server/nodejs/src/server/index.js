@@ -500,8 +500,8 @@ app.post("/open-metadata/admin-services/*", (req, res) => {
       key: key,
       rejectUnauthorized: false,
     }),
-    data: config,
   }
+  if (config) apiReq.data = config;
   axios(apiReq)
     .then(function (response) {
       const resBody = response.data;
@@ -516,6 +516,41 @@ app.post("/open-metadata/admin-services/*", (req, res) => {
       console.log(error);
       res.status(400).send(error);
     });
+});
+
+
+// Handle platform services
+app.get("/open-metadata/platform-services/*", (req, res) => {
+  const incomingPath = req.path;
+  console.log("/open-metadata/platform-services/* get called " + incomingPath);
+  // if (!(validateAdminURL(incomingPath))) {
+  //   res.status(400).send("Error, invalid supplied URL: " + incomingPath);
+  //   return;
+  // }
+  const urlRoot = servers[req.query.tenantId].remoteURL;
+  const apiReq = {
+    method: 'get',
+    url: urlRoot + incomingPath,
+    httpsAgent: new https.Agent({
+      // ca: - at some stage add the certificate authority
+      cert: cert,
+      key: key,
+      rejectUnauthorized: false,
+    }),
+  }
+  axios(apiReq)
+    .then(function (response) {
+      const resBody = response.data;
+      if (resBody.relatedHTTPCode == 200) {
+        res.json(resBody);
+      } else {
+        throw new Error(resBody.exceptionErrorMessage)
+      }
+    })
+    .catch(function (error) {
+      console.error({error});
+      res.status(400).send(error);
+    })
 });
 
 

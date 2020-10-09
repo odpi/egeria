@@ -1,0 +1,23 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
+
+.customAccordionItem > div.bx--accordion__content {
+  // padding-right: 1rem;
+  // padding-top: 0;
+  // padding-bottom: 0;
+  padding: 0;
+}
+
+.customStructuredListHeader {
+  vertical-align: baseline;
+}
+
+.expanded-td > td {
+  padding-top: 16px;
+  padding-bottom: 16px;
+  padding-left: 64px;
+}
+
+.bx--structured-list:first-child {
+  border-top: 1px solid #e0e0e0;
+}

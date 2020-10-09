@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
-export default function generateServerConfig(options) {
+export default function generateBasicServerConfig(options) {
 
   const {
     newServerName,
