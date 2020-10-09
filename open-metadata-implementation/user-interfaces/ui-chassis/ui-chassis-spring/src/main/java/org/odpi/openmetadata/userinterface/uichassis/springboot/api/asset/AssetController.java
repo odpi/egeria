@@ -33,13 +33,17 @@ public class AssetController {
      */
     @GetMapping( path = "/search")
     public List<AssetElements> searchAssets(@RequestParam("q") String searchCriteria,
-                                            @RequestParam("types") List<String> types)
+                                            @RequestParam("types") List<String> types,
+                                            @RequestParam(defaultValue="0") Integer from,
+                                            @RequestParam(defaultValue="10") Integer pageSize)
             throws PropertyServerException, InvalidParameterException {
         String user = SecurityContextHolder.getContext().getAuthentication().getName();
         SearchParameters searchParameters = new SearchParameters();
         if(CollectionUtils.isNotEmpty(types) ) {
             searchParameters.setEntityTypes(types);
         }
+        searchParameters.setPageSize(pageSize);
+        searchParameters.setFrom(from);
         return assetCatalogOMASService.searchAssets(user, searchCriteria, searchParameters);
     }
 
