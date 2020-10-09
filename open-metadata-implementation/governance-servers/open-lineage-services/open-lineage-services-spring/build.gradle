@@ -7,7 +7,7 @@
 dependencies {
     implementation project(':open-metadata-implementation:common-services:ffdc-services')
     implementation 'org.springframework:spring-web:5.2.9.RELEASE'
-    implementation 'org.springframework:spring-context:5.2.7.RELEASE'
+    implementation 'org.springframework:spring-context:5.2.9.RELEASE'
     implementation project(':open-metadata-implementation:governance-servers:open-lineage-services:open-lineage-services-api')
     implementation project(':open-metadata-implementation:governance-servers:open-lineage-services:open-lineage-services-server')
     implementation 'io.swagger.core.v3:swagger-annotations:2.1.3'

@@ -20,7 +20,7 @@ dependencies {
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
     implementation 'org.springframework.boot:spring-boot-autoconfigure:2.3.1.RELEASE'
     implementation 'org.springframework:spring-webmvc:5.2.9.RELEASE'
-    implementation 'org.springframework:spring-context:5.2.7.RELEASE'
+    implementation 'org.springframework:spring-context:5.2.9.RELEASE'
     implementation 'org.springframework.security:spring-security-config:5.4.0'
     implementation 'org.springframework.security:spring-security-core:5.3.3.RELEASE'
     implementation 'org.springframework:spring-web:5.2.7.RELEASE'
