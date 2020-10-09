@@ -3,8 +3,8 @@
 
 package org.odpi.openmetadata.accessservices.analyticsmodeling.test.utils;
 
-import static org.junit.Assert.assertFalse;
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.fail;
 
 import java.io.ByteArrayOutputStream;
@@ -103,7 +103,7 @@ public class TestUtilities {
 			return;
 		}
 		
-		assertFalse("Not unique guid.", guids.contains(guid.getValue()));
+		assertFalse(guids.contains(guid.getValue()), "Not unique guid.");
 		
 		guids.add(guid.getValue());		// mark as guid that had been processed
 		guid.setValue(generateGUID(object));	// set predefined guid value
