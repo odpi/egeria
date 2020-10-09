@@ -85,7 +85,7 @@ public class ConfigViewServicesResource
 
     /**
      * Enable all view services that are registered with this server platform.
-     * The view services are set up to use the default event bus.
+     *
      *
      * @param userId      user that is issuing the request.
      * @param serverName  local server name.

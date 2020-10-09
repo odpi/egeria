@@ -152,7 +152,7 @@ public class ConfigAccessServicesResource
 
 
     /**
-     * Retrieve the topic names for this access service
+     * Retrieve the topic names for all access services
      *
      * @param userId                user that is issuing the request.
      * @param serverName            local server name.
