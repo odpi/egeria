@@ -5,7 +5,7 @@
 
 
 dependencies {
-    implementation 'org.slf4j:slf4j-api:1.7.30'
+    implementation 'org.slf4j:slf4j-api'
     implementation project(':open-metadata-implementation:admin-services:admin-services-api')
     implementation project(':open-metadata-implementation:admin-services:admin-services-registration')
     implementation project(':open-metadata-implementation:admin-services:admin-services-client')
@@ -28,7 +28,7 @@ dependencies {
     implementation project(':open-metadata-implementation:governance-servers:data-platform-services:data-platform-services-server')
     implementation project(':open-metadata-implementation:governance-servers:stewardship-engine-services:stewardship-engine-services-server')
     implementation project(':open-metadata-implementation:common-services:metadata-security:metadata-security-apis')
-    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.11.1'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations'
 
 }
 
