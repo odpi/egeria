@@ -10,11 +10,11 @@ dependencies {
     implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
     implementation project(':open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-api')
-    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.11.1'
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.1'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations'
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
     implementation project(':open-metadata-implementation:frameworks:open-discovery-framework')
     testImplementation project(':open-metadata-test:open-metadata-ut')
-    testImplementation 'org.testng:testng:7.1.0'
+    testImplementation 'org.testng:testng'
 }
 
 description = 'Asset Owner OMAS API'
