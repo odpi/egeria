@@ -20,7 +20,7 @@ repositories {
 
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot:2.3.1.RELEASE'
+    implementation 'org.springframework.boot:spring-boot:2.3.4.RELEASE'
   	testImplementation('org.springframework.boot:spring-boot-starter-test')
     implementation 'org.springframework.boot:spring-boot-autoconfigure:2.3.1.RELEASE'
     //TODO: readd implementation 'org.springframework.boot:spring-boot-starter-actuator:2.3.1.RELEASE'
