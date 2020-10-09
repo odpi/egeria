@@ -214,11 +214,11 @@ public class ConfigAccessServicesResource
 
 
     /**
-     * Retrieve the config for an access service.
+     * Remove the config for an access service.
      *
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
-     * @param serviceURLMarker string indicating which access service it is configuring
+     * @param serviceURLMarker string indicating which access service to clear
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName parameter or
