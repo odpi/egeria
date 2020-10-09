@@ -16,7 +16,7 @@ dependencies {
     implementation project(':open-metadata-implementation:common-services:odf-metadata-management:odf-metadata-api')
     implementation project(':open-metadata-implementation:common-services:odf-metadata-management:odf-metadata-client')
     implementation project(':open-metadata-implementation:repository-services:repository-services-apis')
-    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.11.1'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations'
 
 }
 

@@ -193,7 +193,7 @@
         <javassist.version>3.27.0-GA</javassist.version>
         <httpcore.version>4.4.13</httpcore.version>
         <httpclient.version>4.5.13</httpclient.version>
-
+        <commons-configuration.version>1.10</commons-configuration.version>
         <!-- Versions of plugins -->
         <enunciate-maven-plugin.version>2.10.1</enunciate-maven-plugin.version>
         <maven-javadoc-plugin.version>3.2.0</maven-javadoc-plugin.version>
@@ -433,6 +433,20 @@
                 <artifactId>tinkergraph-gremlin</artifactId>
                 <scope>compile</scope>
                 <version>${gremlin.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.janusgraph</groupId>
+                <artifactId>janusgraph-driver</artifactId>
+                <version>${janus.version}</version>
+                <scope>compile</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-configuration</groupId>
+                <artifactId>commons-configuration</artifactId>
+                <version>${commons-configuration.version}</version>
+                <scope>compile</scope>
             </dependency>
 
             <dependency>
