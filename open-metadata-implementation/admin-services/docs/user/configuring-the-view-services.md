@@ -179,7 +179,7 @@ You would need to replace the `<hostname>` and `<port>` variables with your own 
 
 ## Administrative Operations
 
-### 0. List the different types of view services supported by a platform
+### List the different types of view services supported by a platform
 
 It is possible to list the registered view services for an [OMAG Server Platform](../concepts/omag-server-platform.md)
 using the following command.
@@ -229,7 +229,7 @@ some of the operations described below.
 
 
 
-### 1. List the view services configured on a server
+### List the view services configured on a server
 
 It is possible to list the configured view services for an [OMAG Server](../concepts/omag-server.md)
 using the following command.
@@ -271,7 +271,7 @@ These view services are available to configure either together or individually.
 
 
 
-### 2. Clear all the view services configured on a server
+### Clear all the view services configured on a server
 
 All the view services configured on a server can be cleared with the following command.
 
@@ -280,24 +280,7 @@ DELETE {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/
 ```
 
 
-### 3. Enable all the view services configured on a server ISSUE 3836 - CANNOT SEE HOW THIS WILL WORK UNLESS THE BODY IS A LIST OF V S CONFIGS
-To enable all of the view services configured on a server.
-They will be configured with the supplied remote OMAG Server name {remoteServerName} and platform root url {remoteServerURLRoot}, use the following command.
-
-```
-POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/view-services
-```
-With body : 
-```
-{ 
-    "class":"ViewServiceConfig",
-    "omagserverName":{remoteServerName},
-    "omagserverPlatformRootURL":{remoteServerURLRoot}",
-}
-```
-
-
-### 4. Get the configuration of a specific view service ISSUE 3836 - MISSING FROM API
+### Get the configuration of a specific view service
 ```
 GET {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/view-services/{serviceURLMarker}
 ```
@@ -306,7 +289,7 @@ The response will be a ViewServiceConfigResponse containing a ViewServiceConfig 
 
 
 
-### 5. Set the configuration for a specific view service
+### Set the configuration for a specific view service
 A specific view service can be individually configured with the following command:
 
 ```
@@ -318,7 +301,7 @@ The request body must contain a ViewServiceConfig object.
 The service URL marker for a service can be found using [List Configured View Services](#list-the-view-services-configured-on-a-server).
 
 
-### 6. Clear the configuration for a specific view service ISSUE 3836 - MISSING FROM API
+### Clear the configuration for a specific view service
 A specific view service can be individually cleared with the following command. This will remove the view service's configuration from the server.
 
 ```
@@ -328,7 +311,7 @@ DELETE {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/
 The service URL marker for a service can be found using [List Configured View Services](#list-the-view-services-configured-on-a-server).
 
 
-### 7. Set the configuration for selected view services on a server
+### Set the configuration for selected view services on a server
 
 It is possible to set the current configuration for a set of view services, using the following command.
 ```
@@ -336,7 +319,7 @@ POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{s
 ```
 The request body must contain a list of ViewServiceConfig objects.
 
-### 8. Retrieve the current configuration for all configured view services
+### Retrieve the current configuration for all configured view services
 
 It is possible to retrieve the current configuration for all configured view services.
 
