@@ -11,7 +11,7 @@ dependencies {
     implementation project(':open-metadata-implementation:repository-services:repository-services-apis')
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.1'
     implementation 'commons-io:commons-io:2.8.0'
-    testImplementation 'org.testng:testng:7.1.0'
+    testImplementation 'org.testng:testng:7.3.0'
 }
 
 description = 'Cohort Registry File Store'

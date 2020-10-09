@@ -12,7 +12,7 @@ dependencies {
     implementation project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-archive-connectors:open-metadata-archive-file-connector')
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.1'
     implementation 'commons-io:commons-io:2.8.0'
-    testImplementation 'org.testng:testng:7.1.0'
+    testImplementation 'org.testng:testng:7.3.0'
 }
 
 description = 'Repository Services Archive Utilities'

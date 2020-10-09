@@ -12,7 +12,7 @@ dependencies {
     implementation project(':open-metadata-implementation:common-services:ffdc-services')
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
     testImplementation project(':open-metadata-test:open-metadata-ut')
-    testImplementation 'org.testng:testng:7.1.0'
+    testImplementation 'org.testng:testng:7.3.0'
 }
 
 description = 'Administration Services API'
