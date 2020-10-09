@@ -7,8 +7,8 @@
 dependencies {
     implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.1'
-    implementation 'org.testng:testng:7.1.0'
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
+    implementation 'org.testng:testng'
 }
 
 description = 'Open Metadata Unit Test Utilities'

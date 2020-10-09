@@ -5,9 +5,9 @@
 
 
 dependencies {
-    implementation 'org.slf4j:slf4j-api:1.7.30'
-    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.11.1'
-    testImplementation 'org.testng:testng:7.1.0'
+    implementation 'org.slf4j:slf4j-api'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations'
+    testImplementation 'org.testng:testng'
 }
 
 description = 'Audit Log Framework (ALF)'
