@@ -10,7 +10,7 @@ dependencies {
     implementation project(':open-metadata-implementation:repository-services:repository-services-apis')
     implementation 'commons-io:commons-io:2.8.0'
     implementation 'org.slf4j:slf4j-api:1.7.30'
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.1'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.3'
 }
 
 description = 'Audit Log File Connector'

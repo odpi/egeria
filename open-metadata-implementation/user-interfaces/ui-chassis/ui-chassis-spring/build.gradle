@@ -31,7 +31,7 @@ dependencies {
     implementation 'io.micrometer:micrometer-registry-prometheus:1.5.2'
     implementation 'jakarta.persistence:jakarta.persistence-api:2.2.3'
     implementation 'org.springframework:spring-beans:5.2.9.RELEASE'
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.1'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.3'
     implementation 'javax.xml.bind:jaxb-api:2.3.1'
     implementation 'com.fasterxml.jackson.core:jackson-annotations:2.11.1'
     implementation 'org.slf4j:slf4j-api:1.7.30'

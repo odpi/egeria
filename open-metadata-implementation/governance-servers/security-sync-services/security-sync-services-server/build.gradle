@@ -11,7 +11,7 @@ dependencies {
     implementation 'org.springframework:spring-web:5.2.9.RELEASE'
     implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.1'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.3'
     implementation 'org.slf4j:slf4j-api:1.7.30'
     implementation project(':open-metadata-implementation:repository-services:repository-services-apis')
     implementation project(':open-metadata-implementation:access-services:governance-engine:governance-engine-api')

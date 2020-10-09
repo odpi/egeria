@@ -8,7 +8,7 @@ dependencies {
     implementation 'org.janusgraph:janusgraph-core:0.5.2'
     implementation 'org.janusgraph:janusgraph-driver:0.5.2'
     implementation 'org.slf4j:slf4j-api:1.7.30'
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.1'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.3'
     implementation 'com.fasterxml.jackson.core:jackson-core:2.11.3'
     implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
