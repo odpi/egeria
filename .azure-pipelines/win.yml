@@ -1,0 +1,47 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the ODPi Egeria project.
+---
+trigger:
+  branches:
+    include:
+      - master
+      - egeria-release-*
+pr: none
+
+variables:
+  - group: Artifactory
+
+stages:
+  - stage: Verify
+    jobs:
+      - job: VerifyBuild
+        pool:
+          vmImage: 'windows-latest'
+        strategy:
+          matrix:
+            #Java8:
+            #  JAVA_VERSION: '1.8'
+            Java11:
+              JAVA_VERSION: '1.11'
+        steps:
+          - task: Maven@3
+            inputs:
+              mavenPomFile: 'pom.xml'
+              mavenOptions: '-XX:TieredStopAtLevel=1'
+              javaHomeOption: 'JDKVersion'
+              jdkVersionOption: $(JAVA_VERSION)
+              jdkArchitectureOption: 'x64'
+              goals: 'clean deploy'
+              options: >-
+                  --batch-mode
+                  -e
+                  -s .m2/settings.xml
+                  -Dstream=$(System.PullRequest.TargetBranch)
+                  -DaltDeploymentRepository=staging::default::file:$(Agent.BuildDirectory)/local-repo
+                  -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+                  -Dmaven.source.skip=true
+          - publish: target
+            artifact: target-$(Build.BuildNumber)_Java-$(JAVA_VERSION)_Windows
+            condition: always()
+          - publish: $(Agent.BuildDirectory)/local-repo
+            artifact: org.odpi.egeira-$(Build.BuildNumber)_Java-$(JAVA_VERSION)_Windows
