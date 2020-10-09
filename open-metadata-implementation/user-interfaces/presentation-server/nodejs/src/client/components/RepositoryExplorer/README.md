@@ -15,4 +15,3 @@ For information on how to configure the presentation server refer to the Admin G
 
 For information on how to configure the view services refer to the Admin Guide section on and [Configuring the view services](../../../../../../../admin-services/docs/user/configuring-the-view-services.md).
 
-
