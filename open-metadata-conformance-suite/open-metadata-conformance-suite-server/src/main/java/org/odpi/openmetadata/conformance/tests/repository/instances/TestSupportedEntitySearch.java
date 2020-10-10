@@ -95,7 +95,6 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
     private static final String V_NULL = "null";
 
     private RepositoryConformanceWorkPad              workPad;
-    private String                                    metadataCollectionId;
     private OMRSMetadataCollection                    metadataCollection;
     private EntityDef                                 entityDef;
     private List<TypeDefAttribute>                    attrList;
@@ -129,7 +128,6 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
               RepositoryConformanceProfileRequirement.ENTITY_PROPERTY_SEARCH.getRequirementId());
 
         this.workPad = workPad;
-        this.metadataCollectionId = workPad.getTutMetadataCollectionId();
         this.entityDef = entityDef;
 
         this.testTypeName = this.updateTestIdByType(entityDef.getName(), TEST_CASE_ID, TEST_CASE_NAME);
@@ -157,10 +155,8 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
          */
         OMRSRepositoryConnector cohortRepositoryConnector = null;
         OMRSRepositoryHelper repositoryHelper = null;
-        if (workPad != null) {
-            cohortRepositoryConnector = workPad.getTutRepositoryConnector();
-            repositoryHelper = cohortRepositoryConnector.getRepositoryHelper();
-        }
+        cohortRepositoryConnector = workPad.getTutRepositoryConnector();
+        repositoryHelper = cohortRepositoryConnector.getRepositoryHelper();
 
         EntityDef knownEntityDef = (EntityDef) repositoryHelper.getTypeDefByName(workPad.getLocalServerUserId(), entityDef.getName());
         verifyCondition((entityDef.equals(knownEntityDef)),
@@ -1278,11 +1274,10 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
          */
 
         Set<Object> possibleValues = propertyValueMap.get(attributeName).keySet();
-        Iterator<Object> possibleValueIterator = possibleValues.iterator();
 
-        while (possibleValueIterator.hasNext()) {
+        for (Object possibleValue : possibleValues) {
 
-            String stringValue = (String) (possibleValueIterator.next());
+            String stringValue = (String) possibleValue;
             String truncatedStringValue = null;
             String literalisedValue = null;
             int stringValueLength;
@@ -1311,7 +1306,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                         return; /* not a long enough string to perform a meaningful test */
                     }
                     truncatedLength = (int) (Math.ceil(stringValueLength / 2.0));
-                    truncatedStringValue = stringValue.substring(stringValueLength-truncatedLength, stringValueLength);
+                    truncatedStringValue = stringValue.substring(stringValueLength - truncatedLength, stringValueLength);
                     literalisedValue = literaliseStringPropertyEndsWith(truncatedStringValue);
                     break;
                 case Contains:
@@ -1322,8 +1317,8 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                     }
                     truncatedLength = (int) (Math.floor(stringValueLength / 2.0));
                     int diff = stringValueLength - truncatedLength;
-                    int halfDiff = diff/2;
-                    truncatedStringValue = stringValue.substring(halfDiff, stringValueLength-halfDiff);
+                    int halfDiff = diff / 2;
+                    truncatedStringValue = stringValue.substring(halfDiff, stringValueLength - halfDiff);
                     literalisedValue = literaliseStringPropertyContains(truncatedStringValue);
                     break;
             }
@@ -1340,9 +1335,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
             int expectedEntityCount = 0;
             List<String> expectedGUIDs = new ArrayList<>();
             Set<String> propertyNamesSet = propertyValueMap.keySet();
-            Iterator<String> propertyNamesSetIterator = propertyNamesSet.iterator();
-            while (propertyNamesSetIterator.hasNext()) {
-                String propName = propertyNamesSetIterator.next();
+            for (String propName : propertyNamesSet) {
                 if (propertyCatMap.get(propName) == OM_PRIMITIVE_TYPE_STRING) {
                     Map<Object, List<String>> propValues = propertyValueMap.get(propName);
                     Set<Object> propertyValuesSet = propValues.keySet();
@@ -1405,22 +1398,21 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
 
             List<EntityDetail> result;
 
-            Map<String,String> parameters = getParameters(entityDef.getGUID(), literalisedValue);
+            Map<String, String> parameters = getParameters(entityDef.getGUID(), literalisedValue);
 
             try {
 
                 result = metadataCollection.findEntitiesByPropertyValue(workPad.getLocalServerUserId(),
-                                                                        entityDef.getGUID(),
-                                                                        literalisedValue,
-                                                                        0,
-                                                                        null,
-                                                                        null,
-                                                                        null,
-                                                                        null,
-                                                                        null,
-                                                                        pageSize);
-            }
-            catch(Exception exc) {
+                        entityDef.getGUID(),
+                        literalisedValue,
+                        0,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        pageSize);
+            } catch (Exception exc) {
                 /*
                  * We are not expecting any exceptions from this method call. Log and fail the test.
                  */
@@ -1429,7 +1421,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                 String operationDescription = "find entities using repository helper regex for type " + entityDef.getName();
                 String msg = this.buildExceptionMessage(TEST_CASE_ID, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
 
-                throw new Exception( msg , exc );
+                throw new Exception(msg, exc);
 
             }
 
@@ -1448,15 +1440,15 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
              * So in that latter case we need to accept Min().
              */
             boolean limited_large_case = pageLimited && expectedEntityCount >= pageSize && resultCount == pageSize;
-            boolean limited_small_case = pageLimited && expectedEntityCount <  pageSize && resultCount >= expectedEntityCount;
+            boolean limited_small_case = pageLimited && expectedEntityCount < pageSize && resultCount >= expectedEntityCount;
             boolean acceptable_result_size = unlimited_case || limited_large_case || limited_small_case;
 
             String assertionMessage = MessageFormat.format(ASSERTION_MSG_7, resultCount, expectedEntityCount, parameters);
             assertCondition((acceptable_result_size),
-                            ASSERTION_7,
-                            assertionMessage,
-                            RepositoryConformanceProfileRequirement.ENTITY_VALUE_SEARCH.getProfileId(),
-                            RepositoryConformanceProfileRequirement.ENTITY_VALUE_SEARCH.getRequirementId());
+                    ASSERTION_7,
+                    assertionMessage,
+                    RepositoryConformanceProfileRequirement.ENTITY_VALUE_SEARCH.getProfileId(),
+                    RepositoryConformanceProfileRequirement.ENTITY_VALUE_SEARCH.getRequirementId());
 
 
             /*
@@ -1495,9 +1487,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                             InstanceProperties entityProperties = entity.getProperties();
                             if (entityProperties != null) {
                                 Set<String> entityPropertyNames = entityProperties.getInstanceProperties().keySet();
-                                Iterator<String> entityPropertyNameIterator = entityPropertyNames.iterator();
-                                while (entityPropertyNameIterator.hasNext()) {
-                                    String propertyName = entityPropertyNameIterator.next();
+                                for (String propertyName : entityPropertyNames) {
                                     InstancePropertyValue ipValue = entityProperties.getPropertyValue(attributeName);
                                     if (ipValue != null) {
                                         InstancePropertyCategory ipCategory = ipValue.getInstancePropertyCategory();
@@ -1547,10 +1537,10 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
 
                 assertionMessage = MessageFormat.format(ASSERTION_MSG_8, unexpectedResult, parameters.toString());
                 assertCondition(unexpectedResult.equals("0"),
-                                ASSERTION_8,
-                                assertionMessage,
-                                RepositoryConformanceProfileRequirement.ENTITY_VALUE_SEARCH.getProfileId(),
-                                RepositoryConformanceProfileRequirement.ENTITY_VALUE_SEARCH.getRequirementId());
+                        ASSERTION_8,
+                        assertionMessage,
+                        RepositoryConformanceProfileRequirement.ENTITY_VALUE_SEARCH.getProfileId(),
+                        RepositoryConformanceProfileRequirement.ENTITY_VALUE_SEARCH.getRequirementId());
             }
 
         }
@@ -1566,14 +1556,8 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
      */
     protected List<TypeDefAttribute>  getAllPropertiesForTypedef(String userId, TypeDef typeDef)
     {
-
-
         // Recursively gather all the TypeDefAttributes for the supertype hierarchy...
-        List<TypeDefAttribute> allTypeDefAttributes = getPropertiesForTypeDef(userId, typeDef);
-
-
-        return allTypeDefAttributes;
-
+        return getPropertiesForTypeDef(userId, typeDef);
     }
 
 
@@ -1689,9 +1673,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
         List<String> comp = new ArrayList<>(lu);
         if (ld != null) {
             for (String s : ld) {
-                if (comp.contains(s)) {
-                    comp.remove(s);
-                }
+                comp.remove(s);
             }
         }
         return comp;
@@ -1704,8 +1686,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
     public String literaliseStringProperty(String value)
     {
         OMRSRepositoryHelper repositoryHelper = cohortRepositoryConnector.getRepositoryHelper();
-        String litValue = repositoryHelper.getExactMatchRegex(value);
-        return litValue;
+        return repositoryHelper.getExactMatchRegex(value);
     }
 
     /*
@@ -1715,8 +1696,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
     public String literaliseStringPropertyExact(String value)
     {
         OMRSRepositoryHelper repositoryHelper = cohortRepositoryConnector.getRepositoryHelper();
-        String litValue = repositoryHelper.getExactMatchRegex(value);
-        return litValue;
+        return repositoryHelper.getExactMatchRegex(value);
     }
 
     /*
@@ -1726,8 +1706,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
     public String literaliseStringPropertyStartsWith(String value)
     {
         OMRSRepositoryHelper repositoryHelper = cohortRepositoryConnector.getRepositoryHelper();
-        String litValue = repositoryHelper.getStartsWithRegex(value);
-        return litValue;
+        return repositoryHelper.getStartsWithRegex(value);
     }
 
     /*
@@ -1737,8 +1716,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
     public String literaliseStringPropertyEndsWith(String value)
     {
         OMRSRepositoryHelper repositoryHelper = cohortRepositoryConnector.getRepositoryHelper();
-        String litValue = repositoryHelper.getEndsWithRegex(value);
-        return litValue;
+        return repositoryHelper.getEndsWithRegex(value);
     }
 
     /*
@@ -1748,8 +1726,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
     public String literaliseStringPropertyContains(String value)
     {
         OMRSRepositoryHelper repositoryHelper = cohortRepositoryConnector.getRepositoryHelper();
-        String litValue = repositoryHelper.getContainsRegex(value);
-        return litValue;
+        return repositoryHelper.getContainsRegex(value);
     }
 
 
@@ -2001,11 +1978,10 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
          */
 
         Set<Object> possibleValues = propertyValueMap.get(attributeName).keySet();
-        Iterator<Object> possibleValueIterator = possibleValues.iterator();
 
-        while (possibleValueIterator.hasNext()) {
+        for (Object possibleValue : possibleValues) {
 
-            String stringValue = (String) (possibleValueIterator.next());
+            String stringValue = (String) possibleValue;
             String truncatedStringValue = null;
             String regexValue = null;
             int stringValueLength;
@@ -2067,15 +2043,12 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
             int expectedEntityCount = 0;
             List<String> expectedGUIDs = new ArrayList<>();
             Set<String> propertyNamesSet = propertyValueMap.keySet();
-            Iterator<String> propertyNamesSetIterator = propertyNamesSet.iterator();
-            while (propertyNamesSetIterator.hasNext()) {
-                String propName = propertyNamesSetIterator.next();
+            for (String propName : propertyNamesSet) {
                 if (propertyCatMap.get(propName) == OM_PRIMITIVE_TYPE_STRING) {
                     Map<Object, List<String>> propValues = propertyValueMap.get(propName);
                     Set<Object> propertyValuesSet = propValues.keySet();
-                    Iterator<Object> propertyValuesSetIterator = propertyValuesSet.iterator();
-                    while (propertyValuesSetIterator.hasNext()) {
-                        String knownStringValue = (String) (propertyValuesSetIterator.next());
+                    for (Object o : propertyValuesSet) {
+                        String knownStringValue = (String) o;
 
                         switch (matchType) {
 
@@ -2091,7 +2064,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                                 break;
                             case Prefix:
                                 /* PREFIX MATCH */
-                                if (knownStringValue.matches(truncatedStringValue+".*")) {
+                                if (knownStringValue.matches(truncatedStringValue + ".*")) {
                                     for (String matchGUID : propValues.get(knownStringValue)) {
                                         if (!expectedGUIDs.contains(matchGUID)) {
                                             expectedGUIDs.add(matchGUID);
@@ -2101,7 +2074,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                                 break;
                             case Suffix:
                                 /* SUFFIX MATCH */
-                                if (knownStringValue.matches(".*"+truncatedStringValue)) {
+                                if (knownStringValue.matches(".*" + truncatedStringValue)) {
                                     for (String matchGUID : propValues.get(knownStringValue)) {
                                         if (!expectedGUIDs.contains(matchGUID)) {
                                             expectedGUIDs.add(matchGUID);
@@ -2111,7 +2084,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                                 break;
                             case Contains:
                                 /* CONTAINS MATCH */
-                                if (knownStringValue.matches(".*"+truncatedStringValue+".*")) {
+                                if (knownStringValue.matches(".*" + truncatedStringValue + ".*")) {
                                     for (String matchGUID : propValues.get(knownStringValue)) {
                                         if (!expectedGUIDs.contains(matchGUID)) {
                                             expectedGUIDs.add(matchGUID);
@@ -2132,23 +2105,22 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
 
             List<EntityDetail> result;
 
-            Map<String,String> parameters = getParameters(entityDef.getGUID(), regexValue);
+            Map<String, String> parameters = getParameters(entityDef.getGUID(), regexValue);
 
             try {
 
                 result = metadataCollection.findEntitiesByPropertyValue(workPad.getLocalServerUserId(),
-                                                                        entityDef.getGUID(),
-                                                                        regexValue,
-                                                                        0,
-                                                                        null,
-                                                                        null,
-                                                                        null,
-                                                                        null,
-                                                                        null,
-                                                                        pageSize);
+                        entityDef.getGUID(),
+                        regexValue,
+                        0,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        pageSize);
 
-            }
-            catch (FunctionNotSupportedException exc) {
+            } catch (FunctionNotSupportedException exc) {
 
                 /*
                  * Because the above test only exercises one optional function (advanced regex support)
@@ -2156,14 +2128,13 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                  */
 
                 super.addNotSupportedAssertion(ASSERTION_101,
-                                               ASSERTION_MSG_101 + exc.getMessage(),
-                                               RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_VALUE_SEARCH.getProfileId(),
-                                               RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_VALUE_SEARCH.getRequirementId());
+                        ASSERTION_MSG_101 + exc.getMessage(),
+                        RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_VALUE_SEARCH.getProfileId(),
+                        RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_VALUE_SEARCH.getRequirementId());
 
                 return;
 
-            }
-            catch(Exception exc) {
+            } catch (Exception exc) {
                 /*
                  * We are not expecting any exceptions from this method call. Log and fail the test.
                  */
@@ -2172,7 +2143,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                 String operationDescription = "find entities using general regex for type " + entityDef.getName();
                 String msg = this.buildExceptionMessage(TEST_CASE_ID, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
 
-                throw new Exception( msg , exc );
+                throw new Exception(msg, exc);
 
             }
 
@@ -2197,10 +2168,10 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
 
             String assertionMessage = MessageFormat.format(ASSERTION_MSG_11, resultCount, expectedEntityCount, parameters);
             assertCondition((acceptable_result_size),
-                            ASSERTION_11,
-                            assertionMessage,
-                            RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_VALUE_SEARCH.getProfileId(),
-                            RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_VALUE_SEARCH.getRequirementId());
+                    ASSERTION_11,
+                    assertionMessage,
+                    RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_VALUE_SEARCH.getProfileId(),
+                    RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_VALUE_SEARCH.getRequirementId());
 
 
             /*
@@ -2239,9 +2210,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                             InstanceProperties entityProperties = entity.getProperties();
                             if (entityProperties != null) {
                                 Set<String> entityPropertyNames = entityProperties.getInstanceProperties().keySet();
-                                Iterator<String> entityPropertyNameIterator = entityPropertyNames.iterator();
-                                while (entityPropertyNameIterator.hasNext()) {
-                                    String propertyName = entityPropertyNameIterator.next();
+                                for (String propertyName : entityPropertyNames) {
                                     InstancePropertyValue ipValue = entityProperties.getPropertyValue(attributeName);
                                     if (ipValue != null) {
                                         InstancePropertyCategory ipCategory = ipValue.getInstancePropertyCategory();
@@ -2260,19 +2229,19 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                                                         break;
                                                     case Prefix:
                                                         /* PREFIX MATCH */
-                                                        if (propertyValueAsString.matches(truncatedStringValue+".*")) {
+                                                        if (propertyValueAsString.matches(truncatedStringValue + ".*")) {
                                                             validEntity = true;
                                                         }
                                                         break;
                                                     case Suffix:
                                                         /* SUFFIX MATCH */
-                                                        if (propertyValueAsString.matches(".*"+truncatedStringValue)) {
+                                                        if (propertyValueAsString.matches(".*" + truncatedStringValue)) {
                                                             validEntity = true;
                                                         }
                                                         break;
                                                     case Contains:
                                                         /* CONTAINS MATCH */
-                                                        if (propertyValueAsString.matches(".*"+truncatedStringValue+".*")) {
+                                                        if (propertyValueAsString.matches(".*" + truncatedStringValue + ".*")) {
                                                             validEntity = true;
                                                         }
                                                         break;
@@ -2291,10 +2260,10 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
 
                 assertionMessage = MessageFormat.format(ASSERTION_MSG_12, unexpectedResult, parameters);
                 assertCondition(unexpectedResult.equals("0"),
-                                ASSERTION_12,
-                                assertionMessage,
-                                RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_VALUE_SEARCH.getProfileId(),
-                                RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_VALUE_SEARCH.getRequirementId());
+                        ASSERTION_12,
+                        assertionMessage,
+                        RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_VALUE_SEARCH.getProfileId(),
+                        RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_VALUE_SEARCH.getRequirementId());
             }
 
 
@@ -2317,18 +2286,17 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
             try {
 
                 result = metadataCollection.findEntitiesByProperty(workPad.getLocalServerUserId(),
-                                                                   entityDef.getGUID(),
-                                                                   matchProperties,
-                                                                   MatchCriteria.ALL,
-                                                                   0,
-                                                                   null,
-                                                                   null,
-                                                                   null,
-                                                                   null,
-                                                                   null,
-                                                                   pageSize);
-            }
-            catch (FunctionNotSupportedException exc) {
+                        entityDef.getGUID(),
+                        matchProperties,
+                        MatchCriteria.ALL,
+                        0,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        pageSize);
+            } catch (FunctionNotSupportedException exc) {
 
                 /*
                  * Because the above test only exercises one optional function (advanced regex support)
@@ -2336,14 +2304,13 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                  */
 
                 super.addNotSupportedAssertion(ASSERTION_102,
-                                               ASSERTION_MSG_102 + exc.getMessage(),
-                                               RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_PROPERTY_SEARCH.getProfileId(),
-                                               RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_PROPERTY_SEARCH.getRequirementId());
+                        ASSERTION_MSG_102 + exc.getMessage(),
+                        RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_PROPERTY_SEARCH.getProfileId(),
+                        RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_PROPERTY_SEARCH.getRequirementId());
 
                 return;
 
-            }
-            catch(Exception exc) {
+            } catch (Exception exc) {
                 /*
                  * We are not expecting any exceptions from this method call. Log and fail the test.
                  */
@@ -2352,7 +2319,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                 String operationDescription = "find entities using general regex for type " + entityDef.getName();
                 String msg = this.buildExceptionMessage(TEST_CASE_ID, methodName, operationDescription, parameters, exc.getClass().getSimpleName(), exc.getMessage());
 
-                throw new Exception( msg , exc );
+                throw new Exception(msg, exc);
 
             }
 
@@ -2377,10 +2344,10 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
 
             assertionMessage = MessageFormat.format(ASSERTION_MSG_13, resultCount, expectedEntityCount, parameters);
             assertCondition((acceptable_result_size),
-                            ASSERTION_13,
-                            assertionMessage,
-                            RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_PROPERTY_SEARCH.getProfileId(),
-                            RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_PROPERTY_SEARCH.getRequirementId());
+                    ASSERTION_13,
+                    assertionMessage,
+                    RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_PROPERTY_SEARCH.getProfileId(),
+                    RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_PROPERTY_SEARCH.getRequirementId());
 
 
             /*
@@ -2419,9 +2386,7 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                             InstanceProperties entityProperties = entity.getProperties();
                             if (entityProperties != null) {
                                 Set<String> entityPropertyNames = entityProperties.getInstanceProperties().keySet();
-                                Iterator<String> entityPropertyNameIterator = entityPropertyNames.iterator();
-                                while (entityPropertyNameIterator.hasNext()) {
-                                    String propertyName = entityPropertyNameIterator.next();
+                                for (String propertyName : entityPropertyNames) {
                                     InstancePropertyValue ipValue = entityProperties.getPropertyValue(attributeName);
                                     if (ipValue != null) {
                                         InstancePropertyCategory ipCategory = ipValue.getInstancePropertyCategory();
@@ -2440,19 +2405,19 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
                                                         break;
                                                     case Prefix:
                                                         /* PREFIX MATCH */
-                                                        if (propertyValueAsString.matches(truncatedStringValue+".*")) {
+                                                        if (propertyValueAsString.matches(truncatedStringValue + ".*")) {
                                                             validEntity = true;
                                                         }
                                                         break;
                                                     case Suffix:
                                                         /* SUFFIX MATCH */
-                                                        if (propertyValueAsString.matches(".*"+truncatedStringValue)) {
+                                                        if (propertyValueAsString.matches(".*" + truncatedStringValue)) {
                                                             validEntity = true;
                                                         }
                                                         break;
                                                     case Contains:
                                                         /* CONTAINS MATCH */
-                                                        if (propertyValueAsString.matches(".*"+truncatedStringValue+".*")) {
+                                                        if (propertyValueAsString.matches(".*" + truncatedStringValue + ".*")) {
                                                             validEntity = true;
                                                         }
                                                         break;
@@ -2471,10 +2436,10 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
 
                 assertionMessage = MessageFormat.format(ASSERTION_MSG_14, unexpectedResult, parameters);
                 assertCondition(unexpectedResult.equals("0"),
-                                ASSERTION_14,
-                                assertionMessage,
-                                RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_PROPERTY_SEARCH.getProfileId(),
-                                RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_PROPERTY_SEARCH.getRequirementId());
+                        ASSERTION_14,
+                        assertionMessage,
+                        RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_PROPERTY_SEARCH.getProfileId(),
+                        RepositoryConformanceProfileRequirement.ENTITY_ADVANCED_PROPERTY_SEARCH.getRequirementId());
             }
         }
 
@@ -2556,9 +2521,6 @@ public class TestSupportedEntitySearch extends RepositoryConformanceTestCase
             outputStringBldr.append(c);
         }
 
-        String outputString = outputStringBldr.toString();
-
-        return outputString;
+        return outputStringBldr.toString();
     }
-
 }

@@ -15,9 +15,9 @@ dependencies {
     implementation project(':open-metadata-implementation:access-services:governance-program:governance-program-api')
     implementation project(':open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-client')
     implementation project(':open-metadata-implementation:common-services:odf-metadata-management:odf-metadata-client')
-    implementation 'org.springframework:spring-web:5.2.7.RELEASE'
+    implementation 'org.springframework:spring-web'
     implementation project(':open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-api')
-    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.11.1'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations'
 
 }
 

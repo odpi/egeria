@@ -11,8 +11,8 @@ dependencies {
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
     implementation project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:rest-client-connectors-api')
     implementation project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:rest-client-factory')
-    implementation 'org.slf4j:slf4j-api:1.7.30'
-    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.11.1'
+    implementation 'org.slf4j:slf4j-api'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations'
 
 }
 

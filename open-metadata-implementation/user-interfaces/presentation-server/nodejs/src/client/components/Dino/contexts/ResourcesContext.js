@@ -131,7 +131,7 @@ const ResourcesContextProvider = (props) => {
   }
 
   const genServerInstanceGUID = (serverInstanceName) => {
-    let guid = "SERVER_INSTANCE"+serverInstanceName;
+    let guid = "SERVER_INSTANCE_"+serverInstanceName;
     return guid;
   }
 
@@ -346,18 +346,9 @@ const ResourcesContextProvider = (props) => {
         let ex_gen = gens_clone[ex_genId - 1];
         /*
          * Update the existing relationship...
-         *
-         * With regard to active staus the desired result from this is that if either the 
-         * existing or new relationship is active the merged (updated) relationship should 
-         * be active. 
          */
          let existingRelationship = ex_gen.relationships[guid];
-         let eitherActive = update_objects.relationships[guid].active || existingRelationship.active;
          let mergedRelationship = Object.assign(existingRelationship, update_objects.relationships[guid]);
-         /*
-          * Handle active boolean explicity
-          */
-         mergedRelationship.active = eitherActive;
          ex_gen.relationships[guid] = mergedRelationship;
       }
       else {
@@ -952,7 +943,7 @@ const ResourcesContextProvider = (props) => {
        * changed state (active -> stopped or vice versa)
        */
       let serverInstanceName                  = serverName+"@"+platformName;
-      let serverInstanceGUID                  = "SERVER_INSTANCE_"+serverInstanceName;
+      let serverInstanceGUID                  = genServerInstanceGUID(serverInstanceName);
 
       let serverInstance                      = {};
       serverInstance.category                 = "server-instance";

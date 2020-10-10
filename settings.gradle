@@ -3,6 +3,17 @@
  * Copyright Contributors to the ODPi Egeria project.
  */
 
+// This HAS to be the first block of the file
+pluginManagement {
+    plugins {
+        //id 'io.spring.dependency-management' version '1.0.10.RELEASE'
+        id 'org.springframework.boot' version '2.3.4.RELEASE'
+        id 'gradle-aggregate-javadocs-plugin' version '3.0.1'
+        // For reference we use these, but they are internal so no version spec needed
+        //id 'java' version
+        //id 'maven-publish' version
+    }
+}
 rootProject.name = 'egeria'
 
 include(':open-metadata-implementation:frameworks:audit-log-framework')
@@ -322,8 +333,6 @@ include(':open-metadata-resources:open-metadata-samples:admin-services-samples')
 include(':open-metadata-resources:open-metadata-samples:open-metadata-security-samples')
 include(':open-metadata-resources:open-metadata-samples:discovery-service-sample')
 include(':open-metadata-resources:open-metadata-samples')
-include(':open-metadata-resources:open-metadata-demos:in-memory-repository-demo')
-include(':open-metadata-resources:open-metadata-demos')
 include(':open-metadata-resources:open-metadata-tutorials')
 include(':open-metadata-resources:open-metadata-labs')
 include(':open-metadata-resources:open-metadata-deployment')
@@ -651,8 +660,6 @@ project(':open-metadata-resources:open-metadata-samples:admin-services-samples')
 project(':open-metadata-resources:open-metadata-samples:open-metadata-security-samples').projectDir = file('open-metadata-resources/open-metadata-samples/open-metadata-security-samples')
 project(':open-metadata-resources:open-metadata-samples:discovery-service-sample').projectDir = file('open-metadata-resources/open-metadata-samples/discovery-service-sample')
 project(':open-metadata-resources:open-metadata-samples').projectDir = file('open-metadata-resources/open-metadata-samples')
-project(':open-metadata-resources:open-metadata-demos:in-memory-repository-demo').projectDir = file('open-metadata-resources/open-metadata-demos/in-memory-repository-demo')
-project(':open-metadata-resources:open-metadata-demos').projectDir = file('open-metadata-resources/open-metadata-demos')
 project(':open-metadata-resources:open-metadata-tutorials').projectDir = file('open-metadata-resources/open-metadata-tutorials')
 project(':open-metadata-resources:open-metadata-labs').projectDir = file('open-metadata-resources/open-metadata-labs')
 project(':open-metadata-resources:open-metadata-deployment').projectDir = file('open-metadata-resources/open-metadata-deployment')

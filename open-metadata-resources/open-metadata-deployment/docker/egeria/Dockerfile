@@ -4,7 +4,7 @@
 # Based on RedHat UBI image.
 # https://catalog.redhat.com/software/containers/ubi8/openjdk-11/5dd6a4b45a13461646f677f4?container-tabs=gti&gti-tabs=unauthenticated
 FROM registry.access.redhat.com/ubi8/openjdk-11
-ARG version=2.3-SNAPSHOT
+ARG version=2.4-SNAPSHOT
 ARG VCS_REF=unknown
 ARG VCS_ORIGIN=unknown
 ARG BUILD_TIME=unknown
@@ -43,3 +43,6 @@ ENV LOADER_PATH=${LOADER_PATH}
 
 # Joloka will be removed shortly. For now disable to avoid errors
 ENV AB_JOLOKIA_OFF=true
+
+# See issue 3740 - we leave the metaspace size as unlimited - jvm default
+ENV JAVA_OPTS_APPEND="-XX:MaxMetaspaceSize=1g"

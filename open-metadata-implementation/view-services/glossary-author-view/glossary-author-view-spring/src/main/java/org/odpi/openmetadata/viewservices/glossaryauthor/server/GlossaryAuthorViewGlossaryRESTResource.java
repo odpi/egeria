@@ -7,10 +7,13 @@ import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
+import org.odpi.openmetadata.viewservices.glossaryauthor.properties.BreadCrumb;
 import org.odpi.openmetadata.viewservices.glossaryauthor.services.GlossaryAuthorViewGlossaryRESTServices;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.Date;
 
 import static org.odpi.openmetadata.viewservices.glossaryauthor.services.BaseGlossaryAuthorView.PAGE_OFFSET_DEFAULT_VALUE;
@@ -56,7 +59,7 @@ public class GlossaryAuthorViewGlossaryRESTResource {
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata repository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised.</li>
      * <li> ClassificationException              Error processing a classification.</li>
@@ -81,7 +84,7 @@ public class GlossaryAuthorViewGlossaryRESTResource {
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException  not able to communicate with a Metadata respository service.</li>
+     * <li> MetadataServerUncontactableException  not able to communicate with a Metadata repository service.</li>
      * <li> InvalidParameterException one of the parameters is null or invalid.</li>
      * <li> UnrecognizedGUIDException the supplied guid was not recognised</li>
      * <li> UnrecognizedGUIDException the supplied guid was not recognised</li>
@@ -113,7 +116,7 @@ public class GlossaryAuthorViewGlossaryRESTResource {
      *
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata repository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
@@ -149,7 +152,7 @@ public class GlossaryAuthorViewGlossaryRESTResource {
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata repository service.</li>
      * </ul>
      */
     @GetMapping(path = "/{guid}/relationships")
@@ -162,6 +165,79 @@ public class GlossaryAuthorViewGlossaryRESTResource {
                                                                      @RequestParam(value = "sequencingProperty", required = false) String sequencingProperty
     ) {
         return restAPI.getGlossaryRelationships(serverName, userId, guid, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
+    }
+
+    /**
+     * Create the supplied list of Terms in the glossary, identified by the supplied guid. Each term does not need to specify a glossary.
+     *
+     * @param serverName       local UI server name
+     * @param userId           user identifier
+     * @param guid             guid of the glossary under which the Terms will be created
+     * @param terms            terms to create
+     * @return a response which when successful contains a list of the responses from the Term creates (successful or otherwise). The order of the responses is the same as the supplied terms order.
+     *
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> FunctionNotSupportedException        Function not supported</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata repository service.</li>
+     * </ul>
+     */
+    @PostMapping(path = "/{guid}/terms")
+    public SubjectAreaOMASAPIResponse<SubjectAreaOMASAPIResponse<Term>> createMultipleTermsInAGlossary(@PathVariable String serverName,
+                                                                                                   @PathVariable String userId,
+                                                                                                   @PathVariable String guid,
+                                                                                                   @RequestBody  Term[] terms
+                                                                                                  ) {
+        return restAPI.createMultipleTermsInAGlossary(serverName, userId, guid, terms);
+    }
+    /**
+     * Get BreadCrumbTrail.
+     *
+     * The user interface experience can start with a particular Glossary, navigate to a child Category, then to another child category then to a categories term.
+     * When such a user interface navigation occurs, it is helpful for the user to be displayed a 'breadcrumb' trail of where they have been, showing how nested they are in
+     * the glossary artifacts. The Get BreadcrumbTrail API returns information that allows the user interface to easy construct a trail of breadcrumbs.
+     * Each breadcrumb contains
+     * <ul>
+     *  <li> a displayName that is intended to be shown to the user</li>
+     *  <li> a guid that uniquely identifies a breadcrumb but is not intended to be shown to the user</li>
+     *  <li> a types, allowing the user interface to display an appropriate icon.
+     *  <li> a path that can be used to determine all the elements in the breadcrumb </li>
+     * </ul>
+     * @param serverName       local UI server name
+     * @param userId           user identifier
+     * @param guid             Glossary guid.
+     * @param rootCategoryGuid root Category guid. If specified, the Category with this guid must reside in the supplied glossary
+     * @param leafCategoryGuid leaf Category guid. if specified, the Category with this guid must reside in the hierarchy under the root Category
+     * @param termGuid         Term guid. If specified, the Term with this guid must be categorised by the rootCategory or the leafCategory if there is one, or if there are no categories owned by the Glossary.
+     * @return a response which when successful contains a list of breadcrumbs corresponding to the supplied guids.
+     *
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> FunctionNotSupportedException        Function not supported</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata repository service.</li>
+     * </ul>
+     */
+    @GetMapping(path = "/{guid}/breadcrumbs")
+    public SubjectAreaOMASAPIResponse<BreadCrumb> getBreadCrumbTrail(
+            @PathVariable String serverName,
+            @PathVariable String userId,
+            @PathVariable String guid,
+            @RequestParam(value = "rootCategoryGuid", required = false) String rootCategoryGuid,
+            @RequestParam(value = "leafCategoryGuid", required = false) String leafCategoryGuid,
+            @RequestParam(value = "termGuid",         required = false) String termGuid) {
+        return restAPI.getBreadCrumbTrail(
+                serverName,
+                userId,
+                guid,
+                rootCategoryGuid,
+                leafCategoryGuid,
+                termGuid);
     }
 
     /**
@@ -185,7 +261,7 @@ public class GlossaryAuthorViewGlossaryRESTResource {
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> FunctionNotSupportedException        Function not supported</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata repository service.</li>
      * </ul>
      */
     @PutMapping(path = "/{guid}")
@@ -224,9 +300,9 @@ public class GlossaryAuthorViewGlossaryRESTResource {
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata repository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the glossary was not deleted.</li>
-     * <li> EntityNotPurgedException               a hard delete was issued but the glossary was not purged</li>
+     * <li> EntityNotPurgedException             a hard delete was issued but the glossary was not purged</li>
      * </ul>
      */
     @DeleteMapping(path = "/{guid}")
@@ -253,7 +329,7 @@ public class GlossaryAuthorViewGlossaryRESTResource {
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata repository service. There is a problem retrieving properties from the metadata repository.</li>
      * </ul>
      */
     @PostMapping(path = "/{guid}")

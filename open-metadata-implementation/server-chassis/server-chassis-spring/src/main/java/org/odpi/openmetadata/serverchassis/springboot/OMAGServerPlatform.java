@@ -33,12 +33,11 @@ import java.util.*;
 
 
 @SpringBootApplication
-@ComponentScan({"org.odpi.openmetadata.*"})
-
+@ComponentScan(basePackages = {"${scan.packages}"})
 @OpenAPIDefinition(
         info = @Info(
                 title = "Egeria's Open Metadata and Governance (OMAG) Server Platform",
-                version = "2.3-SNAPSHOT",
+                version = "2.4-SNAPSHOT",
                 description = "The OMAG Server Platform provides a runtime process and platform for Open Metadata and Governance (OMAG) Services.\n" +
                         "\n" +
                         "The OMAG services are configured and activated in OMAG Servers using the Administration Services.\n" +

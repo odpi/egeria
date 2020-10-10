@@ -5,7 +5,6 @@ package org.odpi.openmetadata.platformservices.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.platformservices.rest.ServerStatusResponse;
 
 import java.io.Serializable;
 import java.util.ArrayList;

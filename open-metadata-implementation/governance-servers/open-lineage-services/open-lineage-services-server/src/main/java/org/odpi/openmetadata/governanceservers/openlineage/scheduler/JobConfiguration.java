@@ -23,6 +23,7 @@ public class JobConfiguration {
     private static Scheduler scheduler;
     private static LineageGraph lineageGraph;
     private static int jobInterval;
+    private static JobDetail jobDetail;
 
     public JobConfiguration(LineageGraph lineageGraph, int jobInterval){
         this.lineageGraph = lineageGraph;
@@ -49,10 +50,23 @@ public class JobConfiguration {
 
     }
 
+    /**
+     *  Stops future job execution by shutting down the scheduler
+     */
+    public void stop() {
+        try {
+            if(scheduler != null) {
+                this.scheduler.shutdown();
+            }
+        } catch (SchedulerException e) {
+            log.error("Exception while attempting to shutdown the scheduler instance, the message is: {}", e.getMessage());
+        }
+    }
+
     private static void scheduleJob(Trigger trigger) throws Exception {
 
         if(lineageGraph != null) {
-            JobDetail jobDetail = JobBuilder.
+            jobDetail = JobBuilder.
                     newJob(LineageGraphJob.class).
                     withIdentity("LineageGraphJob", GROUP).
                     build();
