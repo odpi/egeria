@@ -16,8 +16,8 @@ dependencies {
     implementation project(':open-metadata-implementation:integration-services:database-integrator:database-integrator-server')
     implementation project(':open-metadata-implementation:integration-services:files-integrator:files-integrator-server')
     implementation project(':open-metadata-implementation:integration-services:organization-integrator:organization-integrator-server')
-    implementation 'org.slf4j:slf4j-api:1.7.30'
-    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.11.1'
+    implementation 'org.slf4j:slf4j-api'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations'
 }
 
 description = 'Integration Daemon Services Server-side'

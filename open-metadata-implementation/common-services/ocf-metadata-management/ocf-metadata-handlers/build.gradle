@@ -12,8 +12,7 @@ dependencies {
     implementation project(':open-metadata-implementation:common-services:ffdc-services')
     implementation project(':open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-api')
     implementation project(':open-metadata-implementation:common-services:metadata-security:metadata-security-apis')
-    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.11.1'
-
+    implementation 'com.fasterxml.jackson.core:jackson-annotations'
 }
 
 description = 'OCF Metadata Management Server-side Handlers'

@@ -11,7 +11,6 @@ dependencies {
     implementation project(':open-metadata-implementation:access-services:data-manager:data-manager-api')
     implementation project(':open-metadata-implementation:access-services:data-manager:data-manager-client')
     implementation 'com.fasterxml.jackson.core:jackson-annotations:2.11.1'
-
 }
 
 description = 'Database Integrator OMIS API'

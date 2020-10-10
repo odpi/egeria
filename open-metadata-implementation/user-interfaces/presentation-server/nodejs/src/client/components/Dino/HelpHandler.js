@@ -21,12 +21,12 @@ const imageRefs = {
 };
 
 
-export default function ReadmeHandler(props) {
+export default function HelpHandler(props) {
 
   const interactionContext    = useContext(InteractionContext);
 
  
-  const readme              = props.readme;
+  const help              = props.help;
 
   const cancelCallback = () => {
     interactionContext.hidePortal();
@@ -46,7 +46,7 @@ export default function ReadmeHandler(props) {
 
     let dialogDisplay;
 
-    if (!readme.markdown) {
+    if (!help.markdown) {
 
       /* 
        * There is nothing to display... 
@@ -57,7 +57,7 @@ export default function ReadmeHandler(props) {
       <div className="dialog-text">
             
         <p>
-        There is no readme information to display.
+        There is no help information to display.
         </p>  
   
         <div className="dismiss-button-container">                     
@@ -73,13 +73,13 @@ export default function ReadmeHandler(props) {
     else {
 
       /* 
-       * There is readme information to display... 
+       * There is help information to display... 
        */
 
       let resultsDisplay = (         
 
         <div>
-          <ReactMarkdown source={readme.markdown} transformImageUri={transformImageURI}/>
+          <ReactMarkdown source={help.markdown} transformImageUri={transformImageURI}/>
         </div>
       );
 
@@ -89,7 +89,7 @@ export default function ReadmeHandler(props) {
         <div className="dialog-text">
           
           <p  className="dialog-text">
-          README for Egeria Dino user interface:
+          Help information for Egeria Dino user interface:
           </p>    
    
           <hr></hr>
@@ -129,10 +129,10 @@ export default function ReadmeHandler(props) {
 
 }
 
-ReadmeHandler.propTypes = {  
+HelpHandler.propTypes = {  
   status               : PropTypes.string,
   onCancel             : PropTypes.func.isRequired, 
   onSubmit             : PropTypes.func.isRequired, 
-  readme               : PropTypes.object
+  help                 : PropTypes.object
    
 };

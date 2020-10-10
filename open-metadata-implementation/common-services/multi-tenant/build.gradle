@@ -17,9 +17,8 @@ dependencies {
     implementation project(':open-metadata-implementation:admin-services:admin-services-api')
     implementation project(':open-metadata-implementation:admin-services:admin-services-registration')
     implementation project(':open-metadata-implementation:governance-servers:integration-daemon-services:integration-daemon-services-registration')
-    testImplementation 'org.testng:testng:7.1.0'
-    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.11.1'
-
+    testImplementation 'org.testng:testng'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations'
 }
 
 description = 'Multi-Tenant Services'

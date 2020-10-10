@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-import React from "react";
+import React, { useContext } from "react";
 import "./app.scss";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Login from "./auth/login";

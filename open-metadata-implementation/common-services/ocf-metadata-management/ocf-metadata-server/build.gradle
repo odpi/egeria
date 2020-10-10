@@ -5,7 +5,7 @@
 
 
 dependencies {
-    implementation 'org.slf4j:slf4j-api:1.7.30'
+    implementation 'org.slf4j:slf4j-api'
     implementation project(':open-metadata-implementation:common-services:ffdc-services')
     implementation project(':open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-api')
     implementation project(':open-metadata-implementation:common-services:generic-handlers')
@@ -16,8 +16,7 @@ dependencies {
     implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
     implementation project(':open-metadata-implementation:common-services:multi-tenant')
-    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.11.1'
-
+    implementation 'com.fasterxml.jackson.core:jackson-annotations'
 }
 
 description = 'OCF Metadata Management Server-side'

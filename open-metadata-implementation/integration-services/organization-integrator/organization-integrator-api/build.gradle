@@ -8,8 +8,7 @@ dependencies {
     implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
     implementation project(':open-metadata-implementation:governance-servers:integration-daemon-services:integration-daemon-services-api')
-    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.11.1'
-
+    implementation 'com.fasterxml.jackson.core:jackson-annotations'
 }
 
 description = 'Organization Integrator OMIS API'
