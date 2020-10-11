@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.assetconsumer.client;
+package org.odpi.openmetadata.accessservices.assetconsumer.client.rest;
 
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.GlossaryTermListResponse;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.GlossaryTermResponse;
@@ -14,7 +14,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 /**
  * AssetConsumerRESTClient is responsible for issuing calls to the OMAG REST APIs.
  */
-class AssetConsumerRESTClient extends OCFRESTClient
+public class AssetConsumerRESTClient extends OCFRESTClient
 {
     /**
      * Constructor for no authentication with audit log.
@@ -26,9 +26,9 @@ class AssetConsumerRESTClient extends OCFRESTClient
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    AssetConsumerRESTClient(String    serverName,
-                            String    serverPlatformURLRoot,
-                            AuditLog auditLog) throws InvalidParameterException
+    public AssetConsumerRESTClient(String    serverName,
+                                   String    serverPlatformURLRoot,
+                                   AuditLog auditLog) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot, auditLog);
     }
@@ -42,8 +42,8 @@ class AssetConsumerRESTClient extends OCFRESTClient
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    AssetConsumerRESTClient(String serverName,
-                            String serverPlatformURLRoot) throws InvalidParameterException
+    public AssetConsumerRESTClient(String serverName,
+                                   String serverPlatformURLRoot) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot);
     }
@@ -60,11 +60,11 @@ class AssetConsumerRESTClient extends OCFRESTClient
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    AssetConsumerRESTClient(String   serverName,
-                            String   serverPlatformURLRoot,
-                            String   userId,
-                            String   password,
-                            AuditLog auditLog) throws InvalidParameterException
+    public AssetConsumerRESTClient(String   serverName,
+                                   String   serverPlatformURLRoot,
+                                   String   userId,
+                                   String   password,
+                                   AuditLog auditLog) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot, userId, password, auditLog);
     }
@@ -80,13 +80,15 @@ class AssetConsumerRESTClient extends OCFRESTClient
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    AssetConsumerRESTClient(String serverName,
-                            String serverPlatformURLRoot,
-                            String userId,
-                            String password) throws InvalidParameterException
+    public AssetConsumerRESTClient(String serverName,
+                                   String serverPlatformURLRoot,
+                                   String userId,
+                                   String password) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot, userId, password);
     }
+
+
 
 
     /**
@@ -101,11 +103,11 @@ class AssetConsumerRESTClient extends OCFRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    GlossaryTermResponse callGlossaryTermGetRESTCall(String    methodName,
-                                                     String    urlTemplate,
-                                                     Object... params) throws InvalidParameterException,
-                                                                              UserNotAuthorizedException,
-                                                                              PropertyServerException
+    public GlossaryTermResponse callGlossaryTermGetRESTCall(String    methodName,
+                                                            String    urlTemplate,
+                                                            Object... params) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
     {
         GlossaryTermResponse restResult = this.callGetRESTCall(methodName, GlossaryTermResponse.class, urlTemplate, params);
 
@@ -128,12 +130,12 @@ class AssetConsumerRESTClient extends OCFRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    GlossaryTermListResponse callGlossaryTermListPostRESTCall(String    methodName,
-                                                              String    urlTemplate,
-                                                              String    searchString,
-                                                              Object... params) throws InvalidParameterException,
-                                                                                       UserNotAuthorizedException,
-                                                                                       PropertyServerException
+    public GlossaryTermListResponse callGlossaryTermListPostRESTCall(String    methodName,
+                                                                     String    urlTemplate,
+                                                                     String    searchString,
+                                                                     Object... params) throws InvalidParameterException,
+                                                                                              UserNotAuthorizedException,
+                                                                                              PropertyServerException
     {
         GlossaryTermListResponse restResult = this.callPostRESTCall(methodName, GlossaryTermListResponse.class, urlTemplate, searchString, params);
 

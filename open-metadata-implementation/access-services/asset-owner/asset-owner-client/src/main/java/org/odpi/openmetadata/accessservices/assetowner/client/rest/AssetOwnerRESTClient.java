@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.assetowner.client;
+package org.odpi.openmetadata.accessservices.assetowner.client.rest;
 
 import org.odpi.openmetadata.accessservices.assetowner.rest.*;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.OCFRESTClient;
@@ -13,7 +13,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 /**
  * AssetOwnerRESTClient is responsible for issuing calls to the OMAS REST APIs.
  */
-class AssetOwnerRESTClient extends OCFRESTClient
+public class AssetOwnerRESTClient extends OCFRESTClient
 {
     /**
      * Constructor for no authentication with audit log.
@@ -25,9 +25,9 @@ class AssetOwnerRESTClient extends OCFRESTClient
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    AssetOwnerRESTClient(String   serverName,
-                         String   serverPlatformURLRoot,
-                         AuditLog auditLog) throws InvalidParameterException
+    public AssetOwnerRESTClient(String   serverName,
+                                String   serverPlatformURLRoot,
+                                AuditLog auditLog) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot, auditLog);
     }
@@ -41,8 +41,8 @@ class AssetOwnerRESTClient extends OCFRESTClient
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    AssetOwnerRESTClient(String serverName,
-                         String serverPlatformURLRoot) throws InvalidParameterException
+    public AssetOwnerRESTClient(String serverName,
+                                String serverPlatformURLRoot) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot);
     }
@@ -59,11 +59,11 @@ class AssetOwnerRESTClient extends OCFRESTClient
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    AssetOwnerRESTClient(String   serverName,
-                         String   serverPlatformURLRoot,
-                         String   userId,
-                         String   password,
-                         AuditLog auditLog) throws InvalidParameterException
+    public AssetOwnerRESTClient(String   serverName,
+                                String   serverPlatformURLRoot,
+                                String   userId,
+                                String   password,
+                                AuditLog auditLog) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot, userId, password, auditLog);
     }
@@ -79,10 +79,10 @@ class AssetOwnerRESTClient extends OCFRESTClient
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    AssetOwnerRESTClient(String serverName,
-                         String serverPlatformURLRoot,
-                         String userId,
-                         String password) throws InvalidParameterException
+    public AssetOwnerRESTClient(String serverName,
+                                String serverPlatformURLRoot,
+                                String userId,
+                                String password) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot, userId, password);
     }
@@ -100,11 +100,11 @@ class AssetOwnerRESTClient extends OCFRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    FileSystemResponse callFileSystemGetRESTCall(String    methodName,
-                                                 String    urlTemplate,
-                                                 Object... params) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException
+    public FileSystemResponse callFileSystemGetRESTCall(String    methodName,
+                                                        String    urlTemplate,
+                                                        Object... params) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
     {
         FileSystemResponse restResult = this.callGetRESTCall(methodName, FileSystemResponse.class, urlTemplate, params);
 
@@ -126,11 +126,11 @@ class AssetOwnerRESTClient extends OCFRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    FolderResponse callFolderGetRESTCall(String    methodName,
-                                         String    urlTemplate,
-                                         Object... params) throws InvalidParameterException,
-                                                                  UserNotAuthorizedException,
-                                                                  PropertyServerException
+    public FolderResponse callFolderGetRESTCall(String    methodName,
+                                                String    urlTemplate,
+                                                Object... params) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
     {
         FolderResponse restResult = this.callGetRESTCall(methodName, FolderResponse.class, urlTemplate, params);
 
@@ -152,11 +152,11 @@ class AssetOwnerRESTClient extends OCFRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    ValidValueResponse callValidValueGetRESTCall(String    methodName,
-                                                 String    urlTemplate,
-                                                 Object... params) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException
+    public ValidValueResponse callValidValueGetRESTCall(String    methodName,
+                                                        String    urlTemplate,
+                                                        Object... params) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
     {
         ValidValueResponse restResult = this.callGetRESTCall(methodName, ValidValueResponse.class, urlTemplate, params);
 
@@ -178,11 +178,11 @@ class AssetOwnerRESTClient extends OCFRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    ValidValuesResponse callValidValuesGetRESTCall(String    methodName,
-                                                   String    urlTemplate,
-                                                   Object... params) throws InvalidParameterException,
-                                                                            UserNotAuthorizedException,
-                                                                            PropertyServerException
+    public ValidValuesResponse callValidValuesGetRESTCall(String    methodName,
+                                                          String    urlTemplate,
+                                                          Object... params) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
     {
         ValidValuesResponse restResult = this.callGetRESTCall(methodName, ValidValuesResponse.class, urlTemplate, params);
 
@@ -204,12 +204,12 @@ class AssetOwnerRESTClient extends OCFRESTClient
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    ValidValuesResponse callValidValuesPostRESTCall(String    methodName,
-                                                    String    urlTemplate,
-                                                    Object    requestBody,
-                                                    Object... params) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException
+    public ValidValuesResponse callValidValuesPostRESTCall(String    methodName,
+                                                           String    urlTemplate,
+                                                           Object    requestBody,
+                                                           Object... params) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
     {
         ValidValuesResponse restResult = this.callPostRESTCall(methodName, ValidValuesResponse.class, urlTemplate, requestBody, params);
 

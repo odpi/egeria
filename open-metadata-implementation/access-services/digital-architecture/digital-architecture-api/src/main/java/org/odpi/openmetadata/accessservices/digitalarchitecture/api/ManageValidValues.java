@@ -31,7 +31,8 @@ public interface ManageValidValues
      * @param usage how/when should this set be used.
      * @param scope what is the scope of this set's values.
      * @param additionalProperties additional properties for this set.
-     * @param extendedProperties properties that need to be populated into a subtype.
+     * @param typeName name of subtype of the definition (or null to use the standard open type)
+     * @param extendedProperties properties that need to be populated into a subtype (or null for the standard open type).
      *
      * @return unique identifier for the new set
      *
@@ -46,6 +47,7 @@ public interface ManageValidValues
                                 String              usage,
                                 String              scope,
                                 Map<String, String> additionalProperties,
+                                String              typeName,
                                 Map<String, Object> extendedProperties) throws InvalidParameterException,
                                                                                UserNotAuthorizedException,
                                                                                PropertyServerException;
@@ -63,7 +65,8 @@ public interface ManageValidValues
      * @param scope what is the scope of the values.
      * @param preferredValue the value that should be used in an implementation if possible.
      * @param additionalProperties additional properties for this definition.
-     * @param extendedProperties properties that need to be populated into a subtype.
+     * @param typeName name of subtype of the definition (or null to use the standard open type)
+     * @param extendedProperties properties that need to be populated into a subtype (or null for the standard open type).
      *
      * @return unique identifier for the new definition
      *
@@ -80,6 +83,7 @@ public interface ManageValidValues
                                        String              scope,
                                        String              preferredValue,
                                        Map<String, String> additionalProperties,
+                                       String              typeName,
                                        Map<String, Object> extendedProperties) throws InvalidParameterException,
                                                                                       UserNotAuthorizedException,
                                                                                       PropertyServerException;
@@ -100,6 +104,7 @@ public interface ManageValidValues
      * @param preferredValue the value that should be used in an implementation if possible.
      * @param isDeprecated is this value deprecated?
      * @param additionalProperties additional properties for this valid value.
+     * @param typeName name of subtype of the definition (or null to use the standard open type)
      * @param extendedProperties properties that need to be populated into a subtype.
      *
      * @throws InvalidParameterException one of the parameters is invalid.
@@ -116,6 +121,7 @@ public interface ManageValidValues
                              String              preferredValue,
                              boolean             isDeprecated,
                              Map<String, String> additionalProperties,
+                             String              typeName,
                              Map<String, Object> extendedProperties) throws InvalidParameterException,
                                                                             UserNotAuthorizedException,
                                                                             PropertyServerException;

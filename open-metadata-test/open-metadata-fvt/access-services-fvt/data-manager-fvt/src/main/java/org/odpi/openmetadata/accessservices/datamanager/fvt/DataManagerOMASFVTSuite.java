@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.datamanager.fvt;
 import org.odpi.openmetadata.accessservices.datamanager.fvt.clientconstructors.ClientConstructorTest;
 import org.odpi.openmetadata.accessservices.datamanager.fvt.databases.CreateDatabaseTest;
 import org.odpi.openmetadata.accessservices.datamanager.fvt.errorhandling.InvalidParameterTest;
+import org.odpi.openmetadata.fvt.utilities.FVTConstants;
 import org.odpi.openmetadata.fvt.utilities.FVTResults;
 
 import java.io.BufferedReader;
@@ -17,7 +18,7 @@ import static java.lang.System.exit;
 /**
  * FVTSuite provides the main program for the Data Manager OMAS
  * Functional Verification Tests (FVTs).  It is used when running the test suite standalone
- * (ie outside of surefire).
+ * (ie outside of the failsafe test framework).
  */
 public class FVTSuite
 {

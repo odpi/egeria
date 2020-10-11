@@ -141,7 +141,8 @@ public class ValidValuesManager extends DigitalArchitectureClientBase implements
      * @param usage how/when should this set be used.
      * @param scope what is the scope of this set's values.
      * @param additionalProperties additional properties for this set.
-     * @param extendedProperties properties that need to be populated into a subtype.
+     * @param typeName name of subtype of the definition (or null to use the standard open type)
+     * @param extendedProperties properties that need to be populated into a subtype (or null for the standard open type).
      *
      * @return unique identifier for the new set
      *
@@ -156,6 +157,7 @@ public class ValidValuesManager extends DigitalArchitectureClientBase implements
                                        String              usage,
                                        String              scope,
                                        Map<String, String> additionalProperties,
+                                       String              typeName,
                                        Map<String, Object> extendedProperties) throws InvalidParameterException,
                                                                                       UserNotAuthorizedException,
                                                                                       PropertyServerException
@@ -175,6 +177,7 @@ public class ValidValuesManager extends DigitalArchitectureClientBase implements
         requestBody.setUsage(usage);
         requestBody.setScope(scope);
         requestBody.setAdditionalProperties(additionalProperties);
+        requestBody.setTypeName(typeName);
         requestBody.setExtendedProperties(extendedProperties);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
@@ -198,7 +201,8 @@ public class ValidValuesManager extends DigitalArchitectureClientBase implements
      * @param usage how/when should this value be used.
      * @param preferredValue the value that should be used in an implementation if possible.
      * @param additionalProperties additional properties for this definition.
-     * @param extendedProperties properties that need to be populated into a subtype.
+     * @param typeName name of subtype of the definition (or null to use the standard open type)
+     * @param extendedProperties properties that need to be populated into a subtype (or null for the standard open type).
      *
      * @return unique identifier for the new definition
      *
@@ -215,6 +219,7 @@ public class ValidValuesManager extends DigitalArchitectureClientBase implements
                                               String              scope,
                                               String              preferredValue,
                                               Map<String, String> additionalProperties,
+                                              String              typeName,
                                               Map<String, Object> extendedProperties) throws InvalidParameterException,
                                                                                              UserNotAuthorizedException,
                                                                                              PropertyServerException
@@ -235,6 +240,7 @@ public class ValidValuesManager extends DigitalArchitectureClientBase implements
         requestBody.setScope(scope);
         requestBody.setPreferredValue(preferredValue);
         requestBody.setAdditionalProperties(additionalProperties);
+        requestBody.setTypeName(typeName);
         requestBody.setExtendedProperties(extendedProperties);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
@@ -263,6 +269,7 @@ public class ValidValuesManager extends DigitalArchitectureClientBase implements
      * @param preferredValue the value that should be used in an implementation if possible.
      * @param isDeprecated is this value deprecated?
      * @param additionalProperties additional properties for this valid value.
+     * @param typeName name of subtype of the definition (or null to use the standard open type)
      * @param extendedProperties properties that need to be populated into a subtype.
      *
      * @throws InvalidParameterException one of the parameters is invalid.
@@ -279,6 +286,7 @@ public class ValidValuesManager extends DigitalArchitectureClientBase implements
                                     String              preferredValue,
                                     boolean             isDeprecated,
                                     Map<String, String> additionalProperties,
+                                    String              typeName,
                                     Map<String, Object> extendedProperties) throws InvalidParameterException,
                                                                                    UserNotAuthorizedException,
                                                                                    PropertyServerException

@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.assetconsumer.client;
 
 import org.odpi.openmetadata.accessservices.assetconsumer.api.*;
+import org.odpi.openmetadata.accessservices.assetconsumer.client.rest.AssetConsumerRESTClient;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.properties.GlossaryTerm;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.GlossaryTermListResponse;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.GlossaryTermResponse;
@@ -127,6 +128,30 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
         this.restClient = new AssetConsumerRESTClient(serverName, serverPlatformRootURL, userId, password);
     }
 
+
+    /**
+     * Create a new client that is going to be used in an OMAG Server (view service or integration service typically).
+     *
+     * @param serverName name of the server to connect to
+     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param restClient client that issues the REST API calls
+     * @param maxPageSize maximum number of results supported by this server
+     * @param auditLog logging destination
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * REST API calls.
+     */
+    public AssetConsumer(String                  serverName,
+                         String                  serverPlatformRootURL,
+                         AssetConsumerRESTClient restClient,
+                         int                     maxPageSize,
+                         AuditLog                auditLog) throws InvalidParameterException
+    {
+        super(serverName, serverPlatformRootURL, auditLog);
+
+        invalidParameterHandler.setMaxPagingSize(maxPageSize);
+
+        this.restClient = restClient;
+    }
 
     /*
      * ===============================================

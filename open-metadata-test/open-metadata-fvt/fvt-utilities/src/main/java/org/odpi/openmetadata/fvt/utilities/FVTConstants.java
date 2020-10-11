@@ -12,7 +12,7 @@ public class FVTConstants
     public static final String DEFAULT_SERVER_NAME = "fvtMDS";
 
     /*
-     * These values are use in the automatic FVT execution in the build using surefire.
+     * These values are use in the automatic FVT execution in the build using failsafe.
      */
     public final static String SERVER_PLATFORM_URL_ROOT = "https://localhost:10443";
     public final static String IN_MEMORY_SERVER         = "serverinmem";
