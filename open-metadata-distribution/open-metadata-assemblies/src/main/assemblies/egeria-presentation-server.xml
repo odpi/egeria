@@ -25,6 +25,7 @@
                 <include>dist/**</include>
                 <include>src/**</include>
                 <include>ssl/**</include>
+                <include>public/**</include>
             </includes>
             <excludes>
               <exclude>package-lock.json</exclude>

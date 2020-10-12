@@ -1,0 +1,176 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
+
+.details-panel {
+  width              : 430px;
+}
+
+.details-message {
+  font-size          : 12px;
+}
+
+.type-details-container {
+  text-align         : left;
+  padding            : 5px;
+  background-color   : rgb(240, 240, 240);
+  font-size          : 12px;
+}
+
+.type-details-item {
+  padding            : 5px 5px;
+  word-break         : break-all;
+}
+
+.type-details-item-bold {
+  padding            : 5px 5px;
+  font-weight        : bold;
+}
+
+.details-sublist {
+  margin-left        : 5px;
+  padding            : inherit;
+}
+
+.end-sublist {
+  margin-top         : 10px;
+  padding            : inherit;
+}
+
+.details-sublist-item {
+  margin-top         : 5px;
+  padding            : inherit;
+  word-break         : break-all;
+}
+
+.details-sublist-item-bold {
+  margin-top         : 5px;
+  padding            : inherit;
+  font-weight        : bold;
+  word-break         : break-all; 
+}
+
+.details-sub-container {
+  padding            : 5px;
+}
+
+.details-sub-group {
+  padding            : 0px;
+}
+.details-sub-item {
+  margin-top         : 3px;
+  padding            : inherit;
+}
+
+.v-spreader {
+  margin-top         : 10px;
+}
+
+.italic {
+  font-style         : italic;
+}
+
+.div-bold {
+  font-weight        : bold;
+}
+
+.button-padded {
+  margin             : 10px 4px 10px 10px;
+}
+
+.backlink {
+  background-color   : rgb(240,240,240);
+  color              : black;
+  cursor             : pointer;
+  padding            : 0px;
+  width              : 100%;
+  border             : none;
+  text-align         : left;
+  outline            : none;
+  font-size          : 12px;
+}
+
+.linkable {
+  background-color   : rgb(240,240,240);
+  color              : black;
+  cursor             : pointer;
+  padding            : 0px;
+  width              : 200px;
+  border             : none;
+  text-align         : left;
+  outline            : none;
+  font-size          : 12px;
+}
+
+.collapsible {
+  background-color   : rgb(240,240,240);
+  color              : black;
+  cursor             : pointer;
+  padding            : 5px;
+  width              : 300px;
+  border             : none;
+  text-align         : left;
+  outline            : none;
+  font-size          : 12px;
+  font-weight        : bold;
+}
+
+.collapsible:before {
+  content: '\025BA';
+  font-size: 10px;
+  color: black;
+  float: left;
+  margin-left: 0px;
+  margin-right: 10px;
+}
+
+.collapsible-warning {
+  background-color   : rgb(240,240,240);
+  color              : black;
+  cursor             : pointer;
+  padding            : 5px;
+  width              : 300px;
+  border             : none;
+  text-align         : left;
+  outline            : none;
+  font-size          : 12px;
+  font-weight        : bold;
+}
+
+.collapsible-warning:after {
+  content:  '\02757';
+  font-size: 10px;
+  color: white;
+  float: right;
+  margin-left: 5px;
+}
+
+.active:before {
+  content: '\025BC';
+}
+
+.content {
+  /*padding            : 10px 0px 10px 10px;*/
+  padding            : inherit;
+  display            : none;
+  overflow           : hidden;
+  background-color   : rgb(240,240,240);
+}
+
+.highlight {
+  background-color   : #EEEEEE;
+  color              : black;
+  padding            : 5px;
+  width              : 300px;
+  border             : 2px;
+  text-align         : left;
+  outline            : none;
+  font-size          : 12px;
+}
+
+
+.server-control-button {  
+  height           : 40px;
+  width            : 120px;
+  background-color : rgb(180,180,180);  
+}
+

@@ -289,8 +289,8 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
             InputValidator.validateNodeType(className, methodName, suppliedCategory.getNodeType(), NodeType.Category, NodeType.SubjectAreaDefinition);
 
             response = getCategoryByGuid(userId, guid);
-            if (response.getHead() != null) {
-                Category currentCategory = (Category) response.getHead();
+            if (response.head().isPresent()) {
+                Category currentCategory = response.head().get();
                 if (isReplace)
                     // copy over attributes
                     replaceAttributes(currentCategory, suppliedCategory);

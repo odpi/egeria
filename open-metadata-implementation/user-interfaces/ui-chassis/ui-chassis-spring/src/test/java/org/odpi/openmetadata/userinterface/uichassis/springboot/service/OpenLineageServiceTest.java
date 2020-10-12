@@ -129,7 +129,7 @@ public class OpenLineageServiceTest {
         } catch (OpenLineageException e) {
             e.printStackTrace();
         }
-        Map<String, List> response = openLineageService.getGlossaryLineage(USER_ID, guid, true);
+        Map<String, List> response = openLineageService.getVerticalLineage(USER_ID, guid, true);
         checkResponse(response);
     }
 

@@ -17,9 +17,7 @@ import {
 } from "carbon-components-react";
 import getNodeType from "./properties/NodeTypes.js";
 import Info16 from "@carbon/icons-react/lib/information/16";
-import {
-  issueRestCreate
-} from "./RestCaller";
+import { issueRestCreate } from "./RestCaller";
 
 export default function CreateGlossary(props) {
   const [createBody, setCreateBody] = useState({});
@@ -148,14 +146,14 @@ export default function CreateGlossary(props) {
 
   const createAnother = () => {
     setCreatedNode(undefined);
-  }
+  };
   const onClickBack = () => {
     console.log("Back clicked");
-    // use props.history, as there is another window history object in scope in the event listener  
+    // use props.history, as there is another window history object in scope in the event listener
     console.log(props.history);
-    // go  back 
+    // go  back
     props.history.goBack();
-  }
+  };
   return (
     <div>
       {createdNode != undefined && (
@@ -234,19 +232,19 @@ export default function CreateGlossary(props) {
             </AccordionItem>
           </Accordion>
           <button
-                className="bx--btn bx--btn--primary"
-                onClick={createAnother}
-                type="button"
-              >
-                Create Another
-              </button>
-              <button
-                className="bx--btn bx--btn--primary"
-                onClick={onClickBack}
-                type="button"
-              >
-                Back
-              </button>
+            className="bx--btn bx--btn--primary"
+            onClick={createAnother}
+            type="button"
+          >
+            Create Another
+          </button>
+          <button
+            className="bx--btn bx--btn--primary"
+            onClick={onClickBack}
+            type="button"
+          >
+            Back
+          </button>
         </div>
       )}
 
@@ -300,7 +298,7 @@ export default function CreateGlossary(props) {
                 </DatePicker>
               </AccordionItem>
             </Accordion>
-
+            <div style={{ color: "red" }}>{errorMsg}</div>
             <div className="bx--form-item">
               <button
                 id="NodeCreateViewButton"

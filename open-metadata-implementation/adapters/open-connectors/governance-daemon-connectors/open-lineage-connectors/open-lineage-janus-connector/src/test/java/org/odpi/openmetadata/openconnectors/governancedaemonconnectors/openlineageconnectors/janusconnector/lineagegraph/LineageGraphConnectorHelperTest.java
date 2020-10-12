@@ -133,7 +133,7 @@ public class LineageGraphConnectorHelperTest {
         expectedNodeIDs.add("g3");
         expectedNodeIDs.add("c2");
 
-        LineageVerticesAndEdges lineageVerticesAndEdges = mainGraphConnector.verticalLineage(queriedNodeID, true).get();
+        LineageVerticesAndEdges lineageVerticesAndEdges = mainGraphConnector.verticalLineage(queriedNodeID).get();
 
         Set<LineageVertex> lineageVertices = lineageVerticesAndEdges.getLineageVertices();
 

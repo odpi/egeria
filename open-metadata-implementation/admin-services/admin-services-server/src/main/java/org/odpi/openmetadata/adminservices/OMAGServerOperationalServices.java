@@ -1031,6 +1031,7 @@ public class OMAGServerOperationalServices
         {
             DataEngineProxyOperationalServices operationalDataEngineProxyServices
                     = new DataEngineProxyOperationalServices(configuration.getLocalServerName(),
+                                                             configuration.getLocalServerId(),
                                                              configuration.getLocalServerUserId(),
                                                              configuration.getLocalServerPassword());
 
