@@ -581,6 +581,29 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
 
 
     /**
+     * Return a classification with the header and type information filled out.  The caller only needs to add properties
+     * to complete the set up of the classification.  This method is deprecated because it does not take the provenance information.
+     * The implementation of this method sets the provenance information to "LOCAL_COHORT".
+     *
+     * @param sourceName     source of the request (used for logging)
+     * @param userName       name of the creator
+     * @param typeName       name of the type
+     * @param entityTypeName name of the type for the entity that this classification is to be attached to.
+     * @param properties     properties for the classification
+     * @return partially filled out classification needs properties and possibly origin information
+     * @throws TypeErrorException the type name is not recognized as a classification type.
+     */
+    @Deprecated
+    Classification getNewClassification(String               sourceName,
+                                        String               userName,
+                                        String               typeName,
+                                        String               entityTypeName,
+                                        ClassificationOrigin classificationOrigin,
+                                        String               classificationOriginGUID,
+                                        InstanceProperties   properties) throws TypeErrorException;
+
+
+    /**
      * Add a classification to an existing entity.
      *
      * @param sourceName          source of the request (used for logging)
