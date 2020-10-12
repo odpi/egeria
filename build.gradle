@@ -18,7 +18,7 @@ buildscript {
 }
 
 /*
- * Plugins for this parent module only - so just high level project related 
+ * Plugins for this parent module only - so just high level project related
  */
 
 plugins {
@@ -31,7 +31,7 @@ plugins {
 
 
 
-/* 
+/*
  * Configuration for all projects - INCLUDING this one
  */
 
@@ -41,16 +41,16 @@ allprojects {
     version = '2.4-SNAPSHOT'
 
 
-    // This enforces version checking but is slow to process 
+    // This enforces version checking but is slow to process
     //apply plugin: 'nebula.lint'
     //gradleLint {
     //    rules = ['all-dependency'] // TODO: Change to criticalRules when ready to enforce
-    //    
+    //
     //}
 }
 
-/* 
- * Configuration for sub projects only 
+/*
+ * Configuration for sub projects only
  */
 
 subprojects {
@@ -155,6 +155,7 @@ subprojects {
             implementation("org.springframework.boot:spring-boot-starter-security:2.3.3.RELEASE")
             implementation("org.springframework.boot:spring-boot-starter-validation:2.3.3.RELEASE")
             implementation("org.springframework.boot:spring-boot-starter-web:2.3.3.RELEASE")
+            implementation("org.springframework.cloud:spring-cloud-starter-netflix-zuul:2.2.5.RELEASE")
             implementation("org.springframework.data:spring-data-commons:2.3.4.RELEASE")
             implementation("org.springframework.data:spring-data-jpa:2.3.4.RELEASE")
             implementation("org.springframework.security:spring-security-config:5.4.1")
