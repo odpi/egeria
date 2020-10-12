@@ -2,6 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 import React, { useState } from "react";
 import Add32 from "../../../images/Egeria_add_32";
+// import Success32 from "../../../images/Success_32";
+import successIcon from '@carbon/icons/es/checkmark--filled/32/';
+import { getAttributes, toSVG } from '@carbon/icon-helpers';
 import getNodeType from "./properties/NodeTypes.js";
 import { Button, Form, FormGroup, TextInput } from "carbon-components-react";
 
@@ -13,6 +16,11 @@ export default function QuickTerms(props) {
   const [terms, setTerms] = useState([]);
   const [termsWithStatus, setTermsWithStatus] = useState([]);
   const [errorMsg, setErrorMsg] = useState();
+
+  const successIconNode = toSVG({
+    ...successIcon,
+    attrs: getAttributes(successIcon.attrs),
+  });
 
   const url = getUrl();
   function getUrl() {
@@ -191,20 +199,23 @@ export default function QuickTerms(props) {
                         readOnly
                       />
                       {item.status == "Success" && (
-                        <TextInput
-                          type="text"
-                          defaultValue={item.status}
-                          style={{ color: "green" }}
-                          readOnly
-                        />
+                        <div className="row-container">
+                          <TextInput
+                            type="text"
+                            defaultValue={item.status}
+                            readOnly
+                          />
+                          <div className="left-20" alias="white_check_mark" src="https://github.githubassets.com/images/icons/emoji/unicode/2705.png">✅</div>
+                        </div>
                       )}
                       {item.status != "Success" && (
-                        <TextInput
-                          type="text"
-                          defaultValue={item.status}
-                          style={{ color: "red" }}
-                          readOnly
-                        />
+                        <div>
+                          <TextInput
+                            type="text"
+                            defaultValue={item.status}
+                            readOnly
+                          />
+                        </div>
                       )}
                     </div>
                   </div>

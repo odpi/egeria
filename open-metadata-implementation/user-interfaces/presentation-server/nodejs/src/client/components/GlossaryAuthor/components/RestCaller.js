@@ -36,7 +36,9 @@ export async function issueRestGet(url, onSuccessful, onError) {
       if (msg) {
         onError(msg);
       }
-    }
+    } else  if (json.relatedHTTPCode == 200) {
+         onError("Error. Server is unable to process complete a get request.");    
+    }  
   } catch (msg) {
     onError(msg);
   }
@@ -62,7 +64,7 @@ export async function issueRestCreate(url, body, onSuccessful, onError) {
         msg = "Create Failed: " + json.exceptionUserAction;
       } else {
         msg =
-          "Create Failed unexpected Egeria response: " + JSON.stringify(json);
+          "Create Failed";
       }
     } else if (response.errno) {
       if (response.errno == "ECONNREFUSED") {
@@ -116,7 +118,9 @@ export async function issueRestDelete(deleteUrl, onSuccessful, onError) {
       if (msg) {
         onError(msg);
       }
-    }
+    } else  if (json.relatedHTTPCode == 200) {
+      onError("Error. Server is unable to process complete a get request.");    
+    }  
   } catch (msg) {
     onError(msg);
   }
@@ -141,7 +145,7 @@ export async function issueRestUpdate(url, body, onSuccessful, onError) {
         msg = "Update Failed: " + json.exceptionUserAction;
       } else {
         msg =
-          "Update Failed unexpected Egeria response: " + JSON.stringify(json);
+          "The server was unable to process the update request";
       }
     } else if (response.errno) {
       if (response.errno == "ECONNREFUSED") {
