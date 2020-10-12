@@ -252,7 +252,7 @@ export default function UpdateGlossary(props) {
           </AccordionItem>
         </Accordion>
       )}
-
+       <div style={{ color: "red" }}>{errorMsg}</div>
       <button
         className="bx--btn bx--btn--primary"
         onClick={handleClickUpdate}

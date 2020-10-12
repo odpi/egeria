@@ -26,6 +26,8 @@ import '@polymer/paper-input/paper-input.js';
 import '@polymer/iron-icon/iron-icon.js';
 import '@polymer/iron-icons/iron-icons.js';
 import '@polymer/iron-form/iron-form.js';
+import '@vaadin/vaadin-icons/vaadin-icons.js';
+import '@polymer/paper-styles/paper-styles.js';
 import './my-icons.js';
 import './token-ajax';
 import './toast-feedback';
