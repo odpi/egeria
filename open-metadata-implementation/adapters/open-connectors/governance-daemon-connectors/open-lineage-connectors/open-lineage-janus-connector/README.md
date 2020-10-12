@@ -7,6 +7,78 @@
 
 The Open Lineage Janus connector allows the Open Lineages Services to connect with a JanusGraph database.
 
+The Connector can be configured to connect to either an embedded JanusGraph database or a standalone JanusGraph server.
+   
+Configuring the properties of the JanusGraph client when connecting to a server should be done following the [official documentation](https://docs.janusgraph.org/basics/configuration/)
+   
+--
+- Embedded JanusGraph server
+In order to configure the connector with an embedded JanusGraph lineageGraphConnection configuration should be configured with the following `connectorProviderClassName`:  
+
+```
+ "connectorProviderClassName" : "org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.graph.LineageGraphConnectorProvider"       
+```
+
+Example: 
+ ```
+"lineageGraphConnection": {
+    "class": "Connection",
+    "displayName": "Lineage Graph Connection",
+    "description": "Used for storing lineage in the Open Metadata format",
+    "connectorType": {
+        "class": "ConnectorType",
+        "connectorProviderClassName": "org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.graph.LineageGraphConnectorProvider"
+    },
+   "configurationProperties": {
+        "gremlin.graph": "org.janusgraph.core.JanusGraphFactory",
+        "storage.backend": "berkeleyje",
+        "storage.directory": "./egeria-lineage-repositories/lineageGraph/berkeley",
+        "storage.berkeleyje.lock-mode": "LockMode.READ_UNCOMMITTED",
+        "index.search.backend": "lucene",
+        "index.search.directory": "./egeria-lineage-repositories/lineageGraph/searchindex"
+    }
+}
+```
+
+The above example configures the server with an embedded JanusGraph that uses BerkeleyDB as the storing solution and Lucene for the indexing. 
+  
+ 
+---
+For the standalone JanusGraph server the following configuration needs to be provided: 
+```
+ "connectorProviderClassName" : "org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.graph.LineageGraphRemoteConnectorProvider"       
+```
+
+Setting `remote.schemaManagement.enable` `true`  will set up the schema for the remote JanusGraph server, configuring the vertex labels and indexes used .
+  
+Example:
+```
+"lineageGraphConnection": {
+    "class": "Connection",
+    "displayName": "Lineage Graph Connection",
+    "description": "Used for storing lineage in the Open Metadata format",
+    "connectorType": {
+        "class": "ConnectorType",
+        "connectorProviderClassName": "org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.graph.LineageGraphRemoteConnectorProvider"
+    },
+   "configurationProperties": {
+        "port": "8182",
+        "hosts": ["localhost"],
+        "serializer.className": "org.apache.tinkerpop.gremlin.driver.ser.GryoMessageSerializerV3d0",
+        "serializer.config": {
+            "ioRegistries": [
+                "org.janusgraph.graphdb.tinkerpop.JanusGraphIoRegistry",
+                "org.apache.tinkerpop.gremlin.tinkergraph.structure.TinkerIoRegistryV3d0"
+                ]
+        },
+        "gremlin.remote.driver.sourceName": "g",
+        "remote.schemaManagement.enable": true
+    }
+},
+```
+In this example, the connector accesses a standalone JanusGraph server running on the local machine, on port 8182. 
+The indexing and storage technologies used by the JansusGraph server are irrelevant for the client in this situation.  
+ 
 ----
 Return to [open-lineage-connectors](..) module.
 
