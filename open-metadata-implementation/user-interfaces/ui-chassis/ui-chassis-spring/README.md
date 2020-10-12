@@ -2,7 +2,7 @@
 <!-- Copyright Contributors to the ODPi Egeria project 2020. -->
 
 The ui chassis provides the base server framework to host the open metadata
-services in the UI Server Platform.  
+services in the UI Server Platform.
 
 The **ui-chassis-spring** module provides the implementation of the ui chassis.
 Its **main()** method is located in a Java class called
@@ -13,18 +13,25 @@ When the **UIServerPlatform** is started, Spring Boot does a component scan for 
 services that are in Java packages stemming from `org.odpi.openmetadata.*`
 and that are visible to this module.
 
-The UIServerPlatform allows for customized logging for http requests. At the moment, request logging is only available for the login endpoints. 
+The UIServerPlatform allows for customized logging for http requests. At the moment, request logging is only available for the login endpoints.
 You can configure the logging mechanism to log any request header, username or the session ID.
 
 For example adding `%X{username}` in the logging pattern will print the username of the user that loges in.
 
 The available fields to be printed, along with the headers form the request are the following
 
-* username  
-* sessionId 
-* remoteAddress 
-* remoteHost 
+* username
+* sessionId
+* remoteAddress
+* remoteHost
 
+# Start in development mode
+
+Start the base server for the `ui-chassis-spring` in bash.
+
+```bash
+ mvn -Dspring-boot.run.folders=./lib/ -Drat.skip spring-boot:run
+```
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
