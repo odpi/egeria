@@ -12,10 +12,12 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.classificatio
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.ConfidenceLevel;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.CriticalityLevel;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.RetentionBasis;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.GovernanceActions;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.CategorySummary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.GlossarySummary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -25,6 +27,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * FVT resource to call subject area term client API
@@ -35,6 +39,8 @@ public class TermFVT {
     private static final String DEFAULT_TEST_TERM_NAME_UPDATED = "Test term A updated";
     private SubjectAreaNodeClient<Term> subjectAreaTerm = null;
     private GlossaryFVT glossaryFVT =null;
+    private CategoryFVT categoryFVT =null;
+    private SubjectAreaDefinitionCategoryFVT subjectAreaFVT =null;
     private String userId =null;
     private int existingTermCount = 0;
     /*
@@ -66,6 +72,9 @@ public class TermFVT {
         subjectAreaTerm = new SubjectAreaTermClient<>(client);
         System.out.println("Create a glossary");
         glossaryFVT = new GlossaryFVT(url,serverName,userId);
+        categoryFVT = new CategoryFVT(url, serverName,userId);
+        subjectAreaFVT = new SubjectAreaDefinitionCategoryFVT(url, serverName,userId);
+
         this.userId=userId;
         existingTermCount = findTerms(".*").size();
         System.out.println("existingTermCount " + existingTermCount);
@@ -97,7 +106,6 @@ public class TermFVT {
         Term term2 = createTerm(DEFAULT_TEST_TERM_NAME, glossaryGuid);
         FVTUtils.validateNode(term2);
         System.out.println("Create a term2 using glossary userId");
-
         Term termForUpdate = new Term();
         termForUpdate.setName(DEFAULT_TEST_TERM_NAME_UPDATED);
         System.out.println("Get term1");
@@ -290,6 +298,86 @@ public class TermFVT {
         if (termForUniqueQFN2 == null || termForUniqueQFN2.equals("")) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected qualified name to be set");
         }
+
+        // test categories
+
+        Category cat1 = categoryFVT.createCategoryWithGlossaryGuid("cat1", glossaryGuid);
+        Category cat2 = subjectAreaFVT.createSubjectAreaDefinitionWithGlossaryGuid("cat2", glossaryGuid);
+        Category cat3 = categoryFVT.createCategoryWithGlossaryGuid("cat3",glossaryGuid);
+        CategorySummary cat1Summary = new CategorySummary();
+        cat1Summary.setGuid(cat1.getSystemAttributes().getGUID());
+        CategorySummary cat2Summary = new CategorySummary();
+        cat2Summary.setGuid(cat2.getSystemAttributes().getGUID());
+        CategorySummary cat3Summary = new CategorySummary();
+        cat3Summary.setGuid(cat3.getSystemAttributes().getGUID());
+
+        List<CategorySummary> suppliedCategories = new ArrayList<>();
+        suppliedCategories.add(cat1Summary);
+
+        Term term4cats = getTermForInput(DEFAULT_TEST_TERM_NAME,glossaryGuid);
+        Term createdTerm4cats =issueCreateTerm(term4cats);
+        if (createdTerm4cats.getCategories() != null) {
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected null categories created when none were requested");
+        }
+
+        term4cats = getTermForInput(DEFAULT_TEST_TERM_NAME,glossaryGuid);
+        term4cats.setCategories(suppliedCategories);
+        createdTerm4cats =issueCreateTerm(term4cats);
+        if (createdTerm4cats.getCategories().size() != 1) {
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 1 categories returned");
+        }
+        if (!createdTerm4cats.getCategories().get(0).getGuid().equals(cat1Summary.getGuid())) {
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected response category guid to match the requested category guid.");
+        }
+        suppliedCategories.add(cat2Summary);
+        term4cats.setCategories(suppliedCategories);
+        Term createdTerm4cats2 =issueCreateTerm(term4cats);
+        if (createdTerm4cats2.getCategories().size() != 2) {
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 2 categories returned");
+        }
+
+        // update with null categories should change nothing
+        createdTerm4cats2.setCategories(null);
+        Term updatedTerm4cats2 = updateTerm(createdTerm4cats2.getSystemAttributes().getGUID(),createdTerm4cats2);
+        if (updatedTerm4cats2.getCategories().size() != 2) {
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 2 categories returned");
+        }
+        // replace categories with null
+        createdTerm4cats.setCategories(null);
+        Term replacedTerm4cats = replaceTerm(createdTerm4cats.getSystemAttributes().getGUID(),createdTerm4cats);
+        if (replacedTerm4cats.getCategories() != null) {
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected replace with null to get rid of the categorizations.");
+        }
+        // update term to gain 2 categories
+        createdTerm4cats.setCategories(suppliedCategories);
+        updatedTerm4cats2 = updateTerm(createdTerm4cats.getSystemAttributes().getGUID(),createdTerm4cats);
+        if (updatedTerm4cats2.getCategories().size() != 2) {
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected update to gain 2 categorizations.");
+        }
+
+
+        List<CategorySummary> supplied3Categories = new ArrayList<>();
+        supplied3Categories.add(cat1Summary);
+        supplied3Categories.add(cat2Summary);
+        supplied3Categories.add(cat3Summary);
+        updatedTerm4cats2.setCategories(supplied3Categories);
+        updatedTerm4cats2 = updateTerm(createdTerm4cats.getSystemAttributes().getGUID(), updatedTerm4cats2);
+        if (updatedTerm4cats2.getCategories().size() != 3) {
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected update to have 3 categorizations.");
+        }
+
+        // clean up
+        categoryFVT.deleteCategory(cat1Summary.getGuid());
+        categoryFVT.purgeCategory(cat1Summary.getGuid());
+        categoryFVT.deleteCategory(cat2Summary.getGuid());
+        categoryFVT.purgeCategory(cat2Summary.getGuid());
+        categoryFVT.deleteCategory(cat3Summary.getGuid());
+        categoryFVT.purgeCategory(cat3Summary.getGuid());
+        deleteTerm(createdTerm4cats.getSystemAttributes().getGUID());
+        purgeTerm(createdTerm4cats.getSystemAttributes().getGUID());
+        deleteTerm(createdTerm4cats2.getSystemAttributes().getGUID());
+        purgeTerm(createdTerm4cats2.getSystemAttributes().getGUID());
+
     }
 
     public  Term createTerm(String termName, String glossaryGuid) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
@@ -382,6 +470,14 @@ public class TermFVT {
         if (updatedTerm != null)
         {
             System.out.println("Updated Term name to " + updatedTerm.getName());
+        }
+        return updatedTerm;
+    }
+    public Term replaceTerm(String guid, Term term) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        Term updatedTerm = subjectAreaTerm.replace(this.userId, guid, term);
+        if (updatedTerm != null)
+        {
+            System.out.println("Replaced Term name to " + updatedTerm.getName());
         }
         return updatedTerm;
     }

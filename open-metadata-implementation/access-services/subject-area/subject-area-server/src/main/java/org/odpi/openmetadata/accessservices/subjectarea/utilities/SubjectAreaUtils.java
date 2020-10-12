@@ -139,7 +139,7 @@ public class SubjectAreaUtils {
     }
 
     /**
-     * Extract glossarySummary
+     * Extract Glossary Summary
      *
      * @param glossary the glossary that is to be summarised
      * @param line     the line to the glossary, which feeds part of the node summary
