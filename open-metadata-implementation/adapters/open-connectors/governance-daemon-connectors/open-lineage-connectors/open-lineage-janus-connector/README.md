@@ -7,12 +7,14 @@
 
 The Open Lineage Janus connector allows the Open Lineages Services to connect with a JanusGraph database.
 
-The Connector can be configured to connect to either an embedded JanusGraph database or a standalone JanusGraph server.
+The Connector can be configured to connect to either an embedded JanusGraph database or a standalone JanusGraph server. 
+For more details on possible configurations please use the documentation [offered by JanusGraph](https://docs.janusgraph.org/basics/deployment/).  
    
-Configuring the properties of the JanusGraph client when connecting to a server should be done following the [official documentation](https://docs.janusgraph.org/basics/configuration/)
+Configuring the properties of the JanusGraph client when connecting to the database should be done following the [official documentation](https://docs.janusgraph.org/basics/configuration/).
    
 --
-- Embedded JanusGraph server
+- Embedded JanusGraph
+
 In order to configure the connector with an embedded JanusGraph lineageGraphConnection configuration should be configured with the following `connectorProviderClassName`:  
 
 ```
@@ -33,7 +35,6 @@ Example:
         "gremlin.graph": "org.janusgraph.core.JanusGraphFactory",
         "storage.backend": "berkeleyje",
         "storage.directory": "./egeria-lineage-repositories/lineageGraph/berkeley",
-        "storage.berkeleyje.lock-mode": "LockMode.READ_UNCOMMITTED",
         "index.search.backend": "lucene",
         "index.search.directory": "./egeria-lineage-repositories/lineageGraph/searchindex"
     }
@@ -44,12 +45,18 @@ The above example configures the server with an embedded JanusGraph that uses Be
   
  
 ---
-For the standalone JanusGraph server the following configuration needs to be provided: 
+ - Standalone JanusGraph server 
+ 
+In order to have the client connect to a standalone database, the following configuration needs to be provided:
+  
 ```
  "connectorProviderClassName" : "org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.graph.LineageGraphRemoteConnectorProvider"       
 ```
 
 Setting `remote.schemaManagement.enable` `true`  will set up the schema for the remote JanusGraph server, configuring the vertex labels and indexes used .
+
+The `configurationProperties` provided are passed to the Gremlin driver when creating a session. 
+More details about the options available can be found on tinkerpop [configuration section](https://tinkerpop.apache.org/docs/current/reference/#_configuration).      
   
 Example:
 ```
