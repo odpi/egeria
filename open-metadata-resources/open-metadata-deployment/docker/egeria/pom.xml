@@ -34,7 +34,6 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>open-metadata-assemblies</artifactId>
-            <classifier>distribution</classifier>
             <type>pom</type>
         </dependency>
     </dependencies>
