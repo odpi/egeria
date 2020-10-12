@@ -675,11 +675,11 @@ public class SchemaTypeHandler extends RootHandler
      * @throws PropertyServerException    problem accessing the property server
      */
     @Deprecated
-    private String updateSchemaAttribute(String           userId,
-                                         String           existingSchemaAttributeGUID,
-                                         SchemaAttribute  schemaAttribute) throws InvalidParameterException,
-                                                                                  PropertyServerException,
-                                                                                  UserNotAuthorizedException
+    public String updateSchemaAttribute(String           userId,
+                                        String           existingSchemaAttributeGUID,
+                                        SchemaAttribute  schemaAttribute) throws InvalidParameterException,
+                                                                                 PropertyServerException,
+                                                                                 UserNotAuthorizedException
     {
         final String methodName = "updateSchemaAttribute";
 
@@ -1161,11 +1161,11 @@ public class SchemaTypeHandler extends RootHandler
      * @throws PropertyServerException    problem accessing the property server
      */
     @Deprecated
-    private String updateSchemaType(String      userId,
-                                    String      existingSchemaTypeGUID,
-                                    SchemaType  schemaType) throws InvalidParameterException,
-                                                                   PropertyServerException,
-                                                                   UserNotAuthorizedException
+    public String updateSchemaType(String      userId,
+                                   String      existingSchemaTypeGUID,
+                                   SchemaType  schemaType) throws InvalidParameterException,
+                                                                  PropertyServerException,
+                                                                  UserNotAuthorizedException
     {
         final String methodName = "updateSchemaType";
 
