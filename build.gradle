@@ -177,7 +177,7 @@ subprojects {
             runtime("joda-time:joda-time:2.10.6")
             runtime("org.antlr:antlr-runtime:3.5.2")
             runtime("org.apache.jena:jena-arq:3.16.0")
-            runtime("org.codehaus.jackson:jackson-core-asl:1.9.13")
+            runtime("org.codehaus.jackson:jackson-core-asl:1.9.13-atlassian-2")
             runtime("org.codehaus.jackson:jackson-mapper-asl:1.9.13")
             runtime("org.janusgraph:janusgraph-berkeleyje:0.5.2")
             runtime("org.janusgraph:janusgraph-cassandra:0.5.2")
