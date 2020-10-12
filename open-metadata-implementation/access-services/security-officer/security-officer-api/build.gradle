@@ -6,8 +6,8 @@
 
 dependencies {
     implementation project(':open-metadata-implementation:repository-services:repository-services-apis')
-    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.11.1'
-    implementation 'org.slf4j:slf4j-api:1.7.30'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations'
+    implementation 'org.slf4j:slf4j-api'
 }
 
 description = 'Security Officer OMAS API'
