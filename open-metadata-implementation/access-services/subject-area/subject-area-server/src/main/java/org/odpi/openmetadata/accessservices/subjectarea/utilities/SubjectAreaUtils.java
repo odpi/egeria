@@ -151,19 +151,6 @@ public class SubjectAreaUtils {
         extractNodeSummary(glossary, line, glossarySummary);
         return glossarySummary;
     }
-    /**
-     * Extract category Summary
-     *
-     * @param category the category that is to be summarised
-     * @param line     the line to the category, which feeds part of the node summary
-     * @return Category Summary or null
-     */
-    public static CategorySummary extractGlossarySummaryFromGlossary(Category category, Line line) {
-        if (category == null) return null;
-        CategorySummary categorySummary = new CategorySummary();
-        extractNodeSummary(category, line, categorySummary);
-        return categorySummary;
-    }
 
     /**
      * Get glossary guid from anchors

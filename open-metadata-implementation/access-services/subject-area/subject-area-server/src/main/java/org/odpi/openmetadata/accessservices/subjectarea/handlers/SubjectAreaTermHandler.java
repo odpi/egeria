@@ -40,9 +40,9 @@ import java.util.stream.Collectors;
  */
 public class SubjectAreaTermHandler extends SubjectAreaHandler {
     private static final String className = SubjectAreaTermHandler.class.getName();
-    private TermAnchorMapper termAnchorMapper;
-    private TermCategorizationMapper termCategorizationMapper;
-    private CategoryMapper categoryMapper;
+    private final TermAnchorMapper termAnchorMapper;
+    private final TermCategorizationMapper termCategorizationMapper;
+    private final CategoryMapper categoryMapper;
 
     /**
      * Construct the Subject Area Term Handler
@@ -330,8 +330,9 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
      * If the caller has chosen to incorporate the term qualifiedName in their Term Terms or Categories qualified name, changing the qualified name of the term will cause those
      * qualified names to mismatch the Term name.
      * Status is not updated using this call.
-     * The Categories categorising this Term can be amended using this call. For an update (rather than a replace) with no categories supplied, no changes are made to the categories; otherwise the
-     * supplied categories will replace the existing ones.
+     * The Categories categorising this Term can be amended using this call; this means that the termCategorization relationships are removed and/or added in this call.
+     * For an update (rather than a replace) with no categories supplied, no changes are made to the termCategorizations; otherwise the
+     * supplied categorizing Categories will replace the existing ones.
      *
      * @param userId           unique identifier for requesting user, under which the request is performed
      * @param guid             guid of the term to update
@@ -387,38 +388,11 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
                             oMRSAPIHelper.callOMRSDeClassifyEntity(methodName, userId, guid, deClassifyName);
                         }
                     }
-
                     List<CategorySummary> suppliedCategories = suppliedTerm.getCategories();
                     if (suppliedCategories==null && !isReplace) {
                         // in the update case with null categories supplied then do not change anything.
                     } else {
-                        Set<String> deleteCategorizationGuidSet = new HashSet<>();
-                        SubjectAreaOMASAPIResponse<Line> lineResponse = getTermRelationships(userId, guid, new FindRequest());
-                        List<Line> lines= lineResponse.results();
-                        /*
-                         * The supplied categories may not be completely filled out.
-                         * we will accept a guid (i.e. that of the category) and ignore the rest.
-                         */
-                        for (Line line : lines) {
-                            if (line.getLineType().equals(LineType.TermCategorization)) {
-                                deleteCategorizationGuidSet.add(line.getGuid());
-                            }
-                        }
-
-                        // always replace the categories if categories are supplied
-                        // delete any existing categorizations
-                        if (deleteCategorizationGuidSet != null && deleteCategorizationGuidSet.size() > 0) {
-                            for (String categorizationGuidToDelete : deleteCategorizationGuidSet) {
-                                String typeDefGuid = termCategorizationMapper.getTypeDefGuid();
-                                oMRSAPIHelper.callOMRSDeleteRelationship(methodName, userId, typeDefGuid, "TermCategorization", categorizationGuidToDelete);
-                            }
-                        }
-                        // add any supplied ones
-                        if (suppliedCategories != null && suppliedCategories.size() > 0) {
-                            for (CategorySummary categorySummary : suppliedCategories) {
-                                addCategorizationRelationship(userId, suppliedTerm, methodName, categorySummary.getGuid());
-                            }
-                        }
+                        replaceCategories(userId, guid, suppliedTerm, methodName);
                     }
                 }
                 response = getTermByGuid(userId, guid);
@@ -429,6 +403,49 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
         }
 
         return response;
+    }
+
+    /**
+     * Update the Categories sub-object of Term. Replace the categories with those supplied. This means that the termCategorization relationships are removed and
+     * added as per the request.
+     * @param userId           unique identifier for requesting user, under which the request is performed
+     * @param guid             guid of the term to update
+     * @param suppliedTerm     term to be updated
+     * @param methodName       API name
+     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
+     * @throws PropertyServerException              reporting errors when connecting to a metadata repository to retrieve properties about the connection and/or connector.
+     * @throws SubjectAreaCheckedException          reporting errors found when using the Subject Area OMAS services.
+     * @throws InvalidParameterException            one of the parameters is null or invalid.
+     */
+    private void replaceCategories(String userId, String guid, Term suppliedTerm, String methodName) throws UserNotAuthorizedException, PropertyServerException, SubjectAreaCheckedException, InvalidParameterException {
+        Set<String> deleteCategorizationGuidSet = new HashSet<>();
+        SubjectAreaOMASAPIResponse<Line> lineResponse = getTermRelationships(userId, guid, new FindRequest());
+        List<Line> lines= lineResponse.results();
+        /*
+         * The supplied categories may not be completely filled out.
+         * we will accept a guid (i.e. that of the category) and ignore the rest.
+         */
+        for (Line line : lines) {
+            if (line.getLineType().equals(LineType.TermCategorization)) {
+                deleteCategorizationGuidSet.add(line.getGuid());
+            }
+        }
+
+        // always replace the categories if categories are supplied
+        // delete any existing categorizations
+        if (deleteCategorizationGuidSet != null && deleteCategorizationGuidSet.size() > 0) {
+            for (String categorizationGuidToDelete : deleteCategorizationGuidSet) {
+                String typeDefGuid = termCategorizationMapper.getTypeDefGuid();
+                oMRSAPIHelper.callOMRSDeleteRelationship(methodName, userId, typeDefGuid, termCategorizationMapper.getTypeName(), categorizationGuidToDelete);
+            }
+        }
+        // add any supplied ones
+        List<CategorySummary> suppliedCategories = suppliedTerm.getCategories();
+        if (suppliedCategories != null && suppliedCategories.size() > 0) {
+            for (CategorySummary categorySummary : suppliedCategories) {
+                addCategorizationRelationship(userId, suppliedTerm, methodName, categorySummary.getGuid());
+            }
+        }
     }
 
     private void addCategorizationRelationship(String userId, Term suppliedTerm, String methodName, String categoryGuid) throws SubjectAreaCheckedException, PropertyServerException, UserNotAuthorizedException, InvalidParameterException {
