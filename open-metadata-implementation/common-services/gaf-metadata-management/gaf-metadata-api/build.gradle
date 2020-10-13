@@ -5,11 +5,11 @@
 
 
 dependencies {
-    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.11.1'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations'
     implementation project(':open-metadata-implementation:frameworks:governance-action-framework')
     implementation project(':open-metadata-implementation:common-services:ffdc-services')
     implementation project(':open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-api')
-    testImplementation 'org.testng:testng:7.1.0'
+    testImplementation 'org.testng:testng'
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
 }
 
