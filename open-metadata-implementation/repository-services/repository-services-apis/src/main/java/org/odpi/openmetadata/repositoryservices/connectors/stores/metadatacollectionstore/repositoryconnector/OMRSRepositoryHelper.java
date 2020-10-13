@@ -290,6 +290,7 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
      * @return partially filled out entity needs classifications and properties
      * @throws TypeErrorException  the type name is not recognized.
      */
+    @Deprecated
     EntityDetail getSkeletonEntity(String                 sourceName,
                                    String                 metadataCollectionId,
                                    InstanceProvenanceType provenanceType,
@@ -322,6 +323,26 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
      * Return an entity with the header and type information filled out.  The caller only needs to classifications
      * to complete the set up of the entity.
      *
+     * @param sourceName            source of the request (used for logging)
+     * @param metadataCollectionId  unique identifier for the home metadata collection
+     * @param provenanceType        origin of the entity
+     * @param userName              name of the creator
+     * @param typeName              name of the type
+     * @return partially filled out entity needs classifications
+     * @throws TypeErrorException  the type name is not recognized.
+     */
+    @Deprecated
+    EntitySummary getSkeletonEntitySummary(String                 sourceName,
+                                           String                 metadataCollectionId,
+                                           InstanceProvenanceType provenanceType,
+                                           String                 userName,
+                                           String                 typeName) throws TypeErrorException;
+
+
+    /**
+     * Return an entity with the header and type information filled out.  The caller only needs to classifications
+     * to complete the set up of the entity.
+     *
      * @param sourceName             source of the request (used for logging)
      * @param metadataCollectionId   unique identifier for the home metadata collection
      * @param metadataCollectionName unique name for the home metadata collection
@@ -337,6 +358,23 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
                                            InstanceProvenanceType provenanceType,
                                            String                 userName,
                                            String                 typeName) throws TypeErrorException;
+
+
+    /**
+     * Return a classification with the header and type information filled out.  The caller only needs to add properties
+     * and possibility origin information if it is propagated to complete the set up of the classification.
+     *
+     * @param sourceName              source of the request (used for logging)
+     * @param userName                name of the creator
+     * @param classificationTypeName  name of the classification type
+     * @param entityTypeName          name of the type for the entity that this classification is to be attached to.
+     * @return partially filled out classification needs properties and possibly origin information
+     * @throws TypeErrorException  the type name is not recognized as a classification type.
+     */
+    Classification getSkeletonClassification(String sourceName,
+                                             String userName,
+                                             String classificationTypeName,
+                                             String entityTypeName) throws TypeErrorException;
 
 
     /**
