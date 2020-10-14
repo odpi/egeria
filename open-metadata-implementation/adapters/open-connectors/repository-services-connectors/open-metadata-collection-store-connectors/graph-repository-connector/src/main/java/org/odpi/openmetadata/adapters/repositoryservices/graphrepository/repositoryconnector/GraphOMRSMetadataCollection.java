@@ -1943,7 +1943,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
         /*
          * Validate parameters
          */
-        super.declassifyEntityParameterValidation(userId, entityGUID, classificationName);
+        super.declassifyEntityParameterValidation(userId, entityGUID, classificationName, methodName);
 
         /*
          * Locate entity - only interested in a non-proxy entity
@@ -2836,6 +2836,54 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
     }
 
 
+    public List<Classification> getHomeClassifications(String userId,
+                                                       String entityGUID)
+            throws InvalidParameterException,
+                   RepositoryErrorException,
+                   EntityNotKnownException,
+                   UserNotAuthorizedException,
+                   FunctionNotSupportedException
+    {
+        final String  methodName = "getHomeClassifications";
+
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        EntityDetail retrievedEntity = null;
+        try {
+            retrievedEntity = graphStore.getEntityDetailFromStore(entityGUID);
+        }
+        catch (EntityProxyOnlyException | EntityNotKnownException e) {
+            log.debug("{} entity wth GUID {} only a proxy", methodName, entityGUID);
+        }
+
+        List<Classification> homeClassifications = new ArrayList<>();
+
+        if (retrievedEntity != null) {
+            List<Classification> retrievedClassifications = retrievedEntity.getClassifications();
+
+            if (retrievedClassifications != null) {
+                for (Classification retrievedClassification : retrievedClassifications) {
+                    if (retrievedClassification != null) {
+                        if (metadataCollectionId.equals(retrievedClassification.getMetadataCollectionId())) {
+                            /*
+                             * Locally homed classification
+                             */
+                            homeClassifications.add(retrievedClassification);
+                        }
+                    }
+                }
+            }
+        }
+
+        if (homeClassifications.isEmpty()) {
+            return null;
+        }
+
+        return homeClassifications;
+    }
+
+
     /*
      * Removal of proxy entities: if a proxy entity existed prior to the ref copy being saved, it was replaced by the
      * ref copy - so when we now purge the ref copy there is no need to remove any proxy - it has already been subsumed.
@@ -2890,6 +2938,144 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
             super.reportEntityNotKnown(entityGUID, methodName);
         }
     }
+
+
+    public void saveClassificationReferenceCopy(String         userId,
+                                                EntityDetail   entity,
+                                                Classification classification)
+            throws InvalidParameterException,
+                   RepositoryErrorException,
+                   TypeErrorException,
+                   EntityConflictException,
+                   InvalidEntityException,
+                   PropertyErrorException,
+                   UserNotAuthorizedException,
+                   FunctionNotSupportedException
+    {
+        final String  methodName = "saveClassificationReferenceCopy";
+        final String  classificationParameterName = "classification";
+        final String  propertiesParameterName = "classification.getProperties()";
+
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        EntityDetail retrievedEntity = null;
+        try {
+            retrievedEntity = graphStore.getEntityDetailFromStore(entity.getGUID());
+        }
+        catch (EntityProxyOnlyException | EntityNotKnownException e) {
+            log.debug("{} entity wth GUID {} only a proxy", methodName, entity.getGUID());
+        }
+
+        if ((retrievedEntity == null) && (!metadataCollectionId.equals(entity.getMetadataCollectionId()))) {
+            /*
+             * If the entity is a reference copy then it can be stored in the repository.
+             */
+            retrievedEntity = entity;
+        }
+
+        if (retrievedEntity != null) {
+            try {
+                repositoryValidator.validateEntityFromStore(repositoryName, entity.getGUID(), retrievedEntity, methodName);
+                repositoryValidator.validateEntityIsNotDeleted(repositoryName, retrievedEntity, methodName);
+
+                repositoryValidator.validateInstanceType(repositoryName, entity);
+
+                InstanceType entityType = entity.getType();
+
+                repositoryValidator.validateClassification(repositoryName,
+                                                           classificationParameterName,
+                                                           classification.getName(),
+                                                           entityType.getTypeDefName(),
+                                                           methodName);
+
+                repositoryValidator.validateClassificationProperties(repositoryName,
+                                                                     classification.getName(),
+                                                                     propertiesParameterName,
+                                                                     classification.getProperties(),
+                                                                     methodName);
+
+                /*
+                 * Validation complete - ok to update entity
+                 */
+
+                EntityDetail updatedEntity = repositoryHelper.addClassificationToEntity(repositoryName,
+                                                                                        retrievedEntity,
+                                                                                        classification,
+                                                                                        methodName);
+
+                if (metadataCollectionId.equals(entity.getMetadataCollectionId())) {
+                    updatedEntity = repositoryHelper.incrementVersion(userId, retrievedEntity, updatedEntity);
+                    graphStore.updateEntityInStore(updatedEntity);
+                }
+                else {
+                    graphStore.saveEntityReferenceCopyToStore(entity);
+                }
+            }
+            catch (EntityNotKnownException  error) {
+                // Ignore since the entity has been removed since the classification was added
+            }
+            catch (ClassificationErrorException error) {
+                throw new TypeErrorException(error);
+            }
+        }
+    }
+
+
+
+    public  void purgeClassificationReferenceCopy(String         userId,
+                                                  EntityDetail   entity,
+                                                  Classification classification)
+            throws InvalidParameterException,
+                   TypeErrorException,
+                   PropertyErrorException,
+                   EntityConflictException,
+                   InvalidEntityException,
+                   RepositoryErrorException,
+                   UserNotAuthorizedException,
+                   FunctionNotSupportedException
+    {
+        final String methodName = "purgeClassificationReferenceCopy";
+
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        EntityDetail retrievedEntity = null;
+        try {
+            retrievedEntity = graphStore.getEntityDetailFromStore(entity.getGUID());
+        }
+        catch (EntityProxyOnlyException | EntityNotKnownException e) {
+            log.debug("{} entity wth GUID {} only a proxy", methodName, entity.getGUID());
+        }
+
+        if ((retrievedEntity == null) && (!metadataCollectionId.equals(entity.getMetadataCollectionId()))) {
+            /*
+             * If the entity is a reference copy then it can be stored in the repository.
+             */
+            retrievedEntity = entity;
+        }
+
+        if (retrievedEntity != null) {
+            try {
+                EntityDetail updatedEntity = repositoryHelper.deleteClassificationFromEntity(repositoryName,
+                                                                                             entity,
+                                                                                             classification.getName(),
+                                                                                             methodName);
+
+                if (metadataCollectionId.equals(entity.getMetadataCollectionId())) {
+                    updatedEntity = repositoryHelper.incrementVersion(userId, retrievedEntity, updatedEntity);
+                    graphStore.updateEntityInStore(updatedEntity);
+                }
+                else {
+                    graphStore.saveEntityReferenceCopyToStore(entity);
+                }
+            }
+            catch (ClassificationErrorException error) {
+                throw new TypeErrorException(error);
+            }
+        }
+    }
+
 
 
     public void saveRelationshipReferenceCopy(String         userId,

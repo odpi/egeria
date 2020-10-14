@@ -626,7 +626,9 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
      * @param sourceName     source of the request (used for logging)
      * @param userName       name of the creator
      * @param typeName       name of the type
-     * @param entityTypeName name of the type for the entity that this classification is to be attached to.
+     * @param entityTypeName name of the type for the entity that this classification is to be attached to
+     * @param classificationOrigin source of the classification (assigned or propagated)
+     * @param classificationOriginGUID unique identifier of element that originated the classification if propagated
      * @param properties     properties for the classification
      * @return partially filled out classification needs properties and possibly origin information
      * @throws TypeErrorException the type name is not recognized as a classification type.

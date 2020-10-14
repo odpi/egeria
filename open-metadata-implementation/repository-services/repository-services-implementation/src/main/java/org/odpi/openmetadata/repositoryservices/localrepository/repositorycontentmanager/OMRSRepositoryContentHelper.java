@@ -1865,6 +1865,11 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
 
         int fullResultsSize = fullResults.size();
 
+        if (fromElement >= fullResultsSize)
+        {
+            return null;
+        }
+
         Collections.sort(fullResults,
                          new java.util.Comparator<EntityDetail>()
                          {
@@ -1878,7 +1883,7 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
                              }
                          });
 
-        if ((fromElement == 0) && (pageSize > fullResults.size()))
+        if ((fromElement == 0) && (pageSize > fullResultsSize))
         {
             return fullResults;
         }
@@ -1929,7 +1934,7 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
 
         int fullResultsSize = fullResults.size();
 
-        if (fromElement > fullResultsSize)
+        if (fromElement >= fullResultsSize)
         {
             return null;
         }
@@ -1947,10 +1952,12 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
                             }
                         });
 
-        if ((fromElement == 0) && (pageSize > fullResults.size()))
+        if ((fromElement == 0) && (pageSize > fullResultsSize))
         {
             return fullResults;
         }
+
+
 
         int toIndex = getToIndex(fromElement, pageSize, fullResultsSize);
 
@@ -2365,6 +2372,7 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
         {
             return null;
         }
+
         String limited = searchString;
         if (isCaseInsensitiveRegex(searchString))
         {
@@ -2382,7 +2390,8 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
         {
             return limited.substring(4, limited.length() - 2);
         }
-        if (isCaseSensitiveContainsRegex(limited)) {
+        if (isCaseSensitiveContainsRegex(limited))
+        {
             return limited.substring(4, limited.length() - 4);
         }
         return limited;
@@ -2394,8 +2403,7 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
      */
     public boolean isCaseInsensitiveRegex(String searchString)
     {
-        return searchString != null
-                && searchString.startsWith("(?i)");
+        return searchString != null && searchString.startsWith("(?i)");
     }
 
 
@@ -2412,19 +2420,26 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
 
         EntityProxyDifferences one = null;
         EntityProxyDifferences two = null;
-        if (present.equals(Differences.SidePresent.BOTH) && !left.equals(right)) {
+
+        if (present.equals(Differences.SidePresent.BOTH) && !left.equals(right))
+        {
             differences.checkInstanceProperties(left.getProperties(), right.getProperties());
             one = getEntityProxyDifferences(left.getEntityOneProxy(), right.getEntityOneProxy(), ignoreModificationStamps);
             two = getEntityProxyDifferences(left.getEntityTwoProxy(), right.getEntityTwoProxy(), ignoreModificationStamps);
-        } else if (present.equals(Differences.SidePresent.LEFT_ONLY)) {
+        }
+        else if (present.equals(Differences.SidePresent.LEFT_ONLY))
+        {
             differences.checkInstanceProperties(left.getProperties(), null);
             one = getEntityProxyDifferences(left.getEntityOneProxy(), null, ignoreModificationStamps);
             two = getEntityProxyDifferences(left.getEntityTwoProxy(), null, ignoreModificationStamps);
-        } else if (present.equals(Differences.SidePresent.RIGHT_ONLY)) {
+        }
+        else if (present.equals(Differences.SidePresent.RIGHT_ONLY))
+        {
             differences.checkInstanceProperties(null, right.getProperties());
             one = getEntityProxyDifferences(null, right.getEntityOneProxy(), ignoreModificationStamps);
             two = getEntityProxyDifferences(null, right.getEntityTwoProxy(), ignoreModificationStamps);
         }
+
         differences.setEntityProxyOneDifferences(one);
         differences.setEntityProxyTwoDifferences(two);
 
@@ -2444,11 +2459,16 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
         getEntitySummaryDifferences(differences, left, right, ignoreModificationStamps);
         Differences.SidePresent present = checkDifferenceNulls(left, right);
 
-        if (present.equals(Differences.SidePresent.BOTH) && !left.equals(right)) {
+        if (present.equals(Differences.SidePresent.BOTH) && !left.equals(right))
+        {
             differences.checkInstanceProperties(left.getProperties(), right.getProperties());
-        } else if (present.equals(Differences.SidePresent.LEFT_ONLY)) {
+        }
+        else if (present.equals(Differences.SidePresent.LEFT_ONLY))
+        {
             differences.checkInstanceProperties(left.getProperties(), null);
-        } else if (present.equals(Differences.SidePresent.RIGHT_ONLY)){
+        }
+        else if (present.equals(Differences.SidePresent.RIGHT_ONLY))
+        {
             differences.checkInstanceProperties(null, right.getProperties());
         }
 
@@ -2468,11 +2488,16 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
         getEntitySummaryDifferences(differences, left, right, ignoreModificationStamps);
         Differences.SidePresent present = checkDifferenceNulls(left, right);
 
-        if (present.equals(Differences.SidePresent.BOTH) && !left.equals(right)) {
+        if (present.equals(Differences.SidePresent.BOTH) && !left.equals(right))
+        {
             differences.checkUniqueProperties(left.getUniqueProperties(), right.getUniqueProperties());
-        } else if (present.equals(Differences.SidePresent.LEFT_ONLY)) {
+        }
+        else if (present.equals(Differences.SidePresent.LEFT_ONLY))
+        {
             differences.checkUniqueProperties(left.getUniqueProperties(), null);
-        } else if (present.equals(Differences.SidePresent.RIGHT_ONLY)) {
+        }
+        else if (present.equals(Differences.SidePresent.RIGHT_ONLY))
+        {
             differences.checkUniqueProperties(null, right.getUniqueProperties());
         }
 
@@ -2504,7 +2529,9 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
             sc = new SearchClassifications();
             sc.setMatchCriteria(MatchCriteria.ALL);
             List<ClassificationCondition> conditions = new ArrayList<>();
-            for (String classificationName : classificationNames) {
+
+            for (String classificationName : classificationNames)
+            {
                 ClassificationCondition cc = new ClassificationCondition();
                 cc.setName(classificationName);
                 conditions.add(cc);
@@ -2549,15 +2576,22 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
                                               boolean ignoreModificationStamps)
     {
         getInstanceAuditHeaderDifferences(differences, left, right, ignoreModificationStamps);
+
         Differences.SidePresent present = checkDifferenceNulls(left, right);
-        if (present.equals(Differences.SidePresent.BOTH) && !left.equals(right)) {
+        if (present.equals(Differences.SidePresent.BOTH) && !left.equals(right))
+        {
             differences.check("GUID", left.getGUID(), right.getGUID());
             differences.check("InstanceURL", left.getInstanceURL(), right.getInstanceURL());
-        } else if (!present.equals(Differences.SidePresent.NEITHER) && !present.equals(Differences.SidePresent.BOTH)) {
+        }
+        else if (!present.equals(Differences.SidePresent.NEITHER) && !present.equals(Differences.SidePresent.BOTH))
+        {
             InstanceHeader sideWithValues;
-            if (present.equals(Differences.SidePresent.LEFT_ONLY)) {
+            if (present.equals(Differences.SidePresent.LEFT_ONLY))
+            {
                 sideWithValues = left;
-            } else {
+            }
+            else
+            {
                 sideWithValues = right;
             }
             differences.addOnlyOnOneSide(present, "GUID", sideWithValues.getGUID());
@@ -2580,15 +2614,17 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
                                                    InstanceAuditHeader right,
                                                    boolean ignoreModificationStamps)
     {
-
         Differences.SidePresent present = checkDifferenceNulls(left, right);
 
-        if (present.equals(Differences.SidePresent.BOTH) && !left.equals(right)) {
-            if (!ignoreModificationStamps) {
+        if (present.equals(Differences.SidePresent.BOTH) && !left.equals(right))
+        {
+            if (!ignoreModificationStamps)
+            {
                 differences.check("Version", left.getVersion(), right.getVersion());
                 differences.check("UpdatedBy", left.getUpdatedBy(), right.getUpdatedBy());
                 differences.check("UpdateTime", left.getUpdateTime(), right.getUpdateTime());
             }
+
             differences.check("Type", left.getType(), right.getType());
             differences.check("InstanceProvenanceType", left.getInstanceProvenanceType(), right.getInstanceProvenanceType());
             differences.check("MetadataCollectionId", left.getMetadataCollectionId(), right.getMetadataCollectionId());
@@ -2600,14 +2636,20 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
             differences.check("Status", left.getStatus(), right.getStatus());
             differences.check("StatusOnDelete", left.getStatusOnDelete(), right.getStatusOnDelete());
             differences.check("MappingProperties", left.getMappingProperties(), right.getMappingProperties());
-        } else if (!present.equals(Differences.SidePresent.NEITHER) && !present.equals(Differences.SidePresent.BOTH)) {
+        }
+        else if (!present.equals(Differences.SidePresent.NEITHER) && !present.equals(Differences.SidePresent.BOTH))
+        {
             InstanceAuditHeader sideWithValues;
-            if (present.equals(Differences.SidePresent.LEFT_ONLY)) {
+            if (present.equals(Differences.SidePresent.LEFT_ONLY))
+            {
                 sideWithValues = left;
-            } else {
+            }
+            else
+            {
                 sideWithValues = right;
             }
-            if (!ignoreModificationStamps) {
+            if (!ignoreModificationStamps)
+            {
                 differences.addOnlyOnOneSide(present, "Version", sideWithValues.getVersion());
                 differences.addOnlyOnOneSide(present, "UpdatedBy", sideWithValues.getUpdatedBy());
                 differences.addOnlyOnOneSide(present, "UpdateTime", sideWithValues.getUpdateTime());
@@ -2635,15 +2677,24 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
      * @param right the other object being compared
      * @return Differences.SidePresent
      */
-    private Differences.SidePresent checkDifferenceNulls(InstanceAuditHeader left, InstanceAuditHeader right) {
+    private Differences.SidePresent checkDifferenceNulls(InstanceAuditHeader left, InstanceAuditHeader right)
+    {
         Differences.SidePresent present;
-        if (left == null && right == null) {
+
+        if (left == null && right == null)
+        {
             present = Differences.SidePresent.NEITHER;
-        } else if (right == null) {
+        }
+        else if (right == null)
+        {
             present = Differences.SidePresent.LEFT_ONLY;
-        } else if (left == null) {
+        }
+        else if (left == null)
+        {
             present = Differences.SidePresent.RIGHT_ONLY;
-        } else {
+        }
+        else
+        {
             present = Differences.SidePresent.BOTH;
         }
         return present;

@@ -4017,19 +4017,10 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * @param userId unique identifier for requesting user.
      * @param entityGUID unique identifier of the entity with classifications to retrieve
      * @return list of all of the classifications for this entity that are homed in this repository
-     * @throws InvalidParameterException the entity is null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
-     *                                    the metadata collection is stored.
-     * @throws EntityNotKnownException the entity is not recognized by this repository
-     * @throws UserNotAuthorizedException to calling user is not authorized to retrieve this metadata
      * @throws FunctionNotSupportedException this method is not supported
      */
     public List<Classification> getHomeClassifications(String userId,
-                                                       String entityGUID) throws InvalidParameterException,
-                                                                                 RepositoryErrorException,
-                                                                                 EntityNotKnownException,
-                                                                                 UserNotAuthorizedException,
-                                                                                 FunctionNotSupportedException
+                                                       String entityGUID) throws FunctionNotSupportedException
     {
         final String  methodName = "getHomeClassifications";
 
@@ -4046,20 +4037,11 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * @param entityGUID unique identifier of the entity with classifications to retrieve
      * @param asOfTime the time used to determine which version of the entity that is desired.
      * @return list of all of the classifications for this entity that are homed in this repository
-     * @throws InvalidParameterException the entity is null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
-     *                                    the metadata collection is stored.
-     * @throws EntityNotKnownException the entity is not recognized by this repository
-     * @throws UserNotAuthorizedException to calling user is not authorized to retrieve this metadata
      * @throws FunctionNotSupportedException this method is not supported
      */
     public List<Classification> getHomeClassifications(String userId,
                                                        String entityGUID,
-                                                       Date   asOfTime) throws InvalidParameterException,
-                                                                               RepositoryErrorException,
-                                                                               EntityNotKnownException,
-                                                                               UserNotAuthorizedException,
-                                                                               FunctionNotSupportedException
+                                                       Date   asOfTime) throws FunctionNotSupportedException
     {
         final String  methodName = "getHomeClassifications (with history)";
 
@@ -4151,6 +4133,46 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                            String   homeMetadataCollectionId) throws FunctionNotSupportedException
     {
         final String    methodName = "refreshEntityReferenceCopy";
+
+        throwNotEnterpriseFunction(methodName);
+    }
+
+    /**
+     * Save the classification as a reference copy.  The id of the home metadata collection is already set up in the
+     * classification.  The entity may be either a locally homed entity or a reference copy.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entity entity that the classification is attached to.
+     * @param classification classification to save.
+     *
+     * @throws FunctionNotSupportedException the repository does not support reference copies of instances.
+     */
+    public void saveClassificationReferenceCopy(String         userId,
+                                                EntityDetail   entity,
+                                                Classification classification) throws FunctionNotSupportedException
+    {
+        final String methodName = "saveClassificationReferenceCopy";
+
+        throwNotEnterpriseFunction(methodName);
+    }
+
+
+    /**
+     * Remove the reference copy of the classification from the local repository. This method can be used to
+     * remove reference copies from the local cohort, repositories that have left the cohort,
+     * or relationships that have come from open metadata archives.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entity entity that the classification is attached to.
+     * @param classification classification to purge.
+     *
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
+     */
+    public  void purgeClassificationReferenceCopy(String         userId,
+                                                  EntityDetail   entity,
+                                                  Classification classification) throws FunctionNotSupportedException
+    {
+        final String methodName = "purgeClassificationReferenceCopy";
 
         throwNotEnterpriseFunction(methodName);
     }

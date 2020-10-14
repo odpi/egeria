@@ -812,11 +812,19 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
     {
         final String methodName = "processClassifiedEntityEvent";
 
-        updateReferenceEntity(sourceName,
-                              methodName,
-                              originatorMetadataCollectionId,
-                              originatorServerName,
-                              entity);
+        try
+        {
+            verifyEventProcessor(methodName);
+
+            localMetadataCollection.saveClassificationReferenceCopy(localRepositoryConnector.getServerUserId(), entity, classification);
+        }
+        catch (Throwable error)
+        {
+            handleUnexpectedErrorFromEvent(error,
+                                           methodName,
+                                           originatorServerName,
+                                           originatorMetadataCollectionId);
+        }
     }
 
 
@@ -843,11 +851,19 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
     {
         final String methodName = "processDeclassifiedEntityEvent";
 
-        updateReferenceEntity(sourceName,
-                              methodName,
-                              originatorMetadataCollectionId,
-                              originatorServerName,
-                              entity);
+        try
+        {
+            verifyEventProcessor(methodName);
+
+            localMetadataCollection.purgeClassificationReferenceCopy(localRepositoryConnector.getServerUserId(), entity, originalClassification);
+        }
+        catch (Throwable error)
+        {
+            handleUnexpectedErrorFromEvent(error,
+                                           methodName,
+                                           originatorServerName,
+                                           originatorMetadataCollectionId);
+        }
     }
 
 
@@ -876,11 +892,19 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
     {
         final String methodName = "processReclassifiedEntityEvent";
 
-        updateReferenceEntity(sourceName,
-                              methodName,
-                              originatorMetadataCollectionId,
-                              originatorServerName,
-                              entity);
+        try
+        {
+            verifyEventProcessor(methodName);
+
+            localMetadataCollection.saveClassificationReferenceCopy(localRepositoryConnector.getServerUserId(), entity, classification);
+        }
+        catch (Throwable error)
+        {
+            handleUnexpectedErrorFromEvent(error,
+                                           methodName,
+                                           originatorServerName,
+                                           originatorMetadataCollectionId);
+        }
     }
 
 

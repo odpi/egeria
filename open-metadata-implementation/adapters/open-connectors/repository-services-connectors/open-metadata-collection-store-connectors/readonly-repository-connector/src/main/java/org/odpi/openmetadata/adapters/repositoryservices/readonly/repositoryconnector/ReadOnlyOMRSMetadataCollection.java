@@ -8,8 +8,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryValidator;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
-import org.odpi.openmetadata.repositoryservices.rest.properties.ClassificationRequest;
-import org.odpi.openmetadata.repositoryservices.rest.properties.EntityDetailResponse;
+
 
 import java.util.*;
 
