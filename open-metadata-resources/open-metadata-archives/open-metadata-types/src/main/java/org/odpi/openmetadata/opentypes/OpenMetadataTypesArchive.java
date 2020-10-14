@@ -1099,15 +1099,21 @@ public class OpenMetadataTypesArchive
         archiveBuilder.addClassificationDef(addGovernanceDomainSetClassification());
         archiveBuilder.addClassificationDef(addGovernanceClassificationSetClassification());
 
+        archiveBuilder.addRelationshipDef(getGovernedByRelationship());
+
         archiveBuilder.addTypeDefPatch(updateCriticalityClassification());
         archiveBuilder.addTypeDefPatch(updateRetentionClassification());
         archiveBuilder.addTypeDefPatch(updateConfidenceClassification());
         archiveBuilder.addTypeDefPatch(updateConfidentialityClassification());
         archiveBuilder.addTypeDefPatch(updateGovernanceOfficerEntity());
         archiveBuilder.addTypeDefPatch(updateGovernanceDefinitionEntity());
-        archiveBuilder.addTypeDefPatch(updateGovernanceZoneDefinitionEntity());
+        archiveBuilder.addTypeDefPatch(updateGovernanceRoleEntity());
+        archiveBuilder.addTypeDefPatch(updateGovernanceMetricEntity());
+        archiveBuilder.addTypeDefPatch(updateGovernanceZoneEntity());
         archiveBuilder.addTypeDefPatch(updateSubjectAreaDefinitionEntity());
         archiveBuilder.addTypeDefPatch(deprecateGovernanceConfidentialityLevelEntity());
+        archiveBuilder.addTypeDefPatch(deprecateZoneGovernanceRelationship());
+        archiveBuilder.addTypeDefPatch(deprecateSubjectAreaGovernanceRelationship());
     }
 
     private EnumDef getConfidentialityLevelEnum()
@@ -1366,6 +1372,63 @@ public class OpenMetadataTypesArchive
         return classificationDef;
     }
 
+
+    private RelationshipDef getGovernedByRelationship()
+    {
+        final String guid            = "89c3c695-9e8d-4660-9f44-ed971fd55f89";
+        final String name            = "GovernedBy";
+        final String description     = "Shows the resources that are governed by a specific governance definition.";
+        final String descriptionGUID = null;
+
+
+        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
+
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
+                                                                                name,
+                                                                                null,
+                                                                                description,
+                                                                                descriptionGUID,
+                                                                                classificationPropagationRule);
+
+        RelationshipEndDef relationshipEndDef;
+
+        /*
+         * Set up end 1.
+         */
+        final String                     end1EntityType               = "GovernanceDefinition";
+        final String                     end1AttributeName            = "governedBy";
+        final String                     end1AttributeDescription     = "The governance definition that defines how this element is governed.";
+        final String                     end1AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+                                                                 end1AttributeName,
+                                                                 end1AttributeDescription,
+                                                                 end1AttributeDescriptionGUID,
+                                                                 end1Cardinality);
+        relationshipDef.setEndDef1(relationshipEndDef);
+
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2EntityType               = "Referenceable";
+        final String                     end2AttributeName            = "governedElements";
+        final String                     end2AttributeDescription     = "An element that is governed according to the governance definition.";
+        final String                     end2AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+                                                                 end2AttributeName,
+                                                                 end2AttributeDescription,
+                                                                 end2AttributeDescriptionGUID,
+                                                                 end2Cardinality);
+        relationshipDef.setEndDef2(relationshipEndDef);
+
+        return relationshipDef;
+    }
+
+
     private TypeDefPatch updateCriticalityClassification()
     {
         /*
@@ -1609,7 +1672,80 @@ public class OpenMetadataTypesArchive
         return typeDefPatch;
     }
 
-    private TypeDefPatch updateGovernanceZoneDefinitionEntity()
+    private TypeDefPatch updateGovernanceRoleEntity()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "GovernanceRole";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute2Name            = "domainIdentifier";
+        final String attribute2Description     = "Identifier of the governance domain that this definition belongs to.";
+        final String attribute2DescriptionGUID = null;
+
+        final String attribute5Name            = "domain";
+        final String attribute5Description     = "Governance domain for this governance definition.";
+        final String attribute5DescriptionGUID = null;
+
+        property = archiveHelper.getIntTypeDefAttribute(attribute2Name,
+                                                        attribute2Description,
+                                                        attribute2DescriptionGUID);
+        properties.add(property);
+
+        property = archiveHelper.getEnumTypeDefAttribute("GovernanceDomain",
+                                                         attribute5Name,
+                                                         attribute5Description,
+                                                         attribute5DescriptionGUID);
+        properties.add(property);
+
+        typeDefPatch.setPropertyDefinitions(properties);
+        return typeDefPatch;
+    }
+
+    private TypeDefPatch updateGovernanceMetricEntity()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "GovernanceMetric";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute2Name            = "domainIdentifier";
+        final String attribute2Description     = "Identifier of the governance domain that this definition belongs to.";
+        final String attribute2DescriptionGUID = null;
+
+        property = archiveHelper.getIntTypeDefAttribute(attribute2Name,
+                                                        attribute2Description,
+                                                        attribute2DescriptionGUID);
+        properties.add(property);
+
+
+        typeDefPatch.setPropertyDefinitions(properties);
+        return typeDefPatch;
+    }
+
+    private TypeDefPatch updateGovernanceZoneEntity()
     {
         /*
          * Create the Patch
@@ -1647,6 +1783,38 @@ public class OpenMetadataTypesArchive
          * Create the Patch
          */
         final String typeName = "GovernanceConfidentialityLevel";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
+
+        return typeDefPatch;
+    }
+
+    private TypeDefPatch deprecateSubjectAreaGovernanceRelationship()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "SubjectAreaGovernance";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+        typeDefPatch.setTypeDefStatus(TypeDefStatus.DEPRECATED_TYPEDEF);
+
+        return typeDefPatch;
+    }
+
+    private TypeDefPatch deprecateZoneGovernanceRelationship()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "ZoneGovernance";
 
         TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
 
