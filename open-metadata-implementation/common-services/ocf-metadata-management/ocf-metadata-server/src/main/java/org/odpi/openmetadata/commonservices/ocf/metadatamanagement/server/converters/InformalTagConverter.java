@@ -68,7 +68,7 @@ public class InformalTagConverter<B> extends OCFConverter<B>
                 bean.setName(this.removeTagName(instanceProperties));
                 bean.setDescription(this.removeTagDescription(instanceProperties));
                 bean.setUser(entity.getCreatedBy());
-                bean.setIsPrivateTag(this.removeIsPublic(instanceProperties));
+                bean.setIsPrivateTag(! this.removeIsPublic(instanceProperties));
 
                 if (relationship != null)
                 {

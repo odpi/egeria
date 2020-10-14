@@ -81,8 +81,8 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
     public int countAttachedComments(String userId,
                                      String elementGUID,
                                      String methodName) throws InvalidParameterException,
-                                                          PropertyServerException,
-                                                          UserNotAuthorizedException
+                                                               PropertyServerException,
+                                                               UserNotAuthorizedException
     {
         return super.countAttachments(userId,
                                       elementGUID,
@@ -127,7 +127,6 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
                                                                    UserNotAuthorizedException
     {
         final String textParameter = "commentText";
-        final String qualifiedNameParameter = "generated GUID";
         final String commentGUIDParameter = "commentGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -231,7 +230,7 @@ public class CommentHandler<B> extends ReferenceableHandler<B>
                                     commentGUIDParameterName,
                                     OpenMetadataAPIMapper.COMMENT_TYPE_GUID,
                                     OpenMetadataAPIMapper.COMMENT_TYPE_NAME,
-                                    builder.getEntityInstanceProperties(methodName),
+                                    builder.getInstanceProperties(methodName),
                                     true,
                                     methodName);
     }

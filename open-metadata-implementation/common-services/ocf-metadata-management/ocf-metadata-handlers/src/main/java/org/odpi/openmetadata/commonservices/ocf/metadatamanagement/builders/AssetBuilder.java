@@ -35,6 +35,7 @@ public class AssetBuilder extends ReferenceableBuilder
      * @param repositoryHelper helper methods
      * @param serviceName name of this OMAS
      * @param serverName name of local server
+     * @throws InvalidParameterException bad properties
      */
     public AssetBuilder(Asset                assetProperties,
                         OMRSRepositoryHelper repositoryHelper,

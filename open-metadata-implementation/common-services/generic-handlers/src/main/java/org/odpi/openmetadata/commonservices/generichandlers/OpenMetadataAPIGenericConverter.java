@@ -72,7 +72,9 @@ public abstract class OpenMetadataAPIGenericConverter<B>
                         EntityDetail entity,
                         String       methodName) throws PropertyServerException
     {
-        handleUnimplementedConverterMethod(beanClass.getName(), this.getClass().getName(), methodName);
+        final String thisMethodName = "getNewBean(entity)";
+
+        handleUnimplementedConverterMethod(beanClass.getName(), thisMethodName, this.getClass().getName(), methodName);
 
         return null;
     }
@@ -95,7 +97,9 @@ public abstract class OpenMetadataAPIGenericConverter<B>
                         Relationship relationship,
                         String       methodName) throws PropertyServerException
     {
-        handleUnimplementedConverterMethod(beanClass.getName(), this.getClass().getName(), methodName);
+        final String thisMethodName = "getNewBean(entity, relationship)";
+
+        handleUnimplementedConverterMethod(beanClass.getName(), thisMethodName, this.getClass().getName(), methodName);
 
         return null;
     }
@@ -119,7 +123,9 @@ public abstract class OpenMetadataAPIGenericConverter<B>
                                List<Relationship> relationships,
                                String             methodName) throws PropertyServerException
     {
-        handleUnimplementedConverterMethod(beanClass.getName(), this.getClass().getName(), methodName);
+        final String thisMethodName = "getNewComplexBean";
+
+        handleUnimplementedConverterMethod(beanClass.getName(), thisMethodName, this.getClass().getName(), methodName);
 
         return null;
     }
@@ -146,7 +152,9 @@ public abstract class OpenMetadataAPIGenericConverter<B>
                                List<Relationship> relationships,
                                String             methodName) throws PropertyServerException
     {
-        handleUnimplementedConverterMethod(beanClass.getName(), this.getClass().getName(), methodName);
+        final String thisMethodName = "getNewComplexBean(with supplementary entities)";
+
+        handleUnimplementedConverterMethod(beanClass.getName(), thisMethodName, this.getClass().getName(), methodName);
 
         return null;
     }
@@ -185,7 +193,9 @@ public abstract class OpenMetadataAPIGenericConverter<B>
                                   List<B>              schemaTypeOptions,
                                   String               methodName) throws PropertyServerException
     {
-        handleUnimplementedConverterMethod(beanClass.getName(), this.getClass().getName(), methodName);
+        final String thisMethodName = "getNewSchemaTypeBean)";
+
+        handleUnimplementedConverterMethod(beanClass.getName(), thisMethodName, this.getClass().getName(), methodName);
 
         return null;
     }
@@ -211,7 +221,9 @@ public abstract class OpenMetadataAPIGenericConverter<B>
                                            List<Relationship> schemaAttributeRelationships,
                                            String             methodName) throws PropertyServerException
     {
-        handleUnimplementedConverterMethod(beanClass.getName(), this.getClass().getName(), methodName);
+        final String thisMethodName = "getNewSchemaAttributeBean)";
+
+        handleUnimplementedConverterMethod(beanClass.getName(), thisMethodName, this.getClass().getName(), methodName);
 
         return null;
     }
@@ -226,6 +238,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
      * Throw an exception to indicate that one of the update methods has not been implemented by an OMAS.
      *
      * @param beanClassName class name of bean
+     * @param missingMethodName method tha has not been implemented
      * @param converterClassName class that detected the missing method
      * @param methodName method that is missing
      * @throws PropertyServerException there is a problem in the use of the generic handlers because
@@ -233,13 +246,15 @@ public abstract class OpenMetadataAPIGenericConverter<B>
      * bean that this converter is implemented for.
      */
     private void handleUnimplementedConverterMethod(String beanClassName,
+                                                    String missingMethodName,
                                                     String converterClassName,
                                                     String methodName) throws PropertyServerException
     {
         throw new PropertyServerException(GenericHandlersErrorCode.MISSING_CONVERTER_METHOD.getMessageDefinition(serviceName,
-                                                                                                                 methodName,
+                                                                                                                 missingMethodName,
                                                                                                                  converterClassName,
-                                                                                                                 beanClassName),
+                                                                                                                 beanClassName,
+                                                                                                                 methodName),
                                           this.getClass().getName(),
                                           methodName);
     }

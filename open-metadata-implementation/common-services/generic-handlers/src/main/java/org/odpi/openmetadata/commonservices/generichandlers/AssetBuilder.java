@@ -156,26 +156,29 @@ public class AssetBuilder extends ReferenceableBuilder
                            int    ownerType,
                            String methodName) throws InvalidParameterException
     {
-        try
+        if (owner != null)
         {
-            Classification classification = repositoryHelper.getNewClassification(serviceName,
-                                                                                  null,
-                                                                                  null,
-                                                                                  InstanceProvenanceType.LOCAL_COHORT,
-                                                                                  userId,
-                                                                                  OpenMetadataAPIMapper.ASSET_OWNERSHIP_CLASSIFICATION_NAME,
-                                                                                  typeName,
-                                                                                  ClassificationOrigin.ASSIGNED,
-                                                                                  null,
-                                                                                  getOwnerProperties(userId,
-                                                                                                     owner,
-                                                                                                     ownerType,
-                                                                                                     methodName));
-            newClassifications.put(classification.getName(), classification);
-        }
-        catch (TypeErrorException error)
-        {
-            errorHandler.handleUnsupportedType(error, methodName, OpenMetadataAPIMapper.ASSET_OWNERSHIP_CLASSIFICATION_NAME);
+            try
+            {
+                Classification classification = repositoryHelper.getNewClassification(serviceName,
+                                                                                      null,
+                                                                                      null,
+                                                                                      InstanceProvenanceType.LOCAL_COHORT,
+                                                                                      userId,
+                                                                                      OpenMetadataAPIMapper.ASSET_OWNERSHIP_CLASSIFICATION_NAME,
+                                                                                      typeName,
+                                                                                      ClassificationOrigin.ASSIGNED,
+                                                                                      null,
+                                                                                      getOwnerProperties(userId,
+                                                                                                         owner,
+                                                                                                         ownerType,
+                                                                                                         methodName));
+                newClassifications.put(classification.getName(), classification);
+            }
+            catch (TypeErrorException error)
+            {
+                errorHandler.handleUnsupportedType(error, methodName, OpenMetadataAPIMapper.ASSET_OWNERSHIP_CLASSIFICATION_NAME);
+            }
         }
     }
 
@@ -265,26 +268,29 @@ public class AssetBuilder extends ReferenceableBuilder
                          Map<String, String>   otherOriginValues,
                          String                methodName) throws InvalidParameterException
     {
-        try
+        if ((organizationGUID != null) || (businessCapabilityGUID != null) || ((otherOriginValues != null) && (! otherOriginValues.isEmpty())))
         {
-            Classification classification = repositoryHelper.getNewClassification(serviceName,
-                                                                                  null,
-                                                                                  null,
-                                                                                  InstanceProvenanceType.LOCAL_COHORT,
-                                                                                  userId,
-                                                                                  OpenMetadataAPIMapper.ASSET_ORIGIN_CLASSIFICATION_NAME,
-                                                                                  typeName,
-                                                                                  ClassificationOrigin.ASSIGNED,
-                                                                                  null,
-                                                                                  getOriginProperties(organizationGUID,
-                                                                                                      businessCapabilityGUID,
-                                                                                                      otherOriginValues,
-                                                                                                      methodName));
-            newClassifications.put(classification.getName(), classification);
-        }
-        catch (TypeErrorException error)
-        {
-            errorHandler.handleUnsupportedType(error, methodName, OpenMetadataAPIMapper.ASSET_ORIGIN_CLASSIFICATION_NAME);
+            try
+            {
+                Classification classification = repositoryHelper.getNewClassification(serviceName,
+                                                                                      null,
+                                                                                      null,
+                                                                                      InstanceProvenanceType.LOCAL_COHORT,
+                                                                                      userId,
+                                                                                      OpenMetadataAPIMapper.ASSET_ORIGIN_CLASSIFICATION_NAME,
+                                                                                      typeName,
+                                                                                      ClassificationOrigin.ASSIGNED,
+                                                                                      null,
+                                                                                      getOriginProperties(organizationGUID,
+                                                                                                          businessCapabilityGUID,
+                                                                                                          otherOriginValues,
+                                                                                                          methodName));
+                newClassifications.put(classification.getName(), classification);
+            }
+            catch (TypeErrorException error)
+            {
+                errorHandler.handleUnsupportedType(error, methodName, OpenMetadataAPIMapper.ASSET_ORIGIN_CLASSIFICATION_NAME);
+            }
         }
     }
 

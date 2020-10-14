@@ -91,7 +91,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                   List<String>                                supportedZones,
                                   List<String>                                defaultZones,
                                   List<String>                                publishZones,
-                                  AuditLog                                auditLog)
+                                  AuditLog                                    auditLog)
     {
 
         this.serviceName             = serviceName;
@@ -409,14 +409,14 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                               UserNotAuthorizedException,
                                                               PropertyServerException
     {
-        String folderAssetTypeName = OpenMetadataAPIMapper.DATA_FOLDER_TYPE_NAME;
+        String folderAssetTypeName = OpenMetadataAPIMapper.FILE_FOLDER_TYPE_NAME;
         if (typeName != null)
         {
             folderAssetTypeName = typeName;
         }
 
         String folderAssetTypeGUID = invalidParameterHandler.validateTypeName(folderAssetTypeName,
-                                                                              OpenMetadataAPIMapper.DATA_FOLDER_TYPE_NAME,
+                                                                              OpenMetadataAPIMapper.FILE_FOLDER_TYPE_NAME,
                                                                               serviceName,
                                                                               methodName,
                                                                               repositoryHelper);
@@ -1237,7 +1237,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
                                                    externalSourceName,
                                                    fileParentGUID,
                                                    pathNameParameterName,
-                                                   OpenMetadataAPIMapper.DATA_FOLDER_TYPE_NAME,
+                                                   OpenMetadataAPIMapper.FILE_FOLDER_TYPE_NAME,
                                                    fileAssetGUID,
                                                    fileAssetParameterName,
                                                    OpenMetadataAPIMapper.DATA_FILE_TYPE_NAME,

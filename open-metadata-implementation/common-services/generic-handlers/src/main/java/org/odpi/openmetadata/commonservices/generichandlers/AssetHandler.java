@@ -1038,8 +1038,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                            assetGUID,
                                            assetGUIDParameterName,
                                            OpenMetadataAPIMapper.ASSET_TYPE_NAME,
-                                           OpenMetadataAPIMapper.ASSET_ORIGIN_CLASSIFICATION_GUID,
-                                           OpenMetadataAPIMapper.ASSET_ORIGIN_CLASSIFICATION_NAME,
+                                           OpenMetadataAPIMapper.ASSET_ZONES_CLASSIFICATION_GUID,
+                                           OpenMetadataAPIMapper.ASSET_ZONES_CLASSIFICATION_NAME,
                                            builder.getZoneMembershipProperties(assetZones, methodName),
                                            methodName);
     }
@@ -1074,8 +1074,8 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                                            assetGUID,
                                            assetGUIDParameterName,
                                            OpenMetadataAPIMapper.ASSET_TYPE_NAME,
-                                           OpenMetadataAPIMapper.ASSET_ORIGIN_CLASSIFICATION_GUID,
-                                           OpenMetadataAPIMapper.ASSET_ORIGIN_CLASSIFICATION_NAME,
+                                           OpenMetadataAPIMapper.ASSET_OWNERSHIP_CLASSIFICATION_GUID,
+                                           OpenMetadataAPIMapper.ASSET_OWNERSHIP_CLASSIFICATION_NAME,
                                            builder.getOwnerProperties(userId, ownerId, ownerType, methodName),
                                            methodName);
     }

@@ -101,13 +101,22 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
         {
             if (connectorType.getGUID() != null)
             {
-                if (this.getEntityFromRepository(userId,
-                                                 connectorType.getGUID(),
-                                                 OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_NAME,
-                                                 methodName,
-                                                 guidParameterName) != null)
+                try
                 {
-                    return connectorType.getGUID();
+                    if (this.getEntityFromRepository(userId,
+                                                     connectorType.getGUID(),
+                                                     OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_NAME,
+                                                     methodName,
+                                                     guidParameterName) != null)
+                    {
+                        return connectorType.getGUID();
+                    }
+                }
+                catch (InvalidParameterException notFound)
+                {
+                    /*
+                     * Keep searching ...
+                     */
                 }
             }
 
@@ -271,7 +280,7 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
                                                                 serviceName,
                                                                 serverName);
 
-          return this.createBeanInRepository(userId,
+        return this.createBeanInRepository(userId,
                                            externalSourceGUID,
                                            externalSourceName,
                                            OpenMetadataAPIMapper.CONNECTOR_TYPE_TYPE_GUID,

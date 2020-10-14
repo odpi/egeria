@@ -472,7 +472,8 @@ public class RepositoryErrorHandler
      * Throw an exception if an unexpected repository error is received
      *
      * @param error  caught exception
-     * @param methodName  name of the method making the call.
+     * @param methodName  name of the method called by the external party
+     * @param localMethodName name of method that called this error
      *
      * @throws PropertyServerException unexpected exception from property server
      */

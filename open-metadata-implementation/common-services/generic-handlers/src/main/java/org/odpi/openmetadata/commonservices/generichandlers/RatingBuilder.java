@@ -73,7 +73,7 @@ public class RatingBuilder extends OpenMetadataAPIGenericBuilder
      * @return InstanceProperties object
      * @throws InvalidParameterException there is a problem with the properties
      */
-    public InstanceProperties getEntityInstanceProperties(String  methodName) throws InvalidParameterException
+    public InstanceProperties getInstanceProperties(String  methodName) throws InvalidParameterException
     {
         InstanceProperties properties = super.getInstanceProperties(methodName);
 

@@ -68,7 +68,8 @@ public enum GenericHandlersErrorCode implements ExceptionMessageSet
                        "Correct the code that initializes the converter during server start up."),
 
     MISSING_CONVERTER_METHOD(500, "OMAG-GENERIC-HANDLERS-500-002",
-                       "The {0} service has not implemented the {1} method in a subclass of the {2} converter class for bean class {3}",
+                       "The {0} service has not implemented the {1} method in a subclass of the {2} converter class for bean class {3} and so is " +
+                               "unable to create the bean for method {4}",
                        "The system is unable to process the request because it is not able to populate the bean.",
                        "Correct the converter implementation as part of this module."),
 

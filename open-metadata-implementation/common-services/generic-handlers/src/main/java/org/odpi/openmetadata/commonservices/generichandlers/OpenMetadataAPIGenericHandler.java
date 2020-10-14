@@ -281,7 +281,7 @@ public class OpenMetadataAPIGenericHandler<B>
                                                  beanGUID,
                                                  classificationTypeGUID,
                                                  classificationTypeName,
-                                                 null,
+                                                 ClassificationOrigin.ASSIGNED,
                                                  null,
                                                  classificationProperties,
                                                  methodName);
@@ -597,11 +597,11 @@ public class OpenMetadataAPIGenericHandler<B>
         {
             assetBean.setSecurityLabels(repositoryHelper.getStringArrayProperty(serviceName,
                                                                                 OpenMetadataAPIMapper.SECURITY_LABELS_PROPERTY_NAME,
-                                                                                properties,
+                                                                                securityTagProperties,
                                                                                 methodName));
             assetBean.setSecurityProperties(repositoryHelper.getMapFromProperty(serviceName,
                                                                                 OpenMetadataAPIMapper.SECURITY_PROPERTIES_PROPERTY_NAME,
-                                                                                properties,
+                                                                                securityTagProperties,
                                                                                 methodName));
         }
 
@@ -729,11 +729,11 @@ public class OpenMetadataAPIGenericHandler<B>
         {
             assetBean.setOwner(repositoryHelper.getStringProperty(serviceName,
                                                                   OpenMetadataAPIMapper.OWNER_PROPERTY_NAME,
-                                                                  properties,
+                                                                  ownershipProperties,
                                                                   methodName));
             assetBean.setOwnerType(repositoryHelper.getEnumPropertyOrdinal(serviceName,
                                                                            OpenMetadataAPIMapper.OWNER_TYPE_PROPERTY_NAME,
-                                                                           properties,
+                                                                           ownershipProperties,
                                                                            methodName));
         }
 
@@ -741,7 +741,7 @@ public class OpenMetadataAPIGenericHandler<B>
         {
             assetBean.setZoneMembership(repositoryHelper.getStringArrayProperty(serviceName,
                                                                                 OpenMetadataAPIMapper.ZONE_MEMBERSHIP_PROPERTY_NAME,
-                                                                                properties,
+                                                                                zoneProperties,
                                                                                 methodName));
         }
 
@@ -1958,7 +1958,8 @@ public class OpenMetadataAPIGenericHandler<B>
                     EntityProxy proxy = relationship.getEntityOneProxy();
                     if ((proxy != null) && (proxy.getGUID() != null) && (proxy.getType() != null))
                     {
-                        if (repositoryHelper.isTypeOf(serviceName, proxy.getType().getTypeDefName(), OpenMetadataAPIMapper.COMMENT_TYPE_NAME))
+                        if ((! commentGUID.equals(proxy.getGUID())) &&
+                            (repositoryHelper.isTypeOf(serviceName, proxy.getType().getTypeDefName(), OpenMetadataAPIMapper.COMMENT_TYPE_NAME)))
                         {
                             String parentAnchorGUID = this.getAnchorGUIDForComment(userId, proxy.getGUID(), methodName);
 
@@ -2193,10 +2194,10 @@ public class OpenMetadataAPIGenericHandler<B>
             /*
              * InformalTags have a property that says whether they are public or private
              */
-            if (repositoryHelper.getBooleanProperty(serviceName,
-                                                    OpenMetadataAPIMapper.IS_PUBLIC_PROPERTY_NAME,
-                                                    connectToEntity.getProperties(),
-                                                    methodName))
+            if (! repositoryHelper.getBooleanProperty(serviceName,
+                                                      OpenMetadataAPIMapper.IS_PUBLIC_PROPERTY_NAME,
+                                                      connectToEntity.getProperties(),
+                                                      methodName))
             {
                 /*
                  * This is a private tag - if the user did not create this we pretend it is not known.
@@ -3634,10 +3635,10 @@ public class OpenMetadataAPIGenericHandler<B>
          * This returns the entity for the connect to element and validates it is of the correct type.
          */
         EntityDetail  originalEntity = repositoryHandler.getEntityByGUID(userId,
-                                                                          entityGUID,
-                                                                          entityGUIDParameterName,
-                                                                          entityTypeName,
-                                                                          methodName);
+                                                                         entityGUID,
+                                                                         entityGUIDParameterName,
+                                                                         entityTypeName,
+                                                                         methodName);
 
         if ((originalEntity != null) && (originalEntity.getType() != null))
         {
@@ -5258,7 +5259,7 @@ public class OpenMetadataAPIGenericHandler<B>
 
 
     /**
-     * Return the keyword for the supplied unique identifier (guid).  The keyword is only returned if
+     * Return the entity for the supplied unique identifier (guid).  An exception is thrown if the entity does not exist.
      *
      * @param userId userId of the user making the request
      * @param requestedEntityGUID unique identifier of the entity to retrieve from the repository
@@ -5270,7 +5271,7 @@ public class OpenMetadataAPIGenericHandler<B>
      * @param methodName calling method
      *
      * @return retrieved entity
-     * @throws InvalidParameterException the userId is null or invalid.
+     * @throws InvalidParameterException the userId is null or invalid, the entity does not exist.
      * @throws PropertyServerException there is a problem retrieving information from the repositories.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
@@ -5386,7 +5387,7 @@ public class OpenMetadataAPIGenericHandler<B>
 
 
     /**
-     * Return the keyword for the supplied unique identifier (guid).  The keyword is only returned if
+     * Return the bean for the supplied unique identifier (guid).  An exception occurs if the bean GUID is not known.
      *
      * @param userId userId of the user making the request
      * @param guid unique identifier of the entity to retrieve from the repository
@@ -5928,7 +5929,11 @@ public class OpenMetadataAPIGenericHandler<B>
                                                              methodName);
 
 
-        if ((results != null) && (results.size() == 1))
+        if ((results == null) || (results.isEmpty()))
+        {
+            return null;
+        }
+        else if (results.size() == 1)
         {
             return converter.getNewBean(beanClass, results.get(0), methodName);
         }

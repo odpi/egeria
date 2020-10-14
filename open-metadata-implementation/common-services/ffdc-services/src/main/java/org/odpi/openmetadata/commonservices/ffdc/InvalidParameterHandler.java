@@ -445,7 +445,6 @@ public class InvalidParameterHandler
         else
         {
             typeDef = repositoryHelper.getTypeDefByName(serviceName, typeName);
-
         }
 
         if (typeDef == null)
@@ -457,7 +456,6 @@ public class InvalidParameterHandler
                                                 methodName,
                                                 parameterName);
         }
-
 
         if (! repositoryHelper.isTypeOf(serviceName, typeName, superTypeName))
         {

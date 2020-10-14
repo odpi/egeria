@@ -51,18 +51,4 @@ public class LikeBuilder extends OpenMetadataAPIGenericBuilder
                                                              isPublic,
                                                              methodName);
     }
-
-
-    /**
-     * Return the supplied bean properties in an InstanceProperties object.
-     *
-     * @param methodName name of the calling method
-     * @return InstanceProperties object
-     * @throws InvalidParameterException there is a problem with the properties
-     */
-    public InstanceProperties getEntityInstanceProperties(String  methodName) throws InvalidParameterException
-    {
-        return super.getInstanceProperties(methodName);
-    }
-
 }

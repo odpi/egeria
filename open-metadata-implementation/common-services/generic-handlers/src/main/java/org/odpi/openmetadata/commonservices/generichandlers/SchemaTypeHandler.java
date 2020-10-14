@@ -101,10 +101,10 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
         final String schemaTypeGUIDParameterName = "schemaTypeGUID";
 
         String schemaTypeGUID = this.createBeanInRepository(userId,
-                                                            schemaTypeBuilder.getTypeGUID(),
-                                                            schemaTypeBuilder.getTypeName(),
                                                             externalSourceGUID,
                                                             externalSourceName,
+                                                            schemaTypeBuilder.getTypeGUID(),
+                                                            schemaTypeBuilder.getTypeName(),
                                                             schemaTypeBuilder.getQualifiedName(),
                                                             OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                             schemaTypeBuilder,

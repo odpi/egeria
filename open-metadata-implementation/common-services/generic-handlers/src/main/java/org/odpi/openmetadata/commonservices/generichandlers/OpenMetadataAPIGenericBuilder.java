@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.generichandlers;
 
+import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryErrorHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
@@ -92,14 +93,14 @@ public class OpenMetadataAPIGenericBuilder
         this.instanceStatus          = instanceStatus;
         this.existingClassifications = existingClassifications;
 
-        if (typeName == null)
+        if (this.typeName == null)
         {
-            typeName = OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME;
+            this.typeName = OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME;
         }
 
-        if (typeGUID == null)
+        if (this.typeGUID == null)
         {
-            TypeDef typeDef = repositoryHelper.getTypeDefByName(serviceName, typeName);
+            TypeDef typeDef = repositoryHelper.getTypeDefByName(serviceName, this.typeName);
             if (typeDef != null)
             {
                 this.typeGUID = typeDef.getGUID();
