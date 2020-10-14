@@ -156,10 +156,10 @@ public class AssetConsumerResource
      */
     @PostMapping(path = "/assets/{assetGUID}/ratings")
 
-    public VoidResponse addRatingToAsset(@PathVariable String          serverName,
-                                         @PathVariable String          userId,
-                                         @PathVariable String          assetGUID,
-                                         @RequestBody RatingProperties requestBody)
+    public VoidResponse addRatingToAsset(@PathVariable String           serverName,
+                                         @PathVariable String           userId,
+                                         @PathVariable String           assetGUID,
+                                         @RequestBody  RatingProperties requestBody)
     {
         return restAPI.addRatingToAsset(serverName, userId, assetGUID, requestBody);
     }

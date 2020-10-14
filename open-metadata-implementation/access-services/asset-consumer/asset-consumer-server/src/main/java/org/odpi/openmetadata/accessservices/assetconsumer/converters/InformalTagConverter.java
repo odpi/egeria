@@ -75,7 +75,7 @@ public class InformalTagConverter<B> extends AssetConsumerOMASConverter<B>
 
                     informalTagProperties.setName(this.removeTagName(instanceProperties));
                     informalTagProperties.setDescription(this.removeTagDescription(instanceProperties));
-                    informalTagProperties.setIsPrivateTag(this.removeIsPublic(instanceProperties));
+                    informalTagProperties.setIsPrivateTag(! this.removeIsPublic(instanceProperties));
                 }
                 else
                 {

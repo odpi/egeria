@@ -987,7 +987,7 @@ public class AssetConsumerRESTServices
                                                    null,
                                                    requestBody.getName(),
                                                    requestBody.getDescription(),
-                                                   requestBody.getIsPublic(),
+                                                   (!requestBody.getIsPrivateTag()),
                                                    methodName));
             }
             else

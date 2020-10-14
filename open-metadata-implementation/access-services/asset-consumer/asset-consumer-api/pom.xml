@@ -71,11 +71,6 @@
             <scope>test</scope>
         </dependency>
 
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>ocf-metadata-api</artifactId>
-        </dependency>
-
     </dependencies>
 
 </project>
