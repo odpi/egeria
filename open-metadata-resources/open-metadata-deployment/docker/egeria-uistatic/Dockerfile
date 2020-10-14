@@ -1,7 +1,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright Contributors to the Egeria project
 
-FROM nginx:latest
+FROM node:14-alpine as build
+
 ARG version=2.4-SNAPSHOT
 ARG VCS_REF=unknown
 ARG VCS_ORIGIN=unknown
@@ -25,7 +26,21 @@ LABEL org.opencontainers.image.vendor = "ODPi" \
       org.opencontainers.image.ext.docker.debug = "" \
       org.opencontainers.image.ext.docker.params = ""
 
-COPY dist/nginx.conf /etc/nginx/conf.d/default.cnf
+# Initial version -- build from git
+RUN apk update && apk upgrade && \
+    apk add --no-cache bash git openssh
 
+WORKDIR /app
+RUN git clone https://github.com/odpi/egeria-ui
+WORKDIR egeria-ui
+RUN npm install polymer-cli
+RUN npm install
+RUN npm run build
+
+
+FROM nginx:latest
+
+COPY dist/nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=build /app/egeria-ui/build/dev/ /var/www
 CMD ["nginx", "-g", "daemon off;"]
 
