@@ -204,7 +204,6 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
 
         List<String> specificMatchPropertyNames = new ArrayList<>();
         specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
-        specificMatchPropertyNames.add(OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME);
 
         return discoveryEngineHandler.getBeanByValue(userId,
                                                      name,

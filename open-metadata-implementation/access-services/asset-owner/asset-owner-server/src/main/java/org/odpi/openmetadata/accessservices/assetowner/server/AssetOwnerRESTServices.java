@@ -7,6 +7,7 @@ import org.odpi.openmetadata.accessservices.assetowner.metadataelements.AssetEle
 import org.odpi.openmetadata.accessservices.assetowner.metadataelements.SchemaAttributeElement;
 import org.odpi.openmetadata.accessservices.assetowner.metadataelements.SchemaTypeElement;
 import org.odpi.openmetadata.accessservices.assetowner.properties.AssetProperties;
+import org.odpi.openmetadata.accessservices.assetowner.properties.OwnerType;
 import org.odpi.openmetadata.accessservices.assetowner.properties.SchemaAttributeProperties;
 import org.odpi.openmetadata.accessservices.assetowner.properties.SchemaTypeProperties;
 import org.odpi.openmetadata.accessservices.assetowner.rest.*;
@@ -21,6 +22,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.DataItemSortOrder;
 import org.odpi.openmetadata.frameworks.discovery.properties.Annotation;
 import org.odpi.openmetadata.frameworks.discovery.properties.AnnotationStatus;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryAnalysisReport;
@@ -181,6 +183,12 @@ public class AssetOwnerRESTServices
                                                                                 methodName,
                                                                                 instanceHandler.getRepositoryHelper(userId, serverName, methodName));
 
+                int ownerTypeOrdinal = 0;
+
+                if (requestBody.getOwnerType() != null)
+                {
+                    ownerTypeOrdinal = requestBody.getOwnerType().getOpenTypeOrdinal();
+                }
                 response.setGUID(handler.createAssetInRepository(userId,
                                                                  null,
                                                                  null,
@@ -189,7 +197,7 @@ public class AssetOwnerRESTServices
                                                                  requestBody.getDescription(),
                                                                  requestBody.getZoneMembership(),
                                                                  requestBody.getOwner(),
-                                                                 requestBody.getOwnerType().getOpenTypeOrdinal(),
+                                                                 ownerTypeOrdinal,
                                                                  requestBody.getOriginOrganizationGUID(),
                                                                  requestBody.getOriginBusinessCapabilityGUID(),
                                                                  requestBody.getOtherOriginValues(),
@@ -434,6 +442,12 @@ public class AssetOwnerRESTServices
 
         SchemaTypeHandler<SchemaTypeElement> handler = instanceHandler.getSchemaTypeHandler(userId, serverName, methodName);
 
+        String typeId = invalidParameterHandler.validateTypeName(schemaType.getTypeName(),
+                                                                 OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                                                 instanceHandler.getServiceName(),
+                                                                 methodName,
+                                                                 instanceHandler.getRepositoryHelper(userId, serverName, methodName));
+
         SchemaTypeBuilder schemaTypeBuilder = new SchemaTypeBuilder(schemaType.getQualifiedName(),
                                                                     schemaType.getDisplayName(),
                                                                     schemaType.getDescription(),
@@ -444,7 +458,7 @@ public class AssetOwnerRESTServices
                                                                     schemaType.getEncodingStandard(),
                                                                     schemaType.getNamespace(),
                                                                     schemaType.getAdditionalProperties(),
-                                                                    null,
+                                                                    typeId,
                                                                     schemaType.getTypeName(),
                                                                     schemaType.getExtendedProperties(),
                                                                     handler.getRepositoryHelper(),
@@ -514,6 +528,13 @@ public class AssetOwnerRESTServices
 
         if (schemaAttribute != null)
         {
+            int sortOrder = DataItemSortOrder.UNKNOWN.getOpenTypeOrdinal();
+
+            if (schemaAttribute.getSortOrder() != null)
+            {
+                sortOrder = schemaAttribute.getSortOrder().getOpenTypeOrdinal();
+            }
+
             SchemaAttributeBuilder schemaAttributeBuilder =
                     new SchemaAttributeBuilder(schemaAttribute.getQualifiedName(),
                                                schemaAttribute.getDisplayName(),
@@ -525,7 +546,7 @@ public class AssetOwnerRESTServices
                                                schemaAttribute.getDefaultValueOverride(),
                                                schemaAttribute.getAllowsDuplicateValues(),
                                                schemaAttribute.getOrderedValues(),
-                                               schemaAttribute.getSortOrder().getOpenTypeOrdinal(),
+                                               sortOrder,
                                                schemaAttribute.getMinimumLength(),
                                                schemaAttribute.getLength(),
                                                schemaAttribute.getPrecision(),
@@ -1511,11 +1532,18 @@ public class AssetOwnerRESTServices
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
                 AssetHandler      handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
+                int ownerType = OwnerType.USER_ID.getOpenTypeOrdinal();
+
+                if (requestBody.getOwnerType() != null)
+                {
+                    ownerType = requestBody.getOwnerType().getOpenTypeOrdinal();
+                }
+
                 handler.updateAssetOwner(userId,
                                          assetGUID,
                                          assetGUIDParameterName,
                                          requestBody.getOwnerId(),
-                                         requestBody.getOwnerType().getOpenTypeOrdinal(),
+                                         ownerType,
                                          methodName);
             }
             else
@@ -1850,6 +1878,49 @@ public class AssetOwnerRESTServices
 
 
     /**
+     * Return the basic attributes of an asset.
+     *
+     * @param userId calling user
+     * @param assetGUID unique identifier of the asset
+     * @return basic asset properties
+     * InvalidParameterException one of the parameters is null or invalid.
+     * UserNotAuthorizedException user not authorized to issue this request.
+     * PropertyServerException there was a problem that occurred within the property server.
+     */
+    public AssetElementResponse getAssetSummary(String  serverName,
+                                                String  userId,
+                                                String  assetGUID)
+    {
+        final String methodName = "getAssetSummary";
+        final String assetGUIDParameter = "assetGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AssetElementResponse response = new AssetElementResponse();
+        AuditLog             auditLog = null;
+
+        try
+        {
+            AssetHandler<AssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            response.setAsset(handler.getBeanFromRepository(userId,
+                                                            assetGUID,
+                                                            assetGUIDParameter,
+                                                            OpenMetadataAPIMapper.ASSET_TYPE_NAME,
+                                                            methodName));
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
      * Return the discovery analysis reports about the asset.
      *
      * @param serverName name of the server instance to connect to
@@ -1933,9 +2004,15 @@ public class AssetOwnerRESTServices
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
                 AnnotationHandler<Annotation> handler = instanceHandler.getAnnotationHandler(userId, serverName, methodName);
 
+                int annotationStatus = AnnotationStatus.UNKNOWN_STATUS.getOpenTypeOrdinal();
+
+                if (requestBody.getAnnotationStatus() != null)
+                {
+                    annotationStatus = requestBody.getAnnotationStatus().getOpenTypeOrdinal();
+                }
                 response.setAnnotations(handler.getDiscoveryReportAnnotations(userId,
                                                                               discoveryReportGUID,
-                                                                              requestBody.getAnnotationStatus().getOpenTypeOrdinal(),
+                                                                              annotationStatus,
                                                                               startingFrom,
                                                                               maximumResults,
                                                                               methodName));

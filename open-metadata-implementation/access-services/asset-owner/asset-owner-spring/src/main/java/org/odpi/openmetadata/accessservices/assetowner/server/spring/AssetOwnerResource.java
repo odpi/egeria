@@ -867,6 +867,26 @@ public class AssetOwnerResource
 
 
     /**
+     * Return the basic attributes of an asset.
+     *
+     * @param userId calling user
+     * @param assetGUID unique identifier of the asset
+     * @return basic asset properties
+     * InvalidParameterException one of the parameters is null or invalid.
+     * UserNotAuthorizedException user not authorized to issue this request.
+     * PropertyServerException there was a problem that occurred within the property server.
+     */
+    @GetMapping(path = "/assets/{assetGUID}")
+
+    public AssetElementResponse getAssetSummary(@PathVariable String  serverName,
+                                                @PathVariable String  userId,
+                                                @PathVariable String  assetGUID)
+    {
+        return restAPI.getAssetSummary(serverName, userId, assetGUID);
+    }
+
+
+    /**
      * Return the discovery analysis reports about the asset.
      *
      * @param serverName name of the server instance to connect to

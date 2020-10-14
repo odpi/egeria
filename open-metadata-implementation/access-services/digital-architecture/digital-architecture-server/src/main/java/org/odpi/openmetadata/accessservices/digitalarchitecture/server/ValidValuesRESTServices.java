@@ -3,11 +3,7 @@
 package org.odpi.openmetadata.accessservices.digitalarchitecture.server;
 
 import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.*;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.ElementHeader;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.ElementOrigin;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.ElementType;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.properties.*;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.ElementClassification;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
@@ -18,7 +14,6 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.ValidValuesHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;

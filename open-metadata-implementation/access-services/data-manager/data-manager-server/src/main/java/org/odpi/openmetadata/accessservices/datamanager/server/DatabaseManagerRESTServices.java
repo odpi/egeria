@@ -84,6 +84,12 @@ public class DatabaseManagerRESTServices
                     DatabaseColumnElement,
                     SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
+            int ownerCategory = OwnerCategory.USER_ID.getOpenTypeOrdinal();
+
+            if (databaseProperties.getOwnerCategory() != null)
+            {
+                ownerCategory = databaseProperties.getOwnerCategory().getOpenTypeOrdinal();
+            }
             String databaseGUID = handler.createDatabase(userId,
                                                          databaseManagerGUID,
                                                          databaseManagerName,
@@ -91,7 +97,7 @@ public class DatabaseManagerRESTServices
                                                          databaseProperties.getDisplayName(),
                                                          databaseProperties.getDescription(),
                                                          databaseProperties.getOwner(),
-                                                         databaseProperties.getOwnerCategory().getOpenTypeOrdinal(),
+                                                         ownerCategory,
                                                          databaseProperties.getZoneMembership(),
                                                          databaseProperties.getOriginOrganizationGUID(),
                                                          databaseProperties.getOriginBusinessCapabilityGUID(),
@@ -248,6 +254,13 @@ public class DatabaseManagerRESTServices
                     DatabaseColumnElement,
                     SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
+            int ownerCategory = OwnerCategory.USER_ID.getOpenTypeOrdinal();
+
+            if (databaseProperties.getOwnerCategory() != null)
+            {
+                ownerCategory = databaseProperties.getOwnerCategory().getOpenTypeOrdinal();
+            }
+
             handler.updateDatabase(userId,
                                    databaseManagerGUID,
                                    databaseManagerName,
@@ -256,7 +269,7 @@ public class DatabaseManagerRESTServices
                                    databaseProperties.getDisplayName(),
                                    databaseProperties.getDescription(),
                                    databaseProperties.getOwner(),
-                                   databaseProperties.getOwnerCategory().getOpenTypeOrdinal(),
+                                   ownerCategory,
                                    databaseProperties.getZoneMembership(),
                                    databaseProperties.getOriginOrganizationGUID(),
                                    databaseProperties.getOriginBusinessCapabilityGUID(),
@@ -804,6 +817,12 @@ public class DatabaseManagerRESTServices
                     DatabaseColumnElement,
                     SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
+            int ownerCategory = OwnerCategory.USER_ID.getOpenTypeOrdinal();
+
+            if (databaseSchemaProperties.getOwnerCategory() != null)
+            {
+                ownerCategory = databaseSchemaProperties.getOwnerCategory().getOpenTypeOrdinal();
+            }
             String databaseSchemaGUID = handler.createDatabaseSchema(userId,
                                                                      databaseManagerGUID,
                                                                      databaseManagerName,
@@ -812,7 +831,7 @@ public class DatabaseManagerRESTServices
                                                                      databaseSchemaProperties.getDisplayName(),
                                                                      databaseSchemaProperties.getDescription(),
                                                                      databaseSchemaProperties.getOwner(),
-                                                                     databaseSchemaProperties.getOwnerCategory().getOpenTypeOrdinal(),
+                                                                     ownerCategory,
                                                                      databaseSchemaProperties.getZoneMembership(),
                                                                      databaseSchemaProperties.getOriginOrganizationGUID(),
                                                                      databaseSchemaProperties.getOriginBusinessCapabilityGUID(),
@@ -963,6 +982,12 @@ public class DatabaseManagerRESTServices
                     DatabaseColumnElement,
                     SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
+            int ownerCategory = OwnerCategory.USER_ID.getOpenTypeOrdinal();
+
+            if (databaseSchemaProperties.getOwnerCategory() != null)
+            {
+                ownerCategory = databaseSchemaProperties.getOwnerCategory().getOpenTypeOrdinal();
+            }
             handler.updateDatabaseSchema(userId,
                                          databaseManagerGUID,
                                          databaseManagerName,
@@ -971,7 +996,7 @@ public class DatabaseManagerRESTServices
                                          databaseSchemaProperties.getDisplayName(),
                                          databaseSchemaProperties.getDescription(),
                                          databaseSchemaProperties.getOwner(),
-                                         databaseSchemaProperties.getOwnerCategory().getOpenTypeOrdinal(),
+                                         ownerCategory,
                                          databaseSchemaProperties.getZoneMembership(),
                                          databaseSchemaProperties.getOriginOrganizationGUID(),
                                          databaseSchemaProperties.getOriginBusinessCapabilityGUID(),
@@ -2647,6 +2672,13 @@ public class DatabaseManagerRESTServices
                     DatabaseColumnElement,
                     SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
+            int sortOrder = DataItemSortOrder.UNKNOWN.getOpenTypeOrdinal();
+
+            if (databaseColumnProperties.getSortOrder() != null)
+            {
+                sortOrder = databaseColumnProperties.getSortOrder().getOpenTypeOrdinal();
+            }
+
             String databaseColumnGUID = handler.createDatabaseColumn(userId,
                                                                      databaseManagerGUID,
                                                                      databaseManagerName,
@@ -2667,7 +2699,7 @@ public class DatabaseManagerRESTServices
                                                                      databaseColumnProperties.getAllowsDuplicateValues(),
                                                                      databaseColumnProperties.getOrderedValues(),
                                                                      databaseColumnProperties.getDefaultValueOverride(),
-                                                                     databaseColumnProperties.getSortOrder().getOpenTypeOrdinal(),
+                                                                     sortOrder,
                                                                      databaseColumnProperties.getMinimumLength(),
                                                                      databaseColumnProperties.getLength(),
                                                                      databaseColumnProperties.getPrecision(),
@@ -2838,6 +2870,13 @@ public class DatabaseManagerRESTServices
                     DatabaseColumnElement,
                     SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
+            int sortOrder = DataItemSortOrder.UNKNOWN.getOpenTypeOrdinal();
+
+            if (databaseColumnProperties.getSortOrder() != null)
+            {
+                sortOrder = databaseColumnProperties.getSortOrder().getOpenTypeOrdinal();
+            }
+
             handler.updateDatabaseColumn(userId,
                                          databaseManagerGUID,
                                          databaseManagerName,
@@ -2856,7 +2895,7 @@ public class DatabaseManagerRESTServices
                                          databaseColumnProperties.getAllowsDuplicateValues(),
                                          databaseColumnProperties.getOrderedValues(),
                                          databaseColumnProperties.getDefaultValueOverride(),
-                                         databaseColumnProperties.getSortOrder().getOpenTypeOrdinal(),
+                                         sortOrder,
                                          databaseColumnProperties.getMinimumLength(),
                                          databaseColumnProperties.getLength(),
                                          databaseColumnProperties.getPrecision(),
@@ -3285,12 +3324,19 @@ public class DatabaseManagerRESTServices
                     DatabaseColumnElement,
                     SchemaTypeElement> handler = instanceHandler.getRelationalDataHandler(userId, serverName, methodName);
 
+            int keyPattern = KeyPattern.LOCAL_KEY.getOpenTypeOrdinal();
+
+            if (databasePrimaryKeyProperties.getKeyPattern() != null)
+            {
+                keyPattern = databasePrimaryKeyProperties.getKeyPattern().getOpenTypeOrdinal();
+            }
+
             handler.setPrimaryKeyOnColumn(userId,
                                           databaseManagerGUID,
                                           databaseManagerName,
                                           databaseColumnGUID,
                                           databasePrimaryKeyProperties.getName(),
-                                          databasePrimaryKeyProperties.getKeyPattern().getOpenTypeOrdinal(),
+                                          keyPattern,
                                           methodName);
         }
         catch (InvalidParameterException error)

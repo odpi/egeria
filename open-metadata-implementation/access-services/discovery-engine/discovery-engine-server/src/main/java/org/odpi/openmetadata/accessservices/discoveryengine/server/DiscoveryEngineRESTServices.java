@@ -16,6 +16,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.frameworks.discovery.properties.Annotation;
 import org.odpi.openmetadata.frameworks.discovery.properties.AnnotationStatus;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryAnalysisReport;
+import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryRequestStatus;
 import org.slf4j.LoggerFactory;
 
 
@@ -460,13 +461,19 @@ public class DiscoveryEngineRESTServices
 
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
+                int discoveryRequestStatus = DiscoveryRequestStatus.UNKNOWN_STATUS.getOpenTypeOrdinal();
+
+                if (requestBody.getDiscoveryRequestStatus() != null)
+                {
+                    discoveryRequestStatus = requestBody.getDiscoveryRequestStatus().getOpenTypeOrdinal();
+                }
                 response.setGUID(handler.createDiscoveryAnalysisReport(userId,
                                                                        requestBody.getQualifiedName(),
                                                                        requestBody.getDisplayName(),
                                                                        requestBody.getDescription(),
                                                                        requestBody.getCreationDate(),
                                                                        requestBody.getAnalysisParameters(),
-                                                                       requestBody.getDiscoveryRequestStatus().getOpenTypeOrdinal(),
+                                                                       discoveryRequestStatus,
                                                                        assetGUID,
                                                                        requestBody.getDiscoveryEngineGUID(),
                                                                        requestBody.getDiscoveryServiceGUID(),
@@ -536,6 +543,12 @@ public class DiscoveryEngineRESTServices
 
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
+                int discoveryRequestStatus = DiscoveryRequestStatus.UNKNOWN_STATUS.getOpenTypeOrdinal();
+
+                if (requestBody.getDiscoveryRequestStatus() != null)
+                {
+                    discoveryRequestStatus = requestBody.getDiscoveryRequestStatus().getOpenTypeOrdinal();
+                }
                 handler.updateDiscoveryAnalysisReport(userId,
                                                       discoveryReportGUID,
                                                       requestBody.getQualifiedName(),
@@ -543,7 +556,7 @@ public class DiscoveryEngineRESTServices
                                                       requestBody.getDescription(),
                                                       requestBody.getCreationDate(),
                                                       requestBody.getAnalysisParameters(),
-                                                      requestBody.getDiscoveryRequestStatus().getOpenTypeOrdinal(),
+                                                      discoveryRequestStatus,
                                                       requestBody.getAdditionalProperties(),
                                                       methodName);
             }

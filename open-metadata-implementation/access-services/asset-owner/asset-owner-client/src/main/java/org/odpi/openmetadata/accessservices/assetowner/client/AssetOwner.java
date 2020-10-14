@@ -41,6 +41,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
     protected AssetOwnerRESTClient restClient;               /* Initialized in constructor */
 
     private static final String  serviceURLName = "asset-owner";
+    private static final String  defaultAssetType = "Asset";
 
 
     /**
@@ -238,11 +239,9 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
                                                                                      PropertyServerException
     {
         final String methodName             = "addAssetToCatalog";
-        final String typeNameParameter      = "typeName";
         final String qualifiedNameParameter = "qualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(typeName, typeNameParameter, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameter, methodName);
 
         AssetProperties assetProperties = new AssetProperties();
@@ -277,15 +276,17 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetKnowled
     {
         final String methodName                   = "addAssetToCatalog";
         final String assetPropertiesParameterName = "assetProperties";
-        final String typeNameParameter            = "assetProperties.getTypeName()";
         final String qualifiedNameParameter       = "assetProperties.getQualifiedName()";
         final String urlTemplate                  = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/{2}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateObject(assetProperties, assetPropertiesParameterName, methodName);
-        invalidParameterHandler.validateName(assetProperties.getTypeName(), typeNameParameter, methodName);
         invalidParameterHandler.validateName(assetProperties.getQualifiedName(), qualifiedNameParameter, methodName);
 
+        if (assetProperties.getTypeName() == null)
+        {
+            assetProperties.setTypeName(defaultAssetType);
+        }
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   serverPlatformRootURL + urlTemplate,
