@@ -9,6 +9,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.security:spring-security-ldap'
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-zuul'
     implementation 'io.jsonwebtoken:jjwt'
     implementation 'com.h2database:h2'
     implementation project(':open-metadata-implementation:access-services:asset-catalog:asset-catalog-client')
