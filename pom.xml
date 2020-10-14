@@ -141,7 +141,7 @@
         <spring.version>5.2.9.RELEASE</spring.version>
         <spring-security.version>5.4.1</spring-security.version>
         <spring-data.version>2.3.4.RELEASE</spring-data.version>
-        <servo-core.version>0.10.1</servo-core.version>
+        <servo-core.version>0.13.0</servo-core.version>
         <netflix-zuul.version>2.2.5.RELEASE</netflix-zuul.version>
         <tomcat.version>9.0.39</tomcat.version>
         <commons-io.version>2.8.0</commons-io.version>
