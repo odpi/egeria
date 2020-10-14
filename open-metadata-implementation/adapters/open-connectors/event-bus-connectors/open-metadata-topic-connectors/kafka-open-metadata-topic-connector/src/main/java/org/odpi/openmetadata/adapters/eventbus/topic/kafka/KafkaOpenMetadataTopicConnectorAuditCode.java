@@ -135,7 +135,7 @@ public enum KafkaOpenMetadataTopicConnectorAuditCode implements AuditLogMessageS
      * The constructor for KafkaOpenMetadataTopicConnectorAuditCode expects to be passed one of the enumeration rows defined in
      * KafkaOpenMetadataTopicConnectorAuditCode above.   For example:
      *
-     *     KafkaOpenMetadataTopicConnectorAuditCode   auditCode = DerbyViewConnectorAuditCode.KafkaOpenMetadataTopicConnectorAuditCode;
+     *     KafkaOpenMetadataTopicConnectorAuditCode   auditCode = KafkaOpenMetadataTopicConnectorAuditCode.EXCEPTION_COMMITTING_OFFSETS;
      *
      * This will expand out to the 4 parameters shown below.
      *

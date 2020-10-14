@@ -379,7 +379,9 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
                 if (auditLog != null)
                 {
                     auditLog.logException("checkForFullyProcessedMessages.commitSync",
-                            KafkaOpenMetadataTopicConnectorAuditCode.EXCEPTION_COMMITTING_OFFSETS.getMessageDefinition(topicToSubscribe),
+                            KafkaOpenMetadataTopicConnectorAuditCode.EXCEPTION_COMMITTING_OFFSETS.getMessageDefinition(error.getClass().getName(),
+                                                                                                                       topicToSubscribe,
+                                                                                                                       error.getMessage()),
                             error);
                 }
 
@@ -554,7 +556,9 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
                 if (auditLog != null)
                 {
                     auditLog.logException("onPartitionsRevoked.commitSync",
-                            KafkaOpenMetadataTopicConnectorAuditCode.EXCEPTION_COMMITTING_OFFSETS.getMessageDefinition(topicToSubscribe),
+                            KafkaOpenMetadataTopicConnectorAuditCode.EXCEPTION_COMMITTING_OFFSETS.getMessageDefinition(error.getClass().getName(),
+                                                                                                                       topicToSubscribe,
+                                                                                                                       error.getMessage()),
                             error);
                 }
 
