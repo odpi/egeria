@@ -9,32 +9,32 @@ metadata:
     helm.sh/chart: {{ include "myapp.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/component: presentation
-  name: {{ .Release.Name }}-presentation
+    app.kubernetes.io/component: uistatic
+  name: {{ .Release.Name }}-uistatic
 
 spec:
   type: {{ .Values.service.type }}
   ports:
-    - port: 8091
-      targetPort: 8091
-      nodePort: {{ .Values.service.nodeport.presentation }}
+    - port: 80
+      targetPort: 80
+      nodePort: {{ .Values.service.nodeport.uistatic }}
   selector:
     app.kubernetes.io/name: {{ include "myapp.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
-    app.kubernetes.io/component: presentation
+    app.kubernetes.io/component: uistatic
 ...
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   creationTimestamp: null
-  name: {{ include "myapp.fullname" . }}-presentation
+  name: {{ include "myapp.fullname" . }}-uistatic
   labels:
     app.kubernetes.io/name: {{ include "myapp.name" . }}
     helm.sh/chart: {{ include "myapp.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/component: presentation
+    app.kubernetes.io/component: uistatic
 
 spec:
   replicas: 1
@@ -42,7 +42,7 @@ spec:
     matchLabels:
       app.kubernetes.io/name: {{ include "myapp.name" . }}
       app.kubernetes.io/instance: {{ .Release.Name }}
-      app.kubernetes.io/component: presentation
+      app.kubernetes.io/component: uistatic
   strategy: {}
   template:
     metadata:
@@ -50,30 +50,27 @@ spec:
       labels:
         app.kubernetes.io/name: {{ include "myapp.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
-        app.kubernetes.io/component: presentation
+        app.kubernetes.io/component: uistatic
     spec:
       containers:
         - name: presentation
-          image: "{{ if (.Values.image.presentation.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.presentation.registry | default .Values.imageDefaults.registry }}/{{ end }}\
-                  {{ if (.Values.image.presentation.namespace | default .Values.imageDefaults.namespace) }}{{ .Values.image.presentation.namespace | default .Values.imageDefaults.namespace }}/{{ end }}\
-                  {{ .Values.image.presentation.name }}\
-                  :{{ .Values.image.presentation.tag | default .Values.egeria.version }}"
-          imagePullPolicy: {{ .Values.image.presentation.pullPolicy | default .Values.imageDefaults.pullPolicy }}
-          envFrom:
-            - configMapRef:
-                name: {{ include "myapp.fullname" . }}-configmap
+          image: "{{ if (.Values.image.uistatic.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.uistatic.registry | default .Values.imageDefaults.registry }}/{{ end }}\
+                  {{ if (.Values.image.uistatic.namespace | default .Values.imageDefaults.namespace) }}{{ .Values.image.uistatic.namespace | default .Values.imageDefaults.namespace }}/{{ end }}\
+                  {{ .Values.image.uistatic.name }}\
+                  :{{ .Values.image.uistatic.tag | default .Values.egeria.version }}"
+          imagePullPolicy: {{ .Values.image.uistatic.pullPolicy | default .Values.imageDefaults.pullPolicy }}
           ports:
-            - containerPort: 8091
+            - containerPort: 80
           readinessProbe:
             tcpSocket:
-              port: 8091
+              port: 80
             initialDelaySeconds: 10
             periodSeconds: 10
             failureThreshold: 6
           resources: {}
-          env:
-            - name: EGERIA_PRESENTATIONSERVER_SERVER_coco
-              value: "{\"remoteServerName\":\"cocoView1\",\"remoteURL\":\"https://{{ .Release.Name }}-datalake:9443\"}"
+          #env:
+          #  - name: EGERIA_PRESENTATIONSERVER_SERVER_coco
+          #    value: "{\"remoteServerName\":\"cocoView1\",\"remoteURL\":\"https://{{ .Release.Name }}-datalake:9443\"}"
       restartPolicy: Always
 
 status: {}

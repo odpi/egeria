@@ -12,6 +12,7 @@ service:
     factory: 30083
     ui: 30443
     presentation: 30091
+    uistatic: 31088
     debug:
       core: 31005
       datalake: 31006
@@ -53,6 +54,8 @@ image:
     name: egeria-configure
   jupyter:
     name: jupyter
+  uistatic:
+    name: egeria-uistatic
 
 # When using the k8s-internal Kafka (from Bitnami), enable auto-topic creation and minimize the footprint
 kafka:

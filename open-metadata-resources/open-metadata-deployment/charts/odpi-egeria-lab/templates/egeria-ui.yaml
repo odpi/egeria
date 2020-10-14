@@ -81,6 +81,8 @@ spec:
             failureThreshold: 6
           resources: {}
           env:
+            - name: "ZUUL_ROUTES_UI_URL"
+              value: "{{ .Release.Name }}-uistatic"
             - name: "OMAS_SERVER_NAME"
               value: "cocoMDS4"
             - name: "OMAS_SERVER_URL"
