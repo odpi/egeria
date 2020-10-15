@@ -431,13 +431,6 @@
             </dependency>
 
             <dependency>
-                <groupId>org.janusgraph</groupId>
-                <artifactId>janusgraph-driver</artifactId>
-                <version>${janus.version}</version>
-                <scope>compile</scope>
-            </dependency>
-
-            <dependency>
                 <groupId>commons-configuration</groupId>
                 <artifactId>commons-configuration</artifactId>
                 <version>${commons-configuration.version}</version>
