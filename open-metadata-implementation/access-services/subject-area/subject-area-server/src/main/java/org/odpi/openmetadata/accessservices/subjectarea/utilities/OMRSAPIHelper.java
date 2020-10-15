@@ -374,7 +374,7 @@ public class OMRSAPIHelper {
                                                                           PropertyServerException,
                                                                           SubjectAreaCheckedException
     {
-        String methodName = "callOMRSDeClassifyEntity";
+        String methodName = "callOMRSAddRelationship";
         showMethodNameIfDebugEnabled(methodName);
 
         try {
