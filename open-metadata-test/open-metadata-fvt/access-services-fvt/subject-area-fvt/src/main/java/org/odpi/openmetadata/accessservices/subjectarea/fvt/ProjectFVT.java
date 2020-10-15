@@ -157,7 +157,8 @@ public class ProjectFVT
             throw new SubjectAreaFVTCheckedException("ERROR: Expected 1 back on the find got " +results.size());
         }
         Project projectForGraph = createProject(DEFAULT_TEST_PROJECT_NAME4);
-        List<Term> terms = getProjectTerms(projectForGraph.getSystemAttributes().getGUID());
+        FindRequest findRequest = new FindRequest();
+        List<Term> terms = getProjectTerms(projectForGraph.getSystemAttributes().getGUID(), findRequest);
         if (terms != null && terms.size() > 0) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected null or empty got " +terms.size());
         }
@@ -209,8 +210,8 @@ public class ProjectFVT
 
         return project;
     }
-    public  List<Term> getProjectTerms(String guid) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        List<Term> terms = subjectAreaProject.getProjectTerms(this.userId, guid);
+    public  List<Term> getProjectTerms(String guid, FindRequest findRequest) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        List<Term> terms = subjectAreaProject.getProjectTerms(this.userId, guid, findRequest);
         System.out.println("Got terms from project with userId " + guid);
         return terms;
     }

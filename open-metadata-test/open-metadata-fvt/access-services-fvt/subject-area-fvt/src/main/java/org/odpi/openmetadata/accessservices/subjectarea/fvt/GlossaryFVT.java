@@ -5,10 +5,12 @@ package org.odpi.openmetadata.accessservices.subjectarea.fvt;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaNodeClient;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaRestClient;
 import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.glossaries.SubjectAreaGlossaryClient;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Taxonomy;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -25,6 +27,7 @@ public class GlossaryFVT {
     private static final String DEFAULT_TEST_GLOSSARY_NAME2 = "Testglossary2";
     private static final String DEFAULT_TEST_GLOSSARY_NAME3 = "Testglossary3";
     private SubjectAreaNodeClient<Glossary> subjectAreaGlossary = null;
+    private SubjectAreaGlossaryClient  subjectAreaGlossaryClient = null;
     private String serverName = null;
     private String userId = null;
     private int existingGlossaryCount = 0;
@@ -39,6 +42,7 @@ public class GlossaryFVT {
     public GlossaryFVT(String url, String serverName, String userId) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         SubjectAreaRestClient client = new SubjectAreaRestClient(serverName, url);
         subjectAreaGlossary = new SubjectAreaGlossaryClient<>(client);
+        subjectAreaGlossaryClient = (SubjectAreaGlossaryClient)subjectAreaGlossary;
         this.serverName = serverName;
         this.userId = userId;
         createdGlossariesSet = new HashSet<>();
@@ -143,7 +147,6 @@ public class GlossaryFVT {
         }
         //soft delete a glossary and check it is not found
         deleteGlossary(glossaryForFind2.getSystemAttributes().getGUID());
-        //FVTUtils.validateNode(deleted4);
         results = findGlossaries("yyy");
         if (results.size() != 1) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected 1 back on the find got " + results.size());
@@ -154,7 +157,7 @@ public class GlossaryFVT {
         if (results.size() != 1) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected 1 back on the find got " + results.size());
         }
-        // make sure there is a category with the name
+        // make sure there is a glossary with the name
         createGlossary(DEFAULT_TEST_GLOSSARY_NAME);
         Glossary glossaryForUniqueQFN2= createGlossary(DEFAULT_TEST_GLOSSARY_NAME);
         if (glossaryForUniqueQFN2 == null || glossaryForUniqueQFN2.equals("")) {
@@ -208,7 +211,7 @@ public class GlossaryFVT {
         glossary.setName(name);
         long now = new Date().getTime();
         // expire the glossary 10 milliseconds ago
-        glossary.setEffectiveToTime(new Date(now - 10));
+        glossary.setEffectiveToTime(new Date(now - 10).getTime());
         Glossary newGlossary = issueCreateGlossary(glossary);
         FVTUtils.validateNode(newGlossary);
         System.out.println("Created Glossary " + newGlossary.getName() + " with userId " + newGlossary.getSystemAttributes().getGUID());
@@ -221,7 +224,7 @@ public class GlossaryFVT {
         glossary.setName(name);
         long now = new Date().getTime();
         // expire the glossary 10 milliseconds ago
-        glossary.setEffectiveFromTime(new Date(now - 10));
+        glossary.setEffectiveFromTime(new Date(now - 10).getTime());
         return issueCreateGlossary(glossary);
     }
 
@@ -230,8 +233,8 @@ public class GlossaryFVT {
         glossary.setName(name);
         long now = new Date().getTime();
         // expire the glossary 10 milliseconds ago
-        glossary.setEffectiveFromTime(new Date(now - 10));
-        glossary.setEffectiveToTime(new Date(now - 11));
+        glossary.setEffectiveFromTime(new Date(now - 10).getTime());
+        glossary.setEffectiveToTime(new Date(now - 11).getTime());
         return issueCreateGlossary(glossary);
     }
 
@@ -240,8 +243,8 @@ public class GlossaryFVT {
         glossary.setName(name);
         long now = new Date().getTime();
         // make the glossary effective in a days time for day
-        glossary.setEffectiveFromTime(new Date(now + 1000 * 60 * 60 * 24));
-        glossary.setEffectiveToTime(new Date(now + 2000 * 60 * 60 * 24));
+        glossary.setEffectiveFromTime(new Date(now + 1000 * 60 * 60 * 24).getTime());
+        glossary.setEffectiveToTime(new Date(now + 2000 * 60 * 60 * 24).getTime());
         Glossary newGlossary = issueCreateGlossary(glossary);
         FVTUtils.validateNode(newGlossary);
         System.out.println("Created Glossary " + newGlossary.getName() + " with userId " + newGlossary.getSystemAttributes().getGUID());
@@ -290,5 +293,13 @@ public class GlossaryFVT {
 
     public List<Line> getGlossaryRelationships(Glossary glossary) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         return subjectAreaGlossary.getAllRelationships(this.userId, glossary.getSystemAttributes().getGUID());
+    }
+
+    public List<Category> getGlossaryCategories(String glossaryGuid, FindRequest findRequest, boolean onlyTop) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+
+        return subjectAreaGlossaryClient.getCategories(userId, glossaryGuid, findRequest, onlyTop);
+    }
+    public List<Term> getGlossaryTerms(String glossaryGuid, FindRequest findRequest) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        return subjectAreaGlossaryClient.getTerms(userId, glossaryGuid, findRequest);
     }
 }

@@ -12,6 +12,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.gloss
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.CategorySummary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.GlossarySummary;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -101,7 +102,20 @@ public class CategoryFVT {
 
         FVTUtils.validateNode(category1);
         FVTUtils.validateNode(category2);
-
+        FindRequest findRequest = new FindRequest();
+        List<Category> results = glossaryFVT.getGlossaryCategories(glossaryGuid, findRequest, true);
+        if (results.size() != 2) {
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 2 back on getGlossaryCategories " + results.size());
+        }
+        results = glossaryFVT.getGlossaryCategories(glossaryGuid, findRequest, false);
+        if (results.size() != 2) {
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 2 back on getGlossaryCategories " + results.size());
+        }
+        findRequest.setPageSize(1);
+        results = glossaryFVT.getGlossaryCategories(glossaryGuid, findRequest, false);
+        if (results.size() != 1) {
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 1 back on getGlossaryCategories with page size 1" + results.size());
+        }
 
         Category categoryForUpdate = new Category();
         categoryForUpdate.setName(serverName + " " + DEFAULT_TEST_CATEGORY_NAME_UPDATED);
@@ -143,7 +157,7 @@ public class CategoryFVT {
         Category categoryForFind4 = createCategory("This is a Category with spaces in name", glossaryGuid);
         FVTUtils.validateNode(categoryForFind4);
 
-        List<Category> results = findCategories("zzz");
+        results = findCategories("zzz");
         if (results.size() != 1) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected 1 back on the find got " + results.size());
         }

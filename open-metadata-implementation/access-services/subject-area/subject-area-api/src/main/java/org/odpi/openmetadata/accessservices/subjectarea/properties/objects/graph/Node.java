@@ -46,8 +46,8 @@ public class Node implements Serializable, OmasObject {
     private String name =null;
     private String qualifiedName =null;
     private SystemAttributes systemAttributes=null;
-    private Date effectiveFromTime = null;
-    private Date effectiveToTime = null;
+    private Long effectiveFromTime = null;
+    private Long effectiveToTime = null;
     private String description =null;
     protected List<Classification> classifications = null;
     private Set<IconSummary> icons = null;
@@ -143,12 +143,12 @@ public class Node implements Serializable, OmasObject {
      * Return the date/time that this node should start to be used (null means it can be used from creationTime).
      * @return Date the node becomes effective.
      */
-    public Date getEffectiveFromTime()
+    public long getEffectiveFromTime()
     {
         return effectiveFromTime;
     }
 
-    public void setEffectiveFromTime(Date effectiveFromTime)
+    public void setEffectiveFromTime(Long effectiveFromTime)
     {
         this.effectiveFromTime = effectiveFromTime;
     }
@@ -157,12 +157,12 @@ public class Node implements Serializable, OmasObject {
      *
      * @return Date the node stops being effective.
      */
-    public Date getEffectiveToTime()
+    public Long getEffectiveToTime()
     {
         return effectiveToTime;
     }
 
-    public void setEffectiveToTime(Date effectiveToTime)
+    public void setEffectiveToTime(Long effectiveToTime)
     {
         this.effectiveToTime = effectiveToTime;
     }

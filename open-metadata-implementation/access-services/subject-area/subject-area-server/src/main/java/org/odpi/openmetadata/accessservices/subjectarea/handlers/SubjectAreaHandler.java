@@ -10,7 +10,6 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.categ
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineType;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Node;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.CategorySummary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.GlossarySummary;
@@ -25,6 +24,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.entities.
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.entities.GlossaryMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
+import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -56,6 +56,8 @@ public abstract class SubjectAreaHandler {
 
     protected final MappersFactory mappersFactory;
     protected final OMRSAPIHelper oMRSAPIHelper;
+    protected final int maxPageSize;
+    protected InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
 
     /**
      * Construct the Subject Area Project Handler
@@ -63,9 +65,15 @@ public abstract class SubjectAreaHandler {
      *
      * @param oMRSAPIHelper           omrs API helper
      */
-    public SubjectAreaHandler(OMRSAPIHelper oMRSAPIHelper) {
+    public SubjectAreaHandler(OMRSAPIHelper oMRSAPIHelper, int maxPageSize) {
         this.oMRSAPIHelper = oMRSAPIHelper;
         this.mappersFactory = new MappersFactory(oMRSAPIHelper);
+        this.maxPageSize = maxPageSize;
+        invalidParameterHandler.setMaxPagingSize(this.maxPageSize);
+    }
+
+    public int getMaxPageSize() {
+        return maxPageSize;
     }
 
     /**
@@ -133,23 +141,49 @@ public abstract class SubjectAreaHandler {
                                                    Class<? extends INodeMapper<T>> mapperClass,
                                                    String methodName) throws SubjectAreaCheckedException,
                                                                              PropertyServerException,
-                                                                             UserNotAuthorizedException
-    {
+                                                                             UserNotAuthorizedException, org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException {
         List<EntityDetail> entityDetails = null;
         List<T> foundEntities = null;
+
+        if (findRequest.getPageSize() == null) {
+            findRequest.setPageSize(invalidParameterHandler.getMaxPagingSize());
+        }
+        invalidParameterHandler.validatePaging(findRequest.getStartingFrom(), findRequest.getPageSize(), methodName);
         if (findRequest.getSearchCriteria() == null) {
             entityDetails = oMRSAPIHelper.getEntitiesByType(methodName, userId, typeEntityName, findRequest);
         } else {
             entityDetails = oMRSAPIHelper.findEntitiesByPropertyValue(methodName, userId, typeEntityName, findRequest);
         }
         if (entityDetails != null) {
-            INodeMapper<T> iNodeMapper = mappersFactory.get(mapperClass);
-            foundEntities = new ArrayList<>();
-            for (EntityDetail entityDetail : entityDetails) {
-                foundEntities.add(iNodeMapper.map(entityDetail));
-            }
+            foundEntities = convertOmrsToOmas(entityDetails, mapperClass);
         }
         return foundEntities;
+    }
+
+    public <T extends Node> SubjectAreaOMASAPIResponse<T> getRelatedNodes(String methodName,
+                                                                          String userId,
+                                                                          String guid,
+                                                                          String relationshipTypeName,
+                                                                          Class<? extends INodeMapper<T>> mapperClass,
+                                                                          Integer startingFrom,
+                                                                          Integer pageSize) {
+        SubjectAreaOMASAPIResponse<T> response = new SubjectAreaOMASAPIResponse<>();
+
+        try {
+
+            invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
+            final INodeMapper<T> mapper = mappersFactory.get(mapperClass);
+            final List<EntityDetail> entityDetails = oMRSAPIHelper.callGetEntitiesForRelationshipEnd1(
+                    methodName, userId, guid, mapper.getTypeName(), relationshipTypeName, startingFrom, pageSize);
+            if (entityDetails != null) {
+                for (EntityDetail entityDetail : entityDetails) {
+                    response.addResult(mapper.map(entityDetail));
+                }
+            }
+        } catch (UserNotAuthorizedException | SubjectAreaCheckedException | PropertyServerException | org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException e) {
+            response.setExceptionInfo(e, className);
+        }
+        return response;
     }
 
     /**
@@ -168,10 +202,12 @@ public abstract class SubjectAreaHandler {
     {
         SubjectAreaOMASAPIResponse<Line> response = new SubjectAreaOMASAPIResponse<>();
         try {
+            invalidParameterHandler.validatePaging(findRequest.getStartingFrom(), findRequest.getPageSize(), methodName);
             response.addAllResults(getAllLineForEntity(methodName, userId, guid, findRequest));
-        } catch (UserNotAuthorizedException | SubjectAreaCheckedException | PropertyServerException e) {
+        } catch (UserNotAuthorizedException | SubjectAreaCheckedException | PropertyServerException | org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException  e) {
             response.setExceptionInfo(e, className);
         }
+
         return response;
     }
 
@@ -193,7 +229,8 @@ public abstract class SubjectAreaHandler {
                                            String entityGuid,
                                            FindRequest findRequest) throws SubjectAreaCheckedException,
                                                                            PropertyServerException,
-                                                                           UserNotAuthorizedException {
+                                                                           UserNotAuthorizedException, org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException {
+        invalidParameterHandler.validatePaging(findRequest.getStartingFrom(), findRequest.getPageSize(), restAPIName);
         List<Relationship> relationships = oMRSAPIHelper.getAllRelationshipsForEntity(restAPIName, userId, entityGuid, findRequest);
         return getLinesFromRelationships(relationships);
     }

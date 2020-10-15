@@ -31,8 +31,8 @@ public class NodeSummary implements Serializable {
     private String qualifiedName = null;
     private Set<IconSummary> icons = null;
     private String guid = null;
-    private Date fromEffectivityTime = null;
-    private Date toEffectivityTime = null;
+    private Long fromEffectivityTime = null;
+    private Long toEffectivityTime = null;
     private String relationshipguid = null;
     private Date fromRelationshipEffectivityTime = null;
     private Date toRelationshipEffectivityTime = null;
@@ -120,7 +120,7 @@ public class NodeSummary implements Serializable {
      *
      * @return Date date effective from which this node is effective
      */
-    public Date getFromEffectivityTime() {
+    public Long getFromEffectivityTime() {
         return fromEffectivityTime;
     }
 
@@ -129,7 +129,7 @@ public class NodeSummary implements Serializable {
      *
      * @param fromEffectivityTime date from which this node is effective
      */
-    public void setFromEffectivityTime(Date fromEffectivityTime) {
+    public void setFromEffectivityTime(Long fromEffectivityTime) {
         this.fromEffectivityTime = fromEffectivityTime;
     }
 
@@ -139,7 +139,7 @@ public class NodeSummary implements Serializable {
      * @return Date to which this node is effective
      */
 
-    public Date getToEffectivityTime() {
+    public Long getToEffectivityTime() {
         return toEffectivityTime;
     }
 
@@ -148,7 +148,7 @@ public class NodeSummary implements Serializable {
      *
      * @param toEffectivityTime date to which this node is effective
      */
-    public void setToEffectivityTime(Date toEffectivityTime) {
+    public void setToEffectivityTime(Long toEffectivityTime) {
         this.toEffectivityTime = toEffectivityTime;
     }
 
@@ -223,10 +223,10 @@ public class NodeSummary implements Serializable {
             sb.append(", guid='").append(guid).append('\'');
         }
         if (fromEffectivityTime != null) {
-            sb.append(", fromEffectivityTime='").append(fromEffectivityTime.getTime()).append('\'');
+            sb.append(", fromEffectivityTime='").append(fromEffectivityTime).append('\'');
         }
         if (toEffectivityTime != null) {
-            sb.append(", toEffectivityTime='").append(toEffectivityTime.getTime()).append('\'');
+            sb.append(", toEffectivityTime='").append(toEffectivityTime).append('\'');
         }
 
         sb.append('}');

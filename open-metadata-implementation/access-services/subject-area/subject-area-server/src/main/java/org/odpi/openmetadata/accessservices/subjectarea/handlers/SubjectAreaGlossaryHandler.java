@@ -6,12 +6,16 @@ package org.odpi.openmetadata.accessservices.subjectarea.handlers;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.EntityNotDeletedException;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectAreaCheckedException;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.NodeType;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
+import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.entities.CategoryMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.entities.GlossaryMapper;
+import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.entities.TermMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
 import org.odpi.openmetadata.accessservices.subjectarea.validators.InputValidator;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
@@ -38,9 +42,10 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
      * needed to operate within a single server instance.
      *
      * @param oMRSAPIHelper omrs API helper
+     * @param maxPageSize   maximum page size
      */
-    public SubjectAreaGlossaryHandler(OMRSAPIHelper oMRSAPIHelper) {
-        super(oMRSAPIHelper);
+    public SubjectAreaGlossaryHandler(OMRSAPIHelper oMRSAPIHelper, int maxPageSize) {
+        super(oMRSAPIHelper, maxPageSize);
     }
 
     /**
@@ -65,11 +70,8 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
-     * <li> InvalidParameterException            one of the parameters is null or invalid.
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised.</li>
-     * <li>ClassificationException               Error processing a classification.</li>
-     * <li>StatusNotSupportedException           A status value is not supported.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     public SubjectAreaOMASAPIResponse<Glossary> createGlossary(String userId, Glossary suppliedGlossary) {
@@ -104,9 +106,8 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     public SubjectAreaOMASAPIResponse<Glossary> getGlossaryByGuid(String userId, String guid) {
@@ -131,12 +132,10 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
      * @param userId             unique identifier for requesting user, under which the request is performed
      * @param findRequest        {@link FindRequest}
      * @return A list of Glossaries meeting the search Criteria
-     *
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a find was issue but the repository does not implement find functionality in some way.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     public SubjectAreaOMASAPIResponse<Glossary> findGlossary(String userId, FindRequest findRequest) {
@@ -151,7 +150,7 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
             } else {
                 return response;
             }
-        } catch (SubjectAreaCheckedException | PropertyServerException | UserNotAuthorizedException e) {
+        } catch (SubjectAreaCheckedException | PropertyServerException | UserNotAuthorizedException | org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException e) {
             response.setExceptionInfo(e, className);
         }
         return response;
@@ -167,12 +166,11 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
      * <p>
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UserNotAuthorizedException the requesting user is not authorized to issue this request.</li>
-     * <li> InvalidParameterException one of the parameters is null or invalid.</li>
-     * <li> FunctionNotSupportedException   Function not supported.</li>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-
     public SubjectAreaOMASAPIResponse<Line> getGlossaryRelationships(String userId, String guid, FindRequest findRequest) {
         String methodName = "getGlossaryRelationships";
         return getAllRelationshipsForEntity(methodName, userId, guid, findRequest);
@@ -194,11 +192,9 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
      * @return a response which when successful contains the updated glossary
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     public SubjectAreaOMASAPIResponse<Glossary> updateGlossary(String userId, String guid, Glossary suppliedGlossary, boolean isReplace) {
@@ -215,8 +211,8 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
                 else
                     updateAttributes(currentGlossary, suppliedGlossary);
 
-                Date termFromTime = suppliedGlossary.getEffectiveFromTime();
-                Date termToTime = suppliedGlossary.getEffectiveToTime();
+                Long termFromTime = suppliedGlossary.getEffectiveFromTime();
+                Long termToTime = suppliedGlossary.getEffectiveToTime();
                 currentGlossary.setEffectiveFromTime(termFromTime);
                 currentGlossary.setEffectiveToTime(termToTime);
 
@@ -278,12 +274,9 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
      * @return a void response
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.
-     * There is a problem retrieving properties from the metadata repository.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * <li> EntityNotDeletedException            a soft delete was issued but the glossary was not deleted.</li>
      * <li> EntityNotPurgedException             a hard delete was issued but the glossary was not purged</li>
      * </ul>
@@ -322,11 +315,9 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
      * @return response which when successful contains the restored glossary
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     public SubjectAreaOMASAPIResponse<Glossary> restoreGlossary(String userId, String guid) {
@@ -337,6 +328,66 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
             response = getGlossaryByGuid(userId, guid);
         } catch (UserNotAuthorizedException | SubjectAreaCheckedException | PropertyServerException e) {
             response.setExceptionInfo(e, className);
+        }
+        return response;
+    }
+
+    /**
+     * Get terms that are owned by this glossary.  The server has a maximum page size defined, the number of terms returned is limited by that maximum page size.
+     *
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the category to get terms
+     * @return A list of terms owned by the glossary
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
+     * </ul>
+     * */
+    public SubjectAreaOMASAPIResponse<Term> getTerms(String userId, String guid, int startingFrom, int maxPageSize) {
+        final String methodName = "getTerms";
+        return getRelatedNodes(methodName, userId, guid, TERM_ANCHOR_RELATIONSHIP_NAME, TermMapper.class, 0, maxPageSize);
+    }
+
+    /**
+     * Get the Categories owned by this glossary.  The server has a maximum page size defined, the number of categories returned is limited by that maximum page size.
+     *
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the category to get terms
+     * @param onlyTop      when only the top categories (those categories without parents) are returned.
+     * @return A list of categories owned by the glossary
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
+     * </ul>
+     * */
+    public SubjectAreaOMASAPIResponse<Category> getCategories(String userId, String guid, Boolean onlyTop, Integer startingFrom, Integer maxPageSize) {
+        final String methodName = "getCategories";
+
+        SubjectAreaOMASAPIResponse<Category>  response = getRelatedNodes(methodName, userId, guid, CATEGORY_ANCHOR_RELATIONSHIP_NAME, CategoryMapper.class, startingFrom, maxPageSize);
+        // if we got the categories successfully and we have some and only top categories then filter out the top categories from the bigger list of categories
+        int offset = 0;
+        boolean keepGettingCategories = true;
+        while (keepGettingCategories || response.getRelatedHTTPCode() == 200) {
+            List<Category> allCategories = response.results();
+            if (onlyTop && allCategories != null && allCategories.size() > 0) {
+                response = new SubjectAreaOMASAPIResponse<>();
+                for (Category category : allCategories) {
+                    if (category.getParentCategory() == null) {
+                        response.addResult(category);
+                    }
+                }
+            }
+            if (onlyTop && response.results() == null ||  response.results().size() == 0) {
+                keepGettingCategories = false;
+            } else if (onlyTop && allCategories.size() > 0 && response.results() != null &&  response.results().size() < maxPageSize) {
+                // in this case we have found top categories but we got a page full of categories back to there may be more top categories we need to find to fill up the requested page
+                offset = offset+maxPageSize;
+                response = getRelatedNodes(methodName, userId, guid, CATEGORY_ANCHOR_RELATIONSHIP_NAME, CategoryMapper.class, offset, maxPageSize);
+            }
         }
         return response;
     }

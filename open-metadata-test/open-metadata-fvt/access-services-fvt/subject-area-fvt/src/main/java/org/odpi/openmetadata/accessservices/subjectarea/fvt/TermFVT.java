@@ -27,8 +27,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 
 import java.io.IOException;
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * FVT resource to call subject area term client API
@@ -106,6 +104,18 @@ public class TermFVT {
         Term term2 = createTerm(DEFAULT_TEST_TERM_NAME, glossaryGuid);
         FVTUtils.validateNode(term2);
         System.out.println("Create a term2 using glossary userId");
+
+        FindRequest findRequest = new FindRequest();
+        List<Term> results = glossaryFVT.getGlossaryTerms(glossaryGuid, findRequest);
+        if (results.size() != 2) {
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 2 back on getGlossaryTerms " + results.size());
+        }
+        findRequest.setPageSize(1);
+        results = glossaryFVT.getGlossaryTerms(glossaryGuid, findRequest);
+        if (results.size() != 1) {
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 1 back on getGlossaryTerms with page size 1" + results.size());
+        }
+
         Term termForUpdate = new Term();
         termForUpdate.setName(DEFAULT_TEST_TERM_NAME_UPDATED);
         System.out.println("Get term1");
@@ -184,7 +194,7 @@ public class TermFVT {
         Term termForFind4 = createTerm("This is a Term with spaces in name",glossaryGuid);
         FVTUtils.validateNode(termForFind4);
 
-        List<Term>  results = findTerms("zzz");
+        results = findTerms("zzz");
         if (results.size() !=zzzcount+1 ) {
             throw new SubjectAreaFVTCheckedException("ERROR: zzz Expected " + zzzcount+1+ " back on the find got " +results.size());
         }
@@ -216,28 +226,28 @@ public class TermFVT {
         }
         Term term = results.get(0);
         long now = new Date().getTime();
-        Date fromTermTime = new Date(now+6*1000*60*60*24);
-        Date toTermTime = new Date(now+7*1000*60*60*24);
+        Long fromTermTime = new Date(now+6*1000*60*60*24).getTime();
+        Long toTermTime = new Date(now+7*1000*60*60*24).getTime();
 
         term.setEffectiveFromTime(fromTermTime);
         term.setEffectiveToTime(toTermTime);
         Term updatedFutureTerm = updateTerm(term.getSystemAttributes().getGUID(),term);
-        if (updatedFutureTerm.getEffectiveFromTime().getTime()!=fromTermTime.getTime()) {
+        if (updatedFutureTerm.getEffectiveFromTime()!=fromTermTime) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected term from time to update");
         }
-        if (updatedFutureTerm.getEffectiveToTime().getTime()!=toTermTime.getTime()) {
+        if (updatedFutureTerm.getEffectiveToTime() !=toTermTime) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected term to time to update");
         }
-        Date fromGlossaryTime = new Date(now+8*1000*60*60*24);
-        Date toGlossaryTime = new Date(now+9*1000*60*60*24);
+        Long fromGlossaryTime = new Date(now+8*1000*60*60*24).getTime();
+        Long toGlossaryTime = new Date(now+9*1000*60*60*24).getTime();
         glossary.setEffectiveFromTime(fromGlossaryTime);
         glossary.setEffectiveToTime(toGlossaryTime);
         Glossary updatedFutureGlossary= glossaryFVT.updateGlossary(glossaryGuid,glossary);
 
-        if (updatedFutureGlossary.getEffectiveFromTime().getTime()!=fromGlossaryTime.getTime()) {
+        if (updatedFutureGlossary.getEffectiveFromTime()!= fromGlossaryTime) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected glossary from time to update");
         }
-        if (updatedFutureGlossary.getEffectiveToTime().getTime()!=toGlossaryTime.getTime()) {
+        if (updatedFutureGlossary.getEffectiveToTime()!= toGlossaryTime) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected glossary to time to update");
         }
 
@@ -245,20 +255,20 @@ public class TermFVT {
 
         GlossarySummary glossarySummary =  newTerm.getGlossary();
 
-        if (glossarySummary.getFromEffectivityTime().getTime()!=fromGlossaryTime.getTime()) {
+        if (glossarySummary.getFromEffectivityTime()!= fromGlossaryTime) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected glossary summary from time to update");
         }
-        if (glossarySummary.getToEffectivityTime().getTime()!=toGlossaryTime.getTime()) {
+        if (glossarySummary.getToEffectivityTime()!= toGlossaryTime) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected glossary summary to time to update");
         }
 
-        if (glossarySummary.getRelationshipguid() ==null) {
+        if (glossarySummary.getRelationshipguid() == null) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected glossary summary non null relationship");
         }
-        if (glossarySummary.getFromRelationshipEffectivityTime() !=null) {
+        if (glossarySummary.getFromRelationshipEffectivityTime() != null) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected glossary summary null relationship from time");
         }
-        if (glossarySummary.getToRelationshipEffectivityTime() !=null) {
+        if (glossarySummary.getToRelationshipEffectivityTime() != null) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected glossary summary null relationship to time");
         }
         Term term5 = new Term();
@@ -493,8 +503,8 @@ public class TermFVT {
     public Term updateTermToFuture(String guid, Term term) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         long now = new Date().getTime();
 
-       term.setEffectiveFromTime(new Date(now+6*1000*60*60*24));
-       term.setEffectiveToTime(new Date(now+7*1000*60*60*24));
+       term.setEffectiveFromTime(new Date(now+6*1000*60*60*24).getTime());
+       term.setEffectiveToTime(new Date(now+7*1000*60*60*24).getTime());
 
         Term updatedTerm = subjectAreaTerm.update(this.userId, guid, term);
         if (updatedTerm != null)
@@ -529,7 +539,7 @@ public class TermFVT {
     public List<Line> getTermRelationships(Term term, Date asOfTime, int offset, int pageSize, SequencingOrder sequenceOrder, String sequenceProperty) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         FindRequest findRequest = new FindRequest();
         findRequest.setAsOfTime(asOfTime);
-        findRequest.setOffset(offset);
+        findRequest.setStartingFrom(offset);
         findRequest.setPageSize(pageSize);
         findRequest.setSequencingOrder(sequenceOrder);
         findRequest.setSequencingProperty(sequenceProperty);

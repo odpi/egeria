@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.handlers;
 import org.apache.commons.collections4.CollectionUtils;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectAreaCheckedException;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.GovernanceActions;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
@@ -49,10 +50,10 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
      * needed to operate within a single server instance.
      *
      * @param oMRSAPIHelper           omrs API helper
+     * @param maxPageSize             maximum page size
      */
-    public SubjectAreaTermHandler(OMRSAPIHelper oMRSAPIHelper) {
-
-        super(oMRSAPIHelper);
+    public SubjectAreaTermHandler(OMRSAPIHelper oMRSAPIHelper, int maxPageSize) {
+        super(oMRSAPIHelper, maxPageSize);
         termAnchorMapper = mappersFactory.get(TermAnchorMapper.class);
         termCategorizationMapper = mappersFactory.get(TermCategorizationMapper.class);
         categoryMapper = mappersFactory.get(CategoryMapper.class);
@@ -366,8 +367,8 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
                 else
                     updateAttributes(currentTerm, suppliedTerm);
 
-                Date termFromTime = suppliedTerm.getEffectiveFromTime();
-                Date termToTime = suppliedTerm.getEffectiveToTime();
+                Long termFromTime = suppliedTerm.getEffectiveFromTime();
+                Long termToTime = suppliedTerm.getEffectiveToTime();
                 currentTerm.setEffectiveFromTime(termFromTime);
                 currentTerm.setEffectiveToTime(termToTime);
                 // always update the governance actions for a replace or an update
@@ -590,5 +591,24 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
             response.setExceptionInfo(e, className);
         }
         return response;
+    }
+    /**
+     * Get the Categories categorizing this Term. The server has a maximum page size defined, the number of Categories returned is limited by that maximum page size.
+     *
+     * @param userId       unique identifier for requesting user, under which the request is performed
+     * @param guid         guid of the category to get terms
+     * @param startingFrom the starting element number for this set of results.  This is used when retrieving elements
+     * @param pageSize     the maximum number of elements that can be returned on this request.
+     * @return A list of categories categorizing this Term
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
+     * </ul>
+     */
+    public SubjectAreaOMASAPIResponse<Category> getTermCategories(String userId, String guid, Integer startingFrom, Integer pageSize) {
+        final String methodName = "getTermCategories";
+        return getRelatedNodes(methodName, userId, guid, TERM_CATEGORIZATION_RELATIONSHIP_NAME, CategoryMapper.class, startingFrom, maxPageSize);
     }
 }
