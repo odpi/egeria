@@ -5,4 +5,4 @@
  * This package tests that each of the clients support the five constructors and
  * they execute without error.
  */
-package org.odpi.openmetadata.accessservices.datamanager.fvt.clientconstructors;
+package org.odpi.openmetadata.accessservices.assetconsumer.fvt.clientconstructors;

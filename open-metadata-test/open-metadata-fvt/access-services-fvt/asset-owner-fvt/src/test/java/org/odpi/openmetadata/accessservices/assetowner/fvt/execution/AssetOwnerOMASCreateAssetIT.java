@@ -1,25 +1,25 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
-package org.odpi.openmetadata.accessservices.datamanager.fvt.execution;
+package org.odpi.openmetadata.accessservices.assetowner.fvt.execution;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.odpi.openmetadata.accessservices.assetowner.fvt.assets.CreateAssetTest;
 import org.odpi.openmetadata.fvt.utilities.FVTConstants;
-import org.odpi.openmetadata.accessservices.datamanager.fvt.errorhandling.InvalidParameterTest;
 import org.odpi.openmetadata.fvt.utilities.FVTResults;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * DataManagerOMASCreateDatabaseIT is the failsafe wrapper for CreateDatabaseTest.
+ * AssetOwnerOMASCreateAssetIT is the failsafe wrapper for CreateAssetTest.
  */
-public class DataManagerOMASCreateDatabaseIT
+public class AssetOwnerOMASCreateAssetIT
 {
     @ParameterizedTest
     @ValueSource(strings = {FVTConstants.IN_MEMORY_SERVER, FVTConstants.GRAPH_SERVER})
-    public void testInvalidParameters(String serverName)
+    public void testCreateAsset(String serverName)
     {
-        FVTResults results = InvalidParameterTest.performFVT(serverName, FVTConstants.SERVER_PLATFORM_URL_ROOT, FVTConstants.USERID);
+        FVTResults results = CreateAssetTest.performFVT(serverName, FVTConstants.SERVER_PLATFORM_URL_ROOT, FVTConstants.USERID);
 
         results.printResults();
         assertTrue(results.isSuccessful());

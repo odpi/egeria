@@ -5,4 +5,4 @@
  * This package contains the classes that drive the execution of the FVT tests
  * within the failsafe test framework.
  */
-package org.odpi.openmetadata.accessservices.datamanager.fvt.execution;
+package org.odpi.openmetadata.accessservices.assetowner.fvt.execution;

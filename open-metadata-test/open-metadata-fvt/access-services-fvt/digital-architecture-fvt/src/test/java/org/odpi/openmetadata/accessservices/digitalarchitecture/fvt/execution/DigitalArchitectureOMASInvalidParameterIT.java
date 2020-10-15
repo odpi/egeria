@@ -1,20 +1,21 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
-package org.odpi.openmetadata.accessservices.datamanager.fvt.execution;
+package org.odpi.openmetadata.accessservices.digitalarchitecture.fvt.execution;
+
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.odpi.openmetadata.accessservices.digitalarchitecture.fvt.errorhandling.InvalidParameterTest;
 import org.odpi.openmetadata.fvt.utilities.FVTConstants;
-import org.odpi.openmetadata.accessservices.datamanager.fvt.errorhandling.InvalidParameterTest;
 import org.odpi.openmetadata.fvt.utilities.FVTResults;
 import org.odpi.openmetadata.fvt.utilities.exceptions.FVTTestFailureException;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 /**
- * DataManagerOMASInvalidParameterIT is the failsafe wrapper for InvalidParameterTest.
+ * DigitalArchitectureOMASInvalidParameterIT is the failsafe wrapper for InvalidParameterTest.
  */
-public class DataManagerOMASInvalidParameterIT
+public class DigitalArchitectureOMASInvalidParameterIT
 {
     @ParameterizedTest
     @ValueSource(strings = {"serverinmem","servergraph"})

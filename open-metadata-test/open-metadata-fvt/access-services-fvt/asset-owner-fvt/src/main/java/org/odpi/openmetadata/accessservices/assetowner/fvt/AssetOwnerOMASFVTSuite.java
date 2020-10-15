@@ -1,27 +1,18 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.datamanager.fvt;
+package org.odpi.openmetadata.accessservices.assetowner.fvt;
 
-import org.odpi.openmetadata.accessservices.datamanager.fvt.clientconstructors.ClientConstructorTest;
-import org.odpi.openmetadata.accessservices.datamanager.fvt.databases.CreateDatabaseTest;
-import org.odpi.openmetadata.accessservices.datamanager.fvt.errorhandling.InvalidParameterTest;
-import org.odpi.openmetadata.fvt.utilities.FVTConstants;
+import org.odpi.openmetadata.accessservices.assetowner.fvt.assets.CreateAssetTest;
+import org.odpi.openmetadata.accessservices.assetowner.fvt.clientconstructors.ClientConstructorTest;
+import org.odpi.openmetadata.accessservices.assetowner.fvt.errorhandling.InvalidParameterTest;
 import org.odpi.openmetadata.fvt.utilities.FVTResults;
 import org.odpi.openmetadata.fvt.utilities.FVTSuiteBase;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-
-
-import static java.lang.System.exit;
-
 /**
- * DataManagerOMASFVTSuite provides the main program for the Data Manager OMAS
- * Functional Verification Tests (FVTs).  It is used when running the test suite standalone
- * (ie outside of the failsafe test framework).
+ * AssetOwnerOMASFVT provides the main program for the Asset Owner OMAS
+ * Functional Verification Tests (FVTs).
  */
-public class DataManagerOMASFVTSuite extends FVTSuiteBase
+public class AssetOwnerOMASFVTSuite extends FVTSuiteBase
 {
     /**
      * Run all of the defined tests and capture the results.
@@ -53,7 +44,7 @@ public class DataManagerOMASFVTSuite extends FVTSuiteBase
         }
         results.printResults();
 
-        results = CreateDatabaseTest.performFVT(serverName, serverPlatformRootURL, userId);
+        results = CreateAssetTest.performFVT(serverName, serverPlatformRootURL, userId);
         if (! results.isSuccessful())
         {
             returnCode --;

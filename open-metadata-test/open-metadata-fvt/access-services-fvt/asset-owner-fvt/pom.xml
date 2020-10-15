@@ -20,10 +20,10 @@
         <url>http://github.com/odpi/egeria/tree/master</url>
     </scm>
 
-    <artifactId>asset-consumer-fvt</artifactId>
-    <name>Asset Consumer OMAS FVT</name>
+    <artifactId>asset-owner-fvt</artifactId>
+    <name>Asset Owner OMAS FVT</name>
     <description>
-        Asset Consumer Open Metadata Access Service (OMAS) FVT Suite.
+        Asset Owner Open Metadata Access Service (OMAS) FVT Suite.
     </description>
 
     <!-- TODO: Properties used for FVT tests. Note tests currently hardcoded, whilst exec plugin is not. Needs consolidation -->
@@ -37,16 +37,6 @@
     </properties>
 
     <dependencies>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>asset-consumer-api</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>asset-consumer-client</artifactId>
-        </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>

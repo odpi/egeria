@@ -4,14 +4,14 @@
 package org.odpi.openmetadata.accessservices.datamanager.fvt.execution;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.odpi.openmetadata.accessservices.datamanager.fvt.FVTConstants;
+import org.odpi.openmetadata.fvt.utilities.FVTConstants;
 import org.odpi.openmetadata.accessservices.datamanager.fvt.clientconstructors.ClientConstructorTest;
 import org.odpi.openmetadata.fvt.utilities.FVTResults;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * DataManagerOMASClientConstructorIT is the surefire wrapper for ClientConstructorTest.
+ * DataManagerOMASClientConstructorIT is the failsafe wrapper for ClientConstructorTest.
  */
 public class DataManagerOMASClientConstructorIT
 {
