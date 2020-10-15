@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.datamanager.fvt;
+package org.odpi.openmetadata.fvt.utilities;
 
 /**
  * Constants that provide defaults to the FVT Suite.

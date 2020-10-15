@@ -23,7 +23,7 @@ public class FVTUnexpectedCondition extends Exception
      */
     public FVTUnexpectedCondition(String testCaseName, String activityDescription, Throwable caughtException)
     {
-        super(caughtException);
+        super(activityDescription, caughtException);
 
         this.testCaseName        = testCaseName;
         this.activityDescription = activityDescription;
@@ -39,7 +39,7 @@ public class FVTUnexpectedCondition extends Exception
      */
     public FVTUnexpectedCondition(String testCaseName, String activityDescription)
     {
-        super();
+        super(activityDescription);
 
         this.testCaseName        = testCaseName;
         this.activityDescription = activityDescription;

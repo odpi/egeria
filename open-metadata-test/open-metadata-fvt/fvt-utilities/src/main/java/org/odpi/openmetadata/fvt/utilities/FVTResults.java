@@ -139,6 +139,8 @@ public class FVTResults
             for (Exception exception : capturedErrors)
             {
                 System.out.println(" ==> " + exception.getClass().getName() + " with message " + exception.getMessage());
+                System.out.println(exception.toString());
+                exception.printStackTrace();
             }
         }
 
