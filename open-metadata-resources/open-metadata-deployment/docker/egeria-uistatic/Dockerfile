@@ -33,7 +33,6 @@ RUN apk update && apk upgrade && \
 WORKDIR /app
 RUN git clone https://github.com/odpi/egeria-ui
 WORKDIR egeria-ui
-#RUN npm install polymer-cli
 RUN npm install
 RUN npm run build
 
@@ -41,6 +40,6 @@ RUN npm run build
 FROM nginx:latest
 
 COPY dist/nginx.conf /etc/nginx/conf.d/default.conf
-COPY --from=build /app/egeria-ui/build/dev/ /var/www
+COPY --from=build /app/egeria-ui/build/prod/ /var/www
 CMD ["nginx", "-g", "daemon off;"]
 
