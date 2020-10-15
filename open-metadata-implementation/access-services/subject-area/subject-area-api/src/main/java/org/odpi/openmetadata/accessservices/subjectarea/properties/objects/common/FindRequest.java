@@ -24,7 +24,7 @@ public class FindRequest
     private String               searchCriteria       = null;
     private String               sequencingProperty   = null;
     private SequencingOrder      sequencingOrder      = null;
-    private Integer              startingFrom         = null;
+    private int                  startingFrom         = 0;
     private Integer              pageSize             = null;
     private Date                 asOfTime;
     /**

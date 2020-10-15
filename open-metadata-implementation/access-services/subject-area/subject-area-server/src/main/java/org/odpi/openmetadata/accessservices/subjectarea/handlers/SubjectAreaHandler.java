@@ -170,7 +170,9 @@ public abstract class SubjectAreaHandler {
         SubjectAreaOMASAPIResponse<T> response = new SubjectAreaOMASAPIResponse<>();
 
         try {
-
+            if (pageSize == null) {
+               pageSize = maxPageSize;
+            }
             invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
             final INodeMapper<T> mapper = mappersFactory.get(mapperClass);
             final List<EntityDetail> entityDetails = oMRSAPIHelper.callGetEntitiesForRelationshipEnd1(
@@ -202,6 +204,9 @@ public abstract class SubjectAreaHandler {
     {
         SubjectAreaOMASAPIResponse<Line> response = new SubjectAreaOMASAPIResponse<>();
         try {
+            if (findRequest.getPageSize() == null) {
+                findRequest.setPageSize(invalidParameterHandler.getMaxPagingSize());
+            }
             invalidParameterHandler.validatePaging(findRequest.getStartingFrom(), findRequest.getPageSize(), methodName);
             response.addAllResults(getAllLineForEntity(methodName, userId, guid, findRequest));
         } catch (UserNotAuthorizedException | SubjectAreaCheckedException | PropertyServerException | org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException  e) {
@@ -230,6 +235,9 @@ public abstract class SubjectAreaHandler {
                                            FindRequest findRequest) throws SubjectAreaCheckedException,
                                                                            PropertyServerException,
                                                                            UserNotAuthorizedException, org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException {
+        if (findRequest.getPageSize() == null) {
+            findRequest.setPageSize(invalidParameterHandler.getMaxPagingSize());
+        }
         invalidParameterHandler.validatePaging(findRequest.getStartingFrom(), findRequest.getPageSize(), restAPIName);
         List<Relationship> relationships = oMRSAPIHelper.getAllRelationshipsForEntity(restAPIName, userId, entityGuid, findRequest);
         return getLinesFromRelationships(relationships);

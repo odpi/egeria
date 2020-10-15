@@ -42,15 +42,15 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         @JsonSubTypes.Type(value = Project.class)
 })
 public class Node implements Serializable, OmasObject {
-    protected NodeType nodeType = NodeType.Unknown;
+    protected NodeType nodeType =NodeType.Unknown;
     private String name =null;
     private String qualifiedName =null;
     private SystemAttributes systemAttributes=null;
-    private Long effectiveFromTime = null;
-    private Long effectiveToTime = null;
+    private Long effectiveFromTime =null;
+    private Long effectiveToTime =null;
     private String description =null;
-    protected List<Classification> classifications = null;
-    private Set<IconSummary> icons = null;
+    protected List<Classification> classifications =null;
+    private Set<IconSummary> icons =null;
     private Map<String,String> additionalProperties;
 
     /**
@@ -143,7 +143,7 @@ public class Node implements Serializable, OmasObject {
      * Return the date/time that this node should start to be used (null means it can be used from creationTime).
      * @return Date the node becomes effective.
      */
-    public long getEffectiveFromTime()
+    public Long getEffectiveFromTime()
     {
         return effectiveFromTime;
     }

@@ -231,23 +231,23 @@ public class TermFVT {
 
         term.setEffectiveFromTime(fromTermTime);
         term.setEffectiveToTime(toTermTime);
-        Term updatedFutureTerm = updateTerm(term.getSystemAttributes().getGUID(),term);
-        if (updatedFutureTerm.getEffectiveFromTime()!=fromTermTime) {
+        Term updatedFutureTerm = updateTerm(term.getSystemAttributes().getGUID(), term);
+        if (updatedFutureTerm.getEffectiveFromTime().longValue()!=fromTermTime.longValue()) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected term from time to update");
         }
-        if (updatedFutureTerm.getEffectiveToTime() !=toTermTime) {
+        if (updatedFutureTerm.getEffectiveToTime().longValue() !=toTermTime.longValue()) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected term to time to update");
         }
         Long fromGlossaryTime = new Date(now+8*1000*60*60*24).getTime();
         Long toGlossaryTime = new Date(now+9*1000*60*60*24).getTime();
         glossary.setEffectiveFromTime(fromGlossaryTime);
         glossary.setEffectiveToTime(toGlossaryTime);
-        Glossary updatedFutureGlossary= glossaryFVT.updateGlossary(glossaryGuid,glossary);
+        Glossary updatedFutureGlossary= glossaryFVT.updateGlossary(glossaryGuid, glossary);
 
-        if (updatedFutureGlossary.getEffectiveFromTime()!= fromGlossaryTime) {
+        if (updatedFutureGlossary.getEffectiveFromTime().longValue()!= fromGlossaryTime.longValue()) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected glossary from time to update");
         }
-        if (updatedFutureGlossary.getEffectiveToTime()!= toGlossaryTime) {
+        if (updatedFutureGlossary.getEffectiveToTime().longValue()!= toGlossaryTime.longValue()) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected glossary to time to update");
         }
 
@@ -255,10 +255,10 @@ public class TermFVT {
 
         GlossarySummary glossarySummary =  newTerm.getGlossary();
 
-        if (glossarySummary.getFromEffectivityTime()!= fromGlossaryTime) {
+        if (glossarySummary.getFromEffectivityTime().longValue()!= fromGlossaryTime.longValue()) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected glossary summary from time to update");
         }
-        if (glossarySummary.getToEffectivityTime()!= toGlossaryTime) {
+        if (glossarySummary.getToEffectivityTime().longValue()!= toGlossaryTime.longValue()) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected glossary summary to time to update");
         }
 

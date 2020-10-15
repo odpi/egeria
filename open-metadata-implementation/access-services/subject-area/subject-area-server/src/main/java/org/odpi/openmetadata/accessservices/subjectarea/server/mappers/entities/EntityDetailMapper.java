@@ -178,8 +178,19 @@ abstract public class EntityDetailMapper<N extends Node> implements INodeMapper<
      * @param instanceProperties instance properties to update
      */
     private void mapNodeEffectivityToInstanceProperties(N node, InstanceProperties instanceProperties) {
-        instanceProperties.setEffectiveFromTime(new Date(node.getEffectiveFromTime()));
-        instanceProperties.setEffectiveToTime(new Date(node.getEffectiveToTime()));
+
+        Long effectiveFromTime = node.getEffectiveFromTime();
+        Long effectiveToTime =node.getEffectiveToTime();
+        if (effectiveFromTime == null ) {
+            instanceProperties.setEffectiveFromTime(new Date());
+        } else {
+            instanceProperties.setEffectiveFromTime(new Date(effectiveFromTime));
+        }
+        if (effectiveToTime == null) {
+            instanceProperties.setEffectiveToTime(new Date());
+        } else {
+            instanceProperties.setEffectiveToTime(new Date(effectiveToTime));
+        }
     }
     private void mapOmrsClassificationsToNode(EntityDetail omrsEntityDetail, N node) {
         List<Classification> omrsclassifications = omrsEntityDetail.getClassifications();
