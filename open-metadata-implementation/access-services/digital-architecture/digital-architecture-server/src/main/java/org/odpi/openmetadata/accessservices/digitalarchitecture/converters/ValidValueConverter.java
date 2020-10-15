@@ -137,6 +137,7 @@ public class ValidValueConverter<B> extends DigitalArchitectureOMASConverter<B>
             validValueProperties.setUsage(this.removeUsage(instanceProperties));
             validValueProperties.setScope(this.removeScope(instanceProperties));
             validValueProperties.setPreferredValue(this.removePreferredValue(instanceProperties));
+            validValueProperties.setIsDeprecated(this.removeIsDeprecated(instanceProperties));
 
             /*
              * Any remaining properties are returned in the extended properties.  They are

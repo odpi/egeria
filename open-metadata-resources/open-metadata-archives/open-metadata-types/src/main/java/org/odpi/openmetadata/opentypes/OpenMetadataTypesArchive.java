@@ -147,6 +147,7 @@ public class OpenMetadataTypesArchive
         update0215SoftwareComponents();
         update04xxGovernanceEnums();
         update05xxSchemaAttributes();
+        update0545ReferenceData();
         update06xxDiscovery();
     }
 
@@ -2438,6 +2439,47 @@ public class OpenMetadataTypesArchive
     /*
      * -------------------------------------------------------------------------------------------------------
      */
+
+    /**
+     * 0545 - Add the isDeprecated boolean attribute to ValidValueDefinition.
+     */
+    private void update0545ReferenceData()
+    {
+        this.archiveBuilder.addTypeDefPatch(addIsDeprecated());
+
+    }
+
+    private TypeDefPatch addIsDeprecated()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "ValidValueDefinition";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name = "isDeprecated";
+        final String attribute1Description = "Indicates that this value is deprecated and all uses should be discontinued as soon as possible.";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getBooleanTypeDefAttribute(attribute1Name,
+                                                            attribute1Description,
+                                                            attribute1DescriptionGUID);
+        properties.add(property);
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
 
 
     /*

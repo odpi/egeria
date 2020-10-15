@@ -308,6 +308,7 @@ public class ValidValuesManager extends DigitalArchitectureClientBase implements
         requestBody.setUsage(usage);
         requestBody.setScope(scope);
         requestBody.setPreferredValue(preferredValue);
+        requestBody.setIsDeprecated(isDeprecated);
         requestBody.setAdditionalProperties(additionalProperties);
         requestBody.setExtendedProperties(extendedProperties);
 
