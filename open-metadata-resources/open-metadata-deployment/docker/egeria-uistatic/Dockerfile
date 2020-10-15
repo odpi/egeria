@@ -33,7 +33,7 @@ RUN apk update && apk upgrade && \
 WORKDIR /app
 RUN git clone https://github.com/odpi/egeria-ui
 WORKDIR egeria-ui
-RUN npm install polymer-cli
+#RUN npm install polymer-cli
 RUN npm install
 RUN npm run build
 
