@@ -53,7 +53,7 @@ public class OMAGServerAdminForIntegrationServices
      *
      * @return list of integration service descriptions
      */
-    public RegisteredOMAGServicesResponse getConfiguredIntegrationServices(String userId,
+    public RegisteredOMAGServicesResponse getRegisteredIntegrationServices(String userId,
                                                                            String serverName)
     {
         final String methodName = "getConfiguredIntegrationServices";

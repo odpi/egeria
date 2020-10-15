@@ -42,10 +42,10 @@ public class ConfigIntegrationServicesResource
      */
     @GetMapping("/integration-services")
 
-    public RegisteredOMAGServicesResponse getConfiguredIntegrationServices(@PathVariable String userId,
+    public RegisteredOMAGServicesResponse getRegisteredIntegrationServices(@PathVariable String userId,
                                                                            @PathVariable String serverName)
     {
-        return adminAPI.getConfiguredIntegrationServices(userId, serverName);
+        return adminAPI.getRegisteredIntegrationServices(userId, serverName);
     }
 
 

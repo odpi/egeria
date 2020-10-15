@@ -15,15 +15,15 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * IntegrationConnectorConfig provides the configuration properties used to create and manage a
- * connector that exchanges metadata with a third party technology.
+ * IntegrationConnectorConfig provides the configuration properties used to create and manage an
+ * integration connector that exchanges metadata with a third party technology.
  *
- * The connectors can:
+ * The integration connectors can:
  * <ul>
  *     <li>Listen on a blocking call for the third party technology to send a notification.</li>
- *     <li>Register with a notification service that sends notifications on its own thread.</li>
+ *     <li>Register with an external notification service that sends notifications on its own thread.</li>
  *     <li>Register a listener with the OMAS client to act on notifications from the OMAS's Out Topic.</li>
- *     <li>Poll the third party technology each time that the refresh() method is called</li>
+ *     <li>Poll the third party technology each time that the refresh() method is called.</li>
  * </ul>
  *
  * The configuration properties defines the connector to create and how it should be operated.
@@ -37,6 +37,7 @@ public class IntegrationConnectorConfig extends AdminServicesConfigHeader
 
     private String     connectorId                 = UUID.randomUUID().toString();
     private String     connectorName               = null;
+    private String     connectorUserId             = null;
     private Connection connection                  = null;
     private String     metadataSourceQualifiedName = null;
     private long       refreshTimeInterval         = 0L;
@@ -64,6 +65,7 @@ public class IntegrationConnectorConfig extends AdminServicesConfigHeader
         {
             connectorId                 = template.getConnectorId();
             connectorName               = template.getConnectorName();
+            connectorUserId             = template.getConnectorUserId();
             connection                  = template.getConnection();
             metadataSourceQualifiedName = template.getMetadataSourceQualifiedName();
             refreshTimeInterval         = template.getRefreshTimeInterval();
@@ -119,6 +121,30 @@ public class IntegrationConnectorConfig extends AdminServicesConfigHeader
 
 
     /**
+     * Return the user id for the connector - if this is null, the integration daemon's userId is used
+     * on requests to the Open Metadata Access Service (OMAS).
+     *
+     * @return string name
+     */
+    public String getConnectorUserId()
+    {
+        return connectorUserId;
+    }
+
+
+    /**
+     * Set up the user id for the connector - if this is null, the integration daemon's userId is used
+     * on requests to the Open Metadata Access Service (OMAS).
+     *
+     * @param connectorUserId string name
+     */
+    public void setConnectorUserId(String connectorUserId)
+    {
+        this.connectorUserId = connectorUserId;
+    }
+
+
+    /**
      * Set up the connection for the integration connector.
      *
      * @return Connection object
@@ -138,7 +164,6 @@ public class IntegrationConnectorConfig extends AdminServicesConfigHeader
     {
         this.connection = connection;
     }
-
 
 
     /**
@@ -226,6 +251,7 @@ public class IntegrationConnectorConfig extends AdminServicesConfigHeader
         return "IntegrationConnectorConfig{" +
                 "connectorId='" + connectorId + '\'' +
                 ", connectorName='" + connectorName + '\'' +
+                ", connectorUserId='" + connectorUserId + '\'' +
                 ", connection=" + connection +
                 ", metadataSourceQualifiedName='" + metadataSourceQualifiedName + '\'' +
                 ", refreshTimeInterval=" + refreshTimeInterval +
@@ -257,6 +283,7 @@ public class IntegrationConnectorConfig extends AdminServicesConfigHeader
                 Objects.equals(metadataSourceQualifiedName, that.metadataSourceQualifiedName) &&
                 Objects.equals(connectorId, that.connectorId) &&
                 Objects.equals(connectorName, that.connectorName) &&
+                Objects.equals(connectorUserId, that.connectorUserId) &&
                 Objects.equals(connection, that.connection);
     }
 
@@ -269,6 +296,7 @@ public class IntegrationConnectorConfig extends AdminServicesConfigHeader
     @Override
     public int hashCode()
     {
-        return Objects.hash(connectorId, connectorName, connection, metadataSourceQualifiedName, refreshTimeInterval, usesBlockingCalls);
+        return Objects.hash(connectorId, connectorName, connectorUserId, connection, metadataSourceQualifiedName, refreshTimeInterval,
+                            usesBlockingCalls);
     }
 }

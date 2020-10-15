@@ -17,7 +17,8 @@ running in a [Metadata Access Point](metadata-access-point.md) or
 > a metadata access point / metadata server
 
 Inside the integration daemon are one or more **[Open Metadata Integration
-Services (OMISs)](../../../integration-services)** that each focus on integrating
+Services (OMISs)](../../../integration-services)** that each focus on
+metadata exchange with
 a specific type of technology.  They are paired with a specific
 [Open Metadata Access Service (OMAS)](../../../access-services)
 running in the metadata access point / metadata server.
@@ -50,26 +51,39 @@ This is shown in Figure 4.
 > **Figure 4:** Using the integration daemon to integrate
 > both passive and active open technology into the open metadata ecosystem
 
-For **Passive Open Technology**, the integration daemon will
-continuously poll the technology's API to determine if
+For **Passive Open Technology**, an integration service will
+continuously poll the connector to allow it to repeatedly
+call the technology's API to determine if
 anything has changed and then pass any changes to the
-metadata access point / metadata server.  It also
-listens for events from its access service's 
-[Out Topic](../../../access-services/docs/concepts/client-server/out-topic.md).
-If there is new metadata that is of interest to the
-third party technology the integration daemon passes it over.
+metadata access point / metadata server.
 
 The **Active Open Technology** support is similar except that
 rather than polling for changes in the third party technology,
-the integration daemon will listen on the third party
+the connector listens on the third party
 technology's event topic and translate the events it receives
-and passes the information onto the access service.
+and passes the information onto the access service via calls to
+the integration service.
+
+The integration service also
+listens for events from its access service's 
+[Out Topic](../../../access-services/docs/concepts/client-server/out-topic.md).
+If there is new metadata that is of interest to the
+third party technology, the access service publishes the
+information and it is picked up by the integration service
+and passed onto the connector.  The connector may then
+push metadata to the third party technology.
+
+Thus, the integration services of the integration daemon enable
+metadata to flow both in and out of the open metadata ecosystem.
+
+## Integration connectors
 
 The code that manages the specific APIs and formats of the third party technology
-is encapsulated in a connector.  The connectors that run in an integration daemon are collectively called
-**integration connectors**.
+is encapsulated in a special type of connector called an
+**[integration connector](../../../governance-servers/integration-daemon-services/docs/integration-connector.md)**.
 
-The specific interface that the integration connector needs to implement is defined by the integration service.
+The specific interface that the integration connector needs to implement is defined by the
+[integration service](../../../integration-services).
 This interface enables the integration service to pass 
 a context object to the connector before it is started.
 The context enables the connector to
@@ -77,14 +91,24 @@ register a listener with the associated access service's
 [Out Topic](../../../access-services/docs/concepts/client-server/out-topic.md), or call its REST API, or to
 push events to the access service's 
 [In Topic](../../../access-services/docs/concepts/client-server/in-topic.md).
-The context uses the integration daemon's userId/password for these requests.
+By default the context uses the
+integration daemon's userId for requests to the access service
+which means that the metadata created by the integration connector
+will be credited to this user.
+If you want to use a different userId for metadata from each connector, 
+the server's userId can be overridden in the connector's configuration.
 
 ## Configuring the Integration Daemon
 
 The integration daemon is an [OMAG Server](omag-server.md) that runs on
 the [OMAG Server Platform](omag-server-platform.md).
-It is properties are defined in a [Configuration Document](configuration-document.md) using
-the following commands:
+It is properties are defined in a [Configuration Document](configuration-document.md)
+as shown in Figure 5:
+
+![Figure 5](integration-daemon-config.png)
+> **Figure 5:** The configuration document contents for an integration daemon
+
+The links below take you to the sections that describe the commands for each part of the configuration document:
 
 * [Setting basic properties for the Integration Daemon](../user/configuring-omag-server-basic-properties.md)
 * [Configuring the audit log destinations for log records from the Integration Daemon](../user/configuring-the-audit-log.md)
