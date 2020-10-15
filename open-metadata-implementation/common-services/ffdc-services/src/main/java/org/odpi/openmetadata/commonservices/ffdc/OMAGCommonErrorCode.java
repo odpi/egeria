@@ -173,7 +173,7 @@ public enum OMAGCommonErrorCode implements ExceptionMessageSet
 
     UNIQUE_NAME_ALREADY_IN_USE(409, "OMAG-COMMON-409-001",
                                "Method {0} of service {1} is not able to create an instance of type {2} because parameter name {3} is " +
-                                       "defined as a unique property and it's value {4} is not available for use",
+                                       "defined as a unique property and value {4} is not available for use",
                                "The system is unable to process the request because the unique property for this new entity " +
                                        "is not permitted either because it is a reserved value, or it is already in use.",
                                "Retry the request with a different unique parameter name."),

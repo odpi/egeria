@@ -2201,6 +2201,7 @@ public class FilesAndFoldersHandler<FILESYSTEM, FOLDER, FILE>
         return connectorTypeHandler.getConnectorTypeForConnection(userId,
                                                                   externalSourceGUID,
                                                                   externalSourceName,
+                                                                  null,
                                                                   connectorType.getQualifiedName(),
                                                                   connectorType.getDisplayName(),
                                                                   connectorType.getDescription(),

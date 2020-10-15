@@ -157,13 +157,22 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
              * is to be created.  The guid is accepted if an entity of the right type is found.
              * Otherwise it is ignored.
              */
-            if (this.getEntityFromRepository(userId,
-                                             connectionGUID,
-                                             guidParameterName,
-                                             OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
-                                             methodName) != null)
+            try
             {
-                return connectionGUID;
+                if (this.getEntityFromRepository(userId,
+                                                 connectionGUID,
+                                                 guidParameterName,
+                                                 OpenMetadataAPIMapper.CONNECTION_TYPE_NAME,
+                                                 methodName) != null)
+                {
+                    return connectionGUID;
+                }
+            }
+            catch (InvalidParameterException notFound)
+            {
+                /*
+                 * Not found via the GUID so try something else
+                 */
             }
         }
 
@@ -205,6 +214,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
      * @param userId calling userId
      * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
      * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param anchorGUID unique identifier of the anchor to add to the connection
      * @param assetGUID unique identifier of linked asset (or null)
      * @param assetGUIDParameterName  parameter name supplying assetGUID
      * @param assetTypeName type of asset
@@ -220,6 +230,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
     public String  saveConnection(String     userId,
                                   String     externalSourceGUID,
                                   String     externalSourceName,
+                                  String     anchorGUID,
                                   String     assetGUID,
                                   String     assetGUIDParameterName,
                                   String     assetTypeName,
@@ -248,6 +259,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
             return addConnection(userId,
                                  externalSourceGUID,
                                  externalSourceName,
+                                 anchorGUID,
                                  assetGUID,
                                  assetGUIDParameterName,
                                  assetTypeName,
@@ -260,6 +272,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
             return updateConnection(userId,
                                     externalSourceGUID,
                                     externalSourceName,
+                                    anchorGUID,
                                     assetGUID,
                                     assetGUIDParameterName,
                                     assetTypeName,
@@ -276,6 +289,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
      * @param userId calling user
      * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
      * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param anchorGUID unique identifier of the anchor entity if applicable
      * @param assetGUID unique identifier of linked asset (or null)
      * @param assetGUIDParameterName  parameter name supplying assetGUID
      * @param assetTypeName type of asset
@@ -292,6 +306,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
     private void saveAssociatedConnectionEntities(String                   userId,
                                                   String                   externalSourceGUID,
                                                   String                   externalSourceName,
+                                                  String                   anchorGUID,
                                                   String                   assetGUID,
                                                   String                   assetGUIDParameterName,
                                                   String                   assetTypeName,
@@ -419,7 +434,8 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                                     externalSourceGUID,
                                                                     externalSourceName,
                                                                     assetGUID,
-                                                                    assetGUIDParameterName,
+                                                                    null,
+                                                                    null,
                                                                     assetTypeName,
                                                                     realConnection,
                                                                     null,
@@ -458,6 +474,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
      * @param userId calling userId
      * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
      * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param anchorGUID unique identifier ofr the anchor GUID if applicable
      * @param assetGUID unique identifier of linked asset (or null)
      * @param assetGUIDParameterName  parameter name supplying assetGUID
      * @param assetTypeName type of asset
@@ -473,6 +490,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
     private String  addConnection(String     userId,
                                   String     externalSourceGUID,
                                   String     externalSourceName,
+                                  String     anchorGUID,
                                   String     assetGUID,
                                   String     assetGUIDParameterName,
                                   String     assetTypeName,
@@ -516,9 +534,9 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                                     serviceName,
                                                                     serverName);
 
-        if (assetGUID != null)
+        if (anchorGUID != null)
         {
-            connectionBuilder.setAnchors(userId, assetGUID, methodName);
+            connectionBuilder.setAnchors(userId, anchorGUID, methodName);
         }
 
         String connectionGUID = this.createBeanInRepository(userId,
@@ -536,6 +554,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
             this.saveAssociatedConnectionEntities(userId,
                                                   externalSourceGUID,
                                                   externalSourceName,
+                                                  anchorGUID,
                                                   assetGUID,
                                                   assetGUIDParameterName,
                                                   assetTypeName,
@@ -584,6 +603,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
      * @param userId userId
      * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
      * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param anchorGUID unique identifier ofr the anchor GUID if applicable
      * @param assetGUID unique identifier of linked asset (or null)
      * @param assetGUIDParameterName  parameter name supplying assetGUID
      * @param assetTypeName type of asset
@@ -600,6 +620,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
     private String updateConnection(String     userId,
                                     String     externalSourceGUID,
                                     String     externalSourceName,
+                                    String     anchorGUID,
                                     String     assetGUID,
                                     String     assetGUIDParameterName,
                                     String     assetTypeName,
@@ -650,6 +671,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
         this.saveAssociatedConnectionEntities(userId,
                                               externalSourceGUID,
                                               externalSourceName,
+                                              anchorGUID,
                                               assetGUID,
                                               assetGUIDParameterName,
                                               assetTypeName,
@@ -767,8 +789,6 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
      * @param encryptedPassword encrypted password that the connector needs to decrypt before use
      * @param connectorTypeGUID unique identifier of the connector type to used for this connection
      * @param connectorTypeGUIDParameterName the parameter supplying connectorTypeGUID
-     * @param endpointGUID unique identifier of the endpoint to used for this connection
-     * @param endpointGUIDParameterName the parameter supplying endpointGUID
      * @param methodName calling method
      *
      * @return GUID for new connection
@@ -794,8 +814,6 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                           String              encryptedPassword,
                                           String              connectorTypeGUID,
                                           String              connectorTypeGUIDParameterName,
-                                          String              endpointGUID,
-                                          String              endpointGUIDParameterName,
                                           String              methodName) throws InvalidParameterException,
                                                                                  PropertyServerException,
                                                                                  UserNotAuthorizedException
@@ -819,8 +837,8 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                      encryptedPassword,
                                      connectorTypeGUID,
                                      connectorTypeGUIDParameterName,
-                                     endpointGUID,
-                                     endpointGUIDParameterName,
+                                     null,
+                                     null,
                                      methodName);
     }
 
@@ -1015,7 +1033,7 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                       String              virtualConnectionGUIDParameterName,
                                       int                 position,
                                       String              displayName,
-                                      Map<String, String> arguments,
+                                      Map<String, Object> arguments,
                                       String              embeddedConnectionGUID,
                                       String              embeddedConnectionGUIDParameterName,
                                       String              methodName)  throws InvalidParameterException,
@@ -1043,11 +1061,11 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
 
         if ((arguments != null) && (! arguments.isEmpty()))
         {
-            properties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
-                                                                         properties,
-                                                                         OpenMetadataAPIMapper.ARGUMENTS_PROPERTY_NAME,
-                                                                         arguments,
-                                                                         methodName);
+            properties = repositoryHelper.addMapPropertyToInstance(serviceName,
+                                                                   properties,
+                                                                   OpenMetadataAPIMapper.ARGUMENTS_PROPERTY_NAME,
+                                                                   arguments,
+                                                                   methodName);
         }
 
         this.linkElementToElement(userId,

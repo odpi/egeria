@@ -786,9 +786,9 @@ public class OpenMetadataAPIMapper
     public static final String SCHEMA_ELEMENT_TYPE_NAME                 = "SchemaElement";
     /* Referenceable */
 
-    public static final String SCHEMA_DISPLAY_NAME_PROPERTY_NAME               = "displayName";          /* from SchemaElement entity */
-    public static final String SCHEMA_DESCRIPTION_PROPERTY_NAME                = "description";          /* from SchemaElement entity */
-    public static final String SCHEMA_IS_DEPRECATED_PROPERTY_NAME              = "isDeprecated";         /* from SchemaElement entity */
+    public static final String SCHEMA_DISPLAY_NAME_PROPERTY_NAME = "displayName";          /* from SchemaElement entity */
+    public static final String SCHEMA_DESCRIPTION_PROPERTY_NAME  = "description";          /* from SchemaElement entity */
+    public static final String IS_DEPRECATED_PROPERTY_NAME       = "isDeprecated";         /* from SchemaElement and ValidValueDefinition entity */
 
     /* For Schema Type */
     public static final String SCHEMA_TYPE_TYPE_GUID                    = "5bd4a3e7-d22d-4a3d-a115-066ee8e0754f";   /* from Area 5 */
@@ -1090,10 +1090,9 @@ public class OpenMetadataAPIMapper
     public static final String USAGE_PROPERTY_NAME                     = "usage";                /* from ValidValueDefinition entity */
     public static final String VALID_VALUE_SCOPE_PROPERTY_NAME         = "scope";                /* from ValidValueDefinition entity */
     public static final String PREFERRED_VALUE_PROPERTY_NAME           = "preferredValue";       /* from ValidValueDefinition entity */
-    public static final String VALID_VALUE_IS_DEPRECATED_PROPERTY_NAME = "isDeprecated";         /* from ValidValueDefinition entity */
 
     public static final String VALID_VALUE_SET_TYPE_GUID                = "7de10805-7c44-40e3-a410-ffc51306801b";   /* from Area 5 */
-    public static final String VALID_VALUE_SET_TYPE_NAME                = "ValidValueSet";
+    public static final String VALID_VALUE_SET_TYPE_NAME                = "ValidValuesSet";
     /* ValidValueDefinition */
 
     public static final String REFERENCE_DATA_CLASSIFICATION_TYPE_GUID  = "55e5ae33-39c6-4834-9d05-ef0ae4e0163b";  /* from Area 5 */
@@ -1107,7 +1106,7 @@ public class OpenMetadataAPIMapper
     public static final String IS_STRICT_REQUIREMENT_PROPERTY_NAME      = "strictRequirement";     /* from ValidValuesAssignment relationship */
 
     public static final String VALID_VALUES_MEMBER_RELATIONSHIP_TYPE_GUID = "6337c9cd-8e5a-461b-97f9-5151bcb97a9e";  /* from Area 5 */
-    public static final String VALID_VALUES_MEMBER_RELATIONSHIP_TYPE_NAME = "ValidValuesMember";
+    public static final String VALID_VALUES_MEMBER_RELATIONSHIP_TYPE_NAME = "ValidValueMember";
     /* End1 = ValidValuesSet; End 2 = ValidValuesDefinition */
 
     public static final String VALID_VALUES_IMPL_RELATIONSHIP_TYPE_GUID = "d9a39553-6a47-4477-a217-844300c07cf2";  /* from Area 5 */

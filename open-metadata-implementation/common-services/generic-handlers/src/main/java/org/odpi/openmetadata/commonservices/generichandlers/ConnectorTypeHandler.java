@@ -186,6 +186,7 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
                 return this.createConnectorType(userId,
                                                 externalSourceGUID,
                                                 externalSourceName,
+                                                null,
                                                 connectorType.getQualifiedName(),
                                                 connectorType.getDisplayName(),
                                                 connectorType.getDescription(),
@@ -229,6 +230,7 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
      * @param userId           userId of user making request
      * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
      * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param anchorGUID unique identifier of the anchor entity (or null if free-standing)
      * @param qualifiedName      unique name of the connectorType
      * @param displayName    human memorable name for the connectorType - does not need to be unique
      * @param description  (optional) description of the connectorType.  Setting a description, particularly in a public connectorType
@@ -249,6 +251,7 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
     public String createConnectorType(String              userId,
                                       String              externalSourceGUID,
                                       String              externalSourceName,
+                                      String              anchorGUID,
                                       String              qualifiedName,
                                       String              displayName,
                                       String              description,
@@ -280,6 +283,11 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
                                                                 serviceName,
                                                                 serverName);
 
+        if (anchorGUID != null)
+        {
+            builder.setAnchors(userId, anchorGUID, methodName);
+        }
+
         return this.createBeanInRepository(userId,
                                            externalSourceGUID,
                                            externalSourceName,
@@ -299,6 +307,7 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
      * @param userId           userId of user making request
      * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
      * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param anchorGUID unique identifier for the anchor of this connector type (or null if free standing)
      * @param qualifiedName      unique name of the connectorType
      * @param displayName    human memorable name for the connectorType - does not need to be unique
      * @param description  (optional) description of the connectorType.  Setting a description, particularly in a public connectorType
@@ -319,6 +328,7 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
     public String getConnectorTypeForConnection(String              userId,
                                                 String              externalSourceGUID,
                                                 String              externalSourceName,
+                                                String              anchorGUID,
                                                 String              qualifiedName,
                                                 String              displayName,
                                                 String              description,
@@ -347,6 +357,7 @@ public class ConnectorTypeHandler<B> extends ReferenceableHandler<B>
             connectorTypeGUID = this.createConnectorType(userId,
                                                          externalSourceGUID,
                                                          externalSourceName,
+                                                         anchorGUID,
                                                          qualifiedName,
                                                          displayName,
                                                          description,

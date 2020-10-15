@@ -94,19 +94,28 @@ public class EndpointHandler<B> extends ReferenceableHandler<B>
     {
         final String guidParameterName      = "endpoint.getGUID";
         final String qualifiedNameParameter = "endpoint.getQualifiedName";
-        final String displayNameParameter = "endpoint.getDisplayName";
+        final String displayNameParameter   = "endpoint.getDisplayName";
 
         if (endpoint != null)
         {
             if (endpoint.getGUID() != null)
             {
-                if (this.getEntityFromRepository(userId,
-                                                 endpoint.getGUID(),
-                                                 OpenMetadataAPIMapper.ENDPOINT_TYPE_NAME,
-                                                 methodName,
-                                                 guidParameterName) != null)
+                try
                 {
-                    return endpoint.getGUID();
+                    if (this.getEntityFromRepository(userId,
+                                                     endpoint.getGUID(),
+                                                     OpenMetadataAPIMapper.ENDPOINT_TYPE_NAME,
+                                                     methodName,
+                                                     guidParameterName) != null)
+                    {
+                        return endpoint.getGUID();
+                    }
+                }
+                catch (InvalidParameterException notFound)
+                {
+                    /*
+                     * Not found so try something else
+                     */
                 }
             }
 

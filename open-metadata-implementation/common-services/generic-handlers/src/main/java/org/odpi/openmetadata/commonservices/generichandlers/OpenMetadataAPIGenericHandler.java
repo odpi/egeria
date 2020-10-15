@@ -5630,6 +5630,7 @@ public class OpenMetadataAPIGenericHandler<B>
 
     /**
      * Return the list of beans of the requested type that match the supplied value.
+     * A null is returned if the entity is not found.
      *
      * @param userId the calling user
      * @param name  value to search

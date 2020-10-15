@@ -518,96 +518,6 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
     }
 
 
-
-    /**
-     * Add a simple asset description to the metadata repository.  Null values for requested typename, ownership,
-     * zone membership and latest change are filled in with default values.
-     *
-     * @param userId calling user
-     * @param externalSourceGUID unique identifier of software server capability representing the caller
-     * @param externalSourceName unique name of software server capability representing the caller
-     * @param qualifiedName unique name for this asset
-     * @param displayName the stored display name property for the asset
-     * @param description the stored description property associated with the asset
-     * @param zoneMembership initial zones for the asset - or null to allow the security module to set it up
-     * @param owner identifier of the owner
-     * @param ownerType is the owner identifier a user id, personal profile or team profile
-     * @param originOrganizationCapabilityGUID unique identifier of originating organization
-     * @param originBusinessCapabilityGUID unique identifier of originating business capability
-     * @param otherOriginValues the properties that characterize where this asset is from
-     * @param additionalProperties any arbitrary properties not part of the type system
-     * @param typeGUID identifier of the type that is a subtype of asset - or null to create standard type
-     * @param typeName name of the type that is a subtype of asset - or null to create standard type
-     * @param extendedProperties properties from any subtype
-     * @param connection connection associated with the asset
-     * @param assetSummary description of the asset from the perspective of the connection
-     * @param methodName calling method
-     *
-     * @return unique identifier of the new asset
-     *
-     * @throws InvalidParameterException the bean properties are invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException problem accessing the property server
-     */
-    public String  createAssetWithConnectionInRepository(String               userId,
-                                                         String               externalSourceGUID,
-                                                         String               externalSourceName,
-                                                         String               qualifiedName,
-                                                         String               displayName,
-                                                         String               description,
-                                                         List<String>         zoneMembership,
-                                                         String               owner,
-                                                         int                  ownerType,
-                                                         String               originOrganizationCapabilityGUID,
-                                                         String               originBusinessCapabilityGUID,
-                                                         Map<String, String>  otherOriginValues,
-                                                         Map<String, String>  additionalProperties,
-                                                         String               typeGUID,
-                                                         String               typeName,
-                                                         Map<String, Object>  extendedProperties,
-                                                         Connection           connection,
-                                                         String               assetSummary,
-                                                         String               methodName) throws InvalidParameterException,
-                                                                                                 PropertyServerException,
-                                                                                                 UserNotAuthorizedException
-    {
-        final String assetGUIDParameterName = "new Asset.getGUID";
-
-        String assetGUID = this.createAssetInRepository(userId,
-                                                        externalSourceGUID,
-                                                        externalSourceName,
-                                                        qualifiedName,
-                                                        displayName,
-                                                        description,
-                                                        zoneMembership,
-                                                        owner,
-                                                        ownerType,
-                                                        originOrganizationCapabilityGUID,
-                                                        originBusinessCapabilityGUID,
-                                                        otherOriginValues,
-                                                        additionalProperties,
-                                                        typeGUID,
-                                                        typeName,
-                                                        extendedProperties,
-                                                        methodName);
-
-        if (assetGUID != null)
-        {
-            connectionHandler.saveConnection(userId,
-                                             null,
-                                             null,
-                                             assetGUID,
-                                             assetGUIDParameterName,
-                                             typeName,
-                                             connection,
-                                             assetSummary,
-                                             methodName);
-        }
-
-        return assetGUID;
-    }
-
-
     /**
      * Update an asset's properties.
      *
@@ -751,6 +661,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
             String  connectionGUID = connectionHandler.saveConnection(userId,
                                                                       null,
                                                                       null,
+                                                                      assetGUID,
                                                                       assetGUID,
                                                                       assetGUIDParameterName,
                                                                       typeName,
@@ -1361,7 +1272,7 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                 }
             }
 
-            List<Relationship> supplementaryRelationships = null;
+            List<Relationship> supplementaryRelationships = new ArrayList<>();
             List<EntityDetail> supplementaryEntities      = new ArrayList<>();
 
             if ((connectionEntity != null) && (connectionEntity.getType() != null))
@@ -1418,11 +1329,16 @@ public class AssetHandler<B> extends ReferenceableHandler<B>
                         }
                     }
                 }
+            }
 
-                if (supplementaryEntities.isEmpty())
-                {
-                    supplementaryEntities = null;
-                }
+            if (supplementaryEntities.isEmpty())
+            {
+                supplementaryEntities = null;
+            }
+
+            if (supplementaryRelationships.isEmpty())
+            {
+                supplementaryEntities = null;
             }
 
             return converter.getNewComplexBean(beanClass, assetEntity, supplementaryEntities, supplementaryRelationships, methodName);

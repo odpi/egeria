@@ -1704,7 +1704,7 @@ public class RelationalDataHandler<DATABASE,
 
         properties = repositoryHelper.addBooleanPropertyToInstance(serviceName,
                                                                    properties,
-                                                                   OpenMetadataAPIMapper.SCHEMA_IS_DEPRECATED_PROPERTY_NAME,
+                                                                   OpenMetadataAPIMapper.IS_DEPRECATED_PROPERTY_NAME,
                                                                    isDeprecated,
                                                                    methodName);
 

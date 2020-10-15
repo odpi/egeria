@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.discoveryengine.handlers;
 
+import org.odpi.openmetadata.accessservices.discoveryengine.converters.ConnectionConverter;
 import org.odpi.openmetadata.accessservices.discoveryengine.converters.DiscoveryEnginePropertiesConverter;
 import org.odpi.openmetadata.accessservices.discoveryengine.converters.DiscoveryServicePropertiesConverter;
 import org.odpi.openmetadata.accessservices.discoveryengine.converters.RegisteredDiscoveryServiceConverter;
@@ -11,7 +12,7 @@ import org.odpi.openmetadata.commonservices.generichandlers.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
 import org.odpi.openmetadata.frameworks.discovery.DiscoveryConfigurationServer;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryEngineProperties;
@@ -38,6 +39,8 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
     private OMRSRepositoryHelper                                       repositoryHelper;
     private SoftwareServerCapabilityHandler<DiscoveryEngineProperties> discoveryEngineHandler;
     private AssetHandler<DiscoveryServiceProperties>                   discoveryServiceHandler;
+    private ConnectionHandler<Connection>                              connectionHandler;
+    private ConnectorTypeHandler<ConnectorType>                        connectorTypeHandler;
     private InvalidParameterHandler                                    invalidParameterHandler;
 
 
@@ -105,7 +108,33 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
                                                           publishZones,
                                                           auditLog);
 
+        this.connectionHandler = new ConnectionHandler<>(new ConnectionConverter<>(repositoryHelper, serviceName, serverName),
+                                                         Connection.class,
+                                                         serviceName,
+                                                         serverName,
+                                                         invalidParameterHandler,
+                                                         repositoryHandler,
+                                                         repositoryHelper,
+                                                         localServerUserId,
+                                                         securityVerifier,
+                                                         supportedZones,
+                                                         defaultZones,
+                                                         publishZones,
+                                                         auditLog);
 
+        this.connectorTypeHandler = new ConnectorTypeHandler<>(new OpenMetadataAPIDummyBeanConverter<>(repositoryHelper, serviceName, serverName),
+                                                               ConnectorType.class,
+                                                               serviceName,
+                                                               serverName,
+                                                               invalidParameterHandler,
+                                                               repositoryHandler,
+                                                               repositoryHelper,
+                                                               localServerUserId,
+                                                               securityVerifier,
+                                                               supportedZones,
+                                                               defaultZones,
+                                                               publishZones,
+                                                               auditLog);
     }
 
 
@@ -379,26 +408,139 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
                                                                           PropertyServerException
     {
         final String methodName = "createDiscoveryService";
+        final String connectionParameterName = "createDiscoveryService";
+        final String assetGUIDParameterName = "assetGUID";
+        final String connectorTypeGUIDParameterName = "connectorTypeGUID";
+        final String embeddedConnectionGUIDParameterName = "embeddedConnectionGUID ";
 
-        return discoveryServiceHandler.createAssetWithConnectionInRepository(userId,
-                                                                             null,
-                                                                             null,
-                                                                             qualifiedName,
-                                                                             displayName,
-                                                                             description,
-                                                                             null,
-                                                                             null,
-                                                                             0,
-                                                                             null,
-                                                                             null,
-                                                                             null,
-                                                                             null,
-                                                                             OpenMetadataAPIMapper.DISCOVERY_SERVICE_TYPE_GUID,
-                                                                             OpenMetadataAPIMapper.DISCOVERY_SERVICE_TYPE_NAME,
-                                                                             null,
-                                                                             connection,
-                                                                             null,
-                                                                             methodName);
+        invalidParameterHandler.validateConnection(connection, connectionParameterName, methodName);
+
+        String assetGUID = discoveryServiceHandler.createAssetInRepository(userId,
+                                                                           null,
+                                                                           null,
+                                                                           qualifiedName,
+                                                                           displayName,
+                                                                           description,
+                                                                           null,
+                                                                           null,
+                                                                           0,
+                                                                           null,
+                                                                           null,
+                                                                           null,
+                                                                           null,
+                                                                           OpenMetadataAPIMapper.DISCOVERY_SERVICE_TYPE_GUID,
+                                                                           OpenMetadataAPIMapper.DISCOVERY_SERVICE_TYPE_NAME,
+                                                                           null,
+                                                                           methodName);
+
+        if (assetGUID != null)
+        {
+            ConnectorType connectorType = connection.getConnectorType();
+
+            String connectorTypeGUID = connectorTypeHandler.getConnectorTypeForConnection(userId,
+                                                                                          null,
+                                                                                          null,
+                                                                                          assetGUID,
+                                                                                          connectorType.getQualifiedName(),
+                                                                                          connectorType.getDisplayName(),
+                                                                                          connectorType.getDescription(),
+                                                                                          connectorType.getConnectorProviderClassName(),
+                                                                                          connectorType.getRecognizedAdditionalProperties(),
+                                                                                          connectorType.getRecognizedSecuredProperties(),
+                                                                                          connectorType.getRecognizedConfigurationProperties(),
+                                                                                          connectorType.getAdditionalProperties(),
+                                                                                          methodName);
+
+            if (connectorTypeGUID != null)
+            {
+                if (connection instanceof VirtualConnection)
+                {
+                    /*
+                     * OpenDiscoveryPipelines are represented using a VirtualConnection that
+                     * nests all of the Connections for services to call.
+                     */
+                    final String connectionGUIDParameterName = "connection.getGUID";
+
+                    String connectionGUID = connectionHandler.createVirtualConnection(userId,
+                                                                                     null,
+                                                                                     null,
+                                                                                     assetGUID,
+                                                                                     assetGUIDParameterName,
+                                                                                     connection.getAssetSummary(),
+                                                                                     connection.getQualifiedName(),
+                                                                                     connection.getDisplayName(),
+                                                                                     connection.getDescription(),
+                                                                                     connection.getAdditionalProperties(),
+                                                                                     connection.getSecuredProperties(),
+                                                                                     connection.getConfigurationProperties(),
+                                                                                     connection.getUserId(),
+                                                                                     connection.getClearPassword(),
+                                                                                     connection.getEncryptedPassword(),
+                                                                                     connectorTypeGUID,
+                                                                                     connectorTypeGUIDParameterName,
+                                                                                     methodName);
+
+                    List<EmbeddedConnection> embeddedConnections = ((VirtualConnection) connection).getEmbeddedConnections();
+
+                    if (embeddedConnections != null)
+                    {
+                        for (EmbeddedConnection embeddedConnection : embeddedConnections)
+                        {
+                            if (embeddedConnection != null)
+                            {
+                                String embeddedConnectionGUID = connectionHandler.saveConnection(userId,
+                                                                                                 null,
+                                                                                                 null,
+                                                                                                 assetGUID,
+                                                                                                 null,
+                                                                                                 assetGUIDParameterName,
+                                                                                                 OpenMetadataAPIMapper.DISCOVERY_SERVICE_TYPE_NAME,
+                                                                                                 embeddedConnection.getEmbeddedConnection(),
+                                                                                                 null,
+                                                                                                 methodName);
+                                connectionHandler.addEmbeddedConnection(userId,
+                                                                        null,
+                                                                        null,
+                                                                        connectionGUID,
+                                                                        connectionGUIDParameterName,
+                                                                        embeddedConnection.getPosition(),
+                                                                        embeddedConnection.getDisplayName(),
+                                                                        embeddedConnection.getArguments(),
+                                                                        embeddedConnectionGUID,
+                                                                        embeddedConnectionGUIDParameterName,
+                                                                        methodName);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    connectionHandler.createConnection(userId,
+                                                       null,
+                                                       null,
+                                                       assetGUID,
+                                                       assetGUIDParameterName,
+                                                       connection.getAssetSummary(),
+                                                       connection.getQualifiedName(),
+                                                       connection.getDisplayName(),
+                                                       connection.getDescription(),
+                                                       connection.getAdditionalProperties(),
+                                                       connection.getSecuredProperties(),
+                                                       connection.getConfigurationProperties(),
+                                                       connection.getUserId(),
+                                                       connection.getClearPassword(),
+                                                       connection.getEncryptedPassword(),
+                                                       connectorTypeGUID,
+                                                       connectorTypeGUIDParameterName,
+                                                       null,
+                                                       null,
+                                                       methodName);
+                }
+            }
+        }
+
+
+        return assetGUID;
     }
 
 
@@ -515,11 +657,11 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
         /*
          * Checks this is a valid, visible service.
          */
-        discoveryServiceHandler.getBeanFromRepository(userId,
-                                                      discoveryServiceGUID,
-                                                      guidParameter,
-                                                      OpenMetadataAPIMapper.DISCOVERY_SERVICE_TYPE_NAME,
-                                                      methodName);
+        connectionHandler.getBeanFromRepository(userId,
+                                                discoveryServiceGUID,
+                                                guidParameter,
+                                                OpenMetadataAPIMapper.DISCOVERY_SERVICE_TYPE_NAME,
+                                                methodName);
 
         List<Relationship>  relationships = repositoryHandler.getRelationshipsByType(userId,
                                                                                      discoveryServiceGUID,
@@ -628,16 +770,16 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
         final String qualifiedNameParameter = "qualifiedName";
         final String guidParameter = "discoveryServiceGUID";
 
-        discoveryServiceHandler.deleteBeanInRepository(userId,
-                                                       null,
-                                                       null,
-                                                       guid,
-                                                       guidParameter,
-                                                       OpenMetadataAPIMapper.DISCOVERY_SERVICE_TYPE_GUID,
-                                                       OpenMetadataAPIMapper.DISCOVERY_SERVICE_TYPE_NAME,
-                                                       qualifiedNameParameter,
-                                                       qualifiedName,
-                                                       methodName);
+        connectionHandler.deleteBeanInRepository(userId,
+                                                 null,
+                                                 null,
+                                                 guid,
+                                                 guidParameter,
+                                                 OpenMetadataAPIMapper.DISCOVERY_SERVICE_TYPE_GUID,
+                                                 OpenMetadataAPIMapper.DISCOVERY_SERVICE_TYPE_NAME,
+                                                 qualifiedNameParameter,
+                                                 qualifiedName,
+                                                 methodName);
     }
 
 

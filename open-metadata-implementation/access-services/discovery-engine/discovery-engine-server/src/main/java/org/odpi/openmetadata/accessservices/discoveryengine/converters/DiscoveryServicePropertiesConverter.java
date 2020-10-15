@@ -4,15 +4,12 @@ package org.odpi.openmetadata.accessservices.discoveryengine.converters;
 
 import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.OwnerType;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryServiceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -116,6 +113,24 @@ public class DiscoveryServicePropertiesConverter<B> extends DiscoveryEngineOMASC
                     bean.setOriginOrganizationGUID(this.getOriginOrganizationGUID(instanceProperties));
                     bean.setOriginBusinessCapabilityGUID(this.getOriginBusinessCapabilityGUID(instanceProperties));
                     bean.setOtherOriginValues(this.getOtherOriginValues(instanceProperties));
+
+                    if (supplementaryEntities != null)
+                    {
+                        for (EntityDetail entity : supplementaryEntities)
+                        {
+                            if ((entity != null) && (entity.getType() != null))
+                            {
+                                if (repositoryHelper.isTypeOf(serviceName, entity.getType().getTypeDefName(), OpenMetadataAPIMapper.CONNECTION_TYPE_NAME))
+                                {
+                                    bean.setConnection(super.getEmbeddedConnection(beanClass,
+                                                                                   entity,
+                                                                                   supplementaryEntities,
+                                                                                   relationships,
+                                                                                   methodName));
+                                }
+                            }
+                        }
+                    }
                 }
                 else
                 {

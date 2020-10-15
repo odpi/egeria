@@ -1432,7 +1432,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.removeBooleanProperty(serviceName,
-                                                          OpenMetadataAPIMapper.SCHEMA_IS_DEPRECATED_PROPERTY_NAME,
+                                                          OpenMetadataAPIMapper.IS_DEPRECATED_PROPERTY_NAME,
                                                           instanceProperties,
                                                           methodName);
         }

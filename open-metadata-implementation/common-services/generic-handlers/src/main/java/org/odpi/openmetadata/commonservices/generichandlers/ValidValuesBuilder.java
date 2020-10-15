@@ -128,7 +128,7 @@ public class ValidValuesBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addBooleanPropertyToInstance(serviceName,
                                                                    properties,
-                                                                   OpenMetadataAPIMapper.VALID_VALUE_IS_DEPRECATED_PROPERTY_NAME,
+                                                                   OpenMetadataAPIMapper.IS_DEPRECATED_PROPERTY_NAME,
                                                                    isDeprecated,
                                                                    methodName);
 

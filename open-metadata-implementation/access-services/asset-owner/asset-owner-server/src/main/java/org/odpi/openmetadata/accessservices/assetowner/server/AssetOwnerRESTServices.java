@@ -1000,6 +1000,7 @@ public class AssetOwnerRESTServices
                                                      null,
                                                      null,
                                                      assetGUID,
+                                                     assetGUID,
                                                      assetGUIDParameterName,
                                                      OpenMetadataAPIMapper.ASSET_TYPE_NAME,
                                                      connection,
