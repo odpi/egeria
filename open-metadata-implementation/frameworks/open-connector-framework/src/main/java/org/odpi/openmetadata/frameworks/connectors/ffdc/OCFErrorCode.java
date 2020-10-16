@@ -113,6 +113,12 @@ public enum OCFErrorCode implements ExceptionMessageSet
             "Exception with error message \"{0}\" was returned to object {1} resulted from a request for connected asset properties",
             "The requested action is not able to complete which may mean that the server is not able to return all of the properties associated with the asset.",
                      "Verify that the endpoint information is correct and the server that supports it is operational, then retry the request."),
+    UNKNOWN_SCHEMA_TYPE(404, "OCF-PROPERTIES-404-003",
+            "{0} retrieved a schema attribute of type {1} which does not have an associated schema type.  The schema attribute is from metadata " +
+                    "collection {2} ({3})",
+            "The requested action is not able to complete because part of the schema attribute was not found in the repositories.",
+            "Trace the origin of the schema attribute using the metadata collection information.  Determine why it was not created " +
+                                "correctly and correct its definition. Then retry the request."),
     CAUGHT_EXCEPTION(500, "OCF-CONNECTION-500-001",
             "OCF method detected an unexpected exception",
             "The system detected an error during connector processing.",

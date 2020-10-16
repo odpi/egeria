@@ -8,7 +8,7 @@ import java.util.List;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.assets.DatabaseContextHandler;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.contentmanager.OMEntityDao;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.commonservices.multitenant.OCFOMASServiceInstance;
+import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
@@ -17,7 +17,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  * AnalyticsModelingServicesInstance caches references to OMRS objects for a specific server.
  * It is also responsible for registering itself in the instance map.
  */
-public class AnalyticsModelingServicesInstance extends OCFOMASServiceInstance
+public class AnalyticsModelingServicesInstance extends OMASServiceInstance
 {
     private DatabaseContextHandler databaseContextHandler;
 
@@ -35,8 +35,8 @@ public class AnalyticsModelingServicesInstance extends OCFOMASServiceInstance
     public AnalyticsModelingServicesInstance(OMRSRepositoryConnector repositoryConnector, List<String> supportedZones,
                                AuditLog auditLog, String localServerUserId, int maxPageSize) throws NewInstanceException {
     	
-        super(AccessServiceDescription.ANALYTICS_MODELING_OMAS.getAccessServiceFullName(), repositoryConnector, supportedZones, null, auditLog,
-                localServerUserId, maxPageSize);
+        super(AccessServiceDescription.ANALYTICS_MODELING_OMAS.getAccessServiceFullName(), repositoryConnector, supportedZones, null,
+              null, auditLog, localServerUserId, maxPageSize);
         
         OMEntityDao omEntityDao = new OMEntityDao(repositoryConnector, supportedZones, auditLog);
 

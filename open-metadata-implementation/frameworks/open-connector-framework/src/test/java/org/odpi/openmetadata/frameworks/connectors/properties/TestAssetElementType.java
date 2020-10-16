@@ -40,8 +40,8 @@ public class TestAssetElementType
         testObject.setElementTypeDescription("TestDescription");
         testObject.setElementSourceServer("TestSourceServer");
         testObject.setElementOrigin(ElementOrigin.DEREGISTERED_REPOSITORY);
-        testObject.setElementHomeMetadataCollectionId("TestHomeId");
-        testObject.setElementHomeMetadataCollectionName("TestHomeName");
+        testObject.setElementMetadataCollectionId("TestHomeId");
+        testObject.setElementMetadataCollectionName("TestHomeName");
         testObject.setElementLicense("TestLicense");
 
         return new AssetElementType(testObject);
@@ -63,8 +63,8 @@ public class TestAssetElementType
         testObject.setElementTypeDescription("TestDescription");
         testObject.setElementSourceServer("TestSourceServer");
         testObject.setElementOrigin(ElementOrigin.DEREGISTERED_REPOSITORY);
-        testObject.setElementHomeMetadataCollectionId("TestHomeId");
-        testObject.setElementHomeMetadataCollectionName("TestHomeName");
+        testObject.setElementMetadataCollectionId("TestHomeId");
+        testObject.setElementMetadataCollectionName("TestHomeName");
         testObject.setElementLicense("TestLicense");
 
         return new AssetElementType(testObject);
@@ -86,8 +86,8 @@ public class TestAssetElementType
         testObject.setElementTypeDescription("TestDescription");
         testObject.setElementSourceServer("TestSourceServer");
         testObject.setElementOrigin(ElementOrigin.DEREGISTERED_REPOSITORY);
-        testObject.setElementHomeMetadataCollectionId("TestHomeId");
-        testObject.setElementHomeMetadataCollectionName("TestHomeDifferentName");
+        testObject.setElementMetadataCollectionId("TestHomeId");
+        testObject.setElementMetadataCollectionName("TestHomeDifferentName");
         testObject.setElementLicense("TestLicense");
 
         return new AssetElementType(testObject);

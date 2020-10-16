@@ -78,7 +78,7 @@ public class Like extends ElementHeader
      *
      * @return boolean
      */
-    public boolean isPublic()
+    public boolean getIsPublic()
     {
         return isPublic;
     }
@@ -89,7 +89,7 @@ public class Like extends ElementHeader
      *
      * @param aPublic boolean
      */
-    public void setPublic(boolean aPublic)
+    public void setIsPublic(boolean aPublic)
     {
         isPublic = aPublic;
     }
@@ -136,7 +136,7 @@ public class Like extends ElementHeader
             return false;
         }
         Like like = (Like) objectToCompare;
-        return isPublic() == like.isPublic() &&
+        return getIsPublic() == like.getIsPublic() &&
                 Objects.equals(getUser(), like.getUser());
     }
 }

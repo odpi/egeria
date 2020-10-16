@@ -7,16 +7,24 @@ An **Integration Daemon** is an [OMAG Server](omag-server.md)
 that provides metadata exchange services between third party
 technology and the open metadata ecosystem.
 
-Each integration daemon is paired with an 
-[access service](../../../access-services) and supports a particular
-class of technology.
+The integration daemon interacts with the open metadata
+ecosystem through [Open Metadata Access Services (OMAS)s](../../../access-services)
+running in a [Metadata Access Point](metadata-access-point.md) or 
+[Metadata Server](metadata-server.md).
 
 ![Figure 1](integration-daemon.png)
 > **Figure 1:** The integration daemon sitting between a third party technology and
 > a metadata access point / metadata server
 
+Inside the integration daemon are one or more **[Open Metadata Integration
+Services (OMISs)](../../../integration-services)** that each focus on
+metadata exchange with
+a specific type of technology.  They are paired with a specific
+[Open Metadata Access Service (OMAS)](../../../access-services)
+running in the metadata access point / metadata server.
+
 To understand how an integration daemon works, it is necessary to
-look at a bit more detail at how technologies can be
+look in a bit more detail at how technologies can be
 connected together to exchange metadata.
 
 Figure 2 show the four major mechanisms for
@@ -27,7 +35,7 @@ how a particular technology supports integration.
 > offered by a technology
 
 Egeria does not provide any particular consideration for **Closed Technology**.
-**Integrated Technology** is able to interact directly with a
+An **Integrated Technology** is able to interact directly with a
 [Metadata Access Point](metadata-access-point.md) or
 [Metadata Server](metadata-server.md), as shown in Figure 3.
 
@@ -35,7 +43,7 @@ Egeria does not provide any particular consideration for **Closed Technology**.
 > **Figure 3:** Integrated technology can call the open metadata services or
 > consume the open metadata services directly
 
-The **Integration Daemons** provide support for
+The **Integration Daemon** provides support for
 the **Passive Open Technology** and the **Active Open Technology**.
 This is shown in Figure 4.
 
@@ -43,53 +51,84 @@ This is shown in Figure 4.
 > **Figure 4:** Using the integration daemon to integrate
 > both passive and active open technology into the open metadata ecosystem
 
-For **Passive Open Technology**, the integration daemon will
-continuously poll the technology's API to determine if
+For **Passive Open Technology**, an integration service will
+continuously poll the connector to allow it to repeatedly
+call the technology's API to determine if
 anything has changed and then pass any changes to the
-metadata access point / metadata server.  It also
-listens for events from its access service's 
-[Out Topic](../../../access-services/docs/concepts/client-server/out-topic.md).
-If there is new metadata that is of interest to the
-third party technology the integration daemon passes it over.
+metadata access point / metadata server.
 
 The **Active Open Technology** support is similar except that
 rather than polling for changes in the third party technology,
-the integration daemon will listen on the third party
+the connector listens on the third party
 technology's event topic and translate the events it receives
-and passes the information onto the access service.
+and passes the information onto the access service via calls to
+the integration service.
+
+The integration service also
+listens for events from its access service's 
+[Out Topic](../../../access-services/docs/concepts/client-server/out-topic.md).
+If there is new metadata that is of interest to the
+third party technology, the access service publishes the
+information and it is picked up by the integration service
+and passed onto the connector.  The connector may then
+push metadata to the third party technology.
+
+Thus, the integration services of the integration daemon enable
+metadata to flow both in and out of the open metadata ecosystem.
+
+## Integration connectors
 
 The code that manages the specific APIs and formats of the third party technology
-is encapsulated in a connector.  The specific type of connector
-is defined by each type of integration daemon.  The connectors
-are passed a context object that enables the connector to
-call either the associated access service REST API, or to
+is encapsulated in a special type of connector called an
+**[integration connector](../../../governance-servers/integration-daemon-services/docs/integration-connector.md)**.
+
+The specific interface that the integration connector needs to implement is defined by the
+[integration service](../../../integration-services).
+This interface enables the integration service to pass 
+a context object to the connector before it is started.
+The context enables the connector to
+register a listener with the associated access service's
+[Out Topic](../../../access-services/docs/concepts/client-server/out-topic.md), or call its REST API, or to
 push events to the access service's 
 [In Topic](../../../access-services/docs/concepts/client-server/in-topic.md).
+By default the context uses the
+integration daemon's userId for requests to the access service
+which means that the metadata created by the integration connector
+will be credited to this user.
+If you want to use a different userId for metadata from each connector, 
+the server's userId can be overridden in the connector's configuration.
 
-The integration daemons defined in Egeria today are as follows:
+## Configuring the Integration Daemon
 
-* [Data Engine Proxy](data-engine-proxy.md) is an [Integration Daemon](integration-daemon.md)
-  that can capture metadata about data movement processes (such as ETL jobs)
-  from a data engine.
-  
-* [Data Platform Server](data-platform-server.md) is an [Integration Daemon](integration-daemon.md)
-  that can capture metadata about data set and data stores managed by a data
-  platform, such as a database server, Apache Cassandra or Apache Hive.
+The integration daemon is an [OMAG Server](omag-server.md) that runs on
+the [OMAG Server Platform](omag-server-platform.md).
+It is properties are defined in a [Configuration Document](configuration-document.md)
+as shown in Figure 5:
 
-* [Security Sync Server](security-sync-server.md) is an [Integration Daemon](integration-daemon.md)                                              
-  that is responsible for keeping a security
-  enforcement engine supplied with the latest metadata settings.
+![Figure 5](integration-daemon-config.png)
+> **Figure 5:** The configuration document contents for an integration daemon
 
-* [Virtualizer](virtualizer.md) manages the configuration of a
-  data virtualization platform.
+The links below take you to the sections that describe the commands for each part of the configuration document:
 
-All are under development and do not yet support all of the integration
-patterns.  However over time, the number of integration daemons will grow
-so that there is at least one for each access service and most will
-support both of the patterns described above.
+* [Setting basic properties for the Integration Daemon](../user/configuring-omag-server-basic-properties.md)
+* [Configuring the audit log destinations for log records from the Integration Daemon](../user/configuring-the-audit-log.md)
+* [Configuring the server security connector for the Integration Daemon](../user/configuring-the-server-security-connector.md)
+* [Configuring the Integration Services that run in the Integration Daemon](../user/configuring-the-integration-services.md)
+
+Once it is configured, the integration daemon can be started using the
+[Starting an OMAG Server](../user/starting-and-stopping-omag-server.md).
+
+## Further Information
+
+* Link to the [Egeria Solutions](../../../../open-metadata-publication/website/solutions) to see the integration
+daemon in action.
+* Link to the [Integration Daemon Services](../../../governance-servers/integration-daemon-services) to
+understand how the integration daemon is implemented
 
 ----
-Return the the [Governance Server Types](governance-server-types.md)
+* Return to the [Governance Server](governance-server-types.md) types.
+* Return to the [Admin Guide](../user).
+
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

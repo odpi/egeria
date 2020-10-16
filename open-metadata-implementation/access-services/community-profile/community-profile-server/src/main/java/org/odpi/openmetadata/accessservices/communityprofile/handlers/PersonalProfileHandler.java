@@ -270,12 +270,14 @@ public class PersonalProfileHandler
                                                                                jobTitle,
                                                                                jobRoleDescription);
 
-        repositoryHandler.updateEntity(userId,
-                                       profileGUID,
-                                       PersonalProfileMapper.PERSONAL_PROFILE_TYPE_GUID,
-                                       PersonalProfileMapper.PERSONAL_PROFILE_TYPE_NAME,
-                                       properties,
-                                       methodName);
+        repositoryHandler.updateEntityProperties(userId,
+                                                 null,
+                                                 null,
+                                                 profileGUID,
+                                                 PersonalProfileMapper.PERSONAL_PROFILE_TYPE_GUID,
+                                                 PersonalProfileMapper.PERSONAL_PROFILE_TYPE_NAME,
+                                                 properties,
+                                                 methodName);
 
         log.debug("Update of personal details successful: " + profileGUID);
     }

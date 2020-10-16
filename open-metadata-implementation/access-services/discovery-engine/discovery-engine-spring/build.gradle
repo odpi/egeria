@@ -6,8 +6,7 @@
 
 dependencies {
     implementation project(':open-metadata-implementation:common-services:ffdc-services')
-    implementation project(':open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-api')
-    implementation project(':open-metadata-implementation:common-services:odf-metadata-management:odf-metadata-api')
+    implementation project(':open-metadata-implementation:access-services:discovery-engine:discovery-engine-api')
     implementation project(':open-metadata-implementation:access-services:discovery-engine:discovery-engine-server')
     implementation project(':open-metadata-implementation:frameworks:open-discovery-framework')
     implementation 'org.springframework:spring-web'

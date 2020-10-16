@@ -20,35 +20,42 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum CommentType implements Serializable
 {
-    STANDARD_COMMENT (0,  "Comment", "General comment about the asset."),
-    QUESTION         (1,  "Question", "Asks a question to the people owning, managing or using the asset."),
-    ANSWER           (2,  "Answer", "Answers a question (posted as a reply to the question)."),
-    SUGGESTION       (3,  "Suggestion", "Provides a suggestion on how to improve the asset or its properties and description."),
-    USAGE_EXPERIENCE (4,  "Experience", "Describes situations where this asset has been used and related hints and tips."),
-    OTHER            (99, "Other", "Unknown comment type.");
+    STANDARD_COMMENT (0,  0, "Comment", "General comment about the asset."),
+    QUESTION         (1,  1, "Question", "Asks a question to the people owning, managing or using the asset."),
+    ANSWER           (2,  2, "Answer", "Answers a question (posted as a reply to the question)."),
+    SUGGESTION       (3,  3, "Suggestion", "Provides a suggestion on how to improve the asset or its properties and description."),
+    USAGE_EXPERIENCE (4,  4, "Experience", "Describes situations where this asset has been used and related hints and tips."),
+    OTHER            (99, 99, "Other", "Unknown comment type.");
 
     private static final long     serialVersionUID = 1L;
 
-    private int            commentTypeCode;
-    private String         commentType;
-    private String         commentTypeDescription;
+    public static final String ENUM_TYPE_GUID  = "06d5032e-192a-4f77-ade1-a4b97926e867";
+    public static final String ENUM_TYPE_NAME  = "CommentType";
+
+    private int    openTypeOrdinal;
+
+    private int    ordinal;
+    private String name;
+    private String description;
 
 
     /**
-     * Typical Constructor
+     * Constructor to set up the instance of this enum.
      *
-     * @param commentTypeCode ordinal
-     * @param commentType short description
-     * @param commentTypeDescription longer explanation
+     * @param ordinal code number
+     * @param openTypeOrdinal code number from the equivalent Enum Type
+     * @param name default name
+     * @param description default description
      */
-    CommentType(int     commentTypeCode, String   commentType, String   commentTypeDescription)
+    CommentType(int    ordinal,
+                int    openTypeOrdinal,
+                String name,
+                String description)
     {
-        /*
-         * Save the values supplied
-         */
-        this.commentTypeCode = commentTypeCode;
-        this.commentType = commentType;
-        this.commentTypeDescription = commentTypeDescription;
+        this.ordinal         = ordinal;
+        this.openTypeOrdinal = openTypeOrdinal;
+        this.name            = name;
+        this.description     = description;
     }
 
 
@@ -59,7 +66,7 @@ public enum CommentType implements Serializable
      */
     public int getOrdinal()
     {
-        return commentTypeCode;
+        return ordinal;
     }
 
 
@@ -70,7 +77,7 @@ public enum CommentType implements Serializable
      */
     public String getName()
     {
-        return commentType;
+        return name;
     }
 
 
@@ -81,8 +88,35 @@ public enum CommentType implements Serializable
      */
     public String getDescription()
     {
-        return commentTypeDescription;
+        return description;
     }
+
+
+    /**
+     * Return the code for this enum that comes from the Open Metadata Type that this enum represents.
+     *
+     * @return int code number
+     */
+    public int getOpenTypeOrdinal()
+    {
+        return openTypeOrdinal;
+    }
+
+
+    /**
+     * Return the unique identifier for the open metadata enum type that this enum class represents.
+     *
+     * @return string guid
+     */
+    public String getOpenTypeGUID() { return ENUM_TYPE_GUID; }
+
+
+    /**
+     * Return the unique name for the open metadata enum type that this enum class represents.
+     *
+     * @return string name
+     */
+    public String getOpenTypeName() { return ENUM_TYPE_NAME; }
 
 
     /**
@@ -94,9 +128,9 @@ public enum CommentType implements Serializable
     public String toString()
     {
         return "CommentType{" +
-                "commentTypeCode=" + commentTypeCode +
-                ", commentType='" + commentType + '\'' +
-                ", commentTypeDescription='" + commentTypeDescription + '\'' +
+                "commentTypeCode=" + ordinal +
+                ", commentType='" + name + '\'' +
+                ", commentTypeDescription='" + description + '\'' +
                 '}';
     }
 }
