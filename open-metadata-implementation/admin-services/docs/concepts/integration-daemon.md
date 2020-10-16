@@ -8,7 +8,7 @@ that provides metadata exchange services between third party
 technology and the open metadata ecosystem.
 
 The integration daemon interacts with the open metadata
-ecosystem through [Open Metadata Access Service (OMAS)](../../../access-services)
+ecosystem through [Open Metadata Access Services (OMAS)s](../../../access-services)
 running in a [Metadata Access Point](metadata-access-point.md) or 
 [Metadata Server](metadata-server.md).
 
@@ -24,7 +24,7 @@ a specific type of technology.  They are paired with a specific
 running in the metadata access point / metadata server.
 
 To understand how an integration daemon works, it is necessary to
-look at a bit more detail at how technologies can be
+look in a bit more detail at how technologies can be
 connected together to exchange metadata.
 
 Figure 2 show the four major mechanisms for

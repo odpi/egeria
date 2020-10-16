@@ -10,7 +10,7 @@ of Open Metadata Repository Services (OMRS) instances.
 
 It supports the following abstractions:
 * Conversion of repository services exceptions into common exceptions.
-* Creation of the correct type of instances dependant on the setting of the external source GUID.  This means that
+* Creation of the correct type of instances dependent on the setting of the external source GUID.  This means that
   the correct provenance information is added to the instance.
 * Validation of an instance's provenance information when an update is made.  This means that external instances
         can only be updated by processes that represent the external source of the instance.

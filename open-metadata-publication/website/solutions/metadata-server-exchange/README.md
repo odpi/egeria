@@ -56,8 +56,8 @@ Most third party metadata servers do not support the storing of metadata from ot
 The sticking point is typically that it can not store information about
 [where the metadata came from](../../metadata-provenance) and it can not guarantee that metadata from
 another metadata server is not updatable through its APIs and user interfaces.
-There can also be more subtle issues in the the scale (size) of metadata descriptions or the values
-contained within them, are not expected and cause errors.
+There can also be more subtle issues in the the scale (size) of metadata descriptions or or errors
+caused by unexpected values they contain.
 
 This is why it is common that the repository connectors for third party metadata servers only support
 what we call read-only operation.  They can publish information about metadata stored in the third party
@@ -118,7 +118,7 @@ as shown in figure 5.
 ![Figure 5](enterprise-catalog.png#pagewidth)
 > **Figure 5:** Using a metadata server to provide storage for new metadata
 
-At this point, there is now a rich source of metadata visible through the metadata access point.
+With the above capabilities deployed, there is now a rich source of metadata visible through the metadata access point.
 Metadata from the IGC and Atlas repositories can be retrieved, combined together and used in new ways without
 needing to change their implementation.
 
@@ -134,7 +134,7 @@ write metadata into their private metadata repository.
 Figure 6 shows IGC connected using this alternative approach.  IGC is now connecting through
 an integration daemon in a similar way to the other third party technologies shown in Figure 5.
 Storing metadata from other repositories is now possible because IGC is no longer providing
-metadata services to the the broader metadata
+metadata services to the broader metadata
 ecosystem as part of the cohort federated queries, removing the requirement to store information about
 [where the metadata came from](../../metadata-provenance).
 The downside is that the metadata in the IGC's xMeta repository is no longer visible to the

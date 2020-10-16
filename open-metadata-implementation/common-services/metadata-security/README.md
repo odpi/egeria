@@ -7,7 +7,7 @@
 
 Open Metadata Security provides fine-grained authorization services for open metadata services, types and instances.
 Since each organization will have different security requirements, the support is implemented through connectors.
-Egeria defines the interfaces and when it will call the connector.  You define the behaviour when the connector is called
+Egeria defines the interfaces and when it will call the connector.  You define the behavior when the connector is called
 and Egeria acts on the returned decision.
 
 The `metadata-security` module defines the base classes and interfaces for the

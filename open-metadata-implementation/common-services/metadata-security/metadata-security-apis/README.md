@@ -24,7 +24,7 @@ The connector that plugs in to the platform implements the following interface.
 ## Open metadata server security connector interface
 
 The connector that can be defined for an OMAG Server offers a series of layers of
-security checks.  An organization can chose which layers to make use of and which to allow
+security checks.  An organization can choose which layers to make use of and which to allow
 all requests to pass.  Figure 2 shows the layers:
 
 ![Figure 2](../docs/layers-of-security-checks.png)
