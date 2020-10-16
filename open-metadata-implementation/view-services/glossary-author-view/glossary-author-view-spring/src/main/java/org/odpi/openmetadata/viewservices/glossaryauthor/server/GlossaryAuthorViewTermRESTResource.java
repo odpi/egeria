@@ -157,6 +157,8 @@ public class GlossaryAuthorViewTermRESTResource {
      * Update a Term
      * <p>
      * Status is not updated using this call.
+     * The Categories categorising this Term can be amended using this call. For an update (rather than a replace) with no categories supplied, no changes are made to the categories; otherwise the
+     * supplied categories will replace the existing ones.
      *
      * @param serverName   local UI server name
      * @param userId       userid
