@@ -23,7 +23,6 @@ const Login = (props) => {
   const [errorMsg, setErrorMsg] = useState();
   let history = useHistory();
 
-  // }
   const handleOnClick = e => {
     console.log("login handleClick(()");
     e.preventDefault();
@@ -43,6 +42,9 @@ const Login = (props) => {
         if (res.status == "success") {
           console.log("login worked " + JSON.stringify(res));
           identificationContext.setUserId(userId);
+          identificationContext.setUser(res.user);
+          identificationContext.setAuthenticated(true);
+          // TODO original url prop. 
           // redirect user to page they were previously on if they refresh or enter an exact URL
           const path = props.currentURL ? identificationContext.getBrowserURL(props.currentURL) : identificationContext.getBrowserURL(''); 
           history.push(path);
@@ -52,7 +54,7 @@ const Login = (props) => {
           } else {
             setErrorMsg("Login Failed");
           }
-          setErrorMsg("Login Failed with " + res);
+          setErrorMsg("Login Failed with " + JSON.stringify(res));
         }
       })
       .catch(res => {
@@ -81,8 +83,9 @@ const Login = (props) => {
             lg={{ span: 4, offset: 6 }}
           >
             <Form id="egeria-login-form">
-              <FormGroup>
+              <FormGroup legendText="">
                 <TextInput
+                  id="login-username"
                   type="text"
                   labelText="Username"
                   name="username"
@@ -92,6 +95,7 @@ const Login = (props) => {
                   required
                 />
                 <TextInput
+                  id="login-password"
                   type="password"
                   labelText="Password"
                   name="password"
