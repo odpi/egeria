@@ -381,6 +381,9 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
         final String methodName = "getProjectTerms";
         SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
         try {
+            if (pageSize == null) {
+                pageSize = maxPageSize;
+            }
             List<EntityDetail> entityDetails = oMRSAPIHelper.callGetEntitiesForRelationshipEnd1(
                     methodName, userId, guid, PROJECT_TYPE_NAME, PROJECT_SCOPE_RELATIONSHIP_NAME, startingFrom, pageSize);
             List<Term> terms = convertOmrsToOmas(entityDetails, TermMapper.class);
