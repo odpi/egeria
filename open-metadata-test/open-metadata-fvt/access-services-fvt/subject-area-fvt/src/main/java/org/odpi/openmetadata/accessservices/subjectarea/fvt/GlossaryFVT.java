@@ -299,6 +299,7 @@ public class GlossaryFVT {
 
         return subjectAreaGlossaryClient.getCategories(userId, glossaryGuid, findRequest, onlyTop);
     }
+
     public List<Term> getGlossaryTerms(String glossaryGuid, FindRequest findRequest) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         return subjectAreaGlossaryClient.getTerms(userId, glossaryGuid, findRequest);
     }

@@ -36,6 +36,7 @@ public class TermFVT {
     private static final String DEFAULT_TEST_TERM_NAME = "Test term A";
     private static final String DEFAULT_TEST_TERM_NAME_UPDATED = "Test term A updated";
     private SubjectAreaNodeClient<Term> subjectAreaTerm = null;
+    private SubjectAreaTermClient subjectAreaTermClient = null;
     private GlossaryFVT glossaryFVT =null;
     private CategoryFVT categoryFVT =null;
     private SubjectAreaDefinitionCategoryFVT subjectAreaFVT =null;
@@ -68,6 +69,8 @@ public class TermFVT {
     public TermFVT(String url,String serverName,String userId) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         SubjectAreaRestClient client = new SubjectAreaRestClient(serverName, url);
         subjectAreaTerm = new SubjectAreaTermClient<>(client);
+        subjectAreaTermClient = (SubjectAreaTermClient)subjectAreaTerm;
+
         System.out.println("Create a glossary");
         glossaryFVT = new GlossaryFVT(url,serverName,userId);
         categoryFVT = new CategoryFVT(url, serverName,userId);
@@ -339,11 +342,18 @@ public class TermFVT {
         if (!createdTerm4cats.getCategories().get(0).getGuid().equals(cat1Summary.getGuid())) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected response category guid to match the requested category guid.");
         }
+        if (categoryFVT.getTerms(cat1.getSystemAttributes().getGUID()).size() != 1) {
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected the category to have 1 term.");
+        }
+
         suppliedCategories.add(cat2Summary);
         term4cats.setCategories(suppliedCategories);
         Term createdTerm4cats2 =issueCreateTerm(term4cats);
         if (createdTerm4cats2.getCategories().size() != 2) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected 2 categories returned");
+        }
+        if (getCategoriesAPI(createdTerm4cats2.getSystemAttributes().getGUID()).size() !=2) {
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 2 categories returned on get Categories API call");
         }
 
         // update with null categories should change nothing
@@ -352,11 +362,17 @@ public class TermFVT {
         if (updatedTerm4cats2.getCategories().size() != 2) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected 2 categories returned");
         }
+        if (getCategoriesAPI(updatedTerm4cats2.getSystemAttributes().getGUID()).size() !=2) {
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 2 categories returned on get Categories API call after update");
+        }
         // replace categories with null
         createdTerm4cats.setCategories(null);
         Term replacedTerm4cats = replaceTerm(createdTerm4cats.getSystemAttributes().getGUID(),createdTerm4cats);
         if (replacedTerm4cats.getCategories() != null) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected replace with null to get rid of the categorizations.");
+        }
+        if (getCategoriesAPI(replacedTerm4cats.getSystemAttributes().getGUID()) !=null) {
+            throw new SubjectAreaFVTCheckedException("ERROR: Use API call to check replace with null to get rid of the categorizations.");
         }
         // update term to gain 2 categories
         createdTerm4cats.setCategories(suppliedCategories);
@@ -364,7 +380,9 @@ public class TermFVT {
         if (updatedTerm4cats2.getCategories().size() != 2) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected update to gain 2 categorizations.");
         }
-
+        if (getCategoriesAPI(updatedTerm4cats2.getSystemAttributes().getGUID()).size() !=2) {
+            throw new SubjectAreaFVTCheckedException("ERROR: Use API call to check update to gain 2 categorizations");
+        }
 
         List<CategorySummary> supplied3Categories = new ArrayList<>();
         supplied3Categories.add(cat1Summary);
@@ -560,5 +578,9 @@ public class TermFVT {
         if (terms.size() != existingTermCount) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected " +existingTermCount + " Terms to be found, got " + terms.size());
         }
+    }
+    public List<Category> getCategoriesAPI(String termGuid) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+
+        return subjectAreaTermClient.getCategories(userId, termGuid);
     }
 }

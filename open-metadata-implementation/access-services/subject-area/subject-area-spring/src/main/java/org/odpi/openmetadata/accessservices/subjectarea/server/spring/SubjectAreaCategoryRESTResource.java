@@ -235,7 +235,7 @@ public class SubjectAreaCategoryRESTResource {
     }
 
     /**
-     *  Get the terms that are categorized by this Category
+     * Get the terms that are categorized by this Category
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
@@ -249,7 +249,7 @@ public class SubjectAreaCategoryRESTResource {
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
-     **/
+     */
     @GetMapping(path = "/users/{userId}/categories/{guid}/terms")
     public SubjectAreaOMASAPIResponse<Term> getCategorizedTerms(@PathVariable String serverName,
                                                              @PathVariable String userId,

@@ -263,10 +263,10 @@ public class SubjectAreaTermRESTResource {
      */
     @GetMapping(path = "/users/{userId}/terms/{guid}/categories")
     public SubjectAreaOMASAPIResponse<Category> getTermCategories(@PathVariable String serverName,
-                                                                      @PathVariable String userId,
-                                                                      @PathVariable String guid,
-                                                                      @RequestParam(value = "startingFrom", required = false, defaultValue = "0") Integer startingFrom,
-                                                                      @RequestParam(value = "pageSize", required = false) Integer pageSize) {
+                                                                  @PathVariable String userId,
+                                                                  @PathVariable String guid,
+                                                                  @RequestParam(value = "startingFrom", required = false, defaultValue = "0") Integer startingFrom,
+                                                                  @RequestParam(value = "pageSize", required = false) Integer pageSize) {
 
         return restAPI.getTermCategories(serverName, userId, guid, startingFrom, pageSize);
     }
