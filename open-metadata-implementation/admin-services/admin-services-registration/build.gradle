@@ -6,12 +6,11 @@
 
 dependencies {
     implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
+    implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
     implementation project(':open-metadata-implementation:admin-services:admin-services-api')
     implementation project(':open-metadata-implementation:repository-services:repository-services-apis')
-    implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
     testImplementation 'org.testng:testng'
     implementation 'com.fasterxml.jackson.core:jackson-annotations'
-
 }
 
 description = 'Administration Services Registration'

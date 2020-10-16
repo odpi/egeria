@@ -521,6 +521,8 @@ public class ConnectorBroker
      */
     private static class AccessibleConnection extends ConnectionProperties
     {
+        private static final long     serialVersionUID = 1L;
+
         AccessibleConnection(ConnectionProperties templateConnection)
         {
             super(templateConnection);

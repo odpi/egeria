@@ -81,6 +81,10 @@ public class DiscoveryEngineAdmin extends AccessServiceAdmin
                                                                    accessServiceConfig.getAccessServiceName(),
                                                                    auditLog);
 
+            List<String>  publishZones = super.extractPublishZones(accessServiceConfig.getAccessServiceOptions(),
+                                                                   accessServiceConfig.getAccessServiceName(),
+                                                                   auditLog);
+
             /*
              * The instance is used to support REST API calls to this server instance.  It is given the
              * OutTopic connection for the client so that the client can query it to connect to the right
@@ -89,6 +93,7 @@ public class DiscoveryEngineAdmin extends AccessServiceAdmin
             this.instance = new DiscoveryEngineServicesInstance(repositoryConnector,
                                                                 supportedZones,
                                                                 defaultZones,
+                                                                publishZones,
                                                                 auditLog,
                                                                 serverUserName,
                                                                 repositoryConnector.getMaxPageSize(),

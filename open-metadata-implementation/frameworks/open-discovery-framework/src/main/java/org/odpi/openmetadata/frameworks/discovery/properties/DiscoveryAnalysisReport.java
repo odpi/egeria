@@ -5,9 +5,9 @@ package org.odpi.openmetadata.frameworks.discovery.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Referenceable;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -20,19 +20,21 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class DiscoveryAnalysisReport extends Referenceable
+public class DiscoveryAnalysisReport extends PropertyBase
 {
     private static final long    serialVersionUID = 1L;
 
-    protected String                 displayName            = null;
-    protected String                 description            = null;
-    protected Date                   creationDate           = null;
-    protected Map<String, String>    analysisParameters     = null;
-    protected DiscoveryRequestStatus discoveryRequestStatus = null;
-    protected String                 assetGUID              = null;
-    protected String                 discoveryEngineGUID    = null;
-    protected String                 discoveryServiceGUID   = null;
-    protected String                 analysisStep           = null;
+    private String                 qualifiedName          = null;
+    private Map<String, String>    additionalProperties   = null;
+    private String                 displayName            = null;
+    private String                 description            = null;
+    private Date                   creationDate           = null;
+    private Map<String, String>    analysisParameters     = null;
+    private DiscoveryRequestStatus discoveryRequestStatus = null;
+    private String                 assetGUID              = null;
+    private String                 discoveryEngineGUID    = null;
+    private String                 discoveryServiceGUID   = null;
+    private String                 analysisStep           = null;
 
 
     /**
@@ -53,17 +55,75 @@ public class DiscoveryAnalysisReport extends Referenceable
     {
         super(template);
 
-        if (template == null)
+        if (template != null)
         {
-            displayName = template.getDisplayName();
-            description = template.getDescription();
-            creationDate = template.getCreationDate();
-            analysisParameters = template.getAnalysisParameters();
+            qualifiedName          = template.getQualifiedName();
+            additionalProperties   = template.getAdditionalProperties();
+            displayName            = template.getDisplayName();
+            description            = template.getDescription();
+            creationDate           = template.getCreationDate();
+            analysisParameters     = template.getAnalysisParameters();
             discoveryRequestStatus = template.getDiscoveryRequestStatus();
-            assetGUID = template.getAssetGUID();
-            discoveryEngineGUID = template.getDiscoveryEngineGUID();
-            discoveryServiceGUID = template.getDiscoveryServiceGUID();
-            analysisStep = template.getAnalysisStep();
+            assetGUID              = template.getAssetGUID();
+            discoveryEngineGUID    = template.getDiscoveryEngineGUID();
+            discoveryServiceGUID   = template.getDiscoveryServiceGUID();
+            analysisStep           = template.getAnalysisStep();
+        }
+    }
+
+
+    /**
+     * Set up the fully qualified name.
+     *
+     * @param qualifiedName String name
+     */
+    public void setQualifiedName(String qualifiedName)
+    {
+        this.qualifiedName = qualifiedName;
+    }
+
+
+    /**
+     * Returns the stored qualified name property for the metadata entity.
+     * If no qualified name is available then the empty string is returned.
+     *
+     * @return qualifiedName
+     */
+    public String getQualifiedName()
+    {
+        return qualifiedName;
+    }
+
+
+    /**
+     * Set up additional properties.
+     *
+     * @param additionalProperties Additional properties object
+     */
+    public void setAdditionalProperties(Map<String, String> additionalProperties)
+    {
+        this.additionalProperties = additionalProperties;
+    }
+
+
+    /**
+     * Return a copy of the additional properties.  Null means no additional properties are available.
+     *
+     * @return AdditionalProperties
+     */
+    public Map<String, String> getAdditionalProperties()
+    {
+        if (additionalProperties == null)
+        {
+            return null;
+        }
+        else if (additionalProperties.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return new HashMap<>(additionalProperties);
         }
     }
 
@@ -275,7 +335,9 @@ public class DiscoveryAnalysisReport extends Referenceable
     public String toString()
     {
         return "DiscoveryAnalysisReport{" +
-                "displayName='" + displayName + '\'' +
+                "qualifiedName='" + qualifiedName + '\'' +
+                ", additionalProperties=" + additionalProperties +
+                ", displayName='" + displayName + '\'' +
                 ", description='" + description + '\'' +
                 ", creationDate=" + creationDate +
                 ", analysisParameters=" + analysisParameters +
@@ -284,14 +346,10 @@ public class DiscoveryAnalysisReport extends Referenceable
                 ", discoveryEngineGUID='" + discoveryEngineGUID + '\'' +
                 ", discoveryServiceGUID='" + discoveryServiceGUID + '\'' +
                 ", analysisStep='" + analysisStep + '\'' +
-                ", qualifiedName='" + qualifiedName + '\'' +
-                ", additionalProperties=" + additionalProperties +
-                ", extendedProperties=" + extendedProperties +
-                ", meanings=" + meanings +
-                ", type=" + type +
-                ", guid='" + guid + '\'' +
-                ", url='" + url + '\'' +
-                ", classifications=" + classifications +
+                ", headerVersion=" + getHeaderVersion() +
+                ", elementHeader=" + getElementHeader() +
+                ", typeName='" + getTypeName() + '\'' +
+                ", extendedProperties=" + getExtendedProperties() +
                 '}';
     }
 
@@ -313,22 +371,19 @@ public class DiscoveryAnalysisReport extends Referenceable
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
-        {
-            return false;
-        }
         DiscoveryAnalysisReport that = (DiscoveryAnalysisReport) objectToCompare;
-        return Objects.equals(getDisplayName(), that.getDisplayName()) &&
-                Objects.equals(getDescription(), that.getDescription()) &&
-                Objects.equals(getCreationDate(), that.getCreationDate()) &&
-                Objects.equals(getAnalysisParameters(), that.getAnalysisParameters()) &&
-                Objects.equals(getDiscoveryRequestStatus(), that.getDiscoveryRequestStatus()) &&
-                Objects.equals(getAssetGUID(), that.getAssetGUID()) &&
-                Objects.equals(getDiscoveryEngineGUID(), that.getDiscoveryEngineGUID()) &&
-                Objects.equals(getDiscoveryServiceGUID(), that.getDiscoveryServiceGUID()) &&
-                Objects.equals(getAnalysisStep(), that.getAnalysisStep());
+        return Objects.equals(qualifiedName, that.qualifiedName) &&
+                Objects.equals(additionalProperties, that.additionalProperties) &&
+                Objects.equals(displayName, that.displayName) &&
+                Objects.equals(description, that.description) &&
+                Objects.equals(creationDate, that.creationDate) &&
+                Objects.equals(analysisParameters, that.analysisParameters) &&
+                discoveryRequestStatus == that.discoveryRequestStatus &&
+                Objects.equals(assetGUID, that.assetGUID) &&
+                Objects.equals(discoveryEngineGUID, that.discoveryEngineGUID) &&
+                Objects.equals(discoveryServiceGUID, that.discoveryServiceGUID) &&
+                Objects.equals(analysisStep, that.analysisStep);
     }
-
 
     /**
      * Create a hash code for this element type.
@@ -338,8 +393,7 @@ public class DiscoveryAnalysisReport extends Referenceable
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getDisplayName(), getDescription(), getCreationDate(),
-                            getAnalysisParameters(), getDiscoveryRequestStatus(), getAssetGUID(), getDiscoveryEngineGUID(),
-                            getDiscoveryServiceGUID());
+        return Objects.hash(qualifiedName, additionalProperties, displayName, description, creationDate, analysisParameters, discoveryRequestStatus
+                , assetGUID, discoveryEngineGUID, discoveryServiceGUID, analysisStep);
     }
 }

@@ -229,12 +229,14 @@ public class ContributionRecordHandler
                                                                                 contributionRecord.getExtendedProperties(),
                                                                                 contributionRecord.getAdditionalProperties());
 
-        repositoryHandler.updateEntity(userId,
-                                       contributionRecord.getGUID(),
-                                       ContributionRecordMapper.CONTRIBUTION_RECORD_TYPE_GUID,
-                                       ContributionRecordMapper.CONTRIBUTION_RECORD_TYPE_NAME,
-                                       properties,
-                                       methodName);
+        repositoryHandler.updateEntityProperties(userId,
+                                                 null,
+                                                 null,
+                                                 contributionRecord.getGUID(),
+                                                 ContributionRecordMapper.CONTRIBUTION_RECORD_TYPE_GUID,
+                                                 ContributionRecordMapper.CONTRIBUTION_RECORD_TYPE_NAME,
+                                                 properties,
+                                                 methodName);
     }
 
 

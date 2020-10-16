@@ -4,7 +4,7 @@ package org.odpi.openmetadata.frameworks.connectors.properties;
 
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Classification;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementClassification;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
 import org.testng.annotations.Test;
 
@@ -22,7 +22,7 @@ import static org.testng.Assert.assertTrue;
 public class TestAssetDetail
 {
     private ElementType                 type                   = new ElementType();
-    private List<Classification>        classifications        = new ArrayList<>();
+    private List<ElementClassification> classifications        = new ArrayList<>();
     private Map<String, Object>         assetProperties        = new HashMap<>();
     private AssetExternalIdentifiers    externalIdentifiers    = null;
     private AssetRelatedMediaReferences relatedMediaReferences = null;

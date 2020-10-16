@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.governanceprogram.api;
 
 
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernancePrinciple;
+import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernancePrincipleProperties;
 
 import java.util.List;
 
@@ -31,6 +31,6 @@ public interface GovernancePolicyMakingInterface
 
     List<String>  getGovernancePrinciples();
 
-    GovernancePrinciple getGovernancePrinciple();
+    GovernancePrincipleProperties getGovernancePrinciple();
 
 }

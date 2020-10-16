@@ -82,7 +82,7 @@ public class ValidValueAssignmentConsumerElement extends ValidValueAssignmentPro
     public String toString()
     {
         return "ValidValueAssignmentConsumerElement{" + "consumer=" + consumer +
-                ", strictRequirement=" + isStrictRequirement() + '}';
+                ", strictRequirement=" + getStrictRequirement() + '}';
     }
 
 

@@ -123,12 +123,13 @@ public class GovernedAssetHandlerTest {
 
     private void mockCreateSoftwareServerCapability() throws UserNotAuthorizedException, PropertyServerException {
         when(repositoryHandler.createEntity(USER_ID,
-                SOFTWARE_SERVER_CAPABILITY_GUID,
-                SOFTWARE_SERVER_CAPABILITY,
-                new InstanceProperties(),
-                Collections.emptyList(),
-                InstanceStatus.ACTIVE,
-                "createSoftwareServerCapability")).thenReturn(SOFTWARE_SERVER_CAPABILITY_GUID);
+                                            SOFTWARE_SERVER_CAPABILITY_GUID,
+                                            SOFTWARE_SERVER_CAPABILITY,
+                                            null,
+                                            null,
+                                            new InstanceProperties(),
+                                            InstanceStatus.ACTIVE,
+                                            "createSoftwareServerCapability")).thenReturn(SOFTWARE_SERVER_CAPABILITY_GUID);
     }
 
     private List<EntityDetail> mockEntityDetailsList(String guid, String typeName) {

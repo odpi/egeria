@@ -5,12 +5,10 @@ package org.odpi.openmetadata.accessservices.datamanager.metadataelements;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.datamanager.properties.Classification;
+import org.odpi.openmetadata.accessservices.datamanager.metadataelements.ElementClassification;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -36,8 +34,7 @@ public class ElementHeader implements Serializable
     private ElementType   type = null;
     private ElementOrigin origin = null;
 
-    private List<String>         meanings        = null;
-    private List<Classification> classifications = null;
+    private List<ElementClassification> classifications  = null;
 
 
     /**
@@ -57,11 +54,10 @@ public class ElementHeader implements Serializable
     {
         if (template != null)
         {
-            guid            = template.getGUID();
-            type            = template.getType();
-            origin          = template.getOrigin();
-            meanings        = template.getMeanings();
-            classifications = template.getClassifications();
+            guid             = template.getGUID();
+            type             = template.getType();
+            origin           = template.getOrigin();
+            classifications  = template.getClassifications();
         }
     }
 
@@ -141,44 +137,11 @@ public class ElementHeader implements Serializable
 
 
     /**
-     * Return the unique identifiers of the assigned meanings for this metadata element.
-     *
-     * @return list of meanings
-     */
-    public List<String> getMeanings()
-    {
-        if (meanings == null)
-        {
-            return null;
-        }
-        else if (meanings.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new ArrayList<>(meanings);
-        }
-    }
-
-
-    /**
-     * Set up the unique identifiers of the assigned meanings for this metadata element.
-     *
-     * @param meanings list of meanings
-     */
-    public void setMeanings(List<String> meanings)
-    {
-        this.meanings = meanings;
-    }
-
-
-    /**
      * Return the list of classifications associated with the metadata element.
      *
      * @return Classifications  list of classifications
      */
-    public List<Classification> getClassifications()
+    public List<ElementClassification> getClassifications()
     {
         if (classifications == null)
         {
@@ -200,7 +163,7 @@ public class ElementHeader implements Serializable
      *
      * @param classifications list of classifications
      */
-    public void setClassifications(List<Classification> classifications)
+    public void setClassifications(List<ElementClassification> classifications)
     {
         this.classifications = classifications;
     }
@@ -218,7 +181,6 @@ public class ElementHeader implements Serializable
                 "guid='" + guid + '\'' +
                 ", type=" + type +
                 ", origin=" + origin +
-                ", meanings=" + meanings +
                 ", classifications=" + classifications +
                 ", GUID='" + getGUID() + '\'' +
                 '}';
@@ -246,7 +208,6 @@ public class ElementHeader implements Serializable
         return Objects.equals(guid, that.guid) &&
                 Objects.equals(type, that.type) &&
                 Objects.equals(origin, that.origin) &&
-                Objects.equals(meanings, that.meanings) &&
                 Objects.equals(classifications, that.classifications);
     }
 
@@ -259,6 +220,6 @@ public class ElementHeader implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(guid, type, origin, meanings, classifications);
+        return Objects.hash(guid, type, origin, classifications);
     }
 }

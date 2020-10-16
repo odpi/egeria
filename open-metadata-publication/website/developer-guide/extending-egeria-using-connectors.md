@@ -155,6 +155,7 @@ an instance of this connector implementation will be used within the server.
 | Metadata Collection Event Mapper | Maps events from a metadata repository to open metadata events. | [repository-services](../../../open-metadata-implementation/repository-services) | none ([documentation](../../../open-metadata-implementation/repository-services/docs/component-descriptions/connectors/event-mapper-connector.md)) |
 | Open Metadata Topic Connector | Connects to a topic on an external Event bus such as Apache Kafka. | [repository-services](../../../open-metadata-implementation/repository-services) | [open-metadata-topic-connectors](../../../open-metadata-implementation/adapters/open-connectors/event-bus-connectors/open-metadata-topic-connectors) |
 | Open Discovery Service | Implements automatic metadata discovery. | [discovery-engine-services](../../../open-metadata-implementation/governance-servers/discovery-engine-services) | [discovery-service-connectors](../../../open-metadata-implementation/adapters/open-connectors/discovery-service-connectors) |
+| Integration Connector | Implements metadata exchange with third party tools. | [integration-services](../../../open-metadata-implementation/integration-services) | none ([documentation](../../../open-metadata-implementation/governance-servers/integration-daemon-services/docs/integration-connector.md)) |
 
 
 

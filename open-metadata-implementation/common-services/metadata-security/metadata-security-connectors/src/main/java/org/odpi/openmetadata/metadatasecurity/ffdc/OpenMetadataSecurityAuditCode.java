@@ -97,48 +97,55 @@ public enum OpenMetadataSecurityAuditCode implements AuditLogMessageSet
                              "Review the security policies and settings to determine if this access should be allowed or not." +
                                      "  Take action to either change the security sessions or determine the reason for the unauthorized request."),
 
-    UNAUTHORIZED_ASSET_CHANGE("OPEN-METADATA-SECURITY-0012",
+    UNAUTHORIZED_ASSET_CREATE("OPEN-METADATA-SECURITY-0012",
+                               OMRSAuditLogRecordSeverity.SECURITY,
+                              "User {0} is not authorized to create an asset of type {1}",
+                              "The security service detected an unauthorized create of an asset.",
+                              "Review the security policies and settings to determine if this create should be allowed or not." +
+                                      "  Take action to either change the security sessions or determine the reason for the unauthorized request."),
+
+    UNAUTHORIZED_ASSET_CHANGE("OPEN-METADATA-SECURITY-0013",
                               OMRSAuditLogRecordSeverity.SECURITY,
                               "User {0} is not authorized to change asset {1}",
                               "The security service detected an unauthorized access to an asset.",
                               "Review the security policies and settings to determine if this access should be allowed or not." +
                                       "  Take action to either change the security sessions or determine the reason for the unauthorized request."),
 
-    INCOMPLETE_ASSET(         "OPEN-METADATA-SECURITY-0013 ",
+    INCOMPLETE_ASSET(         "OPEN-METADATA-SECURITY-0014",
                               OMRSAuditLogRecordSeverity.SECURITY,
                               "User {0} is not authorized to change asset {1} because it has missing properties",
                               "The system is unable to process a request from the user because the asset is not correctly or completely filled out.",
                               "The request fails with a UserNotAuthorizedException exception."),
 
-    UNAUTHORIZED_TYPE_ACCESS("OPEN-METADATA-SECURITY-0014",
+    UNAUTHORIZED_TYPE_ACCESS("OPEN-METADATA-SECURITY-0015",
                               OMRSAuditLogRecordSeverity.SECURITY,
                               "User {0} is not authorized to access open metadata type {1} ({2}) on server {3}",
                               "The security service detected an unauthorized access of an open metadata type.",
                               "Review the security policies and settings to determine if this access should be allowed or not." +
                                       "  Take action to either change the security sessions or determine the reason for the unauthorized request."),
 
-    UNAUTHORIZED_TYPE_CHANGE("OPEN-METADATA-SECURITY-0015",
+    UNAUTHORIZED_TYPE_CHANGE("OPEN-METADATA-SECURITY-0016",
                              OMRSAuditLogRecordSeverity.SECURITY,
                              "User {0} is not authorized to change open metadata type {1} ({2}) on server {3}",
                              "The security service detected an unauthorized change of an open metadata type.",
                              "Review the security policies and settings to determine if this access should be allowed or not." +
                                      "  Take action to either change the security sessions or determine the reason for the unauthorized request."),
 
-    UNAUTHORIZED_INSTANCE_CREATE("OPEN-METADATA-SECURITY-0016",
+    UNAUTHORIZED_INSTANCE_CREATE("OPEN-METADATA-SECURITY-0017",
                                  OMRSAuditLogRecordSeverity.SECURITY,
                                  "User {0} is not authorized to create an open metadata instance of type {1} on server {2}",
                                  "The security service detected an unauthorized access of an open metadata type.",
                                  "Review the security policies and settings to determine if this access should be allowed or not." +
                                          "  Take action to either change the security sessions or determine the reason for the unauthorized request."),
 
-    UNAUTHORIZED_INSTANCE_ACCESS("OPEN-METADATA-SECURITY-0017",
+    UNAUTHORIZED_INSTANCE_ACCESS("OPEN-METADATA-SECURITY-0018",
                              OMRSAuditLogRecordSeverity.SECURITY,
                              "User {0} is not authorized to access open metadata instance {1} of type {2} on server {3}",
                              "The security service detected an unauthorized access of an open metadata type.",
                              "Review the security policies and settings to determine if this access should be allowed or not." +
                                      "  Take action to either change the security sessions or determine the reason for the unauthorized request."),
 
-    UNAUTHORIZED_INSTANCE_CHANGE("OPEN-METADATA-SECURITY-0018",
+    UNAUTHORIZED_INSTANCE_CHANGE("OPEN-METADATA-SECURITY-0019",
                              OMRSAuditLogRecordSeverity.SECURITY,
                              "User {0} is not authorized to change open metadata type {1} of type {2} on server {3} using method {4}",
                              "The security service detected an unauthorized change of an open metadata instance.",

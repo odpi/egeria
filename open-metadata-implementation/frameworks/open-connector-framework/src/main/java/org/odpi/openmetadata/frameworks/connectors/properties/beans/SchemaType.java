@@ -4,6 +4,8 @@ package org.odpi.openmetadata.frameworks.connectors.properties.beans;
 
 import com.fasterxml.jackson.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -20,7 +22,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  *     <ul>
  *         <li>PrimitiveSchemaType is for a leaf element in a schema.</li>
  *         <li>MapSchemaType is for an attribute of type Map</li>
- *         <li>BoundedSchemaType is for sets and arrays</li>
  *         <li>APIOperation is for operations in an API</li>
  *     </ul>
  */
@@ -32,7 +33,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes(
         {
-                @JsonSubTypes.Type(value = BoundedSchemaType.class, name = "BoundedSchemaType"),
                 @JsonSubTypes.Type(value = ComplexSchemaType.class, name = "ComplexSchemaType"),
                 @JsonSubTypes.Type(value = MapSchemaType.class, name = "MapSchemaType"),
                 @JsonSubTypes.Type(value = APISchemaType.class, name = "APISchemaType"),
@@ -40,6 +40,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = LiteralSchemaType.class, name = "LiteralSchemaType"),
                 @JsonSubTypes.Type(value = SimpleSchemaType.class, name = "SimpleSchemaType"),
                 @JsonSubTypes.Type(value = SchemaTypeChoice.class, name = "SchemaTypeChoice"),
+                @JsonSubTypes.Type(value = ExternalSchemaType.class, name = "ExternalSchemaType"),
         })
 @SuppressWarnings(value = "deprecation")
 public class SchemaType extends SchemaElement
@@ -51,6 +52,13 @@ public class SchemaType extends SchemaElement
     protected String              usage            = null;
     protected String              encodingStandard = null;
     protected String              namespace        = null;
+
+    /*
+     * Values for when the schemaType is derived from other values rather than stored
+     */
+    protected String                             formula = null;
+    protected List<DerivedSchemaTypeQueryTarget> queries = null;
+
 
     /**
      * Default constructor
@@ -77,7 +85,64 @@ public class SchemaType extends SchemaElement
             usage = template.getUsage();
             encodingStandard = template.getEncodingStandard();
             namespace = template.getNamespace();
+
+            formula = template.getFormula();
+            queries = template.getQueries();
         }
+    }
+
+
+    /**
+     * Return the formula used to combine the values of the queries.  Each query is numbers 0, 1, ... and the
+     * formula has placeholders in it to show how the query results are combined.
+     *
+     * @return String formula
+     */
+    public String getFormula() { return formula; }
+
+
+    /**
+     * Set up the formula used to combine the values of the queries.  Each query is numbers 0, 1, ... and the
+     * formula has placeholders in it to show how the query results are combined.
+     *
+     * @param formula String formula
+     */
+    public void setFormula(String formula)
+    {
+        this.formula = formula;
+    }
+
+
+    /**
+     * Return the list of queries that are used to create the derived schema element.
+     *
+     * @return list of queries
+     */
+    public List<DerivedSchemaTypeQueryTarget> getQueries()
+    {
+        if (queries == null)
+        {
+            return null;
+        }
+        else if (queries.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return new ArrayList<>(queries);
+        }
+    }
+
+
+    /**
+     * Set up the list of queries that are used to create the derived schema element.
+     *
+     * @param queries list of queries
+     */
+    public void setQueries(List<DerivedSchemaTypeQueryTarget> queries)
+    {
+        this.queries = queries;
     }
 
 
@@ -248,7 +313,7 @@ public class SchemaType extends SchemaElement
                 ", usage='" + usage + '\'' +
                 ", encodingStandard='" + encodingStandard + '\'' +
                 ", namespace='" + namespace + '\'' +
-                ", deprecated=" + isDeprecated() +
+                ", deprecated=" + getIsDeprecated() +
                 ", displayName='" + getDisplayName() + '\'' +
                 ", description='" + getDescription() + '\'' +
                 ", qualifiedName='" + getQualifiedName() + '\'' +

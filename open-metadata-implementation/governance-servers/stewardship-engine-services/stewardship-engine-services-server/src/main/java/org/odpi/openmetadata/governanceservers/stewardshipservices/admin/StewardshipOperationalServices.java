@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.governanceservers.stewardshipservices.admin;
 
 import org.odpi.openmetadata.adminservices.configuration.properties.StewardshipEngineServicesConfig;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +20,7 @@ public class StewardshipOperationalServices
     private String                          localServerName;               /* Initialized in constructor */
     private String                          localServerUserId;             /* Initialized in constructor */
     private int                             maxPageSize;                   /* Initialized in constructor */
-    private OMRSAuditLog                    auditLog                        = null;
+    private AuditLog                        auditLog                        = null;
     private StewardshipEngineServicesConfig stewardshipEngineServicesConfig = null;
 
 

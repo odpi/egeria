@@ -91,5 +91,9 @@ POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{s
 ```
 
 ----
+* Return to [configuring an OMAG server](configuring-an-omag-server.md)
+* Return to [configuration document structure](../concepts/configuration-document.md)
+
+----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 Copyright Contributors to the ODPi Egeria project.

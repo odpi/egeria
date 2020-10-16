@@ -4,7 +4,7 @@ package org.odpi.openmetadata.frameworks.connectors.properties;
 
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Classification;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementClassification;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.PrimitiveSchemaType;
 import org.testng.annotations.Test;
@@ -23,14 +23,14 @@ import static org.testng.Assert.assertTrue;
 public class TestAssetUniverse
 {
     private ElementType                 type                   = new ElementType();
-    private List<Classification>        classifications        = new ArrayList<>();
+    private List<ElementClassification> classifications        = new ArrayList<>();
     private Map<String, Object>         assetProperties        = new HashMap<>();
     private AssetExternalIdentifiers    externalIdentifiers    = null;
     private AssetRelatedMediaReferences relatedMediaReferences = null;
     private AssetNoteLogs               noteLogs               = null;
     private AssetExternalReferences     externalReferences     = null;
     private AssetConnections            connections            = null;
-    private AssetLicenses       licenses       = null;
+    private AssetLicenses               licenses               = null;
     private AssetCertifications certifications = null;
     private List<AssetMeaning>  meanings       = null;
     private AssetSchemaType     schema         = null;

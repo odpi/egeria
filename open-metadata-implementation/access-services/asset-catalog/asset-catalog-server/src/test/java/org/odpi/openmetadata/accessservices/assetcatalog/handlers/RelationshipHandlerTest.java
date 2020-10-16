@@ -87,7 +87,7 @@ public class RelationshipHandlerTest {
 
     @Test
     public void getRelationshipBetweenEntities_throwsUserNotAuthorizedException()
-            throws PropertyServerException, UserNotAuthorizedException, RepositoryErrorException {
+            throws PropertyServerException, UserNotAuthorizedException, RepositoryErrorException, InvalidParameterException{
         String methodName = "getRelationshipBetweenEntities";
         mockTypeDef(RELATIONSHIP_TYPE, RELATIONSHIP_TYPE_GUID);
         mockMetadataCollection();

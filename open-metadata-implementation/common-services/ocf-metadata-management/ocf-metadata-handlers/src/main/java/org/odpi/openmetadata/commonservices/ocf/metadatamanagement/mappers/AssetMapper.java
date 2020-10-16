@@ -80,6 +80,22 @@ public class AssetMapper
     public static final String MEDIA_FILE_TYPE_GUID                      = "c5ce5499-9582-42ea-936c-9771fbd475f8";  /* from Area 2 */
     public static final String MEDIA_FILE_TYPE_NAME                      = "MediaFile";
     /* DataFile */
+    public static final String DOCUMENT_TYPE_GUID                        = "b463827c-c0a0-4cfb-a2b2-ddc63746ded4";  /* from Area 2 */
+    public static final String DOCUMENT_TYPE_NAME                        = "Document";
+    /* MediaFile */
+    public static final String DOCUMENT_STORE_TYPE_GUID                  = "37156790-feac-4e1a-a42e-88858ae6f8e1";  /* from Area 2 */
+    public static final String DOCUMENT_STORE_TYPE_NAME                  = "DocumentStore";
+    /* DataStore */
+    public static final String MEDIA_COLLECTION_TYPE_GUID                = "0075d603-1627-41c5-8cae-f5458d1247fe";  /* from Area 2 */
+    public static final String MEDIA_COLLECTION_TYPE_NAME                = "MediaCollection";
+    /* DataSet */
+
+    public static final String LINKED_MEDIA_TYPE_GUID                    = "cee3a190-fc8d-4e53-908a-f1b9689581e0";  /* from Area 0 */
+    public static final String LINKED_MEDIA_TYPE_NAME                    = "LinkedMedia";
+    /* End1 = MediaFile; End 2 = MediaFile */
+    public static final String GROUPED_MEDIA_TYPE_GUID                   = "7d881574-461d-475c-ab44-077451528cb8";  /* from Area 0 */
+    public static final String GROUPED_MEDIA_TYPE_NAME                   = "GroupedMedia";
+    /* End1 = MediaCollection; End 2 = MediaFile */
 
     public static final String EMBEDDED_METADATA_PROPERTY_NAME           = "embeddedMetadata";                      /* from MediaFile entity */
 
@@ -139,4 +155,29 @@ public class AssetMapper
 
     public static final String REFERENCE_DATA_CLASSIFICATION_GUID        = "55e5ae33-39c6-4834-9d05-ef0ae4e0163b";
     public static final String REFERENCE_DATA_CLASSIFICATION_NAME        = "ReferenceData";
+
+    public static final String DEPLOYED_API_TYPE_GUID                    = "7dbb3e63-138f-49f1-97b4-66313871fc14";  /* from Area 2 */
+    public static final String DEPLOYED_API_TYPE_NAME                    = "DeployedAPI";
+    /* Asset */
+    public static final String API_ENDPOINT_TYPE_GUID                    = "de5b9501-3ad4-4803-a8b2-e311c72a4336";  /* from Area 0 */
+    public static final String API_ENDPOINT_TYPE_NAME                    = "APIEndpoint";
+    /* End1 = DeployedAPI; End 2 = Endpoint */
+
+    public static final String LOG_FILE_TYPE_GUID                        = "ff4c8484-9127-464a-97fc-99579d5bc429";  /* from Area 2 */
+    public static final String LOG_FILE_TYPE_NAME                        = "LogFile";
+    /* DataFile */
+    public static final String LOG_FILE_TYPE_PROPERTY_NAME               = "type";                                  /* from LogFile entity */
+
+    public static final String TOPIC_TYPE_GUID                           = "29100f49-338e-4361-b05d-7e4e8e818325";  /* from Area 2 */
+    public static final String TOPIC_TYPE_NAME                           = "Topic";
+    /* DataSet */
+    public static final String TOPIC_TYPE_PROPERTY_NAME                  = "topicType";                             /* from Topic entity */
+
+    public static final String SUBSCRIBER_LIST_TYPE_GUID                 = "69751093-35f9-42b1-944b-ba6251ff513d";  /* from Area 0 */
+    public static final String SUBSCRIBER_LIST_TYPE_NAME                 = "SubscriberList";
+    /* DataSet */
+    public static final String TOPIC_SUBSCRIBERS_TYPE_GUID               = "bc91a28c-afb9-41a7-8eb2-fc8b5271fe9e";  /* from Area 0 */
+    public static final String TOPIC_SUBSCRIBERS_TYPE_NAME               = "TopicSubscribers";
+    /* End1 = SubscriberList; End 2 = Topic */
+
 }
