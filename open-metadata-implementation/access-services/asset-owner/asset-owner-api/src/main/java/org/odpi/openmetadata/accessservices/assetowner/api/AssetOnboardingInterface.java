@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.assetowner.api;
 
 
+import org.odpi.openmetadata.accessservices.assetowner.properties.AssetProperties;
 import org.odpi.openmetadata.accessservices.assetowner.properties.SchemaAttributeProperties;
 import org.odpi.openmetadata.accessservices.assetowner.properties.SchemaTypeProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -47,6 +48,24 @@ public interface AssetOnboardingInterface
                               Map<String, Object>  extendedProperties) throws InvalidParameterException,
                                                                               UserNotAuthorizedException,
                                                                               PropertyServerException;
+
+
+    /**
+     * Add a comprehensive asset description to the catalog.
+     *
+     * @param userId calling user
+     * @param assetProperties properties for the asset
+     *
+     * @return unique identifier (guid) of the asset
+     *
+     * @throws InvalidParameterException full path or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    String  addAssetToCatalog(String          userId,
+                              AssetProperties assetProperties) throws InvalidParameterException,
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException;
 
 
     /**
@@ -193,53 +212,6 @@ public interface AssetOnboardingInterface
                               SchemaAttributeProperties schemaAttribute) throws InvalidParameterException,
                                                                                 UserNotAuthorizedException,
                                                                                 PropertyServerException;
-
-
-    /**
-     * Links the supplied schema to the asset.  If the schema has the GUID set, it is assumed to refer to
-     * an existing schema defined in the metadata repository.  If this schema is either not found, or
-     * already attached to an asset, then an error occurs.  If the GUID is null then a new schemaType
-     * is added to the metadata repository and attached to the asset.  If another schema is currently
-     * attached to the asset, it is unlinked and deleted.
-     *
-     * @param userId calling user
-     * @param assetGUID unique identifier of the asset that the schema is to be attached to
-     * @param schemaType schema to attach
-     * @param schemaAttributes list of schema attribute objects.
-     *
-     * @return unique identifier (guid) of the schema
-     *
-     * @throws InvalidParameterException full path or userId is null
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    @Deprecated
-    String   addSchemaToAsset(String                userId,
-                              String                assetGUID,
-                              SchemaType            schemaType,
-                              List<SchemaAttribute> schemaAttributes) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException;
-
-
-    /**
-     * Adds attributes to a complex schema type like a relational table or a structured document.
-     * This method can be called repeatedly to add many attributes to a schema.
-     *
-     * @param userId calling user
-     * @param schemaTypeGUID unique identifier if the schema to anchor these attributes to.
-     * @param schemaAttributes list of schema attribute objects.
-     *
-     * @throws InvalidParameterException userId or schemaTypeGUID is null
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    @Deprecated
-    void   addSchemaAttributesToSchema(String                 userId,
-                                       String                 schemaTypeGUID,
-                                       List<SchemaAttribute>  schemaAttributes) throws InvalidParameterException,
-                                                                                       UserNotAuthorizedException,
-                                                                                       PropertyServerException;
 
 
     /**

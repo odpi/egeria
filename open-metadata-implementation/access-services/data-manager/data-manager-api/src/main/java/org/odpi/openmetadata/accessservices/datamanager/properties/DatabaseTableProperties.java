@@ -3,9 +3,7 @@
 
 package org.odpi.openmetadata.accessservices.datamanager.properties;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.*;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -16,9 +14,16 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
+        property = "class")
+@JsonSubTypes(
+        {
+                @JsonSubTypes.Type(value = DatabaseViewProperties.class, name = "DatabaseViewProperties"),
+        })
 public class DatabaseTableProperties extends SchemaAttributeProperties
 {
     private static final long    serialVersionUID = 1L;
+
 
     /**
      * Default constructor
@@ -52,18 +57,17 @@ public class DatabaseTableProperties extends SchemaAttributeProperties
                 "elementPosition=" + getElementPosition() +
                 ", minCardinality=" + getMinCardinality() +
                 ", maxCardinality=" + getMaxCardinality() +
-                ", allowsDuplicateValues=" + isAllowsDuplicateValues() +
-                ", orderedValues=" + isOrderedValues() +
+                ", allowsDuplicateValues=" + getAllowsDuplicateValues() +
+                ", orderedValues=" + getOrderedValues() +
                 ", sortOrder=" + getSortOrder() +
                 ", minimumLength=" + getMinimumLength() +
                 ", length=" + getLength() +
-                ", significantDigits=" + getSignificantDigits() +
-                ", nullable=" + isNullable() +
+                ", significantDigits=" + getPrecision() +
+                ", nullable=" + getIsNullable() +
                 ", defaultValueOverride='" + getDefaultValueOverride() + '\'' +
-                ", anchorGUID='" + getAnchorGUID() + '\'' +
                 ", nativeJavaClass='" + getNativeJavaClass() + '\'' +
                 ", aliases=" + getAliases() +
-                ", deprecated=" + isDeprecated() +
+                ", deprecated=" + getIsDeprecated() +
                 ", displayName='" + getDisplayName() + '\'' +
                 ", description='" + getDescription() + '\'' +
                 ", qualifiedName='" + getQualifiedName() + '\'' +

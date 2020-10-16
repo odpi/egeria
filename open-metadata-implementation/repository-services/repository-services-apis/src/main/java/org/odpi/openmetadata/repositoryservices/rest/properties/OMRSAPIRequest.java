@@ -24,6 +24,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = OMRSAPIFindRequest.class, name = "OMRSAPIFindRequest"),
                 @JsonSubTypes.Type(value = TypeDefReIdentifyRequest.class, name = "TypeDefReIdentifyRequest"),
                 @JsonSubTypes.Type(value = InstancePropertiesRequest.class, name = "InstancePropertiesRequest"),
+                @JsonSubTypes.Type(value = ClassificationRequest.class, name = "ClassificationRequest"),
                 @JsonSubTypes.Type(value = InstanceGraphRequest.class, name = "InstanceGraphRequest"),
                 @JsonSubTypes.Type(value = MetadataCollectionIdRequest.class, name = "MetadataCollectionIdRequest"),
                 @JsonSubTypes.Type(value = EntityCreateRequest.class, name = "EntityCreateRequest"),

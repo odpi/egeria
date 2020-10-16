@@ -4,7 +4,10 @@ package org.odpi.openmetadata.metadatasecurity;
 
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.metadatasecurity.properties.Asset;
+import org.odpi.openmetadata.metadatasecurity.properties.Connection;
+
+import java.util.List;
 
 /**
  * OpenMetadataConnectionSecurity defines the interface of a security connector that is validating whether a specific
@@ -23,6 +26,20 @@ public interface OpenMetadataConnectionSecurity
      * @param connection connection object
      * @throws UserNotAuthorizedException the user is not authorized to access this service
      */
-    void  validateUserForConnection(String userId,
+    void  validateUserForConnection(String     userId,
                                     Connection connection) throws UserNotAuthorizedException;
+
+
+    /**
+     * Select a connection from the list of connections attached to an asset.
+     *
+     * @param userId calling user
+     * @param asset asset requested by caller
+     * @param connections list of attached connections
+     * @return selected connection or null (pretend there are no connections attached to the asset) or
+     * @throws UserNotAuthorizedException the user is not authorized to access this service
+     */
+    Connection validateUserForAssetConnectionList(String           userId,
+                                                  Asset            asset,
+                                                  List<Connection> connections) throws UserNotAuthorizedException;
 }

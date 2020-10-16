@@ -5,7 +5,8 @@ package org.odpi.openmetadata.accessservices.assetowner.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.EnumSchemaType;
+
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -21,7 +22,7 @@ public class EnumSchemaTypeProperties extends SimpleSchemaTypeProperties
 {
     private static final long     serialVersionUID = 1L;
 
-    private String  validValueSet = null;
+    private String validValueSetGUID = null;
 
     /**
      * Default constructor
@@ -44,45 +45,24 @@ public class EnumSchemaTypeProperties extends SimpleSchemaTypeProperties
 
 
     /**
-     * Copy/clone operator.
-     *
-     * @param objectToFill schema type object
-     * @return filled object
-     */
-    public EnumSchemaType cloneProperties(EnumSchemaType  objectToFill)
-    {
-        EnumSchemaType clone = objectToFill;
-
-        if (clone == null)
-        {
-            clone = new EnumSchemaType();
-        }
-
-        super.cloneProperties(clone);
-
-        return clone;
-    }
-
-
-    /**
      * Return the unique identifier of the valid value set that describes the enum values for this schema element.
      *
      * @return string guid
      */
-    public String getValidValueSet()
+    public String getValidValueSetGUID()
     {
-        return validValueSet;
+        return validValueSetGUID;
     }
 
 
     /**
      * Set up the unique identifier of the value set that describes the enum values for this schema element.
      *
-     * @param validValueSet string guid
+     * @param validValueSetGUID string guid
      */
-    public void setValidValueSet(String validValueSet)
+    public void setValidValueSetGUID(String validValueSetGUID)
     {
-        this.validValueSet = validValueSet;
+        this.validValueSetGUID = validValueSetGUID;
     }
 
 
@@ -95,7 +75,7 @@ public class EnumSchemaTypeProperties extends SimpleSchemaTypeProperties
     public String toString()
     {
         return "EnumSchemaTypeProperties{" +
-                "validValueSet='" + validValueSet + '\'' +
+                "validValueSet='" + validValueSetGUID + '\'' +
                 ", dataType='" + getDataType() + '\'' +
                 ", defaultValue='" + getDefaultValue() + '\'' +
                 ", versionNumber='" + getVersionNumber() + '\'' +
@@ -105,13 +85,49 @@ public class EnumSchemaTypeProperties extends SimpleSchemaTypeProperties
                 ", namespace='" + getNamespace() + '\'' +
                 ", displayName='" + getDisplayName() + '\'' +
                 ", description='" + getDescription() + '\'' +
-                ", deprecated=" + isDeprecated() +
+                ", deprecated=" + getIsDeprecated() +
                 ", typeName='" + getTypeName() + '\'' +
-                ", classifications=" + getClassifications() +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +
-                ", meanings=" + getMeanings() +
                 ", extendedProperties=" + getExtendedProperties() +
                 '}';
+    }
+
+
+    /**
+     * Compare the values of the supplied object with those stored in the current object.
+     *
+     * @param objectToCompare supplied object
+     * @return boolean result of comparison
+     */
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
+        {
+            return true;
+        }
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        {
+            return false;
+        }
+        if (!super.equals(objectToCompare))
+        {
+            return false;
+        }
+        EnumSchemaTypeProperties that = (EnumSchemaTypeProperties) objectToCompare;
+        return Objects.equals(validValueSetGUID, that.validValueSetGUID);
+    }
+
+
+    /**
+     * Return hash code for this object
+     *
+     * @return int hash code
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), validValueSetGUID);
     }
 }

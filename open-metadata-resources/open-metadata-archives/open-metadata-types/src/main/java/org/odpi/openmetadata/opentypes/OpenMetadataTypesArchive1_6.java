@@ -240,7 +240,7 @@ public class OpenMetadataTypesArchive1_6
         final String attribute2Description     = "Length of the data field (zero means unlimited).";
         final String attribute2DescriptionGUID = null;
         final String attribute3Name            = "significantDigits";
-        final String attribute3Description     = "Number of significant digits to the right of decimal point (zero means it is an integer).";
+        final String attribute3Description     = "Number of significant digits before the decimal point (zero means it is an integer).";
         final String attribute3DescriptionGUID = null;
         final String attribute4Name            = "isNullable";
         final String attribute4Description     = "Accepts null values or not.";

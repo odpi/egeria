@@ -134,7 +134,7 @@ public class Comment extends Referenceable
      *
      * @return boolean
      */
-    public boolean isPublic()
+    public boolean getIsPublic()
     {
         return isPublic;
     }
@@ -145,7 +145,7 @@ public class Comment extends Referenceable
      *
      * @param aPublic boolean
      */
-    public void setPublic(boolean aPublic)
+    public void setIsPublic(boolean aPublic)
     {
         isPublic = aPublic;
     }
@@ -196,7 +196,7 @@ public class Comment extends Referenceable
         Comment comment = (Comment) objectToCompare;
         return getCommentType() == comment.getCommentType() &&
                 Objects.equals(getCommentText(), comment.getCommentText()) &&
-                Objects.equals(isPublic(), comment.isPublic()) &&
+                Objects.equals(getIsPublic(), comment.getIsPublic()) &&
                 Objects.equals(getUser(), comment.getUser());
     }
 }

@@ -20,12 +20,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum StarRating implements Serializable
 {
-    NOT_RECOMMENDED (0, "X", "Not recommended"),
-    ONE_STAR        (1, "*", "Poor"),
-    TWO_STARS       (2, "**", "Usable"),
-    THREE_STARS     (3, "***", "Good"),
-    FOUR_STARS      (4, "****", "Very Good"),
-    FIVE_STARS      (5, "*****", "Excellent");
+    NO_RECOMMENDATION (0, "X", "No recommendation"),
+    ONE_STAR          (1, "*", "Poor"),
+    TWO_STARS         (2, "**", "Usable"),
+    THREE_STARS       (3, "***", "Good"),
+    FOUR_STARS        (4, "****", "Very Good"),
+    FIVE_STARS        (5, "*****", "Excellent");
 
     private static final long     serialVersionUID = 1L;
 

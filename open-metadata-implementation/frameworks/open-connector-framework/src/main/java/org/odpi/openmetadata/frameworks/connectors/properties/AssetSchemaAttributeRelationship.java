@@ -8,8 +8,8 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * SchemaLink defines a relationship between 2 SchemaElements.
- * It is used in network type schemas such as a graph.
+ * AssetSchemaAttributeRelationship defines a relationship between 2 SchemaAttributes.
+ * It is used in network type schemas such as a graph and for foreign keys in a relational database schema.
  */
 public class AssetSchemaAttributeRelationship extends AssetPropertyBase
 {
@@ -90,14 +90,6 @@ public class AssetSchemaAttributeRelationship extends AssetPropertyBase
     {
         return schemaAttributeRelationshipBean;
     }
-
-
-    /**
-     * Return the identifier for the schema relationship.
-     *
-     * @return String guid
-     */
-    public String getLinkGUID() { return schemaAttributeRelationshipBean.getLinkGUID(); }
 
 
     /**

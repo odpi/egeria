@@ -39,6 +39,7 @@ The minimum level required to build & run Egeria is Java 8.
 
 ## Maven
 
+[Apache Maven](tools/Maven.md) is used to control the builds.
 Maven 3.5 or higher is required to build Egeria. 3.6.x or above is recommended.
 
 Note: Gradle is not currently supported. You will see build.gradle configuration files, but this is currently for prototyping only. A gradle build is neither supported nor working at this point. 
@@ -163,12 +164,41 @@ code is committed into git.
 
 ## Testing
 
-All code submissions should be accompanied by automated tests that validate
-the essential behaviour of the code.  These automated tests should be
-incorporated in the build so that they run either at the **test** or **verify**
-stages of the build.
+Egeria is an integration technology which means that it uses
+a comprehensive multi-level approach to testing.
 
-Our preferred Java test frameworks are [TestNG](http://testng.org) and [Mockito](http://mockito.org).
+Modules include unit tests.  These unit tests should focus on
+simple validation of Java Beans, utilities and code that can easily be tested
+in isolation.  The unit tests run as part of the build and a pull request
+can not be incorporated into master if
+any unit tests are failing.  They should not significantly extend the time of the
+build since this impacts all of the contributors productivity.
+Our preferred Java frameworks for unit testing are [TestNG](http://testng.org) and [Mockito](http://mockito.org).
+
+External APIs (typically they include both a client and a server component)
+are tested using functional verification tests (FVTs).  These are located
+in the [open-metadata-test/open-metadata-fvt](../open-metadata-test/open-metadata-fvt).
+The aim of these tests is to check that the APIs validate all of their parameters and function correctly in a single server environment.
+These tests also operate as part of the build but are not run as part of the PR process.
+Modules should ensure they include some FVTs as they move to from development to
+technical preview.  By the time the module is moving to released function, the
+FVTs should be able to validate that this function is stable and correct.
+(Details of the development phases are defined on the 
+[Content Status](../open-metadata-publication/website/content-status) page.)
+
+Some connectors are tested via the [Conformance Test Suite](../open-metadata-conformance-suite).
+If you deliver a connector that is covered by this test suite, you should run the tests before
+merging changes into master.  The conformance test suite is also
+run as part of the release process.
+
+Egeria's [hands on labs](../open-metadata-resources/open-metadata-labs)
+provide a complex multi-server environment and are typically used
+by contributors to verify that their changes have not regressed any of the
+basic function.
+
+We are also interested in building out a comprehensive integration test to 
+allow automated complex multi-server scenarios that can be running
+continuously.
 
 ## Using an IDE
 

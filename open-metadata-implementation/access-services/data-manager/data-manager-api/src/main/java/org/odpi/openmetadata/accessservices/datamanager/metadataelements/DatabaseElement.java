@@ -20,13 +20,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class DatabaseElement extends DatabaseProperties implements MetadataElement,
-                                                                   Serializable
+public class DatabaseElement implements MetadataElement, Serializable
 {
     private static final long     serialVersionUID = 1L;
 
-    private ElementHeader elementHeader = null;
-
+    private ElementHeader elementHeader           = null;
+    private DatabaseProperties databaseProperties = null;
 
     /**
      * Default constructor
@@ -76,6 +75,27 @@ public class DatabaseElement extends DatabaseProperties implements MetadataEleme
 
 
     /**
+     * Return details of the database
+     *
+     * @return database properties
+     */
+    public DatabaseProperties getDatabaseProperties()
+    {
+        return databaseProperties;
+    }
+
+
+    /**
+     * Set up database properties
+     *
+     * @param databaseProperties database properties
+     */
+    public void setDatabaseProperties(DatabaseProperties databaseProperties)
+    {
+        this.databaseProperties = databaseProperties;
+    }
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -85,27 +105,7 @@ public class DatabaseElement extends DatabaseProperties implements MetadataEleme
     {
         return "DatabaseElement{" +
                 "elementHeader=" + elementHeader +
-                ", databaseType='" + getDatabaseType() + '\'' +
-                ", databaseVersion='" + getDatabaseVersion() + '\'' +
-                ", databaseInstance='" + getDatabaseInstance() + '\'' +
-                ", databaseImportedFrom='" + getDatabaseImportedFrom() + '\'' +
-                ", createTime=" + getCreateTime() +
-                ", modifiedTime=" + getModifiedTime() +
-                ", encodingType='" + getEncodingType() + '\'' +
-                ", encodingLanguage='" + getEncodingLanguage() + '\'' +
-                ", encodingDescription='" + getEncodingDescription() + '\'' +
-                ", displayName='" + getDisplayName() + '\'' +
-                ", description='" + getDescription() + '\'' +
-                ", owner='" + getOwner() + '\'' +
-                ", ownerCategory=" + getOwnerCategory() +
-                ", zoneMembership=" + getZoneMembership() +
-                ", origin=" + getOrigin() +
-                ", latestChange='" + getLatestChange() + '\'' +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", vendorProperties=" + getVendorProperties() +
-                ", typeName='" + getTypeName() + '\'' +
-                ", extendedProperties=" + getExtendedProperties() +
+                ", databaseProperties=" + databaseProperties +
                 '}';
     }
 
@@ -132,7 +132,8 @@ public class DatabaseElement extends DatabaseProperties implements MetadataEleme
             return false;
         }
         DatabaseElement that = (DatabaseElement) objectToCompare;
-        return Objects.equals(elementHeader, that.elementHeader);
+        return Objects.equals(elementHeader, that.elementHeader) &&
+                Objects.equals(databaseProperties, that.databaseProperties);
     }
 
 
@@ -144,6 +145,6 @@ public class DatabaseElement extends DatabaseProperties implements MetadataEleme
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader);
+        return Objects.hash(super.hashCode(), elementHeader, databaseProperties);
     }
 }

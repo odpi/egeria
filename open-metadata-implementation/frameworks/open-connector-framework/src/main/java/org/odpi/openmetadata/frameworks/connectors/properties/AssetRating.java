@@ -6,7 +6,6 @@ package org.odpi.openmetadata.frameworks.connectors.properties;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Rating;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.StarRating;
 
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -110,7 +109,7 @@ public class AssetRating extends AssetElementHeader
      */
     public boolean isPublic()
     {
-        return ratingBean.isPublic();
+        return ratingBean.getIsPublic();
     }
 
 

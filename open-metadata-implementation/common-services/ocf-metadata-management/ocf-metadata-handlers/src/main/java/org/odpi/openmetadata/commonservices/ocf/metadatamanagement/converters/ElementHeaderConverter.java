@@ -29,6 +29,7 @@ public class ElementHeaderConverter
     protected Relationship           relationship = null;
     protected OMRSRepositoryHelper   repositoryHelper;
     protected String                 serviceName;
+    protected String                 serverName;
     protected String                 typeName;
 
     /**
@@ -40,11 +41,13 @@ public class ElementHeaderConverter
      */
     ElementHeaderConverter(EntityDetail           entity,
                            OMRSRepositoryHelper   repositoryHelper,
-                           String                 serviceName)
+                           String                 serviceName,
+                           String                 serverName)
     {
         this.entity = entity;
         this.repositoryHelper = repositoryHelper;
         this.serviceName = serviceName;
+        this.serverName = serverName;
         this.setTypeName();
     }
 
@@ -60,12 +63,14 @@ public class ElementHeaderConverter
     public ElementHeaderConverter(EntityDetail         entity,
                                   Relationship         relationship,
                                   OMRSRepositoryHelper repositoryHelper,
-                                  String               serviceName)
+                                  String               serviceName,
+                                  String               serverName)
     {
         this.entity = entity;
         this.relationship = relationship;
         this.repositoryHelper = repositoryHelper;
         this.serviceName = serviceName;
+        this.serverName = serverName;
         this.setTypeName();
     }
 

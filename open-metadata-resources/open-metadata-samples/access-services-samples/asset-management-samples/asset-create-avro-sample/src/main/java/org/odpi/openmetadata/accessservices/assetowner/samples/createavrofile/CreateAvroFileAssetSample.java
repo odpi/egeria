@@ -95,7 +95,7 @@ public class CreateAvroFileAssetSample
         }
 
         System.out.println("===============================");
-        System.out.println("Apache Avro File Asset Creation   ");
+        System.out.println("Apache Avro FileProperties Asset Creation   ");
         System.out.println("===============================");
         System.out.println("Running against server: " + serverName + " at " + serverURLRoot);
         System.out.println("Using userId: " + clientUserId);

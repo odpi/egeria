@@ -94,7 +94,7 @@ public class CreateCSVFileAssetSample
         }
 
         System.out.println("===============================");
-        System.out.println("CSV File Asset Creation   ");
+        System.out.println("CSV FileProperties Asset Creation   ");
         System.out.println("===============================");
         System.out.println("Running against server: " + serverName + " at " + serverURLRoot);
         System.out.println("Using userId: " + clientUserId);

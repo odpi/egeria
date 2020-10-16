@@ -6,6 +6,7 @@ package org.odpi.openmetadata.accessservices.datamanager.properties;
 import com.fasterxml.jackson.annotation.*;
 
 import java.util.Date;
+import java.util.Map;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -23,16 +24,19 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonSubTypes(
         {
                 @JsonSubTypes.Type(value = DatabaseProperties.class, name = "DatabaseProperties"),
+                @JsonSubTypes.Type(value = DataFileProperties.class, name = "DataFileProperties"),
+                @JsonSubTypes.Type(value = FileFolderProperties.class, name = "FileFolderProperties"),
         })
 public class DataStoreProperties extends AssetProperties
 {
     private static final long    serialVersionUID = 1L;
 
-    private Date   createTime          = null;
-    private Date   modifiedTime        = null;
-    private String encodingType        = null;
-    private String encodingLanguage    = null;
-    private String encodingDescription = null;
+    private Date                createTime          = null;
+    private Date                modifiedTime        = null;
+    private String              encodingType        = null;
+    private String              encodingLanguage    = null;
+    private String              encodingDescription = null;
+    private Map<String, String> encodingProperties  = null;
 
 
     /**
@@ -60,6 +64,7 @@ public class DataStoreProperties extends AssetProperties
             encodingType        = template.getEncodingType();
             encodingLanguage    = template.getEncodingLanguage();
             encodingDescription = template.getEncodingDescription();
+            encodingProperties  = template.getEncodingProperties();
         }
     }
 
@@ -186,6 +191,36 @@ public class DataStoreProperties extends AssetProperties
 
 
     /**
+     * Return the additional properties associated with the encoding process.
+     *
+     * @return map of name-value pairs
+     */
+    public Map<String, String> getEncodingProperties()
+    {
+        if (encodingProperties == null)
+        {
+            return null;
+        }
+        else if (encodingProperties.isEmpty())
+        {
+            return null;
+        }
+        return encodingProperties;
+    }
+
+
+    /**
+     * Set up the additional properties associated with the encoding process.
+     *
+     * @param encodingProperties map of name-value pairs
+     */
+    public void setEncodingProperties(Map<String, String> encodingProperties)
+    {
+        this.encodingProperties = encodingProperties;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -199,13 +234,13 @@ public class DataStoreProperties extends AssetProperties
                 ", encodingType='" + encodingType + '\'' +
                 ", encodingLanguage='" + encodingLanguage + '\'' +
                 ", encodingDescription='" + encodingDescription + '\'' +
+                ", encodingProperties='" + encodingProperties + '\'' +
                 ", displayName='" + getDisplayName() + '\'' +
                 ", description='" + getDescription() + '\'' +
                 ", owner='" + getOwner() + '\'' +
                 ", ownerCategory=" + getOwnerCategory() +
                 ", zoneMembership=" + getZoneMembership() +
-                ", origin=" + getOrigin() +
-                ", latestChange='" + getLatestChange() + '\'' +
+                ", origin=" + getOtherOriginValues() +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +
                 ", vendorProperties=" + getVendorProperties() +
@@ -241,7 +276,8 @@ public class DataStoreProperties extends AssetProperties
                 Objects.equals(modifiedTime, that.modifiedTime) &&
                 Objects.equals(encodingType, that.encodingType) &&
                 Objects.equals(encodingLanguage, that.encodingLanguage) &&
-                Objects.equals(encodingDescription, that.encodingDescription);
+                Objects.equals(encodingDescription, that.encodingDescription) &&
+                Objects.equals(encodingProperties, that.encodingProperties);
     }
 
 
@@ -253,6 +289,6 @@ public class DataStoreProperties extends AssetProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), createTime, modifiedTime, encodingType, encodingLanguage, encodingDescription);
+        return Objects.hash(super.hashCode(), createTime, modifiedTime, encodingType, encodingLanguage, encodingDescription, encodingProperties);
     }
 }

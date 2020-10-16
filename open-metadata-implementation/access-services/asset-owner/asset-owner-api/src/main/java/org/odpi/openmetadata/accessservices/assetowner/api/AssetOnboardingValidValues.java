@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetowner.api;
 
+import org.odpi.openmetadata.accessservices.assetowner.metadataelements.ValidValueElement;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ValidValue;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -188,10 +189,10 @@ public interface AssetOnboardingValidValues
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    ValidValue getValidValueByGUID(String   userId,
-                                   String   validValueGUID) throws InvalidParameterException,
-                                                                   UserNotAuthorizedException,
-                                                                   PropertyServerException;
+    ValidValueElement getValidValueByGUID(String   userId,
+                                          String   validValueGUID) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException;
 
 
     /**
@@ -200,6 +201,8 @@ public interface AssetOnboardingValidValues
      *
      * @param userId calling user
      * @param validValueName qualified name of the valid value.
+     * @param startFrom         starting element (used in paging through large result sets)
+     * @param pageSize          maximum number of results to return
      *
      * @return Valid value beans
      *
@@ -207,10 +210,12 @@ public interface AssetOnboardingValidValues
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    List<ValidValue>   getValidValueByName(String   userId,
-                                           String   validValueName) throws InvalidParameterException,
-                                                                           UserNotAuthorizedException,
-                                                                           PropertyServerException;
+    List<ValidValueElement>   getValidValueByName(String   userId,
+                                                  String   validValueName,
+                                                  int      startFrom,
+                                                  int      pageSize) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException;
 
 
     /**
@@ -228,12 +233,12 @@ public interface AssetOnboardingValidValues
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    List<ValidValue> findValidValues(String   userId,
-                                     String   searchString,
-                                     int      startFrom,
-                                     int      pageSize) throws InvalidParameterException,
-                                                               UserNotAuthorizedException,
-                                                               PropertyServerException;
+    List<ValidValueElement> findValidValues(String   userId,
+                                            String   searchString,
+                                            int      startFrom,
+                                            int      pageSize) throws InvalidParameterException,
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException;
 
     /**
      * Page through the members of a valid value set.
@@ -249,12 +254,12 @@ public interface AssetOnboardingValidValues
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    List<ValidValue> getValidValueSetMembers(String   userId,
-                                             String   validValueSetGUID,
-                                             int      startFrom,
-                                             int      pageSize) throws InvalidParameterException,
-                                                                       UserNotAuthorizedException,
-                                                                       PropertyServerException;
+    List<ValidValueElement> getValidValueSetMembers(String   userId,
+                                                    String   validValueSetGUID,
+                                                    int      startFrom,
+                                                    int      pageSize) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException;
 
 
     /**
@@ -271,10 +276,10 @@ public interface AssetOnboardingValidValues
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    List<ValidValue> getSetsForValidValue(String   userId,
-                                          String   validValueGUID,
-                                          int      startFrom,
-                                          int      pageSize) throws InvalidParameterException,
-                                                                    UserNotAuthorizedException,
-                                                                    PropertyServerException;
+    List<ValidValueElement> getSetsForValidValue(String   userId,
+                                                 String   validValueGUID,
+                                                 int      startFrom,
+                                                 int      pageSize) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException;
 }

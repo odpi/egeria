@@ -101,6 +101,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
     private Connection                      serverSecurityConnection        = null;
     private EventBusConfig                  eventBusConfig                  = null;
     private List<AccessServiceConfig>       accessServicesConfig            = null;
+    private List<IntegrationServiceConfig>  integrationServicesConfig       = null;
     private List<ViewServiceConfig>         viewServicesConfig              = null;
     private RepositoryServicesConfig        repositoryServicesConfig        = null;
     private ConformanceSuiteConfig          conformanceSuiteConfig          = null;
@@ -147,6 +148,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
             serverSecurityConnection        = template.getServerSecurityConnection();
             eventBusConfig                  = template.getEventBusConfig();
             accessServicesConfig            = template.getAccessServicesConfig();
+            integrationServicesConfig       = template.getIntegrationServicesConfig();
             viewServicesConfig              = template.getViewServicesConfig();
             repositoryServicesConfig        = template.getRepositoryServicesConfig();
             conformanceSuiteConfig          = template.getConformanceSuiteConfig();
@@ -413,9 +415,9 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
     }
 
     /**
-     * Return the configuration for the registered Open Metadata Access Services (OMAS).
+     * Return the configuration for the registered Open Metadata Access Services (OMASs).
      *
-     * @return array of configuration properties one for each OMAS
+     * @return array of configuration properties, one for each OMAS
      */
     public List<AccessServiceConfig> getAccessServicesConfig()
     {
@@ -424,19 +426,42 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
 
 
     /**
-     * Set up the configuration for the registered Open Metadata Access Services (OMAS).
+     * Set up the configuration for the registered Open Metadata Access Services (OMASs).
      *
-     * @param accessServicesConfig array of configuration properties one for each OMAS
+     * @param accessServicesConfig array of configuration properties, one for each OMAS
      */
     public void setAccessServicesConfig(List<AccessServiceConfig> accessServicesConfig)
     {
         this.accessServicesConfig = accessServicesConfig;
     }
 
+
     /**
-     * Return the configuration for the registered Open Metadata View Services (OMVS).
+     * Return the configuration for the registered Open Metadata Integration Services (OMISs).
      *
-     * @return array of configuration properties one for each OMVS
+     * @return array of configuration properties, one for each OMIS
+     */
+    public List<IntegrationServiceConfig> getIntegrationServicesConfig()
+    {
+        return integrationServicesConfig;
+    }
+
+
+    /**
+     * Set up the configuration for the registered Open Metadata Integration Services (OMISs).
+     *
+     * @param integrationServicesConfig array of configuration properties, one for each OMIS
+     */
+    public void setIntegrationServicesConfig(List<IntegrationServiceConfig> integrationServicesConfig)
+    {
+        this.integrationServicesConfig = integrationServicesConfig;
+    }
+
+
+    /**
+     * Return the configuration for the registered Open Metadata View Services (OMVSs).
+     *
+     * @return array of configuration properties, one for each OMVS
      */
     public List<ViewServiceConfig> getViewServicesConfig()
     {
@@ -445,9 +470,9 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
 
 
     /**
-     * Set up the configuration for the registered Open Metadata View Services (OMVS).
+     * Set up the configuration for the registered Open Metadata View Services (OMVSs).
      *
-     * @param viewServicesConfig array of configuration properties one for each OMVS
+     * @param viewServicesConfig array of configuration properties, one for each OMVS
      */
     public void setViewServicesConfig(List<ViewServiceConfig> viewServicesConfig)
     {

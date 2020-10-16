@@ -24,8 +24,8 @@ public class DivergentRelationshipAnnotation extends DivergentDuplicateAnnotatio
 {
     private static final long serialVersionUID = 1L;
 
-    protected String       divergentRelationshipGUID          = null;
-    protected List<String> divergentRelationshipPropertyNames = null;
+    private String       divergentRelationshipGUID          = null;
+    private List<String> divergentRelationshipPropertyNames = null;
 
 
     /**
@@ -118,25 +118,24 @@ public class DivergentRelationshipAnnotation extends DivergentDuplicateAnnotatio
         return "DivergentRelationshipAnnotation{" +
                 "divergentRelationshipGUID='" + divergentRelationshipGUID + '\'' +
                 ", divergentRelationshipPropertyNames=" + divergentRelationshipPropertyNames +
-                ", duplicateAnchorGUID='" + duplicateAnchorGUID + '\'' +
-                ", annotationType='" + annotationType + '\'' +
-                ", summary='" + summary + '\'' +
-                ", confidenceLevel=" + confidenceLevel +
-                ", expression='" + expression + '\'' +
-                ", explanation='" + explanation + '\'' +
-                ", analysisStep='" + analysisStep + '\'' +
-                ", jsonProperties='" + jsonProperties + '\'' +
-                ", numAttachedAnnotations=" + numAttachedAnnotations +
-                ", annotationStatus=" + annotationStatus +
-                ", reviewDate=" + reviewDate +
-                ", steward='" + steward + '\'' +
-                ", reviewComment='" + reviewComment + '\'' +
-                ", additionalProperties=" + additionalProperties +
-                ", type=" + type +
-                ", guid='" + guid + '\'' +
-                ", url='" + url + '\'' +
-                ", classifications=" + classifications +
-                ", extendedProperties=" + extendedProperties +
+                ", duplicateAnchorGUIDs='" + getDuplicateAnchorGUID() + '\'' +
+                ", annotationType='" + getAnnotationType() + '\'' +
+                ", summary='" + getSummary() + '\'' +
+                ", confidenceLevel=" + getConfidenceLevel() +
+                ", expression='" + getExpression() + '\'' +
+                ", explanation='" + getExplanation() + '\'' +
+                ", analysisStep='" + getAnalysisStep() + '\'' +
+                ", jsonProperties='" + getJsonProperties() + '\'' +
+                ", annotationStatus=" + getAnnotationStatus() +
+                ", numAttachedAnnotations=" + getNumAttachedAnnotations() +
+                ", reviewDate=" + getReviewDate() +
+                ", steward='" + getSteward() + '\'' +
+                ", reviewComment='" + getReviewComment() + '\'' +
+                ", additionalProperties=" + getAdditionalProperties() +
+                ", headerVersion=" + getHeaderVersion() +
+                ", elementHeader=" + getElementHeader() +
+                ", typeName='" + getTypeName() + '\'' +
+                ", extendedProperties=" + getExtendedProperties() +
                 '}';
     }
 
