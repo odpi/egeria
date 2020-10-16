@@ -7,6 +7,7 @@ const session = require("express-session");
 const bodyParser = require("body-parser");
 let passport = require("passport");
 const https = require("https");
+const helmet = require('helmet');
 const app = express();
 require("dotenv").config();
 
@@ -30,6 +31,17 @@ const options = {
 };
 app.set('key', key);
 app.set('cert', cert);
+
+app.use(helmet({ ieNoOpen: false }));
+// Fix headers for referrer policy for CSFR scan problems
+app.use(helmet.referrerPolicy({ policy: 'same-origin' }));
+app.use(helmet.contentSecurityPolicy({
+  directives: {
+    defaultSrc: ["'self'"],
+    styleSrc: ["'self'", 'maxcdn.bootstrapcdn.com'],
+    requireSriFor: ['style', 'script']
+  },
+}));
 
 const servers = getServerInfoFromEnv();
 app.set('servers', servers);
