@@ -1,3 +1,5 @@
+<!-- SPDX-License-Identifier: CC-BY-4.0 -->
+<!-- Copyright Contributors to the ODPi Egeria project. -->
 ### Open Lineage Services configuration
 
 For example payloads and endpoints, see the [Postman samples](../samples/OLS.postman_collection.json) 
@@ -81,3 +83,6 @@ Remove the Open Lineage Services from the server configuration by issuing the fo
 DELETE {serverURLRoot}/open-metadata/admin-services/users/{userId}/servers/{serverName}/open-lineage/configuration
 ```
 
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.
