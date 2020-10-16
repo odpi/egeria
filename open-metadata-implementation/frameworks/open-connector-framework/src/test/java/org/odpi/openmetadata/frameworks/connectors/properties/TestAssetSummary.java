@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.frameworks.connectors.properties;
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Classification;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementClassification;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.OwnerType;
 import org.testng.annotations.Test;
@@ -18,10 +18,10 @@ import static org.testng.Assert.assertTrue;
  */
 public class TestAssetSummary
 {
-    private ElementType          type            = new ElementType();
-    private List<Classification> classifications = new ArrayList<>();
-    private List<String>         zoneMembership  = new ArrayList<>();
-    private Map<String, Object>  assetProperties = new HashMap<>();
+    private ElementType                 type            = new ElementType();
+    private List<ElementClassification> classifications = new ArrayList<>();
+    private List<String>                zoneMembership  = new ArrayList<>();
+    private Map<String, Object>         assetProperties = new HashMap<>();
 
 
     /**
@@ -31,7 +31,7 @@ public class TestAssetSummary
     {
         type.setElementTypeName("TestType");
 
-        Classification classification = new Classification();
+        ElementClassification classification = new ElementClassification();
 
         classification.setClassificationName("TestClassificationName");
         classifications.add(classification);
@@ -320,8 +320,8 @@ public class TestAssetSummary
      */
     @Test public void testClassifications()
     {
-        List<Classification> classificationList = new ArrayList<>();
-        Classification       classification     = new Classification();
+        List<ElementClassification> classificationList = new ArrayList<>();
+        ElementClassification       classification     = new ElementClassification();
 
         classification.setClassificationName("TestClassification");
         classificationList.add(classification);

@@ -9,8 +9,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.metadatasecurity.OpenMetadataAssetSecurity;
 import org.odpi.openmetadata.metadatasecurity.OpenMetadataConnectionSecurity;
 import org.odpi.openmetadata.metadatasecurity.OpenMetadataServerSecurity;
@@ -18,6 +16,8 @@ import org.odpi.openmetadata.metadatasecurity.OpenMetadataServiceSecurity;
 import org.odpi.openmetadata.metadatasecurity.ffdc.OpenMetadataSecurityAuditCode;
 import org.odpi.openmetadata.metadatasecurity.ffdc.OpenMetadataSecurityErrorCode;
 import org.odpi.openmetadata.metadatasecurity.properties.AssetAuditHeader;
+import org.odpi.openmetadata.metadatasecurity.properties.Asset;
+import org.odpi.openmetadata.metadatasecurity.properties.Connection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OpenMetadataRepositorySecurity;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDef;
@@ -451,6 +451,33 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
      * @param methodName calling method
      * @throws UserNotAuthorizedException the authorization check failed
      */
+    protected void throwUnauthorizedAssetCreate(String   userId,
+                                                Asset    asset,
+                                                String   methodName) throws UserNotAuthorizedException
+    {
+        if (auditLog != null)
+        {
+            auditLog.logMessage(methodName,
+                                OpenMetadataSecurityAuditCode.UNAUTHORIZED_ASSET_CREATE.getMessageDefinition(userId, asset.getTypeName()));
+        }
+
+        throw new UserNotAuthorizedException(OpenMetadataSecurityErrorCode.UNAUTHORIZED_ASSET_CREATE.getMessageDefinition(userId,
+                                                                                                                          asset.getTypeName()),
+                                             this.getClass().getName(),
+                                             methodName,
+                                             userId);
+    }
+
+
+    /**
+     * Write an audit log message and throw exception to record an
+     * unauthorized access.
+     *
+     * @param userId calling user
+     * @param asset asset being accessed
+     * @param methodName calling method
+     * @throws UserNotAuthorizedException the authorization check failed
+     */
     protected void throwIncompleteAsset(String   userId,
                                         Asset    asset,
                                         String   methodName) throws UserNotAuthorizedException
@@ -646,9 +673,9 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
      * @throws InvalidParameterException one of the asset values is invalid
      * @throws PropertyServerException there is a problem calculating the zones
      */
-    public List<String> initializeAssetZones(List<String>  defaultZones,
-                                             Asset         asset) throws InvalidParameterException,
-                                                                         PropertyServerException
+    public List<String> setAssetZonesToDefault(List<String>  defaultZones,
+                                               Asset         asset) throws InvalidParameterException,
+                                                                           PropertyServerException
     {
         List<String>  resultingZones = null;
 
@@ -684,8 +711,44 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
      * @throws InvalidParameterException one of the asset values is invalid
      * @throws PropertyServerException there is a problem calculating the zones
      */
+    @Deprecated
     public List<String> verifyAssetZones(List<String>  defaultZones,
                                          List<String>  supportedZones,
+                                         Asset         originalAsset,
+                                         Asset         updatedAsset) throws InvalidParameterException,
+                                                                            PropertyServerException
+    {
+        List<String>  resultingZones = null;
+
+        if (updatedAsset != null)
+        {
+            resultingZones = updatedAsset.getZoneMembership();
+        }
+
+        return resultingZones;
+    }
+
+
+    /**
+     * Determine the appropriate setting for the asset zones depending on the content of the asset and the
+     * settings of both default zones and supported zones.  This method is called whenever an asset's
+     * values are changed.
+     *
+     * The default behavior is to keep the updated zones as they are.
+     *
+     * @param defaultZones setting of the default zones for the service
+     * @param supportedZones setting of the supported zones for the service
+     * @param publishZones  setting of the publishZones for the service
+     * @param originalAsset original values for the asset
+     * @param updatedAsset updated values for the asset
+     *
+     * @return list of zones to set in the asset
+     * @throws InvalidParameterException one of the asset values is invalid
+     * @throws PropertyServerException there is a problem calculating the zones
+     */
+    public List<String> verifyAssetZones(List<String>  defaultZones,
+                                         List<String>  supportedZones,
+                                         List<String>  publishZones,
                                          Asset         originalAsset,
                                          Asset         updatedAsset) throws InvalidParameterException,
                                                                             PropertyServerException
@@ -820,6 +883,49 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
 
 
     /**
+     * Select a connection from the list of connections attached to an asset.
+     *
+     * @param userId calling user
+     * @param asset asset requested by caller
+     * @param connections list of attached connections
+     * @return selected connection or null (pretend there are no connections attached to the asset) or
+     * @throws UserNotAuthorizedException the user is not authorized to access this service
+     */
+    public Connection validateUserForAssetConnectionList(String           userId,
+                                                         Asset            asset,
+                                                         List<Connection> connections) throws UserNotAuthorizedException
+    {
+        UserNotAuthorizedException caughtException = null;
+
+        if ((connections != null) && (! connections.isEmpty()))
+        {
+            for (Connection connection : connections)
+            {
+                if (connection != null)
+                {
+                    try
+                    {
+                        validateUserForConnection(userId, connection);
+                        return connection;
+                    }
+                    catch (UserNotAuthorizedException error)
+                    {
+                        caughtException = error;
+                    }
+                }
+            }
+        }
+
+        if (caughtException != null)
+        {
+            throw caughtException;
+        }
+
+        return null;
+    }
+
+
+    /**
      * Tests for whether a specific user should have the right to create an asset within a zone.
      *
      * @param userId identifier of user
@@ -831,7 +937,7 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
     {
         final String  methodName = "validateUserForAssetCreate";
 
-        throwUnauthorizedAssetChange(userId, asset, methodName);
+        throwUnauthorizedAssetCreate(userId, asset, methodName);
     }
 
 

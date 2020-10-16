@@ -57,6 +57,32 @@ public class ConnectedAssetResource
 
 
     /**
+     * Returns the connection object corresponding to the supplied connection GUID.
+     *
+     * @param serverName name of the server instances for this request.
+     * @param serviceURLName name of the service that created the connector that issued this request.
+     * @param userId userId of user making request.
+     * @param name  the unique name for the connection within the property server.
+     *
+     * @return connection object or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * UnrecognizedConnectionGUIDException the supplied GUID is not recognized by the metadata repository or
+     * PropertyServerException there is a problem retrieving information from the property (metadata) server or
+     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @GetMapping(path = "/connections/by-name/{name}")
+
+    public ConnectionResponse getConnectionByName(@PathVariable String     serverName,
+                                                  @PathVariable String     serviceURLName,
+                                                  @PathVariable String     userId,
+                                                  @PathVariable String     name)
+    {
+        return restAPI.getConnectionByName(serverName, serviceURLName, userId, name);
+    }
+
+
+
+    /**
      * Returns the connection corresponding to the supplied asset GUID.
      *
      * @param serverName  name of the server instances for this request

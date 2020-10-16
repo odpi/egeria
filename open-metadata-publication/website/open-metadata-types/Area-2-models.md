@@ -36,8 +36,9 @@ get access to the data assets.
 * **[0235 Information View](0235-Information-View.md)**
 * **[0238 Reports](0238-Reports.md)**
 * **[0290 Ports](0290-Ports.md)**
-* **[0298 Lineage Relationships](0298-Lineage-Relationships.md)**
+* **[0298 Lineage Relationships](0298-Process-Hierarchies.md)**
 
+![UML Packages](area-2-assets-overview.png#pagewidth)
 
 Return to [Overview](README.md).
 

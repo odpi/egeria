@@ -14,9 +14,11 @@ The Egeria core repository contains the core Egeria functionality, and is organi
 * **[open-metadata-distribution](open-metadata-distribution)** - contains scripts to extract the completed artifacts from the other modules and stores them together to make it easy to find them.
 * **[open-metadata-implementation](open-metadata-implementation)** - implementation of standards, frameworks and connectors.
   * **[access-services](open-metadata-implementation/access-services)** - domain specific APIs known as the Open Metadata Access Services (OMAS).
+    * **[analytics-modeling](open-metadata-implementation/access-services/analytics-modeling)** - manage assets for an analytics platform.
     * **[asset-catalog](open-metadata-implementation/access-services/asset-catalog)** - search for assets.
     * **[asset-consumer](open-metadata-implementation/access-services/asset-consumer)** - create connectors to access assets.
     * **[asset-lineage](open-metadata-implementation/access-services/asset-lineage)** - provide lineage reporting.
+    * **[asset-manager](open-metadata-implementation/access-services/asset-manager)** - provide a synchronization interface for asset managers and catalogs.
     * **[asset-owner](open-metadata-implementation/access-services/asset-owner)** - manage metadata and feedback for owned assets.
     * **[community-profile](open-metadata-implementation/access-services/community-profile)** - manage personal profiles and communities.
     * **[data-engine](open-metadata-implementation/access-services/data-engine)** - exchange metadata with a data processing engine.
@@ -61,12 +63,12 @@ The Egeria core repository contains the core Egeria functionality, and is organi
   * **[admin-services](open-metadata-implementation/admin-services)** - supports the configuration of the OMAG Server Platform.  This configuration determines which of the open metadata and governance services are active.
   * **[common-services](open-metadata-implementation/common-services)** - support modules that are reused by other services.
     * **[ffdc-services](open-metadata-implementation/common-services/ffdc-services)** - provides base classes and validation for First Failure Data Capture (FFDC).
-    * **[gaf-metadata-management](open-metadata-implementation/common-services/gaf-metadata-management)** - provides metadata management for the [Governance Action Framework (GAF)](open-metadata-implementation/frameworks/governance-action-framework) properties and APIs.
+    * **[generic-handlers](open-metadata-implementation/common-services/generic-handlers)** - provides support for metadata management for open metadata types including visibility and authorization checking, anchor management and provenance recording.
     * **[metadata-security](open-metadata-implementation/common-services/metadata-security)** - provides integration points for fine-grained security for metadata.
     * **[multi-tenant](open-metadata-implementation/common-services/multi-tenant)** - provides management of server instances within the OMAG Server Platform.
     * **[ocf-metadata-management](open-metadata-implementation/common-services/ocf-metadata-management)** - provides metadata management for the [Open Connector Framework (OCF)](open-metadata-implementation/frameworks/open-connector-framework) properties and APIs.
-    * **[odf-metadata-management](open-metadata-implementation/common-services/odf-metadata-management)** - provides metadata management for the [Open Discovery Framework (ODF)](open-metadata-implementation/frameworks/open-discovery-framework) properties and APIs.
     * **[repository-handler](open-metadata-implementation/common-services/repository-handler)** - provides an enhanced set of services for accessing metadata from the [repository services](open-metadata-implementation/repository-services).
+  * **[engine-services](open-metadata-implementation/engine-services)** - services that host data management and governance engines.  These run in the [Engine Host](open-metadata-implementation/admin-services/docs/concepts/engine-host.md) OMAG Server.
   * **[frameworks](open-metadata-implementation/frameworks)** - frameworks that support pluggable components.
     * **[audit-log-framework](open-metadata-implementation/frameworks/audit-log-framework)** provides the interfaces and base implementations for components (called connectors) that access data-related assets. OCF connectors also provide detailed metadata about the assets they access.
     * **[open-connector-framework](open-metadata-implementation/frameworks/open-connector-framework)** provides the interfaces for diagnostics and exceptions.
@@ -74,16 +76,21 @@ The Egeria core repository contains the core Egeria functionality, and is organi
     * **[governance-action-framework](open-metadata-implementation/frameworks/governance-action-framework)** provides the interfaces and base implementations for components (called governance actions) that take action to correct a situation that is harmful the data, or the organization in some way.
   * **[governance-servers](open-metadata-implementation/governance-servers)** - servers and daemons to run open metadata and governance function.
     * **[data-engine-proxy-services](open-metadata-implementation/governance-servers/data-engine-proxy-services)** - supports automated metadata cataloguing from data engines.
-    * **[data-platform-services](open-metadata-implementation/governance-servers/data-platform-services)** - supports automated metadata cataloguing by data platforms.
     * **[discovery-engine-services](open-metadata-implementation/governance-servers/discovery-engine-services)** - supports automated metadata discovery.
+    * **[engine-host-services](open-metadata-implementation/governance-servers/engine-host-services)** - supports the management of external engines hosted in the [Engine Host](open-metadata-implementation/admin-services/docs/concepts/engine-host.md) OMAG Server.
     * **[open-lineage-services](open-metadata-implementation/governance-servers/open-lineage-services)** - provides historic warehouse for lineage.
     * **[security-sync-services](open-metadata-implementation/governance-servers/security-sync-services)** - supports automated configuration of security engines.
     * **[stewardship-engine-services](open-metadata-implementation/governance-servers/stewardship-engine-services)** - supports automated stewardship actions.
-    * **[virtualization-services](open-metadata-implementation/governance-servers/virtualization-services)** - supports automated stewardship actions.
+  * **[integration-services](open-metadata-implementation/integration-services)** - services that host integration connectors.  These run in the [Integration Daemon](open-metadata-implementation/admin-services/docs/concepts/integration-daemon.md) OMAG Server.
+    * **[catalog-integrator](open-metadata-implementation/integration-services/catalog-integrator)** - services to exchange metadata with asset managers and catalogs.
+    * **[database-integrator](open-metadata-implementation/integration-services/database-integrator)** - services to capture metadata from file systems and file management applications.
+    * **[files-integrator](open-metadata-implementation/integration-services/files-integrator)** - services to exchange metadata with relational databases.
+    * **[organization-integrator](open-metadata-implementation/integration-services/organization-integrator)** - services to load metadata about the organization, including user identifiers, profiles, team structures and department hierarchy.
   * **[platform-services](open-metadata-implementation/platform-services)** - the platform services support REST APIs for the OMAG Server Platform.
   * **[repository-services](open-metadata-implementation/repository-services)** - metadata exchange and federation - aka the Open Metadata Repository Services (OMRS).
   * **[server-chassis](open-metadata-implementation/server-chassis)** - the server chassis provides the server framework for the OMAG Server Platform.
   * **[user-interfaces](open-metadata-implementation/user-interfaces)** - browser based user interfaces.
+  * **[view-services](open-metadata-implementation/view-services)** - services that provide services for user interfaces.  These run in the [View Server](open-metadata-implementation/admin-services/docs/concepts/view-server.md) OMAG Server.
 * **[open-metadata-publication](open-metadata-publication)** - contains scripts that send artifacts collected together by the open-metadata-distribution module to external parties.
 * **[open-metadata-resources](open-metadata-resources)** - contains the open metadata demos and samples.
   * **[open-metadata-archives](open-metadata-resources/open-metadata-archives)** - contains pre-canned collections of metadata for loading into an open metadata server.

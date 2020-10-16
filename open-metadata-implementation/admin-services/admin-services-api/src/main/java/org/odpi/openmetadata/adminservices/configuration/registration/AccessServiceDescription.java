@@ -186,17 +186,18 @@ public enum AccessServiceDescription implements Serializable
      * Default Constructor
      *
      * @param accessServiceCode ordinal for this access service
-     * @param accessServiceURLMarker string used in URLs
      * @param accessServiceName symbolic name for this access service
+     * @param accessServiceFullName full name for this access service
+     * @param accessServiceURLMarker string used in URLs
      * @param accessServiceDescription short description for this access service
      * @param accessServiceWiki wiki page for the access service for this access service
      */
-    AccessServiceDescription(int                            accessServiceCode,
-                             String                         accessServiceName,
-                             String                         accessServiceFullName,
-                             String                         accessServiceURLMarker,
-                             String                         accessServiceDescription,
-                             String                         accessServiceWiki)
+    AccessServiceDescription(int    accessServiceCode,
+                             String accessServiceName,
+                             String accessServiceFullName,
+                             String accessServiceURLMarker,
+                             String accessServiceDescription,
+                             String accessServiceWiki)
     {
         /*
          * Save the values supplied
@@ -247,7 +248,7 @@ public enum AccessServiceDescription implements Serializable
      * Return the string that appears in the REST API URL that identifies the owning service.
      * Null means no REST APIs supported by this service.
      *
-     * @return String default name
+     * @return String default URL marker
      */
     public String getAccessServiceURLMarker()
     {

@@ -1,0 +1,273 @@
+/* SPDX-License-Identifier: Apache 2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
+package org.odpi.openmetadata.commonservices.generichandlers;
+
+import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
+
+import java.util.List;
+
+
+/**
+ * RatingHandler manages the Rating entity.  The Rating entity describes the star rating and review text
+ * type of feedback
+ */
+public class RatingHandler<B> extends OpenMetadataAPIGenericHandler<B>
+{
+    /**
+     * Construct the handler information needed to interact with the repository services
+     *
+     * @param converter specific converter for this bean class
+     * @param beanClass name of bean class that is represented by the generic class B
+     * @param serviceName      name of this service
+     * @param serverName       name of the local server
+     * @param invalidParameterHandler handler for managing parameter errors
+     * @param repositoryHandler     manages calls to the repository services
+     * @param repositoryHelper provides utilities for manipulating the repository services objects
+     * @param localServerUserId userId for this server
+     * @param securityVerifier open metadata security services verifier
+     * @param supportedZones list of zones that the access service is allowed to serve Asset instances from.
+     * @param defaultZones list of zones that the access service should set in all new Asset instances.
+     * @param publishZones list of zones that the access service sets up in published Asset instances.
+     * @param auditLog destination for audit log events.
+     */
+    public RatingHandler(OpenMetadataAPIGenericConverter<B> converter,
+                         Class<B>                           beanClass,
+                         String                             serviceName,
+                         String                             serverName,
+                         InvalidParameterHandler            invalidParameterHandler,
+                         RepositoryHandler                  repositoryHandler,
+                         OMRSRepositoryHelper               repositoryHelper,
+                         String                             localServerUserId,
+                         OpenMetadataServerSecurityVerifier securityVerifier,
+                         List<String>                       supportedZones,
+                         List<String>                       defaultZones,
+                         List<String>                       publishZones,
+                         AuditLog                           auditLog)
+    {
+        super(converter,
+              beanClass,
+              serviceName,
+              serverName,
+              invalidParameterHandler,
+              repositoryHandler,
+              repositoryHelper,
+              localServerUserId,
+              securityVerifier,
+              supportedZones,
+              defaultZones,
+              publishZones,
+              auditLog);
+    }
+
+
+    /**
+     * Count the number of Ratings attached to an supplied entity.
+     *
+     * @param userId     calling user
+     * @param elementGUID identifier for the entity that the rating is attached to
+     * @param methodName calling method
+     * @return count of attached objects
+     * @throws InvalidParameterException  the parameters are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
+    public int countRatings(String userId,
+                            String elementGUID,
+                            String methodName) throws InvalidParameterException,
+                                                 PropertyServerException,
+                                                 UserNotAuthorizedException
+    {
+        return super.countAttachments(userId,
+                                      elementGUID,
+                                      OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                      OpenMetadataAPIMapper.REFERENCEABLE_TO_RATING_TYPE_GUID,
+                                      OpenMetadataAPIMapper.REFERENCEABLE_TO_RATING_TYPE_NAME,
+                                      methodName);
+    }
+
+
+
+    /**
+     * Return the Ratings attached to a supplied entity.
+     *
+     * @param userId     calling user
+     * @param elementGUID identifier for the entity that the feedback is attached to
+     * @param elementGUIDParameterName name of parameter supplying the GUID
+     * @param elementTypeName name of the type of object being attached to
+     * @param serviceSupportedZones supported zones for calling service
+     * @param startingFrom where to start from in the list
+     * @param pageSize maximum number of results that can be returned
+     * @param methodName calling method
+     * @return list of objects or null if none found
+     * @throws InvalidParameterException  the input properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
+    public List<B>  getRatings(String       userId,
+                               String       elementGUID,
+                               String       elementGUIDParameterName,
+                               String       elementTypeName,
+                               List<String> serviceSupportedZones,
+                               int          startingFrom,
+                               int          pageSize,
+                               String       methodName) throws InvalidParameterException,
+                                                               PropertyServerException,
+                                                               UserNotAuthorizedException
+    {
+        return this.getAttachedElements(userId,
+                                        elementGUID,
+                                        elementGUIDParameterName,
+                                        elementTypeName,
+                                        OpenMetadataAPIMapper.REFERENCEABLE_TO_RATING_TYPE_GUID,
+                                        OpenMetadataAPIMapper.REFERENCEABLE_TO_RATING_TYPE_NAME,
+                                        OpenMetadataAPIMapper.RATING_TYPE_NAME,
+                                        serviceSupportedZones,
+                                        startingFrom,
+                                        pageSize,
+                                        methodName);
+    }
+
+
+    /**
+     * Add or replace and existing Rating for this user.
+     *
+     * @param userId      userId of user making request.
+     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param elementGUID   unique identifier for the connected entity (Referenceable).
+     * @param elementGUIDParameterName parameter supplying the elementGUID
+     * @param starRating  StarRating ordinal for enumeration for not recommended, one to five stars.
+     * @param review      user review of asset.  This can be null.
+     * @param isPublic   indicates whether the feedback should be shared or only be visible to the originating user
+     * @param methodName calling method
+     * @return unique identifier of the rating
+     *
+     * @throws InvalidParameterException  the endpoint bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
+    public String saveRating(String     userId,
+                             String     externalSourceGUID,
+                             String     externalSourceName,
+                             String     elementGUID,
+                             String     elementGUIDParameterName,
+                             int        starRating,
+                             String     review,
+                             boolean    isPublic,
+                             String     methodName) throws InvalidParameterException,
+                                                           PropertyServerException,
+                                                           UserNotAuthorizedException
+    {
+        try
+        {
+            this.removeRating(userId, externalSourceGUID, externalSourceName, elementGUID, elementGUIDParameterName, methodName);
+        }
+        catch (Exception error)
+        {
+            /*
+             * Exception means this is the first rating from user.
+             */
+        }
+
+        RatingBuilder builder = new RatingBuilder(starRating,
+                                                  review,
+                                                  isPublic,
+                                                  elementGUID,
+                                                  repositoryHelper,
+                                                  serviceName,
+                                                  serverName);
+
+
+        String ratingGUID = this.createBeanInRepository(userId,
+                                                        externalSourceGUID,
+                                                        externalSourceName,
+                                                        OpenMetadataAPIMapper.RATING_TYPE_GUID,
+                                                        OpenMetadataAPIMapper.RATING_TYPE_NAME,
+                                                        null,
+                                                        null,
+                                                        builder,
+                                                        methodName);
+
+        if (ratingGUID != null)
+        {
+            final String ratingGUIDParameterName = "ratingGUID";
+
+            this.linkElementToElement(userId,
+                                      externalSourceGUID,
+                                      externalSourceName,
+                                      elementGUID,
+                                      elementGUIDParameterName,
+                                      OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                      ratingGUID,
+                                      ratingGUIDParameterName,
+                                      OpenMetadataAPIMapper.RATING_TYPE_NAME,
+                                      OpenMetadataAPIMapper.REFERENCEABLE_TO_RATING_TYPE_GUID,
+                                      OpenMetadataAPIMapper.REFERENCEABLE_TO_RATING_TYPE_NAME,
+                                      builder.getRelationshipInstanceProperties(methodName),
+                                      methodName);
+        }
+
+        return ratingGUID;
+    }
+
+
+    /**
+     * Remove the requested rating.
+     *
+     * @param userId       calling user
+     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software server capability entity that represented the external source
+     * @param elementGUID   unique identifier for the connected entity (Referenceable).
+     * @param elementGUIDParameterName parameter supplying the elementGUID
+     * @param methodName   calling method
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
+    public  void removeRating(String userId,
+                              String externalSourceGUID,
+                              String externalSourceName,
+                              String elementGUID,
+                              String elementGUIDParameterName,
+                              String methodName) throws InvalidParameterException,
+                                                        PropertyServerException,
+                                                        UserNotAuthorizedException
+    {
+        String ratingGUID = this.unlinkConnectedElement(userId,
+                                                        true,
+                                                        externalSourceGUID,
+                                                        externalSourceName,
+                                                        elementGUID,
+                                                        elementGUIDParameterName,
+                                                        OpenMetadataAPIMapper.REFERENCEABLE_TYPE_NAME,
+                                                        supportedZones,
+                                                        OpenMetadataAPIMapper.REFERENCEABLE_TO_RATING_TYPE_GUID,
+                                                        OpenMetadataAPIMapper.REFERENCEABLE_TO_RATING_TYPE_NAME,
+                                                        OpenMetadataAPIMapper.RATING_TYPE_NAME,
+                                                        methodName);
+
+        if (ratingGUID != null)
+        {
+            final String ratingGUIDParameterName = "ratingGUID";
+
+            this.deleteBeanInRepository(userId,
+                                        externalSourceGUID,
+                                        externalSourceName,
+                                        ratingGUID,
+                                        ratingGUIDParameterName,
+                                        OpenMetadataAPIMapper.RATING_TYPE_GUID,
+                                        OpenMetadataAPIMapper.RATING_TYPE_NAME,
+                                        null,
+                                        null,
+                                        methodName);
+        }
+    }
+}

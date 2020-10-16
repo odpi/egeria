@@ -7,7 +7,7 @@ import org.odpi.openmetadata.accessservices.governanceprogram.api.GovernanceLead
 import org.odpi.openmetadata.accessservices.governanceprogram.ffdc.exceptions.*;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.ExternalReference;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDomain;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceOfficer;
+import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceOfficerProperties;
 import org.odpi.openmetadata.accessservices.governanceprogram.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
@@ -329,8 +329,8 @@ public class GovernanceProgramLeadership  implements GovernanceLeadershipInterfa
      * @throws PropertyServerException the server is not available.
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    public GovernanceOfficer getGovernanceOfficerByGUID(String     userId,
-                                                        String     governanceOfficerGUID) throws InvalidParameterException,
+    public GovernanceOfficerProperties getGovernanceOfficerByGUID(String     userId,
+                                                                  String     governanceOfficerGUID) throws InvalidParameterException,
                                                                                                  PropertyServerException,
                                                                                                  UserNotAuthorizedException
     {
@@ -368,8 +368,8 @@ public class GovernanceProgramLeadership  implements GovernanceLeadershipInterfa
      * @throws PropertyServerException the server is not available.
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    public GovernanceOfficer        getGovernanceOfficerByAppointmentId(String     userId,
-                                                                        String     appointmentId) throws InvalidParameterException,
+    public GovernanceOfficerProperties getGovernanceOfficerByAppointmentId(String     userId,
+                                                                           String     appointmentId) throws InvalidParameterException,
                                                                                                          AppointmentIdNotUniqueException,
                                                                                                          PropertyServerException,
                                                                                                          UserNotAuthorizedException
@@ -407,9 +407,9 @@ public class GovernanceProgramLeadership  implements GovernanceLeadershipInterfa
      * @throws PropertyServerException the server is not available.
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    public List<GovernanceOfficer>  getGovernanceOfficers(String     userId) throws InvalidParameterException,
-                                                                                    PropertyServerException,
-                                                                                    UserNotAuthorizedException
+    public List<GovernanceOfficerProperties>  getGovernanceOfficers(String     userId) throws InvalidParameterException,
+                                                                                              PropertyServerException,
+                                                                                              UserNotAuthorizedException
     {
         final String   methodName = "getGovernanceOfficers";
         final String   urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/leadership/governance-officers";
@@ -439,9 +439,9 @@ public class GovernanceProgramLeadership  implements GovernanceLeadershipInterfa
      * @throws PropertyServerException the server is not available.
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    public List<GovernanceOfficer>  getActiveGovernanceOfficers(String     userId) throws InvalidParameterException,
-                                                                                          PropertyServerException,
-                                                                                          UserNotAuthorizedException
+    public List<GovernanceOfficerProperties>  getActiveGovernanceOfficers(String     userId) throws InvalidParameterException,
+                                                                                                    PropertyServerException,
+                                                                                                    UserNotAuthorizedException
     {
         final String   methodName = "getGovernanceOfficers";
         final String   urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/leadership/governance-officers/active";
@@ -474,8 +474,8 @@ public class GovernanceProgramLeadership  implements GovernanceLeadershipInterfa
      * @throws PropertyServerException the server is not available.
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    public List<GovernanceOfficer>  getGovernanceOfficersByDomain(String             userId,
-                                                                  GovernanceDomain   governanceDomain) throws InvalidParameterException,
+    public List<GovernanceOfficerProperties>  getGovernanceOfficersByDomain(String             userId,
+                                                                            GovernanceDomain   governanceDomain) throws InvalidParameterException,
                                                                                                               PropertyServerException,
                                                                                                               UserNotAuthorizedException
     {

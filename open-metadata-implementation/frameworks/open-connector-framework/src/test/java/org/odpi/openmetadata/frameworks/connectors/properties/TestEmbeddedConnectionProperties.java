@@ -14,7 +14,7 @@ import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
 /**
- * Validate that the AssetSchemaLink can function as a facade for its bean.
+ * Validate that the EmbeddedConnectionProperties can function as a facade for its bean.
  */
 public class TestEmbeddedConnectionProperties
 {

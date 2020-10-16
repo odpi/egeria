@@ -341,12 +341,17 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
         catch ( InterruptedException e )
         {
             //expected exception and don't care
-         }
+        }
         catch ( Exception error ) {
             if (auditLog != null)
             {
-                auditLog.logMessage("consumerThread.join",
-                        KafkaOpenMetadataTopicConnectorAuditCode.UNEXPECTED_SHUTDOWN_EXCEPTION.getMessageDefinition(topicName));
+                final String command = "consumerThread.join";
+                auditLog.logException(actionDescription,
+                        KafkaOpenMetadataTopicConnectorAuditCode.UNEXPECTED_SHUTDOWN_EXCEPTION.getMessageDefinition(error.getClass().getName(),
+                                                                                                                    topicName,
+                                                                                                                    command,
+                                                                                                                    error.getMessage()),
+                                      error);
             }
         }
 
@@ -358,8 +363,14 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
         catch ( Exception error ){
             if (auditLog != null)
             {
-                auditLog.logMessage("producerThread.join",
-                        KafkaOpenMetadataTopicConnectorAuditCode.UNEXPECTED_SHUTDOWN_EXCEPTION.getMessageDefinition(topicName));
+                final String command = "producerThread.join";
+
+                auditLog.logException(actionDescription,
+                        KafkaOpenMetadataTopicConnectorAuditCode.UNEXPECTED_SHUTDOWN_EXCEPTION.getMessageDefinition(error.getClass().getName(),
+                                                                                                                    topicName,
+                                                                                                                    command,
+                                                                                                                    error.getMessage()),
+                                      error);
             }
 
         }

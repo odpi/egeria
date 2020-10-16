@@ -4,7 +4,7 @@
 package org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest;
 
 import com.fasterxml.jackson.annotation.*;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Classification;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementClassification;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Meaning;
 
 import java.util.*;
@@ -22,12 +22,12 @@ public class ReferenceableRequestBody extends OCFOMASAPIRequestBody
 {
     private static final long    serialVersionUID = 1L;
 
-    protected String               typeName             = null;
-    protected List<Classification> classifications      = null;
-    protected String               qualifiedName        = null;
-    protected List<Meaning>        meanings             = null;
-    protected Map<String, String>  additionalProperties = null;
-    protected Map<String, Object>  extendedProperties   = null;
+    protected String                      typeName             = null;
+    protected List<ElementClassification> classifications      = null;
+    protected String                      qualifiedName        = null;
+    protected List<Meaning>               meanings             = null;
+    protected Map<String, String>         additionalProperties = null;
+    protected Map<String, Object>         extendedProperties   = null;
 
 
     /**
@@ -88,7 +88,7 @@ public class ReferenceableRequestBody extends OCFOMASAPIRequestBody
      *
      * @return list of classifications with their properties
      */
-    public List<Classification> getClassifications()
+    public List<ElementClassification> getClassifications()
     {
         return classifications;
     }
@@ -99,7 +99,7 @@ public class ReferenceableRequestBody extends OCFOMASAPIRequestBody
      *
      * @param classifications list of classifications with their properties
      */
-    public void setClassifications(List<Classification> classifications)
+    public void setClassifications(List<ElementClassification> classifications)
     {
         this.classifications = classifications;
     }

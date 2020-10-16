@@ -24,9 +24,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = DataProfileLogAnnotation.class, name = "DataProfileLogAnnotation"),
                 @JsonSubTypes.Type(value = QualityAnnotation.class, name = "QualityAnnotation"),
                 @JsonSubTypes.Type(value = RelationshipAdviceAnnotation.class, name = "RelationshipAdviceAnnotation"),
+                @JsonSubTypes.Type(value = RequestForActionAnnotation.class, name = "RequestForActionAnnotation"),
                 @JsonSubTypes.Type(value = SemanticAnnotation.class, name = "SemanticAnnotation"),
         })
-public class DataFieldAnnotation extends Annotation
+public abstract class DataFieldAnnotation extends Annotation
 {
     private static final long    serialVersionUID = 1L;
 
@@ -58,49 +59,23 @@ public class DataFieldAnnotation extends Annotation
     public String toString()
     {
         return "DataFieldAnnotation{" +
-                       "annotationType='" + getAnnotationType() + '\'' +
-                       ", summary='" + getSummary() + '\'' +
-                       ", confidenceLevel=" + getConfidenceLevel() +
-                       ", expression='" + getExpression() + '\'' +
-                       ", explanation='" + getExplanation() + '\'' +
-                       ", analysisStep='" + getAnalysisStep() + '\'' +
-                       ", jsonProperties='" + getJsonProperties() + '\'' +
-                       ", annotationStatus=" + getAnnotationStatus() +
-                       ", numAttachedAnnotations=" + getNumAttachedAnnotations() +
-                       ", reviewDate=" + getReviewDate() +
-                       ", steward='" + getSteward() + '\'' +
-                       ", reviewComment='" + getReviewComment() + '\'' +
-                       ", additionalProperties=" + getAdditionalProperties() +
-                       ", type=" + getType() +
-                       ", GUID='" + getGUID() + '\'' +
-                       ", URL='" + getURL() + '\'' +
-                       ", classifications=" + getClassifications() +
-                       ", extendedProperties=" + getExtendedProperties() +
-                       '}';
+                "annotationType='" + getAnnotationType() + '\'' +
+                ", summary='" + getSummary() + '\'' +
+                ", confidenceLevel=" + getConfidenceLevel() +
+                ", expression='" + getExpression() + '\'' +
+                ", explanation='" + getExplanation() + '\'' +
+                ", analysisStep='" + getAnalysisStep() + '\'' +
+                ", jsonProperties='" + getJsonProperties() + '\'' +
+                ", annotationStatus=" + getAnnotationStatus() +
+                ", numAttachedAnnotations=" + getNumAttachedAnnotations() +
+                ", reviewDate=" + getReviewDate() +
+                ", steward='" + getSteward() + '\'' +
+                ", reviewComment='" + getReviewComment() + '\'' +
+                ", additionalProperties=" + getAdditionalProperties() +
+                ", headerVersion=" + getHeaderVersion() +
+                ", elementHeader=" + getElementHeader() +
+                ", typeName='" + getTypeName() + '\'' +
+                ", extendedProperties=" + getExtendedProperties() +
+                '}';
     }
-
-
-    /**
-     * Standard toString method.
-     *
-     * @return print out of variables in a JSON-style
-     */
-
-
-
-    /**
-     * Compare the values of the supplied object with those stored in the current object.
-     *
-     * @param objectToCompare supplied object
-     * @return boolean result of comparison
-     */
-
-
-
-
-    /**
-     * Create a hash code for this element type.
-     *
-     * @return int hash code
-     */
 }

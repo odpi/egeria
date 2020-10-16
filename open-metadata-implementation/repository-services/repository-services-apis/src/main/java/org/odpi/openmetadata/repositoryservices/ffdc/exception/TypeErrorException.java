@@ -128,6 +128,17 @@ public class TypeErrorException extends OMRSCheckedExceptionBase
 
 
     /**
+     * This constructor is ued to wrap an exception with the TypeErrorException.
+     *
+     * @param caughtException exception to wrap
+     */
+    public TypeErrorException(OMRSCheckedExceptionBase caughtException)
+    {
+        super(caughtException.getReportedErrorMessage(), caughtException);
+    }
+
+
+    /**
      * This is the typical constructor used for creating a TypeErrorException.
      *
      * @param httpCode  http response code to use if this exception flows over a REST call

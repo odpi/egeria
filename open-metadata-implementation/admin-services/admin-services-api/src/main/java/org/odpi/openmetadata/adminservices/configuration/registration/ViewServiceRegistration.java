@@ -59,9 +59,9 @@ public class ViewServiceRegistration implements Serializable
      * @param viewServiceOperationalStatus default initial operational status for the view service
      * @param viewServiceAdminClassName  name of ViewServiceAdmin implementation class for the view service
      */
-    public ViewServiceRegistration(ViewServiceDescription       viewServiceDescription,
+    public ViewServiceRegistration(ViewServiceDescription   viewServiceDescription,
                                    ServiceOperationalStatus viewServiceOperationalStatus,
-                                   String                         viewServiceAdminClassName)
+                                   String                   viewServiceAdminClassName)
     {
         this(viewServiceDescription.getViewServiceCode(),
              viewServiceDescription.getViewServiceName(),
@@ -80,6 +80,7 @@ public class ViewServiceRegistration implements Serializable
     public ViewServiceRegistration()
     {
     }
+
 
     /**
      * Return the code for this view service
@@ -112,7 +113,6 @@ public class ViewServiceRegistration implements Serializable
     {
         return viewServiceName;
     }
-
 
 
     /**
@@ -220,7 +220,7 @@ public class ViewServiceRegistration implements Serializable
     /**
      * Return the initial operational status for this view service.
      *
-     * @return ViewServiceOperationalStatus enum
+     * @return ServiceOperationalStatus enum
      */
     public ServiceOperationalStatus getViewServiceOperationalStatus()
     {
@@ -231,7 +231,7 @@ public class ViewServiceRegistration implements Serializable
     /**
      * Set up the initial operational status for this view service.
      *
-     * @param viewServiceOperationalStatus ViewServiceOperationalStatus enum
+     * @param viewServiceOperationalStatus ServiceOperationalStatus enum
      */
     public void setViewServiceOperationalStatus(ServiceOperationalStatus viewServiceOperationalStatus)
     {
