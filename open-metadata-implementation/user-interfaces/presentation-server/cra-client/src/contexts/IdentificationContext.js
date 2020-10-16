@@ -9,6 +9,7 @@ export const IdentificationContextConsumer = IdentificationContext.Consumer;
 const IdentificationContextProvider = props => {
 
   const [userId, setUserId] = useState("");
+  const [user, setUser] = useState({});
   // TODO this will change if the user changes the url - are there any implications to that?
   const [serverName] = useState(window.location.pathname.split("/")[1]);
   const [authenticated, setAuthenticated] = useState(false); //TODO do we need this?
@@ -45,6 +46,8 @@ const IdentificationContextProvider = props => {
       value={{
         userId,
         setUserId,
+        user,
+        setUser,
         authenticated,
         setAuthenticated,
         serverName,
