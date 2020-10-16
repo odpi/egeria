@@ -3,6 +3,10 @@
  * Copyright Contributors to the ODPi Egeria project.
  */
 
+plugins {
+     id 'org.springframework.boot'
+ }
+
 repositories {
 	mavenCentral()
 }

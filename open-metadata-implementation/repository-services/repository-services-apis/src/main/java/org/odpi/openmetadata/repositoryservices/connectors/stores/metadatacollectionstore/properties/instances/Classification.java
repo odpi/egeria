@@ -64,26 +64,6 @@ public class Classification extends InstanceAuditHeader
 
 
     /**
-     * Typical constructor verifies and saves parameters.
-     *
-     * @param name name of the classification
-     * @param properties additional properties for the classification
-     * @param origin the origin of the classification
-     * @param originGUID the guid of the entity of the classification origin was propagated.
-     */
-    public Classification(String               name,
-                          InstanceProperties   properties,
-                          ClassificationOrigin origin,
-                          String               originGUID)
-    {
-        this.classificationName = validateName(name);
-        this.classificationProperties = properties;
-        this.classificationOrigin = origin;
-        this.classificationOriginGUID = originGUID;
-    }
-
-
-    /**
      * Default constructor for automated generation tools.
      */
     public Classification()
@@ -131,7 +111,7 @@ public class Classification extends InstanceAuditHeader
 
 
     /**
-     * Return the name of the classification.
+     * Return the name of the classification. This name is the type name defined in a ClassificationDef type definition.
      *
      * @return name of classification
      */
@@ -142,7 +122,7 @@ public class Classification extends InstanceAuditHeader
 
 
     /**
-     * Set up the name of the classification.
+     * Set up the name of the classification. This name is the type name defined in a ClassificationDef type definition.
      *
      * @param classificationName String name
      */

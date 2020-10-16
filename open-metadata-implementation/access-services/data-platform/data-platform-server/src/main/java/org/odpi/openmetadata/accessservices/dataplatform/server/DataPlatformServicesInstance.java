@@ -4,7 +4,7 @@ package org.odpi.openmetadata.accessservices.dataplatform.server;
 
 import org.odpi.openmetadata.accessservices.dataplatform.ffdc.DataPlatformErrorCode;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.commonservices.multitenant.OCFOMASServiceInstance;
+import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
@@ -16,7 +16,7 @@ import java.util.List;
  * DataPlatformServicesInstance caches references to OMRS objects for a specific server.
  * It is also responsible for registering itself in the instance map.
  */
-public class DataPlatformServicesInstance extends OCFOMASServiceInstance
+public class DataPlatformServicesInstance extends OMASServiceInstance
 {
     private static AccessServiceDescription myDescription = AccessServiceDescription.DATA_PLATFORM_OMAS;
 

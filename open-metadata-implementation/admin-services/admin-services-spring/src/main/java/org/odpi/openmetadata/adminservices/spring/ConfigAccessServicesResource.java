@@ -8,6 +8,7 @@ import org.odpi.openmetadata.adminservices.OMAGServerAdminForAccessServices;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.EnterpriseAccessConfig;
 import org.odpi.openmetadata.adminservices.rest.AccessServiceConfigResponse;
+import org.odpi.openmetadata.adminservices.rest.AccessServicesResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGServicesResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.StringMapResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
@@ -41,11 +42,26 @@ public class ConfigAccessServicesResource
      * @param serverName name of server
      * @return list of access service descriptions
      */
-    @GetMapping(path = "/access-services/configuration")
+    @GetMapping(path = "/access-services")
     public RegisteredOMAGServicesResponse getConfiguredAccessServices(@PathVariable String userId,
                                                                       @PathVariable String serverName)
     {
         return adminAPI.getConfiguredAccessServices(userId, serverName);
+    }
+
+
+    /**
+     * Return the configuration for the access services in this server.
+     *
+     * @param userId calling user
+     * @param serverName name of server
+     * @return list of access service configurations
+     */
+    @GetMapping(path = "/access-services/configuration")
+    public AccessServicesResponse getAccessServicesConfiguration(@PathVariable String userId,
+                                                                 @PathVariable String serverName)
+    {
+        return adminAPI.getAccessServicesConfiguration(userId, serverName);
     }
 
 

@@ -101,6 +101,7 @@ public class UserIdentityHandler
                                                          UserNotAuthorizedException
     {
         final String  nameParameter = "userIdentityQualifiedName";
+        final String  localMethodName = "getUserIdentityGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(userIdentityQualifiedName, nameParameter, methodName);
@@ -136,7 +137,7 @@ public class UserIdentityHandler
         }
         catch (Throwable  error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
 
         log.debug("Unreachable statement for: " +  userId);
@@ -164,6 +165,7 @@ public class UserIdentityHandler
                                                               UserNotAuthorizedException
     {
         final String  nameParameter = "profileUserId";
+        final String  localMethodName = "addUserIdentity";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(profileUserId, nameParameter, methodName);
@@ -197,7 +199,7 @@ public class UserIdentityHandler
         }
         catch (Throwable  error)
         {
-            errorHandler.handleRepositoryError(error, methodName);
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
         }
 
         log.debug("Unreachable statement for: " +  userId);
@@ -300,6 +302,8 @@ public class UserIdentityHandler
                 if (anotherIdentity)
                 {
                     repositoryHandler.removeRelationshipBetweenEntities(userId,
+                                                                        null,
+                                                                        null,
                                                                         PersonalProfileMapper.PROFILE_IDENTITY_TYPE_GUID,
                                                                         PersonalProfileMapper.PROFILE_IDENTITY_TYPE_NAME,
                                                                         profileGUID,

@@ -43,7 +43,7 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>odf-metadata-api</artifactId>
+            <artifactId>discovery-engine-api</artifactId>
         </dependency>
 
         <dependency>

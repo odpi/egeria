@@ -5,6 +5,7 @@ package org.odpi.openmetadata.frameworks.connectors.properties;
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Meaning;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Referenceable;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.SecurityTags;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +16,7 @@ import java.util.Objects;
  * Many open metadata entities are referenceable.  It means that they have a qualified name and additional
  * properties.  In addition the Referenceable class adds support for the parent asset, guid, url and type
  * for the entity through extending ElementHeader.  There is also the possibility that referenceable may have
- * meanings (glossary terms) assigned.
+ * meanings (glossary terms) and security tags assigned.
  *
  * Asset meanings are extracted on demand by the caller.
  */
@@ -171,6 +172,25 @@ public class AssetReferenceable extends AssetElementHeader
 
 
     /**
+     * Return the information used by security engines to secure access to the asset's content.  Null means no tags available.
+     *
+     * @return security labels and properties
+     */
+    public AssetSecurityTags  getSecurityTags()
+    {
+        SecurityTags bean = referenceableBean.getSecurityTags();
+
+        if (bean != null)
+        {
+            return new AssetSecurityTags(parentAsset, bean);
+        }
+
+        return null;
+    }
+
+
+
+    /**
      * Return a copy of the additional properties.  Null means no additional properties are available.
      *
      * @return AdditionalProperties
@@ -198,14 +218,7 @@ public class AssetReferenceable extends AssetElementHeader
     @Override
     public String toString()
     {
-        return "AssetReferenceable{" +
-                "referenceableBean=" + referenceableBean +
-                ", parentAsset=" + parentAsset +
-                ", type=" + getType() +
-                ", GUID='" + getGUID() + '\'' +
-                ", URL='" + getURL() + '\'' +
-                ", assetClassifications=" + getAssetClassifications() +
-                '}';
+        return referenceableBean.toString();
     }
 
 

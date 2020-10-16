@@ -98,7 +98,7 @@ public class AssetLike extends AssetElementHeader
      */
     public boolean isPublic()
     {
-        return likeBean.isPublic();
+        return likeBean.getIsPublic();
     }
 
 

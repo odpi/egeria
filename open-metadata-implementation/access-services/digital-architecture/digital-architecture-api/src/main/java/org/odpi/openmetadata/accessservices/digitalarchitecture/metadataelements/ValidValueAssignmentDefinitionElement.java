@@ -80,7 +80,7 @@ public class ValidValueAssignmentDefinitionElement extends ValidValueAssignmentP
     @Override
     public String toString()
     {
-        return "ValidValueAssignmentDefinitionElement{" + "definition=" + validValueElement + ", strictRequirement=" + isStrictRequirement() + '}';
+        return "ValidValueAssignmentDefinitionElement{" + "definition=" + validValueElement + ", strictRequirement=" + getStrictRequirement() + '}';
     }
 
 

@@ -65,6 +65,29 @@ public class RESTExceptionHandler
 
 
     /**
+     * Manage an unexpected exception
+     *
+     * @param parameterName name of null parameter - use to help locate where the problem is
+     * @param methodName method that caught the exception
+     * @throws InvalidParameterException exception to report error
+     */
+    public void handleMissingValue(String      parameterName,
+                                   String      methodName) throws InvalidParameterException
+    {
+        InvalidParameterException error =
+                new InvalidParameterException(OMAGCommonErrorCode.NULL_OBJECT.getMessageDefinition(parameterName,
+                                                                                                   methodName),
+                                              this.getClass().getName(),
+                                              methodName,
+                                              parameterName);
+
+        log.error("Missing parameter", error);
+        throw error;
+    }
+
+
+
+    /**
      * Throw an exception if it is encoded in the REST response.
      *
      * @param methodName  name of the method called

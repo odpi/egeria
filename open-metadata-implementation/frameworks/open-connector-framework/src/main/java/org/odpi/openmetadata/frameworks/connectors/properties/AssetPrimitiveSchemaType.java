@@ -54,7 +54,7 @@ public class AssetPrimitiveSchemaType extends AssetSimpleSchemaType
      * @param parentAsset descriptor for parent asset
      * @param primitiveSchemaTypeBean bean containing the schema element properties
      */
-    public AssetPrimitiveSchemaType(AssetDescriptor parentAsset,
+    public AssetPrimitiveSchemaType(AssetDescriptor     parentAsset,
                                     PrimitiveSchemaType primitiveSchemaTypeBean)
     {
         super(parentAsset, primitiveSchemaTypeBean);
@@ -153,19 +153,27 @@ public class AssetPrimitiveSchemaType extends AssetSimpleSchemaType
     public String toString()
     {
         return "AssetPrimitiveSchemaType{" +
-                "dataType='" + getDataType() + '\'' +
+                "parentAsset=" + parentAsset +
+                ", dataType='" + getDataType() + '\'' +
                 ", defaultValue='" + getDefaultValue() + '\'' +
-                ", displayName='" + getDisplayName() + '\'' +
                 ", versionNumber='" + getVersionNumber() + '\'' +
                 ", author='" + getAuthor() + '\'' +
                 ", usage='" + getUsage() + '\'' +
                 ", encodingStandard='" + getEncodingStandard() + '\'' +
-                ", extendedProperties=" + getExtendedProperties() +
+                ", formula='" + getFormula() + '\'' +
+                ", queries=" + getQueries() +
+                ", deprecated=" + isDeprecated() +
+                ", displayName='" + getDisplayName() + '\'' +
+                ", description='" + getDescription() + '\'' +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
+                ", meanings=" + getMeanings() +
+                ", securityTags=" + getSecurityTags() +
                 ", additionalProperties=" + getAdditionalProperties() +
                 ", type=" + getType() +
                 ", GUID='" + getGUID() + '\'' +
                 ", URL='" + getURL() + '\'' +
+                ", assetClassifications=" + getAssetClassifications() +
+                ", extendedProperties=" + getExtendedProperties() +
                 '}';
     }
 

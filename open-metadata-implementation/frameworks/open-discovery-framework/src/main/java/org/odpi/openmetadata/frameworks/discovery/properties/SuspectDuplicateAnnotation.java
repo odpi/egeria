@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -225,27 +224,28 @@ public class SuspectDuplicateAnnotation extends Annotation
     public String toString()
     {
         return "SuspectDuplicateAnnotation{" +
-                "matchingClassificationNames=" + matchingClassificationNames +
+                "duplicateAnchorGUIDs=" + duplicateAnchorGUIDs +
+                ", matchingPropertyNames=" + matchingPropertyNames +
+                ", matchingClassificationNames=" + matchingClassificationNames +
                 ", matchingAttachmentGUIDs=" + matchingAttachmentGUIDs +
                 ", matchingRelationshipGUIDs=" + matchingRelationshipGUIDs +
-                ", annotationType='" + annotationType + '\'' +
-                ", summary='" + summary + '\'' +
-                ", confidenceLevel=" + confidenceLevel +
-                ", expression='" + expression + '\'' +
-                ", explanation='" + explanation + '\'' +
-                ", analysisStep='" + analysisStep + '\'' +
-                ", jsonProperties='" + jsonProperties + '\'' +
-                ", numAttachedAnnotations=" + numAttachedAnnotations +
-                ", annotationStatus=" + annotationStatus +
-                ", reviewDate=" + reviewDate +
-                ", steward='" + steward + '\'' +
-                ", reviewComment='" + reviewComment + '\'' +
-                ", additionalProperties=" + additionalProperties +
-                ", type=" + type +
-                ", guid='" + guid + '\'' +
-                ", url='" + url + '\'' +
-                ", classifications=" + classifications +
-                ", extendedProperties=" + extendedProperties +
+                ", annotationType='" + getAnnotationType() + '\'' +
+                ", summary='" + getSummary() + '\'' +
+                ", confidenceLevel=" + getConfidenceLevel() +
+                ", expression='" + getExpression() + '\'' +
+                ", explanation='" + getExplanation() + '\'' +
+                ", analysisStep='" + getAnalysisStep() + '\'' +
+                ", jsonProperties='" + getJsonProperties() + '\'' +
+                ", annotationStatus=" + getAnnotationStatus() +
+                ", numAttachedAnnotations=" + getNumAttachedAnnotations() +
+                ", reviewDate=" + getReviewDate() +
+                ", steward='" + getSteward() + '\'' +
+                ", reviewComment='" + getReviewComment() + '\'' +
+                ", additionalProperties=" + getAdditionalProperties() +
+                ", headerVersion=" + getHeaderVersion() +
+                ", elementHeader=" + getElementHeader() +
+                ", typeName='" + getTypeName() + '\'' +
+                ", extendedProperties=" + getExtendedProperties() +
                 '}';
     }
 
@@ -288,6 +288,7 @@ public class SuspectDuplicateAnnotation extends Annotation
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), duplicateAnchorGUIDs, matchingPropertyNames, matchingClassificationNames, matchingAttachmentGUIDs, matchingRelationshipGUIDs);
+        return Objects.hash(super.hashCode(), duplicateAnchorGUIDs, matchingPropertyNames, matchingClassificationNames,
+                            matchingAttachmentGUIDs, matchingRelationshipGUIDs);
     }
 }

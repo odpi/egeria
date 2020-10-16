@@ -6,7 +6,7 @@
 # Open Metadata View Services (OMVS)
 
 The Open Metadata View Services (OMVS) provide task oriented, domain-specific services
-for user interfaces to integrate with open metadata. 
+for user interfaces to integrate with open metadata.
 
 The view services are as follows:
 

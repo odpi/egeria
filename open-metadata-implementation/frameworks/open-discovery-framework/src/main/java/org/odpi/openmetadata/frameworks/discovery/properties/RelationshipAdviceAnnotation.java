@@ -24,9 +24,9 @@ public class RelationshipAdviceAnnotation extends DataFieldAnnotation
 {
     private static final long    serialVersionUID = 1L;
 
-    String              relatedEntityGUID = null;
-    String              relationshipTypeName = null;
-    Map<String, String> relationshipProperties = null;
+    private String              relatedEntityGUID = null;
+    private String              relationshipTypeName = null;
+    private Map<String, String> relationshipProperties = null;
 
 
     /**
@@ -143,24 +143,23 @@ public class RelationshipAdviceAnnotation extends DataFieldAnnotation
                 "relatedEntityGUID='" + relatedEntityGUID + '\'' +
                 ", relationshipTypeName='" + relationshipTypeName + '\'' +
                 ", relationshipProperties=" + relationshipProperties +
-                ", annotationType='" + annotationType + '\'' +
-                ", summary='" + summary + '\'' +
-                ", confidenceLevel=" + confidenceLevel +
-                ", expression='" + expression + '\'' +
-                ", explanation='" + explanation + '\'' +
-                ", analysisStep='" + analysisStep + '\'' +
-                ", jsonProperties='" + jsonProperties + '\'' +
-                ", numAttachedAnnotations=" + numAttachedAnnotations +
-                ", annotationStatus=" + annotationStatus +
-                ", reviewDate=" + reviewDate +
-                ", steward='" + steward + '\'' +
-                ", reviewComment='" + reviewComment + '\'' +
-                ", additionalProperties=" + additionalProperties +
-                ", type=" + type +
-                ", guid='" + guid + '\'' +
-                ", url='" + url + '\'' +
-                ", classifications=" + classifications +
-                ", extendedProperties=" + extendedProperties +
+                ", annotationType='" + getAnnotationType() + '\'' +
+                ", summary='" + getSummary() + '\'' +
+                ", confidenceLevel=" + getConfidenceLevel() +
+                ", expression='" + getExpression() + '\'' +
+                ", explanation='" + getExplanation() + '\'' +
+                ", analysisStep='" + getAnalysisStep() + '\'' +
+                ", jsonProperties='" + getJsonProperties() + '\'' +
+                ", annotationStatus=" + getAnnotationStatus() +
+                ", numAttachedAnnotations=" + getNumAttachedAnnotations() +
+                ", reviewDate=" + getReviewDate() +
+                ", steward='" + getSteward() + '\'' +
+                ", reviewComment='" + getReviewComment() + '\'' +
+                ", additionalProperties=" + getAdditionalProperties() +
+                ", headerVersion=" + getHeaderVersion() +
+                ", elementHeader=" + getElementHeader() +
+                ", typeName='" + getTypeName() + '\'' +
+                ", extendedProperties=" + getExtendedProperties() +
                 '}';
     }
 

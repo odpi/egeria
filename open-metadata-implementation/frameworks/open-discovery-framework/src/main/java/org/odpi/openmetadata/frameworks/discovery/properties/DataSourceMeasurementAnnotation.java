@@ -97,26 +97,25 @@ public class DataSourceMeasurementAnnotation extends Annotation
     public String toString()
     {
         return "DataSourceMeasurementAnnotation{" +
-                       "dataSourceProperties=" + dataSourceProperties +
-                       ", annotationType='" + getAnnotationType() + '\'' +
-                       ", summary='" + getSummary() + '\'' +
-                       ", confidenceLevel=" + getConfidenceLevel() +
-                       ", expression='" + getExpression() + '\'' +
-                       ", explanation='" + getExplanation() + '\'' +
-                       ", analysisStep='" + getAnalysisStep() + '\'' +
-                       ", jsonProperties='" + getJsonProperties() + '\'' +
-                       ", annotationStatus=" + getAnnotationStatus() +
-                       ", numAttachedAnnotations=" + getNumAttachedAnnotations() +
-                       ", reviewDate=" + getReviewDate() +
-                       ", steward='" + getSteward() + '\'' +
-                       ", reviewComment='" + getReviewComment() + '\'' +
-                       ", additionalProperties=" + getAdditionalProperties() +
-                       ", type=" + getType() +
-                       ", GUID='" + getGUID() + '\'' +
-                       ", URL='" + getURL() + '\'' +
-                       ", classifications=" + getClassifications() +
-                       ", extendedProperties=" + getExtendedProperties() +
-                       '}';
+                "dataSourceProperties=" + dataSourceProperties +
+                ", annotationType='" + getAnnotationType() + '\'' +
+                ", summary='" + getSummary() + '\'' +
+                ", confidenceLevel=" + getConfidenceLevel() +
+                ", expression='" + getExpression() + '\'' +
+                ", explanation='" + getExplanation() + '\'' +
+                ", analysisStep='" + getAnalysisStep() + '\'' +
+                ", jsonProperties='" + getJsonProperties() + '\'' +
+                ", annotationStatus=" + getAnnotationStatus() +
+                ", numAttachedAnnotations=" + getNumAttachedAnnotations() +
+                ", reviewDate=" + getReviewDate() +
+                ", steward='" + getSteward() + '\'' +
+                ", reviewComment='" + getReviewComment() + '\'' +
+                ", additionalProperties=" + getAdditionalProperties() +
+                ", headerVersion=" + getHeaderVersion() +
+                ", elementHeader=" + getElementHeader() +
+                ", typeName='" + getTypeName() + '\'' +
+                ", extendedProperties=" + getExtendedProperties() +
+                '}';
     }
 
 

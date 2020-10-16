@@ -21,12 +21,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class DatabaseTableElement extends DatabaseTableProperties implements MetadataElement,
-                                                                             Serializable
+public class DatabaseTableElement implements MetadataElement, Serializable
 {
     private static final long     serialVersionUID = 1L;
 
-    private ElementHeader elementHeader = null;
+    private ElementHeader           elementHeader = null;
+    private DatabaseTableProperties databaseTableProperties = null;
 
 
     /**
@@ -77,6 +77,28 @@ public class DatabaseTableElement extends DatabaseTableProperties implements Met
 
 
     /**
+     * Return the database table properties.
+     *
+     * @return properties bean
+     */
+    public DatabaseTableProperties getDatabaseTableProperties()
+    {
+        return databaseTableProperties;
+    }
+
+
+    /**
+     * Set up the database table properties.
+     *
+     * @param databaseTableProperties properties bean
+     */
+    public void setDatabaseTableProperties(DatabaseTableProperties databaseTableProperties)
+    {
+        this.databaseTableProperties = databaseTableProperties;
+    }
+
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -86,28 +108,7 @@ public class DatabaseTableElement extends DatabaseTableProperties implements Met
     {
         return "DatabaseTableElement{" +
                 "elementHeader=" + elementHeader +
-                ", elementPosition=" + getElementPosition() +
-                ", minCardinality=" + getMinCardinality() +
-                ", maxCardinality=" + getMaxCardinality() +
-                ", allowsDuplicateValues=" + isAllowsDuplicateValues() +
-                ", orderedValues=" + isOrderedValues() +
-                ", sortOrder=" + getSortOrder() +
-                ", minimumLength=" + getMinimumLength() +
-                ", length=" + getLength() +
-                ", significantDigits=" + getSignificantDigits() +
-                ", nullable=" + isNullable() +
-                ", defaultValueOverride='" + getDefaultValueOverride() + '\'' +
-                ", anchorGUID='" + getAnchorGUID() + '\'' +
-                ", nativeJavaClass='" + getNativeJavaClass() + '\'' +
-                ", aliases=" + getAliases() +
-                ", deprecated=" + isDeprecated() +
-                ", displayName='" + getDisplayName() + '\'' +
-                ", description='" + getDescription() + '\'' +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", vendorProperties=" + getVendorProperties() +
-                ", typeName='" + getTypeName() + '\'' +
-                ", extendedProperties=" + getExtendedProperties() +
+                ", databaseTableProperties=" + databaseTableProperties +
                 '}';
     }
 
@@ -134,7 +135,8 @@ public class DatabaseTableElement extends DatabaseTableProperties implements Met
             return false;
         }
         DatabaseTableElement that = (DatabaseTableElement) objectToCompare;
-        return Objects.equals(elementHeader, that.elementHeader);
+        return Objects.equals(elementHeader, that.elementHeader) &&
+                Objects.equals(databaseTableProperties, that.databaseTableProperties);
     }
 
 
@@ -146,6 +148,6 @@ public class DatabaseTableElement extends DatabaseTableProperties implements Met
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader);
+        return Objects.hash(super.hashCode(), elementHeader, databaseTableProperties);
     }
 }

@@ -10,10 +10,29 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
  */
 public abstract class GovernanceServerServiceInstance extends AuditableServerServiceInstance
 {
-    private String        accessServiceRootURL;
-    private String        accessServiceServerName;
+    private String        accessServiceRootURL      = null;
+    private String        accessServiceServerName   = null;
     private String        accessServiceInTopicName  = null;
     private String        accessServiceOutTopicName = null;
+
+    /**
+     * Constructor where many OMASs are used and so the partner OMAS information is managed by the subclass
+     *
+     * @param serverName name of this server
+     * @param serviceName name of this service
+     * @param auditLog link to the repository responsible for servicing the REST calls.
+     * @param maxPageSize maximum number of results that can be returned in a single request
+     * @param localServerUserId userId to use for server initiated requests
+     */
+    public GovernanceServerServiceInstance(String        serverName,
+                                           String        serviceName,
+                                           AuditLog      auditLog,
+                                           String        localServerUserId,
+                                           int           maxPageSize)
+    {
+        super(serverName, serviceName, auditLog, localServerUserId, maxPageSize);
+    }
+
 
     /**
      * Constructor where REST Services used.

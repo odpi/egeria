@@ -77,7 +77,7 @@ public class DiscoveryServiceHandler implements Runnable
                                                                                                                  discoveryContext.getAssetGUID(),
                                                                                                                  assetDiscoveryType,
                                                                                                                  discoveryEngineProperties.getQualifiedName(),
-                                                                                                                 discoveryEngineProperties.getGUID(),
+                                                                                                                 discoveryEngineProperties.getElementHeader().getGUID(),
                                                                                                                  discoveryReport.getDiscoveryReportGUID()));
 
 
@@ -109,7 +109,7 @@ public class DiscoveryServiceHandler implements Runnable
                                                                                                                  discoveryContext.getAssetGUID(),
                                                                                                                  assetDiscoveryType,
                                                                                                                  discoveryEngineProperties.getQualifiedName(),
-                                                                                                                 discoveryEngineProperties.getGUID(),
+                                                                                                                 discoveryEngineProperties.getElementHeader().getGUID(),
                                                                                                                  error.getMessage()),
                                   error.toString(),
                                   error);

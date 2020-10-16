@@ -70,16 +70,6 @@
             <artifactId>ocf-metadata-client</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>odf-metadata-api</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>odf-metadata-client</artifactId>
-        </dependency>
-
     </dependencies>
 
 </project>

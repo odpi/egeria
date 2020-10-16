@@ -37,7 +37,7 @@ public class DivergentDuplicateAnnotation extends Annotation
 {
     private static final long serialVersionUID = 1L;
 
-    protected String  duplicateAnchorGUID = null;
+    private String  duplicateAnchorGUID = null;
 
 
     /**
@@ -60,7 +60,7 @@ public class DivergentDuplicateAnnotation extends Annotation
 
         if (template != null)
         {
-            duplicateAnchorGUID = template.getDuplicateAnchorGUIDs();
+            duplicateAnchorGUID = template.getDuplicateAnchorGUID();
         }
     }
 
@@ -70,7 +70,7 @@ public class DivergentDuplicateAnnotation extends Annotation
      *
      * @return string guid
      */
-    public String getDuplicateAnchorGUIDs()
+    public String getDuplicateAnchorGUID()
     {
         return duplicateAnchorGUID;
     }
@@ -81,7 +81,7 @@ public class DivergentDuplicateAnnotation extends Annotation
      *
      * @param duplicateAnchorGUID string guid
      */
-    public void setDuplicateAnchorGUIDs(String duplicateAnchorGUID)
+    public void setDuplicateAnchorGUID(String duplicateAnchorGUID)
     {
         this.duplicateAnchorGUID = duplicateAnchorGUID;
     }
@@ -97,26 +97,26 @@ public class DivergentDuplicateAnnotation extends Annotation
     {
         return "DivergentDuplicateAnnotation{" +
                 "duplicateAnchorGUID='" + duplicateAnchorGUID + '\'' +
-                ", annotationType='" + annotationType + '\'' +
-                ", summary='" + summary + '\'' +
-                ", confidenceLevel=" + confidenceLevel +
-                ", expression='" + expression + '\'' +
-                ", explanation='" + explanation + '\'' +
-                ", analysisStep='" + analysisStep + '\'' +
-                ", jsonProperties='" + jsonProperties + '\'' +
-                ", numAttachedAnnotations=" + numAttachedAnnotations +
-                ", annotationStatus=" + annotationStatus +
-                ", reviewDate=" + reviewDate +
-                ", steward='" + steward + '\'' +
-                ", reviewComment='" + reviewComment + '\'' +
-                ", additionalProperties=" + additionalProperties +
-                ", type=" + type +
-                ", guid='" + guid + '\'' +
-                ", url='" + url + '\'' +
-                ", classifications=" + classifications +
-                ", extendedProperties=" + extendedProperties +
+                ", annotationType='" + getAnnotationType() + '\'' +
+                ", summary='" + getSummary() + '\'' +
+                ", confidenceLevel=" + getConfidenceLevel() +
+                ", expression='" + getExpression() + '\'' +
+                ", explanation='" + getExplanation() + '\'' +
+                ", analysisStep='" + getAnalysisStep() + '\'' +
+                ", jsonProperties='" + getJsonProperties() + '\'' +
+                ", annotationStatus=" + getAnnotationStatus() +
+                ", numAttachedAnnotations=" + getNumAttachedAnnotations() +
+                ", reviewDate=" + getReviewDate() +
+                ", steward='" + getSteward() + '\'' +
+                ", reviewComment='" + getReviewComment() + '\'' +
+                ", additionalProperties=" + getAdditionalProperties() +
+                ", headerVersion=" + getHeaderVersion() +
+                ", elementHeader=" + getElementHeader() +
+                ", typeName='" + getTypeName() + '\'' +
+                ", extendedProperties=" + getExtendedProperties() +
                 '}';
     }
+
 
     /**
      * Compare the values of the supplied object with those stored in the current object.

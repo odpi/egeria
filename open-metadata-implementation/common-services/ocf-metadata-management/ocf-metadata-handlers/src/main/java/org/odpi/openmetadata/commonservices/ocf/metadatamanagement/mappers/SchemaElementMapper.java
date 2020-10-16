@@ -11,25 +11,20 @@ public class SchemaElementMapper
     public static final String SCHEMA_ELEMENT_TYPE_NAME                 = "SchemaElement";
     /* Referenceable */
 
-    public static final String ANCHOR_GUID_PROPERTY_NAME                = "anchorGUID";           /* from SchemaElement entity */
-    public static final String DISPLAY_NAME_PROPERTY_NAME               = "displayName";          /* from SchemaElement entity */
-    public static final String DESCRIPTION_PROPERTY_NAME                = "description";          /* from SchemaElement entity */
-    public static final String IS_DEPRECATED_PROPERTY_NAME              = "isDeprecated";         /* from SchemaElement entity */
+    public static final String SCHEMA_DISPLAY_NAME_PROPERTY_NAME               = "displayName";          /* from SchemaElement entity */
+    public static final String SCHEMA_DESCRIPTION_PROPERTY_NAME                = "description";          /* from SchemaElement entity */
+    public static final String SCHEMA_IS_DEPRECATED_PROPERTY_NAME              = "isDeprecated";         /* from SchemaElement entity */
 
     /* For Schema Type */
     public static final String SCHEMA_TYPE_TYPE_GUID                    = "5bd4a3e7-d22d-4a3d-a115-066ee8e0754f";   /* from Area 5 */
     public static final String SCHEMA_TYPE_TYPE_NAME                    = "SchemaType";
     /* SchemaElement */
 
-    public static final String VERSION_NUMBER_PROPERTY_NAME             = "versionNumber";        /* from SchemaType entity */
-    public static final String AUTHOR_PROPERTY_NAME                     = "author";               /* from SchemaType entity */
-    public static final String USAGE_PROPERTY_NAME                      = "usage";                /* from SchemaType entity */
-    public static final String ENCODING_STANDARD_PROPERTY_NAME          = "encodingStandard";     /* from SchemaType entity */
-    public static final String NAMESPACE_PROPERTY_NAME                  = "namespace";            /* from SchemaType entity */
-
-    public static final String ASSET_TO_SCHEMA_TYPE_TYPE_GUID           = "815b004d-73c6-4728-9dd9-536f4fe803cd";  /* from Area 5 */
-    public static final String ASSET_TO_SCHEMA_TYPE_TYPE_NAME           = "AssetSchemaType";
-    /* End1 = Asset; End 2 = SchemaType */
+    public static final String SCHEMA_VERSION_NUMBER_PROPERTY_NAME             = "versionNumber";        /* from SchemaType entity */
+    public static final String SCHEMA_AUTHOR_PROPERTY_NAME                     = "author";               /* from SchemaType entity */
+    public static final String SCHEMA_USAGE_PROPERTY_NAME                      = "usage";                /* from SchemaType entity */
+    public static final String SCHEMA_ENCODING_STANDARD_PROPERTY_NAME          = "encodingStandard";     /* from SchemaType entity */
+    public static final String SCHEMA_NAMESPACE_PROPERTY_NAME                  = "namespace";            /* from SchemaType entity */
 
 
     /* For Complex Schema Type */
@@ -50,9 +45,14 @@ public class SchemaElementMapper
     public static final String LITERAL_SCHEMA_TYPE_TYPE_NAME            = "LiteralSchemaType";
     /* SchemaType */
 
+    /* For External Schema Type */
+    public static final String EXTERNAL_SCHEMA_TYPE_TYPE_GUID           = "78de00ea-3d69-47ff-a6d6-767587526624";  /* from Area 5 */
+    public static final String EXTERNAL_SCHEMA_TYPE_TYPE_NAME           = "ExternalSchemaType";
+    /* SchemaType */
+
     /* For Schema Type Choice */
-    public static final String SCHEMA_TYPE_CHOICE_TYPE_GUID            = "5caf954a-3e33-4cbd-b17d-8b8613bd2db8";  /* from Area 5 */
-    public static final String SCHEMA_TYPE_CHOICE_TYPE_NAME            = "SchemaTypeChoice";
+    public static final String SCHEMA_TYPE_CHOICE_TYPE_GUID             = "5caf954a-3e33-4cbd-b17d-8b8613bd2db8";  /* from Area 5 */
+    public static final String SCHEMA_TYPE_CHOICE_TYPE_NAME             = "SchemaTypeChoice";
     /* SchemaType */
 
     public static final String SCHEMA_TYPE_OPTION_RELATIONSHIP_TYPE_GUID = "eb4f1f98-c649-4560-8a46-da17c02764a9";   /* from Area 5 */
@@ -127,6 +127,9 @@ public class SchemaElementMapper
     public static final String ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_NAME = "SchemaAttributeType";
     /* End1 = SchemaAttribute; End 2 = SchemaType */
 
+    public static final String DATA_ITEM_SORT_ORDER_TYPE_GUID           = "aaa4df8f-1aca-4de8-9abd-1ef2aadba300";  /* from Area 5 */
+    public static final String DATA_ITEM_SORT_ORDER_TYPE_NAME           = "DataItemSortOrder";
+
     public static final String NESTED_ATTRIBUTE_RELATIONSHIP_TYPE_GUID  = "0ffb9d87-7074-45da-a9b0-ae0859611133";  /* from Area 5 */
     public static final String NESTED_ATTRIBUTE_RELATIONSHIP_TYPE_NAME  = "NestedSchemaAttribute";
     /* End1 = SchemaAttribute; End 2 = SchemaAttribute */
@@ -135,13 +138,6 @@ public class SchemaElementMapper
     public static final String TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION_TYPE_NAME  = "TypeEmbeddedAttribute";
     /* Linked to SchemaAttribute */
     public static final String TYPE_NAME_PROPERTY_NAME                  = "typeName";      /* from TypeEmbeddedAttribute classification */
-
-    /* For Derived Schema Attribute */
-    public static final String DERIVED_SCHEMA_ATTRIBUTE_TYPE_GUID       = "cf21abfe-655a-47ba-b9b6-f73394745c80";      /* from Area 5 */
-    public static final String DERIVED_SCHEMA_ATTRIBUTE_TYPE_NAME       = "DerivedSchemaAttribute";
-    /* SchemaAttribute */
-
-    public static final String FORMULA_PROPERTY_NAME                    = "formula";             /* from DerivedSchemaAttribute entity */
 
     /* For Schema Link */
     public static final String SCHEMA_LINK_TYPE_GUID                    = "67e08705-2d2a-4df6-9239-1818161a41e0";      /* from Area 5 */
@@ -159,13 +155,12 @@ public class SchemaElementMapper
     public static final String ATTRIBUTE_TO_LINK_RELATIONSHIP_TYPE_NAME = "SchemaLinkToType";
     /* End1 = SchemaAttribute; End 2 = SchemaLinkElement */
 
-    /* For Derived Schema Attribute */
-    public static final String SCHEMA_QUERY_IMPL_RELATIONSHIP_TYPE_GUID = "e5d7025d-8b4f-43c7-bcae-1047d650b94a"; /* from Area 5 */
-    public static final String SCHEMA_QUERY_IMPL_RELATIONSHIP_TYPE_NAME = "SchemaQueryImplementation";
-    /* End1 = DerivedSchemaAttribute; End 2 = SchemaAttribute */
+    public static final String SCHEMA_QUERY_TARGET_RELATIONSHIP_TYPE_GUID = "e5d7025d-8b4f-43c7-bcae-1147d650b94b"; /* from Area 5 */
+    public static final String SCHEMA_QUERY_TARGET_RELATIONSHIP_TYPE_NAME = "DerivedSchemaTypeQueryTarget";
+    /* End1 = SchemaElement; End 2 = SchemaElement (target) */
 
-    public static final String QUERY_ID_PROPERTY_NAME                   = "queryId"; /* from SchemaQueryImplementation relationship */
-    public static final String QUERY_PROPERTY_NAME                      = "query";   /* from SchemaQueryImplementation relationship */
+    public static final String QUERY_ID_PROPERTY_NAME                   = "queryId"; /* from DerivedSchemaTypeQueryTarget relationship */
+    public static final String QUERY_PROPERTY_NAME                      = "query";   /* from DerivedSchemaTypeQueryTarget relationship */
 
     /* - Known Subtypes ------------------------------------------------------- */
 
@@ -246,14 +241,18 @@ public class SchemaElementMapper
     public static final String RELATIONAL_TABLE_TYPE_NAME               = "RelationalTable";
     /* SchemaAttribute */
 
-    public static final String RELATIONAL_VIEW_CLASSIFICATION_TYPE_GUID = "4814bec8-482d-463d-8376-160b0358e129";
-    public static final String RELATIONAL_VIEW_CLASSIFICATION_TYPE_NAME = "RelationalView";
-    /* Linked to RelationalTable */
-    public static final String EXPRESSION_PROPERTY_NAME                 = "expression";          /* from RelationalView classification */
+    public static final String CALCULATED_VALUE_CLASSIFICATION_TYPE_GUID = "4814bec8-482d-463d-8376-160b0358e139";
+    public static final String CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME = "CalculatedValue";
+    /* Linked to SchemaType */
+    public static final String FORMULA_PROPERTY_NAME                     = "formula";          /* from CalculatedValue classification */
 
     public static final String RELATIONAL_COLUMN_TYPE_GUID              = "aa8d5470-6dbc-4648-9e2f-045e5df9d2f9";   /* from Area 5 */
     public static final String RELATIONAL_COLUMN_TYPE_NAME              = "RelationalColumn";
     /* TabularColumn */
+
+    public static final String RELATIONAL_COLUMN_TYPE_TYPE_GUID         = "f0438d80-6eb9-4fac-bcc1-5efee5babcfc";   /* from Area 5 */
+    public static final String RELATIONAL_COLUMN_TYPE_TYPE_NAME         = "RelationalColumnType";
+    /* TabularColumnType */
 
     public static final String PRIMARY_KEY_CLASSIFICATION_TYPE_GUID     = "b239d832-50bd-471b-b17a-15a335fc7f40";
     public static final String PRIMARY_KEY_CLASSIFICATION_TYPE_NAME     = "PrimaryKey";
@@ -270,5 +269,32 @@ public class SchemaElementMapper
     public static final String FOREIGN_KEY_STEWARD_PROPERTY_NAME        = "steward";       /* from ForeignKey relationship */
     public static final String FOREIGN_KEY_SOURCE_PROPERTY_NAME         = "source";        /* from ForeignKey relationship */
 
+    /* For Event Type */
+    public static final String EVENT_TYPE_TYPE_GUID                     = "bead9aa4-214a-4596-8036-aa78395bbfb1";   /* from Area 5 */
+    public static final String EVENT_TYPE_TYPE_NAME                     = "EventType";
+    /* ComplexSchemaType */
+    public static final String EVENT_SET_TYPE_GUID                      = "8bc88aba-d7e4-4334-957f-cfe8e8eadc32";   /* from Area 5 */
+    public static final String EVENT_SET_TYPE_NAME                      = "EventSet";
+    /* Collection */
+
+    /* For API Schema Type */
+    public static final String API_SCHEMA_TYPE_TYPE_GUID                = "b46cddb3-9864-4c5d-8a49-266b3fc95cb8";   /* from Area 5 */
+    public static final String API_SCHEMA_TYPE_TYPE_NAME                = "APISchemaType";
+    /* SchemaType */
+    public static final String API_OPERATION_TYPE_GUID                  = "f1c0af19-2729-4fac-996e-a7badff3c21c";   /* from Area 5 */
+    public static final String API_OPERATION_TYPE_NAME                  = "APIOperation";
+    /* SchemaType */
+    public static final String API_OPERATIONS_RELATIONSHIP_TYPE_GUID    = "03737169-ceb5-45f0-84f0-21c5929945af"; /* from Area 5 */
+    public static final String API_OPERATIONS_RELATIONSHIP_TYPE_NAME    = "APIOperations";
+    /* End1 = APISchemaType; End 2 = APIOperation */
+    public static final String API_HEADER_RELATIONSHIP_TYPE_GUID        = "e8fb46d1-5f75-481b-aa66-f43ad44e2cc6"; /* from Area 5 */
+    public static final String API_HEADER_RELATIONSHIP_TYPE_NAME        = "APIHeader";
+    /* End1 = APIOperation; End 2 = SchemaType */
+    public static final String API_REQUEST_RELATIONSHIP_TYPE_GUID       = "4ab3b466-31bd-48ea-8aa2-75623476f2e2"; /* from Area 5 */
+    public static final String API_REQUEST_RELATIONSHIP_TYPE_NAME       = "APIRequest";
+    /* End1 = APIOperation; End 2 = SchemaType */
+    public static final String API_RESPONSE_RELATIONSHIP_TYPE_GUID      = "e8001de2-1bb1-442b-a66f-9addc3641eae"; /* from Area 5 */
+    public static final String API_RESPONSE_RELATIONSHIP_TYPE_NAME      = "APIResponse";
+    /* End1 = APIOperation; End 2 = SchemaType */
 
 }
