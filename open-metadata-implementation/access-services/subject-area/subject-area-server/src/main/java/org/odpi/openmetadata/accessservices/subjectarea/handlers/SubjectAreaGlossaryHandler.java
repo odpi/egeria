@@ -368,25 +368,30 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
         final String methodName = "getCategories";
 
         SubjectAreaOMASAPIResponse<Category>  response = getRelatedNodes(methodName, userId, guid, CATEGORY_ANCHOR_RELATIONSHIP_NAME, CategoryMapper.class, startingFrom, maxPageSize);
-        // if we got the categories successfully and we have some and only top categories then filter out the top categories from the bigger list of categories
-        int offset = 0;
-        boolean keepGettingCategories = true;
-        while (keepGettingCategories || response.getRelatedHTTPCode() == 200) {
-            List<Category> allCategories = response.results();
-            if (onlyTop && allCategories != null && allCategories.size() > 0) {
-                response = new SubjectAreaOMASAPIResponse<>();
-                for (Category category : allCategories) {
-                    if (category.getParentCategory() == null) {
-                        response.addResult(category);
+        if (response.getRelatedHTTPCode() == 200) {
+            // if we got the categories successfully and we have some and only top categories then filter out the top categories from the bigger list of categories
+            int offset = 0;
+            boolean keepGettingCategories = true;
+            while (keepGettingCategories) {
+                List<Category> allCategories = response.results();
+                if (onlyTop && allCategories != null && allCategories.size() > 0) {
+                    response = new SubjectAreaOMASAPIResponse<>();
+                    for (Category category : allCategories) {
+                        if (category.getParentCategory() == null) {
+                            response.addResult(category);
+                        }
                     }
                 }
-            }
-            if (onlyTop && response.results() == null ||  response.results().size() == 0) {
-                keepGettingCategories = false;
-            } else if (onlyTop && allCategories.size() > 0 && response.results() != null &&  response.results().size() < maxPageSize) {
-                // in this case we have found top categories but we got a page full of categories back to there may be more top categories we need to find to fill up the requested page
-                offset = offset+maxPageSize;
-                response = getRelatedNodes(methodName, userId, guid, CATEGORY_ANCHOR_RELATIONSHIP_NAME, CategoryMapper.class, offset, maxPageSize);
+                if (onlyTop && response.results() == null || response.results().size() == 0) {
+                    keepGettingCategories = false;
+                } else if (onlyTop && allCategories.size() > 0 && response.results() != null && response.results().size() < maxPageSize) {
+                    // in this case we have found top categories, but we got a page full of categories back to there may be more top categories we need to find to fill up the requested page, or there is no more data
+                    offset = offset + maxPageSize;
+                    response = getRelatedNodes(methodName, userId, guid, CATEGORY_ANCHOR_RELATIONSHIP_NAME, CategoryMapper.class, offset, maxPageSize);
+                    if (response.getRelatedHTTPCode() != 200) {
+                        keepGettingCategories = false;
+                    }
+                }
             }
         }
         return response;
