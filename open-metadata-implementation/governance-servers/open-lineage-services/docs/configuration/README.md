@@ -1,6 +1,6 @@
 ### Open Lineage Services configuration
 
-For example payloads and endpoints, see the [Postman samples](../samples) 
+For example payloads and endpoints, see the [Postman samples](../samples/OLS.postman_collection.json) 
 
 
 1. Build the 

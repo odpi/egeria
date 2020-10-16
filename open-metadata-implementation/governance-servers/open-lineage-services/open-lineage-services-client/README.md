@@ -5,7 +5,7 @@
 
 The OLS client provides language-specific client packages to make it easier for applications to call the interface.
 
-Details are provides in the [Java client documentation](docs/user/java-client/README.md).
+Details are provides in the [Java Client documentation](docs/user/java-client/README.md).
 
 
 ----
