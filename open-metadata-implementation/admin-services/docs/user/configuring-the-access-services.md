@@ -223,5 +223,12 @@ POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{s
 ```
 
 ----
+* Return to [Configuring an OMAG Server](configuring-an-omag-server.md)
+* Return to [Configuring a Metadata Access Point](../concepts/metadata-access-point.md#Configuring-a-Metadata-Access-Point)
+* Return to [Configuring a Metadata Server](../concepts/metadata-server.md#Configuring-a-Metadata-Server)
+* Return to [configuration document structure](../concepts/configuration-document.md)
+
+
+----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 Copyright Contributors to the ODPi Egeria project.

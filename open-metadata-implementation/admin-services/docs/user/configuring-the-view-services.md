@@ -1,6 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
+
 # Configuring the Open Metadata View Services (OMVSs)
 
 The [Open Metadata View Services (OMVSs)](../../../view-services) provide task oriented, domain-specific services
@@ -104,6 +105,10 @@ it is then possible to make changes to the configuration and save it back:
 POST {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/view-services/configuration
 ```
 
+----
+* Return to [Configuring an OMAG Server](configuring-an-omag-server.md)
+* Return to [the View Server](../concepts/view-server.md)
+* Return to [configuration document structure](../concepts/configuration-document.md)
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 Copyright Contributors to the ODPi Egeria project.

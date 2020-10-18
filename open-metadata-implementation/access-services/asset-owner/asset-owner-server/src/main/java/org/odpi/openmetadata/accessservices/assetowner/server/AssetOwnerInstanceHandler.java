@@ -2,8 +2,16 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetowner.server;
 
+import org.odpi.openmetadata.accessservices.assetowner.metadataelements.*;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.commonservices.multitenant.ODFOMASServiceInstanceHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.*;
+import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstanceHandler;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.discovery.properties.Annotation;
+import org.odpi.openmetadata.frameworks.discovery.properties.DataField;
+import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryAnalysisReport;
 
 
 /**
@@ -11,7 +19,7 @@ import org.odpi.openmetadata.commonservices.multitenant.ODFOMASServiceInstanceHa
  * access service instances.  The instance map is thread-safe.  Instances are added
  * and removed by the AssetConsumerAdmin class.
  */
-class AssetOwnerInstanceHandler extends ODFOMASServiceInstanceHandler
+class AssetOwnerInstanceHandler extends OMASServiceInstanceHandler
 {
     /**
      * Default constructor registers the access service
@@ -21,5 +29,374 @@ class AssetOwnerInstanceHandler extends ODFOMASServiceInstanceHandler
         super(AccessServiceDescription.ASSET_OWNER_OMAS.getAccessServiceFullName());
 
         AssetOwnerRegistration.registerAccessService();
+    }
+
+
+    /**
+     * Retrieve the specific handler for the access service.
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     * @return handler for use by the requested instance
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException error in the requested server
+     */
+    SoftwareServerCapabilityHandler<FileSystemElement> getFileSystemHandler(String userId,
+                                                                            String serverName,
+                                                                            String serviceOperationName) throws InvalidParameterException,
+                                                                                                                UserNotAuthorizedException,
+                                                                                                                PropertyServerException
+    {
+        AssetOwnerServicesInstance instance = (AssetOwnerServicesInstance)super.getServerServiceInstance(userId,
+                                                                                                         serverName,
+                                                                                                         serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getFileSystemHandler();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve the specific handler for the access service.
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     * @return handler for use by the requested instance
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException error in the requested server
+     */
+    AssetHandler<AssetElement> getAssetHandler(String userId,
+                                               String serverName,
+                                               String serviceOperationName) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
+    {
+        AssetOwnerServicesInstance instance = (AssetOwnerServicesInstance)super.getServerServiceInstance(userId,
+                                                                                                         serverName,
+                                                                                                         serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getAssetHandler();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve the specific handler for the access service.
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     * @return handler for use by the requested instance
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException error in the requested server
+     */
+    SchemaAttributeHandler<SchemaAttributeElement, SchemaTypeElement> getSchemaAttributeHandler(String userId,
+                                                                                                String serverName,
+                                                                                                String serviceOperationName) throws InvalidParameterException,
+                                                                                                                                    UserNotAuthorizedException,
+                                                                                                                                    PropertyServerException
+    {
+        AssetOwnerServicesInstance instance = (AssetOwnerServicesInstance)super.getServerServiceInstance(userId,
+                                                                                                         serverName,
+                                                                                                         serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getSchemaAttributeHandler();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve the specific handler for the access service.
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     * @return handler for use by the requested instance
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException error in the requested server
+     */
+    SchemaTypeHandler<SchemaTypeElement> getSchemaTypeHandler(String userId,
+                                                              String serverName,
+                                                              String serviceOperationName) throws InvalidParameterException,
+                                                                                                  UserNotAuthorizedException,
+                                                                                                  PropertyServerException
+    {
+        AssetOwnerServicesInstance instance = (AssetOwnerServicesInstance)super.getServerServiceInstance(userId,
+                                                                                                         serverName,
+                                                                                                         serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getSchemaTypeHandler();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve the specific handler for the access service.
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     * @return handler for use by the requested instance
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException error in the requested server
+     */
+    FilesAndFoldersHandler<FileSystemElement, FolderElement, FileElement> getFilesAndFoldersHandler(String userId,
+                                                                                                    String serverName,
+                                                                                                    String serviceOperationName) throws InvalidParameterException,
+                                                                                                                                                 UserNotAuthorizedException,
+                                                                                                                                                 PropertyServerException
+    {
+        AssetOwnerServicesInstance instance = (AssetOwnerServicesInstance)super.getServerServiceInstance(userId,
+                                                                                                         serverName,
+                                                                                                         serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getFilesAndFoldersHandler();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve the specific handler for the access service.
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     * @return handler for use by the requested instance
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException error in the requested server
+     */
+    ValidValuesHandler<ValidValueElement,
+            OpenMetadataAPIDummyBean,
+            OpenMetadataAPIDummyBean,
+            OpenMetadataAPIDummyBean,
+            OpenMetadataAPIDummyBean,
+            OpenMetadataAPIDummyBean,
+            OpenMetadataAPIDummyBean,
+            OpenMetadataAPIDummyBean> getValidValuesHandler(String userId,
+                                                            String serverName,
+                                                            String serviceOperationName) throws InvalidParameterException,
+                                                                                                UserNotAuthorizedException,
+                                                                                                PropertyServerException
+    {
+        AssetOwnerServicesInstance instance = (AssetOwnerServicesInstance)super.getServerServiceInstance(userId,
+                                                                                                         serverName,
+                                                                                                         serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getValidValuesHandler();
+        }
+
+        return null;
+    }
+
+
+
+    /**
+     * Retrieve the specific handler for the access service.
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     * @return handler for use by the requested instance
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException error in the requested server
+     */
+    public DiscoveryAnalysisReportHandler<DiscoveryAnalysisReport> getDiscoveryAnalysisReportHandler(String userId,
+                                                                                                     String serverName,
+                                                                                                     String serviceOperationName) throws InvalidParameterException,
+                                                                                                                UserNotAuthorizedException,
+                                                                                                                PropertyServerException
+    {
+
+        AssetOwnerServicesInstance instance = (AssetOwnerServicesInstance)super.getServerServiceInstance(userId,
+                                                                                                         serverName,
+                                                                                                         serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getDiscoveryAnalysisReportHandler();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve the specific handler for the access service.
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     * @return handler for use by the requested instance
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException error in the requested server
+     */
+    public AnnotationHandler<Annotation> getAnnotationHandler(String userId,
+                                                              String serverName,
+                                                              String serviceOperationName) throws InvalidParameterException,
+                                                                                                  UserNotAuthorizedException,
+                                                                                                  PropertyServerException
+    {
+        AssetOwnerServicesInstance instance = (AssetOwnerServicesInstance)super.getServerServiceInstance(userId,
+                                                                                                         serverName,
+                                                                                                         serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getAnnotationHandler();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve the specific handler for the access service.
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     * @return handler for use by the requested instance
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException error in the requested server
+     */
+    public DataFieldHandler<DataField> getDataFieldHandler(String userId,
+                                                           String serverName,
+                                                           String serviceOperationName) throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException
+    {
+        AssetOwnerServicesInstance instance = (AssetOwnerServicesInstance)super.getServerServiceInstance(userId,
+                                                                                                         serverName,
+                                                                                                         serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getDataFieldHandler();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve the specific handler for the access service.
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     * @return handler for use by the requested instance
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException error in the requested server
+     */
+    public ConnectionHandler<OpenMetadataAPIDummyBean> getConnectionHandler(String userId,
+                                                                            String serverName,
+                                                                            String serviceOperationName) throws InvalidParameterException,
+                                                                                                                UserNotAuthorizedException,
+                                                                                                                PropertyServerException
+    {
+        AssetOwnerServicesInstance instance = (AssetOwnerServicesInstance)super.getServerServiceInstance(userId,
+                                                                                                         serverName,
+                                                                                                         serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getConnectionHandler();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve the specific handler for the access service.
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     * @return handler for use by the requested instance
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException error in the requested server
+     */
+    public ConnectorTypeHandler<OpenMetadataAPIDummyBean> getConnectorTypeHandler(String userId,
+                                                                                  String serverName,
+                                                                                  String serviceOperationName) throws InvalidParameterException,
+                                                                                                                      UserNotAuthorizedException,
+                                                                                                                      PropertyServerException
+    {
+        AssetOwnerServicesInstance instance = (AssetOwnerServicesInstance)super.getServerServiceInstance(userId,
+                                                                                                         serverName,
+                                                                                                         serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getConnectorTypeHandler();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve the specific handler for the access service.
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     * @return handler for use by the requested instance
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException error in the requested server
+     */
+    public EndpointHandler<OpenMetadataAPIDummyBean> getEndpointHandler(String userId,
+                                                                        String serverName,
+                                                                        String serviceOperationName) throws InvalidParameterException,
+                                                                                                            UserNotAuthorizedException,
+                                                                                                            PropertyServerException
+    {
+        AssetOwnerServicesInstance instance = (AssetOwnerServicesInstance)super.getServerServiceInstance(userId,
+                                                                                                         serverName,
+                                                                                                         serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getEndpointHandler();
+        }
+
+        return null;
     }
 }

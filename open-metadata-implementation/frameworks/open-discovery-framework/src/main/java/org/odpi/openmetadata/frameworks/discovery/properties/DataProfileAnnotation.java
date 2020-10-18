@@ -23,6 +23,7 @@ public class DataProfileAnnotation extends DataFieldAnnotation
     private String               inferredDataType  = null;
     private String               inferredFormat    = null;
     private int                  inferredLength    = 0;
+    private int                  inferredPrecision = 0;
     private int                  inferredScale     = 0;
     private Map<String, String>  profileProperties = null;
     private Map<String, Boolean> profileFlags      = null;
@@ -53,7 +54,20 @@ public class DataProfileAnnotation extends DataFieldAnnotation
 
         if (template != null)
         {
+            length = template.getLength();
+            inferredDataType = template.getInferredDataType();
+            inferredFormat = template.getInferredFormat();
+            inferredLength = template.getInferredLength();
+            inferredPrecision = template.getInferredPrecision();
+            inferredScale = template.getInferredScale();
             profileProperties = template.getProfileProperties();
+            profileFlags = template.getProfileFlags();
+            profileCounts = template.getProfileCounts();
+            valueList = template.getValueList();
+            valueCount = template.getValueCount();
+            valueRangeFrom = template.getValueRangeFrom();
+            valueRangeTo = template.getValueRangeTo();
+            averageValue = template.getAverageValue();
         }
     }
 
@@ -143,6 +157,28 @@ public class DataProfileAnnotation extends DataFieldAnnotation
     public void setInferredLength(int inferredLength)
     {
         this.inferredLength = inferredLength;
+    }
+
+
+    /**
+     * Return the precision of the data filed that has been deduced from the data stored.
+     *
+     * @return integer
+     */
+    public int getInferredPrecision()
+    {
+        return inferredPrecision;
+    }
+
+
+    /**
+     * Set up the precision of the data filed that has been deduced from the data stored.
+     *
+     * @param inferredPrecision integer
+     */
+    public void setInferredPrecision(int inferredPrecision)
+    {
+        this.inferredPrecision = inferredPrecision;
     }
 
 
@@ -398,38 +434,38 @@ public class DataProfileAnnotation extends DataFieldAnnotation
     public String toString()
     {
         return "DataProfileAnnotation{" +
-                       "length=" + length +
-                       ", inferredDataType='" + inferredDataType + '\'' +
-                       ", inferredFormat='" + inferredFormat + '\'' +
-                       ", inferredLength=" + inferredLength +
-                       ", inferredScale=" + inferredScale +
-                       ", profileProperties=" + profileProperties +
-                       ", profileFlags=" + profileFlags +
-                       ", profileCounts=" + profileCounts +
-                       ", valueList=" + valueList +
-                       ", valueCount=" + valueCount +
-                       ", valueRangeFrom='" + valueRangeFrom + '\'' +
-                       ", valueRangeTo='" + valueRangeTo + '\'' +
-                       ", averageValue='" + averageValue + '\'' +
-                       ", annotationType='" + getAnnotationType() + '\'' +
-                       ", summary='" + getSummary() + '\'' +
-                       ", confidenceLevel=" + getConfidenceLevel() +
-                       ", expression='" + getExpression() + '\'' +
-                       ", explanation='" + getExplanation() + '\'' +
-                       ", analysisStep='" + getAnalysisStep() + '\'' +
-                       ", jsonProperties='" + getJsonProperties() + '\'' +
-                       ", annotationStatus=" + getAnnotationStatus() +
-                       ", numAttachedAnnotations=" + getNumAttachedAnnotations() +
-                       ", reviewDate=" + getReviewDate() +
-                       ", steward='" + getSteward() + '\'' +
-                       ", reviewComment='" + getReviewComment() + '\'' +
-                       ", additionalProperties=" + getAdditionalProperties() +
-                       ", type=" + getType() +
-                       ", GUID='" + getGUID() + '\'' +
-                       ", URL='" + getURL() + '\'' +
-                       ", classifications=" + getClassifications() +
-                       ", extendedProperties=" + getExtendedProperties() +
-                       '}';
+                "length=" + length +
+                ", inferredDataType='" + inferredDataType + '\'' +
+                ", inferredFormat='" + inferredFormat + '\'' +
+                ", inferredLength=" + inferredLength +
+                ", inferredPrecision=" + inferredPrecision +
+                ", inferredScale=" + inferredScale +
+                ", profileProperties=" + profileProperties +
+                ", profileFlags=" + profileFlags +
+                ", profileCounts=" + profileCounts +
+                ", valueList=" + valueList +
+                ", valueCount=" + valueCount +
+                ", valueRangeFrom='" + valueRangeFrom + '\'' +
+                ", valueRangeTo='" + valueRangeTo + '\'' +
+                ", averageValue='" + averageValue + '\'' +
+                ", annotationType='" + getAnnotationType() + '\'' +
+                ", summary='" + getSummary() + '\'' +
+                ", confidenceLevel=" + getConfidenceLevel() +
+                ", expression='" + getExpression() + '\'' +
+                ", explanation='" + getExplanation() + '\'' +
+                ", analysisStep='" + getAnalysisStep() + '\'' +
+                ", jsonProperties='" + getJsonProperties() + '\'' +
+                ", annotationStatus=" + getAnnotationStatus() +
+                ", numAttachedAnnotations=" + getNumAttachedAnnotations() +
+                ", reviewDate=" + getReviewDate() +
+                ", steward='" + getSteward() + '\'' +
+                ", reviewComment='" + getReviewComment() + '\'' +
+                ", additionalProperties=" + getAdditionalProperties() +
+                ", headerVersion=" + getHeaderVersion() +
+                ", elementHeader=" + getElementHeader() +
+                ", typeName='" + getTypeName() + '\'' +
+                ", extendedProperties=" + getExtendedProperties() +
+                '}';
     }
 
 
@@ -455,21 +491,21 @@ public class DataProfileAnnotation extends DataFieldAnnotation
             return false;
         }
         DataProfileAnnotation that = (DataProfileAnnotation) objectToCompare;
-        return getLength() == that.getLength() &&
-                       getInferredLength() == that.getInferredLength() &&
-                       getInferredScale() == that.getInferredScale() &&
-                       Objects.equals(getInferredDataType(), that.getInferredDataType()) &&
-                       Objects.equals(getInferredFormat(), that.getInferredFormat()) &&
-                       Objects.equals(getProfileProperties(), that.getProfileProperties()) &&
-                       Objects.equals(getProfileFlags(), that.getProfileFlags()) &&
-                       Objects.equals(getProfileCounts(), that.getProfileCounts()) &&
-                       Objects.equals(getValueList(), that.getValueList()) &&
-                       Objects.equals(getValueCount(), that.getValueCount()) &&
-                       Objects.equals(getValueRangeFrom(), that.getValueRangeFrom()) &&
-                       Objects.equals(getValueRangeTo(), that.getValueRangeTo()) &&
-                       Objects.equals(getAverageValue(), that.getAverageValue());
+        return length == that.length &&
+                inferredLength == that.inferredLength &&
+                inferredPrecision == that.inferredPrecision &&
+                inferredScale == that.inferredScale &&
+                Objects.equals(inferredDataType, that.inferredDataType) &&
+                Objects.equals(inferredFormat, that.inferredFormat) &&
+                Objects.equals(profileProperties, that.profileProperties) &&
+                Objects.equals(profileFlags, that.profileFlags) &&
+                Objects.equals(profileCounts, that.profileCounts) &&
+                Objects.equals(valueList, that.valueList) &&
+                Objects.equals(valueCount, that.valueCount) &&
+                Objects.equals(valueRangeFrom, that.valueRangeFrom) &&
+                Objects.equals(valueRangeTo, that.valueRangeTo) &&
+                Objects.equals(averageValue, that.averageValue);
     }
-
 
 
     /**
@@ -480,9 +516,7 @@ public class DataProfileAnnotation extends DataFieldAnnotation
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getLength(), getInferredDataType(), getInferredFormat(),
-                            getInferredLength(),
-                            getInferredScale(), getProfileProperties(), getProfileFlags(), getProfileCounts(),
-                            getValueList(), getValueCount(), getValueRangeFrom(), getValueRangeTo(), getAverageValue());
+        return Objects.hash(super.hashCode(), length, inferredDataType, inferredFormat, inferredLength, inferredPrecision, inferredScale,
+                            profileProperties, profileFlags, profileCounts, valueList, valueCount, valueRangeFrom, valueRangeTo, averageValue);
     }
 }

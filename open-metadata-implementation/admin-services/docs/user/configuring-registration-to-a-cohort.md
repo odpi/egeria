@@ -81,6 +81,7 @@ DELETE {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/
 * Return to [Configuring a Metadata Server](../concepts/metadata-server.md#Configuring-a-Metadata-Server)
 * Return to [Configuring a Repository Proxy](../concepts/repository-proxy.md#Configuring-a-Repository-Proxy)
 * Return to [Configuring a Conformance Test Server](../concepts/conformance-test-server.md#Configuring-a-Conformance-Test-Server)
+* Return to [configuration document structure](../concepts/configuration-document.md)
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

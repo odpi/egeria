@@ -16,8 +16,8 @@ import static org.testng.Assert.assertTrue;
  */
 public class TestAssetRating
 {
-    private ElementType          type                           = new ElementType();
-    private List<Classification> classifications                = new ArrayList<>();
+    private ElementType                 type            = new ElementType();
+    private List<ElementClassification> classifications = new ArrayList<>();
 
 
     /**

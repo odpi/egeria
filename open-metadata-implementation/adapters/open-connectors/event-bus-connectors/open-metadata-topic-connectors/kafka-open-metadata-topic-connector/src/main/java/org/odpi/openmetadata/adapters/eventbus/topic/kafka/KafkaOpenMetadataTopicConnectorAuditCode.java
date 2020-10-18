@@ -102,27 +102,30 @@ public enum KafkaOpenMetadataTopicConnectorAuditCode implements AuditLogMessageS
              "The system is unable to connect to the event bus.",
              "Add the missing property to the event bus properties in the server configuration."),
 
-    SERVICE_FAILED_INITIALIZING( "OCF-KAFKA-TOPIC-CONNECTOR-00014 ",
+    SERVICE_FAILED_INITIALIZING( "OCF-KAFKA-TOPIC-CONNECTOR-0014 ",
               OMRSAuditLogRecordSeverity.ERROR,
-             "Connecting to bootstrap Apache Kafka Broker {0}}",
+             "Connecting to bootstrap Apache Kafka Broker {0}",
              "The local server has failed to started up the Apache Kafka connector, Kafka Broker is unavailable",
              "Ensure Kafka is running and restart the local Egeria Server"),
 
-    KAFKA_CONNECTION_RETRY( "OCF-KAFKA-TOPIC_CONNECTOR-00015",
+    KAFKA_CONNECTION_RETRY( "OCF-KAFKA-TOPIC-CONNECTOR-0015",
               OMRSAuditLogRecordSeverity.STARTUP,
              "The local server is attempting to connect to Kafka, attempt {0}",
-             "Ensure Kafka is available",
+             "The system retries the connection after a short wait.",
              "Ensure the Kafka Cluster has started"),
-    UNEXPECTED_SHUTDOWN_EXCEPTION( "OCF-KAFKA-TOPIC_CONNECTOR-00016",
+    UNEXPECTED_SHUTDOWN_EXCEPTION( "OCF-KAFKA-TOPIC-CONNECTOR-0016",
             OMRSAuditLogRecordSeverity.SHUTDOWN,
-            "An unexpected error was encountered while closing the kafka topic connector",
-            "Check Egeria and Kafka Error Logs",
-            "Ensure the server has shutdown cleanly"),
-    EXCEPTION_COMMITING_OFFSETS("OCF-KAFKA-TOPIC_CONNECTOR-00017",
-            OMRSAuditLogRecordSeverity.SHUTDOWN,
-            "An unexpected error was encountered while commitimg consumed messages",
-            "Check Egeria and Kafka Error Logs",
-            "Ensure the server has shutdown cleanly")
+            "An unexpected error {0} was encountered while closing the kafka topic connector for {1}: action {2} and error message {3}",
+            "The connector continues to shutdown.  Some resources may not be released properly.",
+            "Check the OMAG Server's audit log and Kafka error logs for related messages that may indicate " +
+                                           "if there are any unreleased resources."),
+    EXCEPTION_COMMITTING_OFFSETS("OCF-KAFKA-TOPIC-CONNECTOR-0017",
+            OMRSAuditLogRecordSeverity.EXCEPTION,
+            "An unexpected error {0} was encountered while committing consumed event offsets to topic {1}: error message is {2}",
+            "Depending on the nature of the error, events may no longer be exchanged with the topic.",
+            "Check the OMAG Server's audit log and Kafka error logs for related messages that " +
+                                         "indicate the cause of this error.  Work to clear the underlying error.  " +
+                                         "Once fixed, it may be necessary to restart the server to cause a reconnect to Kafka.")
     ;
 
     private final AuditLogMessageDefinition messageDefinition;
@@ -132,7 +135,7 @@ public enum KafkaOpenMetadataTopicConnectorAuditCode implements AuditLogMessageS
      * The constructor for KafkaOpenMetadataTopicConnectorAuditCode expects to be passed one of the enumeration rows defined in
      * KafkaOpenMetadataTopicConnectorAuditCode above.   For example:
      *
-     *     KafkaOpenMetadataTopicConnectorAuditCode   auditCode = DerbyViewConnectorAuditCode.KafkaOpenMetadataTopicConnectorAuditCode;
+     *     KafkaOpenMetadataTopicConnectorAuditCode   auditCode = KafkaOpenMetadataTopicConnectorAuditCode.EXCEPTION_COMMITTING_OFFSETS;
      *
      * This will expand out to the 4 parameters shown below.
      *

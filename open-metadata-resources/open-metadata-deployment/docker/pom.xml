@@ -102,6 +102,7 @@
                 <module>configure</module>
                 <module>presentation-server</module>
                 <module>egeria</module>
+                <module>egeria-uistatic</module>
                 <module>jupyter</module>
             </modules>
         </profile>

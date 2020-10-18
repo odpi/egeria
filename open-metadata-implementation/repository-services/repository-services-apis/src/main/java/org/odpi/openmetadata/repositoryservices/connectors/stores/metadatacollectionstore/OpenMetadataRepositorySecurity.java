@@ -266,6 +266,7 @@ public interface OpenMetadataRepositorySecurity
                                                     EntityDetail         instance,
                                                     String               classificationName) throws UserNotAuthorizedException;
 
+
     /**
      * Tests for whether a specific user should have the right to delete a instance within a repository.
      *

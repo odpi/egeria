@@ -4,7 +4,6 @@ package org.odpi.openmetadata.viewservices.tex.handlers;
 
 
 import org.odpi.openmetadata.adminservices.configuration.properties.ResourceEndpointConfig;
-import org.odpi.openmetadata.commonservices.ffdc.OMAGCommonErrorCode;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
@@ -35,6 +34,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefGallery;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
+import org.odpi.openmetadata.viewservices.tex.api.ffdc.TexViewErrorCode;
 import org.odpi.openmetadata.viewservices.tex.api.properties.ClassificationExplorer;
 import org.odpi.openmetadata.viewservices.tex.api.properties.EntityExplorer;
 import org.odpi.openmetadata.viewservices.tex.api.properties.RelationshipExplorer;
@@ -184,7 +184,7 @@ public class TexViewHandler
             }
         }
         if (platformName == null || platformRootURL == null) {
-            throw new InvalidParameterException(OMAGCommonErrorCode.VIEW_SERVICE_NULL_PLATFORM_NAME.getMessageDefinition(),
+            throw new InvalidParameterException(TexViewErrorCode.VIEW_SERVICE_NULL_PLATFORM_NAME.getMessageDefinition(),
                                                 this.getClass().getName(),
                                                 methodName,
                                                 "platformName");

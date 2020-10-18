@@ -103,14 +103,14 @@ public class OMASServiceInstance extends AuditableServerServiceInstance
      * @param maxPageSize maximum page size
      * @throws NewInstanceException a problem occurred during initialization
      */
-    OMASServiceInstance(String                  serviceName,
-                        OMRSRepositoryConnector repositoryConnector,
-                        List<String>            supportedZones,
-                        List<String>            defaultZones,
-                        List<String>            publishZones,
-                        AuditLog                auditLog,
-                        String                  localServerUserId,
-                        int                     maxPageSize) throws NewInstanceException
+    public OMASServiceInstance(String                  serviceName,
+                               OMRSRepositoryConnector repositoryConnector,
+                               List<String>            supportedZones,
+                               List<String>            defaultZones,
+                               List<String>            publishZones,
+                               AuditLog                auditLog,
+                               String                  localServerUserId,
+                               int                     maxPageSize) throws NewInstanceException
     {
         super(null, serviceName, auditLog, localServerUserId, maxPageSize);
 
@@ -125,7 +125,7 @@ public class OMASServiceInstance extends AuditableServerServiceInstance
                 this.metadataCollection = repositoryConnector.getMetadataCollection();
                 this.repositoryHelper = repositoryConnector.getRepositoryHelper();
 
-                this.errorHandler = new RepositoryErrorHandler(repositoryHelper, serviceName, serverName);
+                this.errorHandler = new RepositoryErrorHandler(repositoryHelper, serviceName, serverName, auditLog);
                 this.repositoryHandler = new RepositoryHandler(auditLog, errorHandler, metadataCollection, maxPageSize);
                 this.supportedZones = supportedZones;
                 this.defaultZones = defaultZones;
@@ -179,7 +179,7 @@ public class OMASServiceInstance extends AuditableServerServiceInstance
      * @param methodName calling method
      * @throws PropertyServerException problem with the repository services
      */
-    void validateActiveRepository(String  methodName) throws PropertyServerException
+    public void validateActiveRepository(String  methodName) throws PropertyServerException
     {
         if ((repositoryConnector == null) || (metadataCollection == null) || (! repositoryConnector.isActive()))
         {

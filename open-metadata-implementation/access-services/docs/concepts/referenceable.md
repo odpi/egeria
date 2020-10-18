@@ -22,8 +22,10 @@ two different objects.
 * [GUIDs](guid.md)
 * [Referenceable Open Metadata Type](../../../../open-metadata-publication/website/open-metadata-types/0010-Base-Model.md)
 * [Assets](assets)
+* [Software Server Capabilities](server-capabilities)
 
-
+----
+* Return to [Access Services Concepts](.)
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

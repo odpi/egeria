@@ -29,7 +29,7 @@ public class ComplexSchemaTypeProperties extends SchemaTypeProperties
 {
     private static final long     serialVersionUID = 1L;
 
-    protected int    attributeCount = 0;
+    private int    attributeCount = 0;
 
 
     /**
@@ -94,7 +94,6 @@ public class ComplexSchemaTypeProperties extends SchemaTypeProperties
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +
                 ", extendedProperties=" + getExtendedProperties() +
-                ", classifications=" + getClassifications() +
                 '}';
     }
 

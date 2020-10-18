@@ -4,9 +4,7 @@
 package org.odpi.openmetadata.accessservices.assetowner.properties;
 
 import com.fasterxml.jackson.annotation.*;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Classification;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Meaning;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Referenceable;
+import org.odpi.openmetadata.accessservices.assetowner.metadataelements.ReferenceableElement;
 
 import java.io.Serializable;
 import java.util.*;
@@ -25,18 +23,21 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes(
         {
+                @JsonSubTypes.Type(value = ReferenceableElement.class, name = "ReferenceableElement"),
+                @JsonSubTypes.Type(value = AssetProperties.class, name = "AssetProperties"),
+                @JsonSubTypes.Type(value = MeaningProperties.class, name = "MeaningProperties"),
+                @JsonSubTypes.Type(value = SoftwareServerCapabilityProperties.class, name = "SoftwareServerCapabilityProperties"),
                 @JsonSubTypes.Type(value = SchemaElementProperties.class, name = "SchemaElementProperties")
         })
 public abstract class ReferenceableProperties implements Serializable
 {
     private static final long    serialVersionUID = 1L;
 
-    protected String               typeName             = null;
-    protected List<Classification> classifications      = null;
-    protected String               qualifiedName        = null;
-    protected List<Meaning>        meanings             = null;
-    protected Map<String, String>  additionalProperties = null;
-    protected Map<String, Object>  extendedProperties   = null;
+    private String                      qualifiedName        = null;
+    private Map<String, String>         additionalProperties = null;
+
+    private String                      typeName             = null;
+    private Map<String, Object>         extendedProperties   = null;
 
 
     /**
@@ -56,34 +57,10 @@ public abstract class ReferenceableProperties implements Serializable
     {
         if (template != null)
         {
-            this.typeName = template.getTypeName();
-            this.classifications = template.getClassifications();
-            this.qualifiedName = template.getQualifiedName();
-            this.meanings = template.getMeanings();
+            this.qualifiedName        = template.getQualifiedName();
             this.additionalProperties = template.getAdditionalProperties();
-            this.extendedProperties = template.getExtendedProperties();
-        }
-    }
-
-
-    /**
-     * Copy/clone constructor
-     *
-     * @param template object to copy
-     */
-    public ReferenceableProperties(Referenceable template)
-    {
-        if (template != null)
-        {
-            if (template.getType() != null)
-            {
-                this.typeName = template.getType().getElementTypeName();
-            }
-            this.classifications = template.getClassifications();
-            this.qualifiedName = template.getQualifiedName();
-            this.meanings = template.getMeanings();
-            this.additionalProperties = template.getAdditionalProperties();
-            this.extendedProperties = template.getExtendedProperties();
+            this.typeName             = template.getTypeName();
+            this.extendedProperties   = template.getExtendedProperties();
         }
     }
 
@@ -109,28 +86,6 @@ public abstract class ReferenceableProperties implements Serializable
     public void setTypeName(String typeName)
     {
         this.typeName = typeName;
-    }
-
-
-    /**
-     * Return the classifications associated with this referenceable.
-     *
-     * @return list of classifications with their properties
-     */
-    public List<Classification> getClassifications()
-    {
-        return classifications;
-    }
-
-
-    /**
-     * Set up the list of classifications associated with this referenceable.
-     *
-     * @param classifications list of classifications with their properties
-     */
-    public void setClassifications(List<Classification> classifications)
-    {
-        this.classifications = classifications;
     }
 
 
@@ -191,39 +146,6 @@ public abstract class ReferenceableProperties implements Serializable
 
 
     /**
-     * Return the assigned meanings for this metadata entity.
-     *
-     * @return list of meanings
-     */
-    public List<Meaning> getMeanings()
-    {
-        if (meanings == null)
-        {
-            return null;
-        }
-        else if (meanings.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new ArrayList<>(meanings);
-        }
-    }
-
-
-    /**
-     * Set up the assigned meanings for this metadata entity.
-     *
-     * @param meanings list of meanings
-     */
-    public void setMeanings(List<Meaning> meanings)
-    {
-        this.meanings = meanings;
-    }
-
-
-    /**
      * Return the properties that are defined for a subtype of referenceable but are not explicitly
      * supported by the bean.
      *
@@ -258,6 +180,8 @@ public abstract class ReferenceableProperties implements Serializable
     }
 
 
+
+
     /**
      * JSON-style toString.
      *
@@ -267,15 +191,12 @@ public abstract class ReferenceableProperties implements Serializable
     public String toString()
     {
         return "ReferenceableProperties{" +
-                "typeName='" + typeName + '\'' +
-                ", classifications=" + classifications +
-                ", qualifiedName='" + qualifiedName + '\'' +
-                ", meanings=" + meanings +
+                "qualifiedName='" + qualifiedName + '\'' +
                 ", additionalProperties=" + additionalProperties +
+                ", typeName='" + typeName + '\'' +
                 ", extendedProperties=" + extendedProperties +
                 '}';
     }
-
 
     /**
      * Equals method that returns true if containing properties are the same.
@@ -295,15 +216,11 @@ public abstract class ReferenceableProperties implements Serializable
             return false;
         }
         ReferenceableProperties that = (ReferenceableProperties) objectToCompare;
-        return Objects.equals(getTypeName(), that.getTypeName()) &&
-                Objects.equals(getClassifications(), that.getClassifications()) &&
-                Objects.equals(getQualifiedName(), that.getQualifiedName()) &&
-                Objects.equals(getMeanings(), that.getMeanings()) &&
-                Objects.equals(getAdditionalProperties(), that.getAdditionalProperties()) &&
-                Objects.equals(getExtendedProperties(), that.getExtendedProperties());
+        return Objects.equals(qualifiedName, that.qualifiedName) &&
+                Objects.equals(additionalProperties, that.additionalProperties) &&
+                Objects.equals(typeName, that.typeName) &&
+                Objects.equals(extendedProperties, that.extendedProperties);
     }
-
-
 
     /**
      * Return hash code for this object
@@ -313,7 +230,6 @@ public abstract class ReferenceableProperties implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(getTypeName(), getClassifications(), getQualifiedName(), getMeanings(),
-                            getAdditionalProperties(), getExtendedProperties());
+        return Objects.hash(qualifiedName, additionalProperties, extendedProperties, typeName);
     }
 }

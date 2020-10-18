@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.assetcatalog.admin;
 import org.odpi.openmetadata.accessservices.assetcatalog.handlers.AssetCatalogHandler;
 import org.odpi.openmetadata.accessservices.assetcatalog.handlers.RelationshipHandler;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.commonservices.multitenant.OCFOMASServiceInstanceHandler;
+import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstanceHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -14,7 +14,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
  * AssetCatalogInstanceHandler retrieves information from the instance map for the access service instances.
  * The instance map is thread-safe. Instances are added and removed by the AssetCatalogAdmin class.
  */
-public class AssetCatalogInstanceHandler extends OCFOMASServiceInstanceHandler {
+public class AssetCatalogInstanceHandler extends OMASServiceInstanceHandler {
 
     /**
      * Default constructor registers the access service

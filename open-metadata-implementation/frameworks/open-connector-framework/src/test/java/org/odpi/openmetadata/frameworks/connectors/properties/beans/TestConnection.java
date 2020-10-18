@@ -18,13 +18,13 @@ import static org.testng.Assert.assertTrue;
  */
 public class TestConnection
 {
-    private ElementType          type                    = new ElementType();
-    private List<Classification> classifications         = new ArrayList<>();
-    private Map<String, String>  additionalProperties    = new HashMap<>();
-    private Map<String, Object>  configurationProperties = new HashMap<>();
-    private Map<String, Object>  securedProperties       = new HashMap<>();
-    private ConnectorType        connectorType           = new ConnectorType();
-    private Endpoint             endpoint                = new Endpoint();
+    private ElementType                 type                    = new ElementType();
+    private List<ElementClassification> classifications         = new ArrayList<>();
+    private Map<String, String>         additionalProperties    = new HashMap<>();
+    private Map<String, Object>         configurationProperties = new HashMap<>();
+    private Map<String, String>         securedProperties       = new HashMap<>();
+    private ConnectorType               connectorType           = new ConnectorType();
+    private Endpoint                    endpoint                = new Endpoint();
 
 
     /**
@@ -177,7 +177,7 @@ public class TestConnection
      */
     @Test public void testSecuredProperties()
     {
-        Map<String, Object> propertyMap;
+        Map<String, String> propertyMap;
         Connection          testObject = new Connection();
 
         assertTrue(testObject.getSecuredProperties() == null);
@@ -198,7 +198,7 @@ public class TestConnection
         testObject = new Connection();
         testObject.setSecuredProperties(propertyMap);
 
-        Map<String, Object>   retrievedPropertyMap = testObject.getSecuredProperties();
+        Map<String, String>   retrievedPropertyMap = testObject.getSecuredProperties();
 
         assertTrue(retrievedPropertyMap != null);
         assertFalse(retrievedPropertyMap.isEmpty());

@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.Iterator;
 
 
-public class ZoneMembers implements Iterator<AssetSummary>, Serializable
+public class ZoneMembers implements Iterator<AssetProperties>, Serializable
 {
     private static final long    serialVersionUID = 1L;
 
@@ -26,10 +26,10 @@ public class ZoneMembers implements Iterator<AssetSummary>, Serializable
     /**
      * Return the next element in the iteration.
      *
-     * @return Rating next element object that has been cloned.
+     * @return  next element object that has been cloned.
      */
     @Override
-    public AssetSummary next()
+    public AssetProperties next()
     {
         return null;
     }

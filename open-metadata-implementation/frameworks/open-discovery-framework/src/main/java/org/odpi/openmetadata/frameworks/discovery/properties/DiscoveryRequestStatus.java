@@ -19,20 +19,24 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum DiscoveryRequestStatus implements Serializable
 {
-    WAITING         (0,  "Waiting",    "Discovery service is waiting to execute in the discovery engine"),
-    ACTIVATING      (1,  "Activating", "Discovery service is being initialized in the discovery engine"),
-    IN_PROGRESS     (2,  "In Progress","Discovery service is executing"),
-    FAILED          (3,  "Failed",     "Discovery service has failed"),
-    COMPLETED       (4,  "Completed",  "Discovery service has completed successfully"),
-    OTHER           (5,  "Other",      "Discovery service has a status that is not covered by this enum"),
-    UNKNOWN_STATUS  (99, "Unknown",    "Discovery service status is unknown");
+    WAITING         (0,  0,  "Waiting",    "Discovery service is waiting to execute in the discovery engine"),
+    ACTIVATING      (1,  1,  "Activating", "Discovery service is being initialized in the discovery engine"),
+    IN_PROGRESS     (2,  2,  "In Progress","Discovery service is executing"),
+    FAILED          (3,  3,  "Failed",     "Discovery service has failed"),
+    COMPLETED       (4,  4,  "Completed",  "Discovery service has completed successfully"),
+    OTHER           (5,  5,  "Other",      "Discovery service has a status that is not covered by this enum"),
+    UNKNOWN_STATUS  (99, 99, "Unknown",    "Discovery service status is unknown");
 
     private static final long     serialVersionUID = 1L;
 
-    private int            statusCode;
-    private String         statusName;
-    private String         statusDescription;
+    public static final String ENUM_TYPE_GUID  = "b2fdeddd-24eb-4e9c-a2a4-2693828d4a69";
+    public static final String ENUM_TYPE_NAME  = "DiscoveryServiceRequestStatus";
 
+    private String statusName;
+    private String statusDescription;
+    private int    statusCode;
+
+    private int openTypeOrdinal;
 
     /**
      * Typical Constructor
@@ -41,13 +45,14 @@ public enum DiscoveryRequestStatus implements Serializable
      * @param statusName short name
      * @param statusDescription longer explanation
      */
-    DiscoveryRequestStatus(int     statusCode, String   statusName, String   statusDescription)
+    DiscoveryRequestStatus(int    statusCode,
+                           int    openTypeOrdinal,
+                           String statusName,
+                           String statusDescription)
     {
-        /*
-         * Save the values supplied
-         */
-        this.statusCode = statusCode;
-        this.statusName = statusName;
+        this.statusCode        = statusCode;
+        this.openTypeOrdinal   = openTypeOrdinal;
+        this.statusName        = statusName;
         this.statusDescription = statusDescription;
     }
 
@@ -85,6 +90,34 @@ public enum DiscoveryRequestStatus implements Serializable
     }
 
 
+
+    /**
+     * Return the code for this enum that comes from the Open Metadata Type that this enum represents.
+     *
+     * @return int code number
+     */
+    public int getOpenTypeOrdinal()
+    {
+        return openTypeOrdinal;
+    }
+
+
+    /**
+     * Return the unique identifier for the open metadata enum type that this enum class represents.
+     *
+     * @return string guid
+     */
+    public String getOpenTypeGUID() { return ENUM_TYPE_GUID; }
+
+
+    /**
+     * Return the unique name for the open metadata enum type that this enum class represents.
+     *
+     * @return string name
+     */
+    public String getOpenTypeName() { return ENUM_TYPE_NAME; }
+
+
     /**
      * Standard toString method.
      *
@@ -94,9 +127,10 @@ public enum DiscoveryRequestStatus implements Serializable
     public String toString()
     {
         return "DiscoveryRequestStatus{" +
-                "statusCode=" + statusCode +
-                ", statusName='" + statusName + '\'' +
+                "statusName='" + statusName + '\'' +
                 ", statusDescription='" + statusDescription + '\'' +
+                ", statusCode=" + statusCode +
+                ", openTypeOrdinal=" + openTypeOrdinal +
                 '}';
     }
 }

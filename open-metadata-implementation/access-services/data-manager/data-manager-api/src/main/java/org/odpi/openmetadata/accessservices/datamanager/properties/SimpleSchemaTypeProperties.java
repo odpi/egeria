@@ -112,7 +112,7 @@ public class SimpleSchemaTypeProperties extends SchemaTypeProperties
                 ", usage='" + getUsage() + '\'' +
                 ", encodingStandard='" + getEncodingStandard() + '\'' +
                 ", namespace='" + getNamespace() + '\'' +
-                ", deprecated=" + isDeprecated() +
+                ", deprecated=" + getIsDeprecated() +
                 ", displayName='" + getDisplayName() + '\'' +
                 ", description='" + getDescription() + '\'' +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
@@ -149,5 +149,16 @@ public class SimpleSchemaTypeProperties extends SchemaTypeProperties
         SimpleSchemaType that = (SimpleSchemaType) objectToCompare;
         return Objects.equals(getDataType(), that.getDataType()) &&
                 Objects.equals(getDefaultValue(), that.getDefaultValue());
+    }
+
+    /**
+     * Return hash code for this object
+     *
+     * @return int hash code
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), dataType, defaultValue);
     }
 }
