@@ -27,9 +27,7 @@ stages:
         - task: CmdLine@2
           inputs:
             script: |
-              echo Write your commands here
-      
-      echo Hello world
+              git config --system core.longpaths true
           - task: Maven@3
             inputs:
               mavenPomFile: 'pom.xml'
