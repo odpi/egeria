@@ -59,7 +59,7 @@ public class ValidValue extends Referenceable
             usage = template.getUsage();
             scope = template.getScope();
             preferredValue = template.getPreferredValue();
-            isDeprecated = template.isDeprecated();
+            isDeprecated = template.getIsDeprecated();
         }
     }
 
@@ -181,7 +181,7 @@ public class ValidValue extends Referenceable
      *
      * @return boolean flag
      */
-    public boolean isDeprecated()
+    public boolean getIsDeprecated()
     {
         return isDeprecated;
     }
@@ -192,7 +192,7 @@ public class ValidValue extends Referenceable
      *
      * @param deprecated boolean flag
      */
-    public void setDeprecated(boolean deprecated)
+    public void setIsDeprecated(boolean deprecated)
     {
         isDeprecated = deprecated;
     }

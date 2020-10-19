@@ -2,28 +2,23 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.discoveryengine.handlers;
 
-import org.odpi.openmetadata.accessservices.discoveryengine.builders.DiscoveryEngineBuilder;
-import org.odpi.openmetadata.accessservices.discoveryengine.builders.DiscoveryServiceBuilder;
+import org.odpi.openmetadata.accessservices.discoveryengine.converters.ConnectionConverter;
 import org.odpi.openmetadata.accessservices.discoveryengine.converters.DiscoveryEnginePropertiesConverter;
 import org.odpi.openmetadata.accessservices.discoveryengine.converters.DiscoveryServicePropertiesConverter;
 import org.odpi.openmetadata.accessservices.discoveryengine.converters.RegisteredDiscoveryServiceConverter;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.handlers.ConnectionHandler;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.AssetMapper;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.ConnectionMapper;
-import org.odpi.openmetadata.commonservices.odf.metadatamanagement.mappers.DiscoveryEnginePropertiesMapper;
-import org.odpi.openmetadata.commonservices.odf.metadatamanagement.mappers.DiscoveryServicePropertiesMapper;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryErrorHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.*;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.OwnerType;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
 import org.odpi.openmetadata.frameworks.discovery.DiscoveryConfigurationServer;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryEngineProperties;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryServiceProperties;
 import org.odpi.openmetadata.frameworks.discovery.properties.RegisteredDiscoveryService;
+import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
@@ -38,42 +33,108 @@ import java.util.Map;
  */
 public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
 {
-    private String                  serviceName;
-    private String                  serverName;
-    private RepositoryErrorHandler  errorHandler;
-    private RepositoryHandler       repositoryHandler;
-    private OMRSRepositoryHelper    repositoryHelper;
-    private ConnectionHandler       connectionHandler;
-    private InvalidParameterHandler invalidParameterHandler;
+    private String                                                     serviceName;
+    private String                                                     serverName;
+    private RepositoryHandler                                          repositoryHandler;
+    private OMRSRepositoryHelper                                       repositoryHelper;
+    private SoftwareServerCapabilityHandler<DiscoveryEngineProperties> discoveryEngineHandler;
+    private AssetHandler<DiscoveryServiceProperties>                   discoveryServiceHandler;
+    private ConnectionHandler<Connection>                              connectionHandler;
+    private ConnectorTypeHandler<ConnectorType>                        connectorTypeHandler;
+    private InvalidParameterHandler                                    invalidParameterHandler;
 
 
     /**
      * Construct the discovery engine configuration handler caching the objects
      * needed to operate within a single server instance.
      *
-     * @param serviceName name of the consuming service
-     * @param serverName name of this server instance
-     * @param invalidParameterHandler handler for invalid parameters
-     * @param repositoryHelper helper used by the converters
-     * @param repositoryHandler handler for calling the repository services
-     * @param errorHandler handler for repository service errors
-     * @param connectionHandler handler for working with connection objects
-     */
-    public DiscoveryConfigurationHandler(String                  serviceName,
-                                         String                  serverName,
-                                         InvalidParameterHandler invalidParameterHandler,
-                                         OMRSRepositoryHelper    repositoryHelper,
-                                         RepositoryHandler       repositoryHandler,
-                                         RepositoryErrorHandler  errorHandler,
-                                         ConnectionHandler       connectionHandler)
+     * @param serviceName      name of this service
+     * @param serverName       name of the local server
+     * @param invalidParameterHandler handler for managing parameter errors
+     * @param repositoryHandler     manages calls to the repository services
+     * @param repositoryHelper provides utilities for manipulating the repository services objects
+     * @param localServerUserId userId for this server
+     * @param securityVerifier open metadata security services verifier
+     * @param supportedZones list of zones that the access service is allowed to serve B instances from.
+     * @param defaultZones list of zones that the access service should set in all new B instances.
+     * @param publishZones list of zones that the access service sets up in published B instances.
+     * @param auditLog logging destination
+    */
+    public DiscoveryConfigurationHandler(String                             serviceName,
+                                         String                             serverName,
+                                         InvalidParameterHandler            invalidParameterHandler,
+                                         RepositoryHandler                  repositoryHandler,
+                                         OMRSRepositoryHelper               repositoryHelper,
+                                         String                             localServerUserId,
+                                         OpenMetadataServerSecurityVerifier securityVerifier,
+                                         List<String>                       supportedZones,
+                                         List<String>                       defaultZones,
+                                         List<String>                       publishZones,
+                                         AuditLog                           auditLog)
     {
         this.serviceName = serviceName;
         this.serverName = serverName;
         this.invalidParameterHandler = invalidParameterHandler;
         this.repositoryHelper = repositoryHelper;
-        this.errorHandler = errorHandler;
         this.repositoryHandler = repositoryHandler;
-        this.connectionHandler = connectionHandler;
+
+        this.discoveryEngineHandler = new SoftwareServerCapabilityHandler<>(new DiscoveryEnginePropertiesConverter<>(repositoryHelper,
+                                                                                                                     serviceName,
+                                                                                                                     serverName),
+                                                                            DiscoveryEngineProperties.class,
+                                                                            serviceName,
+                                                                            serverName,
+                                                                            invalidParameterHandler,
+                                                                            repositoryHandler,
+                                                                            repositoryHelper,
+                                                                            localServerUserId,
+                                                                            securityVerifier,
+                                                                            supportedZones,
+                                                                            defaultZones,
+                                                                            publishZones,
+                                                                            auditLog);
+
+        this.discoveryServiceHandler = new AssetHandler<>(new DiscoveryServicePropertiesConverter<>(repositoryHelper, serviceName, serverName),
+                                                          DiscoveryServiceProperties.class,
+                                                          serviceName,
+                                                          serverName,
+                                                          invalidParameterHandler,
+                                                          repositoryHandler,
+                                                          repositoryHelper,
+                                                          localServerUserId,
+                                                          securityVerifier,
+                                                          supportedZones,
+                                                          defaultZones,
+                                                          publishZones,
+                                                          auditLog);
+
+        this.connectionHandler = new ConnectionHandler<>(new ConnectionConverter<>(repositoryHelper, serviceName, serverName),
+                                                         Connection.class,
+                                                         serviceName,
+                                                         serverName,
+                                                         invalidParameterHandler,
+                                                         repositoryHandler,
+                                                         repositoryHelper,
+                                                         localServerUserId,
+                                                         securityVerifier,
+                                                         supportedZones,
+                                                         defaultZones,
+                                                         publishZones,
+                                                         auditLog);
+
+        this.connectorTypeHandler = new ConnectorTypeHandler<>(new OpenMetadataAPIDummyBeanConverter<>(repositoryHelper, serviceName, serverName),
+                                                               ConnectorType.class,
+                                                               serviceName,
+                                                               serverName,
+                                                               invalidParameterHandler,
+                                                               repositoryHandler,
+                                                               repositoryHelper,
+                                                               localServerUserId,
+                                                               securityVerifier,
+                                                               supportedZones,
+                                                               defaultZones,
+                                                               publishZones,
+                                                               auditLog);
     }
 
 
@@ -100,37 +161,23 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
                                                                       PropertyServerException
     {
         final String methodName = "createDiscoveryEngine";
-        final String qualifiedNameParameter = "qualifiedName";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameter, methodName);
-
-        DiscoveryEngineProperties existingEngine = this.getDiscoveryEngineByName(userId, qualifiedName);
-        if (existingEngine != null)
-        {
-            errorHandler.handleDuplicateCreateRequest(DiscoveryEnginePropertiesMapper.DISCOVERY_ENGINE_TYPE_NAME,
-                                                      qualifiedName,
-                                                      existingEngine.getGUID(),
-                                                      methodName);
-        }
-
-        /*
-         * Build up the properties used to create the engine and pass to the repository services.
-         */
-        DiscoveryEngineBuilder builder = new DiscoveryEngineBuilder(qualifiedName,
-                                                                    displayName,
-                                                                    description,
-                                                                    repositoryHelper,
-                                                                    serviceName,
-                                                                    serverName);
-
-        InstanceProperties properties = builder.getInstanceProperties(methodName);
-
-        return repositoryHandler.createEntity(userId,
-                                              DiscoveryEnginePropertiesMapper.DISCOVERY_ENGINE_TYPE_GUID,
-                                              DiscoveryEnginePropertiesMapper.DISCOVERY_ENGINE_TYPE_NAME,
-                                              properties,
-                                              methodName);
+        return discoveryEngineHandler.createSoftwareServerCapability(userId,
+                                                                     null,
+                                                                     null,
+                                                                     OpenMetadataAPIMapper.DISCOVERY_ENGINE_TYPE_GUID,
+                                                                     OpenMetadataAPIMapper.DISCOVERY_ENGINE_TYPE_NAME,
+                                                                     null,
+                                                                     qualifiedName,
+                                                                     displayName,
+                                                                     description,
+                                                                     null,
+                                                                     null,
+                                                                     null,
+                                                                     null,
+                                                                     null,
+                                                                     null,
+                                                                     methodName);
     }
 
 
@@ -155,25 +202,11 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
         final  String   methodName = "getDiscoveryEngineByGUID";
         final  String   guidParameter = "guid";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(guid, guidParameter, methodName);
-
-        EntityDetail retrievedEntity = repositoryHandler.getEntityByGUID(userId,
-                                                                         guid,
-                                                                         guidParameter,
-                                                                         DiscoveryEnginePropertiesMapper.DISCOVERY_ENGINE_TYPE_NAME,
-                                                                         methodName);
-
-        if (retrievedEntity != null)
-        {
-            DiscoveryEnginePropertiesConverter converter = new DiscoveryEnginePropertiesConverter(retrievedEntity,
-                                                                                                  repositoryHelper,
-                                                                                                  serviceName);
-
-            return converter.getBean();
-        }
-
-        return null;
+        return discoveryEngineHandler.getBeanFromRepository(userId,
+                                                            guid,
+                                                            guidParameter,
+                                                            OpenMetadataAPIMapper.DISCOVERY_ENGINE_TYPE_NAME,
+                                                            methodName);
     }
 
 
@@ -198,68 +231,16 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
         final  String   methodName = "getDiscoveryEngineByName";
         final  String   nameParameter = "name";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(name, nameParameter, methodName);
+        List<String> specificMatchPropertyNames = new ArrayList<>();
+        specificMatchPropertyNames.add(OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME);
 
-        /*
-         * Try to retrieve the entity using the fully qualified name first and then
-         * the display name.
-         */
-        DiscoveryEngineBuilder builder = new DiscoveryEngineBuilder(name,
-                                                                    name,
-                                                                    null,
-                                                                    repositoryHelper,
-                                                                    serviceName,
-                                                                    serverName);
-
-
-
-        List<EntityDetail> retrievedEntities = repositoryHandler.getEntityByName(userId,
-                                                                                 builder.getQualifiedNameInstanceProperties(methodName),
-                                                                                 DiscoveryEnginePropertiesMapper.DISCOVERY_ENGINE_TYPE_GUID,
-                                                                                 methodName);
-
-        if ((retrievedEntities != null) && (retrievedEntities.size() == 1))
-        {
-            DiscoveryEnginePropertiesConverter converter =
-                    new DiscoveryEnginePropertiesConverter(retrievedEntities.get(0),
-                                                           repositoryHelper,
-                                                           serviceName);
-
-            return converter.getBean();
-        }
-
-
-        retrievedEntities = repositoryHandler.getEntityByName(userId,
-                                                              builder.getNameInstanceProperties(methodName),
-                                                              DiscoveryEnginePropertiesMapper.DISCOVERY_ENGINE_TYPE_GUID,
-                                                              methodName);
-
-        /*
-         * Did not retrieve the discovery engine by qualified name so going to try all of the names
-         */
-        if ((retrievedEntities != null) && (!retrievedEntities.isEmpty()))
-        {
-            if (retrievedEntities.size() == 1)
-            {
-                DiscoveryEnginePropertiesConverter converter =
-                        new DiscoveryEnginePropertiesConverter(retrievedEntities.get(0),
-                                                               repositoryHelper,
-                                                               serviceName);
-
-                return converter.getBean();
-            }
-            else
-            {
-                errorHandler.handleAmbiguousEntityName(name,
-                                                       nameParameter,
-                                                       DiscoveryEnginePropertiesMapper.DISCOVERY_ENGINE_TYPE_NAME,
-                                                       retrievedEntities,
-                                                       methodName);
-            }
-        }
-
-        return null;
+        return discoveryEngineHandler.getBeanByValue(userId,
+                                                     name,
+                                                     nameParameter,
+                                                     OpenMetadataAPIMapper.DISCOVERY_ENGINE_TYPE_GUID,
+                                                     OpenMetadataAPIMapper.DISCOVERY_ENGINE_TYPE_NAME,
+                                                     specificMatchPropertyNames,
+                                                     methodName);
     }
 
 
@@ -283,41 +264,12 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
     {
         final  String   methodName = "getAllDiscoveryEngines";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        int queryPageSize = invalidParameterHandler.validatePaging(startingFrom, maximumResults, methodName);
-
-        List<EntityDetail> retrievedEntities = repositoryHandler.getEntitiesByType(userId,
-                                                                                   DiscoveryEnginePropertiesMapper.DISCOVERY_ENGINE_TYPE_GUID,
-                                                                                   startingFrom,
-                                                                                   queryPageSize,
-                                                                                   methodName);
-
-        /*
-         * Convert entities to beans
-         */
-        if ((retrievedEntities != null) && (!retrievedEntities.isEmpty()))
-        {
-            List<DiscoveryEngineProperties>   results = new ArrayList<>();
-
-            for (EntityDetail  entityDetail : retrievedEntities)
-            {
-                if (entityDetail != null)
-                {
-                    DiscoveryEnginePropertiesConverter converter = new DiscoveryEnginePropertiesConverter(entityDetail,
-                                                                                                          repositoryHelper,
-                                                                                                          serviceName);
-
-                    results.add(converter.getBean());
-                }
-            }
-
-            if (!results.isEmpty())
-            {
-                return results;
-            }
-        }
-
-        return null;
+        return discoveryEngineHandler.getBeansByType(userId,
+                                                     OpenMetadataAPIMapper.DISCOVERY_ENGINE_TYPE_GUID,
+                                                     OpenMetadataAPIMapper.DISCOVERY_ENGINE_TYPE_NAME,
+                                                     startingFrom,
+                                                     maximumResults,
+                                                     methodName);
     }
 
 
@@ -357,32 +309,39 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
                                                                                            PropertyServerException
     {
         final String methodName = "updateDiscoveryEngine";
+        final String guidParameter = "guid";
         final String qualifiedNameParameter = "qualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameter, methodName);
 
-        DiscoveryEngineBuilder builder = new DiscoveryEngineBuilder(qualifiedName,
-                                                                    displayName,
-                                                                    description,
-                                                                    typeDescription,
-                                                                    version,
-                                                                    patchLevel,
-                                                                    source,
-                                                                    additionalProperties,
-                                                                    extendedProperties,
-                                                                    repositoryHelper,
-                                                                    serviceName,
-                                                                    serverName);
+        SoftwareServerCapabilityBuilder builder = new SoftwareServerCapabilityBuilder(qualifiedName,
+                                                                                      displayName,
+                                                                                      description,
+                                                                                      typeDescription,
+                                                                                      version,
+                                                                                      patchLevel,
+                                                                                      source,
+                                                                                      additionalProperties,
+                                                                                      OpenMetadataAPIMapper.DISCOVERY_ENGINE_TYPE_GUID,
+                                                                                      OpenMetadataAPIMapper.DISCOVERY_ENGINE_TYPE_NAME,
+                                                                                      extendedProperties,
+                                                                                      repositoryHelper,
+                                                                                      serviceName,
+                                                                                      serverName);
 
         InstanceProperties properties = builder.getInstanceProperties(methodName);
 
-        repositoryHandler.updateEntity(userId,
-                                       guid,
-                                       DiscoveryEnginePropertiesMapper.DISCOVERY_ENGINE_TYPE_GUID,
-                                       DiscoveryEnginePropertiesMapper.DISCOVERY_ENGINE_TYPE_NAME,
-                                       properties,
-                                       methodName);
+        discoveryEngineHandler.updateBeanInRepository(userId,
+                                                      null,
+                                                      null,
+                                                      guid,
+                                                      guidParameter,
+                                                      OpenMetadataAPIMapper.DISCOVERY_ENGINE_TYPE_GUID,
+                                                      OpenMetadataAPIMapper.DISCOVERY_ENGINE_TYPE_NAME,
+                                                      properties,
+                                                      false,
+                                                      methodName);
     }
 
 
@@ -405,18 +364,22 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
                                                                         PropertyServerException
     {
         final String methodName = "deleteDiscoveryEngine";
+        final String guidParameter = "discoveryEngineGUID";
         final String qualifiedNameParameter = "qualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameter, methodName);
 
-        repositoryHandler.removeEntity(userId,
-                                       guid,
-                                       DiscoveryEnginePropertiesMapper.DISCOVERY_ENGINE_TYPE_GUID,
-                                       DiscoveryEnginePropertiesMapper.DISCOVERY_ENGINE_TYPE_NAME,
-                                       qualifiedNameParameter,
-                                       qualifiedName,
-                                       methodName);
+        discoveryEngineHandler.deleteBeanInRepository(userId,
+                                                      null,
+                                                      null,
+                                                      guid,
+                                                      guidParameter,
+                                                      OpenMetadataAPIMapper.DISCOVERY_ENGINE_TYPE_GUID,
+                                                      OpenMetadataAPIMapper.DISCOVERY_ENGINE_TYPE_NAME,
+                                                      qualifiedNameParameter,
+                                                      qualifiedName,
+                                                      methodName);
     }
 
 
@@ -428,7 +391,7 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
      * @param qualifiedName  unique name for the discovery service.
      * @param displayName   display name for the discovery service.
      * @param description  description of the analysis provided by the discovery service.
-     * @param connection   connection to instanciate the discovery service implementation.
+     * @param connection   connection to instantiate the discovery service implementation.
      *
      * @return unique identifier of the discovery service.
      *
@@ -445,38 +408,139 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
                                                                           PropertyServerException
     {
         final String methodName = "createDiscoveryService";
-        final String qualifiedNameParameter = "qualifiedName";
-        final String connectionParameter = "connection";
+        final String connectionParameterName = "createDiscoveryService";
+        final String assetGUIDParameterName = "assetGUID";
+        final String connectorTypeGUIDParameterName = "connectorTypeGUID";
+        final String embeddedConnectionGUIDParameterName = "embeddedConnectionGUID ";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameter, methodName);
-        invalidParameterHandler.validateConnection(connection, connectionParameter, methodName);
+        invalidParameterHandler.validateConnection(connection, connectionParameterName, methodName);
 
-        String connectionGUID = connectionHandler.saveConnection(userId, connection);
+        String assetGUID = discoveryServiceHandler.createAssetInRepository(userId,
+                                                                           null,
+                                                                           null,
+                                                                           qualifiedName,
+                                                                           displayName,
+                                                                           description,
+                                                                           null,
+                                                                           null,
+                                                                           0,
+                                                                           null,
+                                                                           null,
+                                                                           null,
+                                                                           null,
+                                                                           OpenMetadataAPIMapper.DISCOVERY_SERVICE_TYPE_GUID,
+                                                                           OpenMetadataAPIMapper.DISCOVERY_SERVICE_TYPE_NAME,
+                                                                           null,
+                                                                           methodName);
 
-        DiscoveryServiceBuilder builder = new DiscoveryServiceBuilder(qualifiedName,
-                                                                      displayName,
-                                                                      description,
-                                                                      repositoryHelper,
-                                                                      serviceName,
-                                                                      serverName);
+        if (assetGUID != null)
+        {
+            ConnectorType connectorType = connection.getConnectorType();
 
-        InstanceProperties properties = builder.getInstanceProperties(methodName);
+            String connectorTypeGUID = connectorTypeHandler.getConnectorTypeForConnection(userId,
+                                                                                          null,
+                                                                                          null,
+                                                                                          assetGUID,
+                                                                                          connectorType.getQualifiedName(),
+                                                                                          connectorType.getDisplayName(),
+                                                                                          connectorType.getDescription(),
+                                                                                          connectorType.getConnectorProviderClassName(),
+                                                                                          connectorType.getRecognizedAdditionalProperties(),
+                                                                                          connectorType.getRecognizedSecuredProperties(),
+                                                                                          connectorType.getRecognizedConfigurationProperties(),
+                                                                                          connectorType.getAdditionalProperties(),
+                                                                                          methodName);
 
-        String discoveryServiceGUID = repositoryHandler.createEntity(userId,
-                                                                     DiscoveryServicePropertiesMapper.DISCOVERY_SERVICE_TYPE_GUID,
-                                                                     DiscoveryServicePropertiesMapper.DISCOVERY_SERVICE_TYPE_NAME,
-                                                                     properties,
-                                                                     methodName);
+            if (connectorTypeGUID != null)
+            {
+                if (connection instanceof VirtualConnection)
+                {
+                    /*
+                     * OpenDiscoveryPipelines are represented using a VirtualConnection that
+                     * nests all of the Connections for services to call.
+                     */
+                    final String connectionGUIDParameterName = "connection.getGUID";
 
-        repositoryHandler.createRelationship(userId,
-                                             DiscoveryServicePropertiesMapper.CONNECTION_TO_ASSET_TYPE_GUID,
-                                             connectionGUID,
-                                             discoveryServiceGUID,
-                                             null,
-                                             methodName);
+                    String connectionGUID = connectionHandler.createVirtualConnection(userId,
+                                                                                     null,
+                                                                                     null,
+                                                                                     assetGUID,
+                                                                                     assetGUIDParameterName,
+                                                                                     connection.getAssetSummary(),
+                                                                                     connection.getQualifiedName(),
+                                                                                     connection.getDisplayName(),
+                                                                                     connection.getDescription(),
+                                                                                     connection.getAdditionalProperties(),
+                                                                                     connection.getSecuredProperties(),
+                                                                                     connection.getConfigurationProperties(),
+                                                                                     connection.getUserId(),
+                                                                                     connection.getClearPassword(),
+                                                                                     connection.getEncryptedPassword(),
+                                                                                     connectorTypeGUID,
+                                                                                     connectorTypeGUIDParameterName,
+                                                                                     methodName);
 
-        return discoveryServiceGUID;
+                    List<EmbeddedConnection> embeddedConnections = ((VirtualConnection) connection).getEmbeddedConnections();
+
+                    if (embeddedConnections != null)
+                    {
+                        for (EmbeddedConnection embeddedConnection : embeddedConnections)
+                        {
+                            if (embeddedConnection != null)
+                            {
+                                String embeddedConnectionGUID = connectionHandler.saveConnection(userId,
+                                                                                                 null,
+                                                                                                 null,
+                                                                                                 assetGUID,
+                                                                                                 null,
+                                                                                                 assetGUIDParameterName,
+                                                                                                 OpenMetadataAPIMapper.DISCOVERY_SERVICE_TYPE_NAME,
+                                                                                                 embeddedConnection.getEmbeddedConnection(),
+                                                                                                 null,
+                                                                                                 methodName);
+                                connectionHandler.addEmbeddedConnection(userId,
+                                                                        null,
+                                                                        null,
+                                                                        connectionGUID,
+                                                                        connectionGUIDParameterName,
+                                                                        embeddedConnection.getPosition(),
+                                                                        embeddedConnection.getDisplayName(),
+                                                                        embeddedConnection.getArguments(),
+                                                                        embeddedConnectionGUID,
+                                                                        embeddedConnectionGUIDParameterName,
+                                                                        methodName);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    connectionHandler.createConnection(userId,
+                                                       null,
+                                                       null,
+                                                       assetGUID,
+                                                       assetGUIDParameterName,
+                                                       connection.getAssetSummary(),
+                                                       connection.getQualifiedName(),
+                                                       connection.getDisplayName(),
+                                                       connection.getDescription(),
+                                                       connection.getAdditionalProperties(),
+                                                       connection.getSecuredProperties(),
+                                                       connection.getConfigurationProperties(),
+                                                       connection.getUserId(),
+                                                       connection.getClearPassword(),
+                                                       connection.getEncryptedPassword(),
+                                                       connectorTypeGUID,
+                                                       connectorTypeGUIDParameterName,
+                                                       null,
+                                                       null,
+                                                       methodName);
+                }
+            }
+        }
+
+
+        return assetGUID;
     }
 
 
@@ -500,16 +564,11 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
         final  String   methodName = "getDiscoveryServiceByGUID";
         final  String   guidParameter = "guid";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(guid, guidParameter, methodName);
-
-        EntityDetail discoveryServiceEntity = repositoryHandler.getEntityByGUID(userId,
-                                                                                guid,
-                                                                                guidParameter,
-                                                                                DiscoveryServicePropertiesMapper.DISCOVERY_SERVICE_TYPE_NAME,
-                                                                                methodName);
-
-        return this.getDiscoveryServiceBean(userId, discoveryServiceEntity, methodName);
+        return discoveryServiceHandler.getAssetWithConnection(userId,
+                                                              guid,
+                                                              guidParameter,
+                                                              OpenMetadataAPIMapper.DISCOVERY_SERVICE_TYPE_NAME,
+                                                              methodName);
     }
 
 
@@ -533,105 +592,12 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
         final String methodName    = "getDiscoveryServiceByName";
         final String nameParameter = "name";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(name, nameParameter, methodName);
-
-        /*
-         * Try to retrieve the entity using the fully qualified name first and then
-         * the display name.
-         */
-        DiscoveryServiceBuilder builder = new DiscoveryServiceBuilder(name,
-                                                                      name,
-                                                                      null,
-                                                                      repositoryHelper,
-                                                                      serviceName,
-                                                                      serverName);
-
-
-        List<EntityDetail> retrievedEntities = repositoryHandler.getEntityByName(userId,
-                                                                                 builder.getQualifiedNameInstanceProperties(methodName),
-                                                                                 DiscoveryServicePropertiesMapper.DISCOVERY_SERVICE_TYPE_GUID,
-                                                                                 methodName);
-
-        /*
-         * Did not retrieve the discovery service by qualified name so going to try all of the names
-         */
-        if ((retrievedEntities == null) || (retrievedEntities.isEmpty()))
-        {
-            retrievedEntities = repositoryHandler.getEntityByName(userId,
-                                                                  builder.getNameInstanceProperties(methodName),
-                                                                  DiscoveryEnginePropertiesMapper.DISCOVERY_ENGINE_TYPE_GUID,
-                                                                  methodName);
-        }
-
-
-        if ((retrievedEntities != null) && (!retrievedEntities.isEmpty()))
-        {
-            if (retrievedEntities.size() == 1)
-            {
-                return this.getDiscoveryServiceBean(userId, retrievedEntities.get(0), methodName);
-            }
-            else
-            {
-                errorHandler.handleAmbiguousEntityName(name,
-                                                       nameParameter,
-                                                       DiscoveryEnginePropertiesMapper.DISCOVERY_ENGINE_TYPE_NAME,
-                                                       retrievedEntities,
-                                                       methodName);
-            }
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Return the properties of the discovery service.
-     *
-     * @param userId calling user
-     * @param discoveryServiceEntity entity details from repository
-     * @param methodName calling method
-     *
-     * @return properties of the discovery service.
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws UserNotAuthorizedException user not authorized to issue this request.
-     * @throws PropertyServerException problem retrieving the discovery service definition.
-     */
-    private DiscoveryServiceProperties getDiscoveryServiceBean(String       userId,
-                                                               EntityDetail discoveryServiceEntity,
-                                                               String       methodName) throws InvalidParameterException,
-                                                                                               UserNotAuthorizedException,
-                                                                                               PropertyServerException
-    {
-        Relationship relationshipToConnection = repositoryHandler.getUniqueRelationshipByType(userId,
-                                                                                              discoveryServiceEntity.getGUID(),
-                                                                                              DiscoveryServicePropertiesMapper.DISCOVERY_SERVICE_TYPE_NAME,
-                                                                                              DiscoveryServicePropertiesMapper.CONNECTION_TO_ASSET_TYPE_GUID,
-                                                                                              DiscoveryServicePropertiesMapper.CONNECTION_TO_ASSET_TYPE_NAME,
-                                                                                              methodName);
-
-
-        DiscoveryServicePropertiesConverter converter = new DiscoveryServicePropertiesConverter(discoveryServiceEntity,
-                                                                                                relationshipToConnection,
-                                                                                                repositoryHelper,
-                                                                                                serviceName);
-
-
-
-        DiscoveryServiceProperties bean = converter.getDiscoveryServiceBean();
-
-        if (relationshipToConnection != null)
-        {
-            EntityProxy  end1 = relationshipToConnection.getEntityOneProxy();
-
-            if (end1 != null)
-            {
-                bean.setConnection(connectionHandler.getConnection(userId, end1.getGUID()));
-            }
-        }
-
-        return bean;
+        return discoveryServiceHandler.getAssetByNameWithConnection(userId,
+                                                                    name,
+                                                                    nameParameter,
+                                                                    OpenMetadataAPIMapper.DISCOVERY_SERVICE_TYPE_GUID,
+                                                                    OpenMetadataAPIMapper.DISCOVERY_SERVICE_TYPE_NAME,
+                                                                    methodName);
     }
 
 
@@ -656,37 +622,12 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
     {
         final  String   methodName = "getAllDiscoveryServices";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        int queryPageSize = invalidParameterHandler.validatePaging(startingFrom, maximumResults, methodName);
-
-        List<EntityDetail> retrievedEntities = repositoryHandler.getEntitiesByType(userId,
-                                                                                   DiscoveryServicePropertiesMapper.DISCOVERY_SERVICE_TYPE_GUID,
-                                                                                   startingFrom,
-                                                                                   queryPageSize,
-                                                                                   methodName);
-
-        /*
-         * Convert entities to beans
-         */
-        if ((retrievedEntities != null) && (!retrievedEntities.isEmpty()))
-        {
-            List<DiscoveryServiceProperties>   results = new ArrayList<>();
-
-            for (EntityDetail  entityDetail : retrievedEntities)
-            {
-                if (entityDetail != null)
-                {
-                    results.add(this.getDiscoveryServiceBean(userId, entityDetail, methodName));
-                }
-            }
-
-            if (!results.isEmpty())
-            {
-                return results;
-            }
-        }
-
-        return null;
+        return discoveryServiceHandler.getAllAssetsWithConnection(userId,
+                                                                  OpenMetadataAPIMapper.DISCOVERY_SERVICE_TYPE_GUID,
+                                                                  OpenMetadataAPIMapper.DISCOVERY_SERVICE_TYPE_NAME,
+                                                                  startingFrom,
+                                                                  maximumResults,
+                                                                  methodName);
     }
 
 
@@ -713,11 +654,20 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(discoveryServiceGUID, guidParameter, methodName);
 
+        /*
+         * Checks this is a valid, visible service.
+         */
+        connectionHandler.getBeanFromRepository(userId,
+                                                discoveryServiceGUID,
+                                                guidParameter,
+                                                OpenMetadataAPIMapper.DISCOVERY_SERVICE_TYPE_NAME,
+                                                methodName);
+
         List<Relationship>  relationships = repositoryHandler.getRelationshipsByType(userId,
                                                                                      discoveryServiceGUID,
-                                                                                     DiscoveryServicePropertiesMapper.DISCOVERY_SERVICE_TYPE_NAME,
-                                                                                     DiscoveryServicePropertiesMapper.CONNECTION_TO_ASSET_TYPE_GUID,
-                                                                                     DiscoveryServicePropertiesMapper.CONNECTION_TO_ASSET_TYPE_NAME,
+                                                                                     OpenMetadataAPIMapper.DISCOVERY_SERVICE_TYPE_NAME,
+                                                                                     OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_GUID,
+                                                                                     OpenMetadataAPIMapper.CONNECTION_TO_ASSET_TYPE_NAME,
                                                                                      methodName);
 
         List<String> results = new ArrayList<>();
@@ -756,13 +706,7 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
      * @param guid unique identifier of the discovery service - used to locate the definition.
      * @param qualifiedName new value for unique name of discovery service.
      * @param displayName new value for the display name.
-     * @param shortDescription new value for the short description.
      * @param description new value for the description.
-     * @param owner new owner of the discovery service.
-     * @param ownerType new type for the owner of the discovery service.
-     * @param zoneMembership new list of zones for this discovery service.
-     * @param origin properties describing the origin of the discovery service.
-     * @param latestChange short description of this update.
      * @param connection connection used to create an instance of this discovery service.
      * @param additionalProperties additional properties for the discovery engine.
      * @param extendedProperties properties to populate the subtype of the discovery service.
@@ -775,13 +719,7 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
                                            String                guid,
                                            String                qualifiedName,
                                            String                displayName,
-                                           String                shortDescription,
                                            String                description,
-                                           String                owner,
-                                           OwnerType             ownerType,
-                                           List<String>          zoneMembership,
-                                           Map<String, String>   origin,
-                                           String                latestChange,
                                            Connection            connection,
                                            Map<String, String>   additionalProperties,
                                            Map<String, Object>   extendedProperties) throws InvalidParameterException,
@@ -789,102 +727,23 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
                                                                                             PropertyServerException
     {
         final String methodName = "updateDiscoveryService";
-        final String qualifiedNameParameter = "qualifiedName";
+        final String guidParameter = "guid";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameter, methodName);
-
-        DiscoveryServiceBuilder builder = new DiscoveryServiceBuilder(qualifiedName,
-                                                                      displayName,
-                                                                      description,
-                                                                      owner,
-                                                                      ownerType,
-                                                                      zoneMembership,
-                                                                      origin,
-                                                                      latestChange,
-                                                                      additionalProperties,
-                                                                      extendedProperties,
-                                                                      repositoryHelper,
-                                                                      serviceName,
-                                                                      serverName);
-
-        InstanceProperties properties = builder.getInstanceProperties(methodName);
-
-        repositoryHandler.updateEntity(userId,
-                                       guid,
-                                       DiscoveryServicePropertiesMapper.DISCOVERY_SERVICE_TYPE_GUID,
-                                       DiscoveryServicePropertiesMapper.DISCOVERY_SERVICE_TYPE_NAME,
-                                       properties,
-                                       methodName);
-
-
-        Relationship  assetConnectionRelationship = repositoryHandler.getUniqueRelationshipByType(userId,
-                                                                                                  guid,
-                                                                                                  DiscoveryServicePropertiesMapper.DISCOVERY_SERVICE_TYPE_NAME,
-                                                                                                  DiscoveryServicePropertiesMapper.CONNECTION_TO_ASSET_TYPE_GUID,
-                                                                                                  DiscoveryServicePropertiesMapper.CONNECTION_TO_ASSET_TYPE_NAME,
-                                                                                                  methodName);
-        if (connection == null)
-        {
-            /*
-             * Make sure there is no relationship to a connection
-             */
-            if (assetConnectionRelationship != null)
-            {
-                repositoryHandler.removeRelationship(userId,
-                                                     DiscoveryServicePropertiesMapper.CONNECTION_TO_ASSET_TYPE_GUID,
-                                                     DiscoveryServicePropertiesMapper.CONNECTION_TO_ASSET_TYPE_NAME,
-                                                     assetConnectionRelationship.getGUID(),
-                                                     methodName);
-
-                EntityProxy connectionProxy = assetConnectionRelationship.getEntityOneProxy();
-
-                if (connectionProxy != null)
-                {
-                    /*
-                     * This deletes the connection and all of its sub parts if it is not connected
-                     * to any other assets.
-                     */
-                    connectionHandler.removeConnection(userId, connectionProxy.getGUID());
-                }
-            }
-        }
-        else /* connection to add */
-        {
-            String  connectionGUID = connectionHandler.saveConnection(userId, connection);
-
-            if (assetConnectionRelationship == null)
-            {
-                InstanceProperties relationshipProperties = null;
-
-                if (shortDescription != null)
-                {
-                    relationshipProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                                          null,
-                                                                                          AssetMapper.SHORT_DESCRIPTION_PROPERTY_NAME,
-                                                                                          shortDescription,
-                                                                                          methodName);
-                }
-
-                repositoryHandler.createRelationship(userId,
-                                                     DiscoveryServicePropertiesMapper.CONNECTION_TO_ASSET_TYPE_GUID,
-                                                     connectionGUID,
-                                                     guid,
-                                                     relationshipProperties,
-                                                     methodName);
-            }
-            else
-            {
-                repositoryHandler.updateUniqueRelationshipByType(userId,
-                                                                 connectionGUID,
-                                                                 ConnectionMapper.CONNECTION_TYPE_NAME,
-                                                                 guid,
-                                                                 DiscoveryServicePropertiesMapper.DISCOVERY_SERVICE_TYPE_NAME,
-                                                                 DiscoveryServicePropertiesMapper.CONNECTION_TO_ASSET_TYPE_GUID,
-                                                                 DiscoveryServicePropertiesMapper.CONNECTION_TO_ASSET_TYPE_NAME,
-                                                                 methodName);
-            }
-        }
+        discoveryServiceHandler.updateAssetWithConnection(userId,
+                                                          null,
+                                                          null,
+                                                          guid,
+                                                          guidParameter,
+                                                          qualifiedName,
+                                                          displayName,
+                                                          description,
+                                                          additionalProperties,
+                                                          OpenMetadataAPIMapper.DISCOVERY_SERVICE_TYPE_GUID,
+                                                          OpenMetadataAPIMapper.DISCOVERY_SERVICE_TYPE_NAME,
+                                                          extendedProperties,
+                                                          null,
+                                                          connection,
+                                                          methodName);
     }
 
 
@@ -909,29 +768,18 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
     {
         final String methodName = "deleteDiscoveryService";
         final String qualifiedNameParameter = "qualifiedName";
+        final String guidParameter = "discoveryServiceGUID";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameter, methodName);
-
-        EntityDetail connectionEntity = repositoryHandler.getEntityForRelationshipType(userId,
-                                                                                       guid,
-                                                                                       DiscoveryServicePropertiesMapper.DISCOVERY_SERVICE_TYPE_NAME,
-                                                                                       DiscoveryServicePropertiesMapper.CONNECTION_TO_ASSET_TYPE_GUID,
-                                                                                       DiscoveryServicePropertiesMapper.CONNECTION_TO_ASSET_TYPE_NAME,
-                                                                                       methodName);
-
-        if (connectionEntity != null)
-        {
-            connectionHandler.removeConnection(userId, connectionEntity.getGUID());
-        }
-
-        repositoryHandler.removeEntity(userId,
-                                       guid,
-                                       DiscoveryServicePropertiesMapper.DISCOVERY_SERVICE_TYPE_GUID,
-                                       DiscoveryServicePropertiesMapper.DISCOVERY_SERVICE_TYPE_NAME,
-                                       qualifiedNameParameter,
-                                       qualifiedName,
-                                       methodName);
+        connectionHandler.deleteBeanInRepository(userId,
+                                                 null,
+                                                 null,
+                                                 guid,
+                                                 guidParameter,
+                                                 OpenMetadataAPIMapper.DISCOVERY_SERVICE_TYPE_GUID,
+                                                 OpenMetadataAPIMapper.DISCOVERY_SERVICE_TYPE_NAME,
+                                                 qualifiedNameParameter,
+                                                 qualifiedName,
+                                                 methodName);
     }
 
 
@@ -964,29 +812,34 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
         final String discoveryServiceGUIDParameter = "discoveryServiceGUID";
         final String discoveryRequestTypesParameter = "discoveryRequestTypes";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(discoveryEngineGUID, discoveryEngineGUIDParameter, methodName);
-        invalidParameterHandler.validateGUID(discoveryServiceGUID, discoveryServiceGUIDParameter, methodName);
         invalidParameterHandler.validateStringArray(discoveryRequestTypes, discoveryRequestTypesParameter, methodName);
 
         InstanceProperties instanceProperties = new InstanceProperties();
 
         repositoryHelper.addStringArrayPropertyToInstance(serviceName,
                                                           instanceProperties,
-                                                          DiscoveryEnginePropertiesMapper.DISCOVERY_REQUEST_TYPES_PROPERTY_NAME,
+                                                          OpenMetadataAPIMapper.DISCOVERY_REQUEST_TYPES_PROPERTY_NAME,
                                                           discoveryRequestTypes,
                                                           methodName);
         repositoryHelper.addStringMapPropertyToInstance(serviceName,
                                                         instanceProperties,
-                                                        DiscoveryEnginePropertiesMapper.DEFAULT_ANALYSIS_PARAMETERS_PROPERTY_NAME,
+                                                        OpenMetadataAPIMapper.DEFAULT_ANALYSIS_PARAMETERS_PROPERTY_NAME,
                                                         defaultAnalysisParameters,
                                                         methodName);
-        repositoryHandler.createRelationship(userId,
-                                             DiscoveryEnginePropertiesMapper.SUPPORTED_DISCOVERY_SERVICE_TYPE_GUID,
-                                             discoveryServiceGUID,
-                                             discoveryEngineGUID,
-                                             instanceProperties,
-                                             methodName);
+
+        discoveryEngineHandler.linkElementToElement(userId,
+                                                    null,
+                                                    null,
+                                                    discoveryServiceGUID,
+                                                    discoveryServiceGUIDParameter,
+                                                    OpenMetadataAPIMapper.DISCOVERY_SERVICE_TYPE_NAME,
+                                                    discoveryEngineGUID,
+                                                    discoveryEngineGUIDParameter,
+                                                    OpenMetadataAPIMapper.DISCOVERY_ENGINE_TYPE_NAME,
+                                                    OpenMetadataAPIMapper.SUPPORTED_DISCOVERY_SERVICE_TYPE_GUID,
+                                                    OpenMetadataAPIMapper.SUPPORTED_DISCOVERY_SERVICE_TYPE_NAME,
+                                                    instanceProperties,
+                                                    methodName);
     }
 
 
@@ -1019,18 +872,15 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
 
         Relationship relationship = repositoryHandler.getRelationshipBetweenEntities(userId,
                                                                                      discoveryServiceGUID,
-                                                                                     DiscoveryServicePropertiesMapper.DISCOVERY_SERVICE_TYPE_NAME,
+                                                                                     OpenMetadataAPIMapper.DISCOVERY_SERVICE_TYPE_NAME,
                                                                                      discoveryEngineGUID,
-                                                                                     DiscoveryEnginePropertiesMapper.SUPPORTED_DISCOVERY_SERVICE_TYPE_GUID,
-                                                                                     DiscoveryEnginePropertiesMapper.SUPPORTED_DISCOVERY_SERVICE_TYPE_NAME,
+                                                                                     OpenMetadataAPIMapper.SUPPORTED_DISCOVERY_SERVICE_TYPE_GUID,
+                                                                                     OpenMetadataAPIMapper.SUPPORTED_DISCOVERY_SERVICE_TYPE_NAME,
                                                                                      methodName);
 
-        RegisteredDiscoveryServiceConverter converter = new RegisteredDiscoveryServiceConverter(this.getDiscoveryServiceByGUID(userId, discoveryServiceGUID),
-                                                                                                relationship,
-                                                                                                repositoryHelper,
-                                                                                                serviceName);
+        RegisteredDiscoveryServiceConverter converter = new RegisteredDiscoveryServiceConverter(repositoryHelper, serviceName);
 
-        return converter.getBean();
+        return converter.getBean(this.getDiscoveryServiceByGUID(userId, discoveryServiceGUID), relationship);
     }
 
 
@@ -1058,44 +908,16 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
         final String methodName = "getRegisteredDiscoveryServices";
         final String discoveryEngineGUIDParameter = "discoveryEngineGUID";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(discoveryEngineGUID, discoveryEngineGUIDParameter, methodName);
-        int queryPageSize = invalidParameterHandler.validatePaging(startingFrom, maximumResults, methodName);
-
-        List<Relationship> relationships = repositoryHandler.getPagedRelationshipsByType(userId,
-                                                                                         discoveryEngineGUID,
-                                                                                         DiscoveryEnginePropertiesMapper.DISCOVERY_ENGINE_TYPE_NAME,
-                                                                                         DiscoveryEnginePropertiesMapper.SUPPORTED_DISCOVERY_SERVICE_TYPE_GUID,
-                                                                                         DiscoveryEnginePropertiesMapper.SUPPORTED_DISCOVERY_SERVICE_TYPE_NAME,
-                                                                                         startingFrom,
-                                                                                         queryPageSize,
-                                                                                         methodName);
-
-        List<String> results = new ArrayList<>();
-
-        if (relationships != null)
-        {
-            for (Relationship relationship : relationships)
-            {
-                if (relationship != null)
-                {
-                    EntityProxy end1 = relationship.getEntityOneProxy();
-                    if (end1.getGUID() != null)
-                    {
-                        results.add(end1.getGUID());
-                    }
-                }
-            }
-        }
-
-        if (results.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return results;
-        }
+        return discoveryEngineHandler.getAttachedElementGUIDs(userId,
+                                                              discoveryEngineGUID,
+                                                              discoveryEngineGUIDParameter,
+                                                              OpenMetadataAPIMapper.DISCOVERY_ENGINE_TYPE_NAME,
+                                                              OpenMetadataAPIMapper.SUPPORTED_DISCOVERY_SERVICE_TYPE_GUID,
+                                                              OpenMetadataAPIMapper.SUPPORTED_DISCOVERY_SERVICE_TYPE_NAME,
+                                                              OpenMetadataAPIMapper.DISCOVERY_SERVICE_TYPE_NAME,
+                                                              startingFrom,
+                                                              maximumResults,
+                                                              methodName);
     }
 
 
@@ -1124,12 +946,19 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
         invalidParameterHandler.validateGUID(discoveryEngineGUID, discoveryEngineGUIDParameter, methodName);
         invalidParameterHandler.validateGUID(discoveryServiceGUID, discoveryServiceGUIDParameter, methodName);
 
-        repositoryHandler.removeRelationshipBetweenEntities(userId,
-                                                            DiscoveryEnginePropertiesMapper.SUPPORTED_DISCOVERY_SERVICE_TYPE_GUID,
-                                                            DiscoveryEnginePropertiesMapper.SUPPORTED_DISCOVERY_SERVICE_TYPE_NAME,
-                                                            discoveryServiceGUID,
-                                                            DiscoveryServicePropertiesMapper.DISCOVERY_SERVICE_TYPE_NAME,
-                                                            discoveryEngineGUID,
-                                                            methodName);
+        discoveryEngineHandler.unlinkElementFromElement(userId,
+                                                        false,
+                                                        null,
+                                                        null,
+                                                        discoveryEngineGUID,
+                                                        discoveryEngineGUIDParameter,
+                                                        OpenMetadataAPIMapper.DISCOVERY_ENGINE_TYPE_NAME,
+                                                        discoveryServiceGUID,
+                                                        discoveryServiceGUIDParameter,
+                                                        OpenMetadataAPIMapper.DISCOVERY_SERVICE_TYPE_GUID,
+                                                        OpenMetadataAPIMapper.DISCOVERY_SERVICE_TYPE_NAME,
+                                                        OpenMetadataAPIMapper.SUPPORTED_DISCOVERY_SERVICE_TYPE_GUID,
+                                                        OpenMetadataAPIMapper.SUPPORTED_DISCOVERY_SERVICE_TYPE_NAME,
+                                                        methodName);
     }
 }

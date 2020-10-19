@@ -76,6 +76,8 @@ public class OMRSAPIHelper {
                    userId,
                    entityDetail.getType().getTypeDefGUID(),
                    entityDetail.getType().getTypeDefName(),
+                   null,
+                   null,
                    entityDetail.getProperties(),
                    entityDetail.getClassifications(),
                    InstanceStatus.ACTIVE,
@@ -199,7 +201,7 @@ public class OMRSAPIHelper {
 
         try {
            return Optional.ofNullable(
-                   getRepositoryHandler().updateEntity(
+                   getRepositoryHandler().updateEntityProperties(
                     userId,
                     entityDetail.getGUID(),
                     entityDetail.getType().getTypeDefGUID(),
@@ -330,7 +332,6 @@ public class OMRSAPIHelper {
             getRepositoryHandler().classifyEntity(
                     userId,
                     entityGUID,
-                    classificationTypeGUID,
                     classificationName,
                     instanceProperties,
                     restAPIName
@@ -356,8 +357,8 @@ public class OMRSAPIHelper {
             getRepositoryHandler().declassifyEntity(
                     userId,
                     entityGUID,
-                    null,
                     classificationName,
+                    null,
                     restAPIName
             );
         } catch (PropertyServerException | UserNotAuthorizedException e) {
@@ -373,7 +374,7 @@ public class OMRSAPIHelper {
                                                                           PropertyServerException,
                                                                           SubjectAreaCheckedException
     {
-        String methodName = "callOMRSDeClassifyEntity";
+        String methodName = "callOMRSAddRelationship";
         showMethodNameIfDebugEnabled(methodName);
 
         try {
@@ -381,6 +382,8 @@ public class OMRSAPIHelper {
                    .createRelationship(
                            userId,
                            relationship.getType().getTypeDefGUID(),
+                           null,
+                           null,
                            relationship.getEntityOneProxy().getGUID(),
                            relationship.getEntityTwoProxy().getGUID(),
                            relationship.getProperties(),
@@ -636,17 +639,15 @@ public class OMRSAPIHelper {
         showMethodNameIfDebugEnabled(methodName);
 
         try {
-            return getRepositoryHandler().getRequiredRelationshipsByType(
+            return getRepositoryHandler().getRelationshipsByType(
                             userId,
                             entityGUID,
-                            null,
                             relationshipTypeGUID,
-                            null,
-                            fromRelationshipElement,
                             limitResultsByStatus,
                             asOfTime,
                             sequencingProperty,
                             sequencingOrder,
+                            fromRelationshipElement,
                             pageSize,
                             restAPIName
             );

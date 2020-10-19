@@ -364,6 +364,13 @@ public enum OMRSErrorCode implements ExceptionMessageSet
             "The provided subtype {0} is not a subtype of typedef {1}.",
             "The system is unable to process the requested search because the specified subtype is not a known subtype of the provided type.",
             "Review the request payload and ensure that the list of subtypes includes only valid subtypes for the provided entity type."),
+    UNSUPPORTED_CLASSIFICATION(400, "OMRS-REPOSITORY-400-080",
+            "Classification {0} is not a supported classification type in open metadata repository {1}",
+            "The supplied classification is valid.  However, the system is unable to maintain the " +
+                                       "classification for an entity in this repository because it does not support the classification type.  " +
+                                       "The system will attempt to store the classification in another member of the cohort",
+            "Ensure there is at least one repository in the cohort that supports this classification type."),
+
     NULL_USER_NAME(400, "OMRS-REST-API-400-001",
             "The OMRS REST API for server {0} has been called with a null user name (userId)",
             "The system is unable to access the local metadata repository.",
@@ -494,11 +501,13 @@ public enum OMRSErrorCode implements ExceptionMessageSet
             "The build of the archive terminates.",
             "Verify the definition of the elements being added to the archive. Once the definitions have been corrected, rerun the request."),
     DUPLICATE_ENDDEF1_NAME_IN_ARCHIVE(400, "OMRS-ARCHIVE-BUILDER-400-007",
-            "endDef2 type {0} and EndDef1 name {1} in RelationshipDef {2} are incorrect, because entity {0} already has a {1} attribute or is referred to in an existing relationshipDef with an endDef with name {1}.",
+            "RelationshipEndDef1 type {0} and EndDef1 name {1} in RelationshipDef {2} are incorrect, because another entity or " +
+                    "relationship endDef is already using this attribute name",
             "The build of the archive terminates.",
             "Verify the definition of the types being added to the archive. Once the definitions have been corrected, rerun the request."),
     DUPLICATE_ENDDEF2_NAME_IN_ARCHIVE(400, "OMRS-ARCHIVE-BUILDER-400-008",
-            "EndDef1 type {0} and EndDef2 name {1} in RelationshipDef {2} are incorrect, because entity {0} already has a {1} attribute or is referred to in an existing relationshipDef with an endDef with name {1}.",
+            "RelationshipEndDef2 type {0} and EndDef2 name {1} in RelationshipDef {2} are incorrect, because another entity or " +
+                    "relationship endDef is already using this attribute name",
             "The build of the archive terminates.",
             "Verify the definition of the types being added to the archive. Once the definitions have been corrected, rerun the request."),
     DUPLICATE_RELATIONSHIP_ATTR_IN_ARCHIVE(400, "OMRS-ARCHIVE-BUILDER-400-009",

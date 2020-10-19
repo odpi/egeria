@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.governanceengine.server.admin;
 import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.errorcode.GovernanceEngineErrorCode;
 import org.odpi.openmetadata.accessservices.governanceengine.server.handlers.GovernedAssetHandler;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.commonservices.multitenant.OCFOMASServiceInstance;
+import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
@@ -16,7 +16,8 @@ import java.util.List;
  * GovernanceEngineServicesInstance caches references to OMRS objects for a specific server.
  * It is also responsible for registering itself in the instance map.
  */
-public class GovernanceEngineServicesInstance extends OCFOMASServiceInstance {
+public class GovernanceEngineServicesInstance extends OMASServiceInstance
+{
 
     private GovernedAssetHandler governedAssetHandler;
 
@@ -33,7 +34,7 @@ public class GovernanceEngineServicesInstance extends OCFOMASServiceInstance {
                                             int maxPageSize) throws NewInstanceException {
 
         super(AccessServiceDescription.GOVERNANCE_ENGINE_OMAS.getAccessServiceFullName(), repositoryConnector, supportedZones,
-                null, auditLog, localServerUserId, maxPageSize);
+                null, null, auditLog, localServerUserId, maxPageSize);
 
         final String methodName = "new ServiceInstance";
 

@@ -44,7 +44,6 @@ public abstract class LineMapper<L extends Line> implements ILineMapper<L> {
             }
         }
 
-
         // Set properties
         InstanceProperties relationshipProperties = relationship.getProperties();
         if (relationshipProperties != null) {

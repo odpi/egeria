@@ -8,6 +8,8 @@ This includes types for Asset, DataSet,
 Infrastructure, Process, Referenceable, Server and Host.
 
 * **[0010 Base Model](0010-Base-Model.md)**
+* **[0011 Managing Referenceables](0011-Managing-Referenceables.md)**
+* **[0012 Search Keywords](0012-Search-Keywords.md)**
 * **[0015 Linked Media Types](0015-Linked-Media-Types.md)**
 * **[0017 External Identifiers](0017-External-Identifiers.md)**
 * **[0019 More Information](0019-More-Information.md)**
@@ -25,7 +27,7 @@ Infrastructure, Process, Referenceable, Server and Host.
 * **[0070 Networks and Gateways](0070-Networks-and-Gateways.md)**
 * **[0090 Cloud Platforms and Services](0090-Cloud-Platforms-and-Services.md)**
 
-![UML Packages](area-0-basic-types-and-infrastructure-overview.png)
+![UML Packages](area-0-basic-types-and-infrastructure-overview.png#pagewidth)
 
 Return to [Overview](README.md).
 

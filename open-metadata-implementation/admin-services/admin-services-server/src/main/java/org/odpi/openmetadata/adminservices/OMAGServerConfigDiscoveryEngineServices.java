@@ -48,8 +48,8 @@ public class OMAGServerConfigDiscoveryEngineServices
      * OMAGConfigurationErrorException unexpected exception or
      * OMAGInvalidParameterException invalid serverName parameter.
      */
-    public VoidResponse setClientConfig(String                    userId,
-                                        String                    serverName,
+    public VoidResponse setClientConfig(String                 userId,
+                                        String                 serverName,
                                         OMAGServerClientConfig clientConfig)
     {
         final String methodName = "setClientConfig";

@@ -211,7 +211,7 @@ public class AccessServiceConfig extends AdminServicesConfigHeader
      *
      * @param accessServiceURLMarker url fragment
      */
-    public void setServiceURLMarker(String accessServiceURLMarker)
+    public void setAccessServiceURLMarker(String accessServiceURLMarker)
     {
         this.accessServiceURLMarker = accessServiceURLMarker;
     }
@@ -381,6 +381,7 @@ public class AccessServiceConfig extends AdminServicesConfigHeader
                 "accessServiceId=" + accessServiceId +
                 ", accessServiceAdminClass='" + accessServiceAdminClass + '\'' +
                 ", accessServiceName='" + accessServiceName + '\'' +
+                ", accessServiceFullName='" + accessServiceFullName + '\'' +
                 ", accessServiceURLMarker='" + accessServiceURLMarker + '\'' +
                 ", accessServiceDescription='" + accessServiceDescription + '\'' +
                 ", accessServiceWiki='" + accessServiceWiki + '\'' +

@@ -20,7 +20,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class SchemaTypeChoice extends SimpleSchemaType
+public class SchemaTypeChoice extends SchemaType
 {
     private static final long   serialVersionUID = 1L;
 
@@ -114,28 +114,41 @@ public class SchemaTypeChoice extends SimpleSchemaType
     @Override
     public String toString()
     {
-        return "PrimitiveSchemaType{" +
-                "dataType='" + dataType + '\'' +
-                ", defaultValue='" + defaultValue + '\'' +
-                ", versionNumber='" + versionNumber + '\'' +
-                ", author='" + author + '\'' +
-                ", usage='" + usage + '\'' +
-                ", encodingStandard='" + encodingStandard + '\'' +
-                ", namespace='" + namespace + '\'' +
-                ", displayName='" + displayName + '\'' +
-                ", description='" + description + '\'' +
-                ", qualifiedName='" + qualifiedName + '\'' +
-                ", additionalProperties=" + additionalProperties +
-                ", meanings=" + meanings +
-                ", type=" + type +
-                ", guid='" + guid + '\'' +
-                ", url='" + url + '\'' +
-                ", classifications=" + classifications +
-                ", extendedProperties=" + extendedProperties +
+        return "SchemaTypeChoice{" +
+                "schemaOptions=" + schemaOptions +
+                ", formula='" + getFormula() + '\'' +
+                ", queries=" + getQueries() +
+                ", cloneSchemaElement=" + cloneSchemaElement() +
+                ", cloneSchemaType=" + cloneSchemaType() +
+                ", versionNumber='" + getVersionNumber() + '\'' +
+                ", author='" + getAuthor() + '\'' +
+                ", usage='" + getUsage() + '\'' +
+                ", encodingStandard='" + getEncodingStandard() + '\'' +
+                ", namespace='" + getNamespace() + '\'' +
+                ", deprecated=" + getIsDeprecated() +
+                ", displayName='" + getDisplayName() + '\'' +
+                ", description='" + getDescription() + '\'' +
+                ", anchorGUID='" + getAnchorGUID() + '\'' +
+                ", qualifiedName='" + getQualifiedName() + '\'' +
+                ", additionalProperties=" + getAdditionalProperties() +
+                ", meanings=" + getMeanings() +
+                ", securityTags=" + getSecurityTags() +
+                ", searchKeywords=" + getSearchKeywords() +
+                ", latestChange='" + getLatestChange() + '\'' +
+                ", latestChangeDetails=" + getLatestChangeDetails() +
+                ", confidentialityGovernanceClassification=" + getConfidentialityGovernanceClassification() +
+                ", confidenceGovernanceClassification=" + getConfidenceGovernanceClassification() +
+                ", criticalityGovernanceClassification=" + getCriticalityGovernanceClassification() +
+                ", retentionGovernanceClassification=" + getRetentionGovernanceClassification() +
+                ", type=" + getType() +
+                ", GUID='" + getGUID() + '\'' +
+                ", URL='" + getURL() + '\'' +
+                ", classifications=" + getClassifications() +
+                ", extendedProperties=" + getExtendedProperties() +
+                ", headerVersion=" + getHeaderVersion() +
                 '}';
     }
 
-    
     /**
      * Compare the values of the supplied object with those stored in the current object.
      *
@@ -149,7 +162,7 @@ public class SchemaTypeChoice extends SimpleSchemaType
         {
             return true;
         }
-        if (!(objectToCompare instanceof SchemaTypeChoice))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
@@ -158,7 +171,6 @@ public class SchemaTypeChoice extends SimpleSchemaType
             return false;
         }
         SchemaTypeChoice that = (SchemaTypeChoice) objectToCompare;
-        return Objects.equals(getDataType(), that.getDataType()) &&
-                Objects.equals(getDefaultValue(), that.getDefaultValue());
+        return Objects.equals(schemaOptions, that.schemaOptions);
     }
 }

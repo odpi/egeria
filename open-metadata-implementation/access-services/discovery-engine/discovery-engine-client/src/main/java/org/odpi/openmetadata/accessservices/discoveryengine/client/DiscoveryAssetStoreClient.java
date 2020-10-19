@@ -7,7 +7,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.discovery.DiscoveryAssetStore;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 
 
 /**

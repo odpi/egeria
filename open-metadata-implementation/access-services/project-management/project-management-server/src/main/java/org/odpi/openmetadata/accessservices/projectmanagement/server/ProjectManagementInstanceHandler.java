@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.projectmanagement.server;
 
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.commonservices.multitenant.OCFOMASServiceInstanceHandler;
+import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstanceHandler;
 
 
 /**
@@ -11,7 +11,7 @@ import org.odpi.openmetadata.commonservices.multitenant.OCFOMASServiceInstanceHa
  * access service instances.  The instance map is thread-safe.  Instances are added
  * and removed by the ProjectManagementAdmin class.
  */
-class ProjectManagementInstanceHandler extends OCFOMASServiceInstanceHandler
+class ProjectManagementInstanceHandler extends OMASServiceInstanceHandler
 {
     /**
      * Default constructor registers the access service

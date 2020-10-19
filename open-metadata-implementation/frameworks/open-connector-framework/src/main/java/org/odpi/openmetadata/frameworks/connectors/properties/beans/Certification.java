@@ -36,6 +36,7 @@ public class Certification extends Referenceable
     protected String            certificationConditions = null;
     protected String            createdBy               = null;
     protected String            custodian               = null;
+    protected String            recipient               = null;
     protected String            notes                   = null;
 
 
@@ -85,6 +86,7 @@ public class Certification extends Referenceable
             certificationConditions = templateCertification.getCertificationConditions();
             createdBy = templateCertification.getCreatedBy();
             custodian = templateCertification.getCustodian();
+            recipient = templateCertification.getRecipient();
             notes = templateCertification.getNotes();
         }
     }
@@ -314,6 +316,27 @@ public class Certification extends Referenceable
 
 
     /**
+     * Return the identifier of the person or organization that received the certification.
+     *
+     * @return string identifier
+     */
+    public String getRecipient()
+    {
+        return recipient;
+    }
+
+
+    /**
+     * Set up the identifier of the person or organization that received the certification.
+     *
+     * @param recipient string identifier
+     */
+    public void setRecipient(String recipient)
+    {
+        this.recipient = recipient;
+    }
+
+    /**
      * Return the notes from the custodian.
      *
      * @return String notes
@@ -351,6 +374,7 @@ public class Certification extends Referenceable
                 ", certificationConditions='" + certificationConditions + '\'' +
                 ", createdBy='" + createdBy + '\'' +
                 ", custodian='" + custodian + '\'' +
+                ", recipient='" + recipient + '\'' +
                 ", notes='" + notes + '\'' +
                 ", qualifiedName='" + qualifiedName + '\'' +
                 ", additionalProperties=" + additionalProperties +
@@ -394,6 +418,7 @@ public class Certification extends Referenceable
                 Objects.equals(getCertificationConditions(), that.getCertificationConditions()) &&
                 Objects.equals(getCreatedBy(), that.getCreatedBy()) &&
                 Objects.equals(getCustodian(), that.getCustodian()) &&
+                Objects.equals(getRecipient(), that.getRecipient()) &&
                 Objects.equals(getNotes(), that.getNotes());
     }
 }

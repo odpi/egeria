@@ -6,9 +6,9 @@ package org.odpi.openmetadata.metadatasecurity.samples;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.metadatasecurity.connectors.OpenMetadataServerSecurityConnector;
+import org.odpi.openmetadata.metadatasecurity.properties.Asset;
+import org.odpi.openmetadata.metadatasecurity.properties.Connection;
 import org.odpi.openmetadata.metadatasecurity.properties.AssetAuditHeader;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDef;
@@ -227,6 +227,7 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
         npaAccounts.add(cocoMDSxUserId);
         npaAccounts.add(findItDL01UserId);
         npaAccounts.add(fixItDL01UserId);
+        assetOnboarding.addAll(npaAccounts);
 
         List<String> zoneSetUp = new ArrayList<>();
 
@@ -468,6 +469,93 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
         super.validateUserForConnection(userId, connection);
     }
 
+
+    /**
+     * Select a connection from the list of connections attached to an asset.  Some connections change the userId to
+     * provide a higher level of access that a specific user account.  These connections are processed first so that the user gets the
+     * most secure connection to use if they are allowed.  In Coco Pharmaceuticals, these types of connections are only available to
+     * engines working in the data lake.
+     *
+     * @param userId calling user
+     * @param asset asset requested by caller
+     * @param connections list of attached connections
+     * @return selected connection or null (pretend there are no connections attached to the asset) or
+     * @throws UserNotAuthorizedException the user is not authorized to access this service
+     */
+    public Connection validateUserForAssetConnectionList(String           userId,
+                                                         Asset            asset,
+                                                         List<Connection> connections) throws UserNotAuthorizedException
+    {
+        UserNotAuthorizedException caughtException = null;
+
+        if ((connections != null) && (! connections.isEmpty()))
+        {
+            List<Connection> unsecuredConnections = new ArrayList<>();
+
+            /*
+             * Need to process the secured connections first.
+             */
+            for (Connection connection : connections)
+            {
+                if (connection != null)
+                {
+                    if ((connection.getClearPassword() == null) &&
+                        (connection.getEncryptedPassword() == null) &&
+                        (connection.getSecuredProperties() == null))
+                    {
+                        /*
+                         * Put the unsecured connection by to process after all of the secured connections have been processed.
+                         */
+                        unsecuredConnections.add(connection);
+                    }
+                    else
+                    {
+                        /*
+                         * This is a secured connection.
+                         */
+                        try
+                        {
+                            validateUserForConnection(userId, connection);
+                            return connection;
+                        }
+                        catch (UserNotAuthorizedException error)
+                        {
+                            caughtException = error;
+                        }
+                    }
+                }
+            }
+
+            /*
+             * Now process the secured connections.
+             */
+            for (Connection connection : unsecuredConnections)
+            {
+                if (connection != null)
+                {
+                    try
+                    {
+                        validateUserForConnection(userId, connection);
+                        return connection;
+                    }
+                    catch (UserNotAuthorizedException error)
+                    {
+                        caughtException = error;
+                    }
+                }
+            }
+        }
+
+        /*
+         * No connection is available to this user.  If an exception has been returned then use it.
+         */
+        if (caughtException != null)
+        {
+            throw caughtException;
+        }
+
+        return null;
+    }
 
     /**
      * Tests for whether a specific user should have access to an asset based on its zones.
@@ -778,16 +866,16 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
      * @throws PropertyServerException there is a problem calculating the zones
      */
     @Override
-    public List<String> initializeAssetZones(List<String>  defaultZones,
-                                             Asset         asset) throws InvalidParameterException,
-                                                                         PropertyServerException
+    public List<String> setAssetZonesToDefault(List<String>  defaultZones,
+                                               Asset         asset) throws InvalidParameterException,
+                                                                           PropertyServerException
     {
         if ((defaultZones == null) || (defaultZones.isEmpty()))
         {
-            return super.initializeAssetZones(defaultZoneMembership, asset);
+            return super.setAssetZonesToDefault(defaultZoneMembership, asset);
         }
 
-        return super.initializeAssetZones(defaultZones, asset);
+        return super.setAssetZonesToDefault(defaultZones, asset);
     }
 
 
@@ -807,9 +895,51 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
      * @throws InvalidParameterException one of the asset values is invalid
      * @throws PropertyServerException there is a problem calculating the zones
      */
+    @Deprecated
+    public List<String> verifyAssetZones(List<String>  defaultZones,
+                                         List<String>  supportedZones,
+                                         Asset         originalAsset,
+                                         Asset         updatedAsset) throws InvalidParameterException,
+                                                                            PropertyServerException
+    {
+        if (updatedAsset != null)
+        {
+            if (updatedAsset.getOwner() != null)
+            {
+                return addZoneName(updatedAsset.getZoneMembership(),
+                                   ownerZones.get(updatedAsset.getOwner()));
+            }
+            else
+            {
+                return updatedAsset.getZoneMembership();
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Determine the appropriate setting for the asset zones depending on the content of the asset and the
+     * settings of both default zones and supported zones.  This method is called whenever an asset's
+     * values are changed.
+     *
+     * The default behavior is to keep the updated zones as they are.
+     *
+     * @param defaultZones setting of the default zones for the service
+     * @param supportedZones setting of the supported zones for the service
+     * @param publishZones setting of the supported zones for the service
+     * @param originalAsset original values for the asset
+     * @param updatedAsset updated values for the asset
+     *
+     * @return list of zones to set in the asset
+     * @throws InvalidParameterException one of the asset values is invalid
+     * @throws PropertyServerException there is a problem calculating the zones
+     */
     @Override
     public List<String> verifyAssetZones(List<String>  defaultZones,
                                          List<String>  supportedZones,
+                                         List<String>  publishZones,
                                          Asset         originalAsset,
                                          Asset         updatedAsset) throws InvalidParameterException,
                                                                             PropertyServerException
@@ -955,7 +1085,7 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
                              * Perform special processing for quarantine zone.
                              * The owner must be specified
                              */
-                            if ((newAsset.getOwner() != null) && (newAsset.getOwnerType() != null))
+                            if ((newAsset.getOwner() != null) && (newAsset.getOwnerType() != 0))
                             {
                                 if (validateSeparationOfDuties(userId, originalAssetAuditHeader))
                                 {

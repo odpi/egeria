@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.datamanager.properties;
 
-
 import com.fasterxml.jackson.annotation.*;
 
 import java.util.Objects;
@@ -18,7 +17,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes(
         {
-                @JsonSubTypes.Type(value = IntegratorCapabilityProperties.class, name = "IntegratorCapabilityProperties"),
+                @JsonSubTypes.Type(value = DatabaseManagerProperties.class, name = "DatabaseManagerProperties"),
+                @JsonSubTypes.Type(value = FileSystemProperties.class, name = "FileSystemProperties"),
+                @JsonSubTypes.Type(value = FileManagerProperties.class, name = "FileManagerProperties"),
         })
 public class SoftwareServerCapabilitiesProperties extends ReferenceableProperties
 {

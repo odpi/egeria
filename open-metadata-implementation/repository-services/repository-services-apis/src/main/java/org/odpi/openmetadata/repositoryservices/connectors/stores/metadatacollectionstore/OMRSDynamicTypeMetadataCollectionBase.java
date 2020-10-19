@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore;
 
 
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefPatch;
@@ -10,6 +12,9 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryValidator;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
+
+import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -508,5 +513,95 @@ public class OMRSDynamicTypeMetadataCollectionBase extends OMRSMetadataCollectio
         }
 
         return existingAttributeTypeDef;
+    }
+
+
+    /**
+     * Retrieve any locally homed classifications assigned to the requested entity.  This method is implemented by repository connectors that are able
+     * to store classifications for entities that are homed in another repository.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityGUID unique identifier of the entity with classifications to retrieve
+     * @return list of all of the classifications for this entity that are homed in this repository
+     * @throws InvalidParameterException the entity is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws EntityNotKnownException the entity is not recognized by this repository
+     * @throws UserNotAuthorizedException to calling user is not authorized to retrieve this metadata
+     * @throws FunctionNotSupportedException this method is not supported
+     */
+    public List<Classification> getHomeClassifications(String userId,
+                                                       String entityGUID) throws InvalidParameterException,
+                                                                                 RepositoryErrorException,
+                                                                                 EntityNotKnownException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 FunctionNotSupportedException
+    {
+        final String  methodName = "getHomeClassifications";
+
+        /*
+         * Validate parameters
+         */
+        super.getInstanceParameterValidation(userId, entityGUID, methodName);
+
+        /*
+         * Perform operation
+         */
+        try
+        {
+            EntityDetail entityDetail = this.getEntityDetail(userId, entityGUID);
+
+            return repositoryHelper.getHomeClassificationsFromEntity(repositoryName, entityDetail, metadataCollectionId, methodName);
+        }
+        catch (EntityProxyOnlyException  error)
+        {
+            return null;
+        }
+    }
+
+
+    /**
+     * Retrieve any locally homed classifications assigned to the requested entity.  This method is implemented by repository connectors that are able
+     * to store classifications for entities that are homed in another repository.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityGUID unique identifier of the entity with classifications to retrieve
+     * @param asOfTime the time used to determine which version of the entity that is desired.
+     * @return list of all of the classifications for this entity that are homed in this repository
+     * @throws InvalidParameterException the entity is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws EntityNotKnownException the entity is not recognized by this repository
+     * @throws UserNotAuthorizedException to calling user is not authorized to retrieve this metadata
+     * @throws FunctionNotSupportedException this method is not supported
+     */
+    public List<Classification> getHomeClassifications(String userId,
+                                                       String entityGUID,
+                                                       Date asOfTime) throws InvalidParameterException,
+                                                                             RepositoryErrorException,
+                                                                             EntityNotKnownException,
+                                                                             UserNotAuthorizedException,
+                                                                             FunctionNotSupportedException
+    {
+        final String  methodName = "getHomeClassifications (with history)";
+
+        /*
+         * Validate parameters
+         */
+        super.getInstanceParameterValidation(userId, entityGUID, methodName);
+
+        /*
+         * Perform operation
+         */
+        try
+        {
+            EntityDetail entityDetail = this.getEntityDetail(userId, entityGUID, asOfTime);
+
+            return repositoryHelper.getHomeClassificationsFromEntity(repositoryName, entityDetail, metadataCollectionId, methodName);
+        }
+        catch (EntityProxyOnlyException  error)
+        {
+            return null;
+        }
     }
 }

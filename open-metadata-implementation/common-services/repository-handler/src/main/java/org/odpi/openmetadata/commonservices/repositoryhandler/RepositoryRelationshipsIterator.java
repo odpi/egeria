@@ -20,12 +20,12 @@ public class RepositoryRelationshipsIterator
 {
     private RepositoryHandler  repositoryHandler;
     private String             userId;
-    private String             anchorEntityGUID;
-    private String             anchorEntityTypeName;
+    private String             startingEntityGUID;
+    private String             startingEntityTypeName;
     private String             relationshipTypeGUID;
     private String             relationshipTypeName;
     private int                startingFrom;
-    private int                pageSize;
+    private int                requesterPageSize;
     private String             methodName;
     private List<Relationship> relationshipsCache = null;
 
@@ -35,33 +35,33 @@ public class RepositoryRelationshipsIterator
      *
      * @param repositoryHandler interface to the open metadata repositories.
      * @param userId  user making the request
-     * @param anchorEntityGUID  starting entity's GUID
-     * @param anchorEntityTypeName  starting entity's type name
+     * @param startingEntityGUID  starting entity's GUID
+     * @param startingEntityTypeName  starting entity's type name
      * @param relationshipTypeGUID  identifier for the relationship to follow
      * @param relationshipTypeName  type name for the relationship to follow
      * @param startingFrom initial position in the stored list.
-     * @param pageSize maximum number of definitions to return on this call.
+     * @param requesterPageSize maximum number of definitions to return by this iterator.
      * @param methodName  name of calling method
      */
     public RepositoryRelationshipsIterator(RepositoryHandler repositoryHandler,
                                            String            userId,
-                                           String            anchorEntityGUID,
-                                           String            anchorEntityTypeName,
+                                           String            startingEntityGUID,
+                                           String            startingEntityTypeName,
                                            String            relationshipTypeGUID,
                                            String            relationshipTypeName,
                                            int               startingFrom,
-                                           int               pageSize,
+                                           int               requesterPageSize,
                                            String            methodName)
     {
-        this.repositoryHandler    = repositoryHandler;
-        this.userId               = userId;
-        this.anchorEntityGUID     = anchorEntityGUID;
-        this.anchorEntityTypeName = anchorEntityTypeName;
-        this.relationshipTypeGUID = relationshipTypeGUID;
-        this.relationshipTypeName = relationshipTypeName;
-        this.startingFrom         = startingFrom;
-        this.pageSize             = pageSize;
-        this.methodName           = methodName;
+        this.repositoryHandler      = repositoryHandler;
+        this.userId                 = userId;
+        this.startingEntityGUID     = startingEntityGUID;
+        this.startingEntityTypeName = startingEntityTypeName;
+        this.relationshipTypeGUID   = relationshipTypeGUID;
+        this.relationshipTypeName   = relationshipTypeName;
+        this.startingFrom           = startingFrom;
+        this.requesterPageSize      = requesterPageSize;
+        this.methodName             = methodName;
     }
 
 
@@ -78,12 +78,12 @@ public class RepositoryRelationshipsIterator
         if ((relationshipsCache == null) || (relationshipsCache.isEmpty()))
         {
             relationshipsCache = repositoryHandler.getRelationshipsByType(userId,
-                                                                          anchorEntityGUID,
-                                                                          anchorEntityTypeName,
+                                                                          startingEntityGUID,
+                                                                          startingEntityTypeName,
                                                                           relationshipTypeGUID,
                                                                           relationshipTypeName,
                                                                           startingFrom,
-                                                                          pageSize,
+                                                                          requesterPageSize,
                                                                           methodName);
 
             if (relationshipsCache != null)
@@ -92,7 +92,7 @@ public class RepositoryRelationshipsIterator
             }
         }
 
-        return relationshipsCache != null;
+        return ! ((relationshipsCache == null) || (relationshipsCache.isEmpty()));
     }
 
 

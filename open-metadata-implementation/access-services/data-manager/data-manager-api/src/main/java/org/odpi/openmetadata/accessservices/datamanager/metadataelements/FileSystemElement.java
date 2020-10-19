@@ -15,17 +15,17 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * FileSystemElement contains the properties and header for a database entity retrieved from the metadata repository.
+ * FileSystemElement contains the properties and header for a SoftwareServerCapability entity retrieved from the metadata repository.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class FileSystemElement extends FileSystemProperties implements MetadataElement,
-                                                                       Serializable
+public class FileSystemElement implements MetadataElement, Serializable
 {
     private static final long     serialVersionUID = 1L;
 
-    private ElementHeader elementHeader = null;
+    private ElementHeader        elementHeader = null;
+    private FileSystemProperties fileSystemProperties = null;
 
 
     /**
@@ -47,6 +47,7 @@ public class FileSystemElement extends FileSystemProperties implements MetadataE
         if (template != null)
         {
             elementHeader = template.getElementHeader();
+            fileSystemProperties = template.getFileSystemProperties();
         }
     }
 
@@ -76,6 +77,28 @@ public class FileSystemElement extends FileSystemProperties implements MetadataE
 
 
     /**
+     * Return the properties of the file system.
+     *
+     * @return file system properties
+     */
+    public FileSystemProperties getFileSystemProperties()
+    {
+        return fileSystemProperties;
+    }
+
+
+    /**
+     * Set up the properties for the file system.
+     *
+     * @param fileSystemProperties file system properties
+     */
+    public void setFileSystemProperties(FileSystemProperties fileSystemProperties)
+    {
+        this.fileSystemProperties = fileSystemProperties;
+    }
+
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -85,17 +108,9 @@ public class FileSystemElement extends FileSystemProperties implements MetadataE
     {
         return "FileSystemElement{" +
                 "elementHeader=" + elementHeader +
-                ", fileSystemType='" + getFileSystemType() + '\'' +
-                ", format='" + getFormat() + '\'' +
-                ", encryption='" + getEncryption() + '\'' +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", vendorProperties=" + getVendorProperties() +
-                ", typeName='" + getTypeName() + '\'' +
-                ", extendedProperties=" + getExtendedProperties() +
+                ", fileSystemProperties=" + fileSystemProperties +
                 '}';
     }
-
 
 
     /**
@@ -120,7 +135,8 @@ public class FileSystemElement extends FileSystemProperties implements MetadataE
             return false;
         }
         FileSystemElement that = (FileSystemElement) objectToCompare;
-        return Objects.equals(elementHeader, that.elementHeader);
+        return Objects.equals(elementHeader, that.elementHeader) &&
+                Objects.equals(fileSystemProperties, that.fileSystemProperties);
     }
 
 
@@ -132,6 +148,6 @@ public class FileSystemElement extends FileSystemProperties implements MetadataE
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader);
+        return Objects.hash(super.hashCode(), elementHeader, fileSystemProperties);
     }
 }

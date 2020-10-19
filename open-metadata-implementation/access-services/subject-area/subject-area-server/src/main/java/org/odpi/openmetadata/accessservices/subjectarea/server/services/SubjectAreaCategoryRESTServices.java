@@ -17,7 +17,7 @@ import java.util.Date;
 
 
 /**
- * The SubjectAreaRESTServicesInstance provides the org.odpi.openmetadata.accessservices.subjectarea.server-side implementation of the SubjectArea Open Metadata
+ * The SubjectAreaRESTServicesInstance provides the server-side implementation of the SubjectArea Open Metadata
  * Access Service (OMAS).  This interface provides glossary authoring interfaces for subject area experts.
  */
 

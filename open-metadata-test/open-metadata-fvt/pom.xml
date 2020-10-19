@@ -27,6 +27,7 @@
     <artifactId>open-metadata-fvt</artifactId>
     <packaging>pom</packaging>
     <modules>
+        <module>fvt-utilities</module>
         <module>access-services-fvt</module>
         <module>open-types-fvt</module>
     </modules>

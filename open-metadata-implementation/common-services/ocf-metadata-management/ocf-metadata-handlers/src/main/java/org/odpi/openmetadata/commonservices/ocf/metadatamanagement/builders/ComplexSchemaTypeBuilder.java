@@ -11,6 +11,7 @@ import java.util.Map;
  * ComplexSchemaTypeBuilder creates properties for a schema type entity. This class is unnecessary as the
  * SchemaTypeBuilder can create the properties of a complex schema type.
  */
+@Deprecated
 public class ComplexSchemaTypeBuilder extends SchemaTypeBuilder
 {
     /**
@@ -41,8 +42,7 @@ public class ComplexSchemaTypeBuilder extends SchemaTypeBuilder
                                     String               serviceName,
                                     String               serverName)
     {
-        super(SchemaElementMapper.COMPLEX_SCHEMA_TYPE_TYPE_NAME,
-              qualifiedName,
+        super(qualifiedName,
               displayName,
               null,
               versionNumber,
@@ -52,6 +52,9 @@ public class ComplexSchemaTypeBuilder extends SchemaTypeBuilder
               encodingStandard,
               null,
               additionalProperties,
+              null,
+              SchemaElementMapper.COMPLEX_SCHEMA_TYPE_TYPE_NAME,
+              SchemaElementMapper.COMPLEX_SCHEMA_TYPE_TYPE_GUID,
               extendedProperties,
               repositoryHelper,
               serviceName,
