@@ -49,7 +49,11 @@ public class ViewServiceConfigResponse extends AdminServicesAPIResponse
         }
         else
         {
-            return new ViewServiceConfig(config);
+            /*
+             * This does not use a copy constructor, because the config could be
+             * any subtype of ViewServiceConfig. Just return it directly.
+             */
+            return config;
         }
     }
 
