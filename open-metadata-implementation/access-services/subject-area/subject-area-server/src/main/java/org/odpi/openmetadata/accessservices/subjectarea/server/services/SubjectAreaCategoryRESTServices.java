@@ -24,7 +24,7 @@ import java.util.Date;
 
 public class SubjectAreaCategoryRESTServices extends SubjectAreaRESTServicesInstance {
     private static final String className = SubjectAreaTermHandler.class.getName();
-    private static final Logger log = LoggerFactory.getLogger(SubjectAreaTermHandler.class);
+    private static final Logger log = LoggerFactory.getLogger(SubjectAreaCategoryHandler.class);
     private static final SubjectAreaInstanceHandler instanceHandler = new SubjectAreaInstanceHandler();
 
     /**
@@ -358,7 +358,7 @@ public class SubjectAreaCategoryRESTServices extends SubjectAreaRESTServicesInst
         SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
         try {
             SubjectAreaCategoryHandler handler = instanceHandler.getSubjectAreaCategoryHandler(userId, serverName, methodName);
-            response = handler.getCategorizedTerms(userId, guid, startingFrom , pageSize);
+            response = handler.getCategorizedTerms(userId, guid,instanceHandler.getSubjectAreaTermHandler(userId, serverName, methodName), startingFrom , pageSize);
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);
         }

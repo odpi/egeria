@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.server.services;
 
+import org.odpi.openmetadata.accessservices.subjectarea.handlers.SubjectAreaCategoryHandler;
 import org.odpi.openmetadata.accessservices.subjectarea.handlers.SubjectAreaGlossaryHandler;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
@@ -352,7 +353,7 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
             if (pageSize == null) {
                 pageSize = handler.getMaxPageSize();
             }
-            response = handler.getTerms(userId, guid, startingFrom, pageSize );
+            response = handler.getTerms(userId, guid, instanceHandler.getSubjectAreaTermHandler(userId, serverName, methodName), startingFrom, pageSize );
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);
         }
@@ -391,7 +392,7 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
             if (pageSize == null) {
                 pageSize = handler.getMaxPageSize();
             }
-            response = handler.getCategories(userId, guid, onlyTop, startingFrom, pageSize);
+            response = handler.getCategories(userId, guid, onlyTop, instanceHandler.getSubjectAreaCategoryHandler(userId, serverName, methodName), startingFrom, pageSize);
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);
         }

@@ -102,11 +102,11 @@ public class EffectiveDatesFVT
             // error always expect a glossary
             throw new SubjectAreaFVTCheckedException("ERROR: Term expected no associated future Glossary");
         }
-        if (glossary.getEffectiveFromTime().longValue() != term.getGlossary().getFromEffectivityTime().longValue()) {
+        if (glossary.getEffectiveFromTime().getTime() != term.getGlossary().getFromEffectivityTime().getTime()) {
             // error
             throw new SubjectAreaFVTCheckedException("ERROR: Term's Glossary from Time does not match the glossaries");
         }
-        if (glossary.getEffectiveToTime().longValue() != term.getGlossary().getToEffectivityTime().longValue()) {
+        if (glossary.getEffectiveToTime().getTime() != term.getGlossary().getToEffectivityTime().getTime()) {
             // error
             throw new SubjectAreaFVTCheckedException("ERROR: Term's Glossary to Time does not match the glossaries");
         }

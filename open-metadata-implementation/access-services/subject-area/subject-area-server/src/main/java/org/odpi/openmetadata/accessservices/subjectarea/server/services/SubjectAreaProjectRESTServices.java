@@ -244,7 +244,7 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
         SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
         try {
             SubjectAreaProjectHandler projectHandler = instanceHandler.getSubjectAreaProjectHandler(userId, serverName, methodName);
-            response = projectHandler.getProjectTerms(userId, guid, startingFrom, pageSize);
+            response = projectHandler.getProjectTerms(userId, guid, instanceHandler.getSubjectAreaTermHandler(userId, serverName, methodName), startingFrom, pageSize);
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);
         }

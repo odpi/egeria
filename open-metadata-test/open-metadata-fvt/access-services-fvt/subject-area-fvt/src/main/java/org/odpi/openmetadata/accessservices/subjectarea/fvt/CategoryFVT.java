@@ -106,7 +106,7 @@ public class CategoryFVT {
         FindRequest findRequest = new FindRequest();
         List<Category> results = glossaryFVT.getGlossaryCategories(glossaryGuid, findRequest, true);
         if (results.size() != 2) {
-            throw new SubjectAreaFVTCheckedException("ERROR: Expected 2 back on getGlossaryCategories " + results.size());
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 2 back on getGlossaryCategories onlyTop true" + results.size());
         }
         results = glossaryFVT.getGlossaryCategories(glossaryGuid, findRequest, false);
         if (results.size() != 2) {
@@ -119,6 +119,7 @@ public class CategoryFVT {
         }
         Category categoryChild = createCategoryWithParentGlossary(DEFAULT_TEST_CATEGORY_A_CHILD, category1, glossaryGuid);
         FVTUtils.validateNode(categoryChild);
+        findRequest.setPageSize(null);
         results = glossaryFVT.getGlossaryCategories(glossaryGuid, findRequest, true);
         if (results.size() != 2) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected 2 top categories back on getGlossaryCategories " + results.size());

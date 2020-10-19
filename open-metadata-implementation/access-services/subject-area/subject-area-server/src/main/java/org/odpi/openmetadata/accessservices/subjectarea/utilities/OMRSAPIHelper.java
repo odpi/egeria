@@ -687,28 +687,6 @@ public class OMRSAPIHelper {
                                                                  String userId,
                                                                  String anchorEntityGUID,
                                                                  String anchorEntityTypeName,
-                                                                 String relationshipTypeName) throws PropertyServerException,
-                                                                                                     SubjectAreaCheckedException,
-                                                                                                     UserNotAuthorizedException
-    {
-        final String relationshipTypeGUID = getTypeDefGUID(relationshipTypeName);
-        return callGetEntitiesForRelationshipEnd(
-                restAPIName,
-                userId,
-                anchorEntityGUID,
-                anchorEntityTypeName,
-                true,
-                relationshipTypeGUID,
-                relationshipTypeName,
-                0,
-                0
-        );
-
-    }
-    public List<EntityDetail> callGetEntitiesForRelationshipEnd1(String restAPIName,
-                                                                 String userId,
-                                                                 String anchorEntityGUID,
-                                                                 String anchorEntityTypeName,
                                                                  String relationshipTypeName,
                                                                  int startingFrom,
                                                                  int pageSize) throws PropertyServerException,
@@ -722,6 +700,30 @@ public class OMRSAPIHelper {
                 anchorEntityGUID,
                 anchorEntityTypeName,
                 true,
+                relationshipTypeGUID,
+                relationshipTypeName,
+                startingFrom,
+                pageSize
+                                                );
+
+    }
+    public List<EntityDetail> callGetEntitiesForRelationshipEnd2(String restAPIName,
+                                                                 String userId,
+                                                                 String anchorEntityGUID,
+                                                                 String anchorEntityTypeName,
+                                                                 String relationshipTypeName,
+                                                                 int startingFrom,
+                                                                 int pageSize) throws PropertyServerException,
+                                                                                      SubjectAreaCheckedException,
+                                                                                      UserNotAuthorizedException
+    {
+        final String relationshipTypeGUID = getTypeDefGUID(relationshipTypeName);
+        return callGetEntitiesForRelationshipEnd(
+                restAPIName,
+                userId,
+                anchorEntityGUID,
+                anchorEntityTypeName,
+                false,
                 relationshipTypeGUID,
                 relationshipTypeName,
                 startingFrom,

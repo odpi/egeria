@@ -229,28 +229,28 @@ public class TermFVT {
         }
         Term term = results.get(0);
         long now = new Date().getTime();
-        Long fromTermTime = new Date(now+6*1000*60*60*24).getTime();
-        Long toTermTime = new Date(now+7*1000*60*60*24).getTime();
+        Date fromTermTime = new Date(now+6*1000*60*60*24);
+        Date toTermTime = new Date(now+7*1000*60*60*24);
 
         term.setEffectiveFromTime(fromTermTime);
         term.setEffectiveToTime(toTermTime);
         Term updatedFutureTerm = updateTerm(term.getSystemAttributes().getGUID(), term);
-        if (updatedFutureTerm.getEffectiveFromTime().longValue()!=fromTermTime.longValue()) {
+        if (updatedFutureTerm.getEffectiveFromTime().getTime()!=fromTermTime.getTime()) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected term from time to update");
         }
-        if (updatedFutureTerm.getEffectiveToTime().longValue() !=toTermTime.longValue()) {
+        if (updatedFutureTerm.getEffectiveToTime().getTime() !=toTermTime.getTime()) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected term to time to update");
         }
-        Long fromGlossaryTime = new Date(now+8*1000*60*60*24).getTime();
-        Long toGlossaryTime = new Date(now+9*1000*60*60*24).getTime();
+        Date fromGlossaryTime = new Date(now+8*1000*60*60*24);
+        Date toGlossaryTime = new Date(now+9*1000*60*60*24);
         glossary.setEffectiveFromTime(fromGlossaryTime);
         glossary.setEffectiveToTime(toGlossaryTime);
         Glossary updatedFutureGlossary= glossaryFVT.updateGlossary(glossaryGuid, glossary);
 
-        if (updatedFutureGlossary.getEffectiveFromTime().longValue()!= fromGlossaryTime.longValue()) {
+        if (updatedFutureGlossary.getEffectiveFromTime().getTime()!= fromGlossaryTime.getTime()) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected glossary from time to update");
         }
-        if (updatedFutureGlossary.getEffectiveToTime().longValue()!= toGlossaryTime.longValue()) {
+        if (updatedFutureGlossary.getEffectiveToTime().getTime()!= toGlossaryTime.getTime()) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected glossary to time to update");
         }
 
@@ -258,11 +258,11 @@ public class TermFVT {
 
         GlossarySummary glossarySummary =  newTerm.getGlossary();
 
-        if (glossarySummary.getFromEffectivityTime().longValue()!= fromGlossaryTime.longValue()) {
-            throw new SubjectAreaFVTCheckedException("ERROR: Expected glossary summary from time to update");
+        if (glossarySummary.getFromEffectivityTime().getTime()!= fromGlossaryTime.getTime()) {
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected from glossary summary time "+glossarySummary.getFromEffectivityTime().getTime()+ " to equal " +fromGlossaryTime.getTime());
         }
-        if (glossarySummary.getToEffectivityTime().longValue()!= toGlossaryTime.longValue()) {
-            throw new SubjectAreaFVTCheckedException("ERROR: Expected glossary summary to time to update");
+        if (glossarySummary.getToEffectivityTime().getTime()!= toGlossaryTime.getTime()) {
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected to glossary summary time "+glossarySummary.getToEffectivityTime().getTime()+ " to equal " +toGlossaryTime.getTime());
         }
 
         if (glossarySummary.getRelationshipguid() == null) {
@@ -352,7 +352,8 @@ public class TermFVT {
         if (createdTerm4cats2.getCategories().size() != 2) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected 2 categories returned");
         }
-        if (getCategoriesAPI(createdTerm4cats2.getSystemAttributes().getGUID()).size() !=2) {
+        List<Category> categories = getCategoriesAPI(createdTerm4cats2.getSystemAttributes().getGUID());
+        if (categories.size() !=2) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected 2 categories returned on get Categories API call");
         }
 
@@ -367,11 +368,12 @@ public class TermFVT {
         }
         // replace categories with null
         createdTerm4cats.setCategories(null);
-        Term replacedTerm4cats = replaceTerm(createdTerm4cats.getSystemAttributes().getGUID(),createdTerm4cats);
+        Term replacedTerm4cats = replaceTerm(createdTerm4cats.getSystemAttributes().getGUID(), createdTerm4cats);
         if (replacedTerm4cats.getCategories() != null) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected replace with null to get rid of the categorizations.");
         }
-        if (getCategoriesAPI(replacedTerm4cats.getSystemAttributes().getGUID()) !=null) {
+        List<Category> cats = getCategoriesAPI(replacedTerm4cats.getSystemAttributes().getGUID());
+        if (cats ==null || cats.size() != 0) {
             throw new SubjectAreaFVTCheckedException("ERROR: Use API call to check replace with null to get rid of the categorizations.");
         }
         // update term to gain 2 categories
@@ -521,8 +523,8 @@ public class TermFVT {
     public Term updateTermToFuture(String guid, Term term) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         long now = new Date().getTime();
 
-       term.setEffectiveFromTime(new Date(now+6*1000*60*60*24).getTime());
-       term.setEffectiveToTime(new Date(now+7*1000*60*60*24).getTime());
+       term.setEffectiveFromTime(new Date(now+6*1000*60*60*24));
+       term.setEffectiveToTime(new Date(now+7*1000*60*60*24));
 
         Term updatedTerm = subjectAreaTerm.update(this.userId, guid, term);
         if (updatedTerm != null)

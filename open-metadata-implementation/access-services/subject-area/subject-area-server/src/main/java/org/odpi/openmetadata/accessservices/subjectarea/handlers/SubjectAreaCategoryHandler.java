@@ -28,6 +28,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -298,8 +299,8 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
                 else
                     updateAttributes(currentCategory, suppliedCategory);
 
-                Long termFromTime = suppliedCategory.getEffectiveFromTime();
-                Long termToTime = suppliedCategory.getEffectiveToTime();
+                Date termFromTime = suppliedCategory.getEffectiveFromTime();
+                Date termToTime = suppliedCategory.getEffectiveToTime();
                 currentCategory.setEffectiveFromTime(termFromTime);
                 currentCategory.setEffectiveToTime(termToTime);
 
@@ -417,6 +418,7 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
      *
      * @param userId       unique identifier for requesting user, under which the request is performed
      * @param guid         guid of the category to get terms
+     * @param termHandler term handler
      * @param startingFrom initial position in the stored list.
      * @param pageSize     maximum number of definitions to return on this call.
      * @return A list of terms is categorized by this Category
@@ -427,12 +429,30 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      * */
-    public SubjectAreaOMASAPIResponse<Term> getCategorizedTerms(String userId, String guid, int startingFrom, Integer pageSize) {
-        final String methodName = "getCategorizedTerms";
+    public SubjectAreaOMASAPIResponse<Term> getCategorizedTerms(String userId, String guid, SubjectAreaTermHandler termHandler, int startingFrom, Integer pageSize) {
+        final String methodName = "getTerms";
         if (pageSize == null) {
             pageSize = maxPageSize;
         }
-        return getRelatedNodes(methodName, userId, guid, TERM_CATEGORIZATION_RELATIONSHIP_NAME, TermMapper.class, startingFrom, pageSize);
+        SubjectAreaOMASAPIResponse<Term>  response = getEndRelatedNodes(methodName, userId, guid, TERM_CATEGORIZATION_RELATIONSHIP_NAME,true , TermMapper.class, startingFrom, pageSize);
+        List<Term> allTerms = new ArrayList<>();
+        // the terms we get back from the mappers only map the parts from the entity. They do not set the glossary.
+        if (response.getRelatedHTTPCode() == 200 && response.results() !=null && response.results().size() >0) {
+            for (Term mappedCategory: response.results()) {
+                SubjectAreaOMASAPIResponse<Term> termResponse = termHandler.getTermByGuid(userId, mappedCategory.getSystemAttributes().getGUID());
+                if (termResponse.getRelatedHTTPCode() == 200) {
+                    allTerms.add(termResponse.results().get(0));
+                } else {
+                    response = termResponse;
+                    break;
+                }
+            }
+        }
+        if (response.getRelatedHTTPCode() == 200) {
+            response = new SubjectAreaOMASAPIResponse<>();
+            response.addAllResults(allTerms);
+        }
+        return response;
     }
     /**
      * Get this Category's child Categories. The server has a maximum page size defined, the number of Categories returned is limited by that maximum page size.
@@ -459,7 +479,7 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
         if (thisCategoryResponse.getRelatedHTTPCode() == 200) {
             boolean foundParent = false;
             String parentCategoryGuid = thisCategoryResponse.results().get(0).getSystemAttributes().getGUID();
-            SubjectAreaOMASAPIResponse<Category> relatedCategories = getRelatedNodes(methodName, userId, guid, CATEGORY_HIERARCHY_LINK_RELATIONSHIP_NAME, CategoryMapper.class, startingFrom, pageSize);
+            SubjectAreaOMASAPIResponse<Category> relatedCategories = getEndRelatedNodes(methodName, userId, guid, CATEGORY_HIERARCHY_LINK_RELATIONSHIP_NAME,true , CategoryMapper.class, startingFrom, pageSize);
             if (relatedCategories != null && relatedCategories.results() != null && relatedCategories.results().size() >0 ) {
                 for (Category relatedCategory: relatedCategories.results()) {
                     // only add related categories that are not the parent Category.
@@ -473,7 +493,7 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
                 // if we got back a page of categories and we found a parent which we removed from the results then we need to get another category, which cant be a parent as
                 // a category can only have one parent.
                 if (foundParent && relatedCategories.results().size() == maxPageSize ) {
-                    SubjectAreaOMASAPIResponse<Category>  extraCategoryResponse = getRelatedNodes(methodName, userId, guid, CATEGORY_HIERARCHY_LINK_RELATIONSHIP_NAME, CategoryMapper.class, maxPageSize, 1);
+                    SubjectAreaOMASAPIResponse<Category>  extraCategoryResponse = getEndRelatedNodes(methodName, userId, guid, CATEGORY_HIERARCHY_LINK_RELATIONSHIP_NAME,true , CategoryMapper.class, maxPageSize, 1);
                     if (extraCategoryResponse.getRelatedHTTPCode() == 200 && extraCategoryResponse.results() != null && extraCategoryResponse.results().size() ==1 ) {
                         response.addResult(extraCategoryResponse.results().get(0));
                     }

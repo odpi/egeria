@@ -367,8 +367,8 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
                 else
                     updateAttributes(currentTerm, suppliedTerm);
 
-                Long termFromTime = suppliedTerm.getEffectiveFromTime();
-                Long termToTime = suppliedTerm.getEffectiveToTime();
+                Date termFromTime = suppliedTerm.getEffectiveFromTime();
+                Date termToTime = suppliedTerm.getEffectiveToTime();
                 currentTerm.setEffectiveFromTime(termFromTime);
                 currentTerm.setEffectiveToTime(termToTime);
                 // always update the governance actions for a replace or an update
@@ -597,6 +597,7 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
      *
      * @param userId       unique identifier for requesting user, under which the request is performed
      * @param guid         guid of the category to get terms
+     * @param categoryHandler  category handler
      * @param startingFrom the starting element number for this set of results.  This is used when retrieving elements
      * @param pageSize     the maximum number of elements that can be returned on this request.
      * @return A list of categories categorizing this Term
@@ -607,8 +608,26 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<Category> getTermCategories(String userId, String guid, Integer startingFrom, Integer pageSize) {
+    public SubjectAreaOMASAPIResponse<Category> getTermCategories(String userId, String guid, SubjectAreaCategoryHandler categoryHandler, Integer startingFrom, Integer pageSize) {
         final String methodName = "getTermCategories";
-        return getRelatedNodes(methodName, userId, guid, TERM_CATEGORIZATION_RELATIONSHIP_NAME, CategoryMapper.class, startingFrom, maxPageSize);
+        SubjectAreaOMASAPIResponse<Category>  response = getEndRelatedNodes(methodName, userId, guid, TERM_CATEGORIZATION_RELATIONSHIP_NAME, true , CategoryMapper.class, startingFrom, pageSize);
+        List<Category> allCategories = new ArrayList<>();
+        // the categories we get back from the mappers only map the parts from the entity. They do not set the parentCategory or the anchor.
+        if (response.getRelatedHTTPCode() == 200 && response.results() !=null && response.results().size() >0) {
+            for (Category mappedCategory: response.results()) {
+                SubjectAreaOMASAPIResponse<Category> categoryResponse = categoryHandler.getCategoryByGuid(userId, mappedCategory.getSystemAttributes().getGUID());
+                if (categoryResponse.getRelatedHTTPCode() == 200) {
+                    allCategories.add(categoryResponse.results().get(0));
+                } else {
+                    response = categoryResponse;
+                    break;
+                }
+            }
+        }
+        if (response.getRelatedHTTPCode() == 200) {
+            response = new SubjectAreaOMASAPIResponse<>();
+            response.addAllResults(allCategories);
+        }
+        return response;
     }
 }

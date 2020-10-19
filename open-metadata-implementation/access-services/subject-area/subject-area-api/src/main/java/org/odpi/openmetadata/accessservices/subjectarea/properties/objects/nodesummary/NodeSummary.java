@@ -31,8 +31,8 @@ public class NodeSummary implements Serializable {
     private String qualifiedName = null;
     private Set<IconSummary> icons = null;
     private String guid = null;
-    private Long fromEffectivityTime = null;
-    private Long toEffectivityTime = null;
+    private Date fromEffectivityTime = null;
+    private Date toEffectivityTime = null;
     private String relationshipguid = null;
     private Date fromRelationshipEffectivityTime = null;
     private Date toRelationshipEffectivityTime = null;
@@ -120,7 +120,7 @@ public class NodeSummary implements Serializable {
      *
      * @return Date date effective from which this node is effective
      */
-    public Long getFromEffectivityTime() {
+    public Date getFromEffectivityTime() {
         return fromEffectivityTime;
     }
 
@@ -129,7 +129,7 @@ public class NodeSummary implements Serializable {
      *
      * @param fromEffectivityTime date from which this node is effective
      */
-    public void setFromEffectivityTime(Long fromEffectivityTime) {
+    public void setFromEffectivityTime(Date fromEffectivityTime) {
         this.fromEffectivityTime = fromEffectivityTime;
     }
 
@@ -139,7 +139,7 @@ public class NodeSummary implements Serializable {
      * @return Date to which this node is effective
      */
 
-    public Long getToEffectivityTime() {
+    public Date getToEffectivityTime() {
         return toEffectivityTime;
     }
 
@@ -148,7 +148,7 @@ public class NodeSummary implements Serializable {
      *
      * @param toEffectivityTime date to which this node is effective
      */
-    public void setToEffectivityTime(Long toEffectivityTime) {
+    public void setToEffectivityTime(Date toEffectivityTime) {
         this.toEffectivityTime = toEffectivityTime;
     }
 

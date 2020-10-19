@@ -221,8 +221,8 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
                 else
                     updateAttributes(updateProject, suppliedProject);
 
-                Long termFromTime = suppliedProject.getEffectiveFromTime();
-                Long termToTime = suppliedProject.getEffectiveToTime();
+                Date termFromTime = suppliedProject.getEffectiveFromTime();
+                Date termToTime = suppliedProject.getEffectiveToTime();
                 updateProject.setEffectiveFromTime(termFromTime);
                 updateProject.setEffectiveToTime(termToTime);
 
@@ -365,6 +365,7 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
      *
      * @param userId                  unique identifier for requesting user, under which the request is performed
      * @param guid                    guid of the Project
+     * @param termHandler             Term handler
      * @param startingFrom            the starting element number for this set of results.  This is used when retrieving elements
      *                                beyond the first page of results. Zero means the results start from the first element.
      * @param pageSize                the maximum number of elements that can be returned on this request.
@@ -377,20 +378,28 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<Term> getProjectTerms(String userId, String guid, Integer startingFrom, Integer pageSize) {
+    public SubjectAreaOMASAPIResponse<Term> getProjectTerms(String userId, String guid, SubjectAreaTermHandler termHandler, Integer startingFrom, Integer pageSize) {
         final String methodName = "getProjectTerms";
-        SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
-        try {
-            if (pageSize == null) {
-                pageSize = maxPageSize;
+
+        SubjectAreaOMASAPIResponse<Term>  response = getEndRelatedNodes(methodName, userId, guid, PROJECT_SCOPE_RELATIONSHIP_NAME, true , TermMapper.class, startingFrom, pageSize);
+        List<Term> allTerms = new ArrayList<>();
+        // the terms we get back from the mappers only map the parts from the entity. They do not set the glossary.
+        if (response.getRelatedHTTPCode() == 200 && response.results() !=null && response.results().size() >0) {
+            for (Term mappedCategory: response.results()) {
+                SubjectAreaOMASAPIResponse<Term> termResponse = termHandler.getTermByGuid(userId, mappedCategory.getSystemAttributes().getGUID());
+                if (termResponse.getRelatedHTTPCode() == 200) {
+                    allTerms.add(termResponse.results().get(0));
+                } else {
+                    response = termResponse;
+                    break;
+                }
             }
-            List<EntityDetail> entityDetails = oMRSAPIHelper.callGetEntitiesForRelationshipEnd1(
-                    methodName, userId, guid, PROJECT_TYPE_NAME, PROJECT_SCOPE_RELATIONSHIP_NAME, startingFrom, pageSize);
-            List<Term> terms = convertOmrsToOmas(entityDetails, TermMapper.class);
-            response.addAllResults(terms);
-        } catch (PropertyServerException | SubjectAreaCheckedException | UserNotAuthorizedException e) {
-            response.setExceptionInfo(e, className);
         }
+        if (response.getRelatedHTTPCode() == 200) {
+            response = new SubjectAreaOMASAPIResponse<>();
+            response.addAllResults(allTerms);
+        }
+
         return response;
     }
 }
