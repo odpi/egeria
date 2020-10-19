@@ -7,8 +7,6 @@ import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.SchemaAt
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaAttribute;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaLink;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaType;
 
 import java.util.ArrayList;
 import java.util.List;

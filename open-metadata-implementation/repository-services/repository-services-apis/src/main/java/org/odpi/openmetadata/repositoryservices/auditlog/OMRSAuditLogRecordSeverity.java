@@ -32,7 +32,7 @@ public enum OMRSAuditLogRecordSeverity implements AuditLogRecordSeverity
     TRACE     (13, "Trace",       "This is additional information on the operation of the server that may be " +
             "of assistance in debugging a problem.  It is not normally logged to any destination, but can be added when needed."),
     PERFMON   (13, "PerfMon",     "This log record contains performance monitoring timing information for " +
-            "specific types of processing. It is not normally logged to any destination, but can be added when needed.")
+            "specific types of processing. It is not normally logged to any destination but can be added when needed.")
 
     ;
 

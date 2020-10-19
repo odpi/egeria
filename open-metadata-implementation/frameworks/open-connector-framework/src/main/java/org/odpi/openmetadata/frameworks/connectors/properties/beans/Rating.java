@@ -134,7 +134,7 @@ public class Rating extends ElementHeader
      *
      * @return boolean
      */
-    public boolean isPublic()
+    public boolean getIsPublic()
     {
         return isPublic;
     }
@@ -145,7 +145,7 @@ public class Rating extends ElementHeader
      *
      * @param aPublic boolean
      */
-    public void setPublic(boolean aPublic)
+    public void setIsPublic(boolean aPublic)
     {
         isPublic = aPublic;
     }
@@ -194,7 +194,7 @@ public class Rating extends ElementHeader
             return false;
         }
         Rating rating = (Rating) objectToCompare;
-        return isPublic() == rating.isPublic() &&
+        return getIsPublic() == rating.getIsPublic() &&
                 getStarRating() == rating.getStarRating() &&
                 Objects.equals(getReview(), rating.getReview()) &&
                 Objects.equals(getUser(), rating.getUser());

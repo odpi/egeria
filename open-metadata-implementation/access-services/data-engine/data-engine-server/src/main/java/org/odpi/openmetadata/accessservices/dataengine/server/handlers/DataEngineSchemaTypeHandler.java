@@ -310,10 +310,10 @@ public class DataEngineSchemaTypeHandler {
     private EntityDetail buildSchemaTypeEntityDetail(String schemaTypeGUID, SchemaType schemaType) throws InvalidParameterException {
         String methodName = "buildSchemaTypeEntityDetail";
 
-        SchemaTypeBuilder builder = new SchemaTypeBuilder(SchemaElementMapper.COMPLEX_SCHEMA_TYPE_TYPE_NAME, schemaType.getQualifiedName(),
-                schemaType.getDisplayName(), schemaType.getDescription(), schemaType.getVersionNumber(), false, schemaType.getAuthor(),
-                schemaType.getUsage(), schemaType.getEncodingStandard(), schemaType.getNamespace(), schemaType.getAdditionalProperties(),
-                schemaType.getExtendedProperties(), repositoryHelper, serviceName, serverName);
+        SchemaTypeBuilder builder = new SchemaTypeBuilder(schemaType.getQualifiedName(), schemaType.getDisplayName(), schemaType.getDescription(),
+                schemaType.getVersionNumber(), false, schemaType.getAuthor(), schemaType.getUsage(), schemaType.getEncodingStandard(),
+                schemaType.getNamespace(), schemaType.getAdditionalProperties(),null, SchemaElementMapper.COMPLEX_SCHEMA_TYPE_TYPE_GUID,
+                SchemaElementMapper.COMPLEX_SCHEMA_TYPE_TYPE_NAME, schemaType.getExtendedProperties(), repositoryHelper, serviceName, serverName);
 
         return dataEngineCommonHandler.buildEntityDetail(schemaTypeGUID, builder.getInstanceProperties(methodName));
     }

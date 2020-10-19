@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
   
-# Repository Explorer View Service (OMVS)
+# Repository Explorer View Service
 
 ![In Development](../../../open-metadata-publication/website/images/egeria-content-status-in-development.png)
 
@@ -12,7 +12,7 @@ The purpose of this interface is to enable a technical user (such as an Enterpri
 retrieve metadata instances from repositories and explore the connectivity of those instances to other metadata objects. 
 The interface enables retrieval and search and the construction of a visualization of a graph of connected objects. 
 
-This OMVS calls a remote server using the [repository services client](../../repository-services/repository-services-client/README.md).
+This view service calls a remote server using the [repository services client](../../repository-services/repository-services-client/README.md).
 
 
 The module structure for the Repository Explorer OMVS is as follows:

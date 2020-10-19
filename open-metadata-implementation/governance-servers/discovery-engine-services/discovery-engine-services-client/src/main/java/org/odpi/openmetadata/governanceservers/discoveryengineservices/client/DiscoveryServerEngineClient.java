@@ -2,15 +2,15 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.discoveryengineservices.client;
 
+import org.odpi.openmetadata.accessservices.discoveryengine.client.ODFRESTClient;
+import org.odpi.openmetadata.accessservices.discoveryengine.rest.AnnotationListResponse;
+import org.odpi.openmetadata.accessservices.discoveryengine.rest.AnnotationResponse;
+import org.odpi.openmetadata.accessservices.discoveryengine.rest.DiscoveryAnalysisReportResponse;
+import org.odpi.openmetadata.accessservices.discoveryengine.rest.DiscoveryRequestRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
-import org.odpi.openmetadata.commonservices.odf.metadatamanagement.client.ODFRESTClient;
-import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.AnnotationListResponse;
-import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.AnnotationResponse;
-import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.DiscoveryAnalysisReportResponse;
-import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.DiscoveryRequestRequestBody;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;

@@ -61,8 +61,18 @@ public class DigitalArchitectureAdmin extends AccessServiceAdmin
                                                                       accessServiceConfig.getAccessServiceName(),
                                                                       auditLog);
 
+            List<String>  defaultZones = this.extractDefaultZones(accessServiceConfig.getAccessServiceOptions(),
+                                                                      accessServiceConfig.getAccessServiceName(),
+                                                                      auditLog);
+
+            List<String>  publishZones = this.extractPublishZones(accessServiceConfig.getAccessServiceOptions(),
+                                                                      accessServiceConfig.getAccessServiceName(),
+                                                                      auditLog);
+
             this.instance = new DigitalArchitectureServicesInstance(repositoryConnector,
                                                                     supportedZones,
+                                                                    defaultZones,
+                                                                    publishZones,
                                                                     auditLog,
                                                                     serverUserName,
                                                                     repositoryConnector.getMaxPageSize());

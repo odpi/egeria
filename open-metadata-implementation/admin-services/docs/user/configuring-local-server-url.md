@@ -25,6 +25,9 @@ in their URLs:
 The local server URL root is the content of the URL prior to `/servers/`.
 The default value is **"https://localhost:9443"**.
 
+----
+* Return to [configuring an OMAG server](configuring-an-omag-server.md)
+* Return to [configuration document structure](../concepts/configuration-document.md)
 
 
 ----

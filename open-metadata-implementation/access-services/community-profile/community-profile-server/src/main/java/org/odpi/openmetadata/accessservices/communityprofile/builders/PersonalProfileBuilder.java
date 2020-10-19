@@ -63,7 +63,14 @@ public class PersonalProfileBuilder extends ReferenceableBuilder
                                   String               serviceName,
                                   String               serverName)
     {
-        super(qualifiedName, additionalProperties, extendedProperties, repositoryHelper, serviceName, serverName);
+        super(qualifiedName,
+              additionalProperties,
+              PersonalProfileMapper.PERSONAL_PROFILE_TYPE_NAME,
+              PersonalProfileMapper.PERSONAL_PROFILE_TYPE_GUID,
+              extendedProperties,
+              repositoryHelper,
+              serviceName,
+              serverName);
 
         this.repositoryHelper = repositoryHelper;
         this.serviceName = serviceName;

@@ -7,13 +7,11 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.ConnectionResponse;
-import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.*;
+import org.odpi.openmetadata.accessservices.discoveryengine.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.OwnerType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.slf4j.LoggerFactory;
 
@@ -487,7 +485,7 @@ public class DiscoveryConfigurationServices
      *                    qualifiedName - unique name for the discovery service;
      *                    displayName -  display name for the discovery service;
      *                    description - description of the analysis provided by the discovery service;
-     *                    connection -  connection to instanciate the discovery service implementation.
+     *                    connection -  connection to instantiate the discovery service implementation.
      *
      * @return unique identifier of the discovery service or
      * InvalidParameterException one of the parameters is null or invalid or
@@ -792,16 +790,11 @@ public class DiscoveryConfigurationServices
 
         String              qualifiedName        = null;
         String              displayName          = null;
-        String              shortDescription     = null;
         String              description          = null;
-        String              owner                = null;
-        OwnerType           ownerType            = null;
-        List<String>        zoneMembership       = null;
-        Map<String, String> origin               = null;
-        String              latestChange         = null;
         Connection          connection           = null;
         Map<String, String> additionalProperties = null;
         Map<String, Object> extendedProperties   = null;
+
         VoidResponse        response             = new VoidResponse();
         AuditLog            auditLog             = null;
 
@@ -810,13 +803,7 @@ public class DiscoveryConfigurationServices
         {
             qualifiedName = requestBody.getQualifiedName();
             displayName = requestBody.getDisplayName();
-            shortDescription = requestBody.getShortDescription();
             description = requestBody.getDescription();
-            owner = requestBody.getOwner();
-            ownerType = requestBody.getOwnerType();
-            zoneMembership = requestBody.getZoneMembership();
-            origin = requestBody.getOrigin();
-            latestChange = requestBody.getLatestChange();
             connection = requestBody.getConnection();
             additionalProperties = requestBody.getAdditionalProperties();
             extendedProperties = requestBody.getExtendedProperties();
@@ -831,13 +818,7 @@ public class DiscoveryConfigurationServices
                                            guid,
                                            qualifiedName,
                                            displayName,
-                                           shortDescription,
                                            description,
-                                           owner,
-                                           ownerType,
-                                           zoneMembership,
-                                           origin,
-                                           latestChange,
                                            connection,
                                            additionalProperties,
                                            extendedProperties);
@@ -1125,6 +1106,7 @@ public class DiscoveryConfigurationServices
      * UserNotAuthorizedException user not authorized to issue this request or
      * PropertyServerException problem storing the discovery engine definition.
      */
+    @SuppressWarnings(value = "unused")
     public VoidResponse unregisterDiscoveryServiceFromEngine(String          serverName,
                                                              String          userId,
                                                              String          discoveryEngineGUID,

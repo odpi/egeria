@@ -220,6 +220,9 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
      * Update a Term
      * <p>
      * Status is not updated using this call.
+     * The Categories categorising this Term can be amended using this call; this means that the termCategorization relationships are removed and/or added in this call.
+     * For an update (rather than a replace) with no categories supplied, no changes are made to the termCategorizations; otherwise the
+     * supplied categorizing Categories will replace the existing ones.
      *
      * @param serverName   serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId       userId under which the request is performed

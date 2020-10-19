@@ -8,12 +8,12 @@ import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.metadatasecurity.*;
 import org.odpi.openmetadata.metadatasecurity.connectors.OpenMetadataServerSecurityConnector;
 import org.odpi.openmetadata.metadatasecurity.ffdc.OpenMetadataSecurityErrorCode;
 import org.odpi.openmetadata.metadatasecurity.properties.AssetAuditHeader;
+import org.odpi.openmetadata.metadatasecurity.properties.Asset;
+import org.odpi.openmetadata.metadatasecurity.properties.Connection;
 import org.odpi.openmetadata.metadatasecurity.samples.CocoPharmaPlatformSecurityConnector;
 import org.odpi.openmetadata.metadatasecurity.samples.CocoPharmaPlatformSecurityProvider;
 import org.odpi.openmetadata.metadatasecurity.samples.CocoPharmaServerSecurityConnector;
@@ -25,6 +25,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefPatch;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -65,10 +66,10 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      *
      * @throws InvalidParameterException the connection is invalid
      */
-    synchronized public  void registerSecurityValidator(String       localServerUserId,
-                                                        String       serverName,
-                                                        AuditLog     auditLog,
-                                                        Connection   connection) throws InvalidParameterException
+    synchronized public  void registerSecurityValidator(String                                                                    localServerUserId,
+                                                        String                                                                    serverName,
+                                                        AuditLog                                                                  auditLog,
+                                                        org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection   connection) throws InvalidParameterException
     {
         try
         {
@@ -94,10 +95,10 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      * @return connector or null
      * @throws InvalidParameterException connection did not create a connector
      */
-    private   OpenMetadataServerSecurityConnector getServerSecurityConnector(String       localServerUserId,
-                                                                             String       serverName,
-                                                                             AuditLog     auditLog,
-                                                                             Connection   connection) throws InvalidParameterException
+    private   OpenMetadataServerSecurityConnector getServerSecurityConnector(String                                                                    localServerUserId,
+                                                                             String                                                                    serverName,
+                                                                             AuditLog                                                                  auditLog,
+                                                                             org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection   connection) throws InvalidParameterException
     {
         final String methodName = "getServerSecurityConnector";
 
@@ -170,15 +171,85 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      * in which case, they are left unchanged.
      *
      * @param defaultZones setting of the default zones for the service
+     * @param ocfAsset initial values for the asset
+     *
+     * @return list of zones to set in the asset
+     * @throws InvalidParameterException one of the asset values is invalid
+     * @throws PropertyServerException there is a problem calculating the zones
+     */
+    public List<String> initializeAssetZones(List<String>                                                       defaultZones,
+                                             org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset ocfAsset) throws InvalidParameterException,
+                                                                                                                                 PropertyServerException
+    {
+        List<String>  resultingZones = null;
+
+        if (ocfAsset != null)
+        {
+            Asset asset = getAssetFromOCFAsset(ocfAsset);
+            if ((ocfAsset.getZoneMembership() == null) || (ocfAsset.getZoneMembership().isEmpty()))
+            {
+                resultingZones = defaultZones;
+            }
+            else
+            {
+                resultingZones = ocfAsset.getZoneMembership();
+            }
+
+            if (connector != null)
+            {
+                return connector.setAssetZonesToDefault(resultingZones, asset);
+            }
+        }
+
+        return resultingZones;
+    }
+
+
+    /**
+     * Transform an OCF Asset in to a metadata security asset
+     *
+     * @param ocfAsset asset from caller
+     * @return asset for security connector
+     */
+    private Asset getAssetFromOCFAsset(org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset ocfAsset)
+    {
+        Asset asset = new Asset();
+
+        if (ocfAsset.getType() != null)
+        {
+            asset.setTypeName(ocfAsset.getType().getElementTypeName());
+        }
+        asset.setGUID(ocfAsset.getGUID());
+        asset.setQualifiedName(ocfAsset.getQualifiedName());
+        asset.setDisplayName(ocfAsset.getDisplayName());
+        asset.setZoneMembership(ocfAsset.getZoneMembership());
+        asset.setOwner(ocfAsset.getOwner());
+        if (ocfAsset.getOwnerType() != null)
+        {
+            asset.setOwnerType(ocfAsset.getOwnerType().getOpenTypeOrdinal());
+        }
+
+        return asset;
+    }
+
+
+    /**
+     * Determine the appropriate setting for the asset zones depending on the content of the asset and the
+     * default zones.  This is called whenever a new asset is created.
+     *
+     * The default behavior is to use the default values, unless the zones have been explicitly set up,
+     * in which case, they are left unchanged.
+     *
+     * @param defaultZones setting of the default zones for the service
      * @param asset initial values for the asset
      *
      * @return list of zones to set in the asset
      * @throws InvalidParameterException one of the asset values is invalid
      * @throws PropertyServerException there is a problem calculating the zones
      */
-    public List<String> initializeAssetZones(List<String>  defaultZones,
-                                             Asset         asset) throws InvalidParameterException,
-                                                                         PropertyServerException
+    public List<String> setAssetZonesToDefault(List<String>  defaultZones,
+                                               Asset         asset) throws InvalidParameterException,
+                                                                           PropertyServerException
     {
         List<String>  resultingZones = null;
 
@@ -196,7 +267,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
 
         if (connector != null)
         {
-            return connector.initializeAssetZones(resultingZones, asset);
+            return connector.setAssetZonesToDefault(resultingZones, asset);
         }
 
         return resultingZones;
@@ -219,6 +290,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      * @throws InvalidParameterException one of the asset values is invalid
      * @throws PropertyServerException there is a problem calculating the zones
      */
+    @Deprecated
     public List<String> verifyAssetZones(List<String>  defaultZones,
                                          List<String>  supportedZones,
                                          Asset         originalAsset,
@@ -228,6 +300,88 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
         if (connector != null)
         {
             return connector.verifyAssetZones(defaultZones, supportedZones, originalAsset, updatedAsset);
+        }
+
+        List<String>  resultingZones = null;
+
+        if (updatedAsset != null)
+        {
+            resultingZones = updatedAsset.getZoneMembership();
+        }
+
+        return resultingZones;
+    }
+
+
+    /**
+     * Determine the appropriate setting for the asset zones depending on the content of the asset and the
+     * settings of both default zones and supported zones.  This method is called whenever an asset's
+     * values are changed.
+     *
+     * The default behavior is to keep the updated zones as they are.
+     *
+     * @param defaultZones setting of the default zones for the service
+     * @param supportedZones setting of the supported zones for the service
+     * @param ocfOriginalAsset original values for the asset
+     * @param ocfUpdatedAsset updated values for the asset
+     *
+     * @return list of zones to set in the asset
+     * @throws InvalidParameterException one of the asset values is invalid
+     * @throws PropertyServerException there is a problem calculating the zones
+     */
+    @Deprecated
+    public List<String> verifyAssetZones(List<String>                                                       defaultZones,
+                                         List<String>                                                       supportedZones,
+                                         org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset ocfOriginalAsset,
+                                         org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset ocfUpdatedAsset) throws InvalidParameterException,
+                                                                                                                                    PropertyServerException
+    {
+        if (connector != null)
+        {
+            Asset originalAsset = this.getAssetFromOCFAsset(ocfOriginalAsset);
+            Asset updatedAsset = this.getAssetFromOCFAsset(ocfUpdatedAsset);
+
+            return connector.verifyAssetZones(defaultZones, supportedZones, null, originalAsset, updatedAsset);
+        }
+
+        List<String>  resultingZones = null;
+
+        if (ocfUpdatedAsset != null)
+        {
+            resultingZones = ocfUpdatedAsset.getZoneMembership();
+        }
+
+        return resultingZones;
+    }
+
+
+
+    /**
+     * Determine the appropriate setting for the asset zones depending on the content of the asset and the
+     * settings of both default zones and supported zones.  This method is called whenever an asset's
+     * values are changed.
+     *
+     * The default behavior is to keep the updated zones as they are.
+     *
+     * @param defaultZones setting of the default zones for the service
+     * @param supportedZones setting of the supported zones for the service
+     * @param originalAsset original values for the asset
+     * @param updatedAsset updated values for the asset
+     *
+     * @return list of zones to set in the asset
+     * @throws InvalidParameterException one of the asset values is invalid
+     * @throws PropertyServerException there is a problem calculating the zones
+     */
+    public List<String> verifyAssetZones(List<String>  defaultZones,
+                                         List<String>  supportedZones,
+                                         List<String>  publishZones,
+                                         Asset         originalAsset,
+                                         Asset         updatedAsset) throws InvalidParameterException,
+                                                                            PropertyServerException
+    {
+        if (connector != null)
+        {
+            return connector.verifyAssetZones(defaultZones, supportedZones, publishZones, originalAsset, updatedAsset);
         }
 
         List<String>  resultingZones = null;
@@ -360,6 +514,83 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
     }
 
 
+
+    /**
+     * Select a connection from the list of connections attached to an asset.
+     *
+     * @param userId calling user
+     * @param asset asset requested by caller
+     * @param connections list of attached connections
+     * @return selected connection or null (pretend there are no connections attached to the asset) or
+     * @throws UserNotAuthorizedException the user is not authorized to access this service
+     */
+    public Connection validateUserForAssetConnectionList(String           userId,
+                                                         Asset            asset,
+                                                         List<Connection> connections) throws UserNotAuthorizedException
+    {
+        if (connector != null)
+        {
+            List<Connection> clonedConnections;
+            if ((connections == null) || (connections.isEmpty()))
+            {
+                clonedConnections = connections;
+            }
+            else
+            {
+                clonedConnections = new ArrayList<>();
+
+                for (Connection connection: connections)
+                {
+                    clonedConnections.add(new Connection(connection));
+                }
+            }
+
+            connector.validateUserForAssetConnectionList(userId,
+                                                         new Asset(asset),
+                                                         clonedConnections);
+        }
+        else
+        {
+            /*
+             * If there is no security connector installed in this server, return the first non-null connection in the list.
+             * If there are no nun-null connections in the list it drops through to return null.
+             */
+            if ((connections != null) && (! connections.isEmpty()))
+            {
+                for (Connection connection : connections)
+                {
+                    if (connection != null)
+                    {
+                        return connection;
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Tests for whether a specific user should have the right to create an asset within a zone.
+     *
+     * @param userId identifier of user
+     * @param ocfAsset asset from an OCF based module
+     * @throws UserNotAuthorizedException the user is not authorized to access this zone
+     */
+    @Deprecated
+    public void  validateUserForAssetCreate(String                                                             userId,
+                                            org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset ocfAsset) throws UserNotAuthorizedException
+    {
+        if ((connector != null) && (ocfAsset != null))
+        {
+            Asset asset = this.getAssetFromOCFAsset(ocfAsset);
+
+            connector.validateUserForAssetCreate(userId, asset);
+        }
+    }
+
+
     /**
      * Tests for whether a specific user should have the right to create an asset within a zone.
      *
@@ -388,6 +619,33 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
         if (connector != null)
         {
             connector.validateUserForAssetRead(userId, new Asset(asset));
+        }
+    }
+
+
+    /**
+     * Tests for whether a specific user should have the right to update an asset.
+     * This is used for a general asset update, which may include changes to the
+     * zones and the ownership.
+     *
+     * @param userId identifier of user
+     * @param ocfOriginalAsset original asset details
+     * @param originalAssetAuditHeader details of the asset's audit header
+     * @param ocfNewAsset new asset details
+     * @throws UserNotAuthorizedException the user is not authorized to change this asset
+     */
+    @Deprecated
+    public void  validateUserForAssetDetailUpdate(String                                                             userId,
+                                                  org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset ocfOriginalAsset,
+                                                  AssetAuditHeader                                                   originalAssetAuditHeader,
+                                                  org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset ocfNewAsset) throws UserNotAuthorizedException
+    {
+        if (connector != null)
+        {
+            Asset originalAsset = this.getAssetFromOCFAsset(ocfOriginalAsset);
+            Asset newAsset = this.getAssetFromOCFAsset(ocfNewAsset);
+
+            connector.validateUserForAssetDetailUpdate(userId, originalAsset, originalAssetAuditHeader, newAsset);
         }
     }
 

@@ -13,6 +13,8 @@ dependencies {
     implementation project(':open-metadata-implementation:common-services:ffdc-services')
     implementation project(':open-metadata-implementation:admin-services:admin-services-api')
     implementation project(':open-metadata-implementation:common-services:repository-handler')
+    implementation project(':open-metadata-implementation:common-services:metadata-security:metadata-security-server')
+    implementation project(':open-metadata-implementation:common-services:generic-handlers')
     implementation project(':open-metadata-implementation:admin-services:admin-services-registration')
     implementation 'org.slf4j:slf4j-api'
     implementation project(':open-metadata-implementation:access-services:asset-consumer:asset-consumer-api')
