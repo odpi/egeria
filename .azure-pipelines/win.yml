@@ -19,11 +19,15 @@ stages:
           vmImage: 'windows-latest'
         strategy:
           matrix:
-            #Java8:
+            # Java8:
             #  JAVA_VERSION: '1.8'
             Java11:
               JAVA_VERSION: '1.11'
         steps:
+          - task: CmdLine@2
+            inputs:
+              script: |
+                git config --system core.longpaths true
           - task: Maven@3
             inputs:
               mavenPomFile: 'pom.xml'
