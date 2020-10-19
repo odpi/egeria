@@ -63,6 +63,7 @@ public class AccessServiceConfig extends AdminServicesConfigHeader
             accessServiceName = template.getAccessServiceName();
             accessServiceFullName = template.getAccessServiceFullName();
             accessServiceDescription = template.getAccessServiceDescription();
+            accessServiceURLMarker = template.getAccessServiceURLMarker();
             accessServiceWiki = template.getAccessServiceWiki();
             accessServiceOperationalStatus = template.getAccessServiceOperationalStatus();
             accessServiceInTopic = template.getAccessServiceInTopic();
