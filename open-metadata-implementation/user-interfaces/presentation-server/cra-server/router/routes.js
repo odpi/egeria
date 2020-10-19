@@ -10,10 +10,6 @@ const validateURL = require('../validations/validateURL');
 const validateAdminURL = require('../validations/validateAdminURL');
 
 
-router.get('/', (req, res) => {
-  res.send('Egeria server is live!');
-})
-
 /**
  * Middleware to handle post requests that start with /login i.e. the login request. The tenant segment has been removed by previous middleware. 
  * The login is performed using passport' local authentication (http://www.passportjs.org/docs/authenticate/). 
