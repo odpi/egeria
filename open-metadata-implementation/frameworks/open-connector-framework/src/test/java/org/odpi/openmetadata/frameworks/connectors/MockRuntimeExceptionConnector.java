@@ -254,9 +254,9 @@ public abstract class MockRuntimeExceptionConnector extends ConnectorBase
          *
          * @return secured properties   typically user credentials for the connection
          */
-        protected Map<String, Object> getSecuredProperties()
+        protected Map<String, String> getSecuredProperties()
         {
-            Map<String, Object>  securedProperties = super.getConnectionBean().getSecuredProperties();
+            Map<String, String>  securedProperties = super.getConnectionBean().getSecuredProperties();
             if (securedProperties == null)
             {
                 return null;

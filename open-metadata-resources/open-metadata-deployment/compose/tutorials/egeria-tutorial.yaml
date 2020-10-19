@@ -111,6 +111,7 @@ services:
     ui:
         depends_on:
             - datalake
+            - uistatic
         image: '${egeria_repo}/egeria:${egeria_version}'
         environment:
             - OMAS_SERVER_URL=https://datalake:9443
@@ -119,8 +120,18 @@ services:
             - OPEN_LINEAGE_SERVER_NAME=open-lineage
             - OPEN_LINEAGE_GRAPH_SOURCE=MAIN
             - JAVA_APP_JAR=user-interface/ui-chassis-spring-${egeria_version}.jar
+            - ZUUL_ROUTES_UI_URL=http://uistatic:80
         ports:
             - '18443:8443'
+        networks:
+            cocopharma:
+        env_file:
+            - '.env'
+
+    uistatic:
+        image: '${egeria_repo}/egeria-uistatic:${egeria_version}'
+        ports:
+            - '10080:80'
         networks:
             cocopharma:
         env_file:

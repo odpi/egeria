@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
   
-# Open Metadata View Services (OMVS)
+# Glossary Author View Service
 
 ![In Development](../../../open-metadata-publication/website/images/egeria-content-status-in-development.png)
 

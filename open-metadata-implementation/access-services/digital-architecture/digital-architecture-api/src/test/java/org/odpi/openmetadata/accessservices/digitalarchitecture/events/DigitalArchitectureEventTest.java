@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.digitalarchitecture.events;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.properties.Classification;
+import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.ElementClassification;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
@@ -19,20 +19,20 @@ import static org.testng.Assert.assertTrue;
  */
 public class DigitalArchitectureEventTest
 {
-    private DigitalArchitectureEventType eventType              = DigitalArchitectureEventType.UNKNOWN_DIGITAL_ARCHITECTURE_EVENT;
+    private DigitalArchitectureEventType eventType                = DigitalArchitectureEventType.UNKNOWN_DIGITAL_ARCHITECTURE_EVENT;
     private String                       url                    = "TestURL";
     private String                       guid                   = "TestGUID";
     private String                       typeId                 = "TestTypeId";
     private String                       typeName               = "TestTypeName";
-    private long                      typeVersion              = 7;
-    private String                    typeDescription          = "TestTypeDescription";
-    private String                    qualifiedName            = "TestQualifiedName";
-    private String                    displayName              = "TestDisplayName";
-    private String                    description              = "TestDescription";
-    private Map<String, Object>       additionalProperties     = new HashMap<>();
-    private List<Classification>      classifications          = new ArrayList<>();
-    private Classification            classification           = new Classification();
-    private Map<String, Object>       classificationProperties = new HashMap<>();
+    private long                         typeVersion              = 7;
+    private String                       typeDescription          = "TestTypeDescription";
+    private String                       qualifiedName            = "TestQualifiedName";
+    private String                       displayName              = "TestDisplayName";
+    private String                       description              = "TestDescription";
+    private Map<String, Object>          additionalProperties     = new HashMap<>();
+    private List<ElementClassification>  classifications          = new ArrayList<>();
+    private ElementClassification        classification           = new ElementClassification();
+    private Map<String, Object>          classificationProperties = new HashMap<>();
 
 
     /**

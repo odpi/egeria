@@ -45,7 +45,10 @@ public class DatabaseProperties extends DataStoreProperties
 
         if (template != null)
         {
-
+            databaseType = template.getDatabaseType();
+            databaseVersion = template.getDatabaseVersion();
+            databaseInstance = template.getDatabaseInstance();
+            databaseImportedFrom = template.getDatabaseImportedFrom();
         }
     }
 
@@ -161,8 +164,7 @@ public class DatabaseProperties extends DataStoreProperties
                 ", owner='" + getOwner() + '\'' +
                 ", ownerCategory=" + getOwnerCategory() +
                 ", zoneMembership=" + getZoneMembership() +
-                ", origin=" + getOrigin() +
-                ", latestChange='" + getLatestChange() + '\'' +
+                ", origin=" + getOtherOriginValues() +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +
                 ", typeName='" + getTypeName() + '\'' +

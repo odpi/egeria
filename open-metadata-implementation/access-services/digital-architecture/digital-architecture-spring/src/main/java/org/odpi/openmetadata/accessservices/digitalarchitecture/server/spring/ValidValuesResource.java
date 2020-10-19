@@ -8,7 +8,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.properties.*;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.rest.*;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.server.ValidValuesRESTServices;
-import org.odpi.openmetadata.commonservices.ffdc.rest.BooleanRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
@@ -44,12 +43,6 @@ public class ValidValuesResource
     }
 
 
-    /*
-     * ==============================================
-     * AssetOnboardingValidValues
-     * ==============================================
-     */
-
     /**
      * Create a new valid value set.  This just creates the Set itself.  Members are added either as they are
      * created, or they can be attached to a set after they are created.
@@ -74,34 +67,6 @@ public class ValidValuesResource
 
 
     /**
-     * Create a new valid value set that is owned/managed by an external tool.
-     * This just creates the Set itself.  Members are added either as they are
-     * created, or they can be attached to a set after they are created.
-     *
-     * @param serverName name of calling server
-     * @param userId calling user.
-     * @param externalSourceGUID guid of the software server capability entity that represented the external source
-     * @param externalSourceName name of the software server capability entity that represented the external source
-     * @param requestBody parameters for the new object.
-     *
-     * @return unique identifier for the new set or
-     * InvalidParameterException one of the parameters is invalid or
-     * UserNotAuthorizedException the user is not authorized to make this request or
-     * PropertyServerException the repository is not available or not working properly.
-     */
-    @PostMapping(path = "/valid-values/sets/external-collection/{externalSourceGUID}/{externalSourceName}")
-
-    public GUIDResponse createExternalValidValueSet(@PathVariable String               serverName,
-                                                    @PathVariable String               userId,
-                                                    @PathVariable String               externalSourceGUID,
-                                                    @PathVariable String               externalSourceName,
-                                                    @PathVariable ValidValueProperties requestBody)
-    {
-        return restAPI.createExternalValidValueSet(serverName, userId, externalSourceGUID, externalSourceName, requestBody);
-    }
-
-
-    /**
      * Create a new valid value definition.
      *
      * @param serverName name of calling server
@@ -122,34 +87,6 @@ public class ValidValuesResource
                                                     @RequestBody  ValidValueProperties requestBody)
     {
         return restAPI.createValidValueDefinition(serverName, userId, setGUID, requestBody);
-    }
-
-
-    /**
-     * Create a new valid value definition that is owned/managed by an external tool.
-     *
-     * @param serverName name of calling server
-     * @param userId calling user.
-     * @param externalSourceGUID guid of the software server capability entity that represented the external source
-     * @param externalSourceName name of the software server capability entity that represented the external source
-     * @param setGUID unique identifier of the set to attach this to.
-     * @param requestBody parameters for the new object.
-     *
-     * @return unique identifier for the new definition
-     * InvalidParameterException one of the parameters is invalid or
-     * UserNotAuthorizedException the user is not authorized to make this request or
-     * PropertyServerException the repository is not available or not working properly.
-     */
-    @PostMapping(path = "/valid-values/sets/{setGUID}/external-collection/{externalSourceGUID}/{externalSourceName}")
-
-    public GUIDResponse  createExternalValidValueDefinition(@PathVariable String               serverName,
-                                                            @PathVariable String               userId,
-                                                            @PathVariable String               externalSourceGUID,
-                                                            @PathVariable String               externalSourceName,
-                                                            @PathVariable String               setGUID,
-                                                            @RequestBody  ValidValueProperties requestBody)
-    {
-        return restAPI.createExternalValidValueDefinition(serverName, userId, externalSourceGUID, externalSourceName, setGUID, requestBody);
     }
 
 
@@ -547,6 +484,8 @@ public class ValidValuesResource
      * @param serverName name of calling server
      * @param userId calling user
      * @param validValueName qualified name of the valid value.
+     * @param startFrom paging starting point
+     * @param pageSize maximum number of return values.
      *
      * @return Valid value beans or
      * InvalidParameterException one of the parameters is invalid or
@@ -557,9 +496,11 @@ public class ValidValuesResource
 
     public ValidValuesResponse getValidValueByName(@PathVariable String  serverName,
                                                    @PathVariable String  userId,
+                                                   @RequestParam int     startFrom,
+                                                   @RequestParam int     pageSize,
                                                    @RequestBody  String  validValueName)
     {
-        return restAPI.getValidValueByName(serverName, userId, validValueName);
+        return restAPI.getValidValueByName(serverName, userId, validValueName, startFrom, pageSize);
     }
 
 

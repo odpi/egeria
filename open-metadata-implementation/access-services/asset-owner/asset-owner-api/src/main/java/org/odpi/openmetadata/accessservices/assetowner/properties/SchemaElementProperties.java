@@ -54,7 +54,7 @@ public abstract class SchemaElementProperties extends ReferenceableProperties
         {
             displayName  = template.getDisplayName();
             description  = template.getDescription();
-            isDeprecated = template.isDeprecated();
+            isDeprecated = template.getIsDeprecated();
         }
     }
 
@@ -108,7 +108,7 @@ public abstract class SchemaElementProperties extends ReferenceableProperties
      *
      * @return boolean flag
      */
-    public boolean isDeprecated()
+    public boolean getIsDeprecated()
     {
         return isDeprecated;
     }
@@ -119,7 +119,7 @@ public abstract class SchemaElementProperties extends ReferenceableProperties
      *
      * @param deprecated boolean flag
      */
-    public void setDeprecated(boolean deprecated)
+    public void setIsDeprecated(boolean deprecated)
     {
         isDeprecated = deprecated;
     }
@@ -138,10 +138,8 @@ public abstract class SchemaElementProperties extends ReferenceableProperties
                 ", description='" + description + '\'' +
                 ", isDeprecated=" + isDeprecated +
                 ", typeName='" + getTypeName() + '\'' +
-                ", classifications=" + getClassifications() +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +
-                ", meanings=" + getMeanings() +
                 ", extendedProperties=" + getExtendedProperties() +
                 '}';
     }

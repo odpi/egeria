@@ -12,6 +12,7 @@ import java.io.Serializable;
 public class AccessServiceRegistration implements Serializable
 {
     private static final long     serialVersionUID    = 1L;
+
     private static final String   defaultTopicRoot    = "omas.";
     private static final String   defaultInTopicLeaf  = ".inTopic";
     private static final String   defaultOutTopicLeaf = ".outTopic";
@@ -87,6 +88,7 @@ public class AccessServiceRegistration implements Serializable
     {
     }
 
+
     /**
      * Return the code for this access service
      *
@@ -118,7 +120,6 @@ public class AccessServiceRegistration implements Serializable
     {
         return accessServiceName;
     }
-
 
 
     /**
@@ -226,7 +227,7 @@ public class AccessServiceRegistration implements Serializable
     /**
      * Return the initial operational status for this access service.
      *
-     * @return AccessServiceOperationalStatus enum
+     * @return ServiceOperationalStatus enum
      */
     public ServiceOperationalStatus getAccessServiceOperationalStatus()
     {
@@ -237,7 +238,7 @@ public class AccessServiceRegistration implements Serializable
     /**
      * Set up the initial operational status for this access service.
      *
-     * @param accessServiceOperationalStatus AccessServiceOperationalStatus enum
+     * @param accessServiceOperationalStatus ServiceOperationalStatus enum
      */
     public void setAccessServiceOperationalStatus(ServiceOperationalStatus accessServiceOperationalStatus)
     {

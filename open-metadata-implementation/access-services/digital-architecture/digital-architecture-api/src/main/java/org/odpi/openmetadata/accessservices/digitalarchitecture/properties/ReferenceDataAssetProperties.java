@@ -22,13 +22,15 @@ public class ReferenceDataAssetProperties extends ReferenceableProperties
 {
     private static final long     serialVersionUID = 1L;
 
-    private String              displayName      = null;
-    protected String              description      = null;
-    protected String              owner            = null;
-    protected OwnerCategory       ownerCategory    = null;
-    protected List<String>        zoneMembership   = null;
-    protected Map<String, String> origin           = null;
-    protected String              latestChange     = null;
+    private String              displayName                  = null;
+    private String              description                  = null;
+    private String              owner                        = null;
+    private OwnerCategory       ownerCategory                = null;
+    private List<String>        zoneMembership               = null;
+    private Map<String, String> origin                       = null;
+    private String              originOrganizationGUID       = null;
+    private String              originBusinessCapabilityGUID = null;
+    private Map<String, String> otherOriginValues            = null;
 
 
     /**
@@ -50,13 +52,14 @@ public class ReferenceDataAssetProperties extends ReferenceableProperties
 
         if (template != null)
         {
-            displayName      = template.getDisplayName();
-            description      = template.getDescription();
-            owner            = template.getOwner();
-            ownerCategory    = template.getOwnerCategory();
-            zoneMembership   = template.getZoneMembership();
-            origin           = template.getOrigin();
-            latestChange     = template.getLatestChange();
+            displayName                  = template.getDisplayName();
+            description                  = template.getDescription();
+            owner                        = template.getOwner();
+            ownerCategory                = template.getOwnerCategory();
+            zoneMembership               = template.getZoneMembership();
+            originOrganizationGUID       = template.getOriginOrganizationGUID();
+            originBusinessCapabilityGUID = template.getOriginBusinessCapabilityGUID();
+            otherOriginValues            = template.getOtherOriginValues();
         }
     }
 
@@ -184,24 +187,69 @@ public class ReferenceDataAssetProperties extends ReferenceableProperties
     }
 
 
+
+    /**
+     * Return the unique identifier for the organization that originated this asset.
+     *
+     * @return string guid
+     */
+    public String getOriginOrganizationGUID()
+    {
+        return originOrganizationGUID;
+    }
+
+
+    /**
+     * Set up the unique identifier for the organization that originated this asset.
+     *
+     * @param originOrganizationGUID string guid
+     */
+    public void setOriginOrganizationGUID(String originOrganizationGUID)
+    {
+        this.originOrganizationGUID = originOrganizationGUID;
+    }
+
+
+    /**
+     * Return the unique identifier of the business capability that originated this asset.
+     *
+     * @return string guid
+     */
+    public String getOriginBusinessCapabilityGUID()
+    {
+        return originBusinessCapabilityGUID;
+    }
+
+
+    /**
+     * Set up the unique identifier of the business capability that originated this asset.
+     *
+     * @param originBusinessCapabilityGUID string guid
+     */
+    public void setOriginBusinessCapabilityGUID(String originBusinessCapabilityGUID)
+    {
+        this.originBusinessCapabilityGUID = originBusinessCapabilityGUID;
+    }
+
+
     /**
      * Return the properties that characterize where this asset is from.
      *
      * @return map of name value pairs, all strings
      */
-    public Map<String, String> getOrigin()
+    public Map<String, String> getOtherOriginValues()
     {
-        if (origin == null)
+        if (otherOriginValues == null)
         {
             return null;
         }
-        else if (origin.isEmpty())
+        else if (otherOriginValues.isEmpty())
         {
             return null;
         }
         else
         {
-            return new HashMap<>(origin);
+            return new HashMap<>(otherOriginValues);
         }
     }
 
@@ -209,35 +257,14 @@ public class ReferenceDataAssetProperties extends ReferenceableProperties
     /**
      * Set up the properties that characterize where this asset is from.
      *
-     * @param origin map of name value pairs, all strings
+     * @param otherOriginValues map of name value pairs, all strings
      */
-    public void setOrigin(Map<String, String> origin)
+    public void setOtherOriginValues(Map<String, String> otherOriginValues)
     {
-        this.origin = origin;
+        this.otherOriginValues = otherOriginValues;
     }
 
 
-    /**
-     * Return a short description of the last change to the asset.  If it is null it means
-     * the agent that last updated the asset did not provide a description.
-     *
-     * @return string description
-     */
-    public String getLatestChange()
-    {
-        return latestChange;
-    }
-
-
-    /**
-     * Set up a short description of the last change to the asset.
-     *
-     * @param latestChange string description
-     */
-    public void setLatestChange(String latestChange)
-    {
-        this.latestChange = latestChange;
-    }
 
 
     /**
@@ -255,7 +282,9 @@ public class ReferenceDataAssetProperties extends ReferenceableProperties
                 ", ownerCategory=" + ownerCategory +
                 ", zoneMembership=" + zoneMembership +
                 ", origin=" + origin +
-                ", latestChange='" + latestChange + '\'' +
+                ", originOrganizationGUID='" + originOrganizationGUID + '\'' +
+                ", originBusinessCapabilityGUID='" + originBusinessCapabilityGUID + '\'' +
+                ", otherOriginValues=" + otherOriginValues +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +
                 ", meanings=" + getMeanings() +
@@ -264,8 +293,6 @@ public class ReferenceDataAssetProperties extends ReferenceableProperties
                 ", extendedProperties=" + getExtendedProperties() +
                 '}';
     }
-
-
 
     /**
      * Compare the values of the supplied object with those stored in the current object.
@@ -288,14 +315,16 @@ public class ReferenceDataAssetProperties extends ReferenceableProperties
         {
             return false;
         }
-        ReferenceDataAssetProperties asset = (ReferenceDataAssetProperties) objectToCompare;
-        return Objects.equals(getDisplayName(), asset.getDisplayName()) &&
-                Objects.equals(getDescription(), asset.getDescription()) &&
-                Objects.equals(getOwner(), asset.getOwner()) &&
-                getOwnerCategory() == asset.getOwnerCategory() &&
-                Objects.equals(getZoneMembership(), asset.getZoneMembership()) &&
-                Objects.equals(getOrigin(), asset.getOrigin()) &&
-                Objects.equals(getLatestChange(), asset.getLatestChange());
+        ReferenceDataAssetProperties that = (ReferenceDataAssetProperties) objectToCompare;
+        return Objects.equals(displayName, that.displayName) &&
+                Objects.equals(description, that.description) &&
+                Objects.equals(owner, that.owner) &&
+                ownerCategory == that.ownerCategory &&
+                Objects.equals(zoneMembership, that.zoneMembership) &&
+                Objects.equals(origin, that.origin) &&
+                Objects.equals(originOrganizationGUID, that.originOrganizationGUID) &&
+                Objects.equals(originBusinessCapabilityGUID, that.originBusinessCapabilityGUID) &&
+                Objects.equals(otherOriginValues, that.otherOriginValues);
     }
 
 
@@ -308,7 +337,7 @@ public class ReferenceDataAssetProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getDisplayName(), getDescription(), getOwner(),
-                            getOwnerCategory(), getZoneMembership(), getOrigin(), getLatestChange());
+        return Objects.hash(super.hashCode(), displayName, description, owner, ownerCategory, zoneMembership, origin, originOrganizationGUID,
+                            originBusinessCapabilityGUID, otherOriginValues);
     }
 }

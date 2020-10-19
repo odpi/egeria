@@ -160,16 +160,21 @@ public class AssetMapSchemaType extends AssetSchemaType
     public String toString()
     {
         return "AssetMapSchemaType{" +
-                "mapFromElement=" + getMapFromElement() +
+                "parentAsset=" + parentAsset +
+                ", mapFromElement=" + getMapFromElement() +
                 ", mapToElement=" + getMapToElement() +
                 ", versionNumber='" + getVersionNumber() + '\'' +
                 ", author='" + getAuthor() + '\'' +
                 ", usage='" + getUsage() + '\'' +
                 ", encodingStandard='" + getEncodingStandard() + '\'' +
+                ", formula='" + getFormula() + '\'' +
+                ", queries=" + getQueries() +
+                ", deprecated=" + isDeprecated() +
                 ", displayName='" + getDisplayName() + '\'' +
                 ", description='" + getDescription() + '\'' +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", meanings=" + getMeanings() +
+                ", securityTags=" + getSecurityTags() +
                 ", additionalProperties=" + getAdditionalProperties() +
                 ", type=" + getType() +
                 ", GUID='" + getGUID() + '\'' +

@@ -298,7 +298,7 @@ export default function CreateGlossary(props) {
                 </DatePicker>
               </AccordionItem>
             </Accordion>
-
+            <div style={{ color: "red" }}>{errorMsg}</div>
             <div className="bx--form-item">
               <button
                 id="NodeCreateViewButton"
