@@ -24,6 +24,12 @@ stages:
             Java11:
               JAVA_VERSION: '1.11'
         steps:
+        - task: CmdLine@2
+          inputs:
+            script: |
+              echo Write your commands here
+      
+      echo Hello world
           - task: Maven@3
             inputs:
               mavenPomFile: 'pom.xml'
