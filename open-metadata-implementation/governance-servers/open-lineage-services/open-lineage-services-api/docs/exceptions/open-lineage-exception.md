@@ -1,9 +1,11 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Open Lineage Services Spring
 
-The Open Lineage Services Spring module uses Spring to implement a REST API for the open lineage server.
+# OpenLineageException
+
+The OpenLineageException is returned when there is typically a problem with the initialization of the janus connector.
+The cause of the problem is documented in the error message inside of the exception.
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
