@@ -785,9 +785,19 @@ public class OMAGServerPlatformInstanceMap
         }
         else
         {
-            serverInstance.shutdown(methodName);
-            inActiveServerInstanceMap.put(serverName, serverInstance);
-            activeServerInstanceMap.remove(serverName);
+            try
+            {
+                serverInstance.shutdown(methodName);
+            }
+            catch (Throwable t)
+            {
+                throw t;
+            }
+            finally
+            {
+                inActiveServerInstanceMap.put(serverName, serverInstance);
+                activeServerInstanceMap.remove(serverName);
+            }
         }
     }
 
