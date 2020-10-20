@@ -299,7 +299,14 @@ public class OMAGServerAdminForViewServices
              */
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
-            errorHandler.validateOMAGServerClientConfig(serverName, requestedViewServiceConfig, methodName);
+
+            /*
+             * If the view service is NOT an integration view service then validate the client confguration.
+             * An integration view service does not connect to a specific OMAG server, it uses resource endpoints instead.
+             */
+            if ( !(requestedViewServiceConfig instanceof IntegrationViewServiceConfig) ) {
+                errorHandler.validateOMAGServerClientConfig(serverName, requestedViewServiceConfig, methodName);
+            }
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
