@@ -224,8 +224,7 @@ public class RexViewHandler
 
         return platformRootURL;
     }
-
-
+    
 
     /**
      * Retrieve type information from the repository server
