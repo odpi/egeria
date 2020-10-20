@@ -4,7 +4,6 @@ package org.odpi.openmetadata.viewservices.rex.handlers;
 
 
 import org.odpi.openmetadata.adminservices.configuration.properties.ResourceEndpointConfig;
-import org.odpi.openmetadata.commonservices.ffdc.OMAGCommonErrorCode;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
@@ -34,6 +33,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefGallery;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
+import org.odpi.openmetadata.viewservices.rex.api.ffdc.RexViewErrorCode;
 import org.odpi.openmetadata.viewservices.rex.api.properties.ClassificationExplorer;
 import org.odpi.openmetadata.viewservices.rex.api.properties.EntityExplorer;
 import org.odpi.openmetadata.viewservices.rex.api.properties.RelationshipExplorer;
@@ -216,7 +216,7 @@ public class RexViewHandler
             }
         }
         if (platformName == null || platformRootURL == null) {
-            throw new InvalidParameterException(OMAGCommonErrorCode.VIEW_SERVICE_NULL_PLATFORM_NAME.getMessageDefinition(),
+            throw new InvalidParameterException(RexViewErrorCode.VIEW_SERVICE_NULL_PLATFORM_NAME.getMessageDefinition(),
                                                 this.getClass().getName(),
                                                 methodName,
                                                 "platformName");

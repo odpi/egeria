@@ -39,10 +39,16 @@ public enum RexViewErrorCode implements ExceptionMessageSet
     INVALID_CONFIG_PROPERTY(404, "OMVS-REPOSITORY-EXPLORER-400-002",
                             "The repository explorer view service configuration has an invalid or missing property, property name {0}.",
                             "The service is unable to initialize because the configuration is not valid or complete.",
-                            "Correct the view service configuration and restart the view server.")
+                            "Correct the view service configuration and restart the view server."),
+
+    VIEW_SERVICE_NULL_PLATFORM_NAME(400, "OMVS-REPOSITORY-EXPLORER-400-003",
+                                            "The Repository Explorer Open Metadata View Service (OMVS) has been called with a null platform name",
+                                            "The system is unable to resolve the platform to query without knowing what it is called.",
+                                            "The platform name is supplied by the caller to the OMAG view service. This call needs to be corrected before the view service can perform the request."),
 
 
-    ;
+
+            ;
 
     private ExceptionMessageDefinition messageDefinition;
 
