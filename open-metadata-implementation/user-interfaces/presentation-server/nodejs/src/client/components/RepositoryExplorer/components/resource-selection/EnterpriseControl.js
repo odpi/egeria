@@ -4,9 +4,10 @@
 
 import React, { useContext }                    from "react";
 
-import { RequestContext }                       from "../../contexts/RequestContext";
+import { RepositoryServerContext }              from "../../contexts/RepositoryServerContext";
 
 import "./resource-selector.scss"
+
 
 
 /*
@@ -14,11 +15,10 @@ import "./resource-selector.scss"
  * issued at the Enterprise level - which means that results will be collected from across 
  * the cohorts that the target server is a member of, rather than just locally.
  */
-
 export default function EnterpriseControl() {
   
   
-  const requestContext = useContext(RequestContext);
+  const repositoryServerContext = useContext(RepositoryServerContext);
 
   
 
@@ -30,9 +30,9 @@ export default function EnterpriseControl() {
       <input type="checkbox"
              id="cbEnterprise"
              name="cbEnterprise"
-             onChange={requestContext.updateEnterpriseOption}
-             checked={ requestContext.enterpriseOption }
-             value={ requestContext.enterpriseOption }  />
+             onChange={repositoryServerContext.updateEnterpriseOption}
+             checked={ repositoryServerContext.enterpriseOption }
+             value={ repositoryServerContext.enterpriseOption }  />
       <br />
 
     </div>
