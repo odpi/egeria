@@ -345,7 +345,7 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
      * */
     public SubjectAreaOMASAPIResponse<Term> getTerms(String userId, String guid, SubjectAreaTermHandler termHandler, int startingFrom, int maxPageSize) {
         final String methodName = "getTerms";
-        SubjectAreaOMASAPIResponse<Term>  response = getEndRelatedNodes(methodName, userId, guid, TERM_ANCHOR_RELATIONSHIP_NAME, true , TermMapper.class, startingFrom, maxPageSize);
+        SubjectAreaOMASAPIResponse<Term>  response = getRelatedNodesForEnd1(methodName, userId, guid, TERM_ANCHOR_RELATIONSHIP_NAME, TermMapper.class, startingFrom, maxPageSize);
         List<Term> allTerms = new ArrayList<>();
         // the terms we get back from the mappers only map the parts from the entity. They do not set the glossary.
         if (response.getRelatedHTTPCode() == 200 && response.results() !=null && response.results().size() >0) {
@@ -425,16 +425,16 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
 
     /**
      * Get categories with paging.
-     * @param userId
-     * @param guid
-     * @param categoryHandler
-     * @param startingFrom
-     * @param maxPageSize
-     * @param methodName
-     * @return
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the category to get terms
+     * @param categoryHandler category handler
+     * @param startingFrom starting element
+     * @param pageSize maximum elements returned on the request
+     * @param methodName REst API
+     * @return Categories  response
      */
     private SubjectAreaOMASAPIResponse<Category> getCategoriesWithPaging(String userId, String guid, SubjectAreaCategoryHandler categoryHandler, Integer startingFrom, Integer pageSize, String methodName) {
-        SubjectAreaOMASAPIResponse<Category>  response = getEndRelatedNodes(methodName, userId, guid, CATEGORY_ANCHOR_RELATIONSHIP_NAME, true , CategoryMapper.class, startingFrom, pageSize);
+        SubjectAreaOMASAPIResponse<Category>  response = getRelatedNodesForEnd1(methodName, userId, guid, CATEGORY_ANCHOR_RELATIONSHIP_NAME, CategoryMapper.class, startingFrom, pageSize);
         List<Category> allCategories = new ArrayList<>();
         // the categories we get back from the mappers only map the parts from the entity. They do not set the parentCategory or the anchor.
         if (response.getRelatedHTTPCode() == 200 && response.results() !=null && response.results().size() >0) {

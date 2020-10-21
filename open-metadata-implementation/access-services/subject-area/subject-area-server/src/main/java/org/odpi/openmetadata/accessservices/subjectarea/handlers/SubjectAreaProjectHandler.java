@@ -381,7 +381,7 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
     public SubjectAreaOMASAPIResponse<Term> getProjectTerms(String userId, String guid, SubjectAreaTermHandler termHandler, Integer startingFrom, Integer pageSize) {
         final String methodName = "getProjectTerms";
 
-        SubjectAreaOMASAPIResponse<Term>  response = getEndRelatedNodes(methodName, userId, guid, PROJECT_SCOPE_RELATIONSHIP_NAME, true , TermMapper.class, startingFrom, pageSize);
+        SubjectAreaOMASAPIResponse<Term>  response = getRelatedNodesForEnd1(methodName, userId, guid, PROJECT_SCOPE_RELATIONSHIP_NAME, TermMapper.class, startingFrom, pageSize);
         List<Term> allTerms = new ArrayList<>();
         // the terms we get back from the mappers only map the parts from the entity. They do not set the glossary.
         if (response.getRelatedHTTPCode() == 200 && response.results() !=null && response.results().size() >0) {

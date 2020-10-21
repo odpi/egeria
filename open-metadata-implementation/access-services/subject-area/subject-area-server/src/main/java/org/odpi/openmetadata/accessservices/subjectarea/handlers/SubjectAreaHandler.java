@@ -161,25 +161,23 @@ public abstract class SubjectAreaHandler {
     }
 
     /**
-     * Get the related nodes from one end of a given type of relationship
+     * Get the related nodes from end 1 of a given type of relationship
      * @param methodName           name of the method being called.
      * @param userId               unique identifier for requesting user, under which the request is performed
      * @param guid                 guid
      * @param relationshipTypeName relationship type name
-     * @param isEnd1Anchor         if the anchor end1
      * @param mapperClass          mapper class used to get the type name of the Node to return
      * @param startingFrom         retrieve items starting from this location
      * @param pageSize             maximum size of the returned items
      * @return response containing the the related Nodes if there are any
      */
-    public <T extends Node> SubjectAreaOMASAPIResponse<T> getEndRelatedNodes(String methodName,
-                                                                             String userId,
-                                                                             String guid,
-                                                                             String relationshipTypeName,
-                                                                             boolean isEnd1Anchor,
-                                                                             Class<? extends INodeMapper<T>> mapperClass,
-                                                                             Integer startingFrom,
-                                                                             Integer pageSize) {
+    public <T extends Node> SubjectAreaOMASAPIResponse<T> getRelatedNodesForEnd1(String methodName,
+                                                                                 String userId,
+                                                                                 String guid,
+                                                                                 String relationshipTypeName,
+                                                                                 Class<? extends INodeMapper<T>> mapperClass,
+                                                                                 Integer startingFrom,
+                                                                                 Integer pageSize) {
         SubjectAreaOMASAPIResponse<T> response = new SubjectAreaOMASAPIResponse<>();
 
         try {
@@ -188,14 +186,46 @@ public abstract class SubjectAreaHandler {
             }
             invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
             final INodeMapper<T> mapper = mappersFactory.get(mapperClass);
-            List<EntityDetail> entityDetails;
-            if (isEnd1Anchor) {
-                entityDetails= oMRSAPIHelper.callGetEntitiesForRelationshipEnd1(
+            List<EntityDetail> entityDetails= oMRSAPIHelper.callGetEntitiesForRelationshipEnd1(
                         methodName, userId, guid, mapper.getTypeName(), relationshipTypeName, startingFrom, pageSize);
-            } else {
-                entityDetails = oMRSAPIHelper.callGetEntitiesForRelationshipEnd2(
-                        methodName, userId, guid, mapper.getTypeName(), relationshipTypeName, startingFrom, pageSize);
+            if (entityDetails != null) {
+                for (EntityDetail entityDetail : entityDetails) {
+                    response.addResult(mapper.map(entityDetail));
+                }
             }
+        } catch (UserNotAuthorizedException | SubjectAreaCheckedException | PropertyServerException | org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException e) {
+            response.setExceptionInfo(e, className);
+        }
+        return response;
+    }
+    /**
+     * Get the related nodes from end 2 of a given type of relationship
+     * @param methodName           name of the method being called.
+     * @param userId               unique identifier for requesting user, under which the request is performed
+     * @param guid                 guid
+     * @param relationshipTypeName relationship type name
+     * @param mapperClass          mapper class used to get the type name of the Node to return
+     * @param startingFrom         retrieve items starting from this location
+     * @param pageSize             maximum size of the returned items
+     * @return response containing the the related Nodes if there are any
+     */
+    public <T extends Node> SubjectAreaOMASAPIResponse<T> getRelatedNodesForEnd2(String methodName,
+                                                                                 String userId,
+                                                                                 String guid,
+                                                                                 String relationshipTypeName,
+                                                                                 Class<? extends INodeMapper<T>> mapperClass,
+                                                                                 Integer startingFrom,
+                                                                                 Integer pageSize) {
+        SubjectAreaOMASAPIResponse<T> response = new SubjectAreaOMASAPIResponse<>();
+
+        try {
+            if (pageSize == null) {
+                pageSize = maxPageSize;
+            }
+            invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
+            final INodeMapper<T> mapper = mappersFactory.get(mapperClass);
+            List<EntityDetail> entityDetails = oMRSAPIHelper.callGetEntitiesForRelationshipEnd2(
+                   methodName, userId, guid, mapper.getTypeName(), relationshipTypeName, startingFrom, pageSize);
             if (entityDetails != null) {
                 for (EntityDetail entityDetail : entityDetails) {
                     response.addResult(mapper.map(entityDetail));

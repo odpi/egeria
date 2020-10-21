@@ -434,7 +434,7 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
         if (pageSize == null) {
             pageSize = maxPageSize;
         }
-        SubjectAreaOMASAPIResponse<Term>  response = getEndRelatedNodes(methodName, userId, guid, TERM_CATEGORIZATION_RELATIONSHIP_NAME,true , TermMapper.class, startingFrom, pageSize);
+        SubjectAreaOMASAPIResponse<Term>  response = getRelatedNodesForEnd1(methodName, userId, guid, TERM_CATEGORIZATION_RELATIONSHIP_NAME,  TermMapper.class, startingFrom, pageSize);
         List<Term> allTerms = new ArrayList<>();
         // the terms we get back from the mappers only map the parts from the entity. They do not set the glossary.
         if (response.getRelatedHTTPCode() == 200 && response.results() !=null && response.results().size() >0) {
@@ -479,7 +479,7 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
         if (thisCategoryResponse.getRelatedHTTPCode() == 200) {
             boolean foundParent = false;
             String parentCategoryGuid = thisCategoryResponse.results().get(0).getSystemAttributes().getGUID();
-            SubjectAreaOMASAPIResponse<Category> relatedCategories = getEndRelatedNodes(methodName, userId, guid, CATEGORY_HIERARCHY_LINK_RELATIONSHIP_NAME,true , CategoryMapper.class, startingFrom, pageSize);
+            SubjectAreaOMASAPIResponse<Category> relatedCategories = getRelatedNodesForEnd1(methodName, userId, guid, CATEGORY_HIERARCHY_LINK_RELATIONSHIP_NAME,  CategoryMapper.class, startingFrom, pageSize);
             if (relatedCategories != null && relatedCategories.results() != null && relatedCategories.results().size() >0 ) {
                 for (Category relatedCategory: relatedCategories.results()) {
                     // only add related categories that are not the parent Category.
@@ -493,7 +493,7 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
                 // if we got back a page of categories and we found a parent which we removed from the results then we need to get another category, which cant be a parent as
                 // a category can only have one parent.
                 if (foundParent && relatedCategories.results().size() == maxPageSize ) {
-                    SubjectAreaOMASAPIResponse<Category>  extraCategoryResponse = getEndRelatedNodes(methodName, userId, guid, CATEGORY_HIERARCHY_LINK_RELATIONSHIP_NAME,true , CategoryMapper.class, maxPageSize, 1);
+                    SubjectAreaOMASAPIResponse<Category>  extraCategoryResponse = getRelatedNodesForEnd1(methodName, userId, guid, CATEGORY_HIERARCHY_LINK_RELATIONSHIP_NAME, CategoryMapper.class, maxPageSize, 1);
                     if (extraCategoryResponse.getRelatedHTTPCode() == 200 && extraCategoryResponse.results() != null && extraCategoryResponse.results().size() ==1 ) {
                         response.addResult(extraCategoryResponse.results().get(0));
                     }

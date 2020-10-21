@@ -610,7 +610,7 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
      */
     public SubjectAreaOMASAPIResponse<Category> getTermCategories(String userId, String guid, SubjectAreaCategoryHandler categoryHandler, Integer startingFrom, Integer pageSize) {
         final String methodName = "getTermCategories";
-        SubjectAreaOMASAPIResponse<Category>  response = getEndRelatedNodes(methodName, userId, guid, TERM_CATEGORIZATION_RELATIONSHIP_NAME, false , CategoryMapper.class, startingFrom, pageSize);
+        SubjectAreaOMASAPIResponse<Category>  response = getRelatedNodesForEnd2(methodName, userId, guid, TERM_CATEGORIZATION_RELATIONSHIP_NAME, CategoryMapper.class, startingFrom, pageSize);
         List<Category> allCategories = new ArrayList<>();
         // the categories we get back from the mappers only map the parts from the entity. They do not set the parentCategory or the anchor.
         if (response.getRelatedHTTPCode() == 200 && response.results() !=null && response.results().size() >0) {
