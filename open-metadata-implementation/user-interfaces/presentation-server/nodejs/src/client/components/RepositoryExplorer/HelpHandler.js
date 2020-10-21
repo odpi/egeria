@@ -10,27 +10,24 @@ import { InteractionContext }                 from "./contexts/InteractionContex
 
 import ReactMarkdown                          from 'react-markdown';
 
+import RexInterfaceImage                     from './RexInterface.png';
 
-import TexInterfaceImage                      from './TexInterface.png';
-import EntityInheritanceDiagramImage          from './InheritanceDiagram.png';
-import NeighborhoodDiagramImage               from './NeighborhoodDiagram.png';
+import SearchResultsImage                   from './SearchResults.png';
 
-
-import "./tex.scss";
+import "./rex.scss";
 
 const imageRefs = {
-    image1 : TexInterfaceImage,
-    image2 : EntityInheritanceDiagramImage,
-    image3 : NeighborhoodDiagramImage
+    image1 : RexInterfaceImage,
+    image2 : SearchResultsImage
 };
 
 
-export default function ReadmeHandler(props) {
+export default function HelpHandler(props) {
 
   const interactionContext    = useContext(InteractionContext);
 
  
-  const readme              = props.readme;
+  const help              = props.help;
 
   const cancelCallback = () => {
     interactionContext.hidePortal();
@@ -50,7 +47,7 @@ export default function ReadmeHandler(props) {
 
     let dialogDisplay;
 
-    if (!readme.markdown) {
+    if (!help.markdown) {
 
       /* 
        * There is nothing to display... 
@@ -61,7 +58,7 @@ export default function ReadmeHandler(props) {
       <div className="dialog-text">
             
         <p>
-        There is no readme information to display.
+        There is no help information to display.
         </p>  
   
         <div className="dismiss-button-container">                     
@@ -83,7 +80,7 @@ export default function ReadmeHandler(props) {
       let resultsDisplay = (         
 
         <div>
-          <ReactMarkdown source={readme.markdown} transformImageUri={transformImageURI}/>
+          <ReactMarkdown source={help.markdown} transformImageUri={transformImageURI}/>
         </div>
       );
 
@@ -93,7 +90,7 @@ export default function ReadmeHandler(props) {
         <div className="dialog-text">
           
           <p  className="dialog-text">
-          README for Egeria Tex user interface:
+          Help text for Egeria Repository Explorer (Rex) user interface:
           </p>    
    
           <hr></hr>
@@ -133,10 +130,10 @@ export default function ReadmeHandler(props) {
 
 }
 
-ReadmeHandler.propTypes = {  
+HelpHandler.propTypes = {  
   status               : PropTypes.string,
   onCancel             : PropTypes.func.isRequired, 
   onSubmit             : PropTypes.func.isRequired, 
-  readme               : PropTypes.object
+  help                 : PropTypes.object
    
 };

@@ -1287,6 +1287,21 @@ public class OMAGServerOperationalServices
                 }
 
                 /*
+                 * Shutdown the view services
+                 */
+                if (instance.getOperationalViewServiceAdminList() != null)
+                {
+                    for (ViewServiceAdmin viewServiceAdmin : instance.getOperationalViewServiceAdminList())
+                    {
+                        if (viewServiceAdmin != null)
+                        {
+                            viewServiceAdmin.shutdown();
+                        }
+                    }
+                }
+
+
+                /*
                  * Shutdown the OCF metadata management services
                  */
                 if (instance.getOperationalOCFMetadataServices() != null)

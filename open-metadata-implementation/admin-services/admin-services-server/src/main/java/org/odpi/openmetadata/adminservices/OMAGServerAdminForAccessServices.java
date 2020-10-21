@@ -509,8 +509,7 @@ public class OMAGServerAdminForAccessServices
 
 
     /**
-     * Remove an access services.  This removes all configuration for the access services
-     * and disables the enterprise repository services.
+     * Retrieve the config for an access service.
      *
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
@@ -722,7 +721,7 @@ public class OMAGServerAdminForAccessServices
 
 
     /**
-     * Retrieve the topic names for this access service
+     * Retrieve the topic names for all configured access services
      *
      * @param userId                user that is issuing the request.
      * @param serverName            local server name.
