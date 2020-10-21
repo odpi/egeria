@@ -24,8 +24,8 @@ public class FindRequest
     private String               searchCriteria       = null;
     private String               sequencingProperty   = null;
     private SequencingOrder      sequencingOrder      = null;
-    private int                  offset               = 0;
-    private int                  pageSize             = 1000;  // default page size
+    private int                  startingFrom         = 0;
+    private Integer              pageSize             = null;
     private Date                 asOfTime;
     /**
      * Default constructor
@@ -44,7 +44,7 @@ public class FindRequest
             this.sequencingProperty = template.getSequencingProperty();
             this.sequencingOrder = template.getSequencingOrder();
             this.asOfTime = template.getAsOfTime();
-            this.offset = template.getOffset();
+            this.startingFrom = template.getStartingFrom();
             this.pageSize = getPageSize();
         }
     }
@@ -105,11 +105,11 @@ public class FindRequest
      * Return the starting element number for this set of results.  This is used when retrieving elements
      * beyond the first page of results. Zero means the results start from the first element.
      *
-     * @return offset number
+     * @return startingFrom number
      */
-    public int getOffset()
+    public int getStartingFrom()
     {
-        return offset;
+        return startingFrom;
     }
 
 
@@ -117,11 +117,11 @@ public class FindRequest
      * Set up the starting element number for this set of results.  This is used when retrieving elements
      * beyond the first page of results. Zero means the results start from the first element.
      *
-     * @param offset offset number
+     * @param startingFrom startingFrom number
      */
-    public void setOffset(int offset)
+    public void setStartingFrom(int startingFrom)
     {
-        this.offset = offset;
+        this.startingFrom = startingFrom;
     }
 
 
@@ -129,7 +129,7 @@ public class FindRequest
      * Return the maximum number of elements that can be returned on this request.
      * @return page size
      */
-    public int getPageSize()
+    public Integer getPageSize()
     {
         return pageSize;
     }
@@ -140,7 +140,7 @@ public class FindRequest
      *
      * @param pageSize integer number
      */
-    public void setPageSize(int pageSize)
+    public void setPageSize(Integer pageSize)
     {
         this.pageSize = pageSize;
     }
@@ -172,7 +172,7 @@ public class FindRequest
         return "OMRSAPIPagedFindRequest{" +
                 "sequencingProperty='" + sequencingProperty + '\'' +
                 ", sequencingOrder=" + sequencingOrder +
-                ", offset=" + offset +
+                ", startingFrom=" + startingFrom +
                 ", pageSize=" + pageSize +
                 '}';
     }
@@ -187,7 +187,7 @@ public class FindRequest
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         FindRequest that = (FindRequest) o;
-        return offset == that.offset &&
+        return startingFrom == that.startingFrom &&
                 pageSize == that.pageSize &&
                 Objects.equals(searchCriteria, that.searchCriteria) &&
                 Objects.equals(sequencingProperty, that.sequencingProperty) &&
@@ -202,6 +202,6 @@ public class FindRequest
      */
     @Override
     public int hashCode() {
-        return Objects.hash(searchCriteria, sequencingProperty, sequencingOrder, offset, pageSize, asOfTime);
+        return Objects.hash(searchCriteria, sequencingProperty, sequencingOrder, startingFrom, pageSize, asOfTime);
     }
 }
