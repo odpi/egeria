@@ -97,6 +97,18 @@ public class TexViewHandler
 
 
 
+    /**
+     * Default constructor for TexViewHandler
+     */
+    public TexViewHandler() {
+
+    }
+
+
+    /**
+     * TexViewHandler constructor with configured resourceEndpoints
+     * @param resourceEndpoints
+     */
     public TexViewHandler(List<ResourceEndpointConfig>  resourceEndpoints) {
 
 
@@ -197,12 +209,6 @@ public class TexViewHandler
 
 
 
-    /**
-     * Constructor for the TexViewHandler
-     */
-    public TexViewHandler() {
-
-    }
 
     /**
      * Retrieve type information from the repository server
