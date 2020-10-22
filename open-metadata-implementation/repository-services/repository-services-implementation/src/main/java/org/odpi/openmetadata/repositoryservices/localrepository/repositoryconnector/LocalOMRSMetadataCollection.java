@@ -2349,6 +2349,8 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
             throw new UserNotAuthorizedException(error);
         }
 
+        repositoryValidator.validateRelationshipFromStore(repositoryName, guid, relationship, methodName);
+
         return relationship;
     }
 
@@ -2401,6 +2403,8 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         {
             throw new UserNotAuthorizedException(error);
         }
+
+        repositoryValidator.validateRelationshipFromStore(repositoryName, guid, relationship, methodName);
 
         return relationship;
     }
@@ -3583,14 +3587,17 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * @return current relationship
      * @throws InvalidParameterException one of the parameters is invalid or null.
      * @throws RelationshipNotKnownException the relationship identified by the guid is not found in the metadata collection.
+     * @throws RepositoryErrorException if the relationship identified is invalid
      */
     private Relationship validateRelationshipCanBeUpdatedByRepository(String           relationshipGUID,
                                                                       Relationship     relationship,
                                                                       String           methodName) throws InvalidParameterException,
-                                                                                                          RelationshipNotKnownException
+                                                                                                          RelationshipNotKnownException,
+                                                                                                          RepositoryErrorException
     {
         if (relationship != null)
         {
+            repositoryValidator.validateRelationshipFromStore(repositoryName, relationshipGUID, relationship, methodName);
             if (relationship.getInstanceProvenanceType() == InstanceProvenanceType.LOCAL_COHORT)
             {
                 if (metadataCollectionId.equals(relationship.getMetadataCollectionId()))
@@ -5058,7 +5065,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
          * Restore previous version
          */
         Relationship   newRelationship = realMetadataCollection.undoRelationshipUpdate(userId,
-                                                                                    relationshipGUID);
+                                                                                       relationshipGUID);
 
         if (newRelationship != null)
         {
@@ -5304,9 +5311,17 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         }
 
         /*
+         * Check relationship is valid
+         */
+        Relationship relationship = realMetadataCollection.getRelationship(userId, deletedRelationshipGUID);
+        repositoryValidator.validateRelationshipFromStore(repositoryName, deletedRelationshipGUID, relationship, methodName);
+
+        /*
          * Restore relationship
          */
         Relationship   newRelationship = realMetadataCollection.restoreRelationship(userId, deletedRelationshipGUID);
+
+        repositoryValidator.validateRelationshipFromStore(repositoryName, deletedRelationshipGUID, newRelationship, methodName);
 
         if (newRelationship != null)
         {
