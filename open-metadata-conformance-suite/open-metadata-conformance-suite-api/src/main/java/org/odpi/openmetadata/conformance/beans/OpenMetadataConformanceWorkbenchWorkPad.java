@@ -124,6 +124,8 @@ public abstract class OpenMetadataConformanceWorkbenchWorkPad
      */
     public OpenMetadataConformanceWorkbenchStatus getWorkbenchStatus()
     {
+        System.out.println("CTS GET WORKBENCH COMPLETION STATUS");
+
         OpenMetadataConformanceWorkbenchStatus status = new OpenMetadataConformanceWorkbenchStatus();
         status.setWorkbenchId(workbenchId);
         if (workbenchComplete) {

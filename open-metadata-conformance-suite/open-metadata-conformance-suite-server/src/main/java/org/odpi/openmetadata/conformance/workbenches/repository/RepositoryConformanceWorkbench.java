@@ -47,6 +47,9 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
               workPad.getWorkbenchVersionNumber(),
               workPad.getWorkbenchDocURL());
 
+        /* Belt and braces initialisation? If this is not here the flag is false. */
+        runningFlag = true;
+
         final String              methodName = "repositoryWorkbenchThread.constructor";
 
         this.workPad = workPad;
@@ -260,218 +263,229 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
              */
 
 
+            System.out.println("CTS - check if any entity defs  +++++++++++++++++++++++++++++++++++++++++++++");
             if (entityDefs != null) {
 
+                System.out.println("CTS - iterate over entity defs  +++++++++++++++++++++++++++++++++++++++++++++");
                 for (EntityDef entityDef : entityDefs.values()) {
 
-                    TestSupportedEntityLifecycle testEntityLifecycle = new TestSupportedEntityLifecycle(workPad, entityDef);
-                    entityTestCases.add(testEntityLifecycle);
+                    System.out.println("CTS - entity def has name " + entityDef.getName() + "  +++++++++++++++++++++++++++++++++++++++++++++"  );
+                    if (entityDef.getName().equals("Asset")) {
 
-                    TestSupportedEntityReferenceCopyLifecycle testEntityReferenceCopyLifecycle = new TestSupportedEntityReferenceCopyLifecycle(workPad, entityDef);
-                    entityReferenceCopyTestCases.add(testEntityReferenceCopyLifecycle);
+                        System.out.println("CTS - create tests for entity def Asset +++++++++++++++++++++++++++++++++++++++++++++");
 
-                    TestSupportedEntityReidentify testEntityReidentify = new TestSupportedEntityReidentify(workPad, entityDef);
-                    entityReidentifyTestCases.add(testEntityReidentify);
+                        TestSupportedEntityLifecycle testEntityLifecycle = new TestSupportedEntityLifecycle(workPad, entityDef);
+                        entityTestCases.add(testEntityLifecycle);
 
-                    TestSupportedEntityRetype testEntityRetype = new TestSupportedEntityRetype(workPad, entityDef);
-                    entityRetypeTestCases.add(testEntityRetype);
+                        TestSupportedEntityReferenceCopyLifecycle testEntityReferenceCopyLifecycle = new TestSupportedEntityReferenceCopyLifecycle(workPad, entityDef);
+                        entityReferenceCopyTestCases.add(testEntityReferenceCopyLifecycle);
 
-                    TestSupportedEntitySearch testEntitySearch = new TestSupportedEntitySearch(workPad, entityDef);
-                    entitySearchTestCases.add(testEntitySearch);
+                        TestSupportedEntityReidentify testEntityReidentify = new TestSupportedEntityReidentify(workPad, entityDef);
+                        entityReidentifyTestCases.add(testEntityReidentify);
 
+                        TestSupportedEntityRetype testEntityRetype = new TestSupportedEntityRetype(workPad, entityDef);
+                        entityRetypeTestCases.add(testEntityRetype);
+
+                        TestSupportedEntitySearch testEntitySearch = new TestSupportedEntitySearch(workPad, entityDef);
+                        entitySearchTestCases.add(testEntitySearch);
+                    }
                 }
             }
 
+            if (false) {
 
-            if (relationshipDefs != null) {
+                if (relationshipDefs != null) {
 
-                for (RelationshipDef relationshipDef : relationshipDefs) {
+                    for (RelationshipDef relationshipDef : relationshipDefs) {
 
-                    TestSupportedRelationshipLifecycle testRelationshipLifecycle = new TestSupportedRelationshipLifecycle(workPad, entityDefs, relationshipDef);
-                    relationshipTestCases.add(testRelationshipLifecycle);
+                        TestSupportedRelationshipLifecycle testRelationshipLifecycle = new TestSupportedRelationshipLifecycle(workPad, entityDefs, relationshipDef);
+                        relationshipTestCases.add(testRelationshipLifecycle);
 
-                    /* It might seem like entity proxy tests should be incarnated in the entity test loop above - but we want a relationship def to test that a proxy can be used */
-                    TestSupportedEntityProxyLifecycle testEntityProxyLifecycle = new TestSupportedEntityProxyLifecycle(workPad, entityDefs, relationshipDef);
-                    entityProxyTestCases.add(testEntityProxyLifecycle);
+                        /* It might seem like entity proxy tests should be incarnated in the entity test loop above - but we want a relationship def to test that a proxy can be used */
+                        TestSupportedEntityProxyLifecycle testEntityProxyLifecycle = new TestSupportedEntityProxyLifecycle(workPad, entityDefs, relationshipDef);
+                        entityProxyTestCases.add(testEntityProxyLifecycle);
 
-                    TestSupportedRelationshipReferenceCopyLifecycle testRelationshipReferenceCopyLifecycle = new TestSupportedRelationshipReferenceCopyLifecycle(workPad, entityDefs, relationshipDef);
-                    relationshipReferenceCopyTestCases.add(testRelationshipReferenceCopyLifecycle);
+                        TestSupportedRelationshipReferenceCopyLifecycle testRelationshipReferenceCopyLifecycle = new TestSupportedRelationshipReferenceCopyLifecycle(workPad, entityDefs, relationshipDef);
+                        relationshipReferenceCopyTestCases.add(testRelationshipReferenceCopyLifecycle);
 
-                    TestSupportedRelationshipReidentify testRelationshipReidentify = new TestSupportedRelationshipReidentify(workPad, entityDefs, relationshipDef);
-                    relationshipReidentifyTestCases.add(testRelationshipReidentify);
+                        TestSupportedRelationshipReidentify testRelationshipReidentify = new TestSupportedRelationshipReidentify(workPad, entityDefs, relationshipDef);
+                        relationshipReidentifyTestCases.add(testRelationshipReidentify);
 
-                    TestSupportedRelationshipSearch testRelationshipSearch = new TestSupportedRelationshipSearch(workPad, entityDefs, relationshipDef);
-                    relationshipSearchTestCases.add(testRelationshipSearch);
-
-
-                }
-            }
+                        TestSupportedRelationshipSearch testRelationshipSearch = new TestSupportedRelationshipSearch(workPad, entityDefs, relationshipDef);
+                        relationshipSearchTestCases.add(testRelationshipSearch);
 
 
-            if (classificationDefs != null) {
-
-                for (ClassificationDef classificationDef : classificationDefs) {
-
-                    TestClassificationHasSupportedEntities testClassificationHasSupportedEntities = new TestClassificationHasSupportedEntities(workPad, entityDefs, classificationDef);
-
-                    testClassificationHasSupportedEntities.executeTest();
-
-                    List<EntityDef> supportedEntitiesForClassification = testClassificationHasSupportedEntities.getSupportedEntityDefsForClassification();
-
-                    if (supportedEntitiesForClassification != null) {
-                        for (EntityDef entityDef : supportedEntitiesForClassification) {
-                            TestSupportedClassificationLifecycle testClassificationLifecycle =
-                                    new TestSupportedClassificationLifecycle(workPad, entityDef, classificationDef);
-
-                            classificationTestCases.add(testClassificationLifecycle);
-
-                            TestSupportedReferenceCopyClassificationLifecycle testReferenceCopyClassificationLifecycle =
-                                    new TestSupportedReferenceCopyClassificationLifecycle(workPad, entityDef, classificationDef);
-
-                            referenceCopyClassificationTestCases.add(testReferenceCopyClassificationLifecycle);
-                        }
                     }
                 }
 
+
+                if (classificationDefs != null) {
+
+                    for (ClassificationDef classificationDef : classificationDefs) {
+
+                        TestClassificationHasSupportedEntities testClassificationHasSupportedEntities = new TestClassificationHasSupportedEntities(workPad, entityDefs, classificationDef);
+
+                        testClassificationHasSupportedEntities.executeTest();
+
+                        List<EntityDef> supportedEntitiesForClassification = testClassificationHasSupportedEntities.getSupportedEntityDefsForClassification();
+
+                        if (supportedEntitiesForClassification != null) {
+                            for (EntityDef entityDef : supportedEntitiesForClassification) {
+                                TestSupportedClassificationLifecycle testClassificationLifecycle =
+                                        new TestSupportedClassificationLifecycle(workPad, entityDef, classificationDef);
+
+                                classificationTestCases.add(testClassificationLifecycle);
+
+                                TestSupportedReferenceCopyClassificationLifecycle testReferenceCopyClassificationLifecycle =
+                                        new TestSupportedReferenceCopyClassificationLifecycle(workPad, entityDef, classificationDef);
+
+                                referenceCopyClassificationTestCases.add(testReferenceCopyClassificationLifecycle);
+                            }
+                        }
+                    }
+
+                }
+
             }
 
 
 
+                /*
+                 * Validate all of the entities, relationships and classifications
+                 */
+            System.out.println("CTS - run entity tests +++++++++++++++++++++++++++++++++++++++++++++");
+                for (TestSupportedEntityLifecycle testCase : entityTestCases) {
+                    testCase.executeTest();
+                    testCase.cleanTest();
+                }
+            System.out.println("CTS - finished entity tests +++++++++++++++++++++++++++++++++++++++++++++");
+
+                for (TestSupportedRelationshipLifecycle testCase : relationshipTestCases) {
+                    testCase.executeTest();
+                    testCase.cleanTest();
+                }
+
+                for (TestSupportedClassificationLifecycle testCase : classificationTestCases) {
+                    testCase.executeTest();
+                    testCase.cleanTest();
+                }
 
 
-            /*
-             * Validate all of the entities, relationships and classifications
-             */
-            for (TestSupportedEntityLifecycle testCase : entityTestCases) {
-                testCase.executeTest();
-                testCase.cleanTest();
-            }
+                /*
+                 * Validate all of the entity and relationship reference copies
+                 */
+                for (TestSupportedEntityReferenceCopyLifecycle testCase : entityReferenceCopyTestCases) {
+                    testCase.executeTest();
+                    testCase.cleanTest();
+                }
 
-            for (TestSupportedRelationshipLifecycle testCase : relationshipTestCases) {
-                testCase.executeTest();
-                testCase.cleanTest();
-            }
+                for (TestSupportedRelationshipReferenceCopyLifecycle testCase : relationshipReferenceCopyTestCases) {
+                    testCase.executeTest();
+                    testCase.cleanTest();
+                }
 
-            for (TestSupportedClassificationLifecycle testCase : classificationTestCases) {
-                testCase.executeTest();
-                testCase.cleanTest();
-            }
-
-
-            /*
-             * Validate all of the entity and relationship reference copies
-             */
-            for (TestSupportedEntityReferenceCopyLifecycle testCase : entityReferenceCopyTestCases) {
-                testCase.executeTest();
-                testCase.cleanTest();
-            }
-
-            for (TestSupportedRelationshipReferenceCopyLifecycle testCase : relationshipReferenceCopyTestCases) {
-                testCase.executeTest();
-                testCase.cleanTest();
-            }
-
-            for (TestSupportedReferenceCopyClassificationLifecycle testCase : referenceCopyClassificationTestCases) {
-                testCase.executeTest();
-                testCase.cleanTest();
-            }
+                for (TestSupportedReferenceCopyClassificationLifecycle testCase : referenceCopyClassificationTestCases) {
+                    testCase.executeTest();
+                    testCase.cleanTest();
+                }
 
 
-            /*
-             * Validate all the entity proxies
-             */
-            for (TestSupportedEntityProxyLifecycle testCase : entityProxyTestCases) {
-                testCase.executeTest();
-                testCase.cleanTest();
-            }
+                /*
+                 * Validate all the entity proxies
+                 */
+                for (TestSupportedEntityProxyLifecycle testCase : entityProxyTestCases) {
+                    testCase.executeTest();
+                    testCase.cleanTest();
+                }
 
 
-            /*
-             * Validate all of the entity and relationship reidentify operations
-             */
-            for (TestSupportedEntityReidentify testCase : entityReidentifyTestCases) {
-                testCase.executeTest();
-                testCase.cleanTest();
-            }
+                /*
+                 * Validate all of the entity and relationship reidentify operations
+                 */
+                for (TestSupportedEntityReidentify testCase : entityReidentifyTestCases) {
+                    testCase.executeTest();
+                    testCase.cleanTest();
+                }
 
-            for (TestSupportedRelationshipReidentify testCase : relationshipReidentifyTestCases) {
-                testCase.executeTest();
-                testCase.cleanTest();
-            }
+                for (TestSupportedRelationshipReidentify testCase : relationshipReidentifyTestCases) {
+                    testCase.executeTest();
+                    testCase.cleanTest();
+                }
 
-            /*
-             * Validate all of the entity retype operations
-             */
-            for (TestSupportedEntityRetype testCase : entityRetypeTestCases) {
-                testCase.executeTest();
-                testCase.cleanTest();
-            }
-
-
-
-            /*
-             * Validate all of the entity and relationship searches
-             */
-
-            /*
-             * Phase 1
-             */
-            for (TestSupportedEntitySearch testCase : entitySearchTestCases) {
-                testCase.executeTest(OpenMetadataTestCase.TestPhase.SEED);
-            }
-            /*
-             * Phase 2
-             */
-            for (TestSupportedEntitySearch testCase : entitySearchTestCases) {
-                testCase.executeTest(OpenMetadataTestCase.TestPhase.EXECUTE);
-            }
-            /*
-             * Phase 3
-             */
-            for (TestSupportedEntitySearch testCase : entitySearchTestCases) {
-                testCase.executeTest(OpenMetadataTestCase.TestPhase.CLEAN);
-            }
-
-
-            /*
-             * Phase 1
-             */
-            for (TestSupportedRelationshipSearch testCase : relationshipSearchTestCases) {
-                testCase.executeTest(OpenMetadataTestCase.TestPhase.SEED);
-            }
-            /*
-             * Phase 2
-             */
-            for (TestSupportedRelationshipSearch testCase : relationshipSearchTestCases) {
-                testCase.executeTest(OpenMetadataTestCase.TestPhase.EXECUTE);
-            }
-            /*
-             * Phase 3
-             */
-            for (TestSupportedRelationshipSearch testCase : relationshipSearchTestCases) {
-                testCase.executeTest(OpenMetadataTestCase.TestPhase.CLEAN);
-            }
+                /*
+                 * Validate all of the entity retype operations
+                 */
+                for (TestSupportedEntityRetype testCase : entityRetypeTestCases) {
+                    testCase.executeTest();
+                    testCase.cleanTest();
+                }
 
 
 
+                /*
+                 * Validate all of the entity and relationship searches
+                 */
 
-            /*
-             * Retrieve the type definitions by external standard mappings
-             */
-            TestFindTypeDefByExternalId testFindTypeDefByExternalId = new TestFindTypeDefByExternalId(workPad, typeDefs);
+                /*
+                 * Phase 1
+                 */
+                for (TestSupportedEntitySearch testCase : entitySearchTestCases) {
+                    testCase.executeTest(OpenMetadataTestCase.TestPhase.SEED);
+                }
+                /*
+                 * Phase 2
+                 */
+                for (TestSupportedEntitySearch testCase : entitySearchTestCases) {
+                    testCase.executeTest(OpenMetadataTestCase.TestPhase.EXECUTE);
+                }
+                /*
+                 * Phase 3
+                 */
+                for (TestSupportedEntitySearch testCase : entitySearchTestCases) {
+                    testCase.executeTest(OpenMetadataTestCase.TestPhase.CLEAN);
+                }
 
-            testFindTypeDefByExternalId.executeTest();
+
+                /*
+                 * Phase 1
+                 */
+                for (TestSupportedRelationshipSearch testCase : relationshipSearchTestCases) {
+                    testCase.executeTest(OpenMetadataTestCase.TestPhase.SEED);
+                }
+                /*
+                 * Phase 2
+                 */
+                for (TestSupportedRelationshipSearch testCase : relationshipSearchTestCases) {
+                    testCase.executeTest(OpenMetadataTestCase.TestPhase.EXECUTE);
+                }
+                /*
+                 * Phase 3
+                 */
+                for (TestSupportedRelationshipSearch testCase : relationshipSearchTestCases) {
+                    testCase.executeTest(OpenMetadataTestCase.TestPhase.CLEAN);
+                }
 
 
-            /*
-             * Perform graph query tests on a set of types that the repository under test supports.
-             * Start with the set of supported relationships and explores to create a graph from types that the repository supports.
-             */
-            if (relationshipDefs != null) {
-                TestGraphQueries testGraphQueries = new TestGraphQueries(workPad, relationshipDefs, entityDefs);
-                testGraphQueries.executeTest();
-            }
+                if (false) {
+                    /*
+                     * Retrieve the type definitions by external standard mappings
+                     */
+                    TestFindTypeDefByExternalId testFindTypeDefByExternalId = new TestFindTypeDefByExternalId(workPad, typeDefs);
+                    testFindTypeDefByExternalId.executeTest();
+
+
+                    /*
+                     * Perform graph query tests on a set of types that the repository under test supports.
+                     * Start with the set of supported relationships and explores to create a graph from types that the repository supports.
+                     */
+                    if (relationshipDefs != null) {
+                        TestGraphQueries testGraphQueries = new TestGraphQueries(workPad, relationshipDefs, entityDefs);
+                        testGraphQueries.executeTest();
+                    }
+                }
         }
+
+        System.out.println("CTS RUN TESTS COMPLETE");
     }
 
 
@@ -508,12 +522,14 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
                      */
                     if (retryCount == 100)
                     {
+                        System.out.println("CTS - resetting retry count to 0");
                         retryCount = 0;
                     }
                     else
                     {
                         if (retryCount == 0)
                         {
+                            System.out.println("CTS - retry count is 0 - produce audit log message");
                             auditCode = ConformanceSuiteAuditCode.WORKBENCH_WAITING_TO_START;
                             auditLog.logRecord(methodName,
                                                auditCode.getLogMessageId(),
@@ -525,6 +541,7 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
                                                auditCode.getUserAction());
                         }
 
+                        System.out.println("CTS - increment retry count to "+retryCount+1);
                         retryCount++;
                     }
                     Thread.sleep(1000);
@@ -537,6 +554,8 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
                 }
                 catch (Throwable error)
                 {
+                    System.out.println("CTS - will stop because caught a throwable - eror is "+error);
+
                     stopRunning();
                     log.error(String.format("Unexpected error: %s", error.getMessage()), error);
 
@@ -550,11 +569,16 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
                                        auditCode.getSystemAction(),
                                        auditCode.getUserAction());                }
             }
+            System.out.println("CTS -  beyond wait loop - isRunning is "+super.isRunning()+" ; tut connector is "+workPad.getTutRepositoryConnector());
 
             if (workPad.getTutRepositoryConnector() != null)
             {
                 runTests();
             }
+
+            System.out.println("Hello World");
+
+            System.out.println("CTS SET WORKBENCH TO COMPLETE");
 
             workPad.setWorkbenchComplete();
 
