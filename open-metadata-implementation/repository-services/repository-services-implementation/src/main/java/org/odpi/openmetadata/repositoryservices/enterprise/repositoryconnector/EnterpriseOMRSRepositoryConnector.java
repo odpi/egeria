@@ -86,7 +86,7 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
     }
 
     /**
-     * Set up the unique Id for this local metadata collection.
+     * Set the unique Id of the metadata collection that is collocated with the Enterprise Metadata Collection
      *
      * @param localMetadataCollectionId String unique Id
      */
