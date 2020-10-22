@@ -20,7 +20,7 @@ In this solution we are going to cover:
 
 Figure 1 shows the set up to extract metadata from one or more data managers.
 It takes a data manager integration connector to interface with a specific data manager.  This is
-running in the [Data Manager Integrator Open Metadata Integration Service (OMIS)](../../../../open-metadata-implementation/integration-services/data-manager-integrator)
+running in the [Database Integrator Open Metadata Integration Service (OMIS)](../../../../open-metadata-implementation/integration-services/database-integrator)
 hosted in an [Integration Daemon](../../../../open-metadata-implementation/admin-services/docs/concepts/integration-daemon.md).
 
 
