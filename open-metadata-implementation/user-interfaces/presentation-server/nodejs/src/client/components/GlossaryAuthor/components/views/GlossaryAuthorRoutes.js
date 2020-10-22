@@ -60,6 +60,10 @@ export default function GlossaryAuthorRoutes({ glossaryAuthorURL }) {
       ></Route>
       <Route path={getCrudPath()} component={GlossaryAuthorCRUD}></Route>
       <Route
+        path={getCrudPath()}
+        component={GlossaryAuthorCRUD}
+      ></Route>
+      <Route
         path={glossaryAuthorURL}
         exact
         render={() => {
