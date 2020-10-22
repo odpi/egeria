@@ -7,7 +7,7 @@ import org.odpi.openmetadata.governanceservers.integrationdaemonservices.connect
 
 /**
  * DatabaseIntegratorConnector is the base class for an integration connector that is managed by the
- * Data Manager Integrator OMIS.
+ * Database Integrator OMIS.
  */
 public abstract class DatabaseIntegratorConnector extends IntegrationConnectorBase
 {
