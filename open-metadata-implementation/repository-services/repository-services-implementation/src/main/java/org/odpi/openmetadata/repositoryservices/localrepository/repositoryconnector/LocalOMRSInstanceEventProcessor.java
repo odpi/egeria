@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.localrepository.repositoryconnector;
 
+import org.odpi.openmetadata.adminservices.configuration.properties.OpenMetadataExchangeRule;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.auditlog.MessageFormatter;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
@@ -1934,10 +1935,10 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                 if (processedEntityType != null)
                 {
                     /*
-                     * It would be possible to save the relationship directly into the repository,
+                     * It would be possible to save the entity directly into the repository,
                      * but it is possible that some of the properties have been suppressed for the
                      * requesting user Id.  In which case saving it now would result in other users
-                     * seeing a restricted view of the relationship.
+                     * seeing a restricted view of the entity.
                      */
                     localMetadataCollection.refreshEntityReferenceCopy(localRepositoryConnector.getServerUserId(),
                                                                        processedEntityGUID,
@@ -1959,6 +1960,54 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
     }
 
 
+
+    /**
+     * Pass a relationship that has been retrieved from a remote open metadata repository so it can be validated and
+     * (if the rules permit) cached in the local repository.
+     *
+     * @param sourceName name of the source of this event.
+     * @param metadataCollectionId unique identifier for the metadata from the remote repository
+     * @param processedRelationshipGUID the retrieved relationship's GUID.
+     * @param processedRelationshipType the retrieved relationship's Type.
+     */
+    private void refreshRetrievedRelationship(String        sourceName,
+                                              String        metadataCollectionId,
+                                              String        processedRelationshipGUID,
+                                              InstanceType  processedRelationshipType)
+    {
+        try
+        {
+            if (localMetadataCollection.isRelationshipKnown(localRepositoryConnector.getServerUserId(),
+                                                            processedRelationshipGUID) == null)
+            {
+                if (processedRelationshipType != null)
+                {
+                    /*
+                     * It would be possible to save the relationship directly into the repository,
+                     * but it is possible that some of the properties have been suppressed for the
+                     * requesting user Id.  In which case saving it now would result in other users
+                     * seeing a restricted view of the relationship.
+                     */
+                    localMetadataCollection.refreshRelationshipReferenceCopy(localRepositoryConnector.getServerUserId(),
+                                                                       processedRelationshipGUID,
+                                                                       processedRelationshipType.getTypeDefGUID(),
+                                                                       processedRelationshipType.getTypeDefName(),
+                                                                       metadataCollectionId);
+                }
+            }
+        }
+        catch (Throwable   error)
+        {
+            final String methodName = "processRetrievedRelationship";
+
+            handleUnexpectedErrorFromEvent(error,
+                                           methodName,
+                                           sourceName,
+                                           metadataCollectionId);
+        }
+    }
+
+
     /**
      * Pass an entity that has been retrieved from a remote open metadata repository so it can be validated and
      * (if the rules permit) cached in the local repository.
@@ -1971,13 +2020,21 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                                               String        metadataCollectionId,
                                               EntitySummary processedEntity)
     {
+
         /*
-         * Discover whether the instance should be learned.
+         * Decide whether to send a refresh request:
+         * If the exchange rule is any of:
+         *    ALL - send the refresh request
+         *    SELECTED_TYPES AND the instance type is in the list of types - send the refresh request
+         *    LEARNED_TYPES AND the instance type is already in the list of types or can be added - add it and send the refresh request
+         * In all the above cases, the refresh request should only be sent if the type is active in this repository. Note that in the
+         * LEARNED_TYPES case it will be added to the selected types list, even if not active at this time.
          */
-        if (verifyEventToLearn(sourceName, processedEntity))
+
+        if (verifyWhetherToRequestRefresh(sourceName, processedEntity))
         {
             refreshRetrievedEntity(sourceName,
-                                   metadataCollectionId,
+                                   processedEntity.getMetadataCollectionId(),
                                    processedEntity.getGUID(),
                                    processedEntity.getType());
         }
@@ -1996,13 +2053,21 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                                              String       metadataCollectionId,
                                              EntityDetail processedEntity)
     {
+
         /*
-         * Discover whether the instance should be learned.
+         * Decide whether to send a refresh request:
+         * If the exchange rule is any of:
+         *    ALL - send the refresh request
+         *    SELECTED_TYPES AND the instance type is in the list of types - send the refresh request
+         *    LEARNED_TYPES AND the instance type is already in the list of types or can be added - add it and send the refresh request
+         * In all the above cases, the refresh request should only be sent if the type is active in this repository. Note that in the
+         * LEARNED_TYPES case it will be added to the selected types list, even if not active at this time.
          */
-        if (verifyEventToLearn(sourceName, processedEntity))
+
+        if (verifyWhetherToRequestRefresh(sourceName, processedEntity))
         {
             refreshRetrievedEntity(sourceName,
-                                   metadataCollectionId,
+                                   processedEntity.getMetadataCollectionId(),
                                    processedEntity.getGUID(),
                                    processedEntity.getType());
         }
@@ -2021,43 +2086,23 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                                              String       metadataCollectionId,
                                              Relationship processedRelationship)
     {
+
         /*
-         * Discover whether the instance should be learned.
+         * Decide whether to send a refresh request:
+         * If the exchange rule is any of:
+         *    ALL - send the refresh request
+         *    SELECTED_TYPES AND the instance type is in the list of types - send the refresh request
+         *    LEARNED_TYPES AND the instance type is already in the list of types or can be added - add it and send the refresh request
+         * In all the above cases, the refresh request should only be sent if the type is active in this repository. Note that in the
+         * LEARNED_TYPES case it will be added to the selected types list, even if not active at this time.
          */
-        if (verifyEventToLearn(sourceName, processedRelationship))
+
+        if (verifyWhetherToRequestRefresh(sourceName, processedRelationship))
         {
-            try
-            {
-                if (localMetadataCollection.isRelationshipKnown(localRepositoryConnector.getServerUserId(),
-                                                                processedRelationship.getGUID()) == null)
-                {
-                    InstanceType type = processedRelationship.getType();
-
-                    if (type != null)
-                    {
-                        /*
-                         * It would be possible to save the relationship directly into the repository,
-                         * but it is possible that some of the properties have been suppressed for the
-                         * requesting user Id.  In which case saving it now would result in other users
-                         * seeing a restricted view of the relationship.
-                         */
-                        localMetadataCollection.refreshRelationshipReferenceCopy(localRepositoryConnector.getServerUserId(),
-                                                                                 processedRelationship.getGUID(),
-                                                                                 type.getTypeDefGUID(),
-                                                                                 type.getTypeDefName(),
-                                                                                 metadataCollectionId);
-                    }
-                }
-            }
-            catch (Throwable   error)
-            {
-                final String methodName = "processRetrievedRelationship";
-
-                handleUnexpectedErrorFromEvent(error,
-                                               methodName,
-                                               sourceName,
-                                               metadataCollectionId);
-            }
+            refreshRetrievedRelationship(sourceName,
+                                   processedRelationship.getMetadataCollectionId(),
+                                   processedRelationship.getGUID(),
+                                   processedRelationship.getType());
         }
     }
 
@@ -2518,4 +2563,62 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                                                   instanceType.getTypeDefGUID(),
                                                   instanceType.getTypeDefName())));
     }
+
+    /**
+     * Determine if the event should result in a refresh request being sent.
+     *
+     * @param source identifier of the source of the event.
+     * @param instance metadata instance in the event.
+     * @return boolean flag indicating whether the event should be sent to the real repository or not.
+     */
+
+    private boolean verifyWhetherToRequestRefresh(String             source,
+                                                  InstanceHeader     instance)
+    {
+        /*
+         * Decide whether to send a refresh request:
+         * If the exchange rule is any of:
+         *    ALL - send the refresh request
+         *    SELECTED_TYPES AND the instance type is in the list of types - send the refresh request
+         *    LEARNED_TYPES AND the instance type is already in the list of types or can be added - add it and send the refresh request
+         * In all the above cases, the refresh request should only be sent if the type is active in this repository. Note that in the
+         * LEARNED_TYPES case it will be added to the selected types list, even if not active at this time.
+         */
+        InstanceType   instanceType = instance.getType();
+
+        /*
+         * Provide an opportunity for the type to be learned.
+         * The result is ignored because processInstanceEvent will verify the exchange rule and type inclusion
+         */
+        saveExchangeRule.learnInstanceEvent(instance);
+
+        /*
+         * Determine whether the exchange rule permits processing of this event.
+         */
+        boolean shouldProcess = saveExchangeRule.processInstanceEvent(instance);
+
+        if (shouldProcess)
+        {
+            /*
+             * Check that the instance type is active.
+             */
+            boolean isActiveType = repositoryValidator.isActiveType(source,
+                                                                instanceType.getTypeDefGUID(),
+                                                                instanceType.getTypeDefName());
+
+            if (isActiveType)
+            {
+               return true;
+            }
+        }
+
+        /*
+         * The event should not trigger a refresh request, either due to an exchange rule mismatch
+         * or because the type is not active
+         */
+        return false;
+
+    }
+
+
 }
