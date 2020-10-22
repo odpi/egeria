@@ -98,7 +98,7 @@ public abstract class AssetSchemaElement extends AssetReferenceable
             return false;
         }
 
-        return this.schemaElementBean.isDeprecated();
+        return this.schemaElementBean.getIsDeprecated();
     }
 
 
@@ -147,6 +147,7 @@ public abstract class AssetSchemaElement extends AssetReferenceable
                 ", description='" + getDescription() + '\'' +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", meanings=" + getMeanings() +
+                ", securityTags=" + getSecurityTags() +
                 ", additionalProperties=" + getAdditionalProperties() +
                 ", type=" + getType() +
                 ", GUID='" + getGUID() + '\'' +

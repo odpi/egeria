@@ -3,10 +3,10 @@
 
 package org.odpi.openmetadata.accessservices.governanceprogram.api;
 
+import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceZoneElement;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceZone;
 
 import java.util.List;
 import java.util.Map;
@@ -28,6 +28,8 @@ public interface GovernanceZoneManagerInterface
      * @param displayName short display name for the zone
      * @param description description of the governance zone
      * @param criteria the criteria for inclusion in a governance zone
+     * @param scope scope of the organization that this some applies to
+     * @param domainIdentifier the identifier of the governance domain where the zone is managed
      * @param additionalProperties additional properties for a governance zone
      *
      * @throws InvalidParameterException qualifiedName or userId is null
@@ -39,6 +41,8 @@ public interface GovernanceZoneManagerInterface
                                String               displayName,
                                String               description,
                                String               criteria,
+                               String               scope,
+                               int                  domainIdentifier,
                                Map<String, String>  additionalProperties) throws InvalidParameterException,
                                                                                  UserNotAuthorizedException,
                                                                                  PropertyServerException;;
@@ -56,10 +60,10 @@ public interface GovernanceZoneManagerInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    GovernanceZone getGovernanceZone(String   userId,
-                                     String   qualifiedName) throws InvalidParameterException,
-                                                                     UserNotAuthorizedException,
-                                                                     PropertyServerException;
+    GovernanceZoneElement getGovernanceZone(String   userId,
+                                            String   qualifiedName) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException;
 
 
     /**
@@ -75,9 +79,9 @@ public interface GovernanceZoneManagerInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    List<GovernanceZone> getGovernanceZones(String   userId,
-                                            int      startingFrom,
-                                            int      maximumResults) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException;
+    List<GovernanceZoneElement> getGovernanceZones(String   userId,
+                                                   int      startingFrom,
+                                                   int      maximumResults) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException;
 }

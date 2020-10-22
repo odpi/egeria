@@ -16,7 +16,7 @@ public interface OpenLineageInterface {
      * the condensed path by querying a different method.
      *
      * @param userId calling user.
-     * @param scope ULTIMATE_SOURCE, ULTIMATE_DESTINATION, GLOSSARY.
+     * @param scope ULTIMATE_SOURCE, ULTIMATE_DESTINATION, SOURCE_AND_DESTINATION, VERTICAL, END_TO_END.
      * @param guid The guid of the node of which the lineage is queried of.
      * @param displaynameMustContain Used to filter out nodes which displayname does not contain this value.
      * @param includeProcesses  Will filter out all processes and subprocesses from the response if false.

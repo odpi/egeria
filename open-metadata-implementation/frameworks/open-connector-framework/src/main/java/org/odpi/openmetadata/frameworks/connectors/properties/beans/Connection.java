@@ -72,6 +72,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  *      <li>
  *          endpoint - Properties that describe the server endpoint where the connector will retrieve the assets.
  *      </li>
+ *      <li>
+ *          assetSummary - short description of the connected asset (if any).
+ *      </li>
  *  </ul>
  *
  * The connection class is simply used to cache the properties for an connection.
@@ -102,8 +105,9 @@ public class Connection extends Referenceable
     protected String              encryptedPassword       = null;
     protected String              clearPassword           = null;
     protected Map<String, Object> configurationProperties = null;
-    protected Map<String, Object> securedProperties       = null;
+    protected Map<String, String> securedProperties       = null;
 
+    protected String              assetSummary            = null;
 
     /**
      * Return the standard type for a connection type.
@@ -128,7 +132,7 @@ public class Connection extends Referenceable
         elementType.setElementTypeDescription(elementTypeDescription);
         elementType.setElementSourceServer(elementAccessServiceURL);
         elementType.setElementOrigin(elementOrigin);
-        elementType.setElementHomeMetadataCollectionId(elementHomeMetadataCollectionId);
+        elementType.setElementMetadataCollectionId(elementHomeMetadataCollectionId);
 
         return elementType;
     }
@@ -241,7 +245,7 @@ public class Connection extends Referenceable
 
 
     /**
-     * Return id of the calling user.
+     * Return the userId to use on this connection.
      *
      * @return string
      */
@@ -252,7 +256,7 @@ public class Connection extends Referenceable
 
 
     /**
-     * Set up the id of the calling user.
+     * Set up the the userId to use on this connection.
      *
      * @param userId string
      */
@@ -341,7 +345,7 @@ public class Connection extends Referenceable
      *
      * @param configurationProperties properties that contain additional configuration information for the connector.
      */
-    public void setConfigurationProperties(Map<String,Object> configurationProperties)
+    public void setConfigurationProperties(Map<String, Object> configurationProperties)
     {
         this.configurationProperties = configurationProperties;
     }
@@ -352,7 +356,7 @@ public class Connection extends Referenceable
      *
      * @return secured properties typically user credentials for the connection
      */
-    public Map<String,Object> getConfigurationProperties()
+    public Map<String, Object> getConfigurationProperties()
     {
         if (configurationProperties == null)
         {
@@ -374,7 +378,7 @@ public class Connection extends Referenceable
      *
      * @param securedProperties properties that contain secret information such as log on information.
      */
-    public void setSecuredProperties(Map<String,Object> securedProperties)
+    public void setSecuredProperties(Map<String, String> securedProperties)
     {
         this.securedProperties = securedProperties;
     }
@@ -385,7 +389,7 @@ public class Connection extends Referenceable
      *
      * @return secured properties typically user credentials for the connection
      */
-    public Map<String,Object> getSecuredProperties()
+    public Map<String, String> getSecuredProperties()
     {
         if (securedProperties == null)
         {
@@ -399,6 +403,30 @@ public class Connection extends Referenceable
         {
             return new HashMap<>(securedProperties);
         }
+    }
+
+
+    /**
+     * Return the description of the asset that this connection is linked to - or null if no asset connected, or the asset summary
+     * property in the relationship is not set.
+     *
+     * @return string description
+     */
+    public String getAssetSummary()
+    {
+        return assetSummary;
+    }
+
+
+    /**
+     * Set up the description of the asset that this connection is linked to - or null if no asset connected, or the asset summary
+     * property in the relationship is not set.
+     *
+     * @param assetSummary string description
+     */
+    public void setAssetSummary(String assetSummary)
+    {
+        this.assetSummary = assetSummary;
     }
 
 
@@ -417,18 +445,28 @@ public class Connection extends Referenceable
                 ", connectorType=" + connectorType +
                 ", endpoint=" + endpoint +
                 ", userId='" + userId + '\'' +
+                ", encryptedPassword='" + encryptedPassword + '\'' +
+                ", clearPassword='" + clearPassword + '\'' +
                 ", configurationProperties=" + configurationProperties +
+                ", securedProperties=" + securedProperties +
+                ", assetSummary='" + assetSummary + '\'' +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +
-                ", extendedProperties=" + getExtendedProperties() +
                 ", meanings=" + getMeanings() +
+                ", securityTags=" + getSecurityTags() +
+                ", searchKeywords=" + getSearchKeywords() +
+                ", confidentialityGovernanceClassification=" + getConfidentialityGovernanceClassification() +
+                ", confidenceGovernanceClassification=" + getConfidenceGovernanceClassification() +
+                ", criticalityGovernanceClassification=" + getCriticalityGovernanceClassification() +
+                ", retentionGovernanceClassification=" + getRetentionGovernanceClassification() +
                 ", type=" + getType() +
                 ", GUID='" + getGUID() + '\'' +
                 ", URL='" + getURL() + '\'' +
                 ", classifications=" + getClassifications() +
+                ", extendedProperties=" + getExtendedProperties() +
+                ", headerVersion=" + getHeaderVersion() +
                 '}';
     }
-
 
     /**
      * Compare the values of the supplied object with those stored in the current object.

@@ -143,7 +143,7 @@ public class AssetElementType extends AssetPropertyElementBase
      */
     public String getElementHomeMetadataCollectionId()
     {
-        return elementTypeBean.getElementHomeMetadataCollectionId();
+        return elementTypeBean.getElementMetadataCollectionId();
     }
 
 
@@ -152,7 +152,7 @@ public class AssetElementType extends AssetPropertyElementBase
      *
      * @return name string
      */
-    public String getElementHomeMetadataCollectionName() { return elementTypeBean.getElementHomeMetadataCollectionName(); }
+    public String getElementHomeMetadataCollectionName() { return elementTypeBean.getElementMetadataCollectionName(); }
 
     /**
      * Return the license associated with this metadata element (null means none).

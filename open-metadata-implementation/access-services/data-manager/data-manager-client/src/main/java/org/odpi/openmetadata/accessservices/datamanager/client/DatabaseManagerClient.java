@@ -4,12 +4,13 @@
 package org.odpi.openmetadata.accessservices.datamanager.client;
 
 import org.odpi.openmetadata.accessservices.datamanager.api.DatabaseManagerInterface;
+import org.odpi.openmetadata.accessservices.datamanager.client.rest.DataManagerRESTClient;
 import org.odpi.openmetadata.accessservices.datamanager.metadataelements.*;
 import org.odpi.openmetadata.accessservices.datamanager.properties.*;
 import org.odpi.openmetadata.accessservices.datamanager.rest.*;
+import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.ConnectedAssetClientBase;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -20,33 +21,47 @@ import java.util.List;
 /**
  * DatabaseManagerClient is the client for managing resources from a relational database server.
  */
-public class DatabaseManagerClient extends ConnectedAssetClientBase implements DatabaseManagerInterface
+public class DatabaseManagerClient implements DatabaseManagerInterface
 {
-    private DataManagerRESTClient restClient;               /* Initialized in constructor */
-
-    private final String integratorGUIDParameterName = "integratorGUID";
-    private final String integratorNameParameterName = "integratorName";
-    private final String editURLTemplatePrefix       = "/servers/{0}/open-metadata/access-services/data-manager/users/{1}/integrators/{2}/{3}/databases";
+    private final String databaseManagerGUIDParameterName = "databaseManagerGUID";
+    private final String databaseManagerNameParameterName = "databaseManagerName";
+    private final String editURLTemplatePrefix
+            = "/servers/{0}/open-metadata/access-services/data-manager/users/{1}/database-managers/{2}/{3}/databases";
     private final String retrieveURLTemplatePrefix   = "/servers/{0}/open-metadata/access-services/data-manager/users/{1}/databases";
+    private final String governanceURLTemplatePrefix = "/servers/{0}/open-metadata/access-services/data-manager/users/{1}/databases";
 
-    private final NullRequestBody  nullRequestBody = new NullRequestBody();
+    private String   serverName;               /* Initialized in constructor */
+    private String   serverPlatformURLRoot;    /* Initialized in constructor */
+    private AuditLog auditLog = null;          /* Initialized in constructor */
+
+    private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
+    private DataManagerRESTClient   restClient;               /* Initialized in constructor */
+
+    private static NullRequestBody nullRequestBody   = new NullRequestBody();
+
 
     /**
      * Create a new client with no authentication embedded in the HTTP request.
      *
      * @param serverName name of the server to connect to
-     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
      * @param auditLog logging destination
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
     public DatabaseManagerClient(String   serverName,
-                                 String   serverPlatformRootURL,
+                                 String   serverPlatformURLRoot,
                                  AuditLog auditLog) throws InvalidParameterException
     {
-        super(serverName, serverPlatformRootURL, auditLog);
+        final String methodName = "Client Constructor";
 
-        this.restClient = new DataManagerRESTClient(serverName, serverPlatformRootURL, auditLog);
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
+
+        this.serverName = serverName;
+        this.serverPlatformURLRoot = serverPlatformURLRoot;
+        this.auditLog = auditLog;
+
+        this.restClient = new DataManagerRESTClient(serverName, serverPlatformURLRoot, auditLog);
     }
 
 
@@ -54,16 +69,21 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
      * Create a new client with no authentication embedded in the HTTP request.
      *
      * @param serverName name of the server to connect to
-     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
     public DatabaseManagerClient(String serverName,
-                                 String serverPlatformRootURL) throws InvalidParameterException
+                                 String serverPlatformURLRoot) throws InvalidParameterException
     {
-        super(serverName, serverPlatformRootURL);
+        final String methodName = "Client Constructor";
 
-        this.restClient = new DataManagerRESTClient(serverName, serverPlatformRootURL);
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
+
+        this.serverName = serverName;
+        this.serverPlatformURLRoot = serverPlatformURLRoot;
+
+        this.restClient = new DataManagerRESTClient(serverName, serverPlatformURLRoot);
     }
 
 
@@ -72,7 +92,7 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
      * userId/password of the calling server.  The end user's userId is sent on each request.
      *
      * @param serverName name of the server to connect to
-     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
      * @param userId caller's userId embedded in all HTTP requests
      * @param password caller's userId embedded in all HTTP requests
      * @param auditLog logging destination
@@ -81,14 +101,49 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
      * REST API calls.
      */
     public DatabaseManagerClient(String   serverName,
-                                 String   serverPlatformRootURL,
+                                 String   serverPlatformURLRoot,
                                  String   userId,
                                  String   password,
                                  AuditLog auditLog) throws InvalidParameterException
     {
-        super(serverName, serverPlatformRootURL, auditLog);
+        final String methodName = "Client Constructor";
 
-        this.restClient = new DataManagerRESTClient(serverName, serverPlatformRootURL, userId, password, auditLog);
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
+
+        this.serverName = serverName;
+        this.serverPlatformURLRoot = serverPlatformURLRoot;
+        this.auditLog = auditLog;
+
+        this.restClient = new DataManagerRESTClient(serverName, serverPlatformURLRoot, userId, password, auditLog);
+    }
+
+
+    /**
+     * Create a new client that is going to be used in an OMAG Server.
+     *
+     * @param serverName name of the server to connect to
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
+     * @param restClient client that issues the REST API calls
+     * @param maxPageSize maximum number of results supported by this server
+     * @param auditLog logging destination
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * REST API calls.
+     */
+    public DatabaseManagerClient(String                serverName,
+                                 String                serverPlatformURLRoot,
+                                 DataManagerRESTClient restClient,
+                                 int                   maxPageSize,
+                                 AuditLog              auditLog) throws InvalidParameterException
+    {
+        final String methodName = "Client Constructor";
+
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
+
+        this.serverName = serverName;
+        this.serverPlatformURLRoot = serverPlatformURLRoot;
+        this.auditLog = auditLog;
+
+        this.restClient = restClient;
     }
 
 
@@ -97,22 +152,26 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
      * userId/password of the calling server.  The end user's userId is sent on each request.
      *
      * @param serverName name of the server to connect to
-     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
      * @param userId caller's userId embedded in all HTTP requests
      * @param password caller's userId embedded in all HTTP requests
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
     public DatabaseManagerClient(String serverName,
-                                 String serverPlatformRootURL,
+                                 String serverPlatformURLRoot,
                                  String userId,
                                  String password) throws InvalidParameterException
     {
-        super(serverName, serverPlatformRootURL);
+        final String methodName = "Client Constructor";
 
-        this.restClient = new DataManagerRESTClient(serverName, serverPlatformRootURL, userId, password);
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
+
+        this.serverName = serverName;
+        this.serverPlatformURLRoot = serverPlatformURLRoot;
+
+        this.restClient = new DataManagerRESTClient(serverName, serverPlatformURLRoot, userId, password);
     }
-
 
 
     /* ========================================================
@@ -124,8 +183,8 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
      * Create a new metadata element to represent a database.
      *
      * @param userId calling user
-     * @param integratorGUID unique identifier of software server capability representing the caller
-     * @param integratorName unique name of software server capability representing the caller
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param databaseProperties properties to store
      *
      * @return unique identifier of the new metadata element
@@ -135,8 +194,8 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public String createDatabase(String             userId,
-                                 String             integratorGUID,
-                                 String             integratorName,
+                                 String             databaseManagerGUID,
+                                 String             databaseManagerName,
                                  DatabaseProperties databaseProperties) throws InvalidParameterException,
                                                                                UserNotAuthorizedException,
                                                                                PropertyServerException
@@ -146,20 +205,20 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
         final String qualifiedNameParameterName  = "qualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(integratorGUID, integratorGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(integratorName, integratorNameParameterName, methodName);
+        invalidParameterHandler.validateGUID(databaseManagerGUID, databaseManagerGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(databaseManagerName, databaseManagerNameParameterName, methodName);
         invalidParameterHandler.validateObject(databaseProperties, propertiesParameterName, methodName);
         invalidParameterHandler.validateName(databaseProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
-        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix;
+        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix;
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate,
                                                                   databaseProperties,
                                                                   serverName,
                                                                   userId,
-                                                                  integratorGUID,
-                                                                  integratorName);
+                                                                  databaseManagerGUID,
+                                                                  databaseManagerName);
 
         return restResult.getGUID();
     }
@@ -169,8 +228,8 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
      * Create a new metadata element to represent a database using an existing metadata element as a template.
      *
      * @param userId calling user
-     * @param integratorGUID unique identifier of software server capability representing the caller
-     * @param integratorName unique name of software server capability representing the caller
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param templateGUID unique identifier of the metadata element to copy
      * @param templateProperties properties that override the template
      *
@@ -181,8 +240,8 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public String createDatabaseFromTemplate(String             userId,
-                                             String             integratorGUID,
-                                             String             integratorName,
+                                             String             databaseManagerGUID,
+                                             String             databaseManagerName,
                                              String             templateGUID,
                                              TemplateProperties templateProperties) throws InvalidParameterException,
                                                                                            UserNotAuthorizedException,
@@ -194,21 +253,21 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
         final String qualifiedNameParameterName  = "qualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(integratorGUID, integratorGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(integratorName, integratorNameParameterName, methodName);
+        invalidParameterHandler.validateGUID(databaseManagerGUID, databaseManagerGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(databaseManagerName, databaseManagerNameParameterName, methodName);
         invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(templateProperties, propertiesParameterName, methodName);
         invalidParameterHandler.validateName(templateProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
-        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/from-template/{4}";
+        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/from-template/{4}";
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate,
                                                                   templateProperties,
                                                                   serverName,
                                                                   userId,
-                                                                  integratorGUID,
-                                                                  integratorName,
+                                                                  databaseManagerGUID,
+                                                                  databaseManagerName,
                                                                   templateGUID);
 
         return restResult.getGUID();
@@ -219,8 +278,8 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
      * Update the metadata element representing a database.
      *
      * @param userId calling user
-     * @param integratorGUID unique identifier of software server capability representing the caller
-     * @param integratorName unique name of software server capability representing the caller
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param databaseGUID unique identifier of the metadata element to update
      * @param databaseProperties new properties for this element
      *
@@ -229,8 +288,8 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public void updateDatabase(String             userId,
-                               String             integratorGUID,
-                               String             integratorName,
+                               String             databaseManagerGUID,
+                               String             databaseManagerName,
                                String             databaseGUID,
                                DatabaseProperties databaseProperties) throws InvalidParameterException,
                                                                              UserNotAuthorizedException,
@@ -242,21 +301,21 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
         final String qualifiedNameParameterName  = "qualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(integratorGUID, integratorGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(integratorName, integratorNameParameterName, methodName);
+        invalidParameterHandler.validateGUID(databaseManagerGUID, databaseManagerGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(databaseManagerName, databaseManagerNameParameterName, methodName);
         invalidParameterHandler.validateGUID(databaseGUID, elementGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(databaseProperties, propertiesParameterName, methodName);
         invalidParameterHandler.validateName(databaseProperties.getQualifiedName(), qualifiedNameParameterName, methodName);
 
-        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/{4}";
+        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/{4}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
                                         databaseProperties,
                                         serverName,
                                         userId,
-                                        integratorGUID,
-                                        integratorName,
+                                        databaseManagerGUID,
+                                        databaseManagerName,
                                         databaseGUID);
     }
 
@@ -267,8 +326,6 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
      * instance of the Data Manager OMAS).
      *
      * @param userId calling user
-     * @param integratorGUID unique identifier of software server capability representing the caller
-     * @param integratorName unique name of software server capability representing the caller
      * @param databaseGUID unique identifier of the metadata element to publish
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -276,8 +333,6 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public void publishDatabase(String userId,
-                                String integratorGUID,
-                                String integratorName,
                                 String databaseGUID) throws InvalidParameterException,
                                                             UserNotAuthorizedException,
                                                             PropertyServerException
@@ -286,19 +341,15 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
         final String elementGUIDParameterName = "databaseGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(integratorGUID, integratorGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(integratorName, integratorNameParameterName, methodName);
         invalidParameterHandler.validateGUID(databaseGUID, elementGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/{4}/publish";
+        final String urlTemplate = serverPlatformURLRoot + governanceURLTemplatePrefix + "/{4}/publish";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
                                         nullRequestBody,
                                         serverName,
                                         userId,
-                                        integratorGUID,
-                                        integratorName,
                                         databaseGUID);
     }
 
@@ -309,8 +360,6 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
      * instance of the Data Manager OMAS.  This is the setting when the database is first created).
      *
      * @param userId calling user
-     * @param integratorGUID unique identifier of software server capability representing the caller
-     * @param integratorName unique name of software server capability representing the caller
      * @param databaseGUID unique identifier of the metadata element to withdraw
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -318,8 +367,6 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public void withdrawDatabase(String userId,
-                                 String integratorGUID,
-                                 String integratorName,
                                  String databaseGUID) throws InvalidParameterException,
                                                              UserNotAuthorizedException,
                                                              PropertyServerException
@@ -328,19 +375,15 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
         final String elementGUIDParameterName = "databaseGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(integratorGUID, integratorGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(integratorName, integratorNameParameterName, methodName);
         invalidParameterHandler.validateGUID(databaseGUID, elementGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/{4}/withdraw";
+        final String urlTemplate = serverPlatformURLRoot + governanceURLTemplatePrefix + "databases/{4}/withdraw";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
                                         nullRequestBody,
                                         serverName,
                                         userId,
-                                        integratorGUID,
-                                        integratorName,
                                         databaseGUID);
     }
 
@@ -349,8 +392,8 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
      * Remove the metadata element representing a database.
      *
      * @param userId calling user
-     * @param integratorGUID unique identifier of software server capability representing the caller
-     * @param integratorName unique name of software server capability representing the caller
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param databaseGUID unique identifier of the metadata element to remove
      * @param qualifiedName unique name of the metadata element to remove
      *
@@ -359,34 +402,34 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public void removeDatabase(String userId,
-                               String integratorGUID,
-                               String integratorName,
+                               String databaseManagerGUID,
+                               String databaseManagerName,
                                String databaseGUID,
                                String qualifiedName) throws InvalidParameterException,
                                                             UserNotAuthorizedException,
                                                             PropertyServerException
     {
         final String methodName = "removeDatabase";
-        final String integratorGUIDParameterName = "integratorGUID";
-        final String integratorNameParameterName = "integratorName";
+        final String databaseManagerGUIDParameterName = "databaseManagerGUID";
+        final String databaseManagerNameParameterName = "databaseManagerName";
         final String elementGUIDParameterName    = "databaseGUID";
         final String qualifiedNameParameterName  = "qualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(integratorGUID, integratorGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(integratorName, integratorNameParameterName, methodName);
+        invalidParameterHandler.validateGUID(databaseManagerGUID, databaseManagerGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(databaseManagerName, databaseManagerNameParameterName, methodName);
         invalidParameterHandler.validateGUID(databaseGUID, elementGUIDParameterName, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
-        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/{4}/{5}/delete";
+        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/{4}/{5}/delete";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
                                         nullRequestBody,
                                         serverName,
                                         userId,
-                                        integratorGUID,
-                                        integratorName,
+                                        databaseManagerGUID,
+                                        databaseManagerName,
                                         databaseGUID,
                                         qualifiedName);
     }
@@ -482,8 +525,8 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
      * Retrieve the list of databases created by this caller.
      *
      * @param userId calling user
-     * @param integratorGUID unique identifier of software server capability representing the caller
-     * @param integratorName unique name of software server capability representing the caller
+     * @param databaseManagerGUID unique identifier of software server capability representing the database manager (DBMS)
+     * @param databaseManagerName unique name of software server capability representing the database manager (DBMS)
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -493,29 +536,29 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<DatabaseElement>   getDatabasesByDaemon(String userId,
-                                                        String integratorGUID,
-                                                        String integratorName,
-                                                        int    startFrom,
-                                                        int    pageSize) throws InvalidParameterException,
-                                                                                UserNotAuthorizedException,
-                                                                                PropertyServerException
+    public List<DatabaseElement>   getDatabasesForDatabaseManager(String userId,
+                                                                  String databaseManagerGUID,
+                                                                  String databaseManagerName,
+                                                                  int    startFrom,
+                                                                  int    pageSize) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException
     {
-        final String methodName = "getDatabasesByDaemon";
+        final String methodName = "getDatabasesForDatabaseManager";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(integratorGUID, integratorGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(integratorName, integratorNameParameterName, methodName);
+        invalidParameterHandler.validateGUID(databaseManagerGUID, databaseManagerGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(databaseManagerName, databaseManagerNameParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = retrieveURLTemplatePrefix + "/for-integrator/{2}/{3}?startFrom={4}&pageSize={5}";
+        final String urlTemplate = editURLTemplatePrefix + "?startFrom={4}&pageSize={5}";
 
         DatabasesResponse restResult = restClient.callDatabasesGetRESTCall(methodName,
                                                                            urlTemplate,
                                                                            serverName,
                                                                            userId,
-                                                                           integratorGUID,
-                                                                           integratorName,
+                                                                           databaseManagerGUID,
+                                                                           databaseManagerName,
                                                                            startFrom,
                                                                            validatedPageSize);
 
@@ -566,8 +609,8 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
      * Create a new metadata element to represent a database schema.
      *
      * @param userId calling user
-     * @param integratorGUID unique identifier of software server capability representing the caller
-     * @param integratorName unique name of software server capability representing the caller
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param databaseGUID unique identifier of the database where the schema is located
      * @param databaseSchemaProperties properties about the database schema
      *
@@ -578,8 +621,8 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public String createDatabaseSchema(String                   userId,
-                                       String                   integratorGUID,
-                                       String                   integratorName,
+                                       String                   databaseManagerGUID,
+                                       String                   databaseManagerName,
                                        String                   databaseGUID,
                                        DatabaseSchemaProperties databaseSchemaProperties) throws InvalidParameterException,
                                                                                                  UserNotAuthorizedException,
@@ -590,20 +633,20 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
         final String propertiesParameterName        = "databaseSchemaProperties";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(integratorGUID, integratorGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(integratorName, integratorNameParameterName, methodName);
+        invalidParameterHandler.validateGUID(databaseManagerGUID, databaseManagerGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(databaseManagerName, databaseManagerNameParameterName, methodName);
         invalidParameterHandler.validateGUID(databaseGUID, parentElementGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(databaseSchemaProperties, propertiesParameterName, methodName);
 
-        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/{4}/schemas";
+        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/{4}/schemas";
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate,
                                                                   databaseSchemaProperties,
                                                                   serverName,
                                                                   userId,
-                                                                  integratorGUID,
-                                                                  integratorName,
+                                                                  databaseManagerGUID,
+                                                                  databaseManagerName,
                                                                   databaseGUID);
 
         return restResult.getGUID();
@@ -614,8 +657,8 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
      * Create a new metadata element to represent a database schema using an existing metadata element as a template.
      *
      * @param userId calling user
-     * @param integratorGUID unique identifier of software server capability representing the caller
-     * @param integratorName unique name of software server capability representing the caller
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param templateGUID unique identifier of the metadata element to copy
      * @param databaseGUID unique identifier of the database where the schema is located
      * @param templateProperties properties that override the template
@@ -627,8 +670,8 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public String createDatabaseSchemaFromTemplate(String             userId,
-                                                   String             integratorGUID,
-                                                   String             integratorName,
+                                                   String             databaseManagerGUID,
+                                                   String             databaseManagerName,
                                                    String             templateGUID,
                                                    String             databaseGUID,
                                                    TemplateProperties templateProperties) throws InvalidParameterException,
@@ -641,21 +684,21 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
         final String propertiesParameterName        = "templateProperties";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(integratorGUID, integratorGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(integratorName, integratorNameParameterName, methodName);
+        invalidParameterHandler.validateGUID(databaseManagerGUID, databaseManagerGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(databaseManagerName, databaseManagerNameParameterName, methodName);
         invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(databaseGUID, parentElementGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(templateProperties, propertiesParameterName, methodName);
 
-        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/{4}/schemas/from-template/{5}";
+        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/{4}/schemas/from-template/{5}";
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate,
                                                                   templateProperties,
                                                                   serverName,
                                                                   userId,
-                                                                  integratorGUID,
-                                                                  integratorName,
+                                                                  databaseManagerGUID,
+                                                                  databaseManagerName,
                                                                   databaseGUID,
                                                                   templateGUID);
 
@@ -667,8 +710,8 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
      * Update the metadata element representing a database schema.
      *
      * @param userId calling user
-     * @param integratorGUID unique identifier of software server capability representing the caller
-     * @param integratorName unique name of software server capability representing the caller
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param databaseSchemaGUID unique identifier of the metadata element to update
      * @param databaseSchemaProperties new properties for the metadata element
      *
@@ -677,8 +720,8 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public void updateDatabaseSchema(String                   userId,
-                                     String                   integratorGUID,
-                                     String                   integratorName,
+                                     String                   databaseManagerGUID,
+                                     String                   databaseManagerName,
                                      String                   databaseSchemaGUID,
                                      DatabaseSchemaProperties databaseSchemaProperties) throws InvalidParameterException,
                                                                                                UserNotAuthorizedException,
@@ -689,20 +732,20 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
         final String propertiesParameterName  = "databaseProperties";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(integratorGUID, integratorGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(integratorName, integratorNameParameterName, methodName);
+        invalidParameterHandler.validateGUID(databaseManagerGUID, databaseManagerGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(databaseManagerName, databaseManagerNameParameterName, methodName);
         invalidParameterHandler.validateGUID(databaseSchemaGUID, elementGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(databaseSchemaProperties, propertiesParameterName, methodName);
 
-        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/schemas/{4}";
+        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/schemas/{4}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
                                         databaseSchemaProperties,
                                         serverName,
                                         userId,
-                                        integratorGUID,
-                                        integratorName,
+                                        databaseManagerGUID,
+                                        databaseManagerName,
                                         databaseSchemaGUID);
     }
 
@@ -713,8 +756,6 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
      * instance of the Data Manager OMAS).
      *
      * @param userId calling user
-     * @param integratorGUID unique identifier of software server capability representing the caller
-     * @param integratorName unique name of software server capability representing the caller
      * @param databaseSchemaGUID unique identifier of the metadata element to publish
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -722,8 +763,6 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public void publishDatabaseSchema(String userId,
-                                      String integratorGUID,
-                                      String integratorName,
                                       String databaseSchemaGUID) throws InvalidParameterException,
                                                                         UserNotAuthorizedException,
                                                                         PropertyServerException
@@ -732,19 +771,15 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
         final String elementGUIDParameterName    = "databaseSchemaGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(integratorGUID, integratorGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(integratorName, integratorNameParameterName, methodName);
         invalidParameterHandler.validateGUID(databaseSchemaGUID, elementGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/schemas/{4}/publish";
+        final String urlTemplate = serverPlatformURLRoot + governanceURLTemplatePrefix + "/schemas/{4}/publish";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
                                         nullRequestBody,
                                         serverName,
                                         userId,
-                                        integratorGUID,
-                                        integratorName,
                                         databaseSchemaGUID);
     }
 
@@ -755,8 +790,6 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
      * instance of the Data Manager OMAS.  This is the setting when the database is first created).
      *
      * @param userId calling user
-     * @param integratorGUID unique identifier of software server capability representing the caller
-     * @param integratorName unique name of software server capability representing the caller
      * @param databaseSchemaGUID unique identifier of the metadata element to withdraw
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -764,8 +797,6 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public void withdrawDatabaseSchema(String userId,
-                                       String integratorGUID,
-                                       String integratorName,
                                        String databaseSchemaGUID) throws InvalidParameterException,
                                                                          UserNotAuthorizedException,
                                                                          PropertyServerException
@@ -774,19 +805,15 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
         final String elementGUIDParameterName = "databaseSchemaGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(integratorGUID, integratorGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(integratorName, integratorNameParameterName, methodName);
         invalidParameterHandler.validateGUID(databaseSchemaGUID, elementGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/schemas/{4}/withdraw";
+        final String urlTemplate = serverPlatformURLRoot + governanceURLTemplatePrefix + "/schemas/{4}/withdraw";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
                                         nullRequestBody,
                                         serverName,
                                         userId,
-                                        integratorGUID,
-                                        integratorName,
                                         databaseSchemaGUID);
     }
 
@@ -795,8 +822,8 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
      * Remove the metadata element representing a database schema.
      *
      * @param userId calling user
-     * @param integratorGUID unique identifier of software server capability representing the caller
-     * @param integratorName unique name of software server capability representing the caller
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param databaseSchemaGUID unique identifier of the metadata element to remove
      * @param qualifiedName unique name of the metadata element to remove
      *
@@ -805,8 +832,8 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public void removeDatabaseSchema(String userId,
-                                     String integratorGUID,
-                                     String integratorName,
+                                     String databaseManagerGUID,
+                                     String databaseManagerName,
                                      String databaseSchemaGUID,
                                      String qualifiedName) throws InvalidParameterException,
                                                                   UserNotAuthorizedException,
@@ -817,20 +844,20 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
         final String qualifiedNameParameterName  = "qualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(integratorGUID, integratorGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(integratorName, integratorNameParameterName, methodName);
+        invalidParameterHandler.validateGUID(databaseManagerGUID, databaseManagerGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(databaseManagerName, databaseManagerNameParameterName, methodName);
         invalidParameterHandler.validateGUID(databaseSchemaGUID, elementGUIDParameterName, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
-        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/schemas/{4}/{5}/delete";
+        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/schemas/{4}/{5}/delete";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
                                         nullRequestBody,
                                         serverName,
                                         userId,
-                                        integratorGUID,
-                                        integratorName,
+                                        databaseManagerGUID,
+                                        databaseManagerName,
                                         databaseSchemaGUID,
                                         qualifiedName);
     }
@@ -1007,8 +1034,8 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
      * Create a new metadata element to represent a database table.
      *
      * @param userId calling user
-     * @param integratorGUID unique identifier of software server capability representing the caller
-     * @param integratorName unique name of software server capability representing the caller
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param databaseSchemaGUID unique identifier of the database schema where the database table is located.
      * @param databaseTableProperties properties for the database table
      *
@@ -1019,8 +1046,8 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public String createDatabaseTable(String                  userId,
-                                      String                  integratorGUID,
-                                      String                  integratorName,
+                                      String                  databaseManagerGUID,
+                                      String                  databaseManagerName,
                                       String                  databaseSchemaGUID,
                                       DatabaseTableProperties databaseTableProperties) throws InvalidParameterException,
                                                                                               UserNotAuthorizedException,
@@ -1031,20 +1058,20 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
         final String propertiesParameterName        = "databaseTableProperties";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(integratorGUID, integratorGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(integratorName, integratorNameParameterName, methodName);
+        invalidParameterHandler.validateGUID(databaseManagerGUID, databaseManagerGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(databaseManagerName, databaseManagerNameParameterName, methodName);
         invalidParameterHandler.validateGUID(databaseSchemaGUID, parentElementGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(databaseTableProperties, propertiesParameterName, methodName);
 
-        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/schemas/{4}/tables";
+        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/schemas/{4}/tables";
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate,
                                                                   databaseTableProperties,
                                                                   serverName,
                                                                   userId,
-                                                                  integratorGUID,
-                                                                  integratorName,
+                                                                  databaseManagerGUID,
+                                                                  databaseManagerName,
                                                                   databaseSchemaGUID);
 
         return restResult.getGUID();
@@ -1055,8 +1082,8 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
      * Create a new metadata element to represent a database table using an existing metadata element as a template.
      *
      * @param userId calling user
-     * @param integratorGUID unique identifier of software server capability representing the caller
-     * @param integratorName unique name of software server capability representing the caller
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param templateGUID unique identifier of the metadata element to copy
      * @param databaseSchemaGUID unique identifier of the database schema where the database table is located.
      * @param templateProperties properties that override the template
@@ -1068,8 +1095,8 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public String createDatabaseTableFromTemplate(String             userId,
-                                                  String             integratorGUID,
-                                                  String             integratorName,
+                                                  String             databaseManagerGUID,
+                                                  String             databaseManagerName,
                                                   String             templateGUID,
                                                   String             databaseSchemaGUID,
                                                   TemplateProperties templateProperties) throws InvalidParameterException,
@@ -1082,21 +1109,21 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
         final String propertiesParameterName        = "templateProperties";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(integratorGUID, integratorGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(integratorName, integratorNameParameterName, methodName);
+        invalidParameterHandler.validateGUID(databaseManagerGUID, databaseManagerGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(databaseManagerName, databaseManagerNameParameterName, methodName);
         invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(databaseSchemaGUID, parentElementGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(templateProperties, propertiesParameterName, methodName);
 
-        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/schemas/{4}/tables/from-template/{5}";
+        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/schemas/{4}/tables/from-template/{5}";
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate,
                                                                   templateProperties,
                                                                   serverName,
                                                                   userId,
-                                                                  integratorGUID,
-                                                                  integratorName,
+                                                                  databaseManagerGUID,
+                                                                  databaseManagerName,
                                                                   databaseSchemaGUID,
                                                                   templateGUID);
 
@@ -1108,8 +1135,8 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
      * Update the metadata element representing a database table.
      *
      * @param userId calling user
-     * @param integratorGUID unique identifier of software server capability representing the caller
-     * @param integratorName unique name of software server capability representing the caller
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param databaseTableGUID unique identifier of the database table to update
      * @param databaseTableProperties new properties for the database table
      *
@@ -1118,8 +1145,8 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public void updateDatabaseTable(String                  userId,
-                                    String                  integratorGUID,
-                                    String                  integratorName,
+                                    String                  databaseManagerGUID,
+                                    String                  databaseManagerName,
                                     String                  databaseTableGUID,
                                     DatabaseTableProperties databaseTableProperties) throws InvalidParameterException,
                                                                                             UserNotAuthorizedException,
@@ -1130,20 +1157,20 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
         final String propertiesParameterName  = "databaseTableProperties";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(integratorGUID, integratorGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(integratorName, integratorNameParameterName, methodName);
+        invalidParameterHandler.validateGUID(databaseManagerGUID, databaseManagerGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(databaseManagerName, databaseManagerNameParameterName, methodName);
         invalidParameterHandler.validateGUID(databaseTableGUID, elementGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(databaseTableProperties, propertiesParameterName, methodName);
 
-        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/schemas/tables/{4}";
+        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/schemas/tables/{4}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
                                         databaseTableProperties,
                                         serverName,
                                         userId,
-                                        integratorGUID,
-                                        integratorName,
+                                        databaseManagerGUID,
+                                        databaseManagerName,
                                         databaseTableGUID);
     }
 
@@ -1152,8 +1179,8 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
      * Remove the metadata element representing a database table.
      *
      * @param userId calling user
-     * @param integratorGUID unique identifier of software server capability representing the caller
-     * @param integratorName unique name of software server capability representing the caller
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param databaseTableGUID unique identifier of the metadata element to remove
      * @param qualifiedName unique name of the metadata element to remove
      *
@@ -1162,8 +1189,8 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public void removeDatabaseTable(String userId,
-                                    String integratorGUID,
-                                    String integratorName,
+                                    String databaseManagerGUID,
+                                    String databaseManagerName,
                                     String databaseTableGUID,
                                     String qualifiedName) throws InvalidParameterException,
                                                                  UserNotAuthorizedException,
@@ -1174,20 +1201,20 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
         final String qualifiedNameParameterName  = "qualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(integratorGUID, integratorGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(integratorName, integratorNameParameterName, methodName);
+        invalidParameterHandler.validateGUID(databaseManagerGUID, databaseManagerGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(databaseManagerName, databaseManagerNameParameterName, methodName);
         invalidParameterHandler.validateGUID(databaseTableGUID, elementGUIDParameterName, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
-        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/schemas/tables/{4}/{5}/delete";
+        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/schemas/tables/{4}/{5}/delete";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
                                         nullRequestBody,
                                         serverName,
                                         userId,
-                                        integratorGUID,
-                                        integratorName,
+                                        databaseManagerGUID,
+                                        databaseManagerName,
                                         databaseTableGUID,
                                         qualifiedName);
     }
@@ -1360,8 +1387,8 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
      * Create a new metadata element to represent a database view.
      *
      * @param userId calling user
-     * @param integratorGUID unique identifier of software server capability representing the caller
-     * @param integratorName unique name of software server capability representing the caller
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param databaseSchemaGUID unique identifier of the database schema where the database view is located.
      * @param databaseViewProperties properties for the new view
      *
@@ -1372,8 +1399,8 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public String createDatabaseView(String                 userId,
-                                     String                 integratorGUID,
-                                     String                 integratorName,
+                                     String                 databaseManagerGUID,
+                                     String                 databaseManagerName,
                                      String                 databaseSchemaGUID,
                                      DatabaseViewProperties databaseViewProperties) throws InvalidParameterException,
                                                                                            UserNotAuthorizedException,
@@ -1384,20 +1411,20 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
         final String propertiesParameterName        = "databaseViewProperties";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(integratorGUID, integratorGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(integratorName, integratorNameParameterName, methodName);
+        invalidParameterHandler.validateGUID(databaseManagerGUID, databaseManagerGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(databaseManagerName, databaseManagerNameParameterName, methodName);
         invalidParameterHandler.validateGUID(databaseSchemaGUID, parentElementGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(databaseViewProperties, propertiesParameterName, methodName);
 
-        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/schemas/{4}/tables/views";
+        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/schemas/{4}/tables/views";
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate,
                                                                   databaseViewProperties,
                                                                   serverName,
                                                                   userId,
-                                                                  integratorGUID,
-                                                                  integratorName,
+                                                                  databaseManagerGUID,
+                                                                  databaseManagerName,
                                                                   databaseSchemaGUID);
 
         return restResult.getGUID();
@@ -1408,8 +1435,8 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
      * Create a new metadata element to represent a database view using an existing metadata element as a template.
      *
      * @param userId calling user
-     * @param integratorGUID unique identifier of software server capability representing the caller
-     * @param integratorName unique name of software server capability representing the caller
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param templateGUID unique identifier of the metadata element to copy
      * @param databaseSchemaGUID unique identifier of the database schema where the database view is located.
      * @param templateProperties properties that override the template
@@ -1421,8 +1448,8 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public String createDatabaseViewFromTemplate(String             userId,
-                                                 String             integratorGUID,
-                                                 String             integratorName,
+                                                 String             databaseManagerGUID,
+                                                 String             databaseManagerName,
                                                  String             templateGUID,
                                                  String             databaseSchemaGUID,
                                                  TemplateProperties templateProperties) throws InvalidParameterException,
@@ -1435,21 +1462,21 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
         final String propertiesParameterName        = "templateProperties";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(integratorGUID, integratorGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(integratorName, integratorNameParameterName, methodName);
+        invalidParameterHandler.validateGUID(databaseManagerGUID, databaseManagerGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(databaseManagerName, databaseManagerNameParameterName, methodName);
         invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(databaseSchemaGUID, parentElementGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(templateProperties, propertiesParameterName, methodName);
 
-        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/schemas/{4}/tables/views/from-template/{5}";
+        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/schemas/{4}/tables/views/from-template/{5}";
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate,
                                                                   templateProperties,
                                                                   serverName,
                                                                   userId,
-                                                                  integratorGUID,
-                                                                  integratorName,
+                                                                  databaseManagerGUID,
+                                                                  databaseManagerName,
                                                                   databaseSchemaGUID,
                                                                   templateGUID);
 
@@ -1461,8 +1488,8 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
      * Update the metadata element representing a database table.
      *
      * @param userId calling user
-     * @param integratorGUID unique identifier of software server capability representing the caller
-     * @param integratorName unique name of software server capability representing the caller
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param databaseViewGUID unique identifier of the database view to update
      * @param databaseViewProperties properties for the new database view
      *
@@ -1471,8 +1498,8 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public void updateDatabaseView(String                 userId,
-                                   String                 integratorGUID,
-                                   String                 integratorName,
+                                   String                 databaseManagerGUID,
+                                   String                 databaseManagerName,
                                    String                 databaseViewGUID,
                                    DatabaseViewProperties databaseViewProperties) throws InvalidParameterException,
                                                                                          UserNotAuthorizedException,
@@ -1483,20 +1510,20 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
         final String propertiesParameterName  = "databaseViewProperties";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(integratorGUID, integratorGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(integratorName, integratorNameParameterName, methodName);
+        invalidParameterHandler.validateGUID(databaseManagerGUID, databaseManagerGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(databaseManagerName, databaseManagerNameParameterName, methodName);
         invalidParameterHandler.validateGUID(databaseViewGUID, elementGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(databaseViewProperties, propertiesParameterName, methodName);
 
-        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/schemas/tables/views/{4}";
+        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/schemas/tables/views/{4}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
                                         databaseViewProperties,
                                         serverName,
                                         userId,
-                                        integratorGUID,
-                                        integratorName,
+                                        databaseManagerGUID,
+                                        databaseManagerName,
                                         databaseViewGUID);
     }
 
@@ -1505,8 +1532,8 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
      * Remove the metadata element representing a database table.
      *
      * @param userId calling user
-     * @param integratorGUID unique identifier of software server capability representing the caller
-     * @param integratorName unique name of software server capability representing the caller
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param databaseViewGUID unique identifier of the metadata element to remove
      * @param qualifiedName unique name of the metadata element to remove
      *
@@ -1515,8 +1542,8 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public void removeDatabaseView(String userId,
-                                   String integratorGUID,
-                                   String integratorName,
+                                   String databaseManagerGUID,
+                                   String databaseManagerName,
                                    String databaseViewGUID,
                                    String qualifiedName) throws InvalidParameterException,
                                                                 UserNotAuthorizedException,
@@ -1527,20 +1554,20 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
         final String qualifiedNameParameterName  = "qualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(integratorGUID, integratorGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(integratorName, integratorNameParameterName, methodName);
+        invalidParameterHandler.validateGUID(databaseManagerGUID, databaseManagerGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(databaseManagerName, databaseManagerNameParameterName, methodName);
         invalidParameterHandler.validateGUID(databaseViewGUID, elementGUIDParameterName, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
-        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/schemas/tables/views/{4}/{5}/delete";
+        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/schemas/tables/views/{4}/{5}/delete";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
                                         nullRequestBody,
                                         serverName,
                                         userId,
-                                        integratorGUID,
-                                        integratorName,
+                                        databaseManagerGUID,
+                                        databaseManagerName,
                                         databaseViewGUID,
                                         qualifiedName);
     }
@@ -1719,8 +1746,8 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
      * Create a new metadata element to represent a database column.
      *
      * @param userId calling user
-     * @param integratorGUID unique identifier of software server capability representing the caller
-     * @param integratorName unique name of software server capability representing the caller
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param databaseTableGUID unique identifier of the database table where this column is located
      * @param databaseColumnProperties properties for the new column
      *
@@ -1731,8 +1758,8 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public String createDatabaseColumn(String                   userId,
-                                       String                   integratorGUID,
-                                       String                   integratorName,
+                                       String                   databaseManagerGUID,
+                                       String                   databaseManagerName,
                                        String                   databaseTableGUID,
                                        DatabaseColumnProperties databaseColumnProperties) throws InvalidParameterException,
                                                                                                  UserNotAuthorizedException,
@@ -1743,20 +1770,20 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
         final String propertiesParameterName        = "databaseColumnProperties";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(integratorGUID, integratorGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(integratorName, integratorNameParameterName, methodName);
+        invalidParameterHandler.validateGUID(databaseManagerGUID, databaseManagerGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(databaseManagerName, databaseManagerNameParameterName, methodName);
         invalidParameterHandler.validateGUID(databaseTableGUID, parentElementGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(databaseColumnProperties, propertiesParameterName, methodName);
 
-        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/schemas/tables/{4}/columns";
+        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/schemas/tables/{4}/columns";
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate,
                                                                   databaseColumnProperties,
                                                                   serverName,
                                                                   userId,
-                                                                  integratorGUID,
-                                                                  integratorName,
+                                                                  databaseManagerGUID,
+                                                                  databaseManagerName,
                                                                   databaseTableGUID);
 
         return restResult.getGUID();
@@ -1767,8 +1794,8 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
      * Create a new metadata element to represent a database column using an existing metadata element as a template.
      *
      * @param userId calling user
-     * @param integratorGUID unique identifier of software server capability representing the caller
-     * @param integratorName unique name of software server capability representing the caller
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param templateGUID unique identifier of the metadata element to copy
      * @param databaseTableGUID unique identifier of the database table where this column is located
      * @param templateProperties properties that override the template
@@ -1780,8 +1807,8 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public String createDatabaseColumnFromTemplate(String             userId,
-                                                   String             integratorGUID,
-                                                   String             integratorName,
+                                                   String             databaseManagerGUID,
+                                                   String             databaseManagerName,
                                                    String             templateGUID,
                                                    String             databaseTableGUID,
                                                    TemplateProperties templateProperties) throws InvalidParameterException,
@@ -1794,21 +1821,21 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
         final String propertiesParameterName        = "templateProperties";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(integratorGUID, integratorGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(integratorName, integratorNameParameterName, methodName);
+        invalidParameterHandler.validateGUID(databaseManagerGUID, databaseManagerGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(databaseManagerName, databaseManagerNameParameterName, methodName);
         invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(databaseTableGUID, parentElementGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(templateProperties, propertiesParameterName, methodName);
 
-        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/schemas/tables/{4}/columns/from-template/{5}";
+        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/schemas/tables/{4}/columns/from-template/{5}";
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   urlTemplate,
                                                                   templateProperties,
                                                                   serverName,
                                                                   userId,
-                                                                  integratorGUID,
-                                                                  integratorName,
+                                                                  databaseManagerGUID,
+                                                                  databaseManagerName,
                                                                   databaseTableGUID,
                                                                   templateGUID);
 
@@ -1820,8 +1847,8 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
      * Update the metadata element representing a database column.
      *
      * @param userId calling user
-     * @param integratorGUID unique identifier of software server capability representing the caller
-     * @param integratorName unique name of software server capability representing the caller
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param databaseColumnGUID unique identifier of the metadata element to update
      * @param databaseColumnProperties new properties for the metadata element
      *
@@ -1830,8 +1857,8 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public void updateDatabaseColumn(String                   userId,
-                                     String                   integratorGUID,
-                                     String                   integratorName,
+                                     String                   databaseManagerGUID,
+                                     String                   databaseManagerName,
                                      String                   databaseColumnGUID,
                                      DatabaseColumnProperties databaseColumnProperties) throws InvalidParameterException,
                                                                                                UserNotAuthorizedException,
@@ -1842,20 +1869,20 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
         final String propertiesParameterName  = "databaseColumnProperties";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(integratorGUID, integratorGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(integratorName, integratorNameParameterName, methodName);
+        invalidParameterHandler.validateGUID(databaseManagerGUID, databaseManagerGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(databaseManagerName, databaseManagerNameParameterName, methodName);
         invalidParameterHandler.validateGUID(databaseColumnGUID, elementGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(databaseColumnProperties, propertiesParameterName, methodName);
 
-        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/schemas/tables/columns/{4}";
+        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/schemas/tables/columns/{4}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
                                         databaseColumnProperties,
                                         serverName,
                                         userId,
-                                        integratorGUID,
-                                        integratorName,
+                                        databaseManagerGUID,
+                                        databaseManagerName,
                                         databaseColumnGUID);
     }
 
@@ -1864,8 +1891,8 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
      * Remove the metadata element representing a database column.
      *
      * @param userId calling user
-     * @param integratorGUID unique identifier of software server capability representing the caller
-     * @param integratorName unique name of software server capability representing the caller
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param databaseColumnGUID unique identifier of the metadata element to remove
      * @param qualifiedName unique name of the metadata element to remove
      *
@@ -1874,8 +1901,8 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public void removeDatabaseColumn(String userId,
-                                     String integratorGUID,
-                                     String integratorName,
+                                     String databaseManagerGUID,
+                                     String databaseManagerName,
                                      String databaseColumnGUID,
                                      String qualifiedName) throws InvalidParameterException,
                                                                   UserNotAuthorizedException,
@@ -1886,20 +1913,20 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
         final String qualifiedNameParameterName  = "qualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(integratorGUID, integratorGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(integratorName, integratorNameParameterName, methodName);
+        invalidParameterHandler.validateGUID(databaseManagerGUID, databaseManagerGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(databaseManagerName, databaseManagerNameParameterName, methodName);
         invalidParameterHandler.validateGUID(databaseColumnGUID, elementGUIDParameterName, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
-        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/schemas/tables/columns/{4}/{5}/delete";
+        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/schemas/tables/columns/{4}/{5}/delete";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
                                         nullRequestBody,
                                         serverName,
                                         userId,
-                                        integratorGUID,
-                                        integratorName,
+                                        databaseManagerGUID,
+                                        databaseManagerName,
                                         databaseColumnGUID,
                                         qualifiedName);
     }
@@ -2077,8 +2104,8 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
      * in this column and it can be used to uniquely identify the column.
      *
      * @param userId calling user
-     * @param integratorGUID unique identifier of software server capability representing the caller
-     * @param integratorName unique name of software server capability representing the caller
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param databaseColumnGUID unique identifier if the primary key column
      * @param databasePrimaryKeyProperties properties to store
      *
@@ -2087,8 +2114,8 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public void setPrimaryKeyOnColumn(String                       userId,
-                                      String                       integratorGUID,
-                                      String                       integratorName,
+                                      String                       databaseManagerGUID,
+                                      String                       databaseManagerName,
                                       String                       databaseColumnGUID,
                                       DatabasePrimaryKeyProperties databasePrimaryKeyProperties) throws InvalidParameterException,
                                                                                                         UserNotAuthorizedException,
@@ -2099,20 +2126,20 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
         final String propertiesParameterName        = "databasePrimaryKeyProperties";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(integratorGUID, integratorGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(integratorName, integratorNameParameterName, methodName);
+        invalidParameterHandler.validateGUID(databaseManagerGUID, databaseManagerGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(databaseManagerName, databaseManagerNameParameterName, methodName);
         invalidParameterHandler.validateGUID(databaseColumnGUID, parentElementGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(databasePrimaryKeyProperties, propertiesParameterName, methodName);
 
-        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/schemas/tables/columns/{4}/primary-key";
+        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/schemas/tables/columns/{4}/primary-key";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
                                         databasePrimaryKeyProperties,
                                         serverName,
                                         userId,
-                                        integratorGUID,
-                                        integratorName,
+                                        databaseManagerGUID,
+                                        databaseManagerName,
                                         databaseColumnGUID);
     }
 
@@ -2121,8 +2148,8 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
      * Remove the classification that this column is a primary key.
      *
      * @param userId calling user
-     * @param integratorGUID unique identifier of software server capability representing the caller
-     * @param integratorName unique name of software server capability representing the caller
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param databaseColumnGUID unique identifier if the primary key column
      *
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -2130,8 +2157,8 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public void removePrimaryKeyFromColumn(String                       userId,
-                                           String                       integratorGUID,
-                                           String                       integratorName,
+                                           String                       databaseManagerGUID,
+                                           String                       databaseManagerName,
                                            String                       databaseColumnGUID) throws InvalidParameterException,
                                                                                                    UserNotAuthorizedException,
                                                                                                    PropertyServerException
@@ -2140,19 +2167,19 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
         final String parentElementGUIDParameterName = "databaseColumnGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(integratorGUID, integratorGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(integratorName, integratorNameParameterName, methodName);
+        invalidParameterHandler.validateGUID(databaseManagerGUID, databaseManagerGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(databaseManagerName, databaseManagerNameParameterName, methodName);
         invalidParameterHandler.validateGUID(databaseColumnGUID, parentElementGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/schemas/tables/columns/{4}/primary-key/delete";
+        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/schemas/tables/columns/{4}/primary-key/delete";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
                                         nullRequestBody,
                                         serverName,
                                         userId,
-                                        integratorGUID,
-                                        integratorName,
+                                        databaseManagerGUID,
+                                        databaseManagerName,
                                         databaseColumnGUID);
     }
 
@@ -2162,8 +2189,8 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
      * to form a link.
      *
      * @param userId calling user
-     * @param integratorGUID unique identifier of software server capability representing the caller
-     * @param integratorName unique name of software server capability representing the caller
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param primaryKeyColumnGUID unique identifier of the column containing the primary key
      * @param foreignKeyColumnGUID unique identifier of the column containing the primary key from the other table
      * @param databaseForeignKeyProperties properties about the foreign key relationship
@@ -2173,8 +2200,8 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public void addForeignKeyRelationship(String                       userId,
-                                          String                       integratorGUID,
-                                          String                       integratorName,
+                                          String                       databaseManagerGUID,
+                                          String                       databaseManagerName,
                                           String                       primaryKeyColumnGUID,
                                           String                       foreignKeyColumnGUID,
                                           DatabaseForeignKeyProperties databaseForeignKeyProperties) throws InvalidParameterException,
@@ -2187,21 +2214,21 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
         final String propertiesParameterName         = "databaseForeignKeyProperties";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(integratorGUID, integratorGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(integratorName, integratorNameParameterName, methodName);
+        invalidParameterHandler.validateGUID(databaseManagerGUID, databaseManagerGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(databaseManagerName, databaseManagerNameParameterName, methodName);
         invalidParameterHandler.validateGUID(primaryKeyColumnGUID, primaryElementGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(foreignKeyColumnGUID, foreignElementGUIDParameterName, methodName);
         invalidParameterHandler.validateObject(databaseForeignKeyProperties, propertiesParameterName, methodName);
 
-        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/schemas/tables/columns/{4}/foreign-key/{5}";
+        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/schemas/tables/columns/{4}/foreign-key/{5}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
                                         databaseForeignKeyProperties,
                                         serverName,
                                         userId,
-                                        integratorGUID,
-                                        integratorName,
+                                        databaseManagerGUID,
+                                        databaseManagerName,
                                         foreignKeyColumnGUID,
                                         primaryKeyColumnGUID);
     }
@@ -2211,8 +2238,8 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
      * Remove the foreign key relationship for the requested columns.
      *
      * @param userId calling user
-     * @param integratorGUID unique identifier of software server capability representing the caller
-     * @param integratorName unique name of software server capability representing the caller
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
      * @param primaryKeyColumnGUID unique identifier of the column that is the linked primary key
      * @param foreignKeyColumnGUID unique identifier of the column the contains the primary key from another table
      *
@@ -2221,8 +2248,8 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public void removeForeignKeyRelationship(String                       userId,
-                                             String                       integratorGUID,
-                                             String                       integratorName,
+                                             String                       databaseManagerGUID,
+                                             String                       databaseManagerName,
                                              String                       primaryKeyColumnGUID,
                                              String                       foreignKeyColumnGUID) throws InvalidParameterException,
                                                                                                        UserNotAuthorizedException,
@@ -2233,20 +2260,20 @@ public class DatabaseManagerClient extends ConnectedAssetClientBase implements D
         final String foreignElementGUIDParameterName = "foreignKeyColumnGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(integratorGUID, integratorGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(integratorName, integratorNameParameterName, methodName);
+        invalidParameterHandler.validateGUID(databaseManagerGUID, databaseManagerGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(databaseManagerName, databaseManagerNameParameterName, methodName);
         invalidParameterHandler.validateGUID(primaryKeyColumnGUID, primaryElementGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(foreignKeyColumnGUID, foreignElementGUIDParameterName, methodName);
 
-        final String urlTemplate = serverPlatformRootURL + editURLTemplatePrefix + "/schemas/tables/columns/{4}/foreign-key/{5}/delete";
+        final String urlTemplate = serverPlatformURLRoot + editURLTemplatePrefix + "/schemas/tables/columns/{4}/foreign-key/{5}/delete";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
                                         nullRequestBody,
                                         serverName,
                                         userId,
-                                        integratorGUID,
-                                        integratorName,
+                                        databaseManagerGUID,
+                                        databaseManagerName,
                                         foreignKeyColumnGUID,
                                         primaryKeyColumnGUID);
     }

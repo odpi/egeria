@@ -100,6 +100,36 @@ public interface AssetClassificationInterface
 
 
     /**
+     * Update the zones for a specific asset to the zone list specified in the publishZones.
+     *
+     * @param userId calling user
+     * @param assetGUID unique identifier for the asset to update
+     * @throws InvalidParameterException entity not known, null userId or guid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    void publishAsset(String                userId,
+                      String                assetGUID) throws InvalidParameterException,
+                                                              UserNotAuthorizedException,
+                                                              PropertyServerException;
+
+
+    /**
+     * Update the zones for a specific asset to the zone list specified in the defaultZones.
+     *
+     * @param userId calling user
+     * @param assetGUID unique identifier for the asset to update
+     * @throws InvalidParameterException entity not known, null userId or guid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    void withdrawAsset(String                userId,
+                       String                assetGUID) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException;
+
+
+    /**
      * Update the zones for a specific asset.
      *
      * @param userId calling user

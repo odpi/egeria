@@ -20,14 +20,16 @@ public class OMRSInstanceEvent extends OMRSEvent
     /*
      * Instance specific properties for typical instance events
      */
-    private String        typeDefGUID          = null;
-    private String        typeDefName          = null;
-    private String        instanceGUID         = null;
-    private EntityDetail  originalEntity       = null;
-    private EntityDetail  entity               = null;
-    private Relationship  originalRelationship = null;
-    private Relationship  relationship         = null;
-    private InstanceGraph instanceBatch        = null;
+    private String         typeDefGUID            = null;
+    private String         typeDefName            = null;
+    private String         instanceGUID           = null;
+    private EntityDetail   originalEntity         = null;
+    private EntityDetail   entity                 = null;
+    private Relationship   originalRelationship   = null;
+    private Relationship   relationship           = null;
+    private Classification originalClassification = null;
+    private Classification classification         = null;
+    private InstanceGraph  instanceBatch          = null;
 
     /*
      * Home repository Id for refresh requests.
@@ -74,6 +76,8 @@ public class OMRSInstanceEvent extends OMRSEvent
             this.entity = instanceSection.getEntity();
             this.originalRelationship = instanceSection.getOriginalRelationship();
             this.relationship = instanceSection.getRelationship();
+            this.originalClassification = instanceSection.getOriginalClassification();
+            this.classification = instanceSection.getClassification();
             this.homeMetadataCollectionId = instanceSection.getHomeMetadataCollectionId();
 
             this.originalHomeMetadataCollectionId = instanceSection.getOriginalHomeMetadataCollectionId();
@@ -120,6 +124,37 @@ public class OMRSInstanceEvent extends OMRSEvent
         {
         	this.typeDefGUID = type.getTypeDefGUID();
         	this.typeDefName = type.getTypeDefName();
+        }
+
+        this.instanceGUID = entity.getGUID();
+    }
+
+
+    /**
+     * Constructor for instance events related to a change to an entity.
+     *
+     * @param instanceEventType type of event
+     * @param entity new values for entity that changed
+     * @param originalClassification original Classification value (if existed)
+     * @param classification new classification (if relevant)
+     */
+    public OMRSInstanceEvent(OMRSInstanceEventType instanceEventType,
+                             EntityDetail          entity,
+                             Classification        originalClassification,
+                             Classification        classification)
+    {
+        super(OMRSEventCategory.INSTANCE);
+
+        this.instanceEventType = instanceEventType;
+        this.entity = entity;
+        this.originalClassification = originalClassification;
+        this.classification = classification;
+
+        InstanceType type = entity.getType();
+        if (type != null)
+        {
+            this.typeDefGUID = type.getTypeDefGUID();
+            this.typeDefName = type.getTypeDefName();
         }
 
         this.instanceGUID = entity.getGUID();
@@ -448,6 +483,27 @@ public class OMRSInstanceEvent extends OMRSEvent
 
 
     /**
+     * Return the original classification if exists
+     *
+     * @return classification object
+     */
+    public Classification getOriginalClassification()
+    {
+        return originalClassification;
+    }
+
+
+    /**
+     * Return the new classification
+     *
+     * @return classification object
+     */
+    public Classification getClassification()
+    {
+        return classification;
+    }
+
+    /**
      * Return the instance batch (if applicable) or null.
      *
      * @return InstanceGraph object
@@ -535,6 +591,8 @@ public class OMRSInstanceEvent extends OMRSEvent
         instanceSection.setEntity(this.entity);
         instanceSection.setOriginalRelationship(this.originalRelationship);
         instanceSection.setRelationship(this.relationship);
+        instanceSection.setOriginalClassification(this.originalClassification);
+        instanceSection.setClassification(this.classification);
         instanceSection.setInstanceBatch(this.instanceBatch);
         instanceSection.setHomeMetadataCollectionId(this.homeMetadataCollectionId);
 
@@ -565,6 +623,8 @@ public class OMRSInstanceEvent extends OMRSEvent
                 ", entity=" + entity +
                 ", originalRelationship=" + originalRelationship +
                 ", relationship=" + relationship +
+                ", originalClassification=" + originalClassification +
+                ", classification=" + classification +
                 ", instanceBatch=" + instanceBatch +
                 ", homeMetadataCollectionId='" + homeMetadataCollectionId + '\'' +
                 ", originalHomeMetadataCollectionId='" + originalHomeMetadataCollectionId + '\'' +

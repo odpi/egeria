@@ -7,34 +7,39 @@ import java.io.Serializable;
 /**
  * ViewServiceDescription provides a list of registered view services.
  */
-public enum ViewServiceDescription implements Serializable {
-    GLOSSARY_AUTHOR(1010,
+public enum ViewServiceDescription implements Serializable
+{
+    GLOSSARY_AUTHOR(5000,
                     "Glossary Author",
                     "Glossary Author OMVS",
                     "glossary-author",
                     "View Service for glossary authoring.",
-                    //TODO create appropriate wiki
-                    "https://odpi.github.io/egeria/open-metadata-implementation/access-services/subject-area/"),
+                    "https://egeria.odpi.org/open-metadata-implementation/view-services/glossary-author-view/"),
 
-    REPOSITORY_EXPLORER(1020,
+    REPOSITORY_EXPLORER(5001,
                   "Repository Explorer",
                   "Repository Explorer OMVS",
                   "rex",
                   "Explore open metadata instances.",
-                  //TODO create appropriate wiki
-                  "https://odpi.github.io/egeria/open-metadata-implementation/access-services/subject-area/"),
+                  "https://egeria.odpi.org/open-metadata-implementation/view-services/rex-view/"),
 
-    TYPE_EXPLORER(1030,
+    TYPE_EXPLORER(5002,
                   "Type Explorer",
                   "Type Explorer OMVS",
-                  "type-explorer",
-                  "Explore the open metadata types.",
-                  //TODO create appropriate wiki
-                  "https://odpi.github.io/egeria/open-metadata-implementation/access-services/subject-area/");
+                  "tex",
+                  "Explore the open metadata types in a repository or cohort.",
+                  "https://egeria.odpi.org/open-metadata-implementation/view-services/tex-view/"),
+
+    DINO(5003,
+                  "Dynamic Infrastructure and Operations",
+                  "Dynamic Infrastructure and Operations OMVS",
+                  "dino",
+                  "Explore and operate an open metadata ecosystem.",
+                  "https://egeria.odpi.org/open-metadata-implementation/view-services/dino-view/");
 
     private static final long serialVersionUID = 1L;
 
-    private int viewServiceCode;
+    private int    viewServiceCode;
     private String viewServiceName;
     private String viewServiceFullName;
     private String viewServiceURLMarker;
@@ -51,12 +56,13 @@ public enum ViewServiceDescription implements Serializable {
      * @param viewServiceDescription short description for this UI view
      * @param viewServiceWiki        wiki page for the UI view for this UI view
      */
-    ViewServiceDescription(int viewServiceCode,
+    ViewServiceDescription(int    viewServiceCode,
                            String viewServiceName,
                            String viewServiceFullName,
                            String viewServiceURLMarker,
                            String viewServiceDescription,
-                           String viewServiceWiki) {
+                           String viewServiceWiki)
+    {
         /*
          * Save the values supplied
          */

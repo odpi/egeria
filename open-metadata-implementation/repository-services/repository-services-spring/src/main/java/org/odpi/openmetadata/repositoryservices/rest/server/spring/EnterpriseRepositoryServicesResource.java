@@ -1539,6 +1539,39 @@ public class EnterpriseRepositoryServicesResource
 
 
     /**
+     * Add the requested classification to a specific entity.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param userId unique identifier for requesting user.
+     * @param entityGUID String unique identifier (guid) for the entity.
+     * @param classificationName String name for the classification.
+     * @param classificationRequestBody values for the classification.
+     * @return EntityDetailResponse:
+     * EntityDetail showing the resulting entity header, properties and classifications or
+     * InvalidParameterException one of the parameters is invalid or null or
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored or
+     * EntityNotKnownException the entity identified by the guid is not found in the metadata collection or
+     * ClassificationErrorException the requested classification is either not known or not valid
+     *                                         for the entity or
+     * PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                characteristics in the TypeDef for this classification type or
+     * FunctionNotSupportedException the repository does not support maintenance of metadata.
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @PostMapping(path = "/instances/entity/{entityGUID}/classification/{classificationName}/detailed")
+
+    public EntityDetailResponse  classifyEntity(String                serverName,
+                                                String                userId,
+                                                String                entityGUID,
+                                                String                classificationName,
+                                                ClassificationRequest classificationRequestBody)
+    {
+        return restAPI.classifyEntity(serverName, userId, entityGUID, classificationName, classificationRequestBody);
+    }
+
+
+    /**
      * Remove a specific classification from an entity.
      *
      * @param serverName unique identifier for requested server.

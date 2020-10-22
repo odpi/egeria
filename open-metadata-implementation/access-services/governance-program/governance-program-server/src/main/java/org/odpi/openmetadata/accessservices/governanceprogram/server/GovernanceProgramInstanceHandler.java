@@ -6,8 +6,9 @@ package org.odpi.openmetadata.accessservices.governanceprogram.server;
 import org.odpi.openmetadata.accessservices.governanceprogram.handlers.ExternalReferencesHandler;
 import org.odpi.openmetadata.accessservices.governanceprogram.handlers.GovernanceOfficerHandler;
 import org.odpi.openmetadata.accessservices.governanceprogram.handlers.PersonalProfileHandler;
+import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceZoneElement;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.commonservices.gaf.metadatamanagement.handlers.GovernanceZoneHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.GovernanceZoneHandler;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstanceHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -42,11 +43,11 @@ class GovernanceProgramInstanceHandler extends OMASServiceInstanceHandler
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException the service name is not known - indicating a logic error
      */
-    GovernanceZoneHandler getGovernanceZoneHandler(String userId,
-                                                   String serverName,
-                                                   String serviceOperationName) throws InvalidParameterException,
-                                                                                       UserNotAuthorizedException,
-                                                                                       PropertyServerException
+    GovernanceZoneHandler<GovernanceZoneElement> getGovernanceZoneHandler(String userId,
+                                                                          String serverName,
+                                                                          String serviceOperationName) throws InvalidParameterException,
+                                                                                                              UserNotAuthorizedException,
+                                                                                                              PropertyServerException
     {
         GovernanceProgramServicesInstance instance = (GovernanceProgramServicesInstance)super.getServerServiceInstance(userId,
                                                                                                                        serverName,

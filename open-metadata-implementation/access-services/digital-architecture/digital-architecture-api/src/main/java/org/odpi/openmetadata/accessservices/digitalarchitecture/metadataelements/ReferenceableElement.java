@@ -20,12 +20,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ReferenceableElement extends ReferenceableProperties implements MetadataElement,
-                                                                             Serializable
+public class ReferenceableElement implements MetadataElement, Serializable
 {
     private static final long     serialVersionUID = 1L;
 
-    private ElementHeader elementHeader = null;
+    private ElementHeader           elementHeader = null;
+    private ReferenceableProperties referenceableProperties = null;
 
 
     /**
@@ -47,6 +47,7 @@ public class ReferenceableElement extends ReferenceableProperties implements Met
         if (template != null)
         {
             elementHeader = template.getElementHeader();
+            referenceableProperties = template.getReferenceableProperties();
         }
     }
 
@@ -76,6 +77,28 @@ public class ReferenceableElement extends ReferenceableProperties implements Met
 
 
     /**
+     * Return the properties for the referenceable.
+     *
+     * @return properties bean
+     */
+    public ReferenceableProperties getReferenceableProperties()
+    {
+        return referenceableProperties;
+    }
+
+
+    /**
+     * Set up the properties for the referenceable.
+     *
+     * @param referenceableProperties properties bean
+     */
+    public void setReferenceableProperties(ReferenceableProperties referenceableProperties)
+    {
+        this.referenceableProperties = referenceableProperties;
+    }
+
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -85,12 +108,7 @@ public class ReferenceableElement extends ReferenceableProperties implements Met
     {
         return "ReferenceableElement{" +
                 "elementHeader=" + elementHeader +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", meanings=" + getMeanings() +
-                ", classifications=" + getClassifications() +
-                ", typeName='" + getTypeName() + '\'' +
-                ", extendedProperties=" + getExtendedProperties() +
+                ", referenceableProperties=" + referenceableProperties +
                 '}';
     }
 
@@ -117,7 +135,8 @@ public class ReferenceableElement extends ReferenceableProperties implements Met
             return false;
         }
         ReferenceableElement that = (ReferenceableElement) objectToCompare;
-        return Objects.equals(elementHeader, that.elementHeader);
+        return Objects.equals(elementHeader, that.elementHeader) &&
+                Objects.equals(referenceableProperties, that.referenceableProperties);
     }
 
 
@@ -129,6 +148,6 @@ public class ReferenceableElement extends ReferenceableProperties implements Met
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader);
+        return Objects.hash(super.hashCode(), elementHeader, referenceableProperties);
     }
 }

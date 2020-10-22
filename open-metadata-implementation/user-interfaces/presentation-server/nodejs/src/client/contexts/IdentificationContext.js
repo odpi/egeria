@@ -38,7 +38,6 @@ const getRestURL = (serviceName) => {
     serviceName +
     "/users/" +
     userId;
-    console.log("rest url is ", url);
   return url;
 };
 

@@ -16,7 +16,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class SchemaTypeRequestBody extends AssetOwnerOMASAPIRequestBody
+@Deprecated
+// Use SchemaTypeProperties
+public class SchemaTypeRequestBody extends SchemaTypeProperties
 {
     private static final long     serialVersionUID = 1L;
 
@@ -113,6 +115,20 @@ public class SchemaTypeRequestBody extends AssetOwnerOMASAPIRequestBody
     {
         return "SchemaTypeRequestBody{" +
                 "schemaTypeProperties=" + schemaTypeProperties +
+                ", versionNumber='" + getVersionNumber() + '\'' +
+                ", author='" + getAuthor() + '\'' +
+                ", usage='" + getUsage() + '\'' +
+                ", encodingStandard='" + getEncodingStandard() + '\'' +
+                ", namespace='" + getNamespace() + '\'' +
+                ", formula='" + getFormula() + '\'' +
+                ", queries=" + getQueries() +
+                ", displayName='" + getDisplayName() + '\'' +
+                ", description='" + getDescription() + '\'' +
+                ", deprecated=" + getIsDeprecated() +
+                ", typeName='" + getTypeName() + '\'' +
+                ", qualifiedName='" + getQualifiedName() + '\'' +
+                ", additionalProperties=" + getAdditionalProperties() +
+                ", extendedProperties=" + getExtendedProperties() +
                 '}';
     }
 }
