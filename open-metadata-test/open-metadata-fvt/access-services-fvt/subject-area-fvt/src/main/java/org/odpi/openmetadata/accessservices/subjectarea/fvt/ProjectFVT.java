@@ -5,10 +5,12 @@ package org.odpi.openmetadata.accessservices.subjectarea.fvt;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaRestClient;
 import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.projects.SubjectAreaProjectClient;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.project.GlossaryProject;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.project.Project;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.ProjectScope;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -32,6 +34,12 @@ public class ProjectFVT
     private static final String DEFAULT_TEST_PROJECT_NAME6 = "Testproject6";
     private static final String DEFAULT_TEST_PROJECT_NAME7 = "Testproject7";
     private SubjectAreaProjectClient<Project> subjectAreaProject = null;
+    private SubjectAreaProjectClient subjectAreaProjectClient= null;
+
+    private GlossaryFVT glossaryFVT =null;
+    private TermFVT termFVT =null;
+    private RelationshipsFVT relationshipsFVT =null;
+
     private String serverName = null;
     private String userId = null;
     private int existingProjectCount = 0;
@@ -90,7 +98,9 @@ public class ProjectFVT
         FVTUtils.validateNode(project);
         Project project2 = createProject(serverName+" "+DEFAULT_TEST_PROJECT_NAME2);
         FVTUtils.validateNode(project2);
-
+        if (getProjectTerms(project.getSystemAttributes().getGUID()).size() != 0) {
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected no terms to be in the project. Got " +getProjectTerms(project.getSystemAttributes().getGUID()).size());
+        }
         List<Project> results = findProjects(null);
         if (results.size() !=2 ) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected 2 back on the find got " + results.size());
@@ -101,6 +111,7 @@ public class ProjectFVT
         System.out.println("Get the project");
         String guid = project.getSystemAttributes().getGUID();
         Project gotProject = getProjectByGUID(guid);
+        FVTUtils.validateNode(gotProject);
         System.out.println("Update the project");
         Project updatedProject = updateProject(guid, projectForUpdate);
         FVTUtils.validateNode(updatedProject);
@@ -157,7 +168,8 @@ public class ProjectFVT
             throw new SubjectAreaFVTCheckedException("ERROR: Expected 1 back on the find got " +results.size());
         }
         Project projectForGraph = createProject(DEFAULT_TEST_PROJECT_NAME4);
-        List<Term> terms = getProjectTerms(projectForGraph.getSystemAttributes().getGUID());
+        FindRequest findRequest = new FindRequest();
+        List<Term> terms = getProjectTerms(projectForGraph.getSystemAttributes().getGUID(), findRequest);
         if (terms != null && terms.size() > 0) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected null or empty got " +terms.size());
         }
@@ -209,8 +221,8 @@ public class ProjectFVT
 
         return project;
     }
-    public  List<Term> getProjectTerms(String guid) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        List<Term> terms = subjectAreaProject.getProjectTerms(this.userId, guid);
+    public  List<Term> getProjectTerms(String guid, FindRequest findRequest) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        List<Term> terms = subjectAreaProject.getProjectTerms(this.userId, guid, findRequest);
         System.out.println("Got terms from project with userId " + guid);
         return terms;
     }
@@ -253,5 +265,10 @@ public class ProjectFVT
         if (projects.size() !=existingProjectCount) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected " + existingProjectCount + " Projects to be found, got " + projects.size());
         }
+    }
+
+    public List<Term> getProjectTerms(String projectGuid)  throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException
+    {
+        return subjectAreaProject.getProjectTerms(userId, projectGuid, new FindRequest());
     }
 }
