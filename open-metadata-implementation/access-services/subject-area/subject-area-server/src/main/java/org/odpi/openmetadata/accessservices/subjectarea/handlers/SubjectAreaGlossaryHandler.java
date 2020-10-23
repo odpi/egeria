@@ -335,6 +335,8 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the category to get terms
      * @param termHandler Term handler
+     * @param startingFrom return results starting from element
+     * @param maxPageSize maximum number of elements to bereturned
      * @return A list of terms owned by the glossary
      * when not successful the following Exception responses can occur
      * <ul>

@@ -64,6 +64,7 @@ public abstract class SubjectAreaHandler {
      * needed to operate within a single server instance.
      *
      * @param oMRSAPIHelper           omrs API helper
+     * @param maxPageSize             maximum page size
      */
     public SubjectAreaHandler(OMRSAPIHelper oMRSAPIHelper, int maxPageSize) {
         this.oMRSAPIHelper = oMRSAPIHelper;
