@@ -34,9 +34,10 @@ public class SubjectAreaRelationshipHandler extends SubjectAreaHandler {
      * needed to operate within a single server instance.
      *
      * @param oMRSAPIHelper           omrs API helper
+     * @param maxPageSize             maximum page size
      */
-    public SubjectAreaRelationshipHandler(OMRSAPIHelper oMRSAPIHelper) {
-        super(oMRSAPIHelper);
+    public SubjectAreaRelationshipHandler(OMRSAPIHelper oMRSAPIHelper, int maxPageSize) {
+        super(oMRSAPIHelper, maxPageSize);
     }
 
     /**

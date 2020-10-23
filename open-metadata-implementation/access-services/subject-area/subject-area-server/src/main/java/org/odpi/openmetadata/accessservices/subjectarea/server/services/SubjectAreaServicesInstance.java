@@ -62,17 +62,17 @@ public class SubjectAreaServicesInstance extends OMASServiceInstance
                 );
             }
 
-            this.glossaryHandler= new SubjectAreaGlossaryHandler(oMRSAPIHelper);
+            this.glossaryHandler= new SubjectAreaGlossaryHandler(oMRSAPIHelper, maxPageSize);
 
-            this.termHandler= new SubjectAreaTermHandler(oMRSAPIHelper);
+            this.termHandler= new SubjectAreaTermHandler(oMRSAPIHelper, maxPageSize);
 
-            this.categoryHandler= new SubjectAreaCategoryHandler(oMRSAPIHelper);
+            this.categoryHandler= new SubjectAreaCategoryHandler(oMRSAPIHelper, maxPageSize);
 
-            this.projectHandler= new SubjectAreaProjectHandler(oMRSAPIHelper);
+            this.projectHandler= new SubjectAreaProjectHandler(oMRSAPIHelper, maxPageSize);
 
-            this.graphHandler= new SubjectAreaGraphHandler(oMRSAPIHelper);
+            this.graphHandler= new SubjectAreaGraphHandler(oMRSAPIHelper, maxPageSize);
 
-            this.relationshipHandler= new SubjectAreaRelationshipHandler(oMRSAPIHelper);
+            this.relationshipHandler= new SubjectAreaRelationshipHandler(oMRSAPIHelper, maxPageSize);
         }
         else
         {
