@@ -7,7 +7,8 @@ import Delete32 from "../../../images/Egeria_delete_32";
 import Edit32 from "../../../images/Egeria_edit_32";
 import Term32 from "../../../images/Egeria_term_32";
 import {
-  LocalNodeCard
+  LocalNodeCard,
+  NodeCardSection
 } from "./NodeCard/NodeCard";
 import GlossaryImage from "../../../images/Egeria_glossary_32";
 import getNodeType from "./properties/NodeTypes.js";
@@ -119,16 +120,16 @@ export default function CardViewNavigation({ match, nodeTypeName }) {
   };
 
   const getNodeChildrenUrl = (guid) => {
-    return match.path + "/" + guid + "/children";
+    return match.path + "/glossaries/" + guid + "/children";
   };
   function getAddNodeUrl() {
-    return match.path + "/add-node";
+    return match.path + "/glossaries/add-node";
   }
   function getQuickTermsUrl() {
-    return match.path + "/" + selectedNodeGuid + "/quick-terms";
+    return match.path + "/glossaries/" + selectedNodeGuid + "/quick-terms";
   }
   function getEditNodeUrl() {
-    return match.path + "/edit-node/" + selectedNodeGuid;
+    return match.path + "/glossaries/edit-node/" + selectedNodeGuid;
   }
   const onFilterCriteria = (e) => {
     setFilterCriteria(e.target.value);
@@ -143,7 +144,7 @@ export default function CardViewNavigation({ match, nodeTypeName }) {
   return (
     <div>
       <div className="bx--grid">
-        <nodeCardSection heading="nodes" className="landing-page__r3">
+        <NodeCardSection heading="nodes" className="landing-page__r3">
           <article className="node-card__controls bx--col-sm-4 bx--col-md-1 bx--col-lg-1 bx--col-xlg-1 bx--col-max-1">
             Choose {nodeType.key}
           </article>
@@ -185,13 +186,13 @@ export default function CardViewNavigation({ match, nodeTypeName }) {
               )}
             </div>
           </article>
-        </nodeCardSection>
+        </NodeCardSection>
 
-        <nodeCardSection className="landing-page__r3">
+        <NodeCardSection className="landing-page__r3">
           <article style={{ color: "red" }}>{errorMsg}</article>
-        </nodeCardSection>
+        </NodeCardSection>
 
-        <nodeCardSection className="landing-page__r3">
+        <NodeCardSection className="landing-page__r3">
           {nodes.map((node) => (
             <LocalNodeCard
               key={node.systemAttributes.guid}
@@ -205,7 +206,7 @@ export default function CardViewNavigation({ match, nodeTypeName }) {
             />
           ))}
           {nodes.length == 0 && <div>No {nodeType.plural} found!</div>}
-        </nodeCardSection>
+        </NodeCardSection>
       </div>
     </div>
   );
