@@ -55,8 +55,17 @@ abstract public class EntityDetailMapper<N extends Node> implements INodeMapper<
      */
     private void mapEntityDetailPropertiesToNode(N node, InstanceProperties omrsEntityDetailProperties) {
         // copy over effectivity
-        node.setEffectiveFromTime(omrsEntityDetailProperties.getEffectiveFromTime());
-        node.setEffectiveToTime(omrsEntityDetailProperties.getEffectiveToTime());
+        Date effectivityFromtime = null;
+        Date effectivityTotime = null;
+        if (omrsEntityDetailProperties.getEffectiveFromTime() != null) {
+            effectivityFromtime = omrsEntityDetailProperties.getEffectiveFromTime();
+        }
+        if (omrsEntityDetailProperties.getEffectiveToTime() !=null) {
+            effectivityTotime = omrsEntityDetailProperties.getEffectiveToTime();
+        }
+
+        node.setEffectiveFromTime(effectivityFromtime);
+        node.setEffectiveToTime(effectivityTotime);
         // copy over properties
         Iterator<String> omrsPropertyIterator = omrsEntityDetailProperties.getPropertyNames();
         NodeType nodeType = node.getNodeType();
@@ -169,8 +178,19 @@ abstract public class EntityDetailMapper<N extends Node> implements INodeMapper<
      * @param instanceProperties instance properties to update
      */
     private void mapNodeEffectivityToInstanceProperties(N node, InstanceProperties instanceProperties) {
-        instanceProperties.setEffectiveFromTime(node.getEffectiveFromTime());
-        instanceProperties.setEffectiveToTime(node.getEffectiveToTime());
+
+        Date effectiveFromTime = node.getEffectiveFromTime();
+        Date effectiveToTime =node.getEffectiveToTime();
+        if (effectiveFromTime == null ) {
+            instanceProperties.setEffectiveFromTime(new Date());
+        } else {
+            instanceProperties.setEffectiveFromTime(effectiveFromTime);
+        }
+        if (effectiveToTime == null) {
+            instanceProperties.setEffectiveToTime(new Date());
+        } else {
+            instanceProperties.setEffectiveToTime((effectiveToTime));
+        }
     }
     private void mapOmrsClassificationsToNode(EntityDetail omrsEntityDetail, N node) {
         List<Classification> omrsclassifications = omrsEntityDetail.getClassifications();

@@ -335,7 +335,7 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
                 .addParam("sequencingOrder", sequencingOrder.name())
                 .addParam("asOfTime", findRequest.getAsOfTime())
                 .addParam("searchCriteria", searchCriteria)
-                .addParam("offset", findRequest.getOffset())
+                .addParam("startingFrom", findRequest.getStartingFrom())
                 .addParam("pageSize", findRequest.getPageSize())
                 .addParam("sequencingProperty", property);
     }
@@ -347,4 +347,5 @@ public class SubjectAreaRestClient extends FFDCRESTClient {
     public String getServerPlatformURLRoot() {
         return serverPlatformURLRoot;
     }
+
 }
