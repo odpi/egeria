@@ -590,7 +590,7 @@ public class OMRSAPIHelper {
                 userId,
                 entityGUID,
                 null,
-                findRequest.getOffset(),
+                findRequest.getStartingFrom(),
                 findRequest.getPageSize(),
                 findRequest.getAsOfTime(),
                 findRequest.getSequencingProperty(),
@@ -687,7 +687,9 @@ public class OMRSAPIHelper {
                                                                  String userId,
                                                                  String anchorEntityGUID,
                                                                  String anchorEntityTypeName,
-                                                                 String relationshipTypeName) throws PropertyServerException,
+                                                                 String relationshipTypeName,
+                                                                 int startingFrom,
+                                                                 int pageSize) throws PropertyServerException,
                                                                                                      SubjectAreaCheckedException,
                                                                                                      UserNotAuthorizedException
     {
@@ -700,9 +702,33 @@ public class OMRSAPIHelper {
                 true,
                 relationshipTypeGUID,
                 relationshipTypeName,
-                0,
-                0
-        );
+                startingFrom,
+                pageSize
+                                                );
+
+    }
+    public List<EntityDetail> callGetEntitiesForRelationshipEnd2(String restAPIName,
+                                                                 String userId,
+                                                                 String anchorEntityGUID,
+                                                                 String anchorEntityTypeName,
+                                                                 String relationshipTypeName,
+                                                                 int startingFrom,
+                                                                 int pageSize) throws PropertyServerException,
+                                                                                      SubjectAreaCheckedException,
+                                                                                      UserNotAuthorizedException
+    {
+        final String relationshipTypeGUID = getTypeDefGUID(relationshipTypeName);
+        return callGetEntitiesForRelationshipEnd(
+                restAPIName,
+                userId,
+                anchorEntityGUID,
+                anchorEntityTypeName,
+                false,
+                relationshipTypeGUID,
+                relationshipTypeName,
+                startingFrom,
+                pageSize
+                                                );
 
     }
 
@@ -792,7 +818,7 @@ public class OMRSAPIHelper {
                 typeName,
                 findRequest.getSearchCriteria(),
                 findRequest.getAsOfTime(),
-                findRequest.getOffset(),
+                findRequest.getStartingFrom(),
                 findRequest.getPageSize(),
                 findRequest.getSequencingOrder(),
                 findRequest.getSequencingProperty()
@@ -804,7 +830,7 @@ public class OMRSAPIHelper {
                                                           String typeName,
                                                           String searchCriteria,
                                                           Date asOfTime,
-                                                          int offset,
+                                                          int startingFrom,
                                                           int pageSize,
                                                           SequencingOrder sequencingOrder,
                                                           String sequencingProperty) throws SubjectAreaCheckedException,
@@ -816,7 +842,7 @@ public class OMRSAPIHelper {
                 userId,
                 entityTypeGUID,
                 searchCriteria,
-                offset,
+                startingFrom,
                 pageSize,
                 asOfTime,
                 sequencingProperty,
@@ -837,7 +863,7 @@ public class OMRSAPIHelper {
                 userId,
                 typeName,
                 findRequest.getAsOfTime(),
-                findRequest.getOffset(),
+                findRequest.getStartingFrom(),
                 findRequest.getPageSize(),
                 findRequest.getSequencingProperty(),
                 findRequest.getSequencingOrder()
@@ -848,7 +874,7 @@ public class OMRSAPIHelper {
                                                 String userId,
                                                 String typeName,
                                                 Date asOfTime,
-                                                int offset,
+                                                int startingFrom,
                                                 int pageSize,
                                                 String sequencingProperty,
                                                 SequencingOrder sequencingOrder) throws SubjectAreaCheckedException,
@@ -860,7 +886,7 @@ public class OMRSAPIHelper {
                 userId,
                 entityTypeGUID,
                 asOfTime,
-                offset,
+                startingFrom,
                 pageSize,
                 sequencingProperty,
                 sequencingOrder,
