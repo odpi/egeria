@@ -68,9 +68,13 @@ export default function GlossaryAuthorRoutes({ glossaryAuthorURL }) {
         component={GlossaryAuthorNavigation}
       ></Route>
       <Route
+        path={getCrudPath()}
+        component={GlossaryAuthorCRUD}
+      ></Route>
+      <Route
         path={glossaryAuthorURL}
         exact
-        component={GlossaryAuthorCRUD}
+        component={GlossaryAuthorNavigation}
       ></Route>
       <Route path="/" render={() => <h1>Route not recognised</h1>}></Route>
       {/* <Route render={() => <h1>Route not recognised!!</h1>}></Route> */}

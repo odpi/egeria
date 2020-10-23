@@ -59,7 +59,7 @@ public class BeansToAccessOMRS  {
 <$$$
     /**
      * Fetch complete definition of an <$$EntityName$$> given its GUID.
-     * The limit and offset paging parameters limit the number elements returned in each of the <$$lowerCasePluralEntityName$$> relationships.
+     * The limit and startingFrom paging parameters limit the number elements returned in each of the <$$lowerCasePluralEntityName$$> relationships.
      * @param userId user identity
      * @param entityGuid GUID for the entity
      * @return <$$uEntityName$$> the <$$uEntityName$$> entity with the requested GUID
