@@ -19,12 +19,8 @@ stages:
       - job: VerifyBuild
         pool:
           vmImage: 'ubuntu-latest'
-        strategy:
-          matrix:
-            Java8:
-              JAVA_VERSION: '1.8'
-            Java11:
-              JAVA_VERSION: '1.11'
+        variables:
+          JAVA_VERSION: 1.8
         steps:
           - task: Maven@3
             inputs:
