@@ -19,10 +19,10 @@ jobs:
         with:
           java-version: 11
       - name: Cache Maven packages
-         uses: actions/cache@v2
-         with:
-           path: ~/.m2
-           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-           restore-keys: ${{ runner.os }}-maven
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-maven
       - name: Build with Maven
         run: mvn -B clean install --file pom.xml
