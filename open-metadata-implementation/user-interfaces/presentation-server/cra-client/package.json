@@ -1,6 +1,7 @@
 {
   "name": "presentation-server-client",
   "version": "0.1.0",
+  "homepage": ".",
   "private": true,
   "dependencies": {
     "@carbon/elements": "^10.15.0",
@@ -20,7 +21,7 @@
     "react-cookie": "^4.0.3",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "^3.4.1"
+    "react-scripts": "^3.4.4"
   },
   "devDependencies": {},
   "scripts": {
