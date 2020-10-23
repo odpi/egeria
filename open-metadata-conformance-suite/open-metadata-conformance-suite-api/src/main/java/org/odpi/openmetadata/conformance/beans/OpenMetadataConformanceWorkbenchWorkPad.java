@@ -29,6 +29,11 @@ public abstract class OpenMetadataConformanceWorkbenchWorkPad
 
     protected Map<String, OpenMetadataTestCase>    testCaseMap = new HashMap<>();
 
+    /*
+     * Add time of last received event - this is to help with determining whether workbench has completed
+     */
+    protected Date lastActive = new Date();
+    private static final long DELAY_TIME = 10000l;  // 10 seconds - time to wait after activity has quiesced before reporting completion
 
     /**
      * Constructor takes properties that are common to all work pads.
@@ -129,13 +134,29 @@ public abstract class OpenMetadataConformanceWorkbenchWorkPad
         OpenMetadataConformanceWorkbenchStatus status = new OpenMetadataConformanceWorkbenchStatus();
         status.setWorkbenchId(workbenchId);
         if (workbenchComplete) {
-            status.setWorkbenchComplete();
+            /*
+             * The synchronous tests are complete, but check whether the workbench has quiesced.
+             */
+            Date now = new Date();
+            long millis = now.getTime() - lastActive.getTime();
+            if (millis < DELAY_TIME)
+            {
+                //System.out.println("CTS getWorkbenchStatus - quiesce timer has not yet expired.");
+            }
+            else
+            {
+                //System.out.println("CTS getWorkbenchStatus quiesce timer has expired - reporting status as complete");
+                status.setWorkbenchComplete();
+            }
+
         }
         return status;
     }
 
     /**
      * Set the completion state of the workbench to true.
+     * This signifies that the synchronous portion of the tests have completed.
+     * The workbench may still be processing asynchronous events which trigger further tests.
      *
      */
     public void setWorkbenchComplete()
@@ -628,6 +649,18 @@ public abstract class OpenMetadataConformanceWorkbenchWorkPad
         }
 
         return workbenchResults;
+    }
+
+    /**
+     *  Register any activity to help with working out when the workbench has quiesced.
+     *  Any kind of activity is significant, especially if beyond the end of the synchronous tests.
+     */
+    public void registerActivity()
+    {
+        /*
+         * Record the current date and time...
+         */
+        lastActive = new Date();
     }
 
 

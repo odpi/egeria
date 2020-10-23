@@ -12,6 +12,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,6 +59,9 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
     private Map<String, List<List<Relationship>>>  relationshipInstances   = new HashMap<>();
 
 
+
+
+    // TODO - clean up old code
     //private Boolean workbenchComplete = false;
 
     /**
@@ -752,6 +756,7 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
     {
         this.relationshipInstances.remove(relationshipTypeName);
     }
+
 
 
     /**
