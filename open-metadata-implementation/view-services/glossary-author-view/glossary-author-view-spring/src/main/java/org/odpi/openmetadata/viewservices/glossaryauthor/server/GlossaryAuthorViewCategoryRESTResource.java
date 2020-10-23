@@ -14,9 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 
-import static org.odpi.openmetadata.viewservices.glossaryauthor.services.BaseGlossaryAuthorView.PAGE_OFFSET_DEFAULT_VALUE;
-import static org.odpi.openmetadata.viewservices.glossaryauthor.services.BaseGlossaryAuthorView.PAGE_SIZE_DEFAULT_VALUE;
-
 /**
  * The GlossaryAuthorRESTServicesInstance provides the org.odpi.openmetadata.viewervices.glossaryauthor.server implementation of the Glossary Author Open Metadata
  * View Service (OMVS) for categories.  This interface provides category authoring interfaces for subject area experts.
@@ -100,7 +97,6 @@ public class GlossaryAuthorViewCategoryRESTResource {
      * @param offset             the starting element number for this set of results.  This is used when retrieving elements
      *                           beyond the first page of results. Zero means the results start from the first element.
      * @param pageSize           the maximum number of elements that can be returned on this request.
-     *                           0 means there is no limit to the page size
      * @param sequencingOrder    the sequencing order for the results.
      * @param sequencingProperty the name of the property that should be used to sequence the results.
      * @return A list of categories meeting the search Criteria
@@ -115,8 +111,8 @@ public class GlossaryAuthorViewCategoryRESTResource {
     public SubjectAreaOMASAPIResponse<Category> findCategory(@PathVariable String serverName, @PathVariable String userId,
                                                              @RequestParam(value = "searchCriteria", required = false) String searchCriteria,
                                                              @RequestParam(value = "asOfTime", required = false) Date asOfTime,
-                                                             @RequestParam(value = "offset", required = false, defaultValue = PAGE_OFFSET_DEFAULT_VALUE) Integer offset,
-                                                             @RequestParam(value = "pageSize", required = false, defaultValue = PAGE_SIZE_DEFAULT_VALUE) Integer pageSize,
+                                                             @RequestParam(value = "offset", required = false) Integer offset,
+                                                             @RequestParam(value = "pageSize", required = false) Integer pageSize,
                                                              @RequestParam(value = "sequencingOrder", required = false) SequencingOrder sequencingOrder,
                                                              @RequestParam(value = "sequencingProperty", required = false) String sequencingProperty
     ) {
@@ -124,7 +120,7 @@ public class GlossaryAuthorViewCategoryRESTResource {
     }
 
     /**
-     * Get Category relationships
+     * Get Category relationships. The server has a maximum page size defined, the number of relationships returned is limited by that maximum page size.
      *
      * @param serverName         local UI server name
      * @param userId             userid
@@ -133,7 +129,6 @@ public class GlossaryAuthorViewCategoryRESTResource {
      * @param offset             the starting element number for this set of results.  This is used when retrieving elements
      *                           beyond the first page of results. Zero means the results start from the first element.
      * @param pageSize           the maximum number of elements that can be returned on this request.
-     *                           0 means there is not limit to the page size
      * @param sequencingOrder    the sequencing order for the results.
      * @param sequencingProperty the name of the property that should be used to sequence the results.
      * @return a response which when successful contains the category relationships
@@ -148,8 +143,8 @@ public class GlossaryAuthorViewCategoryRESTResource {
     public SubjectAreaOMASAPIResponse<Line> getCategoryRelationships(@PathVariable String serverName, @PathVariable String userId,
                                                                      @PathVariable String guid,
                                                                      @RequestParam(value = "asOfTime", required = false) Date asOfTime,
-                                                                     @RequestParam(value = "offset", required = false, defaultValue = PAGE_OFFSET_DEFAULT_VALUE) Integer offset,
-                                                                     @RequestParam(value = "pageSize", required = false, defaultValue = PAGE_SIZE_DEFAULT_VALUE) Integer pageSize,
+                                                                     @RequestParam(value = "offset", required = false) Integer offset,
+                                                                     @RequestParam(value = "pageSize", required = false) Integer pageSize,
                                                                      @RequestParam(value = "sequencingOrder", required = false) SequencingOrder sequencingOrder,
                                                                      @RequestParam(value = "sequencingProperty", required = false) String sequencingProperty
     ) {
