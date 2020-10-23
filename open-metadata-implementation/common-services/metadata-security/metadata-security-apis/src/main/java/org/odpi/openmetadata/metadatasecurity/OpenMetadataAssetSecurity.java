@@ -5,7 +5,7 @@ package org.odpi.openmetadata.metadatasecurity;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
+import org.odpi.openmetadata.metadatasecurity.properties.Asset;
 import org.odpi.openmetadata.metadatasecurity.properties.AssetAuditHeader;
 
 import java.util.List;
@@ -46,9 +46,9 @@ public interface OpenMetadataAssetSecurity
      * @throws InvalidParameterException one of the asset values is invalid
      * @throws PropertyServerException there is a problem calculating the zones
      */
-    List<String> initializeAssetZones(List<String>  defaultZones,
-                                      Asset         asset) throws InvalidParameterException,
-                                                                  PropertyServerException;
+    List<String> setAssetZonesToDefault(List<String>  defaultZones,
+                                        Asset         asset) throws InvalidParameterException,
+                                                                    PropertyServerException;
 
 
     /**
@@ -65,8 +65,33 @@ public interface OpenMetadataAssetSecurity
      * @throws InvalidParameterException one of the asset values is invalid
      * @throws PropertyServerException there is a problem calculating the zones
      */
+    @Deprecated
     List<String> verifyAssetZones(List<String>  defaultZones,
                                   List<String>  supportedZones,
+                                  Asset         originalAsset,
+                                  Asset         updatedAsset) throws InvalidParameterException,
+                                                                     PropertyServerException;
+
+
+
+    /**
+     * Determine the appropriate setting for the asset zones depending on the content of the asset and the
+     * settings of both default zones and supported zones.  This method is called whenever an asset's
+     * values are changed.
+     *
+     * @param defaultZones setting of the default zones for the service
+     * @param supportedZones setting of the supported zones for the service
+     * @param publishZones setting of the publish zones for the service
+     * @param originalAsset original values for the asset
+     * @param updatedAsset updated values for the asset
+     *
+     * @return list of zones to set in the asset
+     * @throws InvalidParameterException one of the asset values is invalid
+     * @throws PropertyServerException there is a problem calculating the zones
+     */
+    List<String> verifyAssetZones(List<String>  defaultZones,
+                                  List<String>  supportedZones,
+                                  List<String>  publishZones,
                                   Asset         originalAsset,
                                   Asset         updatedAsset) throws InvalidParameterException,
                                                                      PropertyServerException;
@@ -80,7 +105,7 @@ public interface OpenMetadataAssetSecurity
      * @throws UserNotAuthorizedException the user is not authorized to change this asset
      */
     void  validateUserForAssetCreate(String userId,
-                                     Asset asset) throws UserNotAuthorizedException;
+                                     Asset  asset) throws UserNotAuthorizedException;
 
 
     /**
@@ -91,7 +116,7 @@ public interface OpenMetadataAssetSecurity
      * @throws UserNotAuthorizedException the user is not authorized to access this asset
      */
     void  validateUserForAssetRead(String userId,
-                                   Asset asset) throws UserNotAuthorizedException;
+                                   Asset  asset) throws UserNotAuthorizedException;
 
 
     /**
@@ -120,7 +145,7 @@ public interface OpenMetadataAssetSecurity
      * @throws UserNotAuthorizedException the user is not authorized to change this asset
      */
     void  validateUserForAssetAttachmentUpdate(String userId,
-                                               Asset asset) throws UserNotAuthorizedException;
+                                               Asset  asset) throws UserNotAuthorizedException;
 
 
     /**
@@ -132,7 +157,7 @@ public interface OpenMetadataAssetSecurity
      * @throws UserNotAuthorizedException the user is not authorized to change this asset
      */
     void  validateUserForAssetFeedback(String userId,
-                                       Asset asset) throws UserNotAuthorizedException;
+                                       Asset  asset) throws UserNotAuthorizedException;
 
 
     /**

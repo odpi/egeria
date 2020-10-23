@@ -503,7 +503,7 @@ const InstancesContextProvider = (props) => {
         const entityDigest     = gen.entities[entityGUID];
         const home             = entityDigest.metadataCollectionName;
         const serverName       = repositoryServerContext.repositoryServerName;                 
-        const enterpriseOption = repositoryServerContext.getRepositoryServerEnterpriseOption();
+        const enterpriseOption = repositoryServerContext.getEnterpriseOption();
         if (enterpriseOption === true || serverName === home ) {
           loadEntity(entityGUID);                  
         }
@@ -538,7 +538,7 @@ const InstancesContextProvider = (props) => {
        const relationshipDigest = gen.relationships[relationshipGUID];
         const home              = relationshipDigest.metadataCollectionName;
         const serverName        = repositoryServerContext.repositoryServerName;              
-        const enterpriseOption  = repositoryServerContext.repositoryServerEnterpriseOption;
+        const enterpriseOption  = repositoryServerContext.getEnterpriseOption();
         if (enterpriseOption === true || serverName === home ) {
           loadRelationship(relationshipGUID);                  
         }
@@ -1052,7 +1052,7 @@ const InstancesContextProvider = (props) => {
         getLatestGen
      }}
     >      
-     {props.children}
+      {props.children}
     </InstancesContext.Provider>
   );
 };

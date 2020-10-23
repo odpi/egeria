@@ -2,26 +2,23 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 
 
-import React, { useContext, useState }                    from "react";
+import React, { useContext }                    from "react";
 
-import { RequestContext }                                 from "../../contexts/RequestContext";
+import { RequestContext }                       from "../../contexts/RequestContext";
 
 import "./resource-selector.scss"
 
 
-
 /*
- * The ServerSelector displays the names of the servers that are configured as resource endpoints
- * in the configuration of the view service. They are retrieved from the view service at strartup.  
- * The server selector control will present servers by name to the user and allow the user to select
- * one. During server load, the platformName is passed to the view service, which resolves it to the 
- * configured platformRootURL for that platform. 
- * The server's details are retrieved and the server will become the new focus object.
+ * The EnterpriseControl provides a checkbox that the user can check if they want queryies to be 
+ * issued at the Enterprise level - which means that results will be collected from across 
+ * the cohorts that the target server is a member of, rather than just locally.
  */
+
 export default function EnterpriseControl() {
   
   
-  const requestContext                    = useContext(RequestContext);
+  const requestContext = useContext(RequestContext);
 
   
 

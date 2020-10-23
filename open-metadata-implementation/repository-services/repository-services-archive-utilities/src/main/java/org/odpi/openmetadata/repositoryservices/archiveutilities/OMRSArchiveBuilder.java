@@ -1397,8 +1397,9 @@ public class OMRSArchiveBuilder
         /*
          * Finally set up the instance store
          */
-        List<EntityDetail>  entities      = new ArrayList<>();
-        List<Relationship>  relationships = new ArrayList<>();
+        List<EntityDetail>                  entities        = new ArrayList<>();
+        List<Relationship>                  relationships   = new ArrayList<>();
+        List<ClassificationEntityExtension> classifications = new ArrayList<>();
 
         if (! entityDetailList.isEmpty())
         {
@@ -1407,6 +1408,10 @@ public class OMRSArchiveBuilder
         if (! relationshipList.isEmpty())
         {
             relationships.addAll(relationshipList);
+        }
+        if (! classificationList.isEmpty())
+        {
+            classifications.addAll(classificationList);
         }
 
         if ((! entities.isEmpty()) || (! relationships.isEmpty()))
@@ -1421,6 +1426,11 @@ public class OMRSArchiveBuilder
             if (! relationships.isEmpty())
             {
                 instanceStore.setRelationships(relationships);
+            }
+
+            if (! classifications.isEmpty())
+            {
+                instanceStore.setClassifications(classifications);
             }
 
             archive.setArchiveInstanceStore(instanceStore);

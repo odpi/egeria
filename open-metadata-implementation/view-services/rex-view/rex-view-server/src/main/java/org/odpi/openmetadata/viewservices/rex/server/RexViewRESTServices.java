@@ -10,6 +10,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.viewservices.rex.api.properties.ResourceEndpoint;
 import org.odpi.openmetadata.viewservices.rex.api.properties.RexPreTraversal;
 import org.odpi.openmetadata.viewservices.rex.api.properties.RexTraversal;
 import org.odpi.openmetadata.viewservices.rex.api.rest.RexEntityDetailResponse;
@@ -17,6 +18,7 @@ import org.odpi.openmetadata.viewservices.rex.api.rest.RexEntityRequestBody;
 import org.odpi.openmetadata.viewservices.rex.api.rest.RexPreTraversalResponse;
 import org.odpi.openmetadata.viewservices.rex.api.rest.RexRelationshipRequestBody;
 import org.odpi.openmetadata.viewservices.rex.api.rest.RexRelationshipResponse;
+import org.odpi.openmetadata.viewservices.rex.api.rest.RexResourceEndpointListResponse;
 import org.odpi.openmetadata.viewservices.rex.api.rest.RexSearchBody;
 import org.odpi.openmetadata.viewservices.rex.api.rest.RexSearchResponse;
 import org.odpi.openmetadata.viewservices.rex.api.rest.RexTraversalRequestBody;
@@ -26,8 +28,10 @@ import org.odpi.openmetadata.viewservices.rex.api.rest.TypeExplorerResponse;
 import org.odpi.openmetadata.viewservices.rex.handlers.RexViewHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
+
+
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -51,6 +55,49 @@ public class RexViewRESTServices {
      * Default constructor
      */
     public RexViewRESTServices() {
+
+    }
+
+
+    /**
+     * Retrieve platform origin
+     *
+     * @param serverName    name of the local view server.
+     * @param userId        userId under which the request is performed
+     * @return response     the list of resource endpoints configured for the view service
+     *
+     */
+    public RexResourceEndpointListResponse getResourceEndpointList(String serverName, String userId)
+    {
+
+        final String methodName = "getResourceEndpointList";
+
+        RexResourceEndpointListResponse response = new RexResourceEndpointListResponse();
+
+        AuditLog auditLog = null;
+
+        try {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            RexViewHandler handler = instanceHandler.getRexViewHandler(userId, serverName, methodName);
+
+            Map<String, List<ResourceEndpoint>> lists =  handler.getResourceEndpoints(userId, methodName);
+            response.setPlatformList(lists.get("platformList"));
+            response.setServerList(lists.get("serverList"));
+
+        } catch (InvalidParameterException error) {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        } catch (PropertyServerException error) {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        } catch (UserNotAuthorizedException error) {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        } catch (Throwable error) {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
 
     }
 
@@ -88,7 +135,7 @@ public class RexViewRESTServices {
 
                 response.setTypeExplorer(handler.getTypeExplorer(userId,
                                                                  requestBody.getServerName(),
-                                                                 requestBody.getServerRootURL(),
+                                                                 requestBody.getPlatformName(),
                                                                  requestBody.getEnterpriseOption(),
                                                                  methodName));
             }
@@ -122,7 +169,9 @@ public class RexViewRESTServices {
      * </ul>
      */
 
-    public RexEntityDetailResponse getEntity(String serverName, String userId, RexEntityRequestBody requestBody)
+    public RexEntityDetailResponse getEntity(String               serverName,
+                                             String               userId,
+                                             RexEntityRequestBody requestBody)
     {
 
         final String methodName = "getEntity";
@@ -141,7 +190,7 @@ public class RexViewRESTServices {
 
                 response.setExpandedEntityDetail(handler.getEntity(userId,
                                                                    requestBody.getServerName(),
-                                                                   requestBody.getServerRootURL(),
+                                                                   requestBody.getPlatformName(),
                                                                    requestBody.getEnterpriseOption(),
                                                                    requestBody.getEntityGUID(),
                                                                    methodName));
@@ -176,7 +225,9 @@ public class RexViewRESTServices {
      * </ul>
      */
 
-    public RexRelationshipResponse getRelationship(String serverName, String userId, RexRelationshipRequestBody requestBody)
+    public RexRelationshipResponse getRelationship(String                     serverName,
+                                                   String                     userId,
+                                                   RexRelationshipRequestBody requestBody)
     {
 
         final String methodName = "getRelationship";
@@ -195,7 +246,7 @@ public class RexViewRESTServices {
 
                 response.setExpandedRelationship(handler.getRelationship(userId,
                                                                          requestBody.getServerName(),
-                                                                         requestBody.getServerRootURL(),
+                                                                         requestBody.getPlatformName(),
                                                                          requestBody.getEnterpriseOption(),
                                                                          requestBody.getRelationshipGUID(),
                                                                          methodName));
@@ -252,7 +303,7 @@ public class RexViewRESTServices {
 
                 response.setEntities(handler.findEntities(userId,
                                                           requestBody.getServerName(),
-                                                          requestBody.getServerRootURL(),
+                                                          requestBody.getPlatformName(),
                                                           requestBody.getEnterpriseOption(),
                                                           requestBody.getSearchText(),
                                                           requestBody.getTypeName(),
@@ -262,8 +313,6 @@ public class RexViewRESTServices {
                 response.setSearchCategory("Entity");
                 response.setSearchText(requestBody.getSearchText());
                 response.setServerName(requestBody.getServerName());
-                // TODO - do you want to add the typeName to the response object??  - useful for history??
-
 
             }
         } catch (InvalidParameterException error) {
@@ -318,7 +367,7 @@ public class RexViewRESTServices {
 
                 response.setRelationships(handler.findRelationships(userId,
                                                                     requestBody.getServerName(),
-                                                                    requestBody.getServerRootURL(),
+                                                                    requestBody.getPlatformName(),
                                                                     requestBody.getEnterpriseOption(),
                                                                     requestBody.getSearchText(),
                                                                     requestBody.getTypeName(),
@@ -327,8 +376,6 @@ public class RexViewRESTServices {
                 response.setSearchCategory("Relationship");
                 response.setSearchText(requestBody.getSearchText());
                 response.setServerName(requestBody.getServerName());
-                // TODO - do you want to add the typeName to the response object??  - useful for history??
-
 
             }
         } catch (InvalidParameterException error) {
@@ -370,8 +417,8 @@ public class RexViewRESTServices {
      */
 
     public RexPreTraversalResponse preTraversal(String                  serverName,
-                                                   String                  userId,
-                                                   RexTraversalRequestBody requestBody) {
+                                                String                  userId,
+                                                RexTraversalRequestBody requestBody) {
 
         final String methodName = "preTraversal";
 
@@ -389,7 +436,7 @@ public class RexViewRESTServices {
 
                 RexPreTraversal preTraversal = handler.preTraversal(userId,
                                                                        requestBody.getServerName(),
-                                                                       requestBody.getServerRootURL(),
+                                                                       requestBody.getPlatformName(),
                                                                        requestBody.getEnterpriseOption(),
                                                                        requestBody.getEntityGUID(),
                                                                        requestBody.getDepth(),
@@ -398,8 +445,6 @@ public class RexViewRESTServices {
                 if (preTraversal != null) {
                     response.setRexPreTraversal(preTraversal);
                 }
-
-                // TODO -- need to test/decide what should happen when there is no neighborhood......
 
             }
         } catch (InvalidParameterException error) {
@@ -460,7 +505,7 @@ public class RexViewRESTServices {
 
                 RexTraversal traversal = handler.traversal(userId,
                                                               requestBody.getServerName(),
-                                                              requestBody.getServerRootURL(),
+                                                              requestBody.getPlatformName(),
                                                               requestBody.getEnterpriseOption(),
                                                               requestBody.getEntityGUID(),
                                                               requestBody.getDepth(),
@@ -472,8 +517,6 @@ public class RexViewRESTServices {
                 if (traversal != null) {
                     response.setRexTraversal(traversal);
                 }
-
-                // TODO -- need to test/decide what should happen when there is no neighborhood......
 
             }
         } catch (InvalidParameterException error) {

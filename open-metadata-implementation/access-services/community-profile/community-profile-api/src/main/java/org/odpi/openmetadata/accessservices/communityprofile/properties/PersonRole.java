@@ -52,7 +52,7 @@ public class PersonRole extends PersonalRole
      *
      * @return boolean flag
      */
-    public boolean isHeadCountLimitSet()
+    public boolean getHeadCountLimitSet()
     {
         return headCountLimitSet;
     }
@@ -158,7 +158,7 @@ public class PersonRole extends PersonalRole
             return false;
         }
         PersonRole that = (PersonRole) objectToCompare;
-        return isHeadCountLimitSet() == that.isHeadCountLimitSet() &&
+        return getHeadCountLimitSet() == that.getHeadCountLimitSet() &&
                 getHeadCount() == that.getHeadCount() &&
                 getAppointmentCount() == that.getAppointmentCount();
     }
@@ -172,6 +172,6 @@ public class PersonRole extends PersonalRole
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), isHeadCountLimitSet(), getHeadCount(), getAppointmentCount());
+        return Objects.hash(super.hashCode(), getHeadCountLimitSet(), getHeadCount(), getAppointmentCount());
     }
 }

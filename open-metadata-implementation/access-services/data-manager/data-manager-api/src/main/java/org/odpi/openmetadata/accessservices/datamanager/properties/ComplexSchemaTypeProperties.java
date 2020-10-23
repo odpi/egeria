@@ -1,32 +1,32 @@
-/* SPDX-License-Identifier: Apache 2.0 */
+/* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-
 package org.odpi.openmetadata.accessservices.datamanager.properties;
 
+
 import com.fasterxml.jackson.annotation.*;
+
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * ComplexSchemaTypeProperties is a class for representing a schema type that is made up of multiple values.
+ * ComplexSchemaTypeProperties describes a schema with multiple attributes.  Notice it does not contain the attributes,
+ * just a count of them.  This is because a complex schema type may have literally thousands of attributes
+ * and so the attribute contents are retrieved separated through calls that support paging.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "class")
-@JsonSubTypes(
-        {
-                @JsonSubTypes.Type(value = TabularSchemaTypeProperties.class, name = "TabularSchemaTypeProperties"),
-        })
 public class ComplexSchemaTypeProperties extends SchemaTypeProperties
 {
-    private static final long    serialVersionUID = 1L;
+    private static final long     serialVersionUID = 1L;
+
+    private int    attributeCount = 0;
+
 
     /**
-     * Default constructor
+     * Default constructor used by subclasses
      */
     public ComplexSchemaTypeProperties()
     {
@@ -35,13 +35,37 @@ public class ComplexSchemaTypeProperties extends SchemaTypeProperties
 
 
     /**
-     * Copy/clone constructor.
+     * Copy/clone Constructor.
      *
-     * @param template object to copy
+     * @param template template object to copy.
      */
     public ComplexSchemaTypeProperties(ComplexSchemaTypeProperties template)
     {
         super(template);
+
+        if (template != null)
+        {
+            attributeCount = template.getAttributeCount();
+        }
+    }
+
+
+    /**
+     * Return the count of attributes in this schema type.
+     *
+     * @return String data type name
+     */
+    public int getAttributeCount() { return attributeCount; }
+
+
+    /**
+     * Set up the count of attributes in this schema type
+     *
+     * @param attributeCount data type name
+     */
+    public void setAttributeCount(int attributeCount)
+    {
+        this.attributeCount = attributeCount;
     }
 
 
@@ -53,20 +77,41 @@ public class ComplexSchemaTypeProperties extends SchemaTypeProperties
     @Override
     public String toString()
     {
-        return "ComplexSchemaTypeProperties{" +
-                "versionNumber='" + getVersionNumber() + '\'' +
+        return "ComplexSchemaType{" +
+                "attributeCount='" + attributeCount + '\'' +
+                ", displayName='" + getDisplayName() + '\'' +
+                ", versionNumber='" + getVersionNumber() + '\'' +
                 ", author='" + getAuthor() + '\'' +
                 ", usage='" + getUsage() + '\'' +
                 ", encodingStandard='" + getEncodingStandard() + '\'' +
-                ", namespace='" + getNamespace() + '\'' +
-                ", deprecated=" + isDeprecated() +
-                ", displayName='" + getDisplayName() + '\'' +
-                ", description='" + getDescription() + '\'' +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +
-                ", vendorProperties=" + getVendorProperties() +
-                ", typeName='" + getTypeName() + '\'' +
                 ", extendedProperties=" + getExtendedProperties() +
                 '}';
+    }
+
+    /**
+     * Compare the values of the supplied object with those stored in the current object.
+     *
+     * @param objectToCompare supplied object
+     * @return boolean result of comparison
+     */
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
+        {
+            return true;
+        }
+        if (!(objectToCompare instanceof ComplexSchemaTypeProperties))
+        {
+            return false;
+        }
+        if (!super.equals(objectToCompare))
+        {
+            return false;
+        }
+        ComplexSchemaTypeProperties that = (ComplexSchemaTypeProperties) objectToCompare;
+        return Objects.equals(getAttributeCount(), that.getAttributeCount());
     }
 }

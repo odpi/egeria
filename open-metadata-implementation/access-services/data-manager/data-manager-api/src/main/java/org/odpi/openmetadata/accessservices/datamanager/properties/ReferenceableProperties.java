@@ -60,6 +60,8 @@ public class ReferenceableProperties implements Serializable
             qualifiedName        = template.getQualifiedName();
             additionalProperties = template.getAdditionalProperties();
 
+            vendorProperties     = template.getVendorProperties();
+
             typeName             = template.getTypeName();
             extendedProperties   = template.getExtendedProperties();
         }

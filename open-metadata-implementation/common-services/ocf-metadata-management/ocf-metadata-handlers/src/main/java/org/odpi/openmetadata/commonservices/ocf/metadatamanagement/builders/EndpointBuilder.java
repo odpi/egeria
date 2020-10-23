@@ -75,6 +75,8 @@ public class EndpointBuilder extends ReferenceableBuilder
     {
         super(qualifiedName,
               additionalProperties,
+              EndpointMapper.ENDPOINT_TYPE_NAME,
+              EndpointMapper.ENDPOINT_TYPE_GUID,
               extendedProperties,
               repositoryHelper,
               serviceName,

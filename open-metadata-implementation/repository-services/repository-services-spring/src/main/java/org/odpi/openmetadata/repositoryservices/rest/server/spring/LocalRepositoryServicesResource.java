@@ -1777,6 +1777,38 @@ public class LocalRepositoryServicesResource
         return restAPI.classifyEntity(serverName, userId, entityGUID, classificationName, propertiesRequestBody);
     }
 
+    /**
+     * Add the requested classification to a specific entity.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param userId unique identifier for requesting user.
+     * @param entityGUID String unique identifier (guid) for the entity.
+     * @param classificationName String name for the classification.
+     * @param classificationRequestBody values for the classification.
+     * @return EntityDetailResponse:
+     * EntityDetail showing the resulting entity header, properties and classifications or
+     * InvalidParameterException one of the parameters is invalid or null or
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored or
+     * EntityNotKnownException the entity identified by the guid is not found in the metadata collection or
+     * ClassificationErrorException the requested classification is either not known or not valid
+     *                                         for the entity or
+     * PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                characteristics in the TypeDef for this classification type or
+     * FunctionNotSupportedException the repository does not support maintenance of metadata.
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @PostMapping(path = "/instances/entity/{entityGUID}/classification/{classificationName}/detailed")
+
+    public EntityDetailResponse  classifyEntity(String                serverName,
+                                                String                userId,
+                                                String                entityGUID,
+                                                String                classificationName,
+                                                ClassificationRequest classificationRequestBody)
+    {
+        return restAPI.classifyEntity(serverName, userId, entityGUID, classificationName, classificationRequestBody);
+    }
+
 
     /**
      * Remove a specific classification from an entity.
@@ -2324,6 +2356,58 @@ public class LocalRepositoryServicesResource
 
 
     /**
+     * Retrieve any locally homed classifications assigned to the requested entity.  This method is implemented by repository connectors that are able
+     * to store classifications for entities that are homed in another repository.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param userId unique identifier for requesting user.
+     * @param entityGUID unique identifier of the entity with classifications to retrieve
+     * @return list of all of the classifications for this entity that are homed in this repository or
+     * InvalidParameterException the entity is null or
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored or
+     * EntityNotKnownException the entity is not recognized by this repository or
+     * UserNotAuthorizedException to calling user is not authorized to retrieve this metadata or
+     * FunctionNotSupportedException this method is not supported
+     */
+    @PostMapping(path = "/instances/entity/{entityGUID}/home-classifications")
+
+    public ClassificationListResponse getHomeClassifications(@PathVariable String serverName,
+                                                             @PathVariable String userId,
+                                                             @PathVariable String entityGUID)
+    {
+        return restAPI.getHomeClassifications(serverName, userId, entityGUID);
+    }
+
+
+    /**
+     * Retrieve any locally homed classifications assigned to the requested entity.  This method is implemented by repository connectors that are able
+     * to store classifications for entities that are homed in another repository.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param userId unique identifier for requesting user.
+     * @param entityGUID unique identifier of the entity with classifications to retrieve
+     * @param requestBody the time used to determine which version of the entity that is desired.
+     * @return list of all of the classifications for this entity that are homed in this repository or
+     * InvalidParameterException the entity is null or
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored or
+     * EntityNotKnownException the entity is not recognized by this repository or
+     * UserNotAuthorizedException to calling user is not authorized to retrieve this metadata or
+     * FunctionNotSupportedException this method is not supported
+     */
+    @PostMapping(path = "/instances/entity/{entityGUID}/home-classifications/history")
+
+    public ClassificationListResponse getHomeClassifications(@PathVariable String         serverName,
+                                                             @PathVariable String         userId,
+                                                             @PathVariable String         entityGUID,
+                                                             @RequestBody  HistoryRequest requestBody)
+    {
+        return restAPI.getHomeClassifications(serverName, userId, entityGUID, requestBody);
+    }
+
+
+    /**
      * Remove a reference copy of the the entity from the local repository.  This method can be used to
      * remove reference copies from the local cohort, repositories that have left the cohort,
      * or entities that have come from open metadata archives.
@@ -2352,6 +2436,30 @@ public class LocalRepositoryServicesResource
     }
 
 
+    /**
+     * Remove a reference copy of the the entity from the local repository.  This method can be used to
+     * remove reference copies from the local cohort, repositories that have left the cohort,
+     * or entities that have come from open metadata archives.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param userId unique identifier for requesting server.
+     * @param entity the instance to purge.
+     * @return VoidResponse:
+     * void or
+     * InvalidParameterException the entity is null or
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored or
+     * TypeErrorException the requested type is not known, or not supported in the metadata repository
+     *                            hosting the metadata collection or
+     * PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                  characteristics in the TypeDef for this entity's type or
+     * HomeEntityException the entity belongs to the local repository so creating a reference
+     *                               copy would be invalid or
+     * EntityConflictException the new entity conflicts with an existing entity or
+     * InvalidEntityException the new entity has invalid contents or
+     * FunctionNotSupportedException the repository does not support instance reference copies or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
     @PostMapping(path = "/instances/entities/reference-copy/purge")
 
     public VoidResponse purgeEntityReferenceCopy(@PathVariable String                        serverName,
@@ -2427,6 +2535,75 @@ public class LocalRepositoryServicesResource
                                                   entityGUID,
                                                   homeMetadataCollectionId,
                                                   typeDefValidationForRequest);
+    }
+
+
+    /**
+     * Save the classification as a reference copy.  The id of the home metadata collection is already set up in the
+     * classification.  The entity may be either a locally homed entity or a reference copy.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param userId unique identifier for requesting user.
+     * @param requestBody entity that the classification is attached to and classification to save.
+     *
+     * @return void response or
+     * InvalidParameterException one of the parameters is invalid or null.
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                          the metadata collection is stored.
+     * PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                        characteristics in the TypeDef for this classification type.
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * FunctionNotSupportedException the repository does not support maintenance of metadata.
+     * TypeErrorException the requested type is not known, or not supported in the metadata repository
+     *                    hosting the metadata collection.
+     * EntityConflictException the new entity conflicts with an existing entity.
+     * InvalidEntityException the new entity has invalid contents.
+     * FunctionNotSupportedException the repository does not support reference copies of instances.
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @PostMapping(path = "instances/entities/classifications/reference-copy")
+
+    public VoidResponse saveClassificationReferenceCopy(@PathVariable String                          serverName,
+                                                        @PathVariable String                          userId,
+                                                        @RequestBody  ClassificationWithEntityRequest requestBody)
+    {
+        final String methodName  = "saveClassificationReferenceCopy";
+
+        return restAPI.saveClassificationReferenceCopy(serverName, userId, requestBody);
+    }
+
+
+    /**
+     * Remove the reference copy of the classification from the local repository. This method can be used to
+     * remove reference copies from the local cohort, repositories that have left the cohort,
+     * or relationships that have come from open metadata archives.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param userId unique identifier for requesting user.
+     * @param requestBody entity that the classification is attached to and classification to purge.
+     *
+     * @return void response or
+     * InvalidParameterException one of the parameters is invalid or null.
+     * PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                        characteristics in the TypeDef for this classification type.
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                          the metadata collection is stored.
+     * TypeErrorException the requested type is not known, or not supported in the metadata repository
+     *                    hosting the metadata collection.
+     * EntityConflictException the new entity conflicts with an existing entity.
+     * InvalidEntityException the new entity has invalid contents.
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * FunctionNotSupportedException the repository does not support maintenance of metadata.
+     */
+    @PostMapping(path = "instances/entities/classifications/reference-copy/purge")
+
+    public  VoidResponse purgeClassificationReferenceCopy(String                          serverName,
+                                                          String                          userId,
+                                                          ClassificationWithEntityRequest requestBody)
+    {
+        final String methodName  = "purgeClassificationReferenceCopy";
+
+        return restAPI.purgeClassificationReferenceCopy(serverName, userId, requestBody);
     }
 
 

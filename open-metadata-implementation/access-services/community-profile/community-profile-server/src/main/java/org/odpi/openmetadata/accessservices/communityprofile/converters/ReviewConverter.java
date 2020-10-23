@@ -91,7 +91,7 @@ public class ReviewConverter extends CommonHeaderConverter
                 switch (enumPropertyValue.getOrdinal())
                 {
                     case 0:
-                        rating = StarRating.NOT_RECOMMENDED;
+                        rating = StarRating.NO_RECOMMENDATION;
                         break;
 
                     case 1:

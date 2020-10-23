@@ -69,6 +69,7 @@ public class ViewServiceConfig extends OMAGServerClientConfig
             viewServiceAdminClass = template.getViewServiceAdminClass();
             viewServiceFullName = template.getViewServiceFullName();
             viewServiceName = template.getViewServiceName();
+            viewServiceURLMarker = template.getViewServiceURLMarker();
             viewServiceDescription = template.getViewServiceDescription();
             viewServiceWiki = template.getViewServiceWiki();
             viewServiceOperationalStatus = template.getViewServiceOperationalStatus();
@@ -204,7 +205,7 @@ public class ViewServiceConfig extends OMAGServerClientConfig
      *
      * @param viewServiceURLMarker url fragment
      */
-    public void setServiceURLMarker(String viewServiceURLMarker)
+    public void setViewServiceURLMarker(String viewServiceURLMarker)
     {
         this.viewServiceURLMarker = viewServiceURLMarker;
     }

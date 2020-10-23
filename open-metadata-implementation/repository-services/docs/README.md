@@ -5,7 +5,7 @@
 
 Figure 1 shows the external APIs for the OMRS.
 
-![Figure 1: OMRS System Context Diagram](omrs-system-context-diagram.png)
+![Figure 1: OMRS System Context Diagram](omrs-system-context-diagram.png#pagewidth)
 > Figure 1: OMRS System Context Diagram
 
 On the left hand side is the **[administration interface](../../governance-servers/README.md)** supported by the OMAG server.
@@ -33,7 +33,7 @@ support different types of messaging infrastructure.
 
 Inside the OMRS are 4 major subsystems (groups of components):
 
-![Figure 2: Component Overview (level 1)](omrs-component-overview-level-1.png)
+![Figure 2: Component Overview (level 1)](omrs-component-overview-level-1.png#pagewidth)
 > Figure 2: Component Overview (level 1)
 
 * **[Enterprise Repository Services](subsystem-descriptions/enterprise-repository-services.md)** provides a virtual
@@ -99,12 +99,16 @@ in and out to support different configurations.
 
 Figure 7 shows the main components of OMRS within each subsystem.
 
-![Figure 7: Component Overview (level 2)](omrs-component-overview-level-1.png)
+![Figure 7: Component Overview (level 2)](omrs-component-overview-level-1.png#pagewidth)
 > Figure 7: Component Overview (level 2)
 
 Follow the links for more details of 
 these **[subsystems](subsystem-descriptions/README.md)**
 and **[components](component-descriptions/README.md)**.
+
+----
+
+* [Return to repository services overview](..)
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

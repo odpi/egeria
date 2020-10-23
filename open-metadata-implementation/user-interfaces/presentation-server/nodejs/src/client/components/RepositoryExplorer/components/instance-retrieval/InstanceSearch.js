@@ -1,17 +1,17 @@
-import React, { useContext, useState, useRef } from "react";
-
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
-import PropTypes                       from "prop-types";
+import React, { useContext, useState, useRef } from "react";
 
-import { InstancesContext }            from "../../contexts/InstancesContext";
+import PropTypes                               from "prop-types";
 
-import { RepositoryServerContext }     from "../../contexts/RepositoryServerContext";
+import { InstancesContext }                    from "../../contexts/InstancesContext";
 
-import FilterManager                   from "./FilterManager";
+import { RepositoryServerContext }             from "../../contexts/RepositoryServerContext";
 
-import SearchResultHandler             from "./SearchResultHandler";
+import FilterManager                           from "./FilterManager";
+
+import SearchResultHandler                     from "./SearchResultHandler";
 
 import "./instance-retriever.scss"
 
@@ -425,6 +425,8 @@ export default function InstanceSearch(props) {
     <div className={props.className}>
 
       <div className="retrieval-controls">
+
+        <div className="retrieval-fields">
         <p>
         Search for instances
         </p>
@@ -453,26 +455,28 @@ export default function InstanceSearch(props) {
                onChange = { updatedSearchText } >
         </input>
 
+        <br/>
         <FilterManager searchCategory={searchCategory} typeSelected={filterTypeSelected} clsChanged={filterClassificationChanged} />
 
-        <br />
 
-        <button className="top-control-button" onClick = { searchForInstances } >
+        </div>
+
+        <button className="retrieval-button" onClick = { searchForInstances } >
           Search for instances
         </button>
       </div>
 
-        <SearchResultHandler status                = { status }
-                             searchCategory        = { searchCategory }
-                             searchType            = { searchType }
-                             searchText            = { searchText }
-                             searchClassifications = { Object.keys(searchClassifications) }
-                             serverName            = { repositoryServerContext.repositoryServerName }
-                             results               = { searchResults }
-                             selectCallback        = { selectCallback }
-                             setAllCallback        = { setAllCallback }
-                             onCancel              = { cancelSearchModal }
-                             onSubmit              = { submitSearchModal } />
+      <SearchResultHandler status                = { status }
+                           searchCategory        = { searchCategory }
+                           searchType            = { searchType }
+                           searchText            = { searchText }
+                           searchClassifications = { Object.keys(searchClassifications) }
+                           serverName            = { repositoryServerContext.repositoryServerName }
+                           results               = { searchResults }
+                           selectCallback        = { selectCallback }
+                           setAllCallback        = { setAllCallback }
+                           onCancel              = { cancelSearchModal }
+                           onSubmit              = { submitSearchModal } />
 
     </div>      
 

@@ -12,7 +12,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
@@ -25,12 +24,10 @@ import java.util.List;
  * ConnectionHandler retrieves Connection objects from the property server.  It runs server-side in the
  * the OMAG Server Platform and retrieves Connections through the OMRSRepositoryConnector.
  */
-public class ConnectionHandler extends AttachmentHandlerBase
+public class ConnectionHandler extends RootHandler
 {
     private EndpointHandler         endpointHandler;
     private ConnectorTypeHandler    connectorTypeHandler;
-
-    private OpenMetadataServerSecurityVerifier securityVerifier = new OpenMetadataServerSecurityVerifier();
 
 
     /**
@@ -41,138 +38,30 @@ public class ConnectionHandler extends AttachmentHandlerBase
      * @param invalidParameterHandler handler for managing parameter errors
      * @param repositoryHandler handler for interfacing with the repository services
      * @param repositoryHelper    helper utilities for managing repository services objects
-     * @param lastAttachmentHandler handler for recording last attachment
      */
     public ConnectionHandler(String                  serviceName,
                              String                  serverName,
                              InvalidParameterHandler invalidParameterHandler,
                              RepositoryHandler       repositoryHandler,
-                             OMRSRepositoryHelper    repositoryHelper,
-                             LastAttachmentHandler   lastAttachmentHandler)
+                             OMRSRepositoryHelper    repositoryHelper)
     {
-        super(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, lastAttachmentHandler);
+        super(serviceName,
+              serverName,
+              invalidParameterHandler,
+              repositoryHandler,
+              repositoryHelper);
 
         this.endpointHandler = new EndpointHandler(serviceName,
                                                    serverName,
                                                    invalidParameterHandler,
                                                    repositoryHandler,
                                                    repositoryHelper);
+
         this.connectorTypeHandler = new ConnectorTypeHandler(serviceName,
                                                              serverName,
                                                              invalidParameterHandler,
                                                              repositoryHandler,
                                                              repositoryHelper);
-    }
-
-
-    /**
-     * Set up a new security verifier (the handler runs with a default verifier until this
-     * method is called).
-     *
-     * The security verifier provides authorization checks for access and maintenance
-     * changes to open metadata.  Authorization checks are enabled through the
-     * OpenMetadataServerSecurityConnector.
-     *
-     * @param securityVerifier new security verifier
-     */
-    public void setSecurityVerifier(OpenMetadataServerSecurityVerifier securityVerifier)
-    {
-        if (securityVerifier != null)
-        {
-            this.securityVerifier = securityVerifier;
-        }
-    }
-
-
-    /**
-     * Count the number of connection attached to an anchor asset.
-     *
-     * @param userId     calling user
-     * @param anchorGUID identifier for the entity that the object is attached to
-     * @param methodName calling method
-     * @return count of attached objects
-     * @throws InvalidParameterException  the parameters are invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException    problem accessing the property server
-     */
-    public int countAttachedConnections(String   userId,
-                                        String   anchorGUID,
-                                        String   methodName) throws InvalidParameterException,
-                                                                    PropertyServerException,
-                                                                    UserNotAuthorizedException
-    {
-        return super.countAttachments(userId,
-                                      anchorGUID,
-                                      AssetMapper.ASSET_TYPE_NAME,
-                                      AssetMapper.ASSET_TO_CONNECTION_TYPE_GUID,
-                                      AssetMapper.ASSET_TO_CONNECTION_TYPE_NAME,
-                                      methodName);
-    }
-
-
-    /**
-     * Return the connections attached to an anchor entity.
-     *
-     * @param userId     calling user
-     * @param anchorGUID identifier for the entity that the feedback is attached to
-     * @param startingFrom where to start from in the list
-     * @param pageSize maximum number of results that can be returned
-     * @param methodName calling method
-     * @return list of connections
-     * @throws InvalidParameterException  the input properties are invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException    problem accessing the property server
-     */
-    public List<Connection>  getConnections(String   userId,
-                                            String   anchorGUID,
-                                            int      startingFrom,
-                                            int      pageSize,
-                                            String   methodName) throws InvalidParameterException,
-                                                                        PropertyServerException,
-                                                                        UserNotAuthorizedException
-    {
-        final String guidParameterName      = "anchorGUID";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(anchorGUID, guidParameterName, methodName);
-        int queryPageSize = invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
-
-        List<Relationship>  relationships = repositoryHandler.getPagedRelationshipsByType(userId,
-                                                                                          anchorGUID,
-                                                                                          AssetMapper.ASSET_TYPE_NAME,
-                                                                                          AssetMapper.ASSET_TO_CONNECTION_TYPE_GUID,
-                                                                                          AssetMapper.ASSET_TO_CONNECTION_TYPE_NAME,
-                                                                                          startingFrom,
-                                                                                          queryPageSize,
-                                                                                          methodName);
-        if (relationships != null)
-        {
-            List<Connection>  results = new ArrayList<>();
-
-            for (Relationship relationship : relationships)
-            {
-                if (relationship != null)
-                {
-                    EntityProxy entityProxy = relationship.getEntityOneProxy();
-
-                    if (entityProxy != null)
-                    {
-                        results.add(this.getConnection(userId, entityProxy.getGUID()));
-                    }
-                }
-            }
-
-            if (results.isEmpty())
-            {
-                return null;
-            }
-            else
-            {
-                return results;
-            }
-        }
-
-        return null;
     }
 
 
@@ -351,6 +240,8 @@ public class ConnectionHandler extends AttachmentHandlerBase
      * the supplied object.
      *
      * @param userId calling userId
+     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software server capability entity that represented the external source
      * @param connection object to add
      *
      * @return unique identifier of the connection in the repository.
@@ -359,6 +250,8 @@ public class ConnectionHandler extends AttachmentHandlerBase
      * @throws PropertyServerException problem accessing the property server
      */
     public String  saveConnection(String      userId,
+                                  String      externalSourceGUID,
+                                  String      externalSourceName,
                                   Connection  connection) throws InvalidParameterException,
                                                                  PropertyServerException,
                                                                  UserNotAuthorizedException
@@ -376,11 +269,11 @@ public class ConnectionHandler extends AttachmentHandlerBase
         String existingConnection = this.findConnection(userId, connection, methodName);
         if (existingConnection == null)
         {
-            return addConnection(userId, connection);
+            return addConnection(userId, externalSourceGUID, externalSourceName, connection);
         }
         else
         {
-            return updateConnection(userId, existingConnection, connection);
+            return updateConnection(userId, externalSourceGUID, externalSourceName, existingConnection, connection);
         }
     }
 
@@ -389,6 +282,8 @@ public class ConnectionHandler extends AttachmentHandlerBase
      * Save the connectorType, endpoint and any embedded connections.
      *
      * @param userId calling user
+     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software server capability entity that represented the external source
      * @param connectionGUID unique identifier of connected connection
      * @param endpoint endpoint object or null
      * @param connectorType connector type object or null
@@ -400,6 +295,8 @@ public class ConnectionHandler extends AttachmentHandlerBase
      * @throws PropertyServerException problem accessing the property server
      */
     private void saveAssociatedConnectionEntities(String                   userId,
+                                                  String                   externalSourceGUID,
+                                                  String                   externalSourceName,
                                                   String                   connectionGUID,
                                                   Endpoint                 endpoint,
                                                   ConnectorType            connectorType,
@@ -412,13 +309,12 @@ public class ConnectionHandler extends AttachmentHandlerBase
          * Match the content in the repository with the connection description passed in on the parameters.
          * It updates the endpoint, then the connector type and then the embedded connections.
          */
-
         if (endpoint != null)
         {
             /*
              * This connection has an endpoint.
              */
-            String endpointGUID = endpointHandler.saveEndpoint(userId, endpoint);
+            String endpointGUID = endpointHandler.saveEndpoint(userId, externalSourceGUID, externalSourceName, endpoint);
 
             if (endpointGUID != null)
             {
@@ -427,6 +323,8 @@ public class ConnectionHandler extends AttachmentHandlerBase
                  */
                 repositoryHandler.ensureRelationship(userId,
                                                      EndpointMapper.ENDPOINT_TYPE_NAME,
+                                                     null,
+                                                     null,
                                                      endpointGUID,
                                                      connectionGUID,
                                                      ConnectionMapper.CONNECTION_ENDPOINT_TYPE_GUID,
@@ -444,6 +342,8 @@ public class ConnectionHandler extends AttachmentHandlerBase
              * it is safe to delete any relationships to endpoints from this connection.
              */
             repositoryHandler.removeAllRelationshipsOfType(userId,
+                                                           externalSourceGUID,
+                                                           externalSourceName,
                                                            connectionGUID,
                                                            ConnectionMapper.CONNECTION_TYPE_NAME,
                                                            ConnectionMapper.CONNECTION_ENDPOINT_TYPE_GUID,
@@ -453,11 +353,13 @@ public class ConnectionHandler extends AttachmentHandlerBase
 
         if (connectorType != null)
         {
-            String connectorTypeGUID = connectorTypeHandler.saveConnectorType(userId, connectorType);
+            String connectorTypeGUID = connectorTypeHandler.saveConnectorType(userId, externalSourceGUID, externalSourceName, connectorType);
 
             if (connectorTypeGUID != null)
             {
                 repositoryHandler.ensureRelationship(userId,
+                                                     externalSourceGUID,
+                                                     externalSourceName,
                                                      ConnectionMapper.CONNECTION_TYPE_NAME,
                                                      connectionGUID,
                                                      connectorTypeGUID,
@@ -476,6 +378,8 @@ public class ConnectionHandler extends AttachmentHandlerBase
              * it is safe to delete any relationships to connectorTypes from this connection.
              */
             repositoryHandler.removeAllRelationshipsOfType(userId,
+                                                           externalSourceGUID,
+                                                           externalSourceName,
                                                            connectionGUID,
                                                            ConnectionMapper.CONNECTION_TYPE_NAME,
                                                            ConnectionMapper.CONNECTION_CONNECTOR_TYPE_TYPE_GUID,
@@ -488,6 +392,8 @@ public class ConnectionHandler extends AttachmentHandlerBase
          * virtual connection is being reorganized.
          */
         repositoryHandler.removeAllRelationshipsOfType(userId,
+                                                       externalSourceGUID,
+                                                       externalSourceName,
                                                        connectionGUID,
                                                        ConnectionMapper.CONNECTION_TYPE_NAME,
                                                        ConnectionMapper.EMBEDDED_CONNECTION_TYPE_GUID,
@@ -500,9 +406,12 @@ public class ConnectionHandler extends AttachmentHandlerBase
             {
                 if (embeddedConnection != null)
                 {
-                    Connection           realConnection = embeddedConnection.getEmbeddedConnection();
+                    Connection realConnection = embeddedConnection.getEmbeddedConnection();
 
-                    String realConnectionGUID = this.saveConnection(userId, realConnection);
+                    String realConnectionGUID = this.saveConnection(userId,
+                                                                    externalSourceGUID,
+                                                                    externalSourceName,
+                                                                    realConnection);
 
                     if (realConnection != null)
                     {
@@ -512,6 +421,8 @@ public class ConnectionHandler extends AttachmentHandlerBase
                                                                                                             serviceName);
                         repositoryHandler.createRelationship(userId,
                                                              ConnectionMapper.CONNECTION_CONNECTOR_TYPE_TYPE_GUID,
+                                                             externalSourceGUID,
+                                                             externalSourceName,
                                                              connectionGUID,
                                                              realConnectionGUID,
                                                              embeddedConnectionBuilder.getInstanceProperties(methodName),
@@ -529,6 +440,8 @@ public class ConnectionHandler extends AttachmentHandlerBase
      * the supplied object.
      *
      * @param userId calling userId
+     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software server capability entity that represented the external source
      * @param connection object to add
      *
      * @return unique identifier of the connection in the repository.
@@ -536,10 +449,12 @@ public class ConnectionHandler extends AttachmentHandlerBase
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
      */
-    private String  addConnection(String             userId,
-                                  Connection         connection) throws InvalidParameterException,
-                                                                        PropertyServerException,
-                                                                        UserNotAuthorizedException
+    private String  addConnection(String     userId,
+                                  String     externalSourceGUID,
+                                  String     externalSourceName,
+                                  Connection connection) throws InvalidParameterException,
+                                                                PropertyServerException,
+                                                                UserNotAuthorizedException
     {
         final String  methodName        = "addConnection";
         final String  parameterName     = "connection.connectorType";
@@ -575,12 +490,16 @@ public class ConnectionHandler extends AttachmentHandlerBase
                                                                     serverName);
 
         String connectionGUID = repositoryHandler.createEntity(userId,
+                                                               externalSourceGUID,
+                                                               externalSourceName,
                                                                connectionTypeGUID,
                                                                connectionTypeName,
                                                                connectionBuilder.getInstanceProperties(methodName),
                                                                methodName);
 
         this.saveAssociatedConnectionEntities(userId,
+                                              externalSourceGUID,
+                                              externalSourceName,
                                               connectionGUID,
                                               connection.getEndpoint(),
                                               connection.getConnectorType(),
@@ -595,6 +514,8 @@ public class ConnectionHandler extends AttachmentHandlerBase
      * Update a stored connection.
      *
      * @param userId userId
+     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software server capability entity that represented the external source
      * @param existingConnectionGUID unique identifier of the existing connection entity
      * @param connection new connection values
      *
@@ -605,6 +526,8 @@ public class ConnectionHandler extends AttachmentHandlerBase
      * @throws PropertyServerException problem accessing the property server
      */
     private String updateConnection(String      userId,
+                                    String      externalSourceGUID,
+                                    String      externalSourceName,
                                     String      existingConnectionGUID,
                                     Connection  connection) throws InvalidParameterException,
                                                                    PropertyServerException,
@@ -642,14 +565,18 @@ public class ConnectionHandler extends AttachmentHandlerBase
                                                                     repositoryHelper,
                                                                     serviceName,
                                                                     serverName);
-        repositoryHandler.updateEntity(userId,
-                                       existingConnectionGUID,
-                                       connectionTypeGUID,
-                                       connectionTypeName,
-                                       connectionBuilder.getInstanceProperties(methodName),
-                                       methodName);
+        repositoryHandler.updateEntityProperties(userId,
+                                                 externalSourceGUID,
+                                                 externalSourceName,
+                                                 existingConnectionGUID,
+                                                 connectionTypeGUID,
+                                                 connectionTypeName,
+                                                 connectionBuilder.getInstanceProperties(methodName),
+                                                 methodName);
 
         this.saveAssociatedConnectionEntities(userId,
+                                              externalSourceGUID,
+                                              externalSourceName,
                                               existingConnectionGUID,
                                               connection.getEndpoint(),
                                               connection.getConnectorType(),
@@ -665,16 +592,20 @@ public class ConnectionHandler extends AttachmentHandlerBase
      * anything else.
      *
      * @param userId calling user
+     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software server capability entity that represented the external source
      * @param connectionGUID object to delete
      *
      * @throws InvalidParameterException the entity guid is not known
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
      */
-    public void     removeConnection(String                 userId,
-                                     String                 connectionGUID) throws InvalidParameterException,
-                                                                                   PropertyServerException,
-                                                                                   UserNotAuthorizedException
+    public void     removeConnection(String userId,
+                                     String externalSourceGUID,
+                                     String externalSourceName,
+                                     String connectionGUID) throws InvalidParameterException,
+                                                                   PropertyServerException,
+                                                                   UserNotAuthorizedException
     {
         final String  methodName = "removeConnection";
         final String  guidParameterName = "connectionGUID";
@@ -688,13 +619,15 @@ public class ConnectionHandler extends AttachmentHandlerBase
             if (endpoint != null)
             {
                 repositoryHandler.removeRelationshipBetweenEntities(userId,
+                                                                    externalSourceGUID,
+                                                                    externalSourceName,
                                                                     ConnectionMapper.CONNECTION_ENDPOINT_TYPE_GUID,
                                                                     ConnectionMapper.CONNECTION_ENDPOINT_TYPE_NAME,
                                                                     endpoint.getGUID(),
                                                                     EndpointMapper.ENDPOINT_TYPE_NAME,
                                                                     connectionGUID,
                                                                     methodName);
-                endpointHandler.removeEndpoint(userId, endpoint.getGUID());
+                endpointHandler.removeEndpoint(userId, externalSourceGUID, externalSourceName, endpoint.getGUID());
             }
 
 
@@ -703,13 +636,15 @@ public class ConnectionHandler extends AttachmentHandlerBase
             if (connectorType != null)
             {
                 repositoryHandler.removeRelationshipBetweenEntities(userId,
+                                                                    externalSourceGUID,
+                                                                    externalSourceName,
                                                                     ConnectionMapper.CONNECTION_CONNECTOR_TYPE_TYPE_GUID,
                                                                     ConnectionMapper.CONNECTION_CONNECTOR_TYPE_TYPE_NAME,
                                                                     connectionGUID,
                                                                     ConnectionMapper.CONNECTION_TYPE_NAME,
                                                                     connectorType.getGUID(),
                                                                     methodName);
-                connectorTypeHandler.removeConnectorType(userId, connectorType.getGUID());
+                connectorTypeHandler.removeConnectorType(userId, externalSourceGUID, externalSourceName, connectorType.getGUID());
             }
 
             if (connection instanceof VirtualConnection)
@@ -723,6 +658,8 @@ public class ConnectionHandler extends AttachmentHandlerBase
                         Connection realConnection = embeddedConnection.getEmbeddedConnection();
 
                         repositoryHandler.removeRelationshipBetweenEntities(userId,
+                                                                            externalSourceGUID,
+                                                                            externalSourceName,
                                                                             ConnectionMapper.EMBEDDED_CONNECTION_TYPE_GUID,
                                                                             ConnectionMapper.EMBEDDED_CONNECTION_TYPE_NAME,
                                                                             connectionGUID,
@@ -732,13 +669,18 @@ public class ConnectionHandler extends AttachmentHandlerBase
 
                         if (realConnection != null)
                         {
-                            this.removeConnection(userId, realConnection.getGUID());
+                            this.removeConnection(userId,
+                                                  externalSourceGUID,
+                                                  externalSourceName,
+                                                  realConnection.getGUID());
                         }
                     }
                 }
             }
 
             repositoryHandler.removeEntityOnLastUse(userId,
+                                                    externalSourceGUID,
+                                                    externalSourceName,
                                                     connectionGUID,
                                                     guidParameterName,
                                                     ConnectionMapper.CONNECTION_TYPE_GUID,
@@ -855,7 +797,8 @@ public class ConnectionHandler extends AttachmentHandlerBase
                                                                           connectorType,
                                                                           embeddedConnections,
                                                                           repositoryHelper,
-                                                                          methodName);
+                                                                          serviceName,
+                                                                          serverName);
 
         return connectionConverter.getBean();
     }

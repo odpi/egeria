@@ -18,7 +18,7 @@ buildscript {
 }
 
 /*
- * Plugins for this parent module only - so just high level project related 
+ * Plugins for this parent module only - so just high level project related
  */
 
 plugins {
@@ -31,7 +31,7 @@ plugins {
 
 
 
-/* 
+/*
  * Configuration for all projects - INCLUDING this one
  */
 
@@ -41,16 +41,16 @@ allprojects {
     version = '2.4-SNAPSHOT'
 
 
-    // This enforces version checking but is slow to process 
+    // This enforces version checking but is slow to process
     //apply plugin: 'nebula.lint'
     //gradleLint {
     //    rules = ['all-dependency'] // TODO: Change to criticalRules when ready to enforce
-    //    
+    //
     //}
 }
 
-/* 
- * Configuration for sub projects only 
+/*
+ * Configuration for sub projects only
  */
 
 subprojects {
@@ -99,13 +99,13 @@ subprojects {
             implementation("io.github.classgraph:classgraph:4.8.90")
             implementation("io.jsonwebtoken:jjwt:0.9.1")
             implementation("io.micrometer:micrometer-registry-prometheus:1.5.5")
-            implementation("io.netty:netty-all:4.1.52.Final")
-            implementation("io.netty:netty-buffer:4.1.52.Final")
+            implementation("io.netty:netty-all:4.1.53.Final")
+            implementation("io.netty:netty-buffer:4.1.53.Final")
             implementation("io.netty:netty-codec:4.1.52.Final")
-            implementation("io.netty:netty-common:4.1.52.Final")
-            implementation("io.netty:netty-handler:4.1.52.Final")
+            implementation("io.netty:netty-common:4.1.53.Final")
+            implementation("io.netty:netty-handler:4.1.53.Final")
             implementation("io.netty:netty-resolver:4.1.52.Final")
-            implementation("io.netty:netty-transport:4.1.52.Final")
+            implementation("io.netty:netty-transport:4.1.53.Final")
             implementation("io.swagger.core.v3:swagger-annotations:2.1.5")
             implementation("jakarta.annotation:jakarta.annotation-api:1.3.5")
             implementation("jakarta.persistence:jakarta.persistence-api:2.2.3")
@@ -120,7 +120,7 @@ subprojects {
             implementation("org.apache.httpcomponents:httpcore:4.4.13")
             implementation("org.apache.jena:jena-core:3.16.0")
             implementation("org.apache.kafka:kafka-clients:2.6.0")
-            implementation("org.apache.lucene:lucene-analyzers-common:8.6.0")
+            implementation("org.apache.lucene:lucene-analyzers-common:8.6.3")
             implementation("org.apache.lucene:lucene-core:8.4.1")
             implementation("org.apache.lucene:lucene-queryparser:8.4.1")
             implementation("org.apache.lucene:lucene-spatial:8.4.1")
@@ -129,7 +129,7 @@ subprojects {
             implementation("org.apache.tinkerpop:gremlin-core:3.4.8")
             implementation("org.apache.tinkerpop:gremlin-driver:3.4.8")
             implementation("org.apache.tinkerpop:tinkergraph-gremlin:3.4.8")
-            implementation("org.apache.tomcat.embed:tomcat-embed-core:9.0.37") //TODO May need to exclude tomcat-annotations-api
+            implementation("org.apache.tomcat.embed:tomcat-embed-core:9.0.39") //TODO May need to exclude tomcat-annotations-api
             implementation("org.codehaus.groovy:groovy:3.0.6")
             implementation("org.codehaus.groovy:groovy-cli-picocli:3.0.6")
             implementation("org.codehaus.groovy:groovy-console:3.0.6")
@@ -155,6 +155,7 @@ subprojects {
             implementation("org.springframework.boot:spring-boot-starter-security:2.3.3.RELEASE")
             implementation("org.springframework.boot:spring-boot-starter-validation:2.3.3.RELEASE")
             implementation("org.springframework.boot:spring-boot-starter-web:2.3.3.RELEASE")
+            implementation("org.springframework.cloud:spring-cloud-starter-netflix-zuul:2.2.5.RELEASE")
             implementation("org.springframework.data:spring-data-commons:2.3.4.RELEASE")
             implementation("org.springframework.data:spring-data-jpa:2.3.4.RELEASE")
             implementation("org.springframework.security:spring-security-config:5.4.1")
@@ -178,7 +179,7 @@ subprojects {
             runtime("org.antlr:antlr-runtime:3.5.2")
             runtime("org.apache.jena:jena-arq:3.16.0")
             runtime("org.codehaus.jackson:jackson-core-asl:1.9.13")
-            runtime("org.codehaus.jackson:jackson-mapper-asl:1.9.13")
+            runtime("org.codehaus.jackson:jackson-mapper-asl:1.9.13-atlassian-2")
             runtime("org.janusgraph:janusgraph-berkeleyje:0.5.2")
             runtime("org.janusgraph:janusgraph-cassandra:0.5.2")
             runtime("org.janusgraph:janusgraph-cql:0.5.2")

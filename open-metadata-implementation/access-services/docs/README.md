@@ -8,7 +8,8 @@ The OMAS documentation is divided in the following parts:
 
 * [General Concepts and Vocabulary](concepts)
 * [User Documentation for the OMASs](user)
-* [Designing and Implementing an OMAS](design)
+* [Design Guidelines for an OMAS](design/access-services-design-guidelines.md)
+* [Design documentation for specific OMASs](design)
 
 
 ----

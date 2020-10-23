@@ -51,7 +51,9 @@ DELETE {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/
 ```
 
 ----
-Return to [Configuring the discovery server](../concepts/discovery-server.md#Configuring-the-Discovery-Server).
+* Return to [Configuring an OMAG Server](configuring-an-omag-server.md)
+* Return to [the Discovery Server](../concepts/discovery-server.md)
+* Return to [configuration document structure](../concepts/configuration-document.md)
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
