@@ -2,7 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.server.services;
 
+import org.odpi.openmetadata.accessservices.subjectarea.handlers.SubjectAreaGlossaryHandler;
 import org.odpi.openmetadata.accessservices.subjectarea.handlers.SubjectAreaTermHandler;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
@@ -114,10 +116,9 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid
      * @param asOfTime the relationships returned as they were at this time. null indicates at the current time. If specified, the date is in milliseconds since 1970-01-01 00:00:00.
-     * @param offset  the starting element number for this set of results.  This is used when retrieving elements
+     * @param startingFrom  the starting element number for this set of results.  This is used when retrieving elements
      *                 beyond the first page of results. Zero means the results start from the first element.
      * @param pageSize the maximum number of elements that can be returned on this request.
-     *                 0 means there is not limit to the page size
      * @param sequencingOrder the sequencing order for the results.
      * @param sequencingProperty the name of the property that should be used to sequence the results.
      * @return the relationships associated with the requested Term guid
@@ -134,7 +135,7 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
                                                                  String userId,
                                                                  String guid,
                                                                  Date asOfTime,
-                                                                 Integer offset,
+                                                                 Integer startingFrom,
                                                                  Integer pageSize,
                                                                  SequencingOrder sequencingOrder,
                                                                  String sequencingProperty
@@ -148,7 +149,7 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
             SubjectAreaTermHandler handler = instanceHandler.getSubjectAreaTermHandler(userId, serverName, methodName);
             FindRequest findRequest = new FindRequest();
             findRequest.setAsOfTime(asOfTime);
-            findRequest.setOffset(offset);
+            findRequest.setStartingFrom(startingFrom);
             findRequest.setPageSize(pageSize);
             findRequest.setSequencingOrder(sequencingOrder);
             findRequest.setSequencingProperty(sequencingProperty);
@@ -169,10 +170,9 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param searchCriteria String expression matching Term property values (this does not include the TermSummary content). When not specified, all terms are returned.
      * @param asOfTime the relationships returned as they were at this time. null indicates at the current time.
-     * @param offset  the starting element number for this set of results.  This is used when retrieving elements
+     * @param startingFrom  the starting element number for this set of results.  This is used when retrieving elements
      *                 beyond the first page of results. Zero means the results start from the first element.
      * @param pageSize the maximum number of elements that can be returned on this request.
-     *                 0 means there is no limit to the page size
      * @param sequencingOrder the sequencing order for the results.
      * @param sequencingProperty the name of the property that should be used to sequence the results.
      * @return A list of Terms meeting the search Criteria
@@ -187,7 +187,7 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
     public SubjectAreaOMASAPIResponse<Term> findTerm(String serverName, String userId,
                                                      String searchCriteria,
                                                      Date asOfTime,
-                                                     Integer offset,
+                                                     Integer startingFrom,
                                                      Integer pageSize,
                                                      SequencingOrder sequencingOrder,
                                                      String sequencingProperty) {
@@ -202,7 +202,7 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
             FindRequest findRequest = new FindRequest();
             findRequest.setSearchCriteria(searchCriteria);
             findRequest.setAsOfTime(asOfTime);
-            findRequest.setOffset(offset);
+            findRequest.setStartingFrom(startingFrom);
             findRequest.setPageSize(pageSize);
             findRequest.setSequencingOrder(sequencingOrder);
             findRequest.setSequencingProperty(sequencingProperty);
@@ -335,5 +335,43 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
             log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
         }
         return response;
+    }
+    /**
+     * Get the Categories categorizing this Term. The server has a maximum page size defined, the number of Categories returned is limited by that maximum page size.
+     *
+     * @param serverName   serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId       unique identifier for requesting user, under which the request is performed
+     * @param guid         guid of the category to get terms
+     * @param startingFrom the starting element number for this set of results.  This is used when retrieving elements
+     * @param pageSize     the maximum number of elements that can be returned on this request.
+     * @return A list of categories categorizing this Term
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
+     * </ul>
+     */
+    public SubjectAreaOMASAPIResponse<Category> getTermCategories(String serverName, String userId, String guid, Integer startingFrom, Integer pageSize) {
+
+        final String methodName = "getTermCategories";
+        if (log.isDebugEnabled()) {
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
+        }
+        SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
+        try {
+            SubjectAreaTermHandler handler = instanceHandler.getSubjectAreaTermHandler(userId, serverName, methodName);
+            if (pageSize == null) {
+                pageSize = handler.getMaxPageSize();
+            }
+            response = handler.getTermCategories(userId, guid, instanceHandler.getSubjectAreaCategoryHandler(userId, serverName, methodName), startingFrom, pageSize);
+        } catch (OCFCheckedExceptionBase e) {
+            response.setExceptionInfo(e, className);
+        }
+        if (log.isDebugEnabled()) {
+            log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
+        }
+        return response;
+
     }
 }

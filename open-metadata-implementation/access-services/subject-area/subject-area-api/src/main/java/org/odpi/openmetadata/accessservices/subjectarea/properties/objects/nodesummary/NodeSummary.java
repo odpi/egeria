@@ -223,10 +223,10 @@ public class NodeSummary implements Serializable {
             sb.append(", guid='").append(guid).append('\'');
         }
         if (fromEffectivityTime != null) {
-            sb.append(", fromEffectivityTime='").append(fromEffectivityTime.getTime()).append('\'');
+            sb.append(", fromEffectivityTime='").append(fromEffectivityTime).append('\'');
         }
         if (toEffectivityTime != null) {
-            sb.append(", toEffectivityTime='").append(toEffectivityTime.getTime()).append('\'');
+            sb.append(", toEffectivityTime='").append(toEffectivityTime).append('\'');
         }
 
         sb.append('}');
