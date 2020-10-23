@@ -72,7 +72,8 @@ class TypeConverter
             }
         }
 
-        elementType.setElementHomeMetadataCollectionId(metadataCollectionId);
+        elementType.setElementMetadataCollectionId(metadataCollectionId);
+        elementType.setElementMetadataCollectionName(metadataCollectionName);
         elementType.setElementOrigin(this.getElementOrigin(instanceProvenanceType));
         elementType.setElementSourceServer(metadataCollectionName);
         elementType.setElementLicense(elementLicense);

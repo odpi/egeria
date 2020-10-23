@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.ocf.metadatamanagement.converters;
 
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Classification;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementClassification;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Referenceable;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -27,9 +27,10 @@ public class ReferenceableConverter extends ElementHeaderConverter
      */
     public ReferenceableConverter(EntityDetail         entity,
                                   OMRSRepositoryHelper repositoryHelper,
-                                  String               serviceName)
+                                  String               serviceName,
+                                  String               serverName)
     {
-        super(entity, repositoryHelper, serviceName);
+        super(entity, repositoryHelper, serviceName, serverName);
     }
 
 
@@ -44,9 +45,10 @@ public class ReferenceableConverter extends ElementHeaderConverter
     public ReferenceableConverter(EntityDetail         entity,
                                   Relationship         relationship,
                                   OMRSRepositoryHelper repositoryHelper,
-                                  String               serviceName)
+                                  String               serviceName,
+                                  String               serverName)
     {
-        super(entity, relationship, repositoryHelper, serviceName);
+        super(entity, relationship, repositoryHelper, serviceName, serverName);
     }
 
 
@@ -91,9 +93,9 @@ public class ReferenceableConverter extends ElementHeaderConverter
      *
      * @return list of bean classifications
      */
-    private List<Classification> getClassificationsFromEntity()
+    private List<ElementClassification> getClassificationsFromEntity()
     {
-        List<Classification> classifications = null;
+        List<ElementClassification> classifications = null;
 
         if (entity != null)
         {
@@ -107,7 +109,7 @@ public class ReferenceableConverter extends ElementHeaderConverter
                 {
                     if (entityClassification != null)
                     {
-                        Classification beanClassification = new Classification();
+                        ElementClassification beanClassification = new ElementClassification();
 
                         beanClassification.setClassificationName(entityClassification.getName());
                         beanClassification.setClassificationProperties(repositoryHelper.getInstancePropertiesAsMap(entityClassification.getProperties()));

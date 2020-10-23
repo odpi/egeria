@@ -72,9 +72,9 @@ public class EntityListResponse extends OMRSAPIPagedResponse
         {
             List<EntityDetail>  clonedEntities = new ArrayList<>();
 
-            for (EntityDetail  attributeTypeDef : entities)
+            for (EntityDetail  entity : entities)
             {
-                clonedEntities.add(new EntityDetail(attributeTypeDef));
+                clonedEntities.add(new EntityDetail(entity));
             }
 
             return clonedEntities;

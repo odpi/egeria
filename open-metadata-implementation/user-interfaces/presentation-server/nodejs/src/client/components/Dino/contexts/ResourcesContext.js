@@ -348,7 +348,6 @@ const ResourcesContextProvider = (props) => {
          * Update the existing relationship...
          */
          let existingRelationship = ex_gen.relationships[guid];
-         //let eitherActive = update_objects.relationships[guid].active || existingRelationship.active;
          let mergedRelationship = Object.assign(existingRelationship, update_objects.relationships[guid]);
          ex_gen.relationships[guid] = mergedRelationship;
       }

@@ -4,7 +4,7 @@ package org.odpi.openmetadata.frameworks.connectors.properties;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFRuntimeException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Classification;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementClassification;
 
 import java.util.Map;
 import java.util.Objects;
@@ -19,7 +19,7 @@ public class AssetClassification extends AssetPropertyBase
 {
     private static final long     serialVersionUID = 1L;
 
-    protected Classification    classificationBean;
+    protected ElementClassification classificationBean;
 
     /**
      * A private validation method used by the constructors.
@@ -40,8 +40,21 @@ public class AssetClassification extends AssetPropertyBase
              * Build and throw exception.  This should not happen likely to be a problem in the
              * repository connector.
              */
-            throw new OCFRuntimeException(OCFErrorCode.NULL_CLASSIFICATION_NAME.getMessageDefinition(super.getParentAssetName(),
-                                                                                                     super.getParentAssetTypeName()),
+            String parentName = super.getParentAssetName();
+            String parentTypeName = super.getParentAssetTypeName();
+
+            if (parentName == null)
+            {
+                parentName = "<null>";
+            }
+
+            if (parentTypeName == null)
+            {
+                parentTypeName = "<null>";
+            }
+
+            throw new OCFRuntimeException(OCFErrorCode.NULL_CLASSIFICATION_NAME.getMessageDefinition(parentName,
+                                                                                                     parentTypeName),
                                           this.getClass().getName(),
                                           "validateName");
         }
@@ -57,13 +70,13 @@ public class AssetClassification extends AssetPropertyBase
      *
      * @param classification bean containing the properties
      */
-    protected AssetClassification(Classification  classification)
+    protected AssetClassification(ElementClassification classification)
     {
         super(null);
 
         if (classification == null)
         {
-            classificationBean = new Classification();
+            classificationBean = new ElementClassification();
         }
         else
         {
@@ -81,13 +94,13 @@ public class AssetClassification extends AssetPropertyBase
      * @param classification bean containing the properties
      */
     protected AssetClassification(AssetDescriptor parentAsset,
-                                  Classification  classification)
+                                  ElementClassification classification)
     {
         super(parentAsset);
 
         if (classification == null)
         {
-            classificationBean = new Classification();
+            classificationBean = new ElementClassification();
         }
         else
         {
@@ -118,7 +131,7 @@ public class AssetClassification extends AssetPropertyBase
              * Build and throw exception.  This should not happen likely to be a problem in the
              * repository connector.
              */
-            throw new OCFRuntimeException(OCFErrorCode.NULL_CLASSIFICATION_NAME.getMessageDefinition("<Unknown>"),
+            throw new OCFRuntimeException(OCFErrorCode.NULL_CLASSIFICATION_NAME.getMessageDefinition("<Unknown>", "<Unknown>"),
                                           this.getClass().getName(),
                                           "Copy Constructor");
         }
@@ -136,7 +149,7 @@ public class AssetClassification extends AssetPropertyBase
      *
      * @return classification bean
      */
-    protected Classification  getClassificationBean()
+    protected ElementClassification getClassificationBean()
     {
         return classificationBean;
     }

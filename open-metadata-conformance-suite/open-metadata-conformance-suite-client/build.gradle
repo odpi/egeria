@@ -9,9 +9,9 @@ dependencies {
     implementation project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:rest-client-connectors-api')
     implementation project(':open-metadata-implementation:adapters:open-connectors:rest-client-connectors:rest-client-factory')
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
-    implementation 'commons-io:commons-io:2.7'
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.1'
-    implementation 'ch.qos.logback:logback-classic:1.2.3'
+    implementation 'commons-io:commons-io'
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
+    implementation 'ch.qos.logback:logback-classic'
 }
 
 description = 'Open Metadata Conformance Suite Client'

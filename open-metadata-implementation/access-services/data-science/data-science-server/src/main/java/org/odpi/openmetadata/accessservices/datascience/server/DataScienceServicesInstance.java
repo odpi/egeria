@@ -4,7 +4,7 @@ package org.odpi.openmetadata.accessservices.datascience.server;
 
 import org.odpi.openmetadata.accessservices.datascience.ffdc.DataScienceErrorCode;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.commonservices.multitenant.OCFOMASServiceInstance;
+import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
@@ -15,7 +15,7 @@ import java.util.List;
  * DataScienceServicesInstance caches references to objects for a specific server.
  * It is also responsible for registering itself in the instance map.
  */
-public class DataScienceServicesInstance extends OCFOMASServiceInstance
+public class DataScienceServicesInstance extends OMASServiceInstance
 {
     private static AccessServiceDescription myDescription = AccessServiceDescription.DATA_SCIENCE_OMAS;
 
@@ -40,6 +40,7 @@ public class DataScienceServicesInstance extends OCFOMASServiceInstance
         super(myDescription.getAccessServiceFullName(),
               repositoryConnector,
               supportedZones,
+              null,
               null,
               auditLog,
               localServerUserId,

@@ -232,7 +232,7 @@ public class DataEngineProxyChangePoller implements Runnable {
         final String type = "LineageMappings";
         auditLog.logMessage(methodName, DataEngineProxyAuditCode.POLLING_TYPE_START.getMessageDefinition(type));
         List<LineageMapping> changedLineageMappings = connector.getChangedLineageMappings(changesLastSynced, changesCutoff);
-        if (changedLineageMappings != null) {
+        if (changedLineageMappings != null && changedLineageMappings.size() > 0) {
             dataEngineOMASClient.addLineageMappings(userId, changedLineageMappings);
         }
         auditLog.logMessage(methodName, DataEngineProxyAuditCode.POLLING_TYPE_FINISH.getMessageDefinition(type));

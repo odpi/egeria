@@ -52,7 +52,7 @@ public class ValidValuesAssignment extends PropertyBase
 
         if (template != null)
         {
-            strictRequirement  = template.isStrictRequirement();
+            strictRequirement  = template.getStrictRequirement();
         }
     }
 
@@ -62,7 +62,7 @@ public class ValidValuesAssignment extends PropertyBase
      *
      * @return boolean flag
      */
-    public boolean isStrictRequirement()
+    public boolean getStrictRequirement()
     {
         return strictRequirement;
     }

@@ -2,10 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetconsumer.api;
 
+import org.odpi.openmetadata.accessservices.assetconsumer.elements.InformalTagElement;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.InformalTag;
 
 import java.util.List;
 
@@ -103,10 +103,10 @@ public interface AssetConsumerTaggingInterface
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    InformalTag getTag(String userId,
-                       String guid) throws InvalidParameterException,
-                                           PropertyServerException,
-                                           UserNotAuthorizedException;
+    InformalTagElement getTag(String userId,
+                              String guid) throws InvalidParameterException,
+                                                  PropertyServerException,
+                                                  UserNotAuthorizedException;
 
 
     /**
@@ -122,12 +122,12 @@ public interface AssetConsumerTaggingInterface
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    List<InformalTag> getTagsByName(String userId,
-                                    String tag,
-                                    int    startFrom,
-                                    int    pageSize) throws InvalidParameterException,
-                                                            PropertyServerException,
-                                                            UserNotAuthorizedException;
+    List<InformalTagElement> getTagsByName(String userId,
+                                           String tag,
+                                           int    startFrom,
+                                           int    pageSize) throws InvalidParameterException,
+                                                                   PropertyServerException,
+                                                                   UserNotAuthorizedException;
 
 
     /**
@@ -143,12 +143,12 @@ public interface AssetConsumerTaggingInterface
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    List<InformalTag> getMyTagsByName(String userId,
-                                      String tag,
-                                      int    startFrom,
-                                      int    pageSize) throws InvalidParameterException,
-                                                              PropertyServerException,
-                                                              UserNotAuthorizedException;
+    List<InformalTagElement> getMyTagsByName(String userId,
+                                             String tag,
+                                             int    startFrom,
+                                             int    pageSize) throws InvalidParameterException,
+                                                                     PropertyServerException,
+                                                                     UserNotAuthorizedException;
 
 
     /**
@@ -164,12 +164,12 @@ public interface AssetConsumerTaggingInterface
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    List<InformalTag> findTags(String userId,
-                               String tag,
-                               int    startFrom,
-                               int    pageSize) throws InvalidParameterException,
-                                                       PropertyServerException,
-                                                       UserNotAuthorizedException;
+    List<InformalTagElement> findTags(String userId,
+                                      String tag,
+                                      int    startFrom,
+                                      int    pageSize) throws InvalidParameterException,
+                                                              PropertyServerException,
+                                                              UserNotAuthorizedException;
 
     /**
      * Return the list of the calling user's private tags containing the supplied string in either the name or description.
@@ -184,12 +184,12 @@ public interface AssetConsumerTaggingInterface
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    List<InformalTag> findMyTags(String userId,
-                                 String tag,
-                                 int    startFrom,
-                                 int    pageSize) throws InvalidParameterException,
-                                                         PropertyServerException,
-                                                         UserNotAuthorizedException;
+    List<InformalTagElement> findMyTags(String userId,
+                                        String tag,
+                                        int    startFrom,
+                                        int    pageSize) throws InvalidParameterException,
+                                                                PropertyServerException,
+                                                                UserNotAuthorizedException;
 
     /**
      * Adds a tag (either private of public) to an asset.
@@ -212,6 +212,26 @@ public interface AssetConsumerTaggingInterface
 
 
     /**
+     * Adds a tag (either private of public) to an element attached to an asset - such as schema element, glossary term, ...
+     *
+     * @param userId           userId of user making request.
+     * @param elementGUID      unique id for the element.
+     * @param tagGUID          unique id of the tag.
+     * @param isPublic         flag indicating whether the attachment of the tag is public or not
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem adding the asset properties to the property server.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    void   addTagToElement(String  userId,
+                           String  elementGUID,
+                           String  tagGUID,
+                           boolean isPublic) throws InvalidParameterException,
+                                                    PropertyServerException,
+                                                    UserNotAuthorizedException;
+
+
+    /**
      * Removes a tag from the asset that was added by this user.
      *
      * @param userId    userId of user making request.
@@ -228,9 +248,29 @@ public interface AssetConsumerTaggingInterface
                                                      PropertyServerException,
                                                      UserNotAuthorizedException;
 
+
+    /**
+     * Removes a tag from an element attached to an asset - such as schema element, glossary term, ... that was added by this user.
+     *
+     * @param userId    userId of user making request.
+     * @param elementGUID unique id for the element.
+     * @param tagGUID   unique id for the tag.
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem updating the asset properties in the property server.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    void   removeTagFromElement(String userId,
+                                String elementGUID,
+                                String tagGUID) throws InvalidParameterException,
+                                                       PropertyServerException,
+                                                       UserNotAuthorizedException;
+
+
     /**
      * Return the list of unique identifiers for assets that are linked to a specific tag either directly, or via one
-     * of its schema elements.
+     * of its schema elements.  An Asset's GUID may appear multiple times in the results if it is tagged multiple times
+     * with the requested tag.
      *
      * @param userId the name of the calling user.
      * @param tagGUID unique identifier of tag.

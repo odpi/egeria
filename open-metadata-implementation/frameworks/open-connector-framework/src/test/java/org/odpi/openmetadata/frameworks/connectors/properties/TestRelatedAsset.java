@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.frameworks.connectors.properties;
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Classification;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementClassification;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
 import org.testng.annotations.Test;
 
@@ -20,13 +20,13 @@ import static org.testng.Assert.assertTrue;
  */
 public class TestRelatedAsset
 {
-    private ElementType            type                      = new ElementType();
-    private List<Classification>   classifications           = new ArrayList<>();
-    private Map<String, String>    additionalProperties      = new HashMap<>();
-    private Map<String, Object>    assetProperties           = new HashMap<>();
-    private RelatedAssetProperties relatedAssetProperties    = null;
-    private String                 relationshipName          = "TestRelationship";
-    private String                 relationshipAttributeName = "TestRelationshipAttribute";
+    private ElementType                 type                      = new ElementType();
+    private List<ElementClassification> classifications           = new ArrayList<>();
+    private Map<String, String>         additionalProperties      = new HashMap<>();
+    private Map<String, Object>         assetProperties           = new HashMap<>();
+    private RelatedAssetProperties      relatedAssetProperties    = null;
+    private String                      relationshipName          = "TestRelationship";
+    private String                      relationshipAttributeName = "TestRelationshipAttribute";
 
 
     /**

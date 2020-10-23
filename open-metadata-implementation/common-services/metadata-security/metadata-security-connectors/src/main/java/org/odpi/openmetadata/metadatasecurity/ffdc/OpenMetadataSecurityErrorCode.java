@@ -96,21 +96,28 @@ public enum OpenMetadataSecurityErrorCode implements ExceptionMessageSet
                              "Using knowledge about the user and the asset, determine if this is the correct result or " +
                                       "the configuration needs to be changed to allow access."),
 
-    UNAUTHORIZED_ASSET_CHANGE(403, "OMAG-PLATFORM-SECURITY-403-008 ",
+    UNAUTHORIZED_ASSET_CREATE(403, "OMAG-PLATFORM-SECURITY-403-008 ",
+                              "User {0} is not authorized to create an asset of type {1}",
+                              "The system is unable to process a request from the user because they do not have authority to create " +
+                                      "an asset of the requested type.  The request fails with a UserNotAuthorizedException exception.",
+                              "Using knowledge about the user and the asset, determine if this is the correct result or " +
+                                      "the configuration needs to be changed to allow the user to create the asset."),
+
+    UNAUTHORIZED_ASSET_CHANGE(403, "OMAG-PLATFORM-SECURITY-403-009 ",
                               "User {0} is not authorized to change asset {1}",
                               "The system is unable to process a request from the user because they do not have access to change the " +
                                       "properties of the requested asset.  The request fails with a UserNotAuthorizedException exception.",
                               "Using knowledge about the user and the asset, determine if this is the correct result or " +
                                       "the configuration needs to be changed to allow the user to update the asset."),
 
-    INCOMPLETE_ASSET(         403, "OMAG-PLATFORM-SECURITY-403-009 ",
+    INCOMPLETE_ASSET(         403, "OMAG-PLATFORM-SECURITY-403-010 ",
                               "User {0} is not authorized to change asset {1} because it has missing properties",
                               "The system is unable to process a request from the user because the asset is not correctly or completely filled out." +
                                       "  The request fails with a UserNotAuthorizedException exception.",
                               "Using knowledge about the asset determine why the properties are missing and whether it needs to be " +
                                       "updated, or that the user should not be accessing the asset."),
 
-    UNAUTHORIZED_TYPE_ACCESS(403, "OMAG-PLATFORM-SECURITY-403-010 ",
+    UNAUTHORIZED_TYPE_ACCESS(403, "OMAG-PLATFORM-SECURITY-403-011 ",
                               "User {0} is not authorized to access open metadata type {1} ({2}) on server {3}",
                               "The system is unable to process a request from the user because they do not have access to the " +
                                      "necessary services and/or resources to retrieve type information.  The request fails with a " +
@@ -118,7 +125,7 @@ public enum OpenMetadataSecurityErrorCode implements ExceptionMessageSet
                               "Determine if the user should be allowed access to the type information or not.  If they should then " +
                                      "change the configuration to give them access."),
 
-    UNAUTHORIZED_TYPE_CHANGE(403, "OMAG-PLATFORM-SECURITY-403-011 ",
+    UNAUTHORIZED_TYPE_CHANGE(403, "OMAG-PLATFORM-SECURITY-403-012 ",
                              "User {0} is not authorized to change open metadata type {1} ({2}) on server {3}",
                              "The system is unable to process a request from the user because they do not have access to " +
                                      "update an open metadata type.  The request fails with a UserNotAuthorizedException exception.",
@@ -126,14 +133,14 @@ public enum OpenMetadataSecurityErrorCode implements ExceptionMessageSet
                                      "if the user is privileged to make these changes.  If they are then update the configuration to grant them " +
                                      "access."),
 
-    UNAUTHORIZED_INSTANCE_ACCESS(403, "OMAG-PLATFORM-SECURITY-403-012 ",
+    UNAUTHORIZED_INSTANCE_ACCESS(403, "OMAG-PLATFORM-SECURITY-403-013 ",
                              "User {0} is not authorized to access open metadata instance {1} of type {2} on server {3}",
                              "The system is unable to process a request from the user because they do not have read access to the " +
                                          "requested metadata.  The request fails with a UserNotAuthorizedException exception.",
                              "Determine if the user should have access to this metadata instance and if they should then" +
                                          " change the configuration to give them the required privileges."),
 
-    UNAUTHORIZED_INSTANCE_CHANGE(403, "OMAG-PLATFORM-SECURITY-403-013 ",
+    UNAUTHORIZED_INSTANCE_CHANGE(403, "OMAG-PLATFORM-SECURITY-403-014 ",
                              "User {0} is not authorized to change open metadata instance {1} of type {2} on server {3}",
                              "The system is unable to process a request from the user because they do not have access to " +
                                          "make changes to the requested metadata instance.  The request fails with a UserNotAuthorizedException exception.",

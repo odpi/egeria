@@ -112,10 +112,9 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param searchCriteria String expression matching Project property values. If not specified then all projects are returned.
      * @param asOfTime the projects returned as they were at this time. null indicates at the current time.
-     * @param offset  the starting element number for this set of results.  This is used when retrieving elements
+     * @param startingFrom  the starting element number for this set of results.  This is used when retrieving elements
      *                 beyond the first page of results. Zero means the results start from the first element.
      * @param pageSize the maximum number of elements that can be returned on this request.
-     *                 0 means there is no limit to the page size
      * @param sequencingOrder the sequencing order for the results.
      * @param sequencingProperty the name of the property that should be used to sequence the results.
      * @return A list of projects meeting the search Criteria
@@ -131,7 +130,7 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
                                                            String userId,
                                                            String searchCriteria,
                                                            Date asOfTime,
-                                                           Integer offset,
+                                                           Integer startingFrom,
                                                            Integer pageSize,
                                                            SequencingOrder sequencingOrder,
                                                            String sequencingProperty) {
@@ -146,7 +145,7 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
             FindRequest findRequest = new FindRequest();
             findRequest.setSearchCriteria(searchCriteria);
             findRequest.setAsOfTime(asOfTime);
-            findRequest.setOffset(offset);
+            findRequest.setStartingFrom(startingFrom);
             findRequest.setPageSize(pageSize);
             findRequest.setSequencingOrder(sequencingOrder);
             findRequest.setSequencingProperty(sequencingProperty);
@@ -168,10 +167,9 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the term to get
      * @param asOfTime the relationships returned as they were at this time. null indicates at the current time. If specified, the date is in milliseconds since 1970-01-01 00:00:00.
-     * @param offset  the starting element number for this set of results.  This is used when retrieving elements
+     * @param startingFrom  the starting element number for this set of results.  This is used when retrieving elements
      *                 beyond the first page of results. Zero means the results start from the first element.
      * @param pageSize the maximum number of elements that can be returned on this request.
-     *                 0 means there is not limit to the page size
      * @param sequencingOrder the sequencing order for the results.
      * @param sequencingProperty the name of the property that should be used to sequence the results.
      * @return the relationships associated with the requested Project guid
@@ -188,7 +186,7 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
                                                                     String userId,
                                                                     String guid,
                                                                     Date asOfTime,
-                                                                    Integer offset,
+                                                                    Integer startingFrom,
                                                                     Integer pageSize,
                                                                     SequencingOrder sequencingOrder,
                                                                     String sequencingProperty) {
@@ -201,7 +199,7 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
             SubjectAreaProjectHandler handler = instanceHandler.getSubjectAreaProjectHandler(userId, serverName, methodName);
             FindRequest findRequest = new FindRequest();
             findRequest.setAsOfTime(asOfTime);
-            findRequest.setOffset(offset);
+            findRequest.setStartingFrom(startingFrom);
             findRequest.setPageSize(pageSize);
             findRequest.setSequencingOrder(sequencingOrder);
             findRequest.setSequencingProperty(sequencingProperty);
@@ -219,10 +217,13 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
     /**
      * Get the terms in this project.
      *
-     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
-     * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the Project to get
-     * @return a response which when successful contains the Project relationships
+     * @param serverName     serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId         unique identifier for requesting user, under which the request is performed
+     * @param guid           guid of the Project
+     * @param startingFrom  the starting element number for this set of results.  This is used when retrieving elements
+     *                 beyond the first page of results. Zero means the results start from the first element.
+     * @param pageSize the maximum number of elements that can be returned on this request.
+     * @return a response which when successful contains the Project Terms
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
@@ -233,7 +234,9 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
      */
     public SubjectAreaOMASAPIResponse<Term> getProjectTerms(String serverName,
                                                             String userId,
-                                                            String guid) {
+                                                            String guid,
+                                                            Integer startingFrom,
+                                                            Integer pageSize) {
         String methodName = "getProjectTerms";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId );
@@ -241,7 +244,7 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
         SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
         try {
             SubjectAreaProjectHandler projectHandler = instanceHandler.getSubjectAreaProjectHandler(userId, serverName, methodName);
-            response = projectHandler.getProjectTerms(userId, guid);
+            response = projectHandler.getProjectTerms(userId, guid, instanceHandler.getSubjectAreaTermHandler(userId, serverName, methodName), startingFrom, pageSize);
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);
         }

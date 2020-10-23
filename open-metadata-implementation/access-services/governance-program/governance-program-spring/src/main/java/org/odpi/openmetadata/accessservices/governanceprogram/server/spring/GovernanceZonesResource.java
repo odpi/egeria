@@ -4,11 +4,11 @@ package org.odpi.openmetadata.accessservices.governanceprogram.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceZoneProperties;
+import org.odpi.openmetadata.accessservices.governanceprogram.rest.ZoneListResponse;
+import org.odpi.openmetadata.accessservices.governanceprogram.rest.ZoneResponse;
 import org.odpi.openmetadata.accessservices.governanceprogram.server.GovernanceZoneRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
-import org.odpi.openmetadata.commonservices.gaf.metadatamanagement.rest.ZoneListResponse;
-import org.odpi.openmetadata.commonservices.gaf.metadatamanagement.rest.ZoneRequestBody;
-import org.odpi.openmetadata.commonservices.gaf.metadatamanagement.rest.ZoneResponse;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -51,9 +51,9 @@ public class GovernanceZonesResource
      */
     @PostMapping(path = "/governance-zones")
 
-    public VoidResponse  createGovernanceZone(@PathVariable String          serverName,
-                                              @PathVariable String          userId,
-                                              @RequestBody  ZoneRequestBody requestBody)
+    public VoidResponse  createGovernanceZone(@PathVariable String                   serverName,
+                                              @PathVariable String                   userId,
+                                              @RequestBody  GovernanceZoneProperties requestBody)
     {
         return restAPI.createGovernanceZone(serverName, userId, requestBody);
     }

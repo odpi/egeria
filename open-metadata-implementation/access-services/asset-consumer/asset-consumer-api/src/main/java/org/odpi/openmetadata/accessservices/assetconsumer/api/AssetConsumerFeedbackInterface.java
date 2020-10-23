@@ -2,9 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetconsumer.api;
 
+import org.odpi.openmetadata.accessservices.assetconsumer.properties.CommentType;
+import org.odpi.openmetadata.accessservices.assetconsumer.properties.StarRating;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.CommentType;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.StarRating;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
@@ -54,7 +54,7 @@ public interface AssetConsumerFeedbackInterface
 
 
     /**
-     * Adds a "Like" to the asset.  If the user has already attached a like then the original one
+     * Adds a "LikeProperties" to the asset.  If the user has already attached a like then the original one
      * is over-ridden.
      *
      * @param userId      userId of user making request.
@@ -73,7 +73,7 @@ public interface AssetConsumerFeedbackInterface
 
 
     /**
-     * Removes a "Like" added to the asset by this user.
+     * Removes a "LikeProperties" added to the asset by this user.
      *
      * @param userId   userId of user making request.
      * @param assetGUID unique identifier for the asset where the like is attached.

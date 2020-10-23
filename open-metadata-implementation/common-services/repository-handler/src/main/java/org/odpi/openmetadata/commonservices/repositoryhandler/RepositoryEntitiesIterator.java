@@ -5,9 +5,7 @@ package org.odpi.openmetadata.commonservices.repositoryhandler;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 
-import java.util.List;
 
 /**
  * RepositoryEntitiesIterator is an iterator class for iteratively retrieving entities (possibly restricting
@@ -16,18 +14,8 @@ import java.util.List;
  *
  * Note this class is intended for a single request's use - it is not thread-safe.
  */
-public class RepositoryEntitiesIterator
+public class RepositoryEntitiesIterator extends RepositoryIteratorForEntities
 {
-    private RepositoryHandler  repositoryHandler;
-    private String             userId;
-    private String             entityTypeGUID;
-    private String             entityTypeName;
-    private int                startingFrom;
-    private int                pageSize;
-    private String             methodName;
-    private List<EntityDetail> entitiesCache = null;
-
-
     /**
      * Constructor takes the parameters used to call the repository handler.
      *
@@ -47,13 +35,7 @@ public class RepositoryEntitiesIterator
                                       int               pageSize,
                                       String            methodName)
     {
-        this.repositoryHandler    = repositoryHandler;
-        this.userId               = userId;
-        this.entityTypeGUID       = entityTypeGUID;
-        this.entityTypeName       = entityTypeName;
-        this.startingFrom         = startingFrom;
-        this.pageSize             = pageSize;
-        this.methodName           = methodName;
+        super(repositoryHandler, userId, entityTypeGUID, entityTypeName, startingFrom, pageSize, methodName);
     }
 
 
@@ -83,26 +65,5 @@ public class RepositoryEntitiesIterator
         }
 
         return entitiesCache != null;
-    }
-
-
-    /**
-     * Return the next entity.  It returns null if nothing left to retrieve.
-     *
-     * @return relationship or null
-     * @throws UserNotAuthorizedException the repository is not allowing the user to access the metadata
-     * @throws PropertyServerException there is a problem in the repository
-     */
-    public EntityDetail  getNext() throws UserNotAuthorizedException,
-                                          PropertyServerException
-    {
-        if (moreToReceive())
-        {
-            return entitiesCache.remove(0);
-        }
-        else
-        {
-            return null;
-        }
     }
 }

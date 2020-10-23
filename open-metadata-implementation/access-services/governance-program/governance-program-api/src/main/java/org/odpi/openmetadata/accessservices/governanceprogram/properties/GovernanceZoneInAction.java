@@ -76,13 +76,15 @@ public class GovernanceZoneInAction extends GovernanceZoneDefinition
         return "GovernanceZoneInAction{" +
                 "zoneMembershipCount=" + zoneMembershipCount +
                 ", associatedGovernanceDefinitions=" + getAssociatedGovernanceDefinitions() +
-                ", GUID='" + getGUID() + '\'' +
-                ", classifications=" + getClassifications() +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", displayName='" + getDisplayName() + '\'' +
                 ", description='" + getDescription() + '\'' +
                 ", criteria='" + getCriteria() + '\'' +
+                ", scope='" + getScope() + '\'' +
+                ", domainIdentifier=" + getDomainIdentifier() +
+                ", typeName='" + getTypeName() + '\'' +
+                ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +
+                ", extendedProperties=" + getExtendedProperties() +
                 '}';
     }
 }

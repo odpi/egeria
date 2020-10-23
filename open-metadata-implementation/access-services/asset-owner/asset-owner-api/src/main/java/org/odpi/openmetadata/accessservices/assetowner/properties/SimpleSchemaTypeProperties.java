@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.accessservices.assetowner.properties;
 
 import com.fasterxml.jackson.annotation.*;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.SimpleSchemaType;
 
 import java.util.Objects;
 
@@ -57,31 +56,6 @@ public class SimpleSchemaTypeProperties extends SchemaTypeProperties
             defaultValue = template.getDefaultValue();
         }
     }
-
-
-    /**
-     * Copy/clone operator.
-     *
-     * @param objectToFill schema type object
-     * @return filled object
-     */
-    public SimpleSchemaType cloneProperties(SimpleSchemaType objectToFill)
-    {
-        SimpleSchemaType clone = objectToFill;
-
-        if (clone == null)
-        {
-            clone = new SimpleSchemaType();
-        }
-
-        clone.setDataType(this.getDataType());
-        clone.setDefaultValue(this.getDefaultValue());
-
-        super.cloneProperties(clone);
-
-        return clone;
-    }
-
 
 
     /**
@@ -168,11 +142,21 @@ public class SimpleSchemaTypeProperties extends SchemaTypeProperties
                 ", displayName='" + getDisplayName() + '\'' +
                 ", description='" + getDescription() + '\'' +
                 ", typeName='" + getTypeName() + '\'' +
-                ", classifications=" + getClassifications() +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +
-                ", meanings=" + getMeanings() +
                 ", extendedProperties=" + getExtendedProperties() +
                 '}';
+    }
+
+
+    /**
+     * Return hash code for this object
+     *
+     * @return int hash code
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), dataType, defaultValue);
     }
 }

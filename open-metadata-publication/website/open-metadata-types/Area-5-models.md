@@ -13,7 +13,7 @@ capability around the data assets.
 * **[0503 Asset Schema](0503-Asset-Schema.md)**
 * **[0504 Implementation Snippets](0504-Implementation-Snippets.md)**
 * **[0505 Schema Attributes](0505-Schema-Attributes.md)**
-* **[0510 Schema Link Element](0510-Schema-Link-Element.md)**
+* **[0507 External Schema Types](0507-External-Schema-Type.md)**
 * **[0511 Map Schema Element](0511-Map-Schema-Elements.md)**
 * **[0512 Derived Schema Elements](0512-Derived-Schema-Elements.md)**
 * **[0530 Tabular Schema](0530-Tabluar-Schemas.md)**
@@ -35,7 +35,7 @@ capability around the data assets.
 * **[0581 Solution Ports and Wires](0581-Solution-Ports-and-Wires.md)**
 * **[0595 Design Patterns](0595-Design-Patterns.md)**
 
-![UML Packages](area-5-models-and-schema-overview.png)
+![UML Packages](area-5-models-and-schema-overview.png#pagewidth)
 
 Return to [Overview](README.md).
 
