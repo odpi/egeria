@@ -7,8 +7,7 @@ import Delete32 from "../../../images/Egeria_delete_32";
 import Edit32 from "../../../images/Egeria_edit_32";
 import Term32 from "../../../images/Egeria_term_32";
 import {
-  LocalNodeCard,
-  NodeCardSection,
+  LocalNodeCard
 } from "./NodeCard/NodeCard";
 import GlossaryImage from "../../../images/Egeria_glossary_32";
 import getNodeType from "./properties/NodeTypes.js";
