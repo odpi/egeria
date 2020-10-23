@@ -571,8 +571,6 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
                 }
                 catch (Throwable error)
                 {
-                    System.out.println("CTS - will stop because caught a throwable - error is " + error);
-
                     stopRunning();
                     log.error(String.format("Unexpected error: %s", error.getMessage()), error);
 
