@@ -2,11 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 import React, { useState } from "react";
 import Add32 from "../../../images/Egeria_add_32";
-// import Success32 from "../../../images/Success_32";
-import successIcon from '@carbon/icons/es/checkmark--filled/32/';
-import { getAttributes, toSVG } from '@carbon/icon-helpers';
 import getNodeType from "./properties/NodeTypes.js";
-import { Button, Form, FormGroup, TextInput } from "carbon-components-react";
+import { Button, Form, FormGroup, TextInput, Loading } from "carbon-components-react";
 
 import { issueRestCreate } from "./RestCaller";
 import { useParams } from "react-router-dom";
@@ -16,11 +13,7 @@ export default function QuickTerms(props) {
   const [terms, setTerms] = useState([]);
   const [termsWithStatus, setTermsWithStatus] = useState([]);
   const [errorMsg, setErrorMsg] = useState();
-
-  const successIconNode = toSVG({
-    ...successIcon,
-    attrs: getAttributes(successIcon.attrs),
-  });
+  const [restCallInProgress, setRestCallInProgress] = useState(false);
 
   const url = getUrl();
   function getUrl() {
@@ -46,7 +39,7 @@ export default function QuickTerms(props) {
   const onSubmit = (e) => {
     console.log("onSubmit");
     e.preventDefault();
-
+    setRestCallInProgress(true);
     if (terms.length > 0) {
       console.log("issueUpdate " + url);
       issueRestCreate(url, terms, onSuccessfulCreate, onErrorCreate);
@@ -55,6 +48,7 @@ export default function QuickTerms(props) {
     }
   };
   const onSuccessfulCreate = (json) => {
+    setRestCallInProgress(false);
     let workingTermsWithStatus = [];
     for (let i = 0; i < terms.length; i++) {
       let workingTermWithStatus = terms[i];
@@ -72,9 +66,11 @@ export default function QuickTerms(props) {
   };
   //return next term to create
   function onErrorCreate(msg) {
+    setRestCallInProgress(false);
     setErrorMsg(msg);
   }
   const onClickBack = () => {
+    setRestCallInProgress(false);
     console.log("Back clicked");
     if (termsWithStatus.length > 0) {
       setTerms([]);
@@ -95,9 +91,6 @@ export default function QuickTerms(props) {
     workingTerms[index].description = description;
     setTerms(workingTerms);
   }
-  const onSelectRow = (row) => {
-    console.log("onSelectRow " + row);
-  };
 
   return (
     <div>
@@ -106,7 +99,8 @@ export default function QuickTerms(props) {
           Back
         </button>
       </div>
-      {termsWithStatus.length == 0 && (
+      {restCallInProgress && <Loading description="Waiting for network call to the server to complete" withOverlay={true} />}
+      {!restCallInProgress && termsWithStatus.length == 0 && (
         <div>
           <div className="row-container">
             <h3>Quickly add terms.</h3>
@@ -154,7 +148,7 @@ export default function QuickTerms(props) {
           </Form>
         </div>
       )}
-      {termsWithStatus.length > 0 && (
+       {!restCallInProgress && termsWithStatus.length > 0 && (
         <div>
           <div className="row-container">
             <h3>Terms Added.</h3>
