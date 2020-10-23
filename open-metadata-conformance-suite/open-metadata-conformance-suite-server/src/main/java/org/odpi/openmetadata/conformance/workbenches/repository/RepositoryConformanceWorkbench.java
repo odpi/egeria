@@ -543,14 +543,12 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
                      */
                     if (retryCount == 100)
                     {
-                        System.out.println("CTS - resetting retry count to 0");
                         retryCount = 0;
                     }
                     else
                     {
                         if (retryCount == 0)
                         {
-                            System.out.println("CTS - retry count is 0 - produce audit log message");
                             auditCode = ConformanceSuiteAuditCode.WORKBENCH_WAITING_TO_START;
                             auditLog.logRecord(methodName,
                                                auditCode.getLogMessageId(),
@@ -561,8 +559,6 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
                                                auditCode.getSystemAction(),
                                                auditCode.getUserAction());
                         }
-
-                        System.out.println("CTS - increment retry count to " + retryCount + 1);
                         retryCount++;
                     }
                     Thread.sleep(1000);
