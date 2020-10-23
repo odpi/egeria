@@ -1,20 +1,18 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-import React, { useContext } from "react";
+import React from "react";
 // import { IdentificationContext } from "../../../../contexts/IdentificationContext";
 import { Route, Switch } from "react-router-dom";
 import GlossaryAuthorCRUD from "../GlossaryAuthorCRUD";
 import GlossaryAuthorNavigation from "../GlossaryAuthorNavigation";
 import GlossaryAuthorSearch from "../GlossaryAuthorSearch";
 import QuickTerms from "../QuickTerms";
+import GlossaryChildren from "../GlossaryChildren";
 import CreateGlossary from "../CreateGlossary";
 import UpdateGlossary from "../UpdateGlossary";
 
-
-
 export default function GlossaryAuthorRoutes({ glossaryAuthorURL }) {
-  // const identificationContext = useContext(IdentificationContext);
-  // const glossaryAuthorURL = identificationContext.getBrowserURL("glossary_author/");
+
   console.log("glossaryAuthorURL=" + glossaryAuthorURL);
 
   function getGlossariesPath() {
@@ -30,6 +28,11 @@ export default function GlossaryAuthorRoutes({ glossaryAuthorURL }) {
   function getQuickTermsPath() {
     const path = glossaryAuthorURL + "/glossaries/:guid/quick-terms";
     console.log("getQuickTerms " + path);
+    return path;
+  }
+  function getGlossaryChildrenPath() {
+    const path = glossaryAuthorURL + "/glossaries/:guid/children";
+    console.log("getGlossaryChildren " + path);
     return path;
   }
   function getGlossariesEditPath() {
@@ -59,6 +62,7 @@ export default function GlossaryAuthorRoutes({ glossaryAuthorURL }) {
       ></Route>
       <Route path={getSearchPath()} component={GlossaryAuthorSearch}></Route>
       <Route path={getQuickTermsPath()} component={QuickTerms}></Route>
+      <Route path={getGlossaryChildrenPath()} component={GlossaryChildren}></Route>
       <Route
         path={getGlossariesPath()}
         component={GlossaryAuthorNavigation}
