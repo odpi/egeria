@@ -129,8 +129,6 @@ public abstract class OpenMetadataConformanceWorkbenchWorkPad
      */
     public OpenMetadataConformanceWorkbenchStatus getWorkbenchStatus()
     {
-        System.out.println("CTS GET WORKBENCH COMPLETION STATUS");
-
         OpenMetadataConformanceWorkbenchStatus status = new OpenMetadataConformanceWorkbenchStatus();
         status.setWorkbenchId(workbenchId);
         if (workbenchComplete) {
@@ -139,13 +137,8 @@ public abstract class OpenMetadataConformanceWorkbenchWorkPad
              */
             Date now = new Date();
             long millis = now.getTime() - lastActive.getTime();
-            if (millis < DELAY_TIME)
+            if (millis >= DELAY_TIME)
             {
-                //System.out.println("CTS getWorkbenchStatus - quiesce timer has not yet expired.");
-            }
-            else
-            {
-                //System.out.println("CTS getWorkbenchStatus quiesce timer has expired - reporting status as complete");
                 status.setWorkbenchComplete();
             }
 

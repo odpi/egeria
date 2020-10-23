@@ -26,7 +26,8 @@ import java.util.Map;
  * The run() method contains the workbench logic.  It executes until the tests are complete, or it is signaled to
  * shutdown.
  */
-public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkbench {
+public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkbench
+{
     private static final Logger log = LoggerFactory.getLogger(RepositoryConformanceWorkbench.class);
 
     private RepositoryConformanceWorkPad workPad;
@@ -44,7 +45,9 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
               workPad.getWorkbenchVersionNumber(),
               workPad.getWorkbenchDocURL());
 
-        /* Belt and braces initialisation? If this is not here the flag is false. TODO - GW improve comment */
+        /*
+         * On construction of the workbench reset runningFlag to true.
+         */
         runningFlag = true;
 
         final String methodName = "repositoryWorkbenchThread.constructor";
@@ -516,7 +519,8 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
     {
         final String methodName = "repositoryWorkbenchThread.run";
 
-        if (workPad != null) {
+        if (workPad != null)
+        {
             long retryCount = 0;
             OMRSAuditLog auditLog = workPad.getAuditLog();
             ConformanceSuiteAuditCode auditCode;
@@ -530,16 +534,22 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
                                auditCode.getSystemAction(),
                                auditCode.getUserAction());
 
-            while (super.isRunning() && (workPad.getTutRepositoryConnector() == null)) {
-                try {
+            while (super.isRunning() && (workPad.getTutRepositoryConnector() == null))
+            {
+                try
+                {
                     /*
                      * Wait for server to connect to the cohort
                      */
-                    if (retryCount == 100) {
+                    if (retryCount == 100)
+                    {
                         System.out.println("CTS - resetting retry count to 0");
                         retryCount = 0;
-                    } else {
-                        if (retryCount == 0) {
+                    }
+                    else
+                    {
+                        if (retryCount == 0)
+                        {
                             System.out.println("CTS - retry count is 0 - produce audit log message");
                             auditCode = ConformanceSuiteAuditCode.WORKBENCH_WAITING_TO_START;
                             auditLog.logRecord(methodName,
@@ -556,12 +566,16 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
                         retryCount++;
                     }
                     Thread.sleep(1000);
-                } catch (InterruptedException wakeUp) {
+                }
+                catch (InterruptedException wakeUp)
+                {
                     /*
                      * Test again.
                      */
-                } catch (Throwable error) {
-                    System.out.println("CTS - will stop because caught a throwable - eror is " + error);
+                }
+                catch (Throwable error)
+                {
+                    System.out.println("CTS - will stop because caught a throwable - error is " + error);
 
                     stopRunning();
                     log.error(String.format("Unexpected error: %s", error.getMessage()), error);
@@ -578,7 +592,8 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
                 }
             }
 
-            if (workPad.getTutRepositoryConnector() != null) {
+            if (workPad.getTutRepositoryConnector() != null)
+            {
                 runTests();
             }
 

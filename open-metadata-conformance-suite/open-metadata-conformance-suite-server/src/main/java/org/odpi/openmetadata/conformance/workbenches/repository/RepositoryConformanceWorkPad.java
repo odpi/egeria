@@ -60,10 +60,6 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
 
 
 
-
-    // TODO - clean up old code
-    //private Boolean workbenchComplete = false;
-
     /**
      * Constructor receives key information from the configuration services.
      *
