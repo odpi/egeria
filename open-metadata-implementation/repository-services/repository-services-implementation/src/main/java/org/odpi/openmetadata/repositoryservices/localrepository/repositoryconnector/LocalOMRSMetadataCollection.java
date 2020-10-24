@@ -1393,19 +1393,22 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
      */
     private void  setLocalProvenanceThroughoutRelationship(Relationship   relationship)
     {
-        setLocalProvenance(relationship);
+        if (relationship != null)
+        {
+            setLocalProvenance(relationship);
 
-        /*
-         * Ensure that for each EntityProxy, the home metadataCollectionId and metadataCollectionName are set.
-         * Note that these proxies are clones - so we need to set back into the relationship when modified.
-         */
-        EntityProxy endOneProxy = relationship.getEntityOneProxy();
-        setLocalProvenance(endOneProxy);
-        relationship.setEntityOneProxy(endOneProxy);
+            /*
+             * Ensure that for each EntityProxy, the home metadataCollectionId and metadataCollectionName are set.
+             * Note that these proxies are clones - so we need to set back into the relationship when modified.
+             */
+            EntityProxy endOneProxy = relationship.getEntityOneProxy();
+            setLocalProvenance(endOneProxy);
+            relationship.setEntityOneProxy(endOneProxy);
 
-        EntityProxy endTwoProxy = relationship.getEntityTwoProxy();
-        setLocalProvenance(endTwoProxy);
-        relationship.setEntityTwoProxy(endTwoProxy);
+            EntityProxy endTwoProxy = relationship.getEntityTwoProxy();
+            setLocalProvenance(endTwoProxy);
+            relationship.setEntityTwoProxy(endTwoProxy);
+        }
     }
 
 
@@ -1560,10 +1563,16 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
      */
     private InstanceGraph  setLocalProvenanceInGraph(InstanceGraph   instanceGraph)
     {
+        /*
+         * Always return a graph, even if empty
+         */
         InstanceGraph  resultGraph = new InstanceGraph();
 
-        resultGraph.setEntities(setLocalProvenanceInEntityList(instanceGraph.getEntities()));
-        resultGraph.setRelationships(setLocalProvenanceInRelationshipList(instanceGraph.getRelationships()));
+        if (instanceGraph != null)
+        {
+            resultGraph.setEntities(setLocalProvenanceInEntityList(instanceGraph.getEntities()));
+            resultGraph.setRelationships(setLocalProvenanceInRelationshipList(instanceGraph.getRelationships()));
+        }
 
         return resultGraph;
     }
@@ -1582,32 +1591,35 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                    InstanceGraph   instanceGraph) throws UserNotAuthorizedException
     {
         InstanceGraph              resultGraph = new InstanceGraph();
-        UserNotAuthorizedException savedException = null;
 
-        try
+        if (instanceGraph != null)
         {
-            resultGraph.setEntities(securityVerifyReadEntityList(userId, instanceGraph.getEntities()));
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            savedException = error;
-        }
+            UserNotAuthorizedException savedException = null;
 
-        try
-        {
-            resultGraph.setRelationships(securityVerifyReadRelationshipList(userId, instanceGraph.getRelationships()));
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            savedException = error;
-        }
-
-        if ((resultGraph.getEntities() == null) && (resultGraph.getRelationships() == null))
-        {
-            if (savedException != null)
+            try
             {
-                throw savedException;
+                resultGraph.setEntities(securityVerifyReadEntityList(userId, instanceGraph.getEntities()));
+            } catch (UserNotAuthorizedException error)
+            {
+                savedException = error;
             }
+
+            try
+            {
+                resultGraph.setRelationships(securityVerifyReadRelationshipList(userId, instanceGraph.getRelationships()));
+            } catch (UserNotAuthorizedException error)
+            {
+                savedException = error;
+            }
+
+            if ((resultGraph.getEntities() == null) && (resultGraph.getRelationships() == null))
+            {
+                if (savedException != null)
+                {
+                    throw savedException;
+                }
+            }
+
         }
         return resultGraph;
     }
@@ -1641,18 +1653,21 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
 
         EntityDetail entity = realMetadataCollection.isEntityKnown(userId, guid);
-        setLocalProvenanceThroughoutEntity(entity);
 
-        /*
-         * Check operation is allowed
-         */
-        try
+        if (entity != null)
         {
-            securityVerifier.validateUserForEntityRead(userId, metadataCollectionName, entity);
-        }
-        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException  error)
-        {
-            throw new UserNotAuthorizedException(error);
+            setLocalProvenanceThroughoutEntity(entity);
+
+            /*
+             * Check operation is allowed
+             */
+            try
+            {
+                securityVerifier.validateUserForEntityRead(userId, metadataCollectionName, entity);
+            } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
+            {
+                throw new UserNotAuthorizedException(error);
+            }
         }
 
         return entity;
@@ -1690,19 +1705,23 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         EntitySummary entity =  realMetadataCollection.getEntitySummary(userId, guid);
 
-        setLocalProvenance(entity);
-        setLocalProvenanceInEntityClassifications(entity.getClassifications());
+        if (entity != null)
+        {
 
-        /*
-         * Check operation is allowed
-         */
-        try
-        {
-            securityVerifier.validateUserForEntitySummaryRead(userId, metadataCollectionName, entity);
-        }
-        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException  error)
-        {
-            throw new UserNotAuthorizedException(error);
+            setLocalProvenance(entity);
+            setLocalProvenanceInEntityClassifications(entity.getClassifications());
+
+            /*
+             * Check operation is allowed
+             */
+            try
+            {
+                securityVerifier.validateUserForEntitySummaryRead(userId, metadataCollectionName, entity);
+            } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
+            {
+                throw new UserNotAuthorizedException(error);
+            }
+
         }
 
         return entity;
@@ -1741,18 +1760,21 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         EntityDetail   entity = realMetadataCollection.getEntityDetail(userId, guid);
 
-        setLocalProvenanceThroughoutEntity(entity);
+        if (entity != null)
+        {
 
-        /*
-         * Check operation is allowed
-         */
-        try
-        {
-            securityVerifier.validateUserForEntitySummaryRead(userId, metadataCollectionName, entity);
-        }
-        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException  error)
-        {
-            throw new UserNotAuthorizedException(error);
+            setLocalProvenanceThroughoutEntity(entity);
+
+            /*
+             * Check operation is allowed
+             */
+            try
+            {
+                securityVerifier.validateUserForEntitySummaryRead(userId, metadataCollectionName, entity);
+            } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
+            {
+                throw new UserNotAuthorizedException(error);
+            }
         }
 
         return entity;
@@ -1797,18 +1819,22 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
         EntityDetail   entity = realMetadataCollection.getEntityDetail(userId, guid, asOfTime);
 
-        setLocalProvenanceThroughoutEntity(entity);
+        if (entity != null)
+        {
 
-        /*
-         * Check operation is allowed
-         */
-        try
-        {
-            securityVerifier.validateUserForEntitySummaryRead(userId, metadataCollectionName, entity);
-        }
-        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException  error)
-        {
-            throw new UserNotAuthorizedException(error);
+            setLocalProvenanceThroughoutEntity(entity);
+
+            /*
+             * Check operation is allowed
+             */
+            try
+            {
+                securityVerifier.validateUserForEntitySummaryRead(userId, metadataCollectionName, entity);
+            } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
+            {
+                throw new UserNotAuthorizedException(error);
+            }
+
         }
 
         return entity;
@@ -2285,18 +2311,22 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
         Relationship relationship = realMetadataCollection.isRelationshipKnown(userId, guid);
 
-        setLocalProvenanceThroughoutRelationship(relationship);
+        if (relationship != null)
+        {
 
-        /*
-         * Check operation is allowed
-         */
-        try
-        {
-            securityVerifier.validateUserForRelationshipRead(userId, metadataCollectionName, relationship);
-        }
-        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException  error)
-        {
-            throw new UserNotAuthorizedException(error);
+            setLocalProvenanceThroughoutRelationship(relationship);
+
+            /*
+             * Check operation is allowed
+             */
+            try
+            {
+                securityVerifier.validateUserForRelationshipRead(userId, metadataCollectionName, relationship);
+            } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
+            {
+                throw new UserNotAuthorizedException(error);
+            }
+
         }
 
         return relationship;
@@ -2335,18 +2365,21 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
         Relationship relationship = realMetadataCollection.getRelationship(userId, guid);
 
-        setLocalProvenanceThroughoutRelationship(relationship);
+        if (relationship != null)
+        {
 
-        /*
-         * Check operation is allowed
-         */
-        try
-        {
-            securityVerifier.validateUserForRelationshipRead(userId, metadataCollectionName, relationship);
-        }
-        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException  error)
-        {
-            throw new UserNotAuthorizedException(error);
+            setLocalProvenanceThroughoutRelationship(relationship);
+
+            /*
+             * Check operation is allowed
+             */
+            try
+            {
+                securityVerifier.validateUserForRelationshipRead(userId, metadataCollectionName, relationship);
+            } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
+            {
+                throw new UserNotAuthorizedException(error);
+            }
         }
 
         return relationship;
@@ -2388,18 +2421,21 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         Relationship relationship = realMetadataCollection.getRelationship(userId, guid, asOfTime);
 
-        setLocalProvenanceThroughoutRelationship(relationship);
+        if (relationship != null)
+        {
 
-        /*
-         * Check operation is allowed
-         */
-        try
-        {
-            securityVerifier.validateUserForRelationshipRead(userId, metadataCollectionName, relationship);
-        }
-        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException  error)
-        {
-            throw new UserNotAuthorizedException(error);
+            setLocalProvenanceThroughoutRelationship(relationship);
+
+            /*
+             * Check operation is allowed
+             */
+            try
+            {
+                securityVerifier.validateUserForRelationshipRead(userId, metadataCollectionName, relationship);
+            } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
+            {
+                throw new UserNotAuthorizedException(error);
+            }
         }
 
         return relationship;
@@ -3859,8 +3895,11 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         EntityDetail   newEntity = realMetadataCollection.updateEntityStatus(userId, entityGUID, newStatus);
 
-        setLocalProvenanceThroughoutEntity(newEntity);
-        notifyOfUpdatedEntity(currentEntity, newEntity);
+        if (newEntity != null)
+        {
+            setLocalProvenanceThroughoutEntity(newEntity);
+            notifyOfUpdatedEntity(currentEntity, newEntity);
+        }
 
         return newEntity;
     }
@@ -3920,8 +3959,11 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         EntityDetail   newEntity = realMetadataCollection.updateEntityProperties(userId, entityGUID, properties);
 
-        setLocalProvenanceThroughoutEntity(newEntity);
-        notifyOfUpdatedEntity(currentEntity, newEntity);
+        if (newEntity != null)
+        {
+            setLocalProvenanceThroughoutEntity(newEntity);
+            notifyOfUpdatedEntity(currentEntity, newEntity);
+        }
 
         return newEntity;
     }
@@ -4067,16 +4109,20 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                   typeDefName,
                                                                   obsoleteEntityGUID);
 
-        if (produceEventsForRealConnector)
+        if (entity != null)
         {
-            setLocalProvenanceThroughoutEntity(entity);
 
-            outboundRepositoryEventProcessor.processDeletedEntityEvent(repositoryName,
-                                                                       metadataCollectionId,
-                                                                       localServerName,
-                                                                       localServerType,
-                                                                       localOrganizationName,
-                                                                       entity);
+            if (produceEventsForRealConnector)
+            {
+                setLocalProvenanceThroughoutEntity(entity);
+
+                outboundRepositoryEventProcessor.processDeletedEntityEvent(repositoryName,
+                                                                           metadataCollectionId,
+                                                                           localServerName,
+                                                                           localServerType,
+                                                                           localOrganizationName,
+                                                                           entity);
+            }
         }
 
         return entity;
@@ -4913,8 +4959,12 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         Relationship   newRelationship     = realMetadataCollection.updateRelationshipStatus(userId,
                                                                                              relationshipGUID,
                                                                                              newStatus);
-        setLocalProvenanceThroughoutRelationship(newRelationship);
-        notifyOfUpdatedRelationship(currentRelationship, newRelationship);
+
+        if (newRelationship != null)
+        {
+            setLocalProvenanceThroughoutRelationship(newRelationship);
+            notifyOfUpdatedRelationship(currentRelationship, newRelationship);
+        }
 
         return newRelationship;
     }
@@ -4975,8 +5025,12 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                                              relationshipGUID,
                                                                                              properties);
 
-        setLocalProvenanceThroughoutRelationship(newRelationship);
-        notifyOfUpdatedRelationship(currentRelationship, newRelationship);
+        if (newRelationship != null)
+        {
+
+            setLocalProvenanceThroughoutRelationship(newRelationship);
+            notifyOfUpdatedRelationship(currentRelationship, newRelationship);
+        }
 
         return newRelationship;
     }
@@ -5150,16 +5204,20 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                                  typeDefName,
                                                                                  obsoleteRelationshipGUID);
 
-        if (produceEventsForRealConnector)
+        if (newRelationship != null)
         {
-            setLocalProvenanceThroughoutRelationship(newRelationship);
 
-            outboundRepositoryEventProcessor.processDeletedRelationshipEvent(repositoryName,
-                                                                             metadataCollectionId,
-                                                                             localServerName,
-                                                                             localServerType,
-                                                                             localOrganizationName,
-                                                                             newRelationship);
+            if (produceEventsForRealConnector)
+            {
+                setLocalProvenanceThroughoutRelationship(newRelationship);
+
+                outboundRepositoryEventProcessor.processDeletedRelationshipEvent(repositoryName,
+                                                                                 metadataCollectionId,
+                                                                                 localServerName,
+                                                                                 localServerType,
+                                                                                 localOrganizationName,
+                                                                                 newRelationship);
+            }
         }
 
         return newRelationship;
@@ -6059,7 +6117,10 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         List<Classification>  homeClassifications = realMetadataCollection.getHomeClassifications(userId, entityGUID);
 
-        setLocalProvenanceInEntityClassifications(homeClassifications);
+        if (homeClassifications != null)
+        {
+            setLocalProvenanceInEntityClassifications(homeClassifications);
+        }
 
         return homeClassifications;
     }
@@ -6100,7 +6161,10 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         List<Classification>  homeClassifications = realMetadataCollection.getHomeClassifications(userId, entityGUID, asOfTime);
 
-        setLocalProvenanceInEntityClassifications(homeClassifications);
+        if (homeClassifications != null)
+        {
+            setLocalProvenanceInEntityClassifications(homeClassifications);
+        }
 
         return homeClassifications;
     }
