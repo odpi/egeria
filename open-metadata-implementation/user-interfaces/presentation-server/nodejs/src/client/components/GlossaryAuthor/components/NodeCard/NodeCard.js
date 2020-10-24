@@ -4,22 +4,22 @@ import React from "react";
 import Launch32 from "../../../../images/Launch_32";
 import { Accordion, AccordionItem } from "carbon-components-react";
 
-const GlossaryCardSection = (props) => (
+const NodeCardSection = (props) => (
   <div>
-    <h3 className=".glossary-card-section__heading">{props.heading}</h3>
-    <section className={`bx--row ${props.className} glossary-card-section`}>
-      {/* <section className={`bx--row ${props.className} glossary-card-section bx--col-md-8 bx--col-lg-4 bx--col-xlg-3`}> */}
+    <h3 className=".node-card-section__heading">{props.heading}</h3>
+    <section className={`bx--row ${props.className} node-card-section`}>
+      {/* <section className={`bx--row ${props.className} node-card-section bx--col-md-8 bx--col-lg-4 bx--col-xlg-3`}> */}
       {props.children}
     </section>
   </div>
 );
 
-const GlossaryCard = (props) => {
+const NodeCard = (props) => {
   return (
-    <article className="glossary-card bx--col-md-4 bx--col-lg-4 bx--col-xlg-3 bx--offset-xlg-1">
-      <h4 className="glossary-card__heading">{props.heading}</h4>
-      <p className="glossary-card__body">{props.body}</p>
-      <div className="glossary-card__footer">
+    <article className="node-card bx--col-md-4 bx--col-lg-4 bx--col-xlg-3 bx--offset-xlg-1">
+      <h4 className="node-card__heading">{props.heading}</h4>
+      <p className="node-card__body">{props.body}</p>
+      <div className="node-card__footer">
         {props.icon}
         <Launch32 link={props.link} external="true" />
       </div>
@@ -27,19 +27,19 @@ const GlossaryCard = (props) => {
   );
 };
 
-const LocalGlossaryCard = (props) => {
+const LocalNodeCard = (props) => {
   const onChange = (e) => {
     if (e.target.checked) {
-      console.log("onchange LocalGlossaryCard selected " + props.guid);
+      console.log("onchange LocalNodeCard selected " + props.guid);
       props.setSelected(props.guid);
     } else {
-      console.log("onchange LocalGlossaryCard unselected " + props.heading);
+      console.log("onchange LocalNodeCard unselected " + props.heading);
       props.setSelected(undefined);
     }
   };
   return (
-    <article className="glossary-card bx--col-md-4 bx--col-lg-4 bx--col-xlg-3 bx--offset-xlg-1">
-      <div className="glossary-card-section__heading">
+    <article className="node-card bx--col-md-4 bx--col-lg-4 bx--col-xlg-3 bx--offset-xlg-1">
+      <div className="node-card-section__heading">
         <h4>{props.heading}</h4>
         <input type="checkbox" checked={props.isSelected} onChange={onChange} />
       </div>
@@ -55,4 +55,4 @@ const LocalGlossaryCard = (props) => {
   );
 };
 
-export { GlossaryCardSection, GlossaryCard, LocalGlossaryCard };
+export { NodeCardSection, NodeCard, LocalNodeCard };
