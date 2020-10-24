@@ -34,6 +34,7 @@ public class RelationshipsFVT {
     private static final String DEFAULT_TEST_CAT_NAME2 = "Test cat B1";
     private static final String DEFAULT_TEST_CAT_NAME3 = "Test cat C1";
     private static final String DEFAULT_TEST_CAT_NAME4 = "Test cat D1";
+    private static final String DEFAULT_TEST_PROJECT_NAME = "Test Project for relationships FVT";
     private SubjectAreaRelationshipClients subjectAreaRelationship = null;
     private SubjectAreaNodeClient<Category> subjectAreaCategory = null;
     private GlossaryFVT glossaryFVT = null;
@@ -113,6 +114,7 @@ public class RelationshipsFVT {
         System.out.println("Create a term called " + DEFAULT_TEST_TERM_NAME + " using glossary userId");
         String glossaryGuid = glossary.getSystemAttributes().getGUID();
         Term term1 = termFVT.createTerm(DEFAULT_TEST_TERM_NAME, glossaryGuid);
+
         term1relationshipcount++;
         glossaryRelationshipCount++;
         checkRelationshipNumberforGlossary(glossaryRelationshipCount, glossary);
@@ -199,7 +201,7 @@ public class RelationshipsFVT {
         if (term1relationshipcount != numberofrelationships) {
             throw new SubjectAreaFVTCheckedException("Expected " + term1Relationships.size() + " got " + numberofrelationships);
         }
-        Project project = projectFVT.createProject("Test Project For ProjectScope FVT");
+        Project project= projectFVT.createProject(DEFAULT_TEST_PROJECT_NAME );
         projectScopeFVT(project, term1);
         projectFVT.deleteProject(project.getSystemAttributes().getGUID());
         projectFVT.purgeProject(project.getSystemAttributes().getGUID());
@@ -1266,6 +1268,10 @@ public class RelationshipsFVT {
     private void projectScopeFVT(Project project, Term term) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, SubjectAreaFVTCheckedException {
         ProjectScope createdProjectScope = createProjectScope(project, term);
         FVTUtils.validateLine(createdProjectScope);
+        if (projectFVT.getProjectTerms(project.getSystemAttributes().getGUID()).size() !=1){
+            throw new SubjectAreaFVTCheckedException("ERROR: Project terms were not as expected");
+        }
+
         System.out.println("Created ProjectScopeRelationship " + createdProjectScope);
         String guid = createdProjectScope.getGuid();
 
@@ -1309,7 +1315,7 @@ public class RelationshipsFVT {
         System.out.println("Hard deleted ProjectScopeRelationship with userId=" + guid);
     }
 
-    private ProjectScope createProjectScope(Project project, Term term) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, SubjectAreaFVTCheckedException {
+    protected ProjectScope createProjectScope(Project project, Term term) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, SubjectAreaFVTCheckedException {
         ProjectScope projectScope = new ProjectScope();
         projectScope.getEnd1().setNodeGuid(project.getSystemAttributes().getGUID());
         projectScope.getEnd2().setNodeGuid(term.getSystemAttributes().getGUID());
