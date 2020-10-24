@@ -65,7 +65,7 @@ export default function CardViewNavigation({ match, nodeTypeName }) {
   const issueNodeSearch = (criteria) => {
     // encode the URI. Be aware the more recent RFC3986 for URLs makes use of square brackets which are reserved (for IPv6)
     const url = encodeURI(
-      nodeType.url + "?offset=0&pageSize=1000&searchCriteria=" + criteria
+      nodeType.url + "?searchCriteria=" + criteria
     );
     issueRestGet(url, onSuccessfulSearch, onErrorSearch);
   };
