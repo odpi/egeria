@@ -8,6 +8,7 @@ import org.odpi.openmetadata.adminservices.OMAGServerAdminForAccessServices;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.EnterpriseAccessConfig;
 import org.odpi.openmetadata.adminservices.rest.AccessServiceConfigResponse;
+import org.odpi.openmetadata.adminservices.rest.AccessServicesResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGServicesResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.StringMapResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
@@ -41,11 +42,26 @@ public class ConfigAccessServicesResource
      * @param serverName name of server
      * @return list of access service descriptions
      */
-    @GetMapping(path = "/access-services/configuration")
+    @GetMapping(path = "/access-services")
     public RegisteredOMAGServicesResponse getConfiguredAccessServices(@PathVariable String userId,
                                                                       @PathVariable String serverName)
     {
         return adminAPI.getConfiguredAccessServices(userId, serverName);
+    }
+
+
+    /**
+     * Return the configuration for the access services in this server.
+     *
+     * @param userId calling user
+     * @param serverName name of server
+     * @return list of access service configurations
+     */
+    @GetMapping(path = "/access-services/configuration")
+    public AccessServicesResponse getAccessServicesConfiguration(@PathVariable String userId,
+                                                                 @PathVariable String serverName)
+    {
+        return adminAPI.getAccessServicesConfiguration(userId, serverName);
     }
 
 
@@ -152,7 +168,7 @@ public class ConfigAccessServicesResource
 
 
     /**
-     * Retrieve the topic names for this access service
+     * Retrieve the topic names for all access services
      *
      * @param userId                user that is issuing the request.
      * @param serverName            local server name.
@@ -214,11 +230,11 @@ public class ConfigAccessServicesResource
 
 
     /**
-     * Retrieve the config for an access service.
+     * Remove the config for an access service.
      *
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
-     * @param serviceURLMarker string indicating which access service it is configuring
+     * @param serviceURLMarker string indicating which access service to clear
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName parameter or

@@ -3,7 +3,7 @@
 
 # 0512 Derived Schema Elements
 
-Derived schema elements access other attributes, possibly in the same or a different
+Derived schema elements access other data, possibly in the same or a different
 asset to generate/derive the values for the attribute.
 
 ![UML](0512-Derived-Schema-Elements.png#pagewidth)

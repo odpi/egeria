@@ -3,11 +3,21 @@
 package org.odpi.openmetadata.accessservices.datamanager.properties;
 
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.util.Objects;
+
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
  * DataFileProperties describes the property of a single data file.
  */
+@JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class DataFileProperties extends DataStoreProperties
 {
     private static final long    serialVersionUID = 1L;
@@ -32,6 +42,11 @@ public class DataFileProperties extends DataStoreProperties
     public DataFileProperties(DataFileProperties template)
     {
         super(template);
+
+        if (template != null)
+        {
+            fileType = template.getFileType();
+        }
     }
 
 
@@ -77,8 +92,7 @@ public class DataFileProperties extends DataStoreProperties
                 ", owner='" + getOwner() + '\'' +
                 ", ownerCategory=" + getOwnerCategory() +
                 ", zoneMembership=" + getZoneMembership() +
-                ", origin=" + getOrigin() +
-                ", latestChange='" + getLatestChange() + '\'' +
+                ", origin=" + getOtherOriginValues() +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +
                 ", vendorProperties=" + getVendorProperties() +

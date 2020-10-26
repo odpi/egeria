@@ -93,7 +93,7 @@ export default function Frame() {
                       Glossary Author
                     </SideNavLink>
                   </SideNavMenu>
-                  <SideNavMenu title="Integrations" defaultExpanded="true">
+                  <SideNavMenu title="Ecosystem Tools" defaultExpanded="true">
                     <SideNavLink element={Link} to={rexUrl}>
                       Repository Explorer
                     </SideNavLink>

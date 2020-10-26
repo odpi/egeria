@@ -68,7 +68,7 @@ exchange metadata for Coco Pharmaceuticals.
 Instructions for running the labs [can be found here](../../../../open-metadata-resources/open-metadata-labs).
 
 ----
-Return to [OMAG Server](omag-server.md)
+* Return to [OMAG Server](omag-server.md)
 
 
 ----

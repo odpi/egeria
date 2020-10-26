@@ -4,7 +4,7 @@ package org.odpi.openmetadata.frameworks.connectors.properties;
 
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Classification;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementClassification;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
 import org.testng.annotations.Test;
@@ -21,9 +21,9 @@ import static org.testng.Assert.assertTrue;
  */
 public class TestAssetElementHeader
 {
-    private ElementType          type            = new ElementType();
-    private List<Classification> classifications = new ArrayList<>();
-    private AssetDescriptor      parentAsset     = new AssetSummary(new Asset());
+    private ElementType                 type            = new ElementType();
+    private List<ElementClassification> classifications = new ArrayList<>();
+    private AssetDescriptor             parentAsset     = new AssetSummary(new Asset());
 
     /**
      * Constructor
@@ -32,7 +32,7 @@ public class TestAssetElementHeader
     {
         type.setElementTypeName("TestTypeName");
 
-        Classification classification = new Classification();
+        ElementClassification classification = new ElementClassification();
 
         classification.setClassificationName("TestClassificationName");
         classifications.add(classification);
@@ -88,7 +88,7 @@ public class TestAssetElementHeader
         testObject.setGUID("TestDifferentGUID");
         testObject.setURL("TestURL");
 
-        List<Classification> emptyClassifications = new ArrayList<>();
+        List<ElementClassification> emptyClassifications = new ArrayList<>();
         emptyClassifications.add(null);
 
         testObject.setClassifications(emptyClassifications);
@@ -117,8 +117,8 @@ public class TestAssetElementHeader
      */
     @Test public void testClassifications()
     {
-        List<Classification> classificationList = new ArrayList<>();
-        Classification       classification     = new Classification();
+        List<ElementClassification> classificationList = new ArrayList<>();
+        ElementClassification       classification     = new ElementClassification();
 
         classification.setClassificationName("TestClassification");
         classificationList.add(classification);

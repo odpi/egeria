@@ -30,9 +30,26 @@ public class AssetConverter extends ReferenceableConverter
     public AssetConverter(EntityDetail         assetEntity,
                           Relationship         connectionToAssetRelationship,
                           OMRSRepositoryHelper repositoryHelper,
+                          String               serviceName,
+                          String               serverName)
+    {
+        super(assetEntity, connectionToAssetRelationship, repositoryHelper, serviceName, serverName);
+    }
+
+    /**
+     * Constructor captures the initial content with connectionToAssetRelationship
+     *
+     * @param assetEntity properties to convert
+     * @param connectionToAssetRelationship properties to convert
+     * @param repositoryHelper helper object to parse entity/relationship objects
+     * @param serviceName name of this component
+     */
+    public AssetConverter(EntityDetail         assetEntity,
+                          Relationship         connectionToAssetRelationship,
+                          OMRSRepositoryHelper repositoryHelper,
                           String               serviceName)
     {
-        super(assetEntity, connectionToAssetRelationship, repositoryHelper, serviceName);
+        super(assetEntity, connectionToAssetRelationship, repositoryHelper, serviceName, null);
     }
 
 

@@ -168,20 +168,28 @@ public class AssetLiteralSchemaType extends AssetSchemaType
     @Override
     public String toString()
     {
-        return "AssetPrimitiveSchemaType{" +
-                "dataType='" + getDataType() + '\'' +
-                ", defaultValue='" + getFixedValue() + '\'' +
-                ", displayName='" + getDisplayName() + '\'' +
+        return "AssetLiteralSchemaType{" +
+                "parentAsset=" + parentAsset +
+                ", dataType='" + getDataType() + '\'' +
+                ", fixedValue='" + getFixedValue() + '\'' +
                 ", versionNumber='" + getVersionNumber() + '\'' +
                 ", author='" + getAuthor() + '\'' +
                 ", usage='" + getUsage() + '\'' +
                 ", encodingStandard='" + getEncodingStandard() + '\'' +
-                ", extendedProperties=" + getExtendedProperties() +
+                ", formula='" + getFormula() + '\'' +
+                ", queries=" + getQueries() +
+                ", deprecated=" + isDeprecated() +
+                ", displayName='" + getDisplayName() + '\'' +
+                ", description='" + getDescription() + '\'' +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
+                ", meanings=" + getMeanings() +
+                ", securityTags=" + getSecurityTags() +
                 ", additionalProperties=" + getAdditionalProperties() +
                 ", type=" + getType() +
                 ", GUID='" + getGUID() + '\'' +
                 ", URL='" + getURL() + '\'' +
+                ", assetClassifications=" + getAssetClassifications() +
+                ", extendedProperties=" + getExtendedProperties() +
                 '}';
     }
 

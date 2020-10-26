@@ -7,6 +7,9 @@ package org.odpi.openmetadata.accessservices.analyticsmodeling.model.module;
  *  Relational database column abstraction.
  *	<br>Sample:<br>
  *	{<br>
+ *	&emsp;	"property": [&nbsp;
+ *	&emsp;		{@link org.odpi.openmetadata.accessservices.analyticsmodeling.model.module.PropertyType}<br>
+ *	&emsp;	],<br>
  *	&emsp;	"name": "AddressID",<br>
  *	&emsp;	"vendorType": "INT32",<br>
  *	&emsp;	"nullable": false,<br>
@@ -14,7 +17,7 @@ package org.odpi.openmetadata.accessservices.analyticsmodeling.model.module;
  *	}
  *
  */
-public class Column implements IModuleObject {
+public class Column extends BaseObjectType {
 
 	private String name;
 	private String vendorType;

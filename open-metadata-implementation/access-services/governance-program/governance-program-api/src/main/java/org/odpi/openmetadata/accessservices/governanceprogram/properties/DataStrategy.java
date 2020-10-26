@@ -18,7 +18,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class DataStrategy extends GovernanceDriver
+public class DataStrategy extends GovernanceDriverProperties
 {
     private static final long    serialVersionUID = 1L;
 
@@ -31,7 +31,6 @@ public class DataStrategy extends GovernanceDriver
     public DataStrategy()
     {
         super();
-        setType("DataStrategy");
     }
 
 
@@ -97,24 +96,23 @@ public class DataStrategy extends GovernanceDriver
     public String toString()
     {
         return "DataStrategy{" +
-                "businessImperatives='" + businessImperatives + '\'' +
+                "businessImperatives=" + businessImperatives +
                 ", relatedGovernanceDrivers=" + getRelatedGovernanceDrivers() +
                 ", governancePolicies=" + getGovernancePolicies() +
+                ", title='" + getTitle() + '\'' +
+                ", summary='" + getSummary() + '\'' +
                 ", description='" + getDescription() + '\'' +
                 ", scope='" + getScope() + '\'' +
                 ", status=" + getStatus() +
                 ", priority='" + getPriority() + '\'' +
                 ", implications=" + getImplications() +
                 ", outcomes=" + getOutcomes() +
-                ", externalReferences=" + getExternalReferences() +
-                ", additionalProperties=" + getAdditionalProperties() +
                 ", governanceMetrics=" + getGovernanceMetrics() +
                 ", governanceZones=" + getGovernanceZones() +
-                ", GUID='" + getGUID() + '\'' +
-                ", type='" + getType() + '\'' +
-                ", documentId='" + getDocumentId() + '\'' +
-                ", title='" + getTitle() + '\'' +
-                ", summary='" + getSummary() + '\'' +
+                ", typeName='" + getTypeName() + '\'' +
+                ", qualifiedName='" + getQualifiedName() + '\'' +
+                ", additionalProperties=" + getAdditionalProperties() +
+                ", extendedProperties=" + getExtendedProperties() +
                 '}';
     }
 

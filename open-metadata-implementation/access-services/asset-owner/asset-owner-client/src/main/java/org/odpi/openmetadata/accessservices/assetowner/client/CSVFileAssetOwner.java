@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.assetowner.client;
 
 import org.odpi.openmetadata.accessservices.assetowner.api.AssetOnboardingCSVFileInterface;
+import org.odpi.openmetadata.accessservices.assetowner.client.rest.AssetOwnerRESTClient;
 import org.odpi.openmetadata.accessservices.assetowner.rest.NewCSVFileAssetRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -90,6 +91,31 @@ public class CSVFileAssetOwner extends AssetOwner implements AssetOnboardingCSVF
                              String password) throws InvalidParameterException
     {
         super(serverName, serverPlatformRootURL, userId, password);
+    }
+
+
+    /**
+     * Create a new client that is going to be used in an OMAG Server (view service or integration service typically).
+     *
+     * @param serverName name of the server to connect to
+     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param restClient client that issues the REST API calls
+     * @param maxPageSize maximum number of results supported by this server
+     * @param auditLog logging destination
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * REST API calls.
+     */
+    public CSVFileAssetOwner(String               serverName,
+                             String               serverPlatformRootURL,
+                             AssetOwnerRESTClient restClient,
+                             int                  maxPageSize,
+                             AuditLog             auditLog) throws InvalidParameterException
+    {
+        super(serverName, serverPlatformRootURL, auditLog);
+
+        invalidParameterHandler.setMaxPagingSize(maxPageSize);
+
+        this.restClient = restClient;
     }
 
 

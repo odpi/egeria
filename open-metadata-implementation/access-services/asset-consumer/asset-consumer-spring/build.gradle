@@ -7,7 +7,6 @@
 dependencies {
     implementation project(':open-metadata-implementation:common-services:ffdc-services')
     implementation project(':open-metadata-implementation:access-services:asset-consumer:asset-consumer-api')
-    implementation project(':open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-api')
     implementation project(':open-metadata-implementation:access-services:asset-consumer:asset-consumer-server')
     implementation 'org.springframework:spring-web'
     implementation 'io.swagger.core.v3:swagger-annotations'

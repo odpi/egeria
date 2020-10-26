@@ -12,6 +12,8 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGService;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.OMAGServerInstanceErrorCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.governanceservers.integrationdaemonservices.registration.IntegrationServiceDescription;
+import org.odpi.openmetadata.governanceservers.integrationdaemonservices.registration.IntegrationServiceRegistry;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataPlatformSecurityVerifier;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.platformservices.properties.OMAGServerInstanceHistory;
@@ -77,7 +79,7 @@ public class OMAGServerPlatformInstanceMap
 
     /**
      * Return the list of access services that are registered (supported) in this OMAG Server Platform
-     * and can be configured in a server.
+     * and can be configured in a metadata access point or metadata server.
      *
      * @param userId calling user
      * @return list of access service descriptions
@@ -123,9 +125,26 @@ public class OMAGServerPlatformInstanceMap
         return response;
     }
 
+
+    /**
+     * Return the list of access services that are registered (supported) in this OMAG Server Platform
+     * and can be configured in an integration daemon.
+     *
+     * @param userId calling user
+     * @return list of access service descriptions
+     * @throws UserNotAuthorizedException user not authorized
+     */
+    public List<RegisteredOMAGService> getRegisteredIntegrationServices(String userId) throws UserNotAuthorizedException
+    {
+        validateUserAsInvestigatorForPlatform(userId);
+
+        return IntegrationServiceRegistry.getRegisteredIntegrationServices();
+    }
+
+
     /**
      * Return the list of view services that are registered (supported) in this OMAG Server Platform
-     * and can be configured in a server.
+     * and can be configured in a view server.
      *
      * @param userId calling user
      * @return list of view service descriptions
@@ -281,6 +300,13 @@ public class OMAGServerPlatformInstanceMap
         }
 
         services = getRegisteredAccessServices(userId);
+
+        if ((services != null) && (! services.isEmpty()))
+        {
+            response.addAll(services);
+        }
+
+        services = getRegisteredIntegrationServices(userId);
 
         if ((services != null) && (! services.isEmpty()))
         {
@@ -759,9 +785,19 @@ public class OMAGServerPlatformInstanceMap
         }
         else
         {
-            serverInstance.shutdown(methodName);
-            inActiveServerInstanceMap.put(serverName, serverInstance);
-            activeServerInstanceMap.remove(serverName);
+            try
+            {
+                serverInstance.shutdown(methodName);
+            }
+            catch (Throwable t)
+            {
+                throw t;
+            }
+            finally
+            {
+                inActiveServerInstanceMap.put(serverName, serverInstance);
+                activeServerInstanceMap.remove(serverName);
+            }
         }
     }
 

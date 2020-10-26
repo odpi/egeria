@@ -24,15 +24,8 @@ import java.util.List;
  * part of a SoftWareServer definition.  This means it must be handled assuming it may be part of many constructs.
  * This is particularly important on delete.
  */
-public class EndpointHandler
+public class EndpointHandler extends RootHandler
 {
-    private String                  serviceName;
-    private String                  serverName;
-    private OMRSRepositoryHelper    repositoryHelper;
-    private RepositoryHandler       repositoryHandler;
-    private InvalidParameterHandler invalidParameterHandler;
-
-
     /**
      * Construct the handler information needed to interact with the repository services
      *
@@ -48,11 +41,11 @@ public class EndpointHandler
                            RepositoryHandler       repositoryHandler,
                            OMRSRepositoryHelper    repositoryHelper)
     {
-        this.serviceName = serviceName;
-        this.serverName = serverName;
-        this.invalidParameterHandler = invalidParameterHandler;
-        this.repositoryHandler = repositoryHandler;
-        this.repositoryHelper = repositoryHelper;
+        super(serviceName,
+              serverName,
+              invalidParameterHandler,
+              repositoryHandler,
+              repositoryHelper);
     }
 
 
@@ -122,6 +115,8 @@ public class EndpointHandler
      * the supplied endpoint object.
      *
      * @param userId   calling userId
+     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software server capability entity that represented the external source
      * @param endpoint object to add
      * @return unique identifier of the endpoint in the repository.
      * @throws InvalidParameterException  the endpoint bean properties are invalid
@@ -129,6 +124,8 @@ public class EndpointHandler
      * @throws PropertyServerException    problem accessing the property server
      */
     public String saveEndpoint(String   userId,
+                               String   externalSourceGUID,
+                               String   externalSourceName,
                                Endpoint endpoint) throws InvalidParameterException,
                                                          PropertyServerException,
                                                          UserNotAuthorizedException
@@ -138,11 +135,11 @@ public class EndpointHandler
         String existingEndpoint = this.findEndpoint(userId, endpoint, methodName);
         if (existingEndpoint == null)
         {
-            return addEndpoint(userId, endpoint);
+            return addEndpoint(userId, externalSourceGUID, externalSourceName, endpoint);
         }
         else
         {
-            return updateEndpoint(userId, existingEndpoint, endpoint);
+            return updateEndpoint(userId, externalSourceGUID, externalSourceName, existingEndpoint, endpoint);
         }
     }
 
@@ -153,6 +150,8 @@ public class EndpointHandler
      * the supplied endpoint object.
      *
      * @param userId   calling userId
+     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software server capability entity that represented the external source
      * @param endpoint object to add
      * @return unique identifier of the endpoint in the repository.
      * @throws InvalidParameterException  the endpoint bean properties are invalid
@@ -160,6 +159,8 @@ public class EndpointHandler
      * @throws PropertyServerException    problem accessing the property server
      */
     String addEndpoint(String   userId,
+                       String   externalSourceGUID,
+                       String   externalSourceName,
                        Endpoint endpoint) throws InvalidParameterException,
                                                  PropertyServerException,
                                                  UserNotAuthorizedException
@@ -178,6 +179,8 @@ public class EndpointHandler
                                                               serviceName,
                                                               serverName);
         return repositoryHandler.createEntity(userId,
+                                              externalSourceGUID,
+                                              externalSourceName,
                                               EndpointMapper.ENDPOINT_TYPE_GUID,
                                               EndpointMapper.ENDPOINT_TYPE_NAME,
                                               endpointBuilder.getInstanceProperties(methodName),
@@ -189,6 +192,8 @@ public class EndpointHandler
      * Update a stored endpoint.
      *
      * @param userId               userId
+     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software server capability entity that represented the external source
      * @param existingEndpointGUID unique identifier of the existing endpoint entity
      * @param endpoint             new endpoint values
      * @return unique identifier of the endpoint in the repository.
@@ -197,6 +202,8 @@ public class EndpointHandler
      * @throws PropertyServerException    problem accessing the property server
      */
     String updateEndpoint(String   userId,
+                          String   externalSourceGUID,
+                          String   externalSourceName,
                           String   existingEndpointGUID,
                           Endpoint endpoint) throws InvalidParameterException,
                                                     PropertyServerException,
@@ -215,12 +222,14 @@ public class EndpointHandler
                                                               repositoryHelper,
                                                               serviceName,
                                                               serverName);
-        repositoryHandler.updateEntity(userId,
-                                       existingEndpointGUID,
-                                       EndpointMapper.ENDPOINT_TYPE_GUID,
-                                       EndpointMapper.ENDPOINT_TYPE_NAME,
-                                       endpointBuilder.getInstanceProperties(methodName),
-                                       methodName);
+        repositoryHandler.updateEntityProperties(userId,
+                                                 externalSourceGUID,
+                                                 externalSourceName,
+                                                 existingEndpointGUID,
+                                                 EndpointMapper.ENDPOINT_TYPE_GUID,
+                                                 EndpointMapper.ENDPOINT_TYPE_NAME,
+                                                 endpointBuilder.getInstanceProperties(methodName),
+                                                 methodName);
 
         return existingEndpointGUID;
     }
@@ -231,12 +240,16 @@ public class EndpointHandler
      * definition.
      *
      * @param userId       calling user
+     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software server capability entity that represented the external source
      * @param endpointGUID object to delete
      * @throws InvalidParameterException  the entity guid is not known
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
     public void removeEndpoint(String userId,
+                               String externalSourceGUID,
+                               String externalSourceName,
                                String endpointGUID) throws InvalidParameterException,
                                                            PropertyServerException,
                                                            UserNotAuthorizedException
@@ -245,6 +258,8 @@ public class EndpointHandler
         final String guidParameterName = "endpointGUID";
 
         repositoryHandler.removeEntityOnLastUse(userId,
+                                                externalSourceGUID,
+                                                externalSourceName,
                                                 endpointGUID,
                                                 guidParameterName,
                                                 EndpointMapper.ENDPOINT_TYPE_GUID,
@@ -279,7 +294,8 @@ public class EndpointHandler
 
         EndpointConverter converter = new EndpointConverter(endpointEntity,
                                                             repositoryHelper,
-                                                            serviceName);
+                                                            serviceName,
+                                                            serverName);
 
         return converter.getBean();
     }
@@ -338,7 +354,7 @@ public class EndpointHandler
             {
                 if (entity != null)
                 {
-                    EndpointConverter converter = new EndpointConverter(entity, repositoryHelper, serviceName);
+                    EndpointConverter converter = new EndpointConverter(entity, repositoryHelper, serviceName, serverName);
 
                     results.add(converter.getBean());
                 }

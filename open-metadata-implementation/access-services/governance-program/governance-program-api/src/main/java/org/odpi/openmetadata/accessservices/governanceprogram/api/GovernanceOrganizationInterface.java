@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.governanceprogram.api;
 
 
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceResponsibility;
+import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceResponsibilityProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -34,11 +34,11 @@ public interface GovernanceOrganizationInterface
     void   deleteGovernanceResponsibility(String              responsibilityGUID);
 
 
-    GovernanceResponsibility getGovernanceResponsibilityByGUID(String  responsibilityGUID);
-    GovernanceResponsibility  getGovernanceResponsibilityByDocumentId(String  documentId);
-    GovernanceResponsibility  getGovernanceResponsibilityByTitle(String  title);
+    GovernanceResponsibilityProperties getGovernanceResponsibilityByGUID(String  responsibilityGUID);
+    GovernanceResponsibilityProperties getGovernanceResponsibilityByDocumentId(String  documentId);
+    GovernanceResponsibilityProperties getGovernanceResponsibilityByTitle(String  title);
 
-    List<GovernanceResponsibility>  getGovernanceResponsibilities(String  title);
+    List<GovernanceResponsibilityProperties>  getGovernanceResponsibilities(String  title);
 
 
 

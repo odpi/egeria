@@ -13,22 +13,15 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  *  SchemaAttribute describes a single attribute within a schema.  The attribute has a name, order in the
- *  schema and cardinality.  Its type is a SchemaType (such as StructSchemaType or PrimitiveSchemaType) or a SchemaLink.
+ *  schema and cardinality.  Its type is a SchemaType (such as StructSchemaType or PrimitiveSchemaType).
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
-        property = "class")
-@JsonSubTypes(
-        {
-                @JsonSubTypes.Type(value = DerivedSchemaAttribute.class, name = "DerivedSchemaAttribute")
-        })
 public class SchemaAttribute extends SchemaElement
 {
     private static final long   serialVersionUID      = 1L;
 
-    protected String            attributeName         = null;
     protected int               elementPosition       = 0;
 
     /*
@@ -37,14 +30,13 @@ public class SchemaAttribute extends SchemaElement
     protected String            cardinality           = null;
     protected int               minCardinality        = 0;
     protected int               maxCardinality        = 0;
-    protected boolean           allowsDuplicateValues = false;
+    protected boolean           allowsDuplicateValues = true;
     protected boolean           orderedValues         = false;
     protected String            defaultValueOverride  = null;
     protected DataItemSortOrder sortOrder             = null;
-    protected String            anchorGUID            = null;
     protected int               minimumLength         = 0;
     protected int               length                = 0;
-    protected int               significantDigits     = 0;
+    protected int               precision             = 0;
     protected boolean           isNullable            = true;
 
 
@@ -52,7 +44,6 @@ public class SchemaAttribute extends SchemaElement
      * Three choices on how the type is expressed
      */
     protected SchemaType                        attributeType          = null;
-    protected SchemaLink                        externalAttributeType  = null;
     protected List<SchemaAttributeRelationship> attributeRelationships = null;
 
     /*
@@ -82,25 +73,22 @@ public class SchemaAttribute extends SchemaElement
 
         if (template != null)
         {
-            attributeName = template.getAttributeName();
-            elementPosition = template.getElementPosition();
-            cardinality = template.getCardinality();
-            minCardinality = template.getMinCardinality();
-            maxCardinality = template.getMaxCardinality();
-            allowsDuplicateValues = template.isAllowsDuplicateValues();
-            orderedValues = template.isOrderedValues();
-            sortOrder = template.getSortOrder();
-            minimumLength = template.getMinimumLength();
-            length = template.getLength();
-            significantDigits = template.getSignificantDigits();
-            isNullable = template.isNullable();
-            defaultValueOverride = template.getDefaultValueOverride();
-            anchorGUID = template.getAnchorGUID();
-            attributeType = template.getAttributeType();
-            externalAttributeType = template.getExternalAttributeType();
+            elementPosition        = template.getElementPosition();
+            cardinality            = template.getCardinality();
+            minCardinality         = template.getMinCardinality();
+            maxCardinality         = template.getMaxCardinality();
+            allowsDuplicateValues  = template.getAllowsDuplicateValues();
+            orderedValues          = template.getOrderedValues();
+            sortOrder              = template.getSortOrder();
+            minimumLength          = template.getMinimumLength();
+            length                 = template.getLength();
+            precision              = template.getPrecision();
+            isNullable             = template.getIsNullable();
+            defaultValueOverride   = template.getDefaultValueOverride();
+            attributeType          = template.getAttributeType();
             attributeRelationships = template.getAttributeRelationships();
-            nativeJavaClass = template.getNativeJavaClass();
-            aliases = template.getAliases();
+            nativeJavaClass        = template.getNativeJavaClass();
+            aliases                = template.getAliases();
         }
     }
 
@@ -118,21 +106,23 @@ public class SchemaAttribute extends SchemaElement
 
 
     /**
-     * Return the name of this schema attribute.
+     * Return the name of this schema attribute.  This value is deprecated in favour of displayName.
      *
      * @return String attribute name
      */
-    public String getAttributeName() { return attributeName; }
+    @Deprecated
+    public String getAttributeName() { return displayName; }
 
 
     /**
-     * Set up the name of this schema attribute.
+     * Set up the name of this schema attribute.  This value is deprecated in favour of displayName.
      *
      * @param attributeName String attribute name
      */
+    @Deprecated
     public void setAttributeName(String attributeName)
     {
-        this.attributeName = attributeName;
+        this.displayName = attributeName;
     }
 
 
@@ -306,7 +296,7 @@ public class SchemaAttribute extends SchemaElement
      *
      * @return boolean flag
      */
-    public boolean isAllowsDuplicateValues()
+    public boolean getAllowsDuplicateValues()
     {
         return allowsDuplicateValues;
     }
@@ -328,7 +318,7 @@ public class SchemaAttribute extends SchemaElement
      *
      * @return boolean flag
      */
-    public boolean isOrderedValues()
+    public boolean getOrderedValues()
     {
         return orderedValues;
     }
@@ -416,20 +406,20 @@ public class SchemaAttribute extends SchemaElement
      *
      * @return int
      */
-    public int getSignificantDigits()
+    public int getPrecision()
     {
-        return significantDigits;
+        return precision;
     }
 
 
     /**
      * Set up the number of significant digits to the right of decimal point.
      *
-     * @param significantDigits int
+     * @param precision int
      */
-    public void setSignificantDigits(int significantDigits)
+    public void setPrecision(int precision)
     {
-        this.significantDigits = significantDigits;
+        this.precision = precision;
     }
 
 
@@ -438,7 +428,7 @@ public class SchemaAttribute extends SchemaElement
      *
      * @return boolean
      */
-    public boolean isNullable()
+    public boolean getIsNullable()
     {
         return isNullable;
     }
@@ -449,7 +439,7 @@ public class SchemaAttribute extends SchemaElement
      *
      * @param nullable boolean
      */
-    public void setNullable(boolean nullable)
+    public void setIsNullable(boolean nullable)
     {
         isNullable = nullable;
     }
@@ -475,23 +465,6 @@ public class SchemaAttribute extends SchemaElement
         this.defaultValueOverride = defaultValueOverride;
     }
 
-    /**
-     * Return the anchorGUID defined for this schema attribute.
-     *
-     * @return String anchorGUID defined for this schema attribute.
-     */
-    public String getAnchorGUID() {
-        return anchorGUID;
-    }
-
-    /**
-     * Set up the anchorGUID of this schema attribute
-     *
-     * @param anchorGUID GUID of the anchor entity
-     */
-    public void setAnchorGUID(String anchorGUID) {
-        this.anchorGUID = anchorGUID;
-    }
 
     /**
      * Return the SchemaType that relates to the type of this attribute.
@@ -519,30 +492,6 @@ public class SchemaAttribute extends SchemaElement
     public void setAttributeType(SchemaType attributeType)
     {
         this.attributeType = attributeType;
-    }
-
-
-    /**
-     * Set up optional link to another attribute.  For example, a foreign key relationship between relational
-     * columns.
-     *
-     * @return SchemaLink object
-     */
-    public SchemaLink getExternalAttributeType()
-    {
-        return externalAttributeType;
-    }
-
-
-    /**
-     * Set up optional links to another attribute.  For example, a foreign key relationship between relational
-     * columns.
-     *
-     * @param externalAttributeType SchemaLink object
-     */
-    public void setExternalAttributeType(SchemaLink externalAttributeType)
-    {
-        this.externalAttributeType = externalAttributeType;
     }
 
 
@@ -577,7 +526,6 @@ public class SchemaAttribute extends SchemaElement
     {
         this.attributeRelationships = attributeRelationships;
     }
-
 
 
     /**
@@ -633,23 +581,28 @@ public class SchemaAttribute extends SchemaElement
     public String toString()
     {
         return "SchemaAttribute{" +
-                "attributeName='" + attributeName + '\'' +
-                ", elementPosition=" + elementPosition +
+                "elementPosition=" + elementPosition +
+                ", cardinality='" + cardinality + '\'' +
                 ", minCardinality=" + minCardinality +
                 ", maxCardinality=" + maxCardinality +
                 ", allowsDuplicateValues=" + allowsDuplicateValues +
                 ", orderedValues=" + orderedValues +
                 ", defaultValueOverride='" + defaultValueOverride + '\'' +
                 ", sortOrder=" + sortOrder +
-                ", anchorGUID='" + anchorGUID + '\'' +
+                ", minimumLength=" + minimumLength +
+                ", length=" + length +
+                ", significantDigits=" + precision +
+                ", isNullable=" + isNullable +
                 ", attributeType=" + attributeType +
-                ", externalAttributeType=" + externalAttributeType +
                 ", attributeRelationships=" + attributeRelationships +
+                ", isCalculatedValue=" + isCalculatedValue +
+                ", expression='" + expression + '\'' +
                 ", nativeJavaClass='" + nativeJavaClass + '\'' +
                 ", aliases=" + aliases +
-                ", deprecated=" + isDeprecated() +
+                ", deprecated=" + getIsDeprecated() +
                 ", displayName='" + getDisplayName() + '\'' +
                 ", description='" + getDescription() + '\'' +
+                ", anchorGUID='" + getAnchorGUID() + '\'' +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +
                 ", meanings=" + getMeanings() +
@@ -658,6 +611,7 @@ public class SchemaAttribute extends SchemaElement
                 ", URL='" + getURL() + '\'' +
                 ", classifications=" + getClassifications() +
                 ", extendedProperties=" + getExtendedProperties() +
+                ", headerVersion=" + getHeaderVersion() +
                 '}';
     }
 
@@ -689,13 +643,17 @@ public class SchemaAttribute extends SchemaElement
                 maxCardinality == that.maxCardinality &&
                 allowsDuplicateValues == that.allowsDuplicateValues &&
                 orderedValues == that.orderedValues &&
-                Objects.equals(attributeName, that.attributeName) &&
+                minimumLength == that.minimumLength &&
+                length == that.length &&
+                precision == that.precision &&
+                isNullable == that.isNullable &&
+                isCalculatedValue == that.isCalculatedValue &&
+                Objects.equals(cardinality, that.cardinality) &&
                 Objects.equals(defaultValueOverride, that.defaultValueOverride) &&
                 sortOrder == that.sortOrder &&
-                Objects.equals(getAnchorGUID(), that.getAnchorGUID()) &&
                 Objects.equals(attributeType, that.attributeType) &&
-                Objects.equals(externalAttributeType, that.externalAttributeType) &&
-                Objects.equals(getAttributeRelationships(), that.getAttributeRelationships()) &&
+                Objects.equals(attributeRelationships, that.attributeRelationships) &&
+                Objects.equals(expression, that.expression) &&
                 Objects.equals(nativeJavaClass, that.nativeJavaClass) &&
                 Objects.equals(aliases, that.aliases);
     }
@@ -709,8 +667,8 @@ public class SchemaAttribute extends SchemaElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), attributeName, elementPosition, minCardinality,
-                            maxCardinality, allowsDuplicateValues, orderedValues, defaultValueOverride, sortOrder,
-                            attributeType, nativeJavaClass, aliases);
+        return Objects.hash(super.hashCode(), elementPosition, cardinality, minCardinality, maxCardinality, allowsDuplicateValues, orderedValues,
+                            defaultValueOverride, sortOrder, minimumLength, length, precision, isNullable, attributeType,
+                            attributeRelationships, isCalculatedValue, expression, nativeJavaClass, aliases);
     }
 }

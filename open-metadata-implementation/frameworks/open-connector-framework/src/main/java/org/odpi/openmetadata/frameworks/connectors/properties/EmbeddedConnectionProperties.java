@@ -4,10 +4,7 @@ package org.odpi.openmetadata.frameworks.connectors.properties;
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.EmbeddedConnection;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaLink;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 

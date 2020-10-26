@@ -62,7 +62,7 @@ export default function GlossaryAuthor() {
       }
     } else {
       // get one page of glossaries
-      const fetchUrl = nodeType.url + "?offset=0&pageSize=1&searchCriteria=.*";
+      const fetchUrl = nodeType.url + "?pageSize=1&searchCriteria=.*";
       console.log("URL to be submitted is " + fetchUrl);
       setErrorMsg(undefined);
       setExceptionUserAction(undefined);

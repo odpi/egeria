@@ -1,12 +1,12 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Server Capabilities
+# Software Server Capabilities
 
 Many software servers are connected to the open metadata ecosystem, each with wildly differing
 capabilities.
 
-A server capability documents a specific function that a software server is able to perform.
+A software server capability documents a specific function that a software server is able to perform.
 
 ## Metadata managing server capabilities
 
@@ -21,9 +21,12 @@ The server capabilities that are recognized as managing metadata are:
 * [Engine](engine.md)
 * [Tool](tool.md)
 
+The identifiers of these software server capabilities are used to 
+[document the provenance](../../../../../open-metadata-publication/website/metadata-provenance)
+of any metadata that comes from these technologies.
 
-
-
+----
+* Return to [Access Services Concepts](..)
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

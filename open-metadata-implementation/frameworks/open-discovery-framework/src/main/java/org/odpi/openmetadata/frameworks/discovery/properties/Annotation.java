@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.frameworks.discovery.properties;
 
 import com.fasterxml.jackson.annotation.*;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 
 import java.util.*;
 
@@ -26,36 +25,34 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = DataFieldAnnotation.class, name = "DataFieldAnnotation"),
                 @JsonSubTypes.Type(value = SuspectDuplicateAnnotation.class, name = "SuspectDuplicateAnnotation"),
         })
-public class Annotation extends ElementHeader
+public class Annotation extends PropertyBase
 {
     private static final long    serialVersionUID = 1L;
 
-    protected String           annotationType   = null;
-    protected String           summary          = null;
-    protected int              confidenceLevel  = 0;
-    protected String           expression       = null;
-    protected String           explanation      = null;
-    protected String           analysisStep     = null;
-    protected String           jsonProperties   = null;
+    private String           annotationType   = null;
+    private String           summary          = null;
+    private int              confidenceLevel  = 0;
+    private String           expression       = null;
+    private String           explanation      = null;
+    private String           analysisStep     = null;
+    private String           jsonProperties   = null;
 
     /*
      * Details of Annotations attached to this Annotation
      */
-    protected int              numAttachedAnnotations = 0;
+    private int              numAttachedAnnotations = 0;
 
     /*
      * Details from the latest AnnotationReview entity.
      */
-    protected AnnotationStatus annotationStatus = null;
-    protected Date             reviewDate       = null;
-    protected String           steward          = null;
-    protected String           reviewComment    = null;
+    private AnnotationStatus annotationStatus = null;
+    private Date             reviewDate       = null;
+    private String           steward          = null;
+    private String           reviewComment    = null;
 
-    /*
-     * Additional properties added directly to the Annotation entity and supported by
-     * the sub-types of Annotation.
-     */
-    protected Map<String, String>  additionalProperties = null;
+
+    private Map<String, String>  additionalProperties = null;
+
 
 
     /**
@@ -91,7 +88,6 @@ public class Annotation extends ElementHeader
             this.steward = template.getSteward();
             this.reviewComment = template.getReviewComment();
             this.additionalProperties = template.getAdditionalProperties();
-            this.extendedProperties = template.getExtendedProperties();
         }
     }
 
@@ -289,7 +285,7 @@ public class Annotation extends ElementHeader
      *
      * @param number number of annotations
      */
-    public void setAttachedAnnotations(int number)
+    public void setNumAttachedAnnotations(int number)
     {
         this.numAttachedAnnotations = number;
     }
@@ -405,11 +401,10 @@ public class Annotation extends ElementHeader
                 ", steward='" + steward + '\'' +
                 ", reviewComment='" + reviewComment + '\'' +
                 ", additionalProperties=" + additionalProperties +
-                ", extendedProperties=" + extendedProperties +
-                ", type=" + type +
-                ", guid='" + guid + '\'' +
-                ", url='" + url + '\'' +
-                ", classifications=" + classifications +
+                ", headerVersion=" + getHeaderVersion() +
+                ", elementHeader=" + getElementHeader() +
+                ", typeName='" + getTypeName() + '\'' +
+                ", extendedProperties=" + getExtendedProperties() +
                 '}';
     }
 
@@ -431,27 +426,21 @@ public class Annotation extends ElementHeader
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
-        {
-            return false;
-        }
         Annotation that = (Annotation) objectToCompare;
-        return getConfidenceLevel() == that.getConfidenceLevel() &&
-                Objects.equals(getAnnotationType(), that.getAnnotationType()) &&
-                Objects.equals(getSummary(), that.getSummary()) &&
-                Objects.equals(getExpression(), that.getExpression()) &&
-                Objects.equals(getExplanation(), that.getExplanation()) &&
-                Objects.equals(getAnalysisStep(), that.getAnalysisStep()) &&
-                Objects.equals(getJsonProperties(), that.getJsonProperties()) &&
-                getNumAttachedAnnotations() == that.getNumAttachedAnnotations() &&
-                getAnnotationStatus() == that.getAnnotationStatus() &&
-                Objects.equals(getReviewDate(), that.getReviewDate()) &&
-                Objects.equals(getSteward(), that.getSteward()) &&
-                Objects.equals(getReviewComment(), that.getReviewComment()) &&
-                Objects.equals(getAdditionalProperties(), that.getAdditionalProperties()) &&
-                Objects.equals(getExtendedProperties(), that.getExtendedProperties());
+        return confidenceLevel == that.confidenceLevel &&
+                numAttachedAnnotations == that.numAttachedAnnotations &&
+                Objects.equals(annotationType, that.annotationType) &&
+                Objects.equals(summary, that.summary) &&
+                Objects.equals(expression, that.expression) &&
+                Objects.equals(explanation, that.explanation) &&
+                Objects.equals(analysisStep, that.analysisStep) &&
+                Objects.equals(jsonProperties, that.jsonProperties) &&
+                annotationStatus == that.annotationStatus &&
+                Objects.equals(reviewDate, that.reviewDate) &&
+                Objects.equals(steward, that.steward) &&
+                Objects.equals(reviewComment, that.reviewComment) &&
+                Objects.equals(additionalProperties, that.additionalProperties);
     }
-
 
     /**
      * Create a hash code for this element type.
@@ -461,9 +450,7 @@ public class Annotation extends ElementHeader
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getAnnotationType(), getSummary(), getConfidenceLevel(), getExpression(),
-                            getExplanation(), getAnalysisStep(), getJsonProperties(), getNumAttachedAnnotations(),
-                            getAnnotationStatus(), getReviewDate(), getSteward(), getReviewComment(),
-                            getAdditionalProperties(), getExtendedProperties());
+        return Objects.hash(annotationType, summary, confidenceLevel, expression, explanation, analysisStep, jsonProperties, numAttachedAnnotations
+                , annotationStatus, reviewDate, steward, reviewComment, additionalProperties);
     }
 }

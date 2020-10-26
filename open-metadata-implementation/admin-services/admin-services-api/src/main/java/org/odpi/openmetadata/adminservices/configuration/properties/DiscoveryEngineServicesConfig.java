@@ -82,10 +82,13 @@ public class DiscoveryEngineServicesConfig extends OMAGServerClientConfig
     @Override
     public String toString()
     {
-        return super.toString() + "DiscoveryEngineServicesConfig{" +
-                ", discoveryEngineNames=" + discoveryEngineNames +
+        return "DiscoveryEngineServicesConfig{" +
+                "discoveryEngineNames=" + discoveryEngineNames +
+                ", OMAGServerPlatformRootURL='" + getOMAGServerPlatformRootURL() + '\'' +
+                ", OMAGServerName='" + getOMAGServerName() + '\'' +
                 '}';
     }
+
 
     /**
      * Validate that an object is equal depending on their stored values.
@@ -111,6 +114,7 @@ public class DiscoveryEngineServicesConfig extends OMAGServerClientConfig
         DiscoveryEngineServicesConfig that = (DiscoveryEngineServicesConfig) objectToCompare;
         return Objects.equals(discoveryEngineNames, that.discoveryEngineNames);
     }
+
 
     /**
      * Return a hash code based on the values of this object.
