@@ -6,10 +6,7 @@ import Add32 from "../../../images/Egeria_add_32";
 import Delete32 from "../../../images/Egeria_delete_32";
 import Edit32 from "../../../images/Egeria_edit_32";
 import Term32 from "../../../images/Egeria_term_32";
-import {
-  LocalNodeCard,
-  NodeCardSection
-} from "./NodeCard/NodeCard";
+import { LocalNodeCard, NodeCardSection } from "./NodeCard/NodeCard";
 import GlossaryImage from "../../../images/Egeria_glossary_32";
 import getNodeType from "./properties/NodeTypes.js";
 import { issueRestGet, issueRestDelete } from "./RestCaller";
@@ -64,10 +61,7 @@ export default function CardViewNavigation({ match, nodeTypeName }) {
   // issue search for first page of nodes
   const issueNodeSearch = (criteria) => {
     // encode the URI. Be aware the more recent RFC3986 for URLs makes use of square brackets which are reserved (for IPv6)
-    const url = encodeURI(
-      // regressed for error testing
-      nodeType.url + "?searchCriteria=" + criteria
-    );
+    const url = encodeURI(nodeType.url + "?searchCriteria=" + criteria);
     issueRestGet(url, onSuccessfulSearch, onErrorSearch);
   };
 
@@ -173,18 +167,16 @@ export default function CardViewNavigation({ match, nodeTypeName }) {
                 <Add32 kind="primary" />
               </Link>
               {selectedNodeGuid && (
-                  <Link to={getQuickTermsUrl}>
-                    <Term32 kind="primary" />
-                  </Link>
+                <Link to={getQuickTermsUrl}>
+                  <Term32 kind="primary" />
+                </Link>
               )}
               {selectedNodeGuid && (
                 <Link to={getEditNodeUrl()}>
                   <Edit32 kind="primary" />
                 </Link>
               )}
-              {selectedNodeGuid && (
-                <Delete32 onClick={() => onClickDelete()} />
-              )}
+              {selectedNodeGuid && <Delete32 onClick={() => onClickDelete()} />}
             </div>
           </article>
         </NodeCardSection>
