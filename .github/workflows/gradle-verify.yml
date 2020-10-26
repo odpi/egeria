@@ -4,9 +4,9 @@ name: "Gradle Build"
 
 on: 
   push:
-    branches: [master]
+    branches: [master, egeria-feature-*, egeria-release-*]
   pull_request:
-    branches: [master]
+    branches: [master, egeria-feature-*, egeria-release-*]
 
 jobs:
   build:
