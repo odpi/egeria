@@ -6,6 +6,7 @@ import Add32 from "../../../images/Egeria_add_32";
 import Delete32 from "../../../images/Egeria_delete_32";
 import Edit32 from "../../../images/Egeria_edit_32";
 import Term32 from "../../../images/Egeria_term_32";
+import ParentChild32 from "../../../images/Egeria_parent_child_32";
 import {
   LocalNodeCard,
   NodeCardSection
@@ -120,7 +121,11 @@ export default function CardViewNavigation({ match, nodeTypeName }) {
   };
 
   const getNodeChildrenUrl = (guid) => {
+    if (guid) {
     return match.path + "/glossaries/" + guid + "/children";
+    } else {
+      return match.path + "/glossaries/" + selectedNodeGuid + "/children";
+    }
   };
   function getAddNodeUrl() {
     return match.path + "/glossaries/add-node";
@@ -174,6 +179,11 @@ export default function CardViewNavigation({ match, nodeTypeName }) {
               {selectedNodeGuid && (
                   <Link to={getQuickTermsUrl}>
                     <Term32 kind="primary" />
+                  </Link>
+              )}
+              {selectedNodeGuid && (
+                  <Link to={getNodeChildrenUrl}>
+                    <ParentChild32 kind="primary" />
                   </Link>
               )}
               {selectedNodeGuid && (
