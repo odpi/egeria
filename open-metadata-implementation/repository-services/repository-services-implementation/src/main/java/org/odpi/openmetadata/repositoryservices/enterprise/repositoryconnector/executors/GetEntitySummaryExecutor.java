@@ -4,9 +4,15 @@ package org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.
 
 
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntitySummary;
 import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.accumulators.MaintenanceAccumulator;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -14,9 +20,13 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
  */
 public class GetEntitySummaryExecutor extends RepositoryExecutorBase
 {
-    private String                 entityGUID;
-    private EntitySummary          retrievedEntity = null;
-    private MaintenanceAccumulator accumulator     = new MaintenanceAccumulator();
+    private String                      entityGUID;
+
+    private boolean                     inPhaseOne          = true;
+    private EntitySummary               latestEntity        = null;
+    private Map<String, Classification> homeClassifications = new HashMap<>();
+
+    private MaintenanceAccumulator      accumulator         = new MaintenanceAccumulator();
 
 
 
@@ -50,18 +60,77 @@ public class GetEntitySummaryExecutor extends RepositoryExecutorBase
     public boolean issueRequestToRepository(String                 metadataCollectionId,
                                             OMRSMetadataCollection metadataCollection)
     {
-        boolean result = false;
-
         try
         {
             /*
              * Issue the request and return if it succeeds
              */
-            retrievedEntity = metadataCollection.getEntitySummary(userId, entityGUID);
-
-            if (retrievedEntity != null)
+            if (inPhaseOne) /* retrieving entity */
             {
-                result = true;
+                EntitySummary retrievedEntity = metadataCollection.getEntitySummary(userId, entityGUID);
+
+                if (retrievedEntity != null)
+                {
+                    /*
+                     * The classifications from every retrieved entity are harvested.
+                     */
+                    if (retrievedEntity.getClassifications() != null)
+                    {
+                        for (Classification entityClassification : retrievedEntity.getClassifications())
+                        {
+                            if (entityClassification != null)
+                            {
+                                /*
+                                 * Only home classifications are saved.
+                                 */
+                                if (metadataCollectionId.equals(entityClassification.getMetadataCollectionId()))
+                                {
+                                    homeClassifications.put(entityClassification.getName(), entityClassification);
+                                }
+                            }
+                        }
+                    }
+
+                    if (metadataCollectionId.equals(retrievedEntity.getMetadataCollectionId()))
+                    {
+                        /*
+                         * The home repository is found - assume it is the latest version - moving to phase two
+                         */
+                        latestEntity = retrievedEntity;
+                        inPhaseOne = false;
+                    }
+                    else if (latestEntity == null)
+                    {
+                        latestEntity = retrievedEntity;
+                    }
+                    else
+                    {
+                        if (retrievedEntity.getVersion() > latestEntity.getVersion())
+                        {
+                            latestEntity = retrievedEntity;
+                        }
+                    }
+                }
+            }
+            else /* retrieving additional classifications */
+            {
+                List<Classification> homeClassifications;
+
+                homeClassifications = metadataCollection.getHomeClassifications(userId, entityGUID);
+
+                /*
+                 * Home classifications override any matching classifications stored in the entity.
+                 */
+                if (homeClassifications != null)
+                {
+                    for (Classification homeClassification : homeClassifications)
+                    {
+                        if (homeClassification != null)
+                        {
+                            this.homeClassifications.put(homeClassification.getName(), homeClassification);
+                        }
+                    }
+                }
             }
         }
         catch (InvalidParameterException error)
@@ -85,7 +154,7 @@ public class GetEntitySummaryExecutor extends RepositoryExecutorBase
             accumulator.captureGenericException(error);
         }
 
-        return result;
+        return false;
     }
 
 
@@ -105,9 +174,18 @@ public class GetEntitySummaryExecutor extends RepositoryExecutorBase
                                                     EntityNotKnownException,
                                                     UserNotAuthorizedException
     {
-        if (retrievedEntity != null)
+        if (latestEntity != null)
         {
-            return retrievedEntity;
+            if (homeClassifications.isEmpty())
+            {
+                latestEntity.setClassifications(null);
+            }
+            else
+            {
+                latestEntity.setClassifications(new ArrayList<>(homeClassifications.values()));
+            }
+
+            return latestEntity;
         }
 
         accumulator.throwCapturedEntityNotKnownException();

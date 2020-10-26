@@ -32,14 +32,30 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
 public enum DinoViewErrorCode implements ExceptionMessageSet
 {
     SERVICE_NOT_INITIALIZED(404, "OMVS-DINO-400-001",
-                           "The dino view service has not been initialized.",
+                           "The Dino Open Metadata View Service (OMVS) has not been initialized.",
                            "The system is unable to perform the request because the service has not been initialized.",
                            "Initialize the view service retry the request."),
 
     INVALID_CONFIG_PROPERTY(404, "OMVS-DINO-400-002",
-                            "The dino view service configuration has an invalid or missing property, property name {0}.",
+                            "The Dino Open Metadata View Service (OMVS) configuration has an invalid or missing property, property name {0}.",
                             "The service is unable to initialize because the configuration is not valid or complete.",
-                            "Correct the view service configuration and restart the view server.")
+                            "Correct the view service configuration and restart the view server."),
+
+    VIEW_SERVICE_NULL_PLATFORM_NAME(400, "OMVS-DINO-400-003",
+                                            "The Dino Open Metadata View Service (OMVS) has been called with a null platform name",
+                                            "The system is unable to resolve the platform to query without knowing what it is called.",
+                                            "The platform name is supplied by the caller to the OMAG view service. This call needs to be corrected before the view service can perform the request."),
+
+    VIEW_SERVICE_NULL_SERVER_NAME(400, "OMVS-DINO-400-004",
+                                          "The Dino Open Metadata View Service (OMVS) has been called with a null server name",
+                                          "The system is unable to resolve the server to query without knowing what it is called.",
+                                          "The server name is supplied by the caller to the OMAG view service. This call needs to be corrected before the view service can perform the request."),
+
+    VIEW_SERVICE_UNKNOWN_SERVER_NAME(400, "OMVS-DINO-400-005",
+                                             "The Dino Open Metadata View Service (OMVS)'s {0} method has been called with an unknown server name " +
+                                                     "of {1}",
+                                             "The system is unable to resolve the server name.",
+                                             "The server name is supplied by the caller to the OMAG view service. Please ensure a known server name is passed and retry the call to the view service."),
 
             ;
 

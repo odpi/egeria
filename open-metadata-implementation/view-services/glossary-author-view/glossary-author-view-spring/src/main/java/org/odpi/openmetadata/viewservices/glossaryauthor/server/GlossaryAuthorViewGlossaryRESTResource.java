@@ -5,6 +5,7 @@ package org.odpi.openmetadata.viewservices.glossaryauthor.server;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
@@ -16,8 +17,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 
-import static org.odpi.openmetadata.viewservices.glossaryauthor.services.BaseGlossaryAuthorView.PAGE_OFFSET_DEFAULT_VALUE;
-import static org.odpi.openmetadata.viewservices.glossaryauthor.services.BaseGlossaryAuthorView.PAGE_SIZE_DEFAULT_VALUE;
 
 /**
  * The GlossaryAuthorRESTServicesInstance provides the org.odpi.openmetadata.viewservices.glossaryauthor.server  implementation of the Glossary Author Open Metadata
@@ -31,7 +30,7 @@ import static org.odpi.openmetadata.viewservices.glossaryauthor.services.BaseGlo
 
 public class GlossaryAuthorViewGlossaryRESTResource {
 
-    private GlossaryAuthorViewGlossaryRESTServices restAPI = new GlossaryAuthorViewGlossaryRESTServices();
+    private final GlossaryAuthorViewGlossaryRESTServices restAPI = new GlossaryAuthorViewGlossaryRESTServices();
 
 
     /**
@@ -106,7 +105,7 @@ public class GlossaryAuthorViewGlossaryRESTResource {
      * @param userId             userid
      * @param searchCriteria     String expression matching Glossary property values .
      * @param asOfTime           the glossaries returned as they were at this time. null indicates at the current time.
-     * @param offset             the starting element number for this set of results.  This is used when retrieving elements
+     * @param startingFrom       the starting element number for this set of results.  This is used when retrieving elements
      *                           beyond the first page of results. Zero means the results start from the first element.
      * @param pageSize           the maximum number of elements that can be returned on this request.
      *                           0 means there is no limit to the page size
@@ -125,25 +124,24 @@ public class GlossaryAuthorViewGlossaryRESTResource {
     public SubjectAreaOMASAPIResponse<Glossary> findGlossary(@PathVariable String serverName, @PathVariable String userId,
                                                              @RequestParam(value = "searchCriteria", required = false) String searchCriteria,
                                                              @RequestParam(value = "asOfTime", required = false) Date asOfTime,
-                                                             @RequestParam(value = "offset", required = false, defaultValue = PAGE_OFFSET_DEFAULT_VALUE) Integer offset,
-                                                             @RequestParam(value = "pageSize", required = false, defaultValue = PAGE_SIZE_DEFAULT_VALUE) Integer pageSize,
+                                                             @RequestParam(value = "startingFrom", required = false, defaultValue = "0") int startingFrom,
+                                                             @RequestParam(value = "pageSize", required = false) Integer pageSize,
                                                              @RequestParam(value = "sequencingOrder", required = false) SequencingOrder sequencingOrder,
                                                              @RequestParam(value = "sequencingProperty", required = false) String sequencingProperty
     ) {
-        return restAPI.findGlossary(serverName, userId, asOfTime, searchCriteria, offset, pageSize, sequencingOrder, sequencingProperty);
+        return restAPI.findGlossary(serverName, userId, asOfTime, searchCriteria, startingFrom, pageSize, sequencingOrder, sequencingProperty);
     }
 
     /**
-     * Get Glossary relationships
+     * Get Glossary relationships. The server has a maximum page size defined, the number of relationships returned is limited by that maximum page size.
      *
      * @param serverName         local UI server name
      * @param userId             userid
      * @param guid               guid of the glossary to get
      * @param asOfTime           the relationships returned as they were at this time. null indicates at the current time. If specified, the date is in milliseconds since 1970-01-01 00:00:00.
-     * @param offset             the starting element number for this set of results.  This is used when retrieving elements
+     * @param startingFrom             the starting element number for this set of results.  This is used when retrieving elements
      *                           beyond the first page of results. Zero means the results start from the first element.
      * @param pageSize           the maximum number of elements that can be returned on this request.
-     *                           0 means there is not limit to the page size
      * @param sequencingOrder    the sequencing order for the results.
      * @param sequencingProperty the name of the property that should be used to sequence the results.
      * @return a response which when successful contains the glossary relationships
@@ -159,12 +157,140 @@ public class GlossaryAuthorViewGlossaryRESTResource {
     public SubjectAreaOMASAPIResponse<Line> getGlossaryRelationships(@PathVariable String serverName, @PathVariable String userId,
                                                                      @PathVariable String guid,
                                                                      @RequestParam(value = "asOfTime", required = false) Date asOfTime,
-                                                                     @RequestParam(value = "offset", required = false, defaultValue = PAGE_OFFSET_DEFAULT_VALUE) Integer offset,
-                                                                     @RequestParam(value = "pageSize", required = false, defaultValue = PAGE_SIZE_DEFAULT_VALUE) Integer pageSize,
+                                                                     @RequestParam(value = "startingFrom", required = false, defaultValue = "0") int startingFrom,
+                                                                     @RequestParam(value = "pageSize", required = false) Integer pageSize,
                                                                      @RequestParam(value = "sequencingOrder", required = false) SequencingOrder sequencingOrder,
                                                                      @RequestParam(value = "sequencingProperty", required = false) String sequencingProperty
     ) {
-        return restAPI.getGlossaryRelationships(serverName, userId, guid, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
+        return restAPI.getGlossaryRelationships(serverName, userId, guid, asOfTime, startingFrom, pageSize, sequencingOrder, sequencingProperty);
+    }
+
+    /**
+     * Get terms that are owned by this glossary. The server has a maximum page size defined, the number of terms returned is limited by that maximum page size.
+     *
+     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId             unique identifier for requesting user, under which the request is performed
+     * @param guid               guid of the category to get terms
+     * @param startingFrom       the starting element number for this set of results.  This is used when retrieving elements
+     *                           beyond the first page of results. Zero means the results start from the first element.
+     * @param pageSize           the maximum number of elements that can be returned on this request.
+     * @return A list of terms owned by the glossary
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
+     * </ul>
+     * */
+    @GetMapping(path = "/users/{userId}/glossaries/{guid}/terms")
+    public SubjectAreaOMASAPIResponse<Term> getGlossaryTerms(@PathVariable String serverName,
+                                                             @PathVariable String userId,
+                                                             @PathVariable String guid,
+                                                             @RequestParam(value = "startingFrom", required = false, defaultValue = "0") int startingFrom,
+                                                             @RequestParam(value = "pageSize", required = false) Integer pageSize) {
+        return restAPI.getTerms(serverName, userId, guid, startingFrom, pageSize);
+    }
+
+    /**
+     * Get the Categories owned by this glossary. The server has a maximum page size defined, the number of Categories returned is limited by that maximum page size.
+     *
+     * @param serverName   serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId       unique identifier for requesting user, under which the request is performed
+     * @param guid         guid of the category to get terms
+     * @param startingFrom the starting element number for this set of results.  This is used when retrieving elements
+     *                     beyond the first page of results. Zero means the results start from the first element.
+     * @param pageSize     the maximum number of elements that can be returned on this request.
+     * @param onlyTop      when set returns only the top categories (those categories without parents).
+     * @return A list of categories owned by the glossary
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
+     * </ul>
+     * */
+    @GetMapping(path = "/users/{userId}/glossaries/{guid}/categories")
+    public SubjectAreaOMASAPIResponse<Category> getGlossaryCategories(@PathVariable String serverName,
+                                                                      @PathVariable String userId,
+                                                                      @PathVariable String guid,
+                                                                      @RequestParam(value = "startingFrom", required = false, defaultValue = "0") int startingFrom,
+                                                                      @RequestParam(value = "pageSize", required = false) Integer pageSize,
+                                                                      @RequestParam(value = "onlyTop", required = false, defaultValue = "true") Boolean onlyTop) {
+
+        return restAPI.getCategories(serverName, userId, guid, startingFrom, pageSize, onlyTop);
+    }
+
+    /**
+     * Create the supplied list of Terms in the glossary, identified by the supplied guid. Each term does not need to specify a glossary.
+     *
+     * @param serverName       local UI server name
+     * @param userId           user identifier
+     * @param guid             guid of the glossary under which the Terms will be created
+     * @param terms            terms to create
+     * @return a response which when successful contains a list of the responses from the Term creates (successful or otherwise). The order of the responses is the same as the supplied terms order.
+     *
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> FunctionNotSupportedException        Function not supported</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata repository service.</li>
+     * </ul>
+     */
+    @PostMapping(path = "/{guid}/terms")
+    public SubjectAreaOMASAPIResponse<SubjectAreaOMASAPIResponse<Term>> createMultipleTermsInAGlossary(@PathVariable String serverName,
+                                                                                                   @PathVariable String userId,
+                                                                                                   @PathVariable String guid,
+                                                                                                   @RequestBody  Term[] terms
+                                                                                                  ) {
+        return restAPI.createMultipleTermsInAGlossary(serverName, userId, guid, terms);
+    }
+    /**
+     * Get BreadCrumbTrail.
+     *
+     * The user interface experience can start with a particular Glossary, navigate to a child Category, then to another child category then to a categories term.
+     * When such a user interface navigation occurs, it is helpful for the user to be displayed a 'breadcrumb' trail of where they have been, showing how nested they are in
+     * the glossary artifacts. The Get BreadcrumbTrail API returns information that allows the user interface to easy construct a trail of breadcrumbs.
+     * Each breadcrumb contains
+     * <ul>
+     *  <li> a displayName that is intended to be shown to the user</li>
+     *  <li> a guid that uniquely identifies a breadcrumb but is not intended to be shown to the user</li>
+     *  <li> a types, allowing the user interface to display an appropriate icon.
+     *  <li> a path that can be used to determine all the elements in the breadcrumb </li>
+     * </ul>
+     * @param serverName       local UI server name
+     * @param userId           user identifier
+     * @param guid             Glossary guid.
+     * @param rootCategoryGuid root Category guid. If specified, the Category with this guid must reside in the supplied glossary
+     * @param leafCategoryGuid leaf Category guid. if specified, the Category with this guid must reside in the hierarchy under the root Category
+     * @param termGuid         Term guid. If specified, the Term with this guid must be categorised by the rootCategory or the leafCategory if there is one, or if there are no categories owned by the Glossary.
+     * @return a response which when successful contains a list of breadcrumbs corresponding to the supplied guids.
+     *
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> FunctionNotSupportedException        Function not supported</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata repository service.</li>
+     * </ul>
+     */
+    @GetMapping(path = "/{guid}/breadcrumbs")
+    public SubjectAreaOMASAPIResponse<BreadCrumb> getBreadCrumbTrail(
+            @PathVariable String serverName,
+            @PathVariable String userId,
+            @PathVariable String guid,
+            @RequestParam(value = "rootCategoryGuid", required = false) String rootCategoryGuid,
+            @RequestParam(value = "leafCategoryGuid", required = false) String leafCategoryGuid,
+            @RequestParam(value = "termGuid",         required = false) String termGuid) {
+        return restAPI.getBreadCrumbTrail(
+                serverName,
+                userId,
+                guid,
+                rootCategoryGuid,
+                leafCategoryGuid,
+                termGuid);
     }
 
     /**

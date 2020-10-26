@@ -73,9 +73,9 @@ public class RelationshipListResponse extends OMRSAPIPagedResponse
         {
             List<Relationship>  clonedRelationships = new ArrayList<>();
 
-            for (Relationship  attributeTypeDef : relationships)
+            for (Relationship  relationship : relationships)
             {
-                clonedRelationships.add(new Relationship(attributeTypeDef));
+                clonedRelationships.add(new Relationship(relationship));
             }
 
             return clonedRelationships;

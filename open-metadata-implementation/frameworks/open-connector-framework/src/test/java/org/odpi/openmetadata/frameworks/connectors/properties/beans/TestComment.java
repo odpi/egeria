@@ -15,9 +15,9 @@ import static org.testng.Assert.assertTrue;
  */
 public class TestComment
 {
-    private ElementType          type            = new ElementType();
-    private List<Classification> classifications = new ArrayList<>();
-    private Map<String, String>  additionalProperties = new HashMap<>();
+    private ElementType                 type                 = new ElementType();
+    private List<ElementClassification> classifications      = new ArrayList<>();
+    private Map<String, String>         additionalProperties = new HashMap<>();
 
 
     /**

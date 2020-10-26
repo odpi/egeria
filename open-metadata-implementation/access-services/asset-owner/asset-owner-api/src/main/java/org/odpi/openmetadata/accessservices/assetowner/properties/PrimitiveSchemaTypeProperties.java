@@ -5,7 +5,6 @@ package org.odpi.openmetadata.accessservices.assetowner.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.PrimitiveSchemaType;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -41,26 +40,6 @@ public class PrimitiveSchemaTypeProperties extends SimpleSchemaTypeProperties
     }
 
 
-    /**
-     * Copy/clone operator.
-     *
-     * @param objectToFill schema type object
-     * @return filled object
-     */
-    public PrimitiveSchemaType cloneProperties(PrimitiveSchemaType objectToFill)
-    {
-        PrimitiveSchemaType clone = objectToFill;
-
-        if (clone == null)
-        {
-            clone = new PrimitiveSchemaType();
-        }
-
-        super.cloneProperties(clone);
-
-        return clone;
-    }
-
 
     /**
      * Standard toString method.
@@ -78,13 +57,14 @@ public class PrimitiveSchemaTypeProperties extends SimpleSchemaTypeProperties
                 ", usage='" + getUsage() + '\'' +
                 ", encodingStandard='" + getEncodingStandard() + '\'' +
                 ", namespace='" + getNamespace() + '\'' +
+                ", formula='" + getFormula() + '\'' +
+                ", queries=" + getQueries() +
                 ", displayName='" + getDisplayName() + '\'' +
                 ", description='" + getDescription() + '\'' +
+                ", deprecated=" + getIsDeprecated() +
                 ", typeName='" + getTypeName() + '\'' +
-                ", classifications=" + getClassifications() +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +
-                ", meanings=" + getMeanings() +
                 ", extendedProperties=" + getExtendedProperties() +
                 '}';
     }

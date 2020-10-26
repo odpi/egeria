@@ -4,7 +4,10 @@
   animation: shake 0.5s;
   animation-iteration-count: 1;
 }
-
+.left-20 {
+   position: relative;
+   left: -20px;
+}
 .my-container {
   display: flex;
   justify-content: space-evenly;

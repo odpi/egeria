@@ -3,10 +3,11 @@
 package org.odpi.openmetadata.accessservices.subjectarea.server.services;
 
 
+import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
 import org.odpi.openmetadata.accessservices.subjectarea.handlers.*;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.commonservices.multitenant.OCFOMASServiceInstance;
+import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
@@ -16,7 +17,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  * It is also responsible for registering itself in the instance map.
  */
 
-public class SubjectAreaServicesInstance extends OCFOMASServiceInstance
+public class SubjectAreaServicesInstance extends OMASServiceInstance
 {
     private static AccessServiceDescription myDescription = AccessServiceDescription.SUBJECT_AREA_OMAS;
     private OMRSAPIHelper oMRSAPIHelper;
@@ -61,23 +62,23 @@ public class SubjectAreaServicesInstance extends OCFOMASServiceInstance
                 );
             }
 
-            this.glossaryHandler= new SubjectAreaGlossaryHandler(oMRSAPIHelper);
+            this.glossaryHandler= new SubjectAreaGlossaryHandler(oMRSAPIHelper, maxPageSize);
 
-            this.termHandler= new SubjectAreaTermHandler(oMRSAPIHelper);
+            this.termHandler= new SubjectAreaTermHandler(oMRSAPIHelper, maxPageSize);
 
-            this.categoryHandler= new SubjectAreaCategoryHandler(oMRSAPIHelper);
+            this.categoryHandler= new SubjectAreaCategoryHandler(oMRSAPIHelper, maxPageSize);
 
-            this.projectHandler= new SubjectAreaProjectHandler(oMRSAPIHelper);
+            this.projectHandler= new SubjectAreaProjectHandler(oMRSAPIHelper, maxPageSize);
 
-            this.graphHandler= new SubjectAreaGraphHandler(oMRSAPIHelper);
+            this.graphHandler= new SubjectAreaGraphHandler(oMRSAPIHelper, maxPageSize);
 
-            this.relationshipHandler= new SubjectAreaRelationshipHandler(oMRSAPIHelper);
+            this.relationshipHandler= new SubjectAreaRelationshipHandler(oMRSAPIHelper, maxPageSize);
         }
         else
         {
-//            throw new NewInstanceException(SubjectAreaErrorCode.OMRS_NOT_INITIALIZED.getMessageDefinition(methodName),
-//                                           this.getClass().getName(),
-//                                           methodName);
+           throw new NewInstanceException(SubjectAreaErrorCode.OMRS_NOT_INITIALIZED.getMessageDefinition(methodName),
+                                           this.getClass().getName(),
+                                           methodName);
 
         }
     }

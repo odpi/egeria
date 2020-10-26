@@ -7,6 +7,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.handlers.SubjectAreaTerm
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
@@ -17,13 +18,13 @@ import java.util.Date;
 
 
 /**
- * The SubjectAreaRESTServicesInstance provides the org.odpi.openmetadata.accessservices.subjectarea.server-side implementation of the SubjectArea Open Metadata
+ * The SubjectAreaRESTServicesInstance provides the server-side implementation of the SubjectArea Open Metadata
  * Access Service (OMAS).  This interface provides glossary authoring interfaces for subject area experts.
  */
 
 public class SubjectAreaCategoryRESTServices extends SubjectAreaRESTServicesInstance {
     private static final String className = SubjectAreaTermHandler.class.getName();
-    private static final Logger log = LoggerFactory.getLogger(SubjectAreaTermHandler.class);
+    private static final Logger log = LoggerFactory.getLogger(SubjectAreaCategoryHandler.class);
     private static final SubjectAreaInstanceHandler instanceHandler = new SubjectAreaInstanceHandler();
 
     /**
@@ -56,12 +57,8 @@ public class SubjectAreaCategoryRESTServices extends SubjectAreaRESTServicesInst
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
-     * <li> ClassificationException              Error processing a classification</li>
-     * <li> StatusNotSupportedException          A status value is not supported</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
 
@@ -91,10 +88,9 @@ public class SubjectAreaCategoryRESTServices extends SubjectAreaRESTServicesInst
      * @return response which when successful contains the category with the requested guid
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.
-     * <li> InvalidParameterException            one of the parameters is null or invalid.
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     public SubjectAreaOMASAPIResponse<Category> getCategory(String serverName, String userId, String guid) {
@@ -123,10 +119,9 @@ public class SubjectAreaCategoryRESTServices extends SubjectAreaRESTServicesInst
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param searchCriteria String expression matching Category property values (this does not include the CategorySummary content). When not specified, all terms are returned.
      * @param asOfTime the relationships returned as they were at this time. null indicates at the current time.
-     * @param offset  the starting element number for this set of results.  This is used when retrieving elements
+     * @param startingFrom  the starting element number for this set of results.  This is used when retrieving elements
      *                 beyond the first page of results. Zero means the results start from the first element.
      * @param pageSize the maximum number of elements that can be returned on this request.
-     *                 0 means there is no limit to the page size
      * @param sequencingOrder the sequencing order for the results.
      * @param sequencingProperty the name of the property that should be used to sequence the results.
      * @return A list of Glossaries meeting the search Criteria
@@ -135,14 +130,13 @@ public class SubjectAreaCategoryRESTServices extends SubjectAreaRESTServicesInst
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-
      * </ul>
      */
     public SubjectAreaOMASAPIResponse<Category> findCategory(String serverName,
                                                              String userId,
                                                              String searchCriteria,
                                                              Date asOfTime,
-                                                             Integer offset,
+                                                             Integer startingFrom,
                                                              Integer pageSize,
                                                              SequencingOrder sequencingOrder,
                                                              String sequencingProperty) {
@@ -157,7 +151,7 @@ public class SubjectAreaCategoryRESTServices extends SubjectAreaRESTServicesInst
             FindRequest findRequest = new FindRequest();
             findRequest.setSearchCriteria(searchCriteria);
             findRequest.setAsOfTime(asOfTime);
-            findRequest.setOffset(offset);
+            findRequest.setStartingFrom(startingFrom);
             findRequest.setPageSize(pageSize);
             findRequest.setSequencingOrder(sequencingOrder);
             findRequest.setSequencingProperty(sequencingProperty);
@@ -179,10 +173,9 @@ public class SubjectAreaCategoryRESTServices extends SubjectAreaRESTServicesInst
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the category to get
      * @param asOfTime the relationships returned as they were at this time. null indicates at the current time. If specified, the date is in milliseconds since 1970-01-01 00:00:00.
-     * @param offset  the starting element number for this set of results.  This is used when retrieving elements
+     * @param startingFrom  the starting element number for this set of results.  This is used when retrieving elements
      *                 beyond the first page of results. Zero means the results start from the first element.
      * @param pageSize the maximum number of elements that can be returned on this request.
-     *                 0 means there is not limit to the page size
      * @param sequencingOrder the sequencing order for the results.
      * @param sequencingProperty the name of the property that should be used to sequence the results.
      * @return the relationships associated with the requested Category userId
@@ -198,7 +191,7 @@ public class SubjectAreaCategoryRESTServices extends SubjectAreaRESTServicesInst
                                                                      String userId,
                                                                      String guid,
                                                                      Date asOfTime,
-                                                                     Integer offset,
+                                                                     Integer startingFrom,
                                                                      Integer pageSize,
                                                                      SequencingOrder sequencingOrder,
                                                                      String sequencingProperty
@@ -214,7 +207,7 @@ public class SubjectAreaCategoryRESTServices extends SubjectAreaRESTServicesInst
             SubjectAreaCategoryHandler handler = instanceHandler.getSubjectAreaCategoryHandler(userId, serverName, methodName);
             FindRequest findRequest = new FindRequest();
             findRequest.setAsOfTime(asOfTime);
-            findRequest.setOffset(offset);
+            findRequest.setStartingFrom(startingFrom);
             findRequest.setPageSize(pageSize);
             findRequest.setSequencingOrder(sequencingOrder);
             findRequest.setSequencingProperty(sequencingProperty);
@@ -242,11 +235,9 @@ public class SubjectAreaCategoryRESTServices extends SubjectAreaRESTServicesInst
      * @return a response which when successful contains the updated category
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     public SubjectAreaOMASAPIResponse<Category> updateCategory(String serverName, String userId, String guid, Category suppliedCategory, boolean isReplace) {
@@ -285,13 +276,11 @@ public class SubjectAreaCategoryRESTServices extends SubjectAreaRESTServicesInst
      * @return a void response
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * <li> EntityNotDeletedException            a soft delete was issued but the category was not deleted.</li>
-     * <li> EntityNotPurgedException               a hard delete was issued but the category was not purged</li>
+     * <li> EntityNotPurgedException             a hard delete was issued but the category was not purged</li>
      * </ul>
      */
     public SubjectAreaOMASAPIResponse<Category> deleteCategory(String serverName, String userId, String guid, Boolean isPurge) {
@@ -322,11 +311,9 @@ public class SubjectAreaCategoryRESTServices extends SubjectAreaRESTServicesInst
      * @return response which when successful contains the restored category
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     public SubjectAreaOMASAPIResponse<Category> restoreCategory(String serverName, String userId, String guid) {
@@ -338,6 +325,73 @@ public class SubjectAreaCategoryRESTServices extends SubjectAreaRESTServicesInst
         try {
             SubjectAreaCategoryHandler handler = instanceHandler.getSubjectAreaCategoryHandler(userId, serverName, methodName);
             response = handler.restoreCategory(userId, guid);
+        } catch (OCFCheckedExceptionBase e) {
+            response.setExceptionInfo(e, className);
+        }
+        if (log.isDebugEnabled()) {
+            log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
+        }
+        return response;
+    }
+
+    /**
+     * Get the terms that are categorized by this Category
+     *
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the category to get terms
+     * @param startingFrom the starting element number for this set of results.  This is used when retrieving elements
+     * @param pageSize     the maximum number of elements that can be returned on this request.
+     * @return A list of terms is categorized by this Category
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
+     * </ul>
+     * */
+    public SubjectAreaOMASAPIResponse<Term> getCategorizedTerms(String serverName, String userId, String guid, Integer startingFrom, Integer pageSize) {
+        final String methodName = "getCategorizedTerms";
+        if (log.isDebugEnabled()) {
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
+        }
+        SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
+        try {
+            SubjectAreaCategoryHandler handler = instanceHandler.getSubjectAreaCategoryHandler(userId, serverName, methodName);
+            response = handler.getCategorizedTerms(userId, guid,instanceHandler.getSubjectAreaTermHandler(userId, serverName, methodName), startingFrom , pageSize);
+        } catch (OCFCheckedExceptionBase e) {
+            response.setExceptionInfo(e, className);
+        }
+        if (log.isDebugEnabled()) {
+            log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
+        }
+        return response;
+    }
+    /**
+     * Get this Category's child Categories. The server has a maximum page size defined, the number of Categories returned is limited by that maximum page size.
+     *
+     * @param serverName   serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId       unique identifier for requesting user, under which the request is performed
+     * @param guid         guid of the category to get terms
+     * @param startingFrom the starting element number for this set of results.  This is used when retrieving elements
+     * @param pageSize     the maximum number of elements that can be returned on this request.
+     * @return A list of child categories
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
+     * </ul>
+     **/
+    public SubjectAreaOMASAPIResponse<Category> getCategoryChildren(String serverName, String userId, String guid, Integer startingFrom, Integer pageSize) {
+        final String methodName = "getCategoryChildren";
+        if (log.isDebugEnabled()) {
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
+        }
+        SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
+        try {
+            SubjectAreaCategoryHandler handler = instanceHandler.getSubjectAreaCategoryHandler(userId, serverName, methodName);
+            response = handler.getCategoryChildren(userId, guid, startingFrom , pageSize);
         } catch (OCFCheckedExceptionBase e) {
             response.setExceptionInfo(e, className);
         }

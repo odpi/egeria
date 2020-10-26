@@ -12,7 +12,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * AssetRequestBody carries the parameters for created a new asset.
+ * ValidValuesRequestBody carries the parameters for created a new asset.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -21,11 +21,12 @@ public class ValidValuesRequestBody extends ReferenceableRequestBody
 {
     private static final long    serialVersionUID = 1L;
 
-    protected String displayName    = null;
-    protected String description    = null;
-    protected String usage          = null;
-    protected String scope          = null;
-    protected String preferredValue = null;
+    private String  displayName    = null;
+    private String  description    = null;
+    private String  usage          = null;
+    private String  scope          = null;
+    private String  preferredValue = null;
+    private boolean isDeprecated   = false;
 
 
     /**
@@ -53,6 +54,7 @@ public class ValidValuesRequestBody extends ReferenceableRequestBody
             usage = template.getUsage();
             scope = template.getScope();
             preferredValue = template.getPreferredValue();
+            isDeprecated = template.getIsDeprecated();
         }
     }
 
@@ -170,6 +172,28 @@ public class ValidValuesRequestBody extends ReferenceableRequestBody
 
 
     /**
+     * Is the valid value deprecated?
+     *
+     * @return boolean flag
+     */
+    public boolean getIsDeprecated()
+    {
+        return isDeprecated;
+    }
+
+
+    /**
+     * Set whether the valid value is deprecated or not.  Default is false.
+     *
+     * @param deprecated boolean flag
+     */
+    public void setIsDeprecated(boolean deprecated)
+    {
+        isDeprecated = deprecated;
+    }
+
+
+    /**
      * Generate a string containing the properties.
      *
      * @return string value
@@ -184,6 +208,7 @@ public class ValidValuesRequestBody extends ReferenceableRequestBody
                 ", usage='" + usage + '\'' +
                 ", scope='" + scope + '\'' +
                 ", preferredValue='" + preferredValue + '\'' +
+                ", isDeprecated=" + isDeprecated +
                 ", qualifiedName='" + qualifiedName + '\'' +
                 ", additionalProperties=" + additionalProperties +
                 ", meanings=" + meanings +
@@ -218,6 +243,7 @@ public class ValidValuesRequestBody extends ReferenceableRequestBody
                 Objects.equals(description, that.description) &&
                 Objects.equals(usage, that.usage) &&
                 Objects.equals(scope, that.scope) &&
+                Objects.equals(isDeprecated, that.isDeprecated) &&
                 Objects.equals(preferredValue, that.preferredValue);
     }
 
@@ -230,6 +256,6 @@ public class ValidValuesRequestBody extends ReferenceableRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), displayName, description, usage, scope, preferredValue);
+        return Objects.hash(super.hashCode(), displayName, description, usage, scope, isDeprecated, preferredValue);
     }
 }

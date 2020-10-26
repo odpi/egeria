@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Add32 from "../../../images/Egeria_add_32";
 import getNodeType from "./properties/NodeTypes.js";
-import { Button, Form, FormGroup, TextInput } from "carbon-components-react";
+import { Button, Form, FormGroup, TextInput, Loading } from "carbon-components-react";
 
 import { issueRestCreate } from "./RestCaller";
 import { useParams } from "react-router-dom";
@@ -13,6 +13,7 @@ export default function QuickTerms(props) {
   const [terms, setTerms] = useState([]);
   const [termsWithStatus, setTermsWithStatus] = useState([]);
   const [errorMsg, setErrorMsg] = useState();
+  const [restCallInProgress, setRestCallInProgress] = useState(false);
 
   const url = getUrl();
   function getUrl() {
@@ -38,7 +39,7 @@ export default function QuickTerms(props) {
   const onSubmit = (e) => {
     console.log("onSubmit");
     e.preventDefault();
-
+    setRestCallInProgress(true);
     if (terms.length > 0) {
       console.log("issueUpdate " + url);
       issueRestCreate(url, terms, onSuccessfulCreate, onErrorCreate);
@@ -47,6 +48,7 @@ export default function QuickTerms(props) {
     }
   };
   const onSuccessfulCreate = (json) => {
+    setRestCallInProgress(false);
     let workingTermsWithStatus = [];
     for (let i = 0; i < terms.length; i++) {
       let workingTermWithStatus = terms[i];
@@ -64,9 +66,11 @@ export default function QuickTerms(props) {
   };
   //return next term to create
   function onErrorCreate(msg) {
+    setRestCallInProgress(false);
     setErrorMsg(msg);
   }
   const onClickBack = () => {
+    setRestCallInProgress(false);
     console.log("Back clicked");
     if (termsWithStatus.length > 0) {
       setTerms([]);
@@ -87,9 +91,6 @@ export default function QuickTerms(props) {
     workingTerms[index].description = description;
     setTerms(workingTerms);
   }
-  const onSelectRow = (row) => {
-    console.log("onSelectRow " + row);
-  };
 
   return (
     <div>
@@ -98,7 +99,8 @@ export default function QuickTerms(props) {
           Back
         </button>
       </div>
-      {termsWithStatus.length == 0 && (
+      {restCallInProgress && <Loading description="Waiting for network call to the server to complete" withOverlay={true} />}
+      {!restCallInProgress && termsWithStatus.length == 0 && (
         <div>
           <div className="row-container">
             <h3>Quickly add terms.</h3>
@@ -146,7 +148,7 @@ export default function QuickTerms(props) {
           </Form>
         </div>
       )}
-      {termsWithStatus.length > 0 && (
+       {!restCallInProgress && termsWithStatus.length > 0 && (
         <div>
           <div className="row-container">
             <h3>Terms Added.</h3>
@@ -191,20 +193,23 @@ export default function QuickTerms(props) {
                         readOnly
                       />
                       {item.status == "Success" && (
-                        <TextInput
-                          type="text"
-                          defaultValue={item.status}
-                          style={{ color: "green" }}
-                          readOnly
-                        />
+                        <div className="row-container">
+                          <TextInput
+                            type="text"
+                            defaultValue={item.status}
+                            readOnly
+                          />
+                          <div className="left-20" alias="white_check_mark" src="https://github.githubassets.com/images/icons/emoji/unicode/2705.png">✅</div>
+                        </div>
                       )}
                       {item.status != "Success" && (
-                        <TextInput
-                          type="text"
-                          defaultValue={item.status}
-                          style={{ color: "red" }}
-                          readOnly
-                        />
+                        <div>
+                          <TextInput
+                            type="text"
+                            defaultValue={item.status}
+                            readOnly
+                          />
+                        </div>
                       )}
                     </div>
                   </div>

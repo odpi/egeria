@@ -270,7 +270,9 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
                         if (auditLog != null)
                         {
                             auditLog.logException("consumer.commitSync",
-                                    KafkaOpenMetadataTopicConnectorAuditCode.EXCEPTION_COMMITING_OFFSETS.getMessageDefinition(topicToSubscribe),
+                                    KafkaOpenMetadataTopicConnectorAuditCode.EXCEPTION_COMMITTING_OFFSETS.getMessageDefinition(error.getClass().getName(),
+                                                                                                                               topicToSubscribe,
+                                                                                                                               error.getMessage()),
                                     error);
 
                         }
@@ -377,7 +379,9 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
                 if (auditLog != null)
                 {
                     auditLog.logException("checkForFullyProcessedMessages.commitSync",
-                            KafkaOpenMetadataTopicConnectorAuditCode.EXCEPTION_COMMITING_OFFSETS.getMessageDefinition(topicToSubscribe),
+                            KafkaOpenMetadataTopicConnectorAuditCode.EXCEPTION_COMMITTING_OFFSETS.getMessageDefinition(error.getClass().getName(),
+                                                                                                                       topicToSubscribe,
+                                                                                                                       error.getMessage()),
                             error);
                 }
 
@@ -392,7 +396,7 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
      * Iteratively removes fully processed event from the beginning of the queue until
      * either the queue is empty or the first entry in the queue has not been fully processed
      * 
-     * @param queue
+     * @param queue incoming events
      * @return the most recent fully processed event that was removed from the queue
      */
     private KafkaIncomingEvent removeFullyProcessedEventsFromBeginningOfQueue(Queue<KafkaIncomingEvent> queue) {
@@ -552,7 +556,9 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
                 if (auditLog != null)
                 {
                     auditLog.logException("onPartitionsRevoked.commitSync",
-                            KafkaOpenMetadataTopicConnectorAuditCode.EXCEPTION_COMMITING_OFFSETS.getMessageDefinition(topicToSubscribe),
+                            KafkaOpenMetadataTopicConnectorAuditCode.EXCEPTION_COMMITTING_OFFSETS.getMessageDefinition(error.getClass().getName(),
+                                                                                                                       topicToSubscribe,
+                                                                                                                       error.getMessage()),
                             error);
                 }
 

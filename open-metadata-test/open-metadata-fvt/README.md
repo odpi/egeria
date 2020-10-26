@@ -8,7 +8,8 @@ ensure they function correctly.   Typically they load test data into the in-memo
 external APIs of the components under test to ensure they are robust enough to support the range of functions
 needed by their consumers.
 
-* **[access-services-fvt](access-services-fvt)** - provides an FVT test suite for each of the Open Metadata Access Services (OMAS). 
+* **[access-services-fvt](access-services-fvt)** - provides an FVT test suite for each of the Open Metadata Access Services (OMAS).
+  They each focus on the functional correctness of a specific OMAS.  
 * **[open-types-fvt](open-types-fvt)** - uses code generated ot build a bean layer from the open metadata types
 and then tests the resulting beans.
 

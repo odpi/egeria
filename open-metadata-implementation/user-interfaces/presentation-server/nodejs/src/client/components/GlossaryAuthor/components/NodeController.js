@@ -324,7 +324,7 @@ const NodeController = (props) => {
     // encode the URI. Be aware the more recent RFC3986 for URLs makes use of square brackets which are reserved (for IPv6)
     const url = encodeURI(
       glossaryAuthorCRUDContext.currentNodeType.url +
-        "?offset=0&pageSize=1000&searchCriteria=" +
+        "?searchCriteria=" +
         actualCriteria
     );
     issueRestGet(url, onSuccessfulSearch, onErrorSearch);

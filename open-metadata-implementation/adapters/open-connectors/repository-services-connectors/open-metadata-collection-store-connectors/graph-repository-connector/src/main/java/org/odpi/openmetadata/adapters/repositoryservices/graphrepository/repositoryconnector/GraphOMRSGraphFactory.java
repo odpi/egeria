@@ -902,9 +902,8 @@ public class GraphOMRSGraphFactory {
                                                                                                                   thisMetadataCollectionId));
 
             throw new RepositoryErrorException(
-                    GraphOMRSErrorCode.GRAPH_DB_HAS_DIFFERENT_METADATACOLLECTION_ID.getMessageDefinition(methodName,
-                                                                                                         GraphOMRSGraphFactory.class.getName(),
-                                                                                                         thisRepositoryName),
+                    GraphOMRSErrorCode.GRAPH_DB_HAS_DIFFERENT_METADATACOLLECTION_ID.getMessageDefinition(metadataCollectionIdString,
+                                                                                                         thisMetadataCollectionId),
                     GraphOMRSGraphFactory.class.getName(),
                     methodName);
 

@@ -49,12 +49,11 @@ export default function DiagramManager(props) {
     let diagram;
 
     if (typesContext.getEntityTypes() === null) {
-        diagram = <p>Diagrams appear here once server details are set...</p>
+        diagram = <p>Diagrams appear here when server has been selected...</p>
     }
     else {
       switch (selectedDiagram) {
         case "Entity Inheritance":
-          //diagram = <div>EntityInheritance Diagram will be drawn here</div>
           diagram = <EntityInheritanceDiagram outerHeight={height} outerWidth={width}/>
           break;
         case "Neighborhood":

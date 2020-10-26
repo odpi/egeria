@@ -18,7 +18,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class Regulation extends GovernanceDriver
+public class Regulation extends GovernanceDriverProperties
 {
     private static final long    serialVersionUID = 1L;
 
@@ -32,7 +32,6 @@ public class Regulation extends GovernanceDriver
     public Regulation()
     {
         super();
-        setType("Regulation");
     }
 
 
@@ -110,23 +109,23 @@ public class Regulation extends GovernanceDriver
                 ", certificationTypes=" + certificationTypes +
                 ", relatedGovernanceDrivers=" + getRelatedGovernanceDrivers() +
                 ", governancePolicies=" + getGovernancePolicies() +
+                ", title='" + getTitle() + '\'' +
+                ", summary='" + getSummary() + '\'' +
                 ", description='" + getDescription() + '\'' +
                 ", scope='" + getScope() + '\'' +
                 ", status=" + getStatus() +
                 ", priority='" + getPriority() + '\'' +
                 ", implications=" + getImplications() +
                 ", outcomes=" + getOutcomes() +
-                ", externalReferences=" + getExternalReferences() +
-                ", additionalProperties=" + getAdditionalProperties() +
                 ", governanceMetrics=" + getGovernanceMetrics() +
                 ", governanceZones=" + getGovernanceZones() +
-                ", GUID='" + getGUID() + '\'' +
-                ", type='" + getType() + '\'' +
-                ", documentId='" + getDocumentId() + '\'' +
-                ", title='" + getTitle() + '\'' +
-                ", summary='" + getSummary() + '\'' +
+                ", typeName='" + getTypeName() + '\'' +
+                ", qualifiedName='" + getQualifiedName() + '\'' +
+                ", additionalProperties=" + getAdditionalProperties() +
+                ", extendedProperties=" + getExtendedProperties() +
                 '}';
     }
+
 
 
     /**

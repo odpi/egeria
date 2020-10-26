@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.properties.ReferenceDataAssetProperties;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.properties.ValidValuesImplProperties;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -21,12 +20,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ReferenceDataAssetElement extends ReferenceDataAssetProperties implements MetadataElement,
-                                                                                       Serializable
+public class ReferenceDataAssetElement implements MetadataElement, Serializable
 {
     private static final long serialVersionUID = 1L;
 
-    private ElementHeader elementHeader = null;
+    private ElementHeader                elementHeader = null;
+    private ReferenceDataAssetProperties referenceDataAssetProperties = null;
 
 
     /**
@@ -48,6 +47,7 @@ public class ReferenceDataAssetElement extends ReferenceDataAssetProperties impl
         if (template != null)
         {
             elementHeader = template.getElementHeader();
+            referenceDataAssetProperties = template.getReferenceDataAssetProperties();
         }
     }
 
@@ -77,6 +77,28 @@ public class ReferenceDataAssetElement extends ReferenceDataAssetProperties impl
 
 
     /**
+     * Return the properties for the reference data asset.
+     *
+     * @return properties bean
+     */
+    public ReferenceDataAssetProperties getReferenceDataAssetProperties()
+    {
+        return referenceDataAssetProperties;
+    }
+
+
+    /**
+     * Set up the properties for the reference data asset.
+     *
+     * @param referenceDataAssetProperties properties bean
+     */
+    public void setReferenceDataAssetProperties(ReferenceDataAssetProperties referenceDataAssetProperties)
+    {
+        this.referenceDataAssetProperties = referenceDataAssetProperties;
+    }
+
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -86,21 +108,10 @@ public class ReferenceDataAssetElement extends ReferenceDataAssetProperties impl
     {
         return "ReferenceDataAssetElement{" +
                 "elementHeader=" + elementHeader +
-                ", displayName='" + getDisplayName() + '\'' +
-                ", description='" + getDescription() + '\'' +
-                ", owner='" + getOwner() + '\'' +
-                ", ownerCategory=" + getOwnerCategory() +
-                ", zoneMembership=" + getZoneMembership() +
-                ", origin=" + getOrigin() +
-                ", latestChange='" + getLatestChange() + '\'' +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", meanings=" + getMeanings() +
-                ", classifications=" + getClassifications() +
-                ", typeName='" + getTypeName() + '\'' +
-                ", extendedProperties=" + getExtendedProperties() +
+                ", referenceDataAssetProperties=" + referenceDataAssetProperties +
                 '}';
     }
+
 
     /**
      * Return comparison result based on the content of the properties.
@@ -124,7 +135,8 @@ public class ReferenceDataAssetElement extends ReferenceDataAssetProperties impl
             return false;
         }
         ReferenceDataAssetElement that = (ReferenceDataAssetElement) objectToCompare;
-        return Objects.equals(elementHeader, that.elementHeader);
+        return Objects.equals(elementHeader, that.elementHeader) &&
+                Objects.equals(referenceDataAssetProperties, that.referenceDataAssetProperties);
     }
 
 
@@ -136,6 +148,6 @@ public class ReferenceDataAssetElement extends ReferenceDataAssetProperties impl
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader);
+        return Objects.hash(super.hashCode(), elementHeader, referenceDataAssetProperties);
     }
 }

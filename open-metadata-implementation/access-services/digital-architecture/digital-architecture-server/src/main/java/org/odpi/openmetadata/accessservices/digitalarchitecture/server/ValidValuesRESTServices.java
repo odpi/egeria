@@ -3,11 +3,7 @@
 package org.odpi.openmetadata.accessservices.digitalarchitecture.server;
 
 import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.*;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.ElementHeader;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.ElementOrigin;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.ElementType;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.properties.*;
-import org.odpi.openmetadata.accessservices.digitalarchitecture.properties.Classification;
 import org.odpi.openmetadata.accessservices.digitalarchitecture.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
@@ -15,10 +11,9 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.handlers.AssetHandler;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.handlers.ValidValuesHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.ValidValuesHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
@@ -26,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * ValidValuesAssetOwner provides the API operations to create and maintain lists of valid
+ * ValidValuesRESTServices provides the API operations to create and maintain lists of valid
  * value definitions grouped into a valid value set.  Both valid value definitions and valid value sets have
  * the same attributes and so inherit from ValidValue where all of the attributes are defined.
  *
@@ -85,83 +80,27 @@ public class ValidValuesRESTServices
 
             if (requestBody != null)
             {
-                ValidValuesHandler handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+                ValidValuesHandler<ValidValueElement,
+                        ValidValueAssignmentConsumerElement,
+                        ValidValueAssignmentDefinitionElement,
+                        ValidValueImplAssetElement,
+                        ValidValueImplDefinitionElement,
+                        ValidValueMappingElement,
+                        ReferenceValueAssignmentDefinitionElement,
+                        ReferenceValueAssignmentItemElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
                 response.setGUID(handler.createValidValueSet(userId,
+                                                             null,
+                                                             null,
                                                              requestBody.getQualifiedName(),
                                                              requestBody.getDisplayName(),
                                                              requestBody.getDescription(),
                                                              requestBody.getUsage(),
                                                              requestBody.getScope(),
-                                                             requestBody.isDeprecated(),
+                                                             requestBody.getIsDeprecated(),
                                                              requestBody.getAdditionalProperties(),
                                                              requestBody.getExtendedProperties(),
                                                              methodName));
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Create a new valid value set that is owned/managed by an external tool.
-     * This just creates the Set itself.  Members are added either as they are
-     * created, or they can be attached to a set after they are created.
-     *
-     * @param serverName name of calling server
-     * @param userId calling user.
-     * @param externalSourceGUID guid of the software server capability entity that represented the external source
-     * @param externalSourceName name of the software server capability entity that represented the external source
-     * @param requestBody parameters for the new object.
-     *
-     * @return unique identifier for the new set or
-     * InvalidParameterException one of the parameters is invalid or
-     * UserNotAuthorizedException the user is not authorized to make this request or
-     * PropertyServerException the repository is not available or not working properly.
-     */
-    public GUIDResponse createExternalValidValueSet(String               serverName,
-                                                    String               userId,
-                                                    String               externalSourceGUID,
-                                                    String               externalSourceName,
-                                                    ValidValueProperties requestBody)
-    {
-        final String methodName = "createExternalValidValueSet";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-
-        GUIDResponse response = new GUIDResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            if (requestBody != null)
-            {
-                ValidValuesHandler handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
-
-                response.setGUID(handler.createExternalValidValueSet(userId,
-                                                                     externalSourceGUID,
-                                                                     externalSourceName,
-                                                                     requestBody.getQualifiedName(),
-                                                                     requestBody.getDisplayName(),
-                                                                     requestBody.getDescription(),
-                                                                     requestBody.getUsage(),
-                                                                     requestBody.getScope(),
-                                                                     requestBody.isDeprecated(),
-                                                                     requestBody.getAdditionalProperties(),
-                                                                     requestBody.getExtendedProperties(),
-                                                                     methodName));
             }
             else
             {
@@ -209,9 +148,18 @@ public class ValidValuesRESTServices
 
             if (requestBody != null)
             {
-                ValidValuesHandler handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+                ValidValuesHandler<ValidValueElement,
+                        ValidValueAssignmentConsumerElement,
+                        ValidValueAssignmentDefinitionElement,
+                        ValidValueImplAssetElement,
+                        ValidValueImplDefinitionElement,
+                        ValidValueMappingElement,
+                        ReferenceValueAssignmentDefinitionElement,
+                        ReferenceValueAssignmentItemElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
                 response.setGUID(handler.createValidValueDefinition(userId,
+                                                                    null,
+                                                                    null,
                                                                     setGUID,
                                                                     requestBody.getQualifiedName(),
                                                                     requestBody.getDisplayName(),
@@ -219,77 +167,10 @@ public class ValidValuesRESTServices
                                                                     requestBody.getUsage(),
                                                                     requestBody.getScope(),
                                                                     requestBody.getPreferredValue(),
-                                                                    requestBody.isDeprecated(),
+                                                                    requestBody.getIsDeprecated(),
                                                                     requestBody.getAdditionalProperties(),
                                                                     requestBody.getExtendedProperties(),
                                                                     methodName));
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Create a new valid value definition.
-     *
-     * @param serverName name of calling server
-     * @param userId calling user.
-     * @param externalSourceGUID guid of the software server capability entity that represented the external source
-     * @param externalSourceName name of the software server capability entity that represented the external source
-     * @param setGUID unique identifier of the set to attach this to.
-     * @param requestBody parameters to update.
-     *
-     * @return unique identifier for the new definition
-     * InvalidParameterException one of the parameters is invalid or
-     * UserNotAuthorizedException the user is not authorized to make this request or
-     * PropertyServerException the repository is not available or not working properly.
-     */
-    public GUIDResponse  createExternalValidValueDefinition(String               serverName,
-                                                            String               userId,
-                                                            String               externalSourceGUID,
-                                                            String               externalSourceName,
-                                                            String               setGUID,
-                                                            ValidValueProperties requestBody)
-    {
-        final String methodName = "createExternalValidValueDefinition";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-
-        GUIDResponse response = new GUIDResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            if (requestBody != null)
-            {
-                ValidValuesHandler handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
-
-                response.setGUID(handler.createExternalValidValueDefinition(userId,
-                                                                            externalSourceGUID,
-                                                                            externalSourceName,
-                                                                            setGUID,
-                                                                            requestBody.getQualifiedName(),
-                                                                            requestBody.getDisplayName(),
-                                                                            requestBody.getDescription(),
-                                                                            requestBody.getUsage(),
-                                                                            requestBody.getScope(),
-                                                                            requestBody.getPreferredValue(),
-                                                                            requestBody.isDeprecated(),
-                                                                            requestBody.getAdditionalProperties(),
-                                                                            requestBody.getExtendedProperties(),
-                                                                            methodName));
             }
             else
             {
@@ -339,9 +220,18 @@ public class ValidValuesRESTServices
 
             if (requestBody != null)
             {
-                ValidValuesHandler handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+                ValidValuesHandler<ValidValueElement,
+                        ValidValueAssignmentConsumerElement,
+                        ValidValueAssignmentDefinitionElement,
+                        ValidValueImplAssetElement,
+                        ValidValueImplDefinitionElement,
+                        ValidValueMappingElement,
+                        ReferenceValueAssignmentDefinitionElement,
+                        ReferenceValueAssignmentItemElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
                 handler.updateValidValue(userId,
+                                         null,
+                                         null,
                                          validValueGUID,
                                          requestBody.getQualifiedName(),
                                          requestBody.getDisplayName(),
@@ -349,7 +239,7 @@ public class ValidValuesRESTServices
                                          requestBody.getUsage(),
                                          requestBody.getScope(),
                                          requestBody.getPreferredValue(),
-                                         requestBody.isDeprecated(),
+                                         requestBody.getIsDeprecated(),
                                          requestBody.getAdditionalProperties(),
                                          requestBody.getExtendedProperties(),
                                          methodName);
@@ -401,9 +291,18 @@ public class ValidValuesRESTServices
 
             if (qualifiedName != null)
             {
-                ValidValuesHandler handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+                ValidValuesHandler<ValidValueElement,
+                        ValidValueAssignmentConsumerElement,
+                        ValidValueAssignmentDefinitionElement,
+                        ValidValueImplAssetElement,
+                        ValidValueImplDefinitionElement,
+                        ValidValueMappingElement,
+                        ReferenceValueAssignmentDefinitionElement,
+                        ReferenceValueAssignmentItemElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
                 handler.deleteValidValue(userId,
+                                         null,
+                                         null,
                                          validValueGUID,
                                          qualifiedName,
                                          methodName);
@@ -456,9 +355,16 @@ public class ValidValuesRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ValidValuesHandler handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+            ValidValuesHandler<ValidValueElement,
+                    ValidValueAssignmentConsumerElement,
+                    ValidValueAssignmentDefinitionElement,
+                    ValidValueImplAssetElement,
+                    ValidValueImplDefinitionElement,
+                    ValidValueMappingElement,
+                    ReferenceValueAssignmentDefinitionElement,
+                    ReferenceValueAssignmentItemElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
-            handler.attachValidValueToSet(userId, setGUID, validValueGUID, methodName);
+            handler.attachValidValueToSet(userId, null, null, setGUID, validValueGUID, methodName);
         }
         catch (Throwable error)
         {
@@ -502,9 +408,16 @@ public class ValidValuesRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ValidValuesHandler handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+            ValidValuesHandler<ValidValueElement,
+                    ValidValueAssignmentConsumerElement,
+                    ValidValueAssignmentDefinitionElement,
+                    ValidValueImplAssetElement,
+                    ValidValueImplDefinitionElement,
+                    ValidValueMappingElement,
+                    ReferenceValueAssignmentDefinitionElement,
+                    ReferenceValueAssignmentItemElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
-            handler.detachValidValueFromSet(userId, setGUID, validValueGUID, methodName);
+            handler.detachValidValueFromSet(userId, null, null, setGUID, validValueGUID, methodName);
         }
         catch (Throwable error)
         {
@@ -558,9 +471,18 @@ public class ValidValuesRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ValidValuesHandler handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+            ValidValuesHandler<ValidValueElement,
+                    ValidValueAssignmentConsumerElement,
+                    ValidValueAssignmentDefinitionElement,
+                    ValidValueImplAssetElement,
+                    ValidValueImplDefinitionElement,
+                    ValidValueMappingElement,
+                    ReferenceValueAssignmentDefinitionElement,
+                    ReferenceValueAssignmentItemElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
             handler.linkValidValueToImplementation(userId,
+                                                   null,
+                                                   null,
                                                    validValueGUID,
                                                    assetGUID,
                                                    symbolicName,
@@ -598,7 +520,8 @@ public class ValidValuesRESTServices
                                                       String          assetGUID,
                                                       NullRequestBody requestBody)
     {
-        final String   methodName = "classifyAssetAsReferenceData";
+        final String assetGUIDParameterName = "assetGUID";
+        final String methodName             = "classifyAssetAsReferenceData";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -609,12 +532,9 @@ public class ValidValuesRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            AssetHandler<ReferenceDataAssetElement> handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
-            handler.classifyAssetAsReferenceData(userId,
-                                                 assetGUID,
-                                                 instanceHandler.getSupportedZones(userId, serverName, methodName),
-                                                 methodName);
+            handler.classifyAssetAsReferenceData(userId, assetGUID, assetGUIDParameterName, methodName);
         }
         catch (Throwable error)
         {
@@ -658,9 +578,16 @@ public class ValidValuesRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ValidValuesHandler handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+            ValidValuesHandler<ValidValueElement,
+                    ValidValueAssignmentConsumerElement,
+                    ValidValueAssignmentDefinitionElement,
+                    ValidValueImplAssetElement,
+                    ValidValueImplDefinitionElement,
+                    ValidValueMappingElement,
+                    ReferenceValueAssignmentDefinitionElement,
+                    ReferenceValueAssignmentItemElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
-            handler.unlinkValidValueFromImplementation(userId, validValueGUID, assetGUID, methodName);
+            handler.unlinkValidValueFromImplementation(userId, null, null, validValueGUID, assetGUID, methodName);
         }
         catch (Throwable error)
         {
@@ -692,7 +619,8 @@ public class ValidValuesRESTServices
                                                         String          assetGUID,
                                                         NullRequestBody requestBody)
     {
-        final String   methodName = "declassifyAssetAsReferenceData";
+        final String assetGUIDParameterName = "assetGUID";
+        final String methodName             = "declassifyAssetAsReferenceData";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -705,10 +633,7 @@ public class ValidValuesRESTServices
 
             AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
-            handler.declassifyAssetAsReferenceData(userId,
-                                                   assetGUID,
-                                                   instanceHandler.getSupportedZones(userId, serverName, methodName),
-                                                   methodName);
+            handler.declassifyAssetAsReferenceData(userId, assetGUID, assetGUIDParameterName, methodName);
         }
         catch (Throwable error)
         {
@@ -751,16 +676,23 @@ public class ValidValuesRESTServices
         boolean strictRequirement = false;
         if (requestBody != null)
         {
-            strictRequirement = requestBody.isStrictRequirement();
+            strictRequirement = requestBody.getStrictRequirement();
         }
 
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ValidValuesHandler handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+            ValidValuesHandler<ValidValueElement,
+                    ValidValueAssignmentConsumerElement,
+                    ValidValueAssignmentDefinitionElement,
+                    ValidValueImplAssetElement,
+                    ValidValueImplDefinitionElement,
+                    ValidValueMappingElement,
+                    ReferenceValueAssignmentDefinitionElement,
+                    ReferenceValueAssignmentItemElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
-            handler.assignValidValueToConsumer(userId, validValueGUID, consumerGUID, strictRequirement, methodName);
+            handler.assignValidValueToConsumer(userId, null, null, validValueGUID, consumerGUID, strictRequirement, methodName);
         }
         catch (Throwable error)
         {
@@ -804,9 +736,16 @@ public class ValidValuesRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ValidValuesHandler handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+            ValidValuesHandler<ValidValueElement,
+                    ValidValueAssignmentConsumerElement,
+                    ValidValueAssignmentDefinitionElement,
+                    ValidValueImplAssetElement,
+                    ValidValueImplDefinitionElement,
+                    ValidValueMappingElement,
+                    ReferenceValueAssignmentDefinitionElement,
+                    ReferenceValueAssignmentItemElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
-            handler.unassignValidValueFromConsumer(userId, validValueGUID, consumerGUID, methodName);
+            handler.unassignValidValueFromConsumer(userId, null, null, validValueGUID, consumerGUID, methodName);
         }
         catch (Throwable error)
         {
@@ -860,9 +799,18 @@ public class ValidValuesRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ValidValuesHandler handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+            ValidValuesHandler<ValidValueElement,
+                    ValidValueAssignmentConsumerElement,
+                    ValidValueAssignmentDefinitionElement,
+                    ValidValueImplAssetElement,
+                    ValidValueImplDefinitionElement,
+                    ValidValueMappingElement,
+                    ReferenceValueAssignmentDefinitionElement,
+                    ReferenceValueAssignmentItemElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
             handler.assignReferenceValueToItem(userId,
+                                               null,
+                                               null,
                                                validValueGUID,
                                                referenceableGUID,
                                                confidence,
@@ -912,9 +860,18 @@ public class ValidValuesRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ValidValuesHandler handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+            ValidValuesHandler<ValidValueElement,
+                    ValidValueAssignmentConsumerElement,
+                    ValidValueAssignmentDefinitionElement,
+                    ValidValueImplAssetElement,
+                    ValidValueImplDefinitionElement,
+                    ValidValueMappingElement,
+                    ReferenceValueAssignmentDefinitionElement,
+                    ReferenceValueAssignmentItemElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
             handler.unassignReferenceValueFromItem(userId,
+                                                   null,
+                                                   null,
                                                    validValueGUID,
                                                    referenceableGUID,
                                                    methodName);
@@ -972,9 +929,18 @@ public class ValidValuesRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ValidValuesHandler handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+            ValidValuesHandler<ValidValueElement,
+                    ValidValueAssignmentConsumerElement,
+                    ValidValueAssignmentDefinitionElement,
+                    ValidValueImplAssetElement,
+                    ValidValueImplDefinitionElement,
+                    ValidValueMappingElement,
+                    ReferenceValueAssignmentDefinitionElement,
+                    ReferenceValueAssignmentItemElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
             handler.mapValidValues(userId,
+                                   null,
+                                   null,
                                    validValue1GUID,
                                    validValue2GUID,
                                    associationDescription,
@@ -1025,9 +991,16 @@ public class ValidValuesRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ValidValuesHandler handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+            ValidValuesHandler<ValidValueElement,
+                    ValidValueAssignmentConsumerElement,
+                    ValidValueAssignmentDefinitionElement,
+                    ValidValueImplAssetElement,
+                    ValidValueImplDefinitionElement,
+                    ValidValueMappingElement,
+                    ReferenceValueAssignmentDefinitionElement,
+                    ReferenceValueAssignmentItemElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
-            handler.unmapValidValues(userId, validValue1GUID, validValue2GUID, methodName);
+            handler.unmapValidValues(userId, null, null, validValue1GUID, validValue2GUID, methodName);
         }
         catch (Throwable error)
         {
@@ -1066,10 +1039,17 @@ public class ValidValuesRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ValidValuesHandler handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+            ValidValuesHandler<ValidValueElement,
+                    ValidValueAssignmentConsumerElement,
+                    ValidValueAssignmentDefinitionElement,
+                    ValidValueImplAssetElement,
+                    ValidValueImplDefinitionElement,
+                    ValidValueMappingElement,
+                    ReferenceValueAssignmentDefinitionElement,
+                    ReferenceValueAssignmentItemElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
-            ValidValue validValue = handler.getValidValueByGUID(userId, validValueGUID, methodName);
-            response.setElement(this.getValidValue(validValue));
+            ValidValueElement validValue = handler.getValidValueByGUID(userId, validValueGUID, methodName);
+            response.setElement(validValue);
         }
         catch (Throwable error)
         {
@@ -1088,6 +1068,8 @@ public class ValidValuesRESTServices
      * @param serverName name of calling server
      * @param userId calling user
      * @param validValueName qualified name of the valid value.
+     * @param startFrom paging starting point
+     * @param pageSize maximum number of return values.
      *
      * @return Valid value beans or
      * InvalidParameterException one of the parameters is invalid or
@@ -1096,9 +1078,12 @@ public class ValidValuesRESTServices
      */
     public ValidValuesResponse getValidValueByName(String   serverName,
                                                    String   userId,
-                                                   String   validValueName)
+                                                   String   validValueName,
+                                                   int      startFrom,
+                                                   int      pageSize)
     {
-        final String   methodName = "getValidValueByName";
+        final String nameParameterName = "validValueName";
+        final String methodName        = "getValidValueByName";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -1111,10 +1096,22 @@ public class ValidValuesRESTServices
 
             if (validValueName != null)
             {
-                ValidValuesHandler handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+                ValidValuesHandler<ValidValueElement,
+                        ValidValueAssignmentConsumerElement,
+                        ValidValueAssignmentDefinitionElement,
+                        ValidValueImplAssetElement,
+                        ValidValueImplDefinitionElement,
+                        ValidValueMappingElement,
+                        ReferenceValueAssignmentDefinitionElement,
+                        ReferenceValueAssignmentItemElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
-                List<ValidValue>  validValues = handler.getValidValueByName(userId, validValueName, methodName);
-                response.setElementList(this.getValidValues(validValues));
+                List<ValidValueElement>  validValues = handler.getValidValueByName(userId,
+                                                                                   validValueName,
+                                                                                   nameParameterName,
+                                                                                   startFrom,
+                                                                                   pageSize,
+                                                                                   methodName);
+                response.setElementList(validValues);
             }
         }
         catch (Throwable error)
@@ -1148,7 +1145,8 @@ public class ValidValuesRESTServices
                                                int      startFrom,
                                                int      pageSize)
     {
-        final String   methodName = "findValidValues";
+        final String   searchStringParameterName = "searchString";
+        final String   methodName                = "findValidValues";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -1161,10 +1159,22 @@ public class ValidValuesRESTServices
 
             if (searchString != null)
             {
-                ValidValuesHandler handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+                ValidValuesHandler<ValidValueElement,
+                        ValidValueAssignmentConsumerElement,
+                        ValidValueAssignmentDefinitionElement,
+                        ValidValueImplAssetElement,
+                        ValidValueImplDefinitionElement,
+                        ValidValueMappingElement,
+                        ReferenceValueAssignmentDefinitionElement,
+                        ReferenceValueAssignmentItemElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
-                List<ValidValue>  validValues = handler.findValidValues(userId, searchString, startFrom, pageSize, methodName);
-                response.setElementList(this.getValidValues(validValues));
+                List<ValidValueElement>  validValues = handler.findValidValues(userId,
+                                                                               searchString,
+                                                                               searchStringParameterName,
+                                                                               startFrom,
+                                                                               pageSize,
+                                                                               methodName);
+                response.setElementList(validValues);
             }
         }
         catch (Throwable error)
@@ -1197,6 +1207,7 @@ public class ValidValuesRESTServices
                                                        int      startFrom,
                                                        int      pageSize)
     {
+        final String validValueGUIDParameter = "validValueSetGUID";
         final String   methodName = "getValidValueSetMembers";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
@@ -1208,14 +1219,22 @@ public class ValidValuesRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ValidValuesHandler handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+            ValidValuesHandler<ValidValueElement,
+                    ValidValueAssignmentConsumerElement,
+                    ValidValueAssignmentDefinitionElement,
+                    ValidValueImplAssetElement,
+                    ValidValueImplDefinitionElement,
+                    ValidValueMappingElement,
+                    ReferenceValueAssignmentDefinitionElement,
+                    ReferenceValueAssignmentItemElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
-            List<ValidValue>  validValues = handler.getValidValueSetMembers(userId,
-                                                                            validValueSetGUID,
-                                                                            startFrom,
-                                                                            pageSize,
-                                                                            methodName);
-            response.setElementList(this.getValidValues(validValues));
+            List<ValidValueElement>  validValues = handler.getValidValueSetMembers(userId,
+                                                                                   validValueSetGUID,
+                                                                                   validValueGUIDParameter,
+                                                                                   startFrom,
+                                                                                   pageSize,
+                                                                                   methodName);
+            response.setElementList(validValues);
         }
         catch (Throwable error)
         {
@@ -1247,7 +1266,8 @@ public class ValidValuesRESTServices
                                                     int      startFrom,
                                                     int      pageSize)
     {
-        final String   methodName = "getSetsForValidValue";
+        final String validValueGUIDParameter = "validValueGUID";
+        final String methodName              = "getSetsForValidValue";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -1258,14 +1278,22 @@ public class ValidValuesRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ValidValuesHandler handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+            ValidValuesHandler<ValidValueElement,
+                    ValidValueAssignmentConsumerElement,
+                    ValidValueAssignmentDefinitionElement,
+                    ValidValueImplAssetElement,
+                    ValidValueImplDefinitionElement,
+                    ValidValueMappingElement,
+                    ReferenceValueAssignmentDefinitionElement,
+                    ReferenceValueAssignmentItemElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
-            List<ValidValue>  validValues = handler.getSetsForValidValue(userId,
-                                                                         validValueGUID,
-                                                                         startFrom,
-                                                                         pageSize,
-                                                                         methodName);
-            response.setElementList(this.getValidValues(validValues));
+            List<ValidValueElement>  validValues = handler.getSetsForValidValue(userId,
+                                                                                validValueGUID,
+                                                                                validValueGUIDParameter,
+                                                                                startFrom,
+                                                                                pageSize,
+                                                                                methodName);
+            response.setElementList(validValues);
         }
         catch (Throwable error)
         {
@@ -1297,7 +1325,8 @@ public class ValidValuesRESTServices
                                                                                    int      startFrom,
                                                                                    int      pageSize)
     {
-        final String   methodName = "getValidValuesAssignmentConsumers";
+        final String validValueGUIDParameter = "validValueGUID";
+        final String methodName              = "getValidValuesAssignmentConsumers";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -1308,49 +1337,27 @@ public class ValidValuesRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ValidValuesHandler handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+            ValidValuesHandler<ValidValueElement,
+                    ValidValueAssignmentConsumerElement,
+                    ValidValueAssignmentDefinitionElement,
+                    ValidValueImplAssetElement,
+                    ValidValueImplDefinitionElement,
+                    ValidValueMappingElement,
+                    ReferenceValueAssignmentDefinitionElement,
+                    ReferenceValueAssignmentItemElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
-            List<ValidValuesAssignmentConsumer>  validValueConsumers = handler.getValidValuesAssignmentConsumers(userId,
-                                                                                                      validValueGUID,
-                                                                                                      instanceHandler.getSupportedZones(userId,
-                                                                                                                                        serverName,
-                                                                                                                                        methodName),
-                                                                                                      startFrom,
-                                                                                                      pageSize,
-                                                                                                      methodName);
+            List<ValidValueAssignmentConsumerElement>  validValueConsumers = handler.getValidValuesAssignmentConsumers(userId,
+                                                                                                                       validValueGUID,
+                                                                                                                       validValueGUIDParameter,
+                                                                                                                       instanceHandler.getSupportedZones(userId,
+                                                                                                                                                         serverName,
+                                                                                                                                                         methodName),
+                                                                                                                       startFrom,
+                                                                                                                       pageSize,
+                                                                                                                       methodName);
 
-            if ((validValueConsumers != null) && (! validValueConsumers.isEmpty()))
-            {
-                List<ValidValueAssignmentConsumerElement> elements = new ArrayList<>();
+            response.setElementList(validValueConsumers);
 
-                for (ValidValuesAssignmentConsumer validValueConsumer : validValueConsumers)
-                {
-                    if (validValueConsumer != null)
-                    {
-                        ValidValueAssignmentConsumerElement validValueAssignmentConsumerElement = new ValidValueAssignmentConsumerElement();
-                        Referenceable                       referenceableBean                   = validValueConsumer.getConsumer();
-                        ReferenceableElement                referenceableElement                = new ReferenceableElement();
-
-                        referenceableElement.setElementHeader(this.getElementHeader(referenceableBean));
-                        referenceableElement.setQualifiedName(referenceableBean.getQualifiedName());
-                        referenceableElement.setTypeName(referenceableBean.getType().getElementTypeName());
-                        referenceableElement.setAdditionalProperties(referenceableBean.getAdditionalProperties());
-                        referenceableElement.setExtendedProperties(referenceableBean.getExtendedProperties());
-                        referenceableElement.setClassifications(this.getClassifications(referenceableBean));
-                        referenceableElement.setMeanings(this.getMeanings(referenceableBean));
-
-                        validValueAssignmentConsumerElement.setConsumer(referenceableElement);
-                        validValueAssignmentConsumerElement.setStrictRequirement(validValueConsumer.isStrictRequirement());
-
-                        elements.add(validValueAssignmentConsumerElement);
-                    }
-                }
-
-                if (! elements.isEmpty())
-                {
-                    response.setElementList(elements);
-                }
-            }
         }
         catch (Throwable error)
         {
@@ -1383,7 +1390,8 @@ public class ValidValuesRESTServices
                                                                                       int      startFrom,
                                                                                       int      pageSize)
     {
-        final String   methodName = "getValidValuesAssignmentDefinition";
+        final String referenceableGUIDParameter = "referencableGUID";
+        final String methodName                 = "getValidValuesAssignmentDefinition";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -1394,40 +1402,23 @@ public class ValidValuesRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ValidValuesHandler handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+            ValidValuesHandler<ValidValueElement,
+                    ValidValueAssignmentConsumerElement,
+                    ValidValueAssignmentDefinitionElement,
+                    ValidValueImplAssetElement,
+                    ValidValueImplDefinitionElement,
+                    ValidValueMappingElement,
+                    ReferenceValueAssignmentDefinitionElement,
+                    ReferenceValueAssignmentItemElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
-            List<ValidValuesAssignmentDefinition>  validValueAssignmentDefinitions = handler.getValidValuesAssignmentDefinition(userId,
-                                                                                                                    referenceableGUID,
-                                                                                                                    startFrom,
-                                                                                                                    pageSize,
-                                                                                                                    methodName);
+            List<ValidValueAssignmentDefinitionElement>  validValueAssignmentDefinitions = handler.getValidValuesAssignmentDefinition(userId,
+                                                                                                                                      referenceableGUID,
+                                                                                                                                      referenceableGUIDParameter,
+                                                                                                                                      startFrom,
+                                                                                                                                      pageSize,
+                                                                                                                                      methodName);
 
-            if ((validValueAssignmentDefinitions != null) && (! validValueAssignmentDefinitions.isEmpty()))
-            {
-                List<ValidValueAssignmentDefinitionElement> elements = new ArrayList<>();
-
-                for (ValidValuesAssignmentDefinition validValueDefinition : validValueAssignmentDefinitions)
-                {
-                    if (validValueDefinition != null)
-                    {
-                        ValidValueAssignmentDefinitionElement validValueAssignmentDefinitionElement = new ValidValueAssignmentDefinitionElement();
-
-                        if (validValueDefinition.getValidValue() != null)
-                        {
-                            validValueAssignmentDefinitionElement.setValidValueElement(getValidValue(validValueDefinition.getValidValue()));
-                        }
-
-                        validValueAssignmentDefinitionElement.setStrictRequirement(validValueDefinition.isStrictRequirement());
-
-                        elements.add(validValueAssignmentDefinitionElement);
-                    }
-                }
-
-                if (! elements.isEmpty())
-                {
-                    response.setElementList(elements);
-                }
-            }
+            response.setElementList(validValueAssignmentDefinitions);
         }
         catch (Throwable error)
         {
@@ -1440,7 +1431,7 @@ public class ValidValuesRESTServices
 
 
     /**
-     * Pag through the list of implementations for a valid value.
+     * Page through the list of implementations for a valid value.
      *
      * @param serverName name of calling server
      * @param userId calling user
@@ -1460,6 +1451,7 @@ public class ValidValuesRESTServices
                                                                             int      pageSize)
     {
         final String   methodName = "getValidValuesImplementationAssets";
+        final String   validValueGUIDParameterName = "validValueGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -1470,77 +1462,24 @@ public class ValidValuesRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ValidValuesHandler validValuesHandler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
-            AssetHandler       assetHandler       = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            ValidValuesHandler<ValidValueElement,
+                    ValidValueAssignmentConsumerElement,
+                    ValidValueAssignmentDefinitionElement,
+                    ValidValueImplAssetElement,
+                    ValidValueImplDefinitionElement,
+                    ValidValueMappingElement,
+                    ReferenceValueAssignmentDefinitionElement,
+                    ReferenceValueAssignmentItemElement> validValuesHandler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
-            List<ValidValueImplementationAsset> validValueImplementations = validValuesHandler.getValidValuesImplementationAssets(userId,
+            List<ValidValueImplAssetElement> validValueImplAssetElements = validValuesHandler.getValidValuesImplementationAssets(userId,
                                                                                                                                   validValueGUID,
+                                                                                                                                  validValueGUIDParameterName,
                                                                                                                                   instanceHandler.getSupportedZones(userId, serverName, methodName),
                                                                                                                                   startFrom,
                                                                                                                                   pageSize,
                                                                                                                                   methodName);
 
-            if ((validValueImplementations != null) && (! validValueImplementations.isEmpty()))
-            {
-                List<ValidValueImplAssetElement> validValueImplAssetElements = new ArrayList<>();
-
-                for (ValidValueImplementationAsset assetImplementation : validValueImplementations)
-                {
-                    if (assetImplementation != null)
-                    {
-                        ValidValueImplAssetElement validValueImplAssetElement = new ValidValueImplAssetElement();
-
-                        validValueImplAssetElement.setAdditionalValues(assetImplementation.getAdditionalValues());
-                        validValueImplAssetElement.setImplementationValue(assetImplementation.getImplementationValue());
-                        validValueImplAssetElement.setSymbolicName(assetImplementation.getSymbolicName());
-
-                        Asset asset = assetImplementation.getReferenceDataAsset();
-
-                        if (asset != null)
-                        {
-
-                            ReferenceDataAssetElement assetElement = new ReferenceDataAssetElement();
-
-                            assetElement.setElementHeader(this.getElementHeader(asset));
-                            assetElement.setDisplayName(asset.getDisplayName());
-                            assetElement.setDescription(asset.getDescription());
-                            assetElement.setLatestChange(asset.getLatestChange());
-                            assetElement.setTypeName(asset.getType().getElementTypeName());
-                            assetElement.setAdditionalProperties(asset.getAdditionalProperties());
-                            assetElement.setExtendedProperties(asset.getExtendedProperties());
-                            assetElement.setClassifications(this.getClassifications(asset));
-                            assetElement.setMeanings(this.getMeanings(asset));
-                            assetElement.setOrigin(asset.getOrigin());
-                            assetElement.setZoneMembership(asset.getZoneMembership());
-                            assetElement.setOwner(asset.getOwner());
-                            if (asset.getOwnerType() != null)
-                            {
-                                switch (asset.getOwnerType())
-                                {
-                                    case USER_ID:
-                                        assetElement.setOwnerCategory(OwnerCategory.USER_ID);
-                                        break;
-
-                                    case PROFILE_ID:
-                                        assetElement.setOwnerCategory(OwnerCategory.PROFILE_ID);
-                                        break;
-
-                                    case OTHER:
-                                        assetElement.setOwnerCategory(OwnerCategory.OTHER);
-                                        break;
-                                }
-                            }
-
-                            validValueImplAssetElement.setReferenceDataAsset(assetElement);
-                            validValueImplAssetElement.setReferenceDataConnections(assetHandler.getConnectionsForAsset(userId, asset.getGUID()));
-                        }
-
-                        validValueImplAssetElements.add(validValueImplAssetElement);
-                    }
-                }
-
-                response.setElementList(validValueImplAssetElements);
-            }
+            response.setElementList(validValueImplAssetElements);
         }
         catch (Throwable error)
         {
@@ -1573,7 +1512,8 @@ public class ValidValuesRESTServices
                                                                                       int    startFrom,
                                                                                       int    pageSize)
     {
-        final String   methodName = "getValidValuesImplementationDefinitions";
+        final String assetGUIDParameterName = "assetGUID";
+        final String methodName             = "getValidValuesImplementationDefinitions";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -1584,46 +1524,25 @@ public class ValidValuesRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            ValidValuesHandler<ValidValueElement,
+                    ValidValueAssignmentConsumerElement,
+                    ValidValueAssignmentDefinitionElement,
+                    ValidValueImplAssetElement,
+                    ValidValueImplDefinitionElement,
+                    ValidValueMappingElement,
+                    ReferenceValueAssignmentDefinitionElement,
+                    ReferenceValueAssignmentItemElement> validValuesHandler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
-            List<ValidValueImplementationDefinition>  definitions =
-                    handler.getValidValuesImplementationDefinitions(userId,
-                                                                    assetGUID,
-                                                                    instanceHandler.getSupportedZones(userId,
-                                                                                                      serverName,
-                                                                                                      methodName),
-                                                                    startFrom,
-                                                                    pageSize,
-                                                                    methodName);
+            List<ValidValueImplDefinitionElement>  definitions =
+                    validValuesHandler.getValidValuesImplementationDefinitions(userId,
+                                                                               assetGUID,
+                                                                               assetGUIDParameterName,
+                                                                               startFrom,
+                                                                               pageSize,
+                                                                               methodName);
 
-            if ((definitions != null) && (! definitions.isEmpty()))
-            {
-                List<ValidValueImplDefinitionElement> elements = new ArrayList<>();
+            response.setElementList(definitions);
 
-                for (ValidValueImplementationDefinition validValueDefinition : definitions)
-                {
-                    if (validValueDefinition != null)
-                    {
-                        ValidValueImplDefinitionElement element = new ValidValueImplDefinitionElement();
-
-                        if (validValueDefinition.getValidValue() != null)
-                        {
-                            element.setValidValueElement(getValidValue(validValueDefinition.getValidValue()));
-                        }
-
-                        element.setSymbolicName(validValueDefinition.getSymbolicName());
-                        element.setImplementationValue(validValueDefinition.getImplementationValue());
-                        element.setAdditionalValues(validValueDefinition.getAdditionalValues());
-
-                        elements.add(element);
-                    }
-                }
-
-                if (! elements.isEmpty())
-                {
-                    response.setElementList(elements);
-                }
-            }
         }
         catch (Throwable error)
         {
@@ -1656,6 +1575,7 @@ public class ValidValuesRESTServices
                                                             int    startFrom,
                                                             int    pageSize)
     {
+        final String validValueGUIDParameter = "validValueGUID";
         final String   methodName = "getValidValueMappings";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
@@ -1667,43 +1587,24 @@ public class ValidValuesRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ValidValuesHandler handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+            ValidValuesHandler<ValidValueElement,
+                    ValidValueAssignmentConsumerElement,
+                    ValidValueAssignmentDefinitionElement,
+                    ValidValueImplAssetElement,
+                    ValidValueImplDefinitionElement,
+                    ValidValueMappingElement,
+                    ReferenceValueAssignmentDefinitionElement,
+                    ReferenceValueAssignmentItemElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
-            List<ValidValueMapping>  validValuesMappings = handler.getValidValueMappings(userId,
-                                                                                         validValueGUID,
-                                                                                         startFrom,
-                                                                                         pageSize,
-                                                                                         methodName);
+            List<ValidValueMappingElement>  validValuesMappings = handler.getValidValueMappings(userId,
+                                                                                                validValueGUID,
+                                                                                                validValueGUIDParameter,
+                                                                                                startFrom,
+                                                                                                pageSize,
+                                                                                                methodName);
 
-            if ((validValuesMappings != null) && (! validValuesMappings.isEmpty()))
-            {
-                List<ValidValueMappingElement> elements = new ArrayList<>();
+            response.setElementList(validValuesMappings);
 
-                for (ValidValueMapping validValueMapping : validValuesMappings)
-                {
-                    if (validValueMapping != null)
-                    {
-                        ValidValueMappingElement validValuesMappingElement = new ValidValueMappingElement();
-
-                        if (validValueMapping.getValidValue() != null)
-                        {
-                            validValuesMappingElement.setValidValueElement(getValidValue(validValueMapping.getValidValue()));
-                        }
-
-                        validValuesMappingElement.setAssociationDescription(validValueMapping.getAssociationDescription());
-                        validValuesMappingElement.setConfidence(validValueMapping.getConfidence());
-                        validValuesMappingElement.setSteward(validValueMapping.getSteward());
-                        validValuesMappingElement.setNotes(validValueMapping.getNotes());
-
-                        elements.add(validValuesMappingElement);
-                    }
-                }
-
-                if (! elements.isEmpty())
-                {
-                    response.setElementList(elements);
-                }
-            }
         }
         catch (Throwable error)
         {
@@ -1737,7 +1638,8 @@ public class ValidValuesRESTServices
                                                               int    startFrom,
                                                               int    pageSize)
     {
-        final String   methodName = "getValidValuesMappings";
+        final String validValueGUIDParameter = "validValueGUID";
+        final String methodName              = "getValidValuesMappings";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -1748,33 +1650,40 @@ public class ValidValuesRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ValidValuesHandler handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+            ValidValuesHandler<ValidValueElement,
+                    ValidValueAssignmentConsumerElement,
+                    ValidValueAssignmentDefinitionElement,
+                    ValidValueImplAssetElement,
+                    ValidValueImplDefinitionElement,
+                    ValidValueMappingElement,
+                    ReferenceValueAssignmentDefinitionElement,
+                    ReferenceValueAssignmentItemElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
-            ValidValue        thisValidValue = handler.getValidValueByGUID(userId, validValueGUID, methodName);
-            ValidValueElement thisValidValueElement = getValidValue(thisValidValue);
+            ValidValueElement  validValueElement = handler.getValidValueByGUID(userId, validValueGUID, methodName);
 
-            List<ValidValueMapping>  validValuesMappings = handler.getValidValueMappings(userId,
-                                                                                         validValueGUID,
-                                                                                         startFrom,
-                                                                                         pageSize,
-                                                                                         methodName);
+            List<ValidValueMappingElement>  validValuesMappings = handler.getValidValueMappings(userId,
+                                                                                                validValueGUID,
+                                                                                                validValueGUIDParameter,
+                                                                                                startFrom,
+                                                                                                pageSize,
+                                                                                                methodName);
 
             if ((validValuesMappings != null) && (! validValuesMappings.isEmpty()))
             {
                 List<ValidValuesMappingElement> elements = new ArrayList<>();
 
-                for (ValidValueMapping validValueMapping : validValuesMappings)
+                for (ValidValueMappingElement validValueMapping : validValuesMappings)
                 {
                     if (validValueMapping != null)
                     {
                         ValidValuesMappingElement validValuesMappingElement = new ValidValuesMappingElement();
 
-                        if (validValueMapping.getValidValue() != null)
+                        if (validValueMapping.getValidValueElement() != null)
                         {
                             List<ValidValueElement> validValueElements = new ArrayList<>();
 
-                            validValueElements.add(thisValidValueElement);
-                            validValueElements.add(getValidValue(validValueMapping.getValidValue()));
+                            validValueElements.add(validValueElement);
+                            validValueElements.add(validValueMapping.getValidValueElement());
                             validValuesMappingElement.setValidValueElements(validValueElements);
                         }
 
@@ -1823,7 +1732,8 @@ public class ValidValuesRESTServices
                                                                                 int    startFrom,
                                                                                 int    pageSize)
     {
-        final String   methodName = "getReferenceValueAssignedItems";
+        final String validValueGUIDParameter = "validValueGUID";
+        final String methodName              = "getReferenceValueAssignedItems";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
@@ -1834,51 +1744,27 @@ public class ValidValuesRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ValidValuesHandler handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+            ValidValuesHandler<ValidValueElement,
+                    ValidValueAssignmentConsumerElement,
+                    ValidValueAssignmentDefinitionElement,
+                    ValidValueImplAssetElement,
+                    ValidValueImplDefinitionElement,
+                    ValidValueMappingElement,
+                    ReferenceValueAssignmentDefinitionElement,
+                    ReferenceValueAssignmentItemElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
-            List<ReferenceValueAssignedItem>  assignedItems = handler.getReferenceValueAssignedItems(userId,
-                                                                                                     validValueGUID,
-                                                                                                     instanceHandler.getSupportedZones(userId,
-                                                                                                                                       serverName,
-                                                                                                                                       methodName),
-                                                                                                     startFrom,
-                                                                                                     pageSize,
-                                                                                                     methodName);
+            List<ReferenceValueAssignmentItemElement>  assignedItems = handler.getReferenceValueAssignedItems(userId,
+                                                                                                              validValueGUID,
+                                                                                                              validValueGUIDParameter,
+                                                                                                              instanceHandler.getSupportedZones(userId,
+                                                                                                                                                serverName,
+                                                                                                                                                methodName),
+                                                                                                              startFrom,
+                                                                                                              pageSize,
+                                                                                                              methodName);
 
-            if ((assignedItems != null) && (! assignedItems.isEmpty()))
-            {
-                List<ReferenceValueAssignmentItemElement> elements = new ArrayList<>();
+            response.setElementList(assignedItems);
 
-                for (ReferenceValueAssignedItem assignedItem : assignedItems)
-                {
-                    if (assignedItem != null)
-                    {
-                        ReferenceValueAssignmentItemElement element              = new ReferenceValueAssignmentItemElement();
-                        Referenceable                       referenceableBean    = assignedItem.getAssignedItem();
-                        ReferenceableElement                referenceableElement = new ReferenceableElement();
-
-                        referenceableElement.setElementHeader(this.getElementHeader(referenceableBean));
-                        referenceableElement.setQualifiedName(referenceableBean.getQualifiedName());
-                        referenceableElement.setTypeName(referenceableBean.getType().getElementTypeName());
-                        referenceableElement.setAdditionalProperties(referenceableBean.getAdditionalProperties());
-                        referenceableElement.setExtendedProperties(referenceableBean.getExtendedProperties());
-                        referenceableElement.setClassifications(this.getClassifications(referenceableBean));
-                        referenceableElement.setMeanings(this.getMeanings(referenceableBean));
-
-                        element.setAssignedItem(referenceableElement);
-                        element.setConfidence(assignedItem.getConfidence());
-                        element.setSteward(assignedItem.getSteward());
-                        element.setNotes(assignedItem.getNotes());
-
-                        elements.add(element);
-                    }
-                }
-
-                if (! elements.isEmpty())
-                {
-                    response.setElementList(elements);
-                }
-            }
         }
         catch (Throwable error)
         {
@@ -1910,6 +1796,7 @@ public class ValidValuesRESTServices
                                                                                     int    startFrom,
                                                                                     int    pageSize)
     {
+        final String   guidParameterName = "referenceableGUID";
         final String   methodName = "getValidValuesAssignmentDefinition";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
@@ -1921,42 +1808,24 @@ public class ValidValuesRESTServices
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ValidValuesHandler handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+            ValidValuesHandler<ValidValueElement,
+                    ValidValueAssignmentConsumerElement,
+                    ValidValueAssignmentDefinitionElement,
+                    ValidValueImplAssetElement,
+                    ValidValueImplDefinitionElement,
+                    ValidValueMappingElement,
+                    ReferenceValueAssignmentDefinitionElement,
+                    ReferenceValueAssignmentItemElement> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
-            List<ReferenceValueAssignment>  referenceValueAssignments = handler.getReferenceValueAssignments(userId,
-                                                                                                             referenceableGUID,
-                                                                                                             startFrom,
-                                                                                                             pageSize,
-                                                                                                             methodName);
+            List<ReferenceValueAssignmentDefinitionElement>  referenceValueAssignments = handler.getReferenceValueAssignments(userId,
+                                                                                                                              referenceableGUID,
+                                                                                                                              guidParameterName,
+                                                                                                                              startFrom,
+                                                                                                                              pageSize,
+                                                                                                                              methodName);
 
-            if ((referenceValueAssignments != null) && (! referenceValueAssignments.isEmpty()))
-            {
-                List<ReferenceValueAssignmentDefinitionElement> elements = new ArrayList<>();
+            response.setElementList(referenceValueAssignments);
 
-                for (ReferenceValueAssignment referenceValueAssignment : referenceValueAssignments)
-                {
-                    if (referenceValueAssignment != null)
-                    {
-                        ReferenceValueAssignmentDefinitionElement element = new ReferenceValueAssignmentDefinitionElement();
-
-                        if (referenceValueAssignment.getValidValue() != null)
-                        {
-                            element.setValidValueElement(getValidValue(referenceValueAssignment.getValidValue()));
-                        }
-
-                        element.setConfidence(referenceValueAssignment.getConfidence());
-                        element.setSteward(referenceValueAssignment.getSteward());
-                        element.setNotes(referenceValueAssignment.getNotes());
-
-                        elements.add(element);
-                    }
-                }
-
-                if (! elements.isEmpty())
-                {
-                    response.setElementList(elements);
-                }
-            }
         }
         catch (Throwable error)
         {
@@ -1965,217 +1834,5 @@ public class ValidValuesRESTServices
 
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
-    }
-
-
-    /**
-     * Convert the OCF element header into a digital architecture header.
-     *
-     * @param bean referenceable bean
-     * @return element header
-     */
-    private ElementHeader getElementHeader(Referenceable   bean)
-    {
-        ElementHeader header = null;
-
-        if (bean != null)
-        {
-            header = new ElementHeader();
-
-            header.setGUID(bean.getGUID());
-
-            if (bean.getType() != null)
-            {
-                ElementType type = new ElementType();
-                ElementOrigin origin = new ElementOrigin();
-
-                type.setTypeId(bean.getType().getElementTypeId());
-                type.setTypeName(bean.getType().getElementTypeName());
-                type.setTypeDescription(bean.getType().getElementTypeDescription());
-                type.setTypeVersion(bean.getType().getElementTypeVersion());
-                type.setSuperTypeNames(bean.getType().getElementSuperTypeNames());
-
-                origin.setHomeMetadataCollectionId(bean.getType().getElementHomeMetadataCollectionId());
-                origin.setHomeMetadataCollectionName(bean.getType().getElementHomeMetadataCollectionName());
-                origin.setLicense(bean.getType().getElementLicense());
-                origin.setSourceServer(bean.getType().getElementSourceServer());
-
-                if (bean.getType().getElementOrigin() != null)
-                switch (bean.getType().getElementOrigin())
-                {
-                    case UNKNOWN:
-                        origin.setOriginCategory(ElementOriginCategory.UNKNOWN);
-                        break;
-
-                    case LOCAL_COHORT:
-                        origin.setOriginCategory(ElementOriginCategory.LOCAL_COHORT);
-                        break;
-
-                    case EXPORT_ARCHIVE:
-                        origin.setOriginCategory(ElementOriginCategory.EXPORT_ARCHIVE);
-                        break;
-
-                    case CONTENT_PACK:
-                        origin.setOriginCategory(ElementOriginCategory.CONTENT_PACK);
-                        break;
-
-                    case DEREGISTERED_REPOSITORY:
-                        origin.setOriginCategory(ElementOriginCategory.DEREGISTERED_REPOSITORY);
-                        break;
-
-                    case CONFIGURATION:
-                        origin.setOriginCategory(ElementOriginCategory.CONFIGURATION);
-                        break;
-
-                    case EXTERNAL_SOURCE:
-                        origin.setOriginCategory(ElementOriginCategory.EXTERNAL_SOURCE);
-                        break;
-                }
-
-                header.setType(type);
-                header.setOrigin(origin);
-            }
-        }
-
-        return header;
-    }
-
-
-    /**
-     * Convert the OCF classification list into a digital architecture classification list.
-     *
-     * @param bean referenceable bean
-     * @return list of classifications
-     */
-    private List<Classification> getClassifications(Referenceable   bean)
-    {
-        List<Classification> classifications = null;
-        if (bean != null)
-        {
-            if (bean.getClassifications() != null)
-            {
-                classifications = new ArrayList<>();
-
-                for (org.odpi.openmetadata.frameworks.connectors.properties.beans.Classification classification : bean.getClassifications())
-                {
-                    if (classification != null)
-                    {
-                        Classification result = new Classification();
-
-                        result.setClassificationName(classification.getClassificationName());
-                        result.setClassificationProperties(classification.getClassificationProperties());
-
-                        classifications.add(result);
-                    }
-                }
-
-                if (classifications.isEmpty())
-                {
-                    classifications = null;
-                }
-            }
-        }
-
-        return classifications;
-    }
-
-
-    /**
-     * Convert the OCF meanings list into a digital architecture list of guids.
-     *
-     * @param bean referenceable bean
-     * @return list of guids
-     */
-    private List<String> getMeanings(Referenceable bean)
-    {
-        List<String> meanings = null;
-        if (bean != null)
-        {
-            if (bean.getMeanings() != null)
-            {
-                meanings = new ArrayList<>();
-
-                for (Meaning meaning : bean.getMeanings())
-                {
-                    if (meaning != null)
-                    {
-                        meanings.add(meaning.getGUID());
-                    }
-                }
-
-                if (meanings.isEmpty())
-                {
-                    meanings = null;
-                }
-            }
-        }
-
-        return meanings;
-    }
-
-
-    /**
-     * Convert the OCF valid value bean into a digital architecture valid value element.
-     *
-     * @param validValue OCF bean
-     * @return valid value element
-     */
-    private ValidValueElement getValidValue(ValidValue validValue)
-    {
-        ValidValueElement validValueElement = null;
-
-        if (validValue != null)
-        {
-            validValueElement = new ValidValueElement();
-
-            validValueElement.setElementHeader(this.getElementHeader(validValue));
-            validValueElement.setQualifiedName(validValue.getQualifiedName());
-            validValueElement.setDisplayName(validValue.getDisplayName());
-            validValueElement.setDescription(validValue.getDescription());
-            validValueElement.setDeprecated(validValue.isDeprecated());
-            validValueElement.setScope(validValue.getScope());
-            validValueElement.setUsage(validValue.getUsage());
-            validValueElement.setPreferredValue(validValue.getPreferredValue());
-
-            validValueElement.setTypeName(validValue.getType().getElementTypeName());
-            validValueElement.setAdditionalProperties(validValue.getAdditionalProperties());
-            validValueElement.setExtendedProperties(validValue.getExtendedProperties());
-            validValueElement.setClassifications(this.getClassifications(validValue));
-            validValueElement.setMeanings(this.getMeanings(validValue));
-        }
-
-        return validValueElement;
-    }
-
-
-    /**
-     * Convert the OCF valid value list into a digital architecture valid value element list.
-     *
-     * @param validValueBeans list of OCF beans
-     * @return list of valid value elements
-     */
-    private List<ValidValueElement> getValidValues(List<ValidValue> validValueBeans)
-    {
-        List<ValidValueElement> validValueElements = null;
-
-        if (validValueBeans != null)
-        {
-            validValueElements = new ArrayList<>();
-
-            for (ValidValue validValue : validValueBeans)
-            {
-                if (validValue != null)
-                {
-                    validValueElements.add(this.getValidValue(validValue));
-                }
-            }
-
-            if (validValueElements.isEmpty())
-            {
-                validValueElements = null;
-            }
-        }
-
-        return validValueElements;
     }
 }

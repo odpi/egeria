@@ -45,7 +45,7 @@ open-metadata-implementation/frameworks/ @mandy-chessell
 
 open-metadata-implementation/governance-servers/ @mandy-chessell
 open-metadata-implementation/governance-servers/data-engine-proxy-services/ @cmgrote
-open-metadata-implementation/governance-servers/open-lineage-services/ @DimitriosMaimaris @lcpopa
+open-metadata-implementation/governance-servers/open-lineage-services/ @DimitriosMaimaris @lcpopa @popa-raluca
 
 
 open-metadata-implementation/platform-services/ @mandy-chessell

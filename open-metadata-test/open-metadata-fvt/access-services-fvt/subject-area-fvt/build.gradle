@@ -11,9 +11,9 @@ dependencies {
     implementation project(':open-metadata-implementation:repository-services:repository-services-apis')
     implementation project(':open-metadata-implementation:common-services:ffdc-services')
     testImplementation project(':open-metadata-distribution:open-metadata-assemblies')
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.2'
-    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.11.1'
-    testCompile("org.junit.jupiter:junit-jupiter-params:5.4.2")
+    testImplementation 'org.junit.jupiter:junit-jupiter-api'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations'
+    testCompile("org.junit.jupiter:junit-jupiter-params:5.7.0")
 
 
 }

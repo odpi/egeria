@@ -49,7 +49,7 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
 
     private String callingServiceName = null;
 
-    private static final Logger       log      = LoggerFactory.getLogger(EnterpriseOMRSRepositoryConnector.class);
+    private static final Logger log = LoggerFactory.getLogger(EnterpriseOMRSRepositoryConnector.class);
 
     /**
      * Constructor used by the EnterpriseOMRSConnectorProvider.
@@ -83,6 +83,16 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
                                                                             localMetadataCollectionId,
                                                                             auditLog);
         }
+    }
+
+    /**
+     * Set the unique Id of the metadata collection that is collocated with the Enterprise Metadata Collection
+     *
+     * @param localMetadataCollectionId String unique Id
+     */
+    public void setLocalMetadataCollectionId(String localMetadataCollectionId)
+    {
+        this.localMetadataCollectionId = localMetadataCollectionId;
     }
 
 
@@ -179,6 +189,7 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
                                            methodName);
     }
 
+
     /**
      * Returns the connector to the repository where the supplied instance can be updated, ie its home repository.
      *
@@ -240,6 +251,75 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
                                            methodName);
     }
 
+
+    /**
+     * Returns the list of connectors with the home repository first, then the local connector then the remaining remote connectors.
+     *
+     * @param instance instance to test
+     * @param methodName name of method making the request (used for logging)
+     * @return list of repository connectors
+     * @throws RepositoryErrorException home metadata collection is null
+     */
+    List<OMRSRepositoryConnector>  getHomeLocalRemoteConnectors(InstanceHeader instance,
+                                                                String         methodName) throws RepositoryErrorException
+    {
+        this.validateRepositoryIsActive(methodName);
+
+        repositoryValidator.validateHomeMetadataGUID(repositoryName, instance, methodName);
+
+        String  instanceMetadataCollectionId = instance.getMetadataCollectionId();
+
+        /*
+         * Begin by separating the repositories into two lists - one with the home repository (if present)
+         * and the non-home repositories.
+         */
+        List<OMRSRepositoryConnector>  remoteHomeRepository = new ArrayList<>();
+        List<OMRSRepositoryConnector>  otherRemoteRepositories = new ArrayList<>();
+
+        for (FederatedConnector   remoteCohortConnector : remoteCohortConnectors)
+        {
+            if (remoteCohortConnector != null)
+            {
+                String remoteMetadataCollectionId = remoteCohortConnector.getMetadataCollectionId();
+
+                if (remoteMetadataCollectionId != null)
+                {
+                    if (remoteMetadataCollectionId.equals(instanceMetadataCollectionId))
+                    {
+                        remoteHomeRepository.add(remoteCohortConnector.getConnector());
+                    }
+                    else if (remoteMetadataCollectionId.equals(instance.getReplicatedBy()))
+                    {
+                        remoteHomeRepository.add(remoteCohortConnector.getConnector());
+                    }
+                    else
+                    {
+                        otherRemoteRepositories.add(remoteCohortConnector.getConnector());
+                    }
+                }
+            }
+        }
+
+        List<OMRSRepositoryConnector>  resultList = remoteHomeRepository;
+
+        if (localMetadataCollectionId != null)
+        {
+            resultList.add(localConnector);
+        }
+
+        resultList.addAll(otherRemoteRepositories);
+
+        if (! resultList.isEmpty())
+        {
+            return resultList;
+        }
+        else
+        {
+            throw new RepositoryErrorException(OMRSErrorCode.NO_REPOSITORIES.getMessageDefinition(callingServiceName),
+                                               this.getClass().getName(),
+                                               methodName);
+        }
+    }
 
     /**
      * Return the federated connector for a metadata collection Id

@@ -1,0 +1,516 @@
+{
+	"info": {
+		"_postman_id": "240bfdb8-0349-4d95-998c-22f8f55bd601",
+		"name": "OLS",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "0.1.event bus",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "34d958cd-930e-4188-ab32-b07ea9c06664",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic YWRtaW46YWRtaW4="
+					},
+					{
+						"key": "User-Agent",
+						"value": "frfx"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"consumer\": {\n\t\"bootstrap.servers\" : \"{{kafka-url}}\",\n\t\"key.deserializer\": \"org.apache.kafka.common.serialization.StringDeserializer\",\n\t\"value.deserializer\": \"org.apache.kafka.common.serialization.StringDeserializer\",\n\t\"kafka.omrs.topic.id\": \"OMRSTopic\"\n},\n\"producer\": {\n\t\"bootstrap.servers\" : \"{{kafka-url}}\",\n\t\"key.serializer\": \"org.apache.kafka.common.serialization.StringSerializer\",\n\t\"value.serializer\": \"org.apache.kafka.common.serialization.StringSerializer\",\n\t\"kafka.omrs.topic.id\" : \"OMRSTopic\"\n}\n}"
+				},
+				"url": {
+					"raw": "{{base-url}}/open-metadata/admin-services/users/{{user-id}}/servers/{{server-id}}/event-bus?connectorProvider=org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopicProvider&topicURLRoot=OMRSTopic",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"open-metadata",
+						"admin-services",
+						"users",
+						"{{user-id}}",
+						"servers",
+						"{{server-id}}",
+						"event-bus"
+					],
+					"query": [
+						{
+							"key": "connectorProvider",
+							"value": "org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopicProvider"
+						},
+						{
+							"key": "topicURLRoot",
+							"value": "OMRSTopic"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "0.2.set server url",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d3768d0b-1e7a-49c5-ba40-9a0587b17098",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic YWRtaW46YWRtaW4="
+					},
+					{
+						"key": "User-Agent",
+						"value": "frfx"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{base-url}}/open-metadata/admin-services/users/{{user-id}}/servers/{{server-id}}/server-url-root?url={{base-url}}",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"open-metadata",
+						"admin-services",
+						"users",
+						"{{user-id}}",
+						"servers",
+						"{{server-id}}",
+						"server-url-root"
+					],
+					"query": [
+						{
+							"key": "url",
+							"value": "{{base-url}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "0.3.cohort",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a2902433-40e0-4a74-a999-67452a342213",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "User-Agent",
+						"value": "Mozzzzz"
+					},
+					{
+						"key": "Authorization",
+						"value": "Basic YWRtaW46YWRtaW4="
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{base-url}}/open-metadata/admin-services/users/{{user-id}}/servers/{{server-id}}/cohorts/cohort1",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"open-metadata",
+						"admin-services",
+						"users",
+						"{{user-id}}",
+						"servers",
+						"{{server-id}}",
+						"cohorts",
+						"cohort1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "0.4.1.configure OLS - embedded",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "eea1c191-4d1a-47d6-9558-0f647374a2f5",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic YWRtaW46YWRtaW4="
+					},
+					{
+						"key": "User-Agent",
+						"value": "frfx"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"class\": \"OpenLineageConfig\",\n\t\"openLineageDescription\": \"Open Lineage Service is used for the storage and querying of lineage\",\n\t\"inTopicName\": \"server.omas.omas.assetlineage.outTopic\",\n\t\"openLineageWiki\": \"wiki URL\",\n\t\"jobIntervalInSeconds\" : \"120\",\n\t\"lineageGraphConnection\":{\n        \"class\": \"Connection\",\n        \"displayName\": \"Lineage Graph Connection\",\n        \"description\": \"Used for storing lineage in the Open Metadata format\",\n        \"connectorType\":{\n        \t\"class\": \"ConnectorType\",\n        \t\"connectorProviderClassName\": \"org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.graph.LineageGraphConnectorProvider\"\n    \t},\n    \"configurationProperties\": {\n            \"gremlin.graph\": \"org.janusgraph.core.JanusGraphFactory\",\n            \"storage.backend\": \"berkeleyje\",\n            \"storage.directory\": \"./egeria-lineage-repositories/lineageGraph/berkeley\",\n            \"index.search.backend\": \"lucene\",\n            \"index.search.directory\": \"./egeria-lineage-repositories/lineageGraph/searchindex\"\n        }\n    }\n}"
+				},
+				"url": {
+					"raw": "{{base-url}}/open-metadata/admin-services/users/{{user-id}}/servers/{{server-id}}/open-lineage/configuration",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"open-metadata",
+						"admin-services",
+						"users",
+						"{{user-id}}",
+						"servers",
+						"{{server-id}}",
+						"open-lineage",
+						"configuration"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "0.4.1.configure OLS - remote",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "96bc2b97-f5de-49bb-b864-953bbf439830",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic YWRtaW46YWRtaW4="
+					},
+					{
+						"key": "User-Agent",
+						"value": "frfx"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"class\": \"OpenLineageConfig\",\n    \"openLineageDescription\": \"Open Lineage Service is used for the storage and querying of lineage\",\n    \"inTopicName\": \"omp_assetlineage_out\",\n    \"openLineageWiki\": \"wiki URL\",\n    \"lineageGraphConnection\": {\n        \"class\": \"Connection\",\n        \"displayName\": \"Lineage Graph Connection\",\n        \"description\": \"Used for storing lineage in the Open Metadata format\",\n        \"connectorType\": {\n            \"class\": \"ConnectorType\",\n            \"connectorProviderClassName\": \"org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.graph.LineageGraphRemoteConnectorProvider\"\n        },\n       \"configurationProperties\": {\n            \"port\": \"8182\",\n            \"hosts\": [\"localhost\"],\n            \"serializer.className\": \"org.apache.tinkerpop.gremlin.driver.ser.GryoMessageSerializerV3d0\",\n            \"serializer.config\": {\n                \"ioRegistries\": [\n                    \"org.janusgraph.graphdb.tinkerpop.JanusGraphIoRegistry\",\n                    \"org.apache.tinkerpop.gremlin.tinkergraph.structure.TinkerIoRegistryV3d0\"\n                    ]\n            },\n            \"gremlin.remote.driver.sourceName\": \"g\",\n            \"remote.schemaManagement.enable\": true\n        }\n    },\n    \"jobIntervalInSeconds\": 120\n}"
+				},
+				"url": {
+					"raw": "{{base-url}}/open-metadata/admin-services/users/{{user-id}}/servers/{{server-id}}/open-lineage/configuration",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"open-metadata",
+						"admin-services",
+						"users",
+						"{{user-id}}",
+						"servers",
+						"{{server-id}}",
+						"open-lineage",
+						"configuration"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "0.4.2. get configuration OLS",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8a70b642-46f0-48c3-b14e-ad5832452ec3",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic YWRtaW46YWRtaW4="
+					},
+					{
+						"key": "User-Agent",
+						"value": "frfx"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"class\": \"OpenLineageConfig\",\n\t\"openLineageDescription\": \"Open Lineage Service is used for the storage and querying of lineage\",\n\t\"inTopicName\": \"server.omas.omas.assetlineage.outTopic\",\n\t\"openLineageWiki\": \"wiki URL\",\n\t\"jobIntervalInSeconds\" : \"120\",\n\t\"lineageGraphConnection\":{\n        \"class\": \"Connection\",\n        \"displayName\": \"Lineage Graph Connection\",\n        \"description\": \"Used for storing lineage in the Open Metadata format\",\n        \"connectorType\":{\n        \t\"class\": \"ConnectorType\",\n        \t\"connectorProviderClassName\": \"org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.graph.LineageGraphConnectorProvider\"\n    \t},\n    \"configurationProperties\": {\n            \"gremlin.graph\": \"org.janusgraph.core.JanusGraphFactory\",\n            \"storage.backend\": \"berkeleyje\",\n            \"storage.directory\": \"./egeria-lineage-repositories/lineageGraph/berkeley\",\n            \"index.search.backend\": \"lucene\",\n            \"index.search.directory\": \"./egeria-lineage-repositories/lineageGraph/searchindex\"\n        }\n    }\n}"
+				},
+				"url": {
+					"raw": "{{base-url}}/open-metadata/admin-services/users/{{user-id}}/servers/{{server-id}}/configuration",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"open-metadata",
+						"admin-services",
+						"users",
+						"{{user-id}}",
+						"servers",
+						"{{server-id}}",
+						"configuration"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "0.5.Start",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f01d02d1-0993-4589-bc0d-69fa7eb8306c",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "demo",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "demo",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{base-url}}/open-metadata/admin-services/users/{{user-id}}/servers/{{server-id}}/instance",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"open-metadata",
+						"admin-services",
+						"users",
+						"{{user-id}}",
+						"servers",
+						"{{server-id}}",
+						"instance"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Query Lineage - End to end",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"class\": \"LineageQueryParameters\",\n  \"scope\": \"END_TO_END\",\n  \"displayNameMustContain\": \"\",\n  \"includeProcesses\": true\n}"
+				},
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/open-lineage/users/{{user-id}}/lineage/entities/data_file_field@a7a7faad-fa91-4d4b-958e-9dc03ba54fa7:b1c497ce.60641b50.001mupjue.rjmi3rm.2r6dbn.4ufrhb60vcofd0mjuha4q",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"open-lineage",
+						"users",
+						"{{user-id}}",
+						"lineage",
+						"entities",
+						"data_file_field@a7a7faad-fa91-4d4b-958e-9dc03ba54fa7:b1c497ce.60641b50.001mupjue.rjmi3rm.2r6dbn.4ufrhb60vcofd0mjuha4q"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Query Lineage - Vertical",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"class\": \"LineageQueryParameters\",\n  \"scope\": \"VERTICAL\",\n  \"displayNameMustContain\": \"\",\n  \"includeProcesses\": true\n}"
+				},
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/open-lineage/users/{{user-id}}/lineage/entities/data_file_field@a7a7faad-fa91-4d4b-958e-9dc03ba54fa7:b1c497ce.60641b50.001mupjue.rjmi3rm.2r6dbn.4ufrhb60vcofd0mjuha4q",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"open-lineage",
+						"users",
+						"{{user-id}}",
+						"lineage",
+						"entities",
+						"data_file_field@a7a7faad-fa91-4d4b-958e-9dc03ba54fa7:b1c497ce.60641b50.001mupjue.rjmi3rm.2r6dbn.4ufrhb60vcofd0mjuha4q"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Query Lineage - Source and Destination",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "\n{\n  \"class\": \"LineageQueryParameters\",\n  \"scope\": \"SOURCE_AND_DESTINATION\",\n  \"displayNameMustContain\": \"\",\n  \"includeProcesses\": true\n}"
+				},
+				"url": {
+					"raw": "{{base-url}}/servers/{{server-id}}/open-metadata/open-lineage/users/{{user-id}}/lineage/entities/data_file_field@a7a7faad-fa91-4d4b-958e-9dc03ba54fa7:b1c497ce.60641b50.001mupjue.rjmi3rm.2r6dbn.4ufrhb60vcofd0mjuha4q",
+					"host": [
+						"{{base-url}}"
+					],
+					"path": [
+						"servers",
+						"{{server-id}}",
+						"open-metadata",
+						"open-lineage",
+						"users",
+						"{{user-id}}",
+						"lineage",
+						"entities",
+						"data_file_field@a7a7faad-fa91-4d4b-958e-9dc03ba54fa7:b1c497ce.60641b50.001mupjue.rjmi3rm.2r6dbn.4ufrhb60vcofd0mjuha4q"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

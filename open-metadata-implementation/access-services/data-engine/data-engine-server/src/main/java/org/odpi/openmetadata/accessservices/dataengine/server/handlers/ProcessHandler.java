@@ -161,7 +161,7 @@ public class ProcessHandler {
                 serverName, serviceName);
 
         assetHandler.reclassifyAsset(userId, originalProcess, updatedProcess, updatedProcessBuilder.getZoneMembershipProperties(methodName),
-                updatedProcessBuilder.getOwnerProperties(methodName), null, methodName);
+                updatedProcessBuilder.getOwnerProperties(methodName),  methodName);
 
         EntityDetail updatedProcessEntity = dataEngineCommonHandler.buildEntityDetail(processGUID,
                 updatedProcessBuilder.getInstanceProperties(methodName));

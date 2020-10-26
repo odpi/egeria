@@ -16,9 +16,9 @@ import static org.testng.Assert.assertTrue;
  */
 public class TestElementHeader
 {
-    private ElementType          type            = new ElementType();
-    private List<Classification> classifications = new ArrayList<>();
-    private List<String>         superTypes      = new ArrayList<>();
+    private ElementType                 type            = new ElementType();
+    private List<ElementClassification> classifications = new ArrayList<>();
+    private List<String>                superTypes      = new ArrayList<>();
 
 
     /**
@@ -26,7 +26,7 @@ public class TestElementHeader
      */
     public TestElementHeader()
     {
-        classifications.add(new Classification());
+        classifications.add(new ElementClassification());
         superTypes.add("Referenceable");
 
         type.setElementSuperTypeNames(superTypes);

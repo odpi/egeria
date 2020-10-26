@@ -20,34 +20,41 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum RelatedMediaUsage implements Serializable
 {
-    ICON           (0, "Icon", "Provides a small image to represent the asset in tree views and graphs."),
-    THUMBNAIL      (1, "Thumbnail", "Provides a small image about the asset that can be used in lists."),
-    ILLUSTRATION   (2, "Illustration", "Illustrates how the asset works or what it contains. It is complementary to the asset's description."),
-    USAGE_GUIDANCE (3, "Usage Guidance", "Provides guidance to a person on how to use the asset."),
-    OTHER          (99, "Other", "Another usage.");
+    ICON           (0, 0, "Icon", "Provides a small image to represent the asset in tree views and graphs."),
+    THUMBNAIL      (1, 1, "Thumbnail", "Provides a small image about the asset that can be used in lists."),
+    ILLUSTRATION   (2, 2, "Illustration", "Illustrates how the asset works or what it contains. It is complementary to the asset's description."),
+    USAGE_GUIDANCE (3, 3, "Usage Guidance", "Provides guidance to a person on how to use the asset."),
+    OTHER          (99, 99, "Other", "Another usage.");
+
+    public static final String ENUM_TYPE_GUID  = "c6861a72-7485-48c9-8040-876f6c342b61";
+    public static final String ENUM_TYPE_NAME  = "MediaUsage";
+
+    private int    openTypeOrdinal;
+
+    private int    ordinal;
+    private String name;
+    private String description;
 
     private static final long     serialVersionUID = 1L;
 
-    private int            mediaUsageCode;
-    private String         mediaUsageName;
-    private String         mediaUsageDescription;
-
 
     /**
-     * Typical Constructor
+     * Constructor to set up the instance of this enum.
      *
-     * @param mediaUsageCode ordinal
-     * @param mediaUsageName short name
-     * @param mediaUsageDescription longer explanation
+     * @param ordinal code number
+     * @param openTypeOrdinal code number from the equivalent Enum Type
+     * @param name default name
+     * @param description default description
      */
-    RelatedMediaUsage(int     mediaUsageCode, String   mediaUsageName, String   mediaUsageDescription)
+    RelatedMediaUsage(int    ordinal,
+                      int    openTypeOrdinal,
+                      String name,
+                      String description)
     {
-        /*
-         * Save the values supplied
-         */
-        this.mediaUsageCode = mediaUsageCode;
-        this.mediaUsageName = mediaUsageName;
-        this.mediaUsageDescription = mediaUsageDescription;
+        this.ordinal         = ordinal;
+        this.openTypeOrdinal = openTypeOrdinal;
+        this.name            = name;
+        this.description     = description;
     }
 
 
@@ -58,7 +65,7 @@ public enum RelatedMediaUsage implements Serializable
      */
     public int getOrdinal()
     {
-        return mediaUsageCode;
+        return ordinal;
     }
 
 
@@ -69,7 +76,7 @@ public enum RelatedMediaUsage implements Serializable
      */
     public String getName()
     {
-        return mediaUsageName;
+        return name;
     }
 
 
@@ -80,8 +87,35 @@ public enum RelatedMediaUsage implements Serializable
      */
     public String getDescription()
     {
-        return mediaUsageDescription;
+        return description;
     }
+
+
+    /**
+     * Return the code for this enum that comes from the Open Metadata Type that this enum represents.
+     *
+     * @return int code number
+     */
+    public int getOpenTypeOrdinal()
+    {
+        return openTypeOrdinal;
+    }
+
+
+    /**
+     * Return the unique identifier for the open metadata enum type that this enum class represents.
+     *
+     * @return string guid
+     */
+    public String getOpenTypeGUID() { return ENUM_TYPE_GUID; }
+
+
+    /**
+     * Return the unique name for the open metadata enum type that this enum class represents.
+     *
+     * @return string name
+     */
+    public String getOpenTypeName() { return ENUM_TYPE_NAME; }
 
 
     /**
@@ -93,9 +127,9 @@ public enum RelatedMediaUsage implements Serializable
     public String toString()
     {
         return "RelatedMediaUsage{" +
-                "mediaUsageCode=" + mediaUsageCode +
-                ", mediaUsageName='" + mediaUsageName + '\'' +
-                ", mediaUsageDescription='" + mediaUsageDescription + '\'' +
+                "mediaUsageCode=" + ordinal +
+                ", mediaUsageName='" + name + '\'' +
+                ", mediaUsageDescription='" + description + '\'' +
                 '}';
     }
 }
