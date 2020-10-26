@@ -1445,7 +1445,7 @@ class GraphOMRSMetadataStore {
          *   1. core properties from the audit header
          *   2. type-defined attributes from the typedef (including inheritance in the case of entities, but not relationships or classifications)
          *
-         * The core property names are known (they are listed in the keys of GraphOMRSCOnstants.corePropertyTypes). Core properties are stored in the
+         * The core property names are known (they are listed in the keys of GraphOMRSConstants.corePropertyTypes). Core properties are stored in the
          * graph (as vertex and edge properties) under their prefixed name - where the prefix depends on the type and purpose of the graph
          * element (e.g. vertex-entity, edge-relationship or vertex-classification). These are shortened to 've', 'er' and 'vc' as defined in the constants.
          * For example, for an entity the core 'createdBy' property from InstanceAuditHeader is stored under the key vecreatedBy.
@@ -1476,11 +1476,7 @@ class GraphOMRSMetadataStore {
          * Check the match properties' names against two sets - first is the core properties, second is the type-defined attributes (including inherited attributes)
          */
 
-
-        // TODO - core property inclusion in a match properties object is not supported (currently - pending TDA/core name clashes being resolved)
-        // When that is resolved, uncomment the following line (and remove the null one below it).
-        // Set<String> corePropertyNames = corePropertyTypes.keySet();
-        Set<String> corePropertyNames = new HashSet<>();  // temporary line of code - to be removed
+        Set<String> corePropertyNames = corePropertyTypes.keySet();
 
 
         TypeDef typeDef = repositoryHelper.getTypeDefByName(repositoryName, typeDefName);
@@ -1938,7 +1934,7 @@ class GraphOMRSMetadataStore {
          *   1. core properties from the audit header
          *   2. type-defined attributes from the typedef (including inheritance in the case of entities, but not relationships or classifications)
          *
-         * The core property names are known (they are listed in the keys of GraphOMRSCOnstants.corePropertyTypes). Core properties are stored in the
+         * The core property names are known (they are listed in the keys of GraphOMRSConstants.corePropertyTypes). Core properties are stored in the
          * graph (as vertex and edge properties) under their prefixed name - where the prefix depends on the type and purpose of the graph
          * element (e.g. vertex-entity, edge-relationship or vertex-classification). These are shortened to 've', 'er' and 'vc' as defined in the constants.
          * For example, for an entity the core 'createdBy' property from InstanceAuditHeader is stored under the key vecreatedBy.
@@ -1969,10 +1965,7 @@ class GraphOMRSMetadataStore {
          * Check the match properties' names against two sets - first is the core properties, second is the type-defined attributes (including inherited attributes)
          */
 
-        // TODO - core property inclusion in a match properties object is not supported (currently - pending TDA/core name clashes being resolved)
-        // When that is resolved, uncomment the following line (and remove the null one below it).
-        // Set<String> corePropertyNames = corePropertyTypes.keySet();
-        Set<String> corePropertyNames = new HashSet<>();  // temporary line of code - to be removed
+        Set<String> corePropertyNames = corePropertyTypes.keySet();
 
 
         TypeDef typeDef = repositoryHelper.getTypeDefByName(repositoryName, typeDefName);
