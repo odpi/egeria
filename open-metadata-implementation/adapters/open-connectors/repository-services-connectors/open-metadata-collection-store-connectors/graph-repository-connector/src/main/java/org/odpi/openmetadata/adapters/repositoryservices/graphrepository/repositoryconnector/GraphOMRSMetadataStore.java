@@ -1708,22 +1708,36 @@ class GraphOMRSMetadataStore {
         }
 
 
-        while (gt.hasNext()) {
-            Vertex vertex = gt.next();
-            log.debug("{} found vertex {}", methodName, vertex);
 
-            EntityDetail entityDetail = new EntityDetail();
-            try {
-                // Check if we have stumbled on a proxy somehow, and if so avoid processing it.
-                Boolean isProxy = entityMapper.isProxy(vertex);
-                if (!isProxy) {
-                    entityMapper.mapVertexToEntityDetail(vertex, entityDetail);
-                    entities.add(entityDetail);
+        try
+        {
+
+
+            while (gt.hasNext())
+            {
+                Vertex vertex = gt.next();
+                log.debug("{} found vertex {}", methodName, vertex);
+
+                EntityDetail entityDetail = new EntityDetail();
+                try
+                {
+                    // Check if we have stumbled on a proxy somehow, and if so avoid processing it.
+                    Boolean isProxy = entityMapper.isProxy(vertex);
+                    if (!isProxy)
+                    {
+                        entityMapper.mapVertexToEntityDetail(vertex, entityDetail);
+                        entities.add(entityDetail);
+                    }
+                } catch (Exception e)
+                {
+                    log.error("{} caught exception from entity mapper, entity being ignored, {}", methodName, e.getMessage());
+                    continue;
                 }
-            } catch (Exception e) {
-                log.error("{} caught exception from entity mapper, entity being ignored, {}", methodName, e.getMessage());
-                continue;
             }
+
+        }
+        catch (Throwable t) {
+            log.debug("dummy for breakpoint");
         }
 
         g.tx().commit();
