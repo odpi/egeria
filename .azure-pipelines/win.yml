@@ -28,6 +28,7 @@ stages:
             inputs:
               script: |
                 git config --system core.longpaths true
+          - checkout: self
           - task: Maven@3
             inputs:
               mavenPomFile: 'pom.xml'
