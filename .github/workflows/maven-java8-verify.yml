@@ -22,7 +22,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/.m2
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ runner.os }}-maven
+          key: ${{ runner.os }}-maven-j8-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-maven-j8
       - name: Build with Maven
         run: mvn -B clean install --file pom.xml
