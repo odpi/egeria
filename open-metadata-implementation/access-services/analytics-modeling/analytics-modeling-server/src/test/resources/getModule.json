@@ -4,13 +4,25 @@
       "identifier" : "physicalmodule",
       "version" : "9.0",
       "dataSource" : [ {
+        "property" : [ {
+          "name" : "guid",
+          "value" : "DataSource@GOSALES.dbo"
+        } ],
         "schema" : "dbo",
         "catalog" : "GOSALES",
         "name" : "GOSALES.dbo",
         "table" : [ {
+          "property" : [ {
+            "name" : "guid",
+            "value" : "Table@Date"
+          } ],
           "name" : "Date",
           "tableItem" : [ {
             "column" : {
+              "property" : [ {
+                "name" : "guid",
+                "value" : "Column@DateKey"
+              } ],
               "name" : "DateKey",
               "vendorType" : "INT32",
               "nullable" : false,
@@ -18,6 +30,10 @@
             }
           }, {
             "column" : {
+              "property" : [ {
+                "name" : "guid",
+                "value" : "Column@Date"
+              } ],
               "name" : "Date",
               "vendorType" : "DATETIME",
               "nullable" : false,
@@ -29,9 +45,17 @@
             "keyedColumn" : [ "DateKey" ]
           } ]
         }, {
+          "property" : [ {
+            "name" : "guid",
+            "value" : "Table@Location"
+          } ],
           "name" : "Location",
           "tableItem" : [ {
             "column" : {
+              "property" : [ {
+                "name" : "guid",
+                "value" : "Column@Latitude"
+              } ],
               "name" : "Latitude",
               "vendorType" : "DECIMAL",
               "nullable" : false,
@@ -39,6 +63,10 @@
             }
           }, {
             "column" : {
+              "property" : [ {
+                "name" : "guid",
+                "value" : "Column@Longitude"
+              } ],
               "name" : "Longitude",
               "vendorType" : "DECIMAL",
               "nullable" : false,
@@ -46,6 +74,10 @@
             }
           }, {
             "column" : {
+              "property" : [ {
+                "name" : "guid",
+                "value" : "Column@Destination"
+              } ],
               "name" : "Destination",
               "vendorType" : "STRING",
               "nullable" : false,
@@ -57,9 +89,17 @@
             "keyedColumn" : [ "Latitude", "Longitude" ]
           } ]
         }, {
+          "property" : [ {
+            "name" : "guid",
+            "value" : "Table@Product"
+          } ],
           "name" : "Product",
           "tableItem" : [ {
             "column" : {
+              "property" : [ {
+                "name" : "guid",
+                "value" : "Column@ProductId"
+              } ],
               "name" : "ProductId",
               "vendorType" : "INT32",
               "nullable" : false,
@@ -67,6 +107,10 @@
             }
           }, {
             "column" : {
+              "property" : [ {
+                "name" : "guid",
+                "value" : "Column@ProductName"
+              } ],
               "name" : "ProductName",
               "vendorType" : "STRING",
               "nullable" : false,
@@ -74,6 +118,10 @@
             }
           }, {
             "column" : {
+              "property" : [ {
+                "name" : "guid",
+                "value" : "Column@ProductDescription"
+              } ],
               "name" : "ProductDescription",
               "vendorType" : "STRING",
               "nullable" : true,
@@ -81,6 +129,10 @@
             }
           }, {
             "column" : {
+              "property" : [ {
+                "name" : "guid",
+                "value" : "Column@ProductIntroductionDate"
+              } ],
               "name" : "ProductIntroductionDate",
               "vendorType" : "INT32",
               "nullable" : false,
@@ -88,6 +140,10 @@
             }
           }, {
             "column" : {
+              "property" : [ {
+                "name" : "guid",
+                "value" : "Column@ProductTerminationDate"
+              } ],
               "name" : "ProductTerminationDate",
               "vendorType" : "INT32",
               "nullable" : false,
@@ -115,9 +171,17 @@
             "keyedColumn" : [ "ProductId" ]
           } ]
         }, {
+          "property" : [ {
+            "name" : "guid",
+            "value" : "Table@Sales"
+          } ],
           "name" : "Sales",
           "tableItem" : [ {
             "column" : {
+              "property" : [ {
+                "name" : "guid",
+                "value" : "Column@ProductId"
+              } ],
               "name" : "ProductId",
               "vendorType" : "INT32",
               "nullable" : false,
@@ -125,6 +189,10 @@
             }
           }, {
             "column" : {
+              "property" : [ {
+                "name" : "guid",
+                "value" : "Column@DateKey"
+              } ],
               "name" : "DateKey",
               "vendorType" : "INT32",
               "nullable" : false,
@@ -132,6 +200,10 @@
             }
           }, {
             "column" : {
+              "property" : [ {
+                "name" : "guid",
+                "value" : "Column@Quantity"
+              } ],
               "name" : "Quantity",
               "vendorType" : "INT32",
               "nullable" : false,
@@ -139,6 +211,10 @@
             }
           }, {
             "column" : {
+              "property" : [ {
+                "name" : "guid",
+                "value" : "Column@Price"
+              } ],
               "name" : "Price",
               "vendorType" : "DECIMAL",
               "nullable" : false,
@@ -146,6 +222,10 @@
             }
           }, {
             "column" : {
+              "property" : [ {
+                "name" : "guid",
+                "value" : "Column@Discount"
+              } ],
               "name" : "Discount",
               "vendorType" : "DECIMAL",
               "nullable" : false,
@@ -153,6 +233,10 @@
             }
           }, {
             "column" : {
+              "property" : [ {
+                "name" : "guid",
+                "value" : "Column@ShipmentDestinationLatitude"
+              } ],
               "name" : "ShipmentDestinationLatitude",
               "vendorType" : "DECIMAL",
               "nullable" : false,
@@ -160,6 +244,10 @@
             }
           }, {
             "column" : {
+              "property" : [ {
+                "name" : "guid",
+                "value" : "Column@ShipmentDestinationLongitude"
+              } ],
               "name" : "ShipmentDestinationLongitude",
               "vendorType" : "DECIMAL",
               "nullable" : false,

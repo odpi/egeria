@@ -4,10 +4,10 @@ package org.odpi.openmetadata.governanceservers.discoveryengineservices.server;
 
 import org.odpi.openmetadata.accessservices.discoveryengine.client.DiscoveryConfigurationClient;
 import org.odpi.openmetadata.accessservices.discoveryengine.client.DiscoveryEngineClient;
+import org.odpi.openmetadata.accessservices.discoveryengine.client.ODFRESTClient;
 import org.odpi.openmetadata.adminservices.configuration.properties.DiscoveryEngineServicesConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.GovernanceServicesDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
-import org.odpi.openmetadata.commonservices.odf.metadatamanagement.client.ODFRESTClient;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.governanceservers.discoveryengineservices.handlers.DiscoveryConfigurationRefreshHandler;
@@ -263,7 +263,7 @@ public class DiscoveryServerOperationalServices
         if (discoveryEngineNames.isEmpty())
         {
             final String actionDescription = "Validate discovery engine services configuration.";
-            final String methodName        = "getAccessServiceRootURL";
+            final String methodName        = "getDiscoveryEngineNames";
 
             auditLog.logMessage(actionDescription, DiscoveryEngineServicesAuditCode.NO_DISCOVERY_ENGINES.getMessageDefinition());
 

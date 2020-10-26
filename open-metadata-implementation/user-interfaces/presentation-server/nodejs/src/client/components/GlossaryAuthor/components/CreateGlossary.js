@@ -7,6 +7,7 @@ import {
   DatePicker,
   DatePickerInput,
   DataTable,
+  Loading,
   TableContainer,
   Table,
   TableHead,
@@ -24,6 +25,7 @@ export default function CreateGlossary(props) {
   const [createdNode, setCreatedNode] = useState();
   const [errorMsg, setErrorMsg] = useState();
   const currentNodeType = getNodeType("glossary");
+  const [restCallInProgress, setRestCallInProgress] = useState(false);
 
   console.log("CreateGlossary");
 
@@ -38,6 +40,7 @@ export default function CreateGlossary(props) {
   const handleClick = (e) => {
     console.log("handleClick(()");
     e.preventDefault();
+    setRestCallInProgress(true);
     let body = createBody;
     // TODO consider moving this up to a node controller as per the CRUD pattern.
     // inthe meantime this will be self contained.
@@ -46,6 +49,7 @@ export default function CreateGlossary(props) {
     issueRestCreate(url, body, onSuccessfulCreate, onErrorCreate);
   };
   const onSuccessfulCreate = (json) => {
+    setRestCallInProgress(false);
     console.log("onSuccessfulCreate");
     if (json.result.length == 1) {
       const node = json.result[0];
@@ -55,6 +59,7 @@ export default function CreateGlossary(props) {
     }
   };
   const onErrorCreate = (msg) => {
+    setRestCallInProgress(false);
     console.log("Error on Create " + msg);
     setErrorMsg(msg);
     setCreatedNode(undefined);
@@ -156,7 +161,8 @@ export default function CreateGlossary(props) {
   };
   return (
     <div>
-      {createdNode != undefined && (
+      {restCallInProgress && <Loading description="Waiting for network call to the server to complete" withOverlay={true} />}
+      {!restCallInProgress && createdNode != undefined && (
         <div>
           <DataTable
             isSortable
@@ -248,7 +254,7 @@ export default function CreateGlossary(props) {
         </div>
       )}
 
-      {createdNode == undefined && (
+      {!restCallInProgress && createdNode == undefined && (
         <div>
           <form>
             <div>
@@ -298,7 +304,7 @@ export default function CreateGlossary(props) {
                 </DatePicker>
               </AccordionItem>
             </Accordion>
-
+            <div style={{ color: "red" }}>{errorMsg}</div>
             <div className="bx--form-item">
               <button
                 id="NodeCreateViewButton"

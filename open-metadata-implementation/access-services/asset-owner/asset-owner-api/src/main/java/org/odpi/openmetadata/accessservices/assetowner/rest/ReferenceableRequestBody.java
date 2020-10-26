@@ -4,8 +4,8 @@
 package org.odpi.openmetadata.accessservices.assetowner.rest;
 
 import com.fasterxml.jackson.annotation.*;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Classification;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Meaning;
+import org.odpi.openmetadata.accessservices.assetowner.properties.ElementClassification;
+import org.odpi.openmetadata.accessservices.assetowner.properties.MeaningProperties;
 
 import java.util.*;
 
@@ -23,20 +23,18 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes(
         {
-                @JsonSubTypes.Type(value = AssetRequestBody.class, name = "AssetRequestBody"),
-                @JsonSubTypes.Type(value = CommentRequestBody.class, name = "CommentRequestBody"),
                 @JsonSubTypes.Type(value = ValidValuesRequestBody.class, name = "ValidValuesRequestBody")
         })
 public class ReferenceableRequestBody extends AssetOwnerOMASAPIRequestBody
 {
     private static final long    serialVersionUID = 1L;
 
-    protected String               typeName             = null;
-    protected List<Classification> classifications      = null;
-    protected String               qualifiedName        = null;
-    protected List<Meaning>        meanings             = null;
-    protected Map<String, String>  additionalProperties = null;
-    protected Map<String, Object>  extendedProperties   = null;
+    protected String                      typeName             = null;
+    protected List<ElementClassification> classifications      = null;
+    protected String                      qualifiedName        = null;
+    protected List<MeaningProperties>     meanings             = null;
+    protected Map<String, String>         additionalProperties = null;
+    protected Map<String, Object>         extendedProperties   = null;
 
 
     /**
@@ -97,7 +95,7 @@ public class ReferenceableRequestBody extends AssetOwnerOMASAPIRequestBody
      *
      * @return list of classifications with their properties
      */
-    public List<Classification> getClassifications()
+    public List<ElementClassification> getClassifications()
     {
         return classifications;
     }
@@ -108,7 +106,7 @@ public class ReferenceableRequestBody extends AssetOwnerOMASAPIRequestBody
      *
      * @param classifications list of classifications with their properties
      */
-    public void setClassifications(List<Classification> classifications)
+    public void setClassifications(List<ElementClassification> classifications)
     {
         this.classifications = classifications;
     }
@@ -175,7 +173,7 @@ public class ReferenceableRequestBody extends AssetOwnerOMASAPIRequestBody
      *
      * @return list of meanings
      */
-    public List<Meaning> getMeanings()
+    public List<MeaningProperties> getMeanings()
     {
         if (meanings == null)
         {
@@ -197,7 +195,7 @@ public class ReferenceableRequestBody extends AssetOwnerOMASAPIRequestBody
      *
      * @param meanings list of meanings
      */
-    public void setMeanings(List<Meaning> meanings)
+    public void setMeanings(List<MeaningProperties> meanings)
     {
         this.meanings = meanings;
     }

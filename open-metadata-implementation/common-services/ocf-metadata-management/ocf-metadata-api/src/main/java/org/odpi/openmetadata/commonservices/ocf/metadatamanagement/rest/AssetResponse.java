@@ -40,6 +40,7 @@ public class AssetResponse extends OCFOMASAPIResponse
     private int            informalTagCount           = 0;
     private int            licenseCount               = 0;
     private int            likeCount                  = 0;
+    private int            keywordCount               = 0;
     private int            knownLocationsCount        = 0;
     private int            noteLogsCount              = 0;
     private int            ratingsCount               = 0;
@@ -78,6 +79,7 @@ public class AssetResponse extends OCFOMASAPIResponse
             this.informalTagCount           = template.getInformalTagCount();
             this.licenseCount               = template.getLicenseCount();
             this.likeCount                  = template.getLikeCount();
+            this.keywordCount               = template.getKeywordCount();
             this.knownLocationsCount        = template.getKnownLocationsCount();
             this.noteLogsCount              = template.getNoteLogsCount();
             this.ratingsCount               = template.getRatingsCount();
@@ -286,6 +288,27 @@ public class AssetResponse extends OCFOMASAPIResponse
         this.likeCount = likeCount;
     }
 
+
+    /**
+     * Return the count of keywords for the asset.
+     *
+     * @return count
+     */
+    public int getKeywordCount()
+    {
+        return keywordCount;
+    }
+
+
+    /**
+     * Set up the count of keywords for the asset.
+     *
+     * @param keywordCount count
+     */
+    public void setKeywordCount(int keywordCount)
+    {
+        this.keywordCount = keywordCount;
+    }
 
     /**
      * Return the count of known locations.

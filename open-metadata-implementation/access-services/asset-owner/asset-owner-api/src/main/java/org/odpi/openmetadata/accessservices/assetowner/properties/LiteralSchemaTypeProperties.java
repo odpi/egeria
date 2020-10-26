@@ -5,8 +5,6 @@ package org.odpi.openmetadata.accessservices.assetowner.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.LiteralSchemaType;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.SimpleSchemaType;
 
 import java.util.Objects;
 
@@ -52,30 +50,6 @@ public class LiteralSchemaTypeProperties extends SchemaTypeProperties
             dataType   = template.getDataType();
             fixedValue = template.getFixedValue();
         }
-    }
-
-
-    /**
-     * Copy/clone operator.
-     *
-     * @param objectToFill schema type object
-     * @return filled object
-     */
-    public LiteralSchemaType cloneProperties(LiteralSchemaType objectToFill)
-    {
-        LiteralSchemaType clone = objectToFill;
-
-        if (clone == null)
-        {
-            clone = new LiteralSchemaType();
-        }
-
-        clone.setDataType(this.getDataType());
-        clone.setFixedValue(this.getFixedValue());
-
-        super.cloneProperties(clone);
-
-        return clone;
     }
 
 
@@ -163,10 +137,8 @@ public class LiteralSchemaTypeProperties extends SchemaTypeProperties
                 ", displayName='" + getDisplayName() + '\'' +
                 ", description='" + getDescription() + '\'' +
                 ", typeName='" + getTypeName() + '\'' +
-                ", classifications=" + getClassifications() +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +
-                ", meanings=" + getMeanings() +
                 ", extendedProperties=" + getExtendedProperties() +
                 '}';
     }

@@ -15,24 +15,20 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * The ElementType bean provides details of the type information associated with a metadata element.
+ * It also includes the control information related the element's origin and how this element was created and maintained.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ElementType extends PropertyBase
+public class ElementType extends ElementControlHeader
 {
     private static final long     serialVersionUID = 1L;
 
-    protected String        elementTypeId                     = null;
-    protected String        elementTypeName                   = null;
-    protected List<String>  elementSuperTypeNames             = null;
-    protected long          elementTypeVersion                = 0;
-    protected String        elementTypeDescription            = null;
-    protected String        elementSourceServer               = null;
-    protected ElementOrigin elementOrigin                     = ElementOrigin.CONFIGURATION;
-    protected String        elementHomeMetadataCollectionId   = null;
-    protected String        elementHomeMetadataCollectionName = null;
-    protected String        elementLicense                    = null;
+    private String       elementTypeId          = null;
+    private String       elementTypeName        = null;
+    private List<String> elementSuperTypeNames  = null;
+    private long         elementTypeVersion     = 0;
+    private String       elementTypeDescription = null;
 
 
     /**
@@ -60,11 +56,6 @@ public class ElementType extends PropertyBase
             elementSuperTypeNames = templateType.getElementSuperTypeNames();
             elementTypeVersion = templateType.getElementTypeVersion();
             elementTypeDescription = templateType.getElementTypeDescription();
-            elementSourceServer = templateType.getElementSourceServer();
-            elementOrigin = templateType.getElementOrigin();
-            elementHomeMetadataCollectionId = templateType.getElementHomeMetadataCollectionId();
-            elementHomeMetadataCollectionName = templateType.getElementHomeMetadataCollectionName();
-            elementLicense = templateType.getElementLicense();
         }
     }
 
@@ -191,118 +182,6 @@ public class ElementType extends PropertyBase
 
 
     /**
-     * Set up the URL of the server where the element was retrieved from.  Typically this is
-     * a server where the OMAS interfaces are activated.  If no URL is known for the server then null is returned.
-     *
-     * @param elementSourceServer URL of the server
-     */
-    public void setElementSourceServer(String elementSourceServer)
-    {
-        this.elementSourceServer = elementSourceServer;
-    }
-
-
-
-    /**
-     * Return the URL of the server where the element was retrieved from.  Typically this is
-     * a server where the OMAS interfaces are activated.  If no URL is known for the server then null is returned.
-     *
-     * @return elementSourceServerURL the url of the server where the element came from
-     */
-    public String getElementSourceServer()
-    {
-        return elementSourceServer;
-    }
-
-
-    /**
-     * Set up the details of this element's origin.
-     *
-     * @param elementOrigin see ElementOrigin enum
-     */
-    public void setElementOrigin(ElementOrigin elementOrigin)
-    {
-        this.elementOrigin = elementOrigin;
-    }
-
-
-    /**
-     * Return the origin of the metadata element.
-     *
-     * @return ElementOrigin enum
-     */
-    public ElementOrigin getElementOrigin() { return elementOrigin; }
-
-
-    /**
-     * Returns the OMRS identifier for the metadata collection that is managed by the repository
-     * where the element originates (its home repository).
-     *
-     * @return String metadata collection id
-     */
-    public String getElementHomeMetadataCollectionId()
-    {
-        return elementHomeMetadataCollectionId;
-    }
-
-
-    /**
-     * Set up the unique identifier for the metadata collection that is managed by the repository
-     * where the element originates (its home repository).
-     *
-     * @param elementHomeMetadataCollectionId String unique identifier for the home metadata repository
-     */
-    public void setElementHomeMetadataCollectionId(String elementHomeMetadataCollectionId)
-    {
-        this.elementHomeMetadataCollectionId = elementHomeMetadataCollectionId;
-    }
-
-
-    /**
-     * Return the name of the metadata collection that this asset belongs to.
-     *
-     * @return name string
-     */
-    public String getElementHomeMetadataCollectionName()
-    {
-        return elementHomeMetadataCollectionName;
-    }
-
-
-    /**
-     * Set up the name of the metadata collection that this asset belongs to.
-     *
-     * @param elementHomeMetadataCollectionName name string
-     */
-    public void setElementHomeMetadataCollectionName(String elementHomeMetadataCollectionName)
-    {
-        this.elementHomeMetadataCollectionName = elementHomeMetadataCollectionName;
-    }
-
-
-    /**
-     * Return the license associated with this metadata element (null means none).
-     *
-     * @return string license name
-     */
-    public String getElementLicense()
-    {
-        return elementLicense;
-    }
-
-
-    /**
-     * Set up the license associated with this metadata element (null means none)
-     *
-     * @param elementLicense string license name
-     */
-    public void setElementLicense(String elementLicense)
-    {
-        this.elementLicense = elementLicense;
-    }
-
-
-    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -311,17 +190,26 @@ public class ElementType extends PropertyBase
     public String toString()
     {
         return "ElementType{" +
-                       "elementTypeId='" + elementTypeId + '\'' +
-                       ", elementTypeName='" + elementTypeName + '\'' +
-                       ", elementSuperTypeNames=" + elementSuperTypeNames +
-                       ", elementTypeVersion=" + elementTypeVersion +
-                       ", elementTypeDescription='" + elementTypeDescription + '\'' +
-                       ", elementSourceServer='" + elementSourceServer + '\'' +
-                       ", elementOrigin=" + elementOrigin +
-                       ", elementHomeMetadataCollectionId='" + elementHomeMetadataCollectionId + '\'' +
-                       ", elementHomeMetadataCollectionName='" + elementHomeMetadataCollectionName + '\'' +
-                       ", elementLicense='" + elementLicense + '\'' +
-                       '}';
+                "elementTypeId='" + elementTypeId + '\'' +
+                ", elementTypeName='" + elementTypeName + '\'' +
+                ", elementSuperTypeNames=" + elementSuperTypeNames +
+                ", elementTypeVersion=" + elementTypeVersion +
+                ", elementTypeDescription='" + elementTypeDescription + '\'' +
+                ", elementSourceServer='" + getElementSourceServer() + '\'' +
+                ", elementOrigin=" + getElementOrigin() +
+                ", elementMetadataCollectionId='" + getElementMetadataCollectionId() + '\'' +
+                ", elementMetadataCollectionName='" + getElementMetadataCollectionName() + '\'' +
+                ", elementLicense='" + getElementLicense() + '\'' +
+                ", status=" + getStatus() +
+                ", elementCreatedBy='" + getElementCreatedBy() + '\'' +
+                ", elementUpdatedBy='" + getElementUpdatedBy() + '\'' +
+                ", elementMaintainedBy=" + getElementMaintainedBy() +
+                ", elementCreateTime=" + getElementCreateTime() +
+                ", elementUpdateTime=" + getElementUpdateTime() +
+                ", elementVersion=" + getElementVersion() +
+                ", mappingProperties=" + getMappingProperties() +
+                ", headerVersion=" + getHeaderVersion() +
+                '}';
     }
 
 
@@ -338,21 +226,20 @@ public class ElementType extends PropertyBase
         {
             return true;
         }
-        if (!(objectToCompare instanceof ElementType))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        {
+            return false;
+        }
+        if (!super.equals(objectToCompare))
         {
             return false;
         }
         ElementType that = (ElementType) objectToCompare;
-        return getElementTypeVersion() == that.getElementTypeVersion() &&
-                Objects.equals(getElementTypeId(), that.getElementTypeId()) &&
-                Objects.equals(getElementTypeName(), that.getElementTypeName()) &&
-                Objects.equals(getElementSuperTypeNames(), that.getElementSuperTypeNames()) &&
-                Objects.equals(getElementTypeDescription(), that.getElementTypeDescription()) &&
-                Objects.equals(getElementSourceServer(), that.getElementSourceServer()) &&
-                getElementOrigin() == that.getElementOrigin() &&
-                Objects.equals(getElementHomeMetadataCollectionId(), that.getElementHomeMetadataCollectionId()) &&
-                Objects.equals(getElementHomeMetadataCollectionName(), that.getElementHomeMetadataCollectionName()) &&
-                Objects.equals(getElementLicense(), that.getElementLicense());
+        return elementTypeVersion == that.elementTypeVersion &&
+                Objects.equals(elementTypeId, that.elementTypeId) &&
+                Objects.equals(elementTypeName, that.elementTypeName) &&
+                Objects.equals(elementSuperTypeNames, that.elementSuperTypeNames) &&
+                Objects.equals(elementTypeDescription, that.elementTypeDescription);
     }
 
 
@@ -364,10 +251,6 @@ public class ElementType extends PropertyBase
     @Override
     public int hashCode()
     {
-        return Objects.hash(getElementTypeId(), getElementTypeName(), getElementSuperTypeNames(),
-                            getElementTypeVersion(),
-                            getElementTypeDescription(), getElementSourceServer(), getElementOrigin(),
-                            getElementHomeMetadataCollectionId(), getElementHomeMetadataCollectionName(),
-                            getElementLicense());
+        return Objects.hash(super.hashCode(), elementTypeId, elementTypeName, elementSuperTypeNames, elementTypeVersion, elementTypeDescription);
     }
 }

@@ -270,7 +270,6 @@ public class DatabaseContextHandler {
 
 	private MetadataModule buildModule(String databaseGuid, String catalog, String schema) throws AnalyticsModelingCheckedException {
 		MetadataModule module = new MetadataModule();
-
 		module.setIdentifier("physicalmodule");
 		module.setDataSource(Arrays.asList(buildDataSource(databaseGuid, catalog, schema)));
 		return module;
@@ -279,15 +278,16 @@ public class DatabaseContextHandler {
 	private DataSource buildDataSource(String databaseGuid, String catalog, String schema) throws AnalyticsModelingCheckedException {
 		DataSource ds = new DataSource();
 		ds.setCatalog(catalog);
-		ds.setSchema(schema);
-		ds.setName(catalog + "." + schema);
-		ds.setTable(buildTables(databaseGuid, schema));
+		EntityDetail schemaEntity = getSchemaEntityByName(databaseGuid, schema);
+		ds.setSchema(getEntityStringProperty(schemaEntity, Constants.ATTRIBUTE_NAME));
+		ds.setName(catalog + "." + ds.getSchema());
+		ds.setTable(buildTables(databaseGuid, schemaEntity));
+		ds.addProperty(Constants.GUID, schemaEntity.getGUID());
 		return ds;
 	}
 
-	private List<Table> buildTables(String databaseGuid, String schema) throws AnalyticsModelingCheckedException {
+	private List<Table> buildTables(String databaseGuid, EntityDetail schemaEntity) throws AnalyticsModelingCheckedException {
 
-		EntityDetail schemaEntity = getSchemaEntityByName(databaseGuid, schema);
 		List<EntityDetail> tables = getTablesForSchema(schemaEntity);
 
 		List<Table> ret = tables
@@ -295,7 +295,7 @@ public class DatabaseContextHandler {
 				.map(this::buildSingleTable)
 				.filter(Objects::nonNull).collect(Collectors.toList());
 		
-		ret.sort(Comparator.comparing(e->e.getName()));
+		ret.sort(Comparator.comparing(Table::getName));
 		
 		return ret;
 	}
@@ -304,6 +304,7 @@ public class DatabaseContextHandler {
 
 		Table ret = new Table();
 		ret.setName(getEntityStringProperty(entityTable, Constants.DISPLAY_NAME));
+		ret.addProperty(Constants.GUID, entityTable.getGUID());
 
 		List<Relationship> relationshipsTableColumns;
 		try {
@@ -315,7 +316,7 @@ public class DatabaseContextHandler {
 		}
 
 		if (relationshipsTableColumns == null || relationshipsTableColumns.isEmpty()) {
-			// report table without columns, don't create such table
+			// report table without columns, don't create empty table
 			return null;
 		}
 
@@ -501,6 +502,7 @@ public class DatabaseContextHandler {
 
 		item.setPosition(getEntityIntProperty(columnEntity, Constants.POSITION));
 		tableColumn.setName(getEntityStringProperty(columnEntity, Constants.DISPLAY_NAME));
+		tableColumn.addProperty(Constants.GUID, columnEntity.getGUID());
 
 		String pkName = getPrimaryKeyClassification(columnEntity);
 		if (pkName != null && !pkName.isEmpty()) {

@@ -598,15 +598,16 @@ public class DataEngineRESTServices {
     }
 
     /**
-     *  Retrieve in topic connection details from the service instance hosting Data Engine access service
+     * Retrieve in topic connection details from the service instance hosting Data Engine access service
+     *
      * @param serverName the name of server instance to call
-     * @param userId the name/identifier of the calling user
+     * @param userId     the name/identifier of the calling user
      *
      * @return OCF API ConnectionResponse object describing the details for the input topic connection used
      * or
-     *      * InvalidParameterException one of the parameters is null or invalid or
-     *      * UserNotAuthorizedException user not authorized to issue this request or
-     *      * PropertyServerException problem retrieving the discovery engine definition
+     * InvalidParameterException one of the parameters is null or invalid or
+     * UserNotAuthorizedException user not authorized to issue this request or
+     * PropertyServerException problem retrieving the discovery engine definition
      */
     public ConnectionResponse getInTopicConnection(String serverName, String userId) {
 
@@ -628,9 +629,9 @@ public class DataEngineRESTServices {
 
 
     public String createOrUpdateSchemaType(String userId, String serverName, SchemaType schemaType, String externalSourceName) throws
-                                                                                                                                InvalidParameterException,
-                                                                                                                                UserNotAuthorizedException,
-                                                                                                                                PropertyServerException {
+                                                                                                                               InvalidParameterException,
+                                                                                                                               UserNotAuthorizedException,
+                                                                                                                               PropertyServerException {
         final String methodName = "createOrUpdateSchemaType";
 
         log.debug(DEBUG_MESSAGE_METHOD_DETAILS, methodName, schemaType);
@@ -795,8 +796,10 @@ public class DataEngineRESTServices {
     private void addProcessHierarchyRelationships(String userId, String serverName, List<Process> processes, ProcessListResponse response,
                                                   String externalSourceName) {
         final String methodName = "addProcessHierarchyRelationships";
+        //TODO clarify intended behavior for process hierarchy relationships - for now, a process is not failed if the relationship fails
+        // to be created
 
-        ArrayList<String> failedGUIDS = new ArrayList<>();
+        //       ArrayList<String> failedGUIDS = new ArrayList<>();
 
         // add the ProcessHierarchy relationships only for successfully created processes
         processes.parallelStream().filter(process -> response.getGUIDs().contains(process.getGUID())).forEach(process -> {
@@ -819,17 +822,17 @@ public class DataEngineRESTServices {
                     restExceptionHandler.captureUserNotAuthorizedException(response, error);
                 }
             }
-            // failed to create a processHierarchy relationship, set the status of the process back to DRAFT and add the processGUID
-            // to the list of failed processes
-            if (response.getRelatedHTTPCode() != HttpStatus.OK.value()) {
-                updateProcessStatus(userId, serverName, processGUID, InstanceStatus.DRAFT);
-                failedGUIDS.add(processGUID);
-            }
+//            // failed to create a processHierarchy relationship, set the status of the process back to DRAFT and add the processGUID
+//            // to the list of failed processes
+//            if (response.getRelatedHTTPCode() != HttpStatus.OK.value()) {
+//                updateProcessStatus(userId, serverName, processGUID, InstanceStatus.DRAFT);
+//                failedGUIDS.add(processGUID);
+//            }
         });
 
-        // update the ProcessListResponse to reflect the updated status for the created/failed processes
-        response.getGUIDs().removeAll(failedGUIDS);
-        response.getFailedGUIDs().addAll(failedGUIDS);
+//        // update the ProcessListResponse to reflect the updated status for the created/failed processes
+//        response.getGUIDs().removeAll(failedGUIDS);
+//        response.getFailedGUIDs().addAll(failedGUIDS);
     }
 
     private void addProcessPortRelationships(String userId, String serverName, String processGUID, Set<String> portGUIDs, GUIDResponse response,

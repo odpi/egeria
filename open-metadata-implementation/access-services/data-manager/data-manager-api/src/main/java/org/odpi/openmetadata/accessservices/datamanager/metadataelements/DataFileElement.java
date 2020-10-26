@@ -15,17 +15,17 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * DatabaseElement contains the properties and header for a database entity retrieved from the metadata repository.
+ * DataFileElement contains the properties and header for a data file retrieved from the metadata repository.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class DataFileElement extends DataFileProperties implements MetadataElement,
-                                                                   Serializable
+public class DataFileElement implements MetadataElement, Serializable
 {
     private static final long     serialVersionUID = 1L;
 
-    private ElementHeader elementHeader = null;
+    private ElementHeader      elementHeader = null;
+    private DataFileProperties dataFileProperties = null;
 
 
     /**
@@ -47,6 +47,7 @@ public class DataFileElement extends DataFileProperties implements MetadataEleme
         if (template != null)
         {
             elementHeader = template.getElementHeader();
+            dataFileProperties = template.getDataFileProperties();
         }
     }
 
@@ -76,6 +77,28 @@ public class DataFileElement extends DataFileProperties implements MetadataEleme
 
 
     /**
+     * Return the properties of the file.
+     *
+     * @return file properties
+     */
+    public DataFileProperties getDataFileProperties()
+    {
+        return dataFileProperties;
+    }
+
+
+    /**
+     * Set up the data file properties.
+     *
+     * @param dataFileProperties file properties
+     */
+    public void setDataFileProperties(DataFileProperties dataFileProperties)
+    {
+        this.dataFileProperties = dataFileProperties;
+    }
+
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -85,23 +108,7 @@ public class DataFileElement extends DataFileProperties implements MetadataEleme
     {
         return "DataFileElement{" +
                 "elementHeader=" + elementHeader +
-                ", createTime=" + getCreateTime() +
-                ", modifiedTime=" + getModifiedTime() +
-                ", encodingType='" + getEncodingType() + '\'' +
-                ", encodingLanguage='" + getEncodingLanguage() + '\'' +
-                ", encodingDescription='" + getEncodingDescription() + '\'' +
-                ", displayName='" + getDisplayName() + '\'' +
-                ", description='" + getDescription() + '\'' +
-                ", owner='" + getOwner() + '\'' +
-                ", ownerCategory=" + getOwnerCategory() +
-                ", zoneMembership=" + getZoneMembership() +
-                ", origin=" + getOrigin() +
-                ", latestChange='" + getLatestChange() + '\'' +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", vendorProperties=" + getVendorProperties() +
-                ", typeName='" + getTypeName() + '\'' +
-                ", extendedProperties=" + getExtendedProperties() +
+                ", dataFileProperties=" + dataFileProperties +
                 '}';
     }
 
@@ -128,7 +135,8 @@ public class DataFileElement extends DataFileProperties implements MetadataEleme
             return false;
         }
         DataFileElement that = (DataFileElement) objectToCompare;
-        return Objects.equals(elementHeader, that.elementHeader);
+        return Objects.equals(elementHeader, that.elementHeader) &&
+                Objects.equals(dataFileProperties, that.dataFileProperties);
     }
 
 
@@ -140,6 +148,6 @@ public class DataFileElement extends DataFileProperties implements MetadataEleme
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader);
+        return Objects.hash(super.hashCode(), elementHeader, dataFileProperties);
     }
 }

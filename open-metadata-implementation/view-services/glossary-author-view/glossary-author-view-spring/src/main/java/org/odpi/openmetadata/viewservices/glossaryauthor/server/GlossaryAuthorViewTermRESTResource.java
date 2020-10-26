@@ -14,9 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 
-import static org.odpi.openmetadata.viewservices.glossaryauthor.services.BaseGlossaryAuthorView.PAGE_OFFSET_DEFAULT_VALUE;
-import static org.odpi.openmetadata.viewservices.glossaryauthor.services.BaseGlossaryAuthorView.PAGE_SIZE_DEFAULT_VALUE;
-
 /**
  * The GlossaryAuthorRESTServicesInstance provides the org.odpi.openmetadata.viewervices.glossaryauthor.server implementation of the Glossary Author Open Metadata
  * View Service (OMVS) for terms.  This interface provides term authoring interfaces for subject area experts.
@@ -65,7 +62,7 @@ public class GlossaryAuthorViewTermRESTResource {
     }
 
     /**
-     * Get a term.
+     * Get a term. The server has a maximum page size defined, the number of categories (a field of Term) returned is limited by that maximum page size.
      *
      * @param serverName local UI server name
      * @param userId     userid
@@ -96,7 +93,6 @@ public class GlossaryAuthorViewTermRESTResource {
      * @param offset             the starting element number for this set of results.  This is used when retrieving elements
      *                           beyond the first page of results. Zero means the results start from the first element.
      * @param pageSize           the maximum number of elements that can be returned on this request.
-     *                           0 means there is no limit to the page size
      * @param sequencingOrder    the sequencing order for the results.
      * @param sequencingProperty the name of the property that should be used to sequence the results.
      * @return A list of terms meeting the search Criteria
@@ -111,8 +107,8 @@ public class GlossaryAuthorViewTermRESTResource {
     public SubjectAreaOMASAPIResponse<Term> findTerm(@PathVariable String serverName, @PathVariable String userId,
                                                      @RequestParam(value = "searchCriteria", required = false) String searchCriteria,
                                                      @RequestParam(value = "asOfTime", required = false) Date asOfTime,
-                                                     @RequestParam(value = "offset", required = false, defaultValue = PAGE_OFFSET_DEFAULT_VALUE) Integer offset,
-                                                     @RequestParam(value = "pageSize", required = false, defaultValue = PAGE_SIZE_DEFAULT_VALUE) Integer pageSize,
+                                                     @RequestParam(value = "offset", required = false) Integer offset,
+                                                     @RequestParam(value = "pageSize", required = false) Integer pageSize,
                                                      @RequestParam(value = "sequencingOrder", required = false) SequencingOrder sequencingOrder,
                                                      @RequestParam(value = "sequencingProperty", required = false) String sequencingProperty
     ) {
@@ -120,7 +116,7 @@ public class GlossaryAuthorViewTermRESTResource {
     }
 
     /**
-     * Get Term relationships
+     * Get Term relationships. The server has a maximum page size defined, the number of relationships returned is limited by that maximum page size.
      *
      * @param serverName         local UI server name
      * @param userId             userid
@@ -129,7 +125,6 @@ public class GlossaryAuthorViewTermRESTResource {
      * @param offset             the starting element number for this set of results.  This is used when retrieving elements
      *                           beyond the first page of results. Zero means the results start from the first element.
      * @param pageSize           the maximum number of elements that can be returned on this request.
-     *                           0 means there is not limit to the page size
      * @param sequencingOrder    the sequencing order for the results.
      * @param sequencingProperty the name of the property that should be used to sequence the results.
      * @return a response which when successful contains the term relationships
@@ -144,8 +139,8 @@ public class GlossaryAuthorViewTermRESTResource {
     public SubjectAreaOMASAPIResponse<Line> getTermRelationships(@PathVariable String serverName, @PathVariable String userId,
                                                                  @PathVariable String guid,
                                                                  @RequestParam(value = "asOfTime", required = false) Date asOfTime,
-                                                                 @RequestParam(value = "offset", required = false, defaultValue = PAGE_OFFSET_DEFAULT_VALUE) Integer offset,
-                                                                 @RequestParam(value = "pageSize", required = false, defaultValue = PAGE_SIZE_DEFAULT_VALUE) Integer pageSize,
+                                                                 @RequestParam(value = "offset", required = false) Integer offset,
+                                                                 @RequestParam(value = "pageSize", required = false) Integer pageSize,
                                                                  @RequestParam(value = "sequencingOrder", required = false) SequencingOrder sequencingOrder,
                                                                  @RequestParam(value = "sequencingProperty", required = false) String sequencingProperty
 
@@ -157,6 +152,8 @@ public class GlossaryAuthorViewTermRESTResource {
      * Update a Term
      * <p>
      * Status is not updated using this call.
+     * The Categories categorising this Term can be amended using this call. For an update (rather than a replace) with no categories supplied, no changes are made to the categories; otherwise the
+     * supplied categories will replace the existing ones. The server has a maximum page size defined, the number of categories returned is limited by that maximum page size.
      *
      * @param serverName   local UI server name
      * @param userId       userid

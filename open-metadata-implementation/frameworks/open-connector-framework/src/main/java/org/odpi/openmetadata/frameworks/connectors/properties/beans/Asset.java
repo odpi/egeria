@@ -22,7 +22,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  *     management organization and should be used (when available) on audit logs and error messages.
  *     (qualifiedName from Referenceable - model 0010)</li>
  *     <li>displayName - A consumable name for the asset.  Often a shortened form of the assetQualifiedName
- *     for use on user interfaces and messages.   The assetDisplayName should be only be used for audit logs and error
+ *     for use on user interfaces and messages.   The assetDisplayName should only be used for audit logs and error
  *     messages if the assetQualifiedName is not set. (Sourced from attribute name within Asset - model 0010)</li>
  *     <li>shortDescription - short description about the asset.
  *     (Sourced from assetSummary within ConnectionsToAsset - model 0205)</li>
@@ -31,12 +31,16 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  *     <li>owner - name of the person or organization that owns the asset.
  *     (Sourced from attribute owner within Asset - model 0010)</li>
  *     <li>ownerType - type of the person or organization that owns the asset.
- *     (Sourced from attribute ownerType within Asset - model 0010)</li>
+ *     (Sourced from classification AssetOwnership attached to Asset - model 0445)</li>
  *     <li>zoneMembership - name of the person or organization that owns the asset.
- *     (Sourced from attribute zoneMembership within Asset - model 0010)</li>
+ *     (Sourced from classification AssetZoneMemberShip attached to Asset - model 0424)</li>
+ *     <li>origin - origin identifiers describing the source of the asset.
+ *     (Sourced from classification AssetOrigin attached to Asset - model 0440)</li>
  *     <li>latestChange - description of last update to the asset.
- *     (Sourced from attribute latestChange within Asset - model 0010)</li>
- *     <li>classifications - list of classifications assigned to the asset</li>
+ *     (Sourced from classification LatestChange attached to Asset - model 0010)</li>
+ *     <li>isReferenceData - flag to show if asset contains reference data.
+ *     (Sourced from classification ReferenceData within Asset - model 0524)</li>
+ *     <li>classifications - list of all classifications assigned to the asset</li>
  *     <li>extendedProperties - list of properties assigned to the asset from the Asset subclasses</li>
  *     <li>additionalProperties - list of properties assigned to the asset as additional properties</li>
  * </ul>
@@ -55,7 +59,7 @@ public class Asset extends Referenceable
     protected OwnerType           ownerType        = null;
     protected List<String>        zoneMembership   = null;
     protected Map<String, String> origin           = null;
-    protected String              latestChange     = null;
+    protected boolean             isReferenceData  = false;
 
 
     /**
@@ -77,14 +81,14 @@ public class Asset extends Referenceable
 
         if (template != null)
         {
-            displayName      = template.getDisplayName();
-            shortDescription = template.getShortDescription();
-            description      = template.getDescription();
-            owner            = template.getOwner();
-            ownerType        = template.getOwnerType();
-            zoneMembership   = template.getZoneMembership();
-            origin           = template.getOrigin();
-            latestChange     = template.getLatestChange();
+            displayName            = template.getDisplayName();
+            shortDescription       = template.getShortDescription();
+            description            = template.getDescription();
+            owner                  = template.getOwner();
+            ownerType              = template.getOwnerType();
+            zoneMembership         = template.getZoneMembership();
+            origin                 = template.getOrigin();
+            isReferenceData        = template.isReferenceData();
         }
     }
 
@@ -267,25 +271,24 @@ public class Asset extends Referenceable
 
 
     /**
-     * Return a short description of the last change to the asset.  If it is null it means
-     * the agent that last updated the asset did not provide a description.
+     * Return a boolean to see if the asset has been marked as reference data.
      *
-     * @return string description
+     * @return true if the asset contains reference data
      */
-    public String getLatestChange()
+    public boolean isReferenceData()
     {
-        return latestChange;
+        return isReferenceData;
     }
 
 
     /**
-     * Set up a short description of the last change to the asset.
+     * Set up the boolean to see if the asset has been marked as reference data.
      *
-     * @param latestChange string description
+     * @param referenceData true if the asset contains reference data
      */
-    public void setLatestChange(String latestChange)
+    public void setReferenceData(boolean referenceData)
     {
-        this.latestChange = latestChange;
+        isReferenceData = referenceData;
     }
 
 
@@ -302,18 +305,19 @@ public class Asset extends Referenceable
                 ", shortDescription='" + shortDescription + '\'' +
                 ", description='" + description + '\'' +
                 ", owner='" + owner + '\'' +
-                ", ownerType='" + ownerType + '\'' +
+                ", ownerType=" + ownerType +
                 ", zoneMembership=" + zoneMembership +
-                ", origins=" + origin +
-                ", latestChange=" + latestChange +
+                ", origin=" + origin +
+                ", latestChange='" + latestChange + '\'' +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +
-                ", extendedProperties=" + getExtendedProperties() +
                 ", meanings=" + getMeanings() +
                 ", type=" + getType() +
                 ", GUID='" + getGUID() + '\'' +
                 ", URL='" + getURL() + '\'' +
                 ", classifications=" + getClassifications() +
+                ", extendedProperties=" + getExtendedProperties() +
+                ", headerVersion=" + getHeaderVersion() +
                 '}';
     }
 

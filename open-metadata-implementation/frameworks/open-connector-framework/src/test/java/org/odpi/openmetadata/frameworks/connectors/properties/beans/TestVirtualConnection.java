@@ -18,13 +18,13 @@ import static org.testng.Assert.assertTrue;
  */
 public class TestVirtualConnection
 {
-    private ElementType              type                 = new ElementType();
-    private List<Classification>     classifications      = new ArrayList<>();
-    private Map<String, String>      additionalProperties = new HashMap<>();
-    private Map<String, Object>      securedProperties    = new HashMap<>();
-    private ConnectorType            connectorType        = new ConnectorType();
-    private Endpoint                 endpoint             = new Endpoint();
-    private List<EmbeddedConnection> embeddedConnections  = new ArrayList<>();
+    private ElementType                 type                 = new ElementType();
+    private List<ElementClassification> classifications      = new ArrayList<>();
+    private Map<String, String>         additionalProperties = new HashMap<>();
+    private Map<String, String>         securedProperties    = new HashMap<>();
+    private ConnectorType               connectorType        = new ConnectorType();
+    private Endpoint                    endpoint             = new Endpoint();
+    private List<EmbeddedConnection>    embeddedConnections  = new ArrayList<>();
 
 
     /**

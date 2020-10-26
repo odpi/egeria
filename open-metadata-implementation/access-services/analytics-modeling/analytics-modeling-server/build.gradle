@@ -13,15 +13,15 @@ dependencies {
     implementation project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-collection-store-connectors:inmemory-repository-connector')
     implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
     implementation project(':open-metadata-implementation:repository-services:repository-services-apis')
-    implementation 'org.slf4j:slf4j-api:1.7.30'
+    implementation 'org.slf4j:slf4j-api'
     implementation project(':open-metadata-implementation:access-services:analytics-modeling:analytics-modeling-api')
-    implementation 'org.apache.commons:commons-collections4:4.4'
+    implementation 'org.apache.commons:commons-collections4'
     testImplementation project(':open-metadata-implementation:access-services:analytics-modeling:analytics-modeling-api')
-    testImplementation 'org.mockito:mockito-core:3.4.2'
-    testImplementation 'org.mockito:mockito-junit-jupiter:3.4.2'
-    testImplementation 'org.testng:testng:7.1.0'
+    testImplementation 'org.mockito:mockito-core'
+    testImplementation 'org.mockito:mockito-junit-jupiter'
+    testImplementation 'org.testng:testng'
     testImplementation project(':open-metadata-implementation:repository-services:repository-services-implementation')
-    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.11.1'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations'
 
     //TODO: Special library used in maven build, process needs porting using gradle's test fixtures - should refactor
     testImplementation project(':open-metadata-implementation:access-services:analytics-modeling:analytics-modeling-api').sourceSets.test.output

@@ -37,9 +37,10 @@ public class SubjectAreaGraphHandler extends SubjectAreaHandler {
      * needed to operate within a single server instance.
      *
      * @param oMRSAPIHelper           omrs API helper
+     * @param maxPageSize             maximum page size
      */
-    public SubjectAreaGraphHandler(OMRSAPIHelper oMRSAPIHelper) {
-        super(oMRSAPIHelper);
+    public SubjectAreaGraphHandler(OMRSAPIHelper oMRSAPIHelper, int maxPageSize) {
+        super(oMRSAPIHelper, maxPageSize);
     }
 
     /**

@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.frameworks.discovery.properties;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Classification;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementClassification;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
 import org.testng.annotations.Test;
 
@@ -17,12 +17,12 @@ import static org.testng.Assert.assertTrue;
  */
 public class AnnotationTest
 {
-    private ElementType          type                 = new ElementType();
-    private Date                 creationDate         = new Date(27);
-    private Date                 reviewDate           = new Date(1234);
-    private List<Classification> classifications      = new ArrayList<>();
-    private Map<String, Object>  analysisParameters   = new HashMap<>();
-    private Map<String, String>  additionalProperties = new HashMap<>();
+    private ElementType                 type                 = new ElementType();
+    private Date                        creationDate         = new Date(27);
+    private Date                        reviewDate           = new Date(1234);
+    private List<ElementClassification> classifications      = new ArrayList<>();
+    private Map<String, Object>         analysisParameters   = new HashMap<>();
+    private Map<String, String>         additionalProperties = new HashMap<>();
 
 
     /**
@@ -42,10 +42,6 @@ public class AnnotationTest
     {
         Annotation testObject = new Annotation();
 
-        testObject.setType(type);
-        testObject.setGUID("TestGUID");
-        testObject.setURL("TestURL");
-        testObject.setClassifications(classifications);
         testObject.setAnnotationType("TestAnnotationType");
         testObject.setSummary("TestSummary");
         testObject.setConfidenceLevel(5);
@@ -69,11 +65,6 @@ public class AnnotationTest
      */
     private void validateResultObject(Annotation  resultObject)
     {
-        assertTrue(resultObject.getType().equals(type));
-        assertTrue(resultObject.getGUID().equals("TestGUID"));
-        assertTrue(resultObject.getURL().equals("TestURL"));
-        assertTrue(resultObject.getClassifications() == null);
-
         assertTrue(resultObject.getAnnotationType().equals("TestAnnotationType"));
         assertTrue(resultObject.getSummary().equals("TestSummary"));
         assertTrue(resultObject.getConfidenceLevel() == 5);
@@ -95,11 +86,6 @@ public class AnnotationTest
     {
         Annotation    nullObject = new Annotation();
 
-        assertTrue(nullObject.getType() == null);
-        assertTrue(nullObject.getGUID() == null);
-        assertTrue(nullObject.getURL() == null);
-        assertTrue(nullObject.getClassifications() == null);
-
         assertTrue(nullObject.getAnnotationType() == null);
         assertTrue(nullObject.getSummary() == null);
         assertTrue(nullObject.getConfidenceLevel() == 0);
@@ -113,11 +99,6 @@ public class AnnotationTest
         assertTrue(nullObject.getAdditionalProperties() == null);
 
         nullObject = new Annotation(null);
-
-        assertTrue(nullObject.getType() == null);
-        assertTrue(nullObject.getGUID() == null);
-        assertTrue(nullObject.getURL() == null);
-        assertTrue(nullObject.getClassifications() == null);
 
         assertTrue(nullObject.getAnnotationType() == null);
         assertTrue(nullObject.getSummary() == null);
@@ -147,7 +128,7 @@ public class AnnotationTest
         assertTrue(sameObject.equals(sameObject));
 
         Annotation  differentObject = getTestObject();
-        differentObject.setGUID("Different");
+        differentObject.setSteward("Different");
         assertFalse(getTestObject().equals(differentObject));
     }
 

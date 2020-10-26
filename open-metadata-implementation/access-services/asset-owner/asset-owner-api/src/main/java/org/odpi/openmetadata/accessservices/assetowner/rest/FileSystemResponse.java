@@ -6,7 +6,8 @@ package org.odpi.openmetadata.accessservices.assetowner.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.assetowner.properties.FileSystem;
+import org.odpi.openmetadata.accessservices.assetowner.metadataelements.FileSystemElement;
+import org.odpi.openmetadata.accessservices.assetowner.properties.FileSystemProperties;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -26,7 +27,7 @@ public class FileSystemResponse extends AssetOwnerOMASAPIResponse
 {
     private static final long    serialVersionUID = 1L;
 
-    private FileSystem fileSystem = null;
+    private FileSystemElement fileSystem = null;
 
 
     /**
@@ -59,7 +60,7 @@ public class FileSystemResponse extends AssetOwnerOMASAPIResponse
      *
      * @return bean
      */
-    public FileSystem getFileSystem()
+    public FileSystemElement getFileSystem()
     {
         return fileSystem;
     }
@@ -70,7 +71,7 @@ public class FileSystemResponse extends AssetOwnerOMASAPIResponse
      *
      * @param fileSystem - bean
      */
-    public void setFileSystem(FileSystem fileSystem)
+    public void setFileSystem(FileSystemElement fileSystem)
     {
         this.fileSystem = fileSystem;
     }

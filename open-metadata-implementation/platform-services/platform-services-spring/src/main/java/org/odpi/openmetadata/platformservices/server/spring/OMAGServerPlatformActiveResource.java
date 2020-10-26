@@ -26,7 +26,9 @@ import org.springframework.web.bind.annotation.RestController;
  * platform and the services that are active within them.
  */
 
-@Tag(name="Platform Services", description="The platform services provides the APIs for querying the Open Metadata and Governance (OMAG) Server Platform and discovering information about the OMAG Servers that it is hosting.", externalDocs=@ExternalDocumentation(description="Platform Services",url="https://egeria.odpi.org/open-metadata-implementation/platform-services"))
+@Tag(name="Platform Services", description="The platform services provides the APIs for querying the Open Metadata and Governance (OMAG) " +
+        "Server Platform and discovering information about the OMAG Servers that it is hosting.",
+        externalDocs=@ExternalDocumentation(description="Platform Services",url="https://egeria.odpi.org/open-metadata-implementation/platform-services"))
 
 @RestController
 @RequestMapping("/open-metadata/platform-services/users/{userId}/server-platform")
@@ -47,20 +49,45 @@ public class OMAGServerPlatformActiveResource
     @Operation( summary = "Get registered access services",
                 description="Retrieve a list of access services registered on this platform",
                 responses = {
-                    @ApiResponse(responseCode = "200",description="list of service descriptions",
+                    @ApiResponse(responseCode = "200", description="list of service descriptions",
                             content = @Content(
                                     mediaType ="application/json",
                                     schema = @Schema(implementation=RegisteredOMAGServicesResponse.class)
                            )
 
                     )
-                }
-    )
-
+                })
     public RegisteredOMAGServicesResponse getRegisteredAccessServices(@Parameter(description="calling user") @PathVariable String userId)
     {
         return platformAPI.getRegisteredAccessServices(userId);
     }
+
+
+
+    /**
+     * Return the list of integration services that are implemented in this OMAG Server Platform
+     * and can be configured for a metadata server.
+     *
+     * @param userId calling user
+     * @return list of service descriptions
+     */
+    @GetMapping(path = "/registered-services/integration-services")
+    @Operation( summary = "Get registered integration services",
+            description="Retrieve a list of integration services implemented in this platform",
+            responses = {
+                    @ApiResponse(responseCode = "200", description="list of service descriptions",
+                            content = @Content(
+                                    mediaType ="application/json",
+                                    schema = @Schema(implementation=RegisteredOMAGServicesResponse.class)
+                            )
+
+                    )
+            })
+    public RegisteredOMAGServicesResponse getRegisteredIntegrationServices(@Parameter(description="calling user") @PathVariable String userId)
+    {
+        return platformAPI.getRegisteredIntegrationServices(userId);
+    }
+
 
     /**
      * Return the list of view services that are registered (supported) in this OMAG Server Platform
@@ -74,7 +101,7 @@ public class OMAGServerPlatformActiveResource
     @Operation( summary = "Get registered view services",
             description="Retrieve a list of view services registered on this platform",
             responses = {
-                    @ApiResponse(responseCode = "200",description="list of service descriptions",
+                    @ApiResponse(responseCode = "200", description="list of service descriptions",
                             content = @Content(
                                     mediaType ="application/json",
                                     schema = @Schema(implementation=RegisteredOMAGServicesResponse.class)
@@ -99,7 +126,7 @@ public class OMAGServerPlatformActiveResource
     @Operation( summary = "Get registered governance services",
             description="Retrieve a list of governance services registered on this platform",
             responses = {
-                    @ApiResponse(responseCode = "200",description="list of service descriptions",
+                    @ApiResponse(responseCode = "200", description="list of service descriptions",
                             content = @Content(
                                     mediaType ="application/json",
                                     schema = @Schema(implementation=RegisteredOMAGServicesResponse.class)
@@ -132,7 +159,6 @@ public class OMAGServerPlatformActiveResource
 
                     )
             })
-
     public RegisteredOMAGServicesResponse getRegisteredCommonServices(@Parameter(description="calling user") @PathVariable String userId)
     {
         return platformAPI.getRegisteredCommonServices(userId);
@@ -257,7 +283,7 @@ public class OMAGServerPlatformActiveResource
                     )
             })
     public ServerStatusResponse getServerStatus(@Parameter(description="calling user") @PathVariable String    userId,
-                                                @Parameter(description="server name") @PathVariable String    serverName)
+                                                @Parameter(description="server name")  @PathVariable String    serverName)
     {
         return platformAPI.getServerStatus(userId, serverName);
     }
@@ -283,7 +309,7 @@ public class OMAGServerPlatformActiveResource
                     )
             })
     public ServerServicesListResponse getActiveServiceListForServer(@Parameter(description="calling user") @PathVariable String    userId,
-                                                                    @Parameter(description="server name") @PathVariable String    serverName)
+                                                                    @Parameter(description="server name")  @PathVariable String    serverName)
     {
         return platformAPI.getActiveServiceListForServer(userId, serverName);
     }

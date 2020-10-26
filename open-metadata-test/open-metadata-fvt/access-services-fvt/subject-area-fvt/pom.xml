@@ -56,7 +56,6 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>open-metadata-assemblies</artifactId>
-            <classifier>distribution</classifier>
             <type>pom</type>
             <scope>test</scope>
         </dependency>
@@ -181,15 +180,6 @@
                 <configuration>
                     <!-- Catch the case where we haven't run tests - may point to a coding or environment issue -->
                     <failIfNoTests>true</failIfNoTests>
-                </configuration>
-            </plugin>
-
-            <!-- Javadoc missing from SA fvt. Skipping for now -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <configuration>
-                    <skip>true</skip>
                 </configuration>
             </plugin>
 

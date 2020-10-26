@@ -19,34 +19,45 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum DataItemSortOrder implements Serializable
 {
-    UNKNOWN    (0, "<Unknown>",  "The sort order is not specified."),
-    ASCENDING  (1, "Ascending",  "The attribute instances are organized so that the " +
-                                                                 "smallest/lowest value is first and the rest of the instances follow in " +
-                                                                 "ascending order."),
-    DESCENDING (2, "Descending", "The attribute instances are organized so that the " +
-                                                                 "largest/highest value is first and the rest of the instances follow in " +
-                                                                 "descending order."),
-    UNSORTED   (3, "Unsorted",   "The instances of the schema attribute may appear in any order.");
+    UNKNOWN    (0, 99, "<Unknown>",  "The sort order is not specified."),
+    ASCENDING  (1, 0, "Ascending",  "The attribute instances are organized so that the " +
+            "smallest/lowest value is first and the rest of the instances follow in " +
+            "ascending order."),
+    DESCENDING (2, 1, "Descending", "The attribute instances are organized so that the " +
+            "largest/highest value is first and the rest of the instances follow in " +
+            "descending order."),
+    UNSORTED   (3, 99, "Unsorted",   "The instances of the schema attribute may appear in any order.");
 
 
-    private int    codeValue;
-    private String codeName;
+    public static final String ENUM_TYPE_GUID  = "aaa4df8f-1aca-4de8-9abd-1ef2aadba300";
+    public static final String ENUM_TYPE_NAME  = "DataItemSortOrder";
+
+    private int    openTypeOrdinal;
+
+    private int    ordinal;
+    private String name;
     private String description;
 
     private static final long     serialVersionUID = 1L;
 
+
     /**
      * Constructor to set up the instance of this enum.
      *
-     * @param codeValue code number
-     * @param codeName default name
+     * @param ordinal code number
+     * @param openTypeOrdinal code number from the equivalent Enum Type
+     * @param name default name
      * @param description default description
      */
-    DataItemSortOrder(int codeValue, String codeName, String description)
+    DataItemSortOrder(int    ordinal,
+                      int    openTypeOrdinal,
+                      String name,
+                      String description)
     {
-        this.codeValue   = codeValue;
-        this.codeName    = codeName;
-        this.description = description;
+        this.ordinal         = ordinal;
+        this.openTypeOrdinal = openTypeOrdinal;
+        this.name            = name;
+        this.description     = description;
     }
 
 
@@ -57,7 +68,7 @@ public enum DataItemSortOrder implements Serializable
      */
     public int getOrdinal()
     {
-        return codeValue;
+        return ordinal;
     }
 
 
@@ -68,7 +79,7 @@ public enum DataItemSortOrder implements Serializable
      */
     public String getName()
     {
-        return codeName;
+        return name;
     }
 
 
@@ -84,6 +95,33 @@ public enum DataItemSortOrder implements Serializable
 
 
     /**
+     * Return the code for this enum that comes from the Open Metadata Type that this enum represents.
+     *
+     * @return int code number
+     */
+    public int getOpenTypeOrdinal()
+    {
+        return openTypeOrdinal;
+    }
+
+
+    /**
+     * Return the unique identifier for the open metadata enum type that this enum class represents.
+     *
+     * @return string guid
+     */
+    public String getOpenTypeGUID() { return ENUM_TYPE_GUID; }
+
+
+    /**
+     * Return the unique name for the open metadata enum type that this enum class represents.
+     *
+     * @return string name
+     */
+    public String getOpenTypeName() { return ENUM_TYPE_NAME; }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -92,11 +130,9 @@ public enum DataItemSortOrder implements Serializable
     public String toString()
     {
         return "DataItemSortOrder{" +
-                "codeValue=" + codeValue +
-                ", codeName='" + codeName + '\'' +
-                ", description='" + description + '\'' +
-                ", ordinal=" + getOrdinal() +
-                ", name='" + getName() + '\'' +
+                "codeValue=" + ordinal +
+                ", codeName='" + name + '\'' +
+                ", description='" + description +
                 '}';
     }
 }

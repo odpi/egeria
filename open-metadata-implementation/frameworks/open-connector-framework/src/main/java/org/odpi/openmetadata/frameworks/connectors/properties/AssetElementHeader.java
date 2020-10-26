@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.connectors.properties;
 
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Classification;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementClassification;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
 
@@ -190,7 +190,7 @@ public abstract class AssetElementHeader extends AssetPropertyBase
             return null;
         }
 
-        List<Classification> classifications = elementHeaderBean.getClassifications();
+        List<ElementClassification> classifications = elementHeaderBean.getClassifications();
 
         if (classifications == null)
         {
@@ -200,7 +200,7 @@ public abstract class AssetElementHeader extends AssetPropertyBase
         {
             List<AssetClassification> assetClassifications = new ArrayList<>();
 
-            for (Classification classification : classifications)
+            for (ElementClassification classification : classifications)
             {
                 if (classification != null)
                 {
