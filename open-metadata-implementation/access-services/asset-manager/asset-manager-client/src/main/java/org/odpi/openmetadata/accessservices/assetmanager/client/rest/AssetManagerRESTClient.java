@@ -27,8 +27,8 @@ public class AssetManagerRESTClient extends FFDCRESTClient
      * REST API calls.
      */
     public AssetManagerRESTClient(String   serverName,
-                                 String   serverPlatformURLRoot,
-                                 AuditLog auditLog) throws InvalidParameterException
+                                  String   serverPlatformURLRoot,
+                                  AuditLog auditLog) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot, auditLog);
     }
@@ -43,7 +43,7 @@ public class AssetManagerRESTClient extends FFDCRESTClient
      * REST API calls.
      */
     public AssetManagerRESTClient(String serverName,
-                                 String serverPlatformURLRoot) throws InvalidParameterException
+                                  String serverPlatformURLRoot) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot);
     }
@@ -61,10 +61,10 @@ public class AssetManagerRESTClient extends FFDCRESTClient
      * REST API calls.
      */
     public AssetManagerRESTClient(String   serverName,
-                                 String   serverPlatformURLRoot,
-                                 String   userId,
-                                 String   password,
-                                 AuditLog auditLog) throws InvalidParameterException
+                                  String   serverPlatformURLRoot,
+                                  String   userId,
+                                  String   password,
+                                  AuditLog auditLog) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot, userId, password, auditLog);
     }
@@ -81,9 +81,9 @@ public class AssetManagerRESTClient extends FFDCRESTClient
      * REST API calls.
      */
     public AssetManagerRESTClient(String serverName,
-                                 String serverPlatformURLRoot,
-                                 String userId,
-                                 String password) throws InvalidParameterException
+                                  String serverPlatformURLRoot,
+                                  String userId,
+                                  String password) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot, userId, password);
     }
