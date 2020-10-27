@@ -39,7 +39,6 @@ import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.bothE;
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.hasLabel;
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.inE;
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.inV;
-import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.or;
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.outV;
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.unfold;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.JanusConnectorErrorCode.GRAPH_DISCONNECT_ERROR;
@@ -77,10 +76,8 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_PREFIX_ELEMENT;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_PREFIX_INSTANCE_PROPERTY;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_PROCESS_GUID;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_PROCESS_LINEAGE_COMPLETED_FLAG;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_RELATIONSHIP_GUID;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_NAME_PORT_TYPE;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_NAME_PROCESS_LINEAGE_COMPLETED_FLAG;
 
 public class LineageGraphConnector extends LineageGraphConnectorBase {
 
@@ -111,7 +108,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
                         errorCode.getUserAction());
             }
 
-            this.helper = new LineageGraphConnectorHelper(g);
+            this.helper = new LineageGraphConnectorHelper(g, graphFactory.isSupportingTransactions());
 
         } catch (JanusConnectorException error) {
             log.error("The Lineage graph could not be initialized due to an error", error);
@@ -140,12 +137,11 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
     @Override
     public void schedulerTask() {
         try {
-            List<Vertex> vertices = g.V()
-                    .and(__.has(PROPERTY_KEY_LABEL, PROCESS),
-                            or(__.has(PROPERTY_KEY_PROCESS_LINEAGE_COMPLETED_FLAG, Boolean.FALSE.toString()),__.hasNot(PROPERTY_KEY_PROCESS_LINEAGE_COMPLETED_FLAG)))
-                    .toList();
+            //TODO investigate possibility of adding the PROPERTY_KEY_PROCESS_LINEAGE_COMPLETED_FLAG again
+            List<Vertex> vertices = g.V().has(PROPERTY_KEY_LABEL, PROCESS).toList();
+
             List<String> guidList = vertices.stream()
-                    .map(v ->  g.V(v.id()).elementMap(PROPERTY_KEY_ENTITY_GUID).toList().get(0).get(PROPERTY_KEY_ENTITY_GUID).toString())
+                    .map(v -> g.V(v.id()).elementMap(PROPERTY_KEY_ENTITY_GUID).toList().get(0).get(PROPERTY_KEY_ENTITY_GUID).toString())
                     .collect(Collectors.toList());
 
             guidList.forEach(
@@ -179,35 +175,37 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
 
 
         Vertex process = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).next();
-        inputPathsForColumns.forEach(columnIn -> findOutputColumn(g, columnIn, process));
+        inputPathsForColumns.forEach(columnIn -> findOutputColumns(g, columnIn, process));
     }
 
     /**
-     * Finds the output column of a Process based on the input.
+     * Finds the output columns of a Process based on the input.
      *
      * @param g        - Graph traversal object
      * @param columnIn - THe vertex of the schema element before processing.
      * @param process  - The vertex of the process.
      */
-    private void findOutputColumn(GraphTraversalSource g, Vertex columnIn, Vertex process) {
-        List<Vertex> schemaElementVertex = g.V()
+    private void findOutputColumns(GraphTraversalSource g, Vertex columnIn, Vertex process) {
+        List<Vertex> schemaElementVertices = g.V()
                 .has(PROPERTY_KEY_ENTITY_GUID, g.V(columnIn.id()).elementMap(PROPERTY_KEY_ENTITY_GUID).toList().get(0).get(PROPERTY_KEY_ENTITY_GUID))
                 .out(LINEAGE_MAPPING)
                 .toList();
 
         Vertex vertexToStart;
-        if (schemaElementVertex != null) {
+        if (schemaElementVertices != null) {
             Vertex columnOut = null;
-            vertexToStart = getProcessForTheSchemaElement(g, schemaElementVertex, process);
-            if (vertexToStart != null) {
-                columnOut = findPathForOutputAsset(vertexToStart, g, columnIn);
+            for (Vertex schemaElementVertex : schemaElementVertices) {
+                vertexToStart = isSchemaElementLinkedToProcess(g, schemaElementVertex, process);
+                if (vertexToStart != null) {
+                    columnOut = findPathForOutputAsset(vertexToStart, g, columnIn);
+                }
+                moveColumnProcessColumn(columnIn, columnOut, process);
             }
-            moveColumnProcessColumn(columnIn, columnOut, process);
         }
     }
 
     /**
-     * Returns the vertex from where the searching for the output column will start.
+     * Returns true if the schemaElementVertex is linked to a process using the lineage related relationships
      *
      * @param g                   - Graph traversal object
      * @param schemaElementVertex - THe vertex of the column before processing.
@@ -215,23 +213,19 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
      *
      * @return Return the vertex of the initial column
      */
-    private Vertex getProcessForTheSchemaElement(GraphTraversalSource g, List<Vertex> schemaElementVertex, Vertex process) {
-        Vertex vertexToStart = null;
-        for (Vertex v : schemaElementVertex) {
-            List<Vertex> initialProcess = g.V(v.id())
-                    .bothE(ATTRIBUTE_FOR_SCHEMA)
-                    .otherV().inE(PORT_SCHEMA).otherV()
-                    .inE(PORT_DELEGATION).otherV()
-                    .inE(PROCESS_PORT).otherV()
-                    .has(PROPERTY_KEY_ENTITY_GUID,
-                            g.V(process.id()).elementMap(PROPERTY_KEY_ENTITY_GUID).toList().get(0).get(PROPERTY_KEY_ENTITY_GUID)).toList();
+    private Vertex isSchemaElementLinkedToProcess(GraphTraversalSource g, Vertex schemaElementVertex, Vertex process) {
+        List<Vertex> initialProcess = g.V(schemaElementVertex.id())
+                .bothE(ATTRIBUTE_FOR_SCHEMA)
+                .otherV().inE(PORT_SCHEMA).otherV()
+                .inE(PORT_DELEGATION).otherV()
+                .inE(PROCESS_PORT).otherV()
+                .has(PROPERTY_KEY_ENTITY_GUID,
+                        g.V(process.id()).elementMap(PROPERTY_KEY_ENTITY_GUID).toList().get(0).get(PROPERTY_KEY_ENTITY_GUID)).toList();
 
-            if (!initialProcess.isEmpty()) {
-                vertexToStart = v;
-                break;
-            }
+        if (!initialProcess.isEmpty()) {
+            return schemaElementVertex;
         }
-        return vertexToStart;
+        return null;
     }
 
     /**
@@ -278,7 +272,6 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
             g.V(subProcess.id()).addE(EDGE_LABEL_INCLUDED_IN).to(g.V(process.id())).next();
 
             addAssetToProcessEdges(columnIn, columnOut, process);
-            g.V(process.id()).property(PROPERTY_KEY_PROCESS_LINEAGE_COMPLETED_FLAG, Boolean.TRUE.toString()).iterate();
 
             if (graphFactory.isSupportingTransactions()) {
                 g.tx().commit();
@@ -443,11 +436,6 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
      */
     @Override
     public void updateEntity(LineageEntity lineageEntity) {
-        // on update, clear lineage status flag for a process in order to make it eligible again for the scheduled job
-        if(lineageEntity.getTypeDefName().equals(PROCESS)){
-            lineageEntity.getProperties().put(PROPERTY_NAME_PROCESS_LINEAGE_COMPLETED_FLAG, Boolean.FALSE.toString());
-        }
-
         Iterator<Vertex> vertex = g.V().has(PROPERTY_KEY_ENTITY_GUID, lineageEntity.getGuid());
         if (!vertex.hasNext()) {
             log.debug("when trying to update, vertex with guid {} was not found  ", lineageEntity.getGuid());
@@ -713,9 +701,9 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
     /**
      * {@inheritDoc}
      */
-    public LineageResponse lineage(Scope scope, String guid, String displayNameMustContain, boolean includeProcesses) throws OpenLineageException {
+    public LineageResponse lineage(Scope scope, String guid, String displayNameMustContain, boolean includeProcesses) {
         GraphTraversal<Vertex, Vertex> vertexGraphTraversal = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid);
-        if(!vertexGraphTraversal.hasNext()) {
+        if (!vertexGraphTraversal.hasNext()) {
             return new LineageResponse();
         }
 

@@ -1075,10 +1075,15 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
         if (instanceProperties != null)
         {
-            return repositoryHelper.removeDateProperty(serviceName,
-                                                       OpenMetadataAPIMapper.CREATE_TIME_PROPERTY_NAME,
-                                                       instanceProperties,
-                                                       methodName);
+            Date createTime1 = repositoryHelper.removeDateProperty(serviceName,
+                                                                   OpenMetadataAPIMapper.CREATE_TIME_PROPERTY_NAME,
+                                                                   instanceProperties,
+                                                                   methodName);
+            Date createTime2 = repositoryHelper.removeDateProperty(serviceName,
+                                                                   OpenMetadataAPIMapper.CREATE_TIME_PROPERTY_NAME_DEP,
+                                                                   instanceProperties,
+                                                                   methodName);
+            return createTime1 == null ? createTime2 : createTime1;
         }
 
         return null;
@@ -1097,10 +1102,15 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
         if (instanceProperties != null)
         {
-            return repositoryHelper.removeDateProperty(serviceName,
-                                                       OpenMetadataAPIMapper.MODIFIED_TIME_PROPERTY_NAME,
-                                                       instanceProperties,
-                                                       methodName);
+            Date modifiedTime1 = repositoryHelper.removeDateProperty(serviceName,
+                                                                     OpenMetadataAPIMapper.MODIFIED_TIME_PROPERTY_NAME,
+                                                                     instanceProperties,
+                                                                     methodName);
+            Date modifiedTime2 = repositoryHelper.removeDateProperty(serviceName,
+                                                                     OpenMetadataAPIMapper.MODIFIED_TIME_PROPERTY_NAME_DEP,
+                                                                     instanceProperties,
+                                                                     methodName);
+            return modifiedTime1 == null ? modifiedTime2 : modifiedTime1;
         }
 
         return null;
@@ -1208,10 +1218,15 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
         if (instanceProperties != null)
         {
-            return repositoryHelper.removeStringProperty(serviceName,
-                                                         OpenMetadataAPIMapper.DATABASE_TYPE_PROPERTY_NAME,
-                                                         instanceProperties,
-                                                         methodName);
+            String type1 = repositoryHelper.removeStringProperty(serviceName,
+                                                                 OpenMetadataAPIMapper.DATABASE_TYPE_PROPERTY_NAME,
+                                                                 instanceProperties,
+                                                                 methodName);
+            String type2 = repositoryHelper.removeStringProperty(serviceName,
+                                                                 OpenMetadataAPIMapper.DATABASE_TYPE_PROPERTY_NAME_DEP,
+                                                                 instanceProperties,
+                                                                 methodName);
+            return type1 == null ? type2 : type1;
         }
 
         return null;
@@ -1230,10 +1245,15 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
         if (instanceProperties != null)
         {
-            return repositoryHelper.removeStringProperty(serviceName,
-                                                         OpenMetadataAPIMapper.DATABASE_VERSION_PROPERTY_NAME,
-                                                         instanceProperties,
-                                                         methodName);
+            String version1 = repositoryHelper.removeStringProperty(serviceName,
+                                                                    OpenMetadataAPIMapper.DATABASE_VERSION_PROPERTY_NAME,
+                                                                    instanceProperties,
+                                                                    methodName);
+            String version2 = repositoryHelper.removeStringProperty(serviceName,
+                                                                    OpenMetadataAPIMapper.DATABASE_VERSION_PROPERTY_NAME_DEP,
+                                                                    instanceProperties,
+                                                                    methodName);
+            return version1 == null ? version2 : version1;
         }
 
         return null;
@@ -1362,10 +1382,15 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
         if (instanceProperties != null)
         {
-            return repositoryHelper.removeStringProperty(serviceName,
-                                                         OpenMetadataAPIMapper.CAPABILITY_TYPE_PROPERTY_NAME,
-                                                         instanceProperties,
-                                                         methodName);
+            String type1 = repositoryHelper.removeStringProperty(serviceName,
+                                                                 OpenMetadataAPIMapper.CAPABILITY_TYPE_PROPERTY_NAME,
+                                                                 instanceProperties,
+                                                                 methodName);
+            String type2 = repositoryHelper.removeStringProperty(serviceName,
+                                                                 OpenMetadataAPIMapper.CAPABILITY_TYPE_PROPERTY_NAME_DEP,
+                                                                 instanceProperties,
+                                                                 methodName);
+            return type1 == null ? type2 : type1;
         }
 
         return null;
@@ -1384,10 +1409,15 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
         if (instanceProperties != null)
         {
-            return repositoryHelper.removeStringProperty(serviceName,
-                                                         OpenMetadataAPIMapper.CAPABILITY_VERSION_PROPERTY_NAME,
-                                                         instanceProperties,
-                                                         methodName);
+            String version1 = repositoryHelper.removeStringProperty(serviceName,
+                                                                    OpenMetadataAPIMapper.CAPABILITY_VERSION_PROPERTY_NAME,
+                                                                    instanceProperties,
+                                                                    methodName);
+            String version2 = repositoryHelper.removeStringProperty(serviceName,
+                                                                    OpenMetadataAPIMapper.CAPABILITY_VERSION_PROPERTY_NAME_DEP,
+                                                                    instanceProperties,
+                                                                    methodName);
+            return version1 == null ? version2 : version1;
         }
 
         return null;

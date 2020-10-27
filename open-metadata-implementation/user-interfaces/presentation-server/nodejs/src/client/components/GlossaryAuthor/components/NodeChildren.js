@@ -3,11 +3,10 @@
 import React from "react";
 
 
-export default function GlossaryChildren() {
-
+export default function NodeChildren(props) {
   return (
     <div>
-     TODO Glossary children page.
+     TODO Node children page.
     </div>
   );
 }

@@ -85,6 +85,16 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
         }
     }
 
+    /**
+     * Set the unique Id of the metadata collection that is collocated with the Enterprise Metadata Collection
+     *
+     * @param localMetadataCollectionId String unique Id
+     */
+    public void setLocalMetadataCollectionId(String localMetadataCollectionId)
+    {
+        this.localMetadataCollectionId = localMetadataCollectionId;
+    }
+
 
     /**
      * Set up the name of the access service using this connector.

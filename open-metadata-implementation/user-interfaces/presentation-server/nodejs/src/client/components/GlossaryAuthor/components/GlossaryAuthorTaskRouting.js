@@ -8,6 +8,7 @@ import { withRouter } from "react-router-dom";
 const GlossaryAuthorTaskRouting = ({ history, glossaryAuthorURL }) => {
   console.log("BaseGlossaryAuthorTaskRouting history");
   console.log(history);
+
   /**
    * This event is bubbled up to this component from the dropdown. 
    * The e.target.value is the value associated with the operation selected in the dropdown.
