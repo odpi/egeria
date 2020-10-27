@@ -38,7 +38,7 @@ plugins {
 allprojects {
 
     group = 'org.odpi.egeria'
-    version = '2.4-SNAPSHOT'
+    version = '2.4'
 
 
     // This enforces version checking but is slow to process
