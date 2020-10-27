@@ -1,12 +1,12 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright Contributors to the ODPi Egeria project.
-name: "Gradle Build"
+name: "Gradle"
 
-on: 
+on:
   push:
-    branches: [master]
+    branches: [master, egeria-feature-*, egeria-release-*]
   pull_request:
-    branches: [master]
+    branches: [master, egeria-feature-*, egeria-release-*]
 
 jobs:
   build:
