@@ -12,9 +12,9 @@ buildscript {
     repositories { jcenter()
     }
 
-    //dependencies {
-    //    classpath 'com.netflix.nebula:gradle-aggregate-javadocs-plugin:3.0.1'
-    //}
+    dependencies {
+        classpath 'com.netflix.nebula:gradle-aggregate-javadocs-plugin:3.0.1'
+    } 
 }
 
 /*
@@ -23,10 +23,11 @@ buildscript {
 
 plugins {
         //id "nebula.lint" version "16.9.0"
-        //id "nebula-aggregate-javadocs'" "
+        //id "nebula-aggregate-javadocs"
     }
 
-//apply plugin: 'nebula-aggregate-javadocs'
+/* run './gradlew aggregateJavadocs' at top level to build all docs & output to build/docs/javadoc */
+apply plugin: 'nebula-aggregate-javadocs'
 
 
 
