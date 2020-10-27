@@ -12,7 +12,7 @@ technology.
 
 Each type of integration service supports particular types of connectors that are designed to exchange
 metadata with a specific [Open Metadata Access Services (OMAS)](../../access-services).
-For example, the Data Manager Integrator OMIS calls the Data Manager OMAS.
+For example, the Database Integrator OMIS calls the Data Manager OMAS.
 
 ![Figure 1](docs/omis-omas-pair.png)
 

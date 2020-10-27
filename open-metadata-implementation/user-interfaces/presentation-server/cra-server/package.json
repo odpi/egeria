@@ -8,7 +8,8 @@
     "start:server": "nodemon index.js",
     "start:client": "cd ../cra-client && npm start",
     "build": "cd ../cra-client && npm run build",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prod": "NODE_ENV=production node index.js"
   },
   "contributors": [
     {

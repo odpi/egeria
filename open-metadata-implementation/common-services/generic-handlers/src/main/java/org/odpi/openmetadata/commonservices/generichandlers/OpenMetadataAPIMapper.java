@@ -140,7 +140,7 @@ public class OpenMetadataAPIMapper
     /* Referenceable */
 
     public static final String URL_PROPERTY_NAME                         = "url";                 /* from ExternalReference entity */
-    public static final String VERSION_PROPERTY_NAME                     = "version";             /* from ExternalReference entity */
+    public static final String VERSION_PROPERTY_NAME                     = "referenceVersion";             /* from ExternalReference entity */
     public static final String ORGANIZATION_PROPERTY_NAME                = "organization";        /* from ExternalReference entity */
 
     public static final String REFERENCE_ID_PROPERTY_NAME                = "referenceId";          /* from ExternalReferenceLink relationship */
@@ -165,8 +165,8 @@ public class OpenMetadataAPIMapper
     public static final String SOFTWARE_SERVER_TYPE_NAME                 = "SoftwareServer";
     /* ITInfrastructure */
 
-    public static final String SERVER_TYPE_PROPERTY_NAME            = "type";      /* from SoftwareServer entity */
-    public static final String SERVER_VERSION_PROPERTY_NAME         = "version";   /* from SoftwareServer entity */
+    public static final String SERVER_TYPE_PROPERTY_NAME            = "deployedImplementationType";      /* from SoftwareServer entity */
+    public static final String SERVER_VERSION_PROPERTY_NAME         = "serverVersion";   /* from SoftwareServer entity */
     public static final String SERVER_SOURCE_PROPERTY_NAME          = "source";    /* from SoftwareServer entity */
     public static final String SERVER_USER_ID_PROPERTY_NAME         = "userId";    /* from SoftwareServer entity */
 
@@ -225,8 +225,10 @@ public class OpenMetadataAPIMapper
     /* Referenceable */
 
     public static final String CAPABILITY_DISPLAY_NAME_PROPERTY_NAME    = "name";          /* from SoftwareServerCapability entity */
-    public static final String CAPABILITY_TYPE_PROPERTY_NAME            = "type";          /* from SoftwareServerCapability entity */
-    public static final String CAPABILITY_VERSION_PROPERTY_NAME         = "version";       /* from SoftwareServerCapability entity */
+    public static final String CAPABILITY_TYPE_PROPERTY_NAME            = "deployedImplementationType";          /* from SoftwareServerCapability entity */
+    public static final String CAPABILITY_TYPE_PROPERTY_NAME_DEP        = "type";          /* from SoftwareServerCapability entity */
+    public static final String CAPABILITY_VERSION_PROPERTY_NAME         = "capabilityVersion";       /* from SoftwareServerCapability entity */
+    public static final String CAPABILITY_VERSION_PROPERTY_NAME_DEP     = "version";       /* from SoftwareServerCapability entity */
     public static final String CAPABILITY_PATCH_LEVEL_PROPERTY_NAME     = "patchLevel";    /* from SoftwareServerCapability entity */
     public static final String CAPABILITY_SOURCE_PROPERTY_NAME          = "source";        /* from SoftwareServerCapability entity */
 
@@ -277,7 +279,7 @@ public class OpenMetadataAPIMapper
     /* SoftwareServerCapability */
 
     public static final String OFFERING_NAME_PROPERTY_NAME           = "offeringName";          /* from CloudService */
-    public static final String SERVICE_TYPE_PROPERTY_NAME            = "type";                  /* from CloudService */
+    public static final String SERVICE_TYPE_PROPERTY_NAME            = "serviceType";                  /* from CloudService */
 
     /* ============================================================================================================================*/
     /* Area 1 - Collaboration                                                                                                      */
@@ -338,7 +340,8 @@ public class OpenMetadataAPIMapper
     /* Referenceable */
 
     public static final String COMMENT_TEXT_PROPERTY_NAME                = "text";          /* from Comment entity */
-    public static final String COMMENT_TYPE_PROPERTY_NAME                = "type";          /* from Comment entity */
+    public static final String COMMENT_TYPE_PROPERTY_NAME                = "commentType";   /* from Comment entity */
+    public static final String COMMENT_TYPE_PROPERTY_NAME_DEP            = "type";          /* from Comment entity */
 
     public static final String COMMENT_TYPE_ENUM_TYPE_GUID               = "06d5032e-192a-4f77-ade1-a4b97926e867";
     public static final String COMMENT_TYPE_ENUM_TYPE_NAME               = "CommentType";              /* from Area 1 */
@@ -452,8 +455,10 @@ public class OpenMetadataAPIMapper
     public static final String DATA_STORE_TYPE_NAME                      = "DataStore";
     /* Asset */
 
-    public static final String CREATE_TIME_PROPERTY_NAME                 = "createTime";                            /* from DataStore entity */
-    public static final String MODIFIED_TIME_PROPERTY_NAME               = "modifiedTime";                          /* from DataStore entity */
+    public static final String CREATE_TIME_PROPERTY_NAME                 = "storeCreateTime";                       /* from DataStore entity */
+    public static final String CREATE_TIME_PROPERTY_NAME_DEP             = "createTime";                            /* from DataStore entity */
+    public static final String MODIFIED_TIME_PROPERTY_NAME               = "storeUpdateTime";                       /* from DataStore entity */
+    public static final String MODIFIED_TIME_PROPERTY_NAME_DEP           = "modifiedTime";                          /* from DataStore entity */
 
     public static final String DATA_STORE_ENCODING_CLASSIFICATION_GUID   = "f08e48b5-6b66-40f5-8ff6-c2bfe527330b";
     public static final String DATA_STORE_ENCODING_CLASSIFICATION_NAME   = "DataStoreEncoding";
@@ -467,8 +472,10 @@ public class OpenMetadataAPIMapper
     public static final String DATABASE_TYPE_NAME                        = "Database";
     /* DataStore */
 
-    public static final String DATABASE_TYPE_PROPERTY_NAME               = "type";          /* from Database entity */
-    public static final String DATABASE_VERSION_PROPERTY_NAME            = "version";       /* from Database entity */
+    public static final String DATABASE_TYPE_PROPERTY_NAME               = "deployedImplementationType";          /* from Database entity */
+    public static final String DATABASE_TYPE_PROPERTY_NAME_DEP           = "type";          /* from Database entity */
+    public static final String DATABASE_VERSION_PROPERTY_NAME            = "databaseVersion";       /* from Database entity */
+    public static final String DATABASE_VERSION_PROPERTY_NAME_DEP        = "version";       /* from Database entity */
     public static final String DATABASE_INSTANCE_PROPERTY_NAME           = "instance";      /* from Database entity */
     public static final String DATABASE_IMPORTED_FROM_PROPERTY_NAME      = "importedFrom";  /* from Database entity */
 
@@ -566,13 +573,13 @@ public class OpenMetadataAPIMapper
     /* SoftwareServerCapability */
 
     public static final String TOPIC_ROOT_PROPERTY_NAME              = "topicRoot";            /* from EnterpriseAccessLayer */
-    public static final String METADATA_COLLECTION_ID_PROPERTY_NAME  = "metadataCollectionId"; /* from EnterpriseAccessLayer */
+    public static final String METADATA_COLLECTION_ID_PROPERTY_NAME  = "accessedMetadataCollectionId"; /* from EnterpriseAccessLayer */
 
     public static final String COHORT_MEMBER_TYPE_GUID               = "42063797-a78a-4720-9353-52026c75f667";
     public static final String COHORT_MEMBER_TYPE_NAME               = "CohortMember";
     /* SoftwareServerCapability */
 
-    public static final String EVENT_VERSION_PROPERTY_NAME           = "version";            /* from CohortMember */
+    public static final String EVENT_VERSION_PROPERTY_NAME           = "protocolVersion";            /* from CohortMember */
 
     public static final String DEPLOYED_API_TYPE_GUID                    = "7dbb3e63-138f-49f1-97b4-66313871fc14";  /* from Area 2 */
     public static final String DEPLOYED_API_TYPE_NAME                    = "DeployedAPI";
@@ -584,7 +591,7 @@ public class OpenMetadataAPIMapper
     public static final String LOG_FILE_TYPE_GUID                        = "ff4c8484-9127-464a-97fc-99579d5bc429";  /* from Area 2 */
     public static final String LOG_FILE_TYPE_NAME                        = "LogFile";
     /* DataFile */
-    public static final String LOG_FILE_TYPE_PROPERTY_NAME               = "type";                                  /* from LogFile entity */
+    public static final String LOG_FILE_TYPE_PROPERTY_NAME               = "deployedImplementationType";                                  /* from LogFile entity */
 
     public static final String TOPIC_TYPE_GUID                           = "29100f49-338e-4361-b05d-7e4e8e818325";  /* from Area 2 */
     public static final String TOPIC_TYPE_NAME                           = "Topic";
@@ -1166,8 +1173,8 @@ public class OpenMetadataAPIMapper
     // public static final String QUALIFIED_NAME_PROPERTY_NAME              = "qualifiedName";       /* from Referenceable entity */
     // public static final String DISPLAY_NAME_PROPERTY_NAME                = "name";                /* from SoftwareServerCapability entity */
     // public static final String DESCRIPTION_PROPERTY_NAME                 = "description";         /* from SoftwareServerCapability entity */
-    public static final String TYPE_DESCRIPTION_PROPERTY_NAME            = "type";                   /* from SoftwareServerCapability entity */
-    // public static final String VERSION_PROPERTY_NAME                     = "version";                /* from SoftwareServerCapability entity */
+    public static final String TYPE_DESCRIPTION_PROPERTY_NAME            = "deployedImplementationType";                   /* from SoftwareServerCapability entity */
+    // public static final String VERSION_PROPERTY_NAME                     = "capabilityVersion";                /* from SoftwareServerCapability entity */
     public static final String PATCH_LEVEL_PROPERTY_NAME                 = "patchLevel";             /* from SoftwareServerCapability entity */
     public static final String SOURCE_PROPERTY_NAME                      = "source";                 /* from SoftwareServerCapability entity */
 
@@ -1427,8 +1434,8 @@ public class OpenMetadataAPIMapper
     public static final String DS_PHYSICAL_STATUS_ANNOTATION_TYPE_NAME         = "DataSourcePhysicalStatusAnnotation";
     /* plus DataSourceMeasurementAnnotation */
 
-    public static final String DS_PHYSICAL_CREATE_TIME_PROPERTY_NAME    = "createTime";      /* from DataSourcePhysicalStatusAnnotation entity */
-    public static final String DS_PHYSICAL_MODIFIED_TIME_PROPERTY_NAME  = "modifiedTime";    /* from DataSourcePhysicalStatusAnnotation entity */
+    public static final String DS_PHYSICAL_CREATE_TIME_PROPERTY_NAME    = "sourceCreateTime";      /* from DataSourcePhysicalStatusAnnotation entity */
+    public static final String DS_PHYSICAL_MODIFIED_TIME_PROPERTY_NAME  = "sourceUpdateTime";    /* from DataSourcePhysicalStatusAnnotation entity */
     public static final String DS_PHYSICAL_SIZE_PROPERTY_NAME           = "size";            /* from DataSourcePhysicalStatusAnnotation entity */
     public static final String DS_PHYSICAL_ENCODING_PROPERTY_NAME       = "encoding";        /* from DataSourcePhysicalStatusAnnotation entity */
 
