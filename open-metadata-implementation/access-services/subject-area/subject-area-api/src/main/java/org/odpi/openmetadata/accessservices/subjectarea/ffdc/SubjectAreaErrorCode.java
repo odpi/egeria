@@ -251,8 +251,12 @@ public enum SubjectAreaErrorCode implements ExceptionMessageSet {
             "Correct the topic configuration and restart the service."),
     PROJECT_CONTENT_PREVENTED_DELETE(400, "OMAS-SUBJECT-AREA-400-072",
             "Project (guid {0}) deletion failed, because there is project content",
-            "The system is unable to process the project delete becase the project has content.",
+            "The system is unable to process the project delete because the project has content.",
             "Retry the Project deletion when it is is empty."),
+    TERM_CREATE_WITH_BAD_CATEGORIES(400, "OMAS-SUBJECT-AREA-400-073",
+            "Cannot continue with create with the supplied Categories, as they do not exist",
+            "The system is unable to process the request as the Term create requires the supplied Categories to exist.",
+            "Correct the code in the caller to create Terms specifying not categories opr existing categories."),
     OMRS_NOT_INITIALIZED(404, "OMAS-SUBJECT-AREA-404-001",
             "The open metadata repository services are not initialized for the {0} operation",
             "The system is unable to connect to the open metadata property server.",
@@ -294,7 +298,11 @@ public enum SubjectAreaErrorCode implements ExceptionMessageSet {
             "The access service has not been initialized and can not support REST API call {0}",
             "The server has received a call to one of its open metadata access services but is unable to process it because the access service is " +
                                     "not active.",
-            "If the server is supposed to have this access service activated, correct the server configuration and restart the server.")
+            "If the server is supposed to have this access service activated, correct the server configuration and restart the server."),
+    NOT_FOUND_CLIENT(500, "OMAS-SUBJECT-AREA-500-003",
+            "Not found client for {0}.",
+            "During a method call `getClient` the cache could not find a client instance for this class.",
+            "Check if the type passed to the getClient method is correct. Check if a client has been created for this type.")
     ;
     private static final long    serialVersionUID = 1L;
 
@@ -302,10 +310,10 @@ public enum SubjectAreaErrorCode implements ExceptionMessageSet {
 
 
     /**
-     * The constructor for AssetConsumerErrorCode expects to be passed one of the enumeration rows defined in
-     * AssetConsumerErrorCode above.   For example:
+     * The constructor for SubjectAreaErrorCode expects to be passed one of the enumeration rows defined in
+     * SubjectAreaErrorCode above. For example:
      *
-     *     AssetConsumerErrorCode   errorCode = AssetConsumerErrorCode.SERVER_NOT_AVAILABLE;
+     *     SubjectAreaErrorCode   errorCode = SubjectAreaErrorCode.NULL_GUID;
      *
      * This will expand out to the 5 parameters shown below.
      *

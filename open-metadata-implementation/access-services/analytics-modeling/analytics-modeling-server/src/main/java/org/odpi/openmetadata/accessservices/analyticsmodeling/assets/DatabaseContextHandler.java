@@ -54,6 +54,13 @@ public class DatabaseContextHandler {
 	public static final String DATA_SOURCE_GUID = "dataSourceGUID";
 	private OMEntityDao omEntityDao;
 	private InvalidParameterHandler invalidParameterHandler;
+	
+	
+	private static HashMap<String, String> mapTypes = new HashMap<>();
+	
+	static {
+		mapTypes.put("WVARCHAR", "NVARCHAR");
+	}
 
 	public DatabaseContextHandler(OMEntityDao omEntityDao, InvalidParameterHandler invalidParameterHandler) {
 		this.omEntityDao = omEntityDao;
@@ -257,14 +264,13 @@ public class DatabaseContextHandler {
 
 		ResponseContainerModule ret = new ResponseContainerModule();
 		ret.setId(catalog + "_" + schema);
-		ret.setModule(buildModule(databaseGuid, catalog, schema));
+		ret.setPhysicalModule(buildModule(databaseGuid, catalog, schema));
 		return ret;
 	}
 
 	private MetadataModule buildModule(String databaseGuid, String catalog, String schema) throws AnalyticsModelingCheckedException {
 		MetadataModule module = new MetadataModule();
-
-		module.setIdentifier(catalog + "." + schema);
+		module.setIdentifier("physicalmodule");
 		module.setDataSource(Arrays.asList(buildDataSource(databaseGuid, catalog, schema)));
 		return module;
 	}
@@ -272,15 +278,16 @@ public class DatabaseContextHandler {
 	private DataSource buildDataSource(String databaseGuid, String catalog, String schema) throws AnalyticsModelingCheckedException {
 		DataSource ds = new DataSource();
 		ds.setCatalog(catalog);
-		ds.setSchema(schema);
-		ds.setName(catalog + "." + schema);
-		ds.setTable(buildTables(databaseGuid, schema));
+		EntityDetail schemaEntity = getSchemaEntityByName(databaseGuid, schema);
+		ds.setSchema(getEntityStringProperty(schemaEntity, Constants.ATTRIBUTE_NAME));
+		ds.setName(catalog + "." + ds.getSchema());
+		ds.setTable(buildTables(databaseGuid, schemaEntity));
+		ds.addProperty(Constants.GUID, schemaEntity.getGUID());
 		return ds;
 	}
 
-	private List<Table> buildTables(String databaseGuid, String schema) throws AnalyticsModelingCheckedException {
+	private List<Table> buildTables(String databaseGuid, EntityDetail schemaEntity) throws AnalyticsModelingCheckedException {
 
-		EntityDetail schemaEntity = getSchemaEntityByName(databaseGuid, schema);
 		List<EntityDetail> tables = getTablesForSchema(schemaEntity);
 
 		List<Table> ret = tables
@@ -288,7 +295,7 @@ public class DatabaseContextHandler {
 				.map(this::buildSingleTable)
 				.filter(Objects::nonNull).collect(Collectors.toList());
 		
-		ret.sort(Comparator.comparing(e->e.getName()));
+		ret.sort(Comparator.comparing(Table::getName));
 		
 		return ret;
 	}
@@ -297,6 +304,7 @@ public class DatabaseContextHandler {
 
 		Table ret = new Table();
 		ret.setName(getEntityStringProperty(entityTable, Constants.DISPLAY_NAME));
+		ret.addProperty(Constants.GUID, entityTable.getGUID());
 
 		List<Relationship> relationshipsTableColumns;
 		try {
@@ -308,7 +316,7 @@ public class DatabaseContextHandler {
 		}
 
 		if (relationshipsTableColumns == null || relationshipsTableColumns.isEmpty()) {
-			// report table without columns, don't create such table
+			// report table without columns, don't create empty table
 			return null;
 		}
 
@@ -392,9 +400,19 @@ public class DatabaseContextHandler {
 					theTableFKs.add(fkColumn);
 					try {
 						// add schema
-						EntityDetail schemaEntity;
-						schemaEntity = getParentEntity(tableEntity, Constants.ATTRIBUTE_FOR_SCHEMA);
-						fkColumn.setPkSchema(getEntityStringProperty(schemaEntity, Constants.DISPLAY_NAME));
+						EntityDetail schemaAttributesEntity = getParentEntity(tableEntity, Constants.ATTRIBUTE_FOR_SCHEMA);
+						EntityDetail schemaEntity = getParentEntity(schemaAttributesEntity, Constants.ASSET_SCHEMA_TYPE);
+						fkColumn.setPkSchema(getEntityStringProperty(schemaEntity, Constants.ATTRIBUTE_NAME));
+						
+						try {
+							EntityDetail catalogEntity = getParentEntity(schemaEntity, Constants.DATA_CONTENT_FOR_DATASET);
+							
+							fkColumn.setPkCatalog(getEntityStringProperty(catalogEntity, Constants.ATTRIBUTE_NAME));							
+						} catch (AnalyticsModelingCheckedException exCatalog) {
+							// log foreign key from unknown catalog
+							return;
+						}
+						
 					} catch (AnalyticsModelingCheckedException exTable) {
 						// log foreign key from unknown schema
 						return;
@@ -404,7 +422,7 @@ public class DatabaseContextHandler {
 					return;
 				}
 				
-				// no catalog: foreign keys are always defined within same catalog/database				
+				
 				
 			});
 			
@@ -430,7 +448,7 @@ public class DatabaseContextHandler {
 			table.getForeignKey().sort(Comparator.comparing(e->e.getName()));
 		}
 	}
-
+	
 	/**
 	 * Get entity by GUID without throwing.
 	 * Log warning when entity is loaded as part of other object,
@@ -456,6 +474,10 @@ public class DatabaseContextHandler {
 	 */
 	private EntityDetail getParentEntity(EntityDetail child, String propertyName) throws AnalyticsModelingCheckedException {
 		List<Relationship> columnRelationships = omEntityDao.getRelationshipsForEntity(child, propertyName);
+		
+		if (columnRelationships == null) {
+			return null;
+		}
 		// relationship table->column
 		Relationship columnTableRelationship = columnRelationships.stream()
 				.filter(r->child.getGUID().equals(r.getEntityTwoProxy().getGUID()))
@@ -480,6 +502,7 @@ public class DatabaseContextHandler {
 
 		item.setPosition(getEntityIntProperty(columnEntity, Constants.POSITION));
 		tableColumn.setName(getEntityStringProperty(columnEntity, Constants.DISPLAY_NAME));
+		tableColumn.addProperty(Constants.GUID, columnEntity.getGUID());
 
 		String pkName = getPrimaryKeyClassification(columnEntity);
 		if (pkName != null && !pkName.isEmpty()) {
@@ -496,10 +519,11 @@ public class DatabaseContextHandler {
 		try {
 			EntityDetail columnTypeUniverse = getColumnType(columnEntity);
 			InstanceProperties ap = getAdditiomalProperty(columnTypeUniverse.getProperties());
-			tableColumn.setVendorType(omEntityDao.getStringProperty(Constants.DATA_UNDERSCORE_TYPE, ap));
+			tableColumn.setVendorType(omEntityDao.getStringProperty(Constants.TYPE, ap));
 
 			String length = omEntityDao.getStringProperty(Constants.LENGTH, ap);
 			String dt = omEntityDao.getStringProperty(Constants.ODBC_TYPE, ap);
+			dt = mapDataType(dt);
 			tableColumn.setDatatype(length == null ? dt : dt + "(" + length + ")");
 
 		} catch (AnalyticsModelingCheckedException e) {
@@ -508,6 +532,11 @@ public class DatabaseContextHandler {
 		}
 
 		return item;
+	}
+
+	private String mapDataType(String dt) {
+		String newType = mapTypes.get(dt);
+		return newType == null ? dt : newType;
 	}
 
 	private String getPrimaryKeyClassification(EntityDetail columnEntity) {

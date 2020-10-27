@@ -13,6 +13,7 @@ import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationError
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
 import org.odpi.openmetadata.adminservices.rest.AccessServiceConfigResponse;
+import org.odpi.openmetadata.adminservices.rest.AccessServicesResponse;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGService;
@@ -111,6 +112,57 @@ public class OMAGServerAdminForAccessServices
                 }
 
             }
+        }
+        catch (OMAGInvalidParameterException error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Return the list of access services that are configured for this server.
+     *
+     * @param userId calling user
+     * @param serverName name of server
+     *
+     * @return list of access service configurations
+     */
+    public AccessServicesResponse getAccessServicesConfiguration(String userId,
+                                                                 String serverName)
+    {
+        final String methodName = "getAccessServicesConfiguration";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AccessServicesResponse response = new AccessServicesResponse();
+
+        try
+        {
+            /*
+             * Validate and set up the userName and server name.
+             */
+            errorHandler.validateServerName(serverName, methodName);
+            errorHandler.validateUserId(userId, serverName, methodName);
+
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+
+            /*
+             * Get the list of Access Services configured in this server.
+             */
+            response.setServices(serverConfig.getAccessServicesConfig());
         }
         catch (OMAGInvalidParameterException error)
         {
@@ -457,8 +509,7 @@ public class OMAGServerAdminForAccessServices
 
 
     /**
-     * Remove an access services.  This removes all configuration for the access services
-     * and disables the enterprise repository services.
+     * Retrieve the config for an access service.
      *
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
@@ -670,7 +721,7 @@ public class OMAGServerAdminForAccessServices
 
 
     /**
-     * Retrieve the topic names for this access service
+     * Retrieve the topic names for all configured access services
      *
      * @param userId                user that is issuing the request.
      * @param serverName            local server name.

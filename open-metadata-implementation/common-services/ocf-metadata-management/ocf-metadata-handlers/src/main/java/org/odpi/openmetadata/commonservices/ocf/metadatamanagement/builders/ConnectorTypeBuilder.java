@@ -79,6 +79,8 @@ public class ConnectorTypeBuilder extends ReferenceableBuilder
     {
         super(qualifiedName,
               additionalProperties,
+              ConnectorTypeMapper.CONNECTOR_TYPE_NAME,
+              ConnectorTypeMapper.CONNECTOR_TYPE_GUID,
               extendedProperties,
               repositoryHelper,
               serviceName,

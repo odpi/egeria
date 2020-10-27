@@ -22,9 +22,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes(
         {
-                @JsonSubTypes.Type(value = DerivedSchemaAttributeProperties.class, name = "DerivedSchemaAttributeProperties"),
-                @JsonSubTypes.Type(value = DatabaseTableProperties.class, name = "DatabaseTableProperties"),
-                @JsonSubTypes.Type(value = DatabaseViewProperties.class, name = "DatabaseViewProperties"),
                 @JsonSubTypes.Type(value = TabularColumnProperties.class, name = "TabularColumnProperties")
         })
 public class SchemaAttributeProperties extends SchemaElementProperties
@@ -38,14 +35,14 @@ public class SchemaAttributeProperties extends SchemaElementProperties
     private boolean           orderedValues         = false;
     private String            defaultValueOverride  = null;
     private DataItemSortOrder sortOrder             = null;
-    private String            anchorGUID            = null;
     private int               minimumLength         = 0;
     private int               length                = 0;
-    private int               significantDigits     = 0;
+    private int               precision             = 0;
     private boolean           isNullable            = true;
     private String            nativeJavaClass       = null;
     private List<String>      aliases               = null;
 
+    private SchemaTypeProperties schemaType         = null;
 
     /**
      * Default constructor
@@ -67,20 +64,20 @@ public class SchemaAttributeProperties extends SchemaElementProperties
 
         if (template != null)
         {
-            elementPosition = template.getElementPosition();
-            minCardinality = template.getMinCardinality();
-            maxCardinality = template.getMaxCardinality();
-            allowsDuplicateValues = template.isAllowsDuplicateValues();
-            orderedValues = template.isOrderedValues();
-            sortOrder = template.getSortOrder();
-            minimumLength = template.getMinimumLength();
-            length = template.getLength();
-            significantDigits = template.getSignificantDigits();
-            isNullable = template.isNullable();
-            defaultValueOverride = template.getDefaultValueOverride();
-            anchorGUID = template.getAnchorGUID();
-            nativeJavaClass = template.getNativeJavaClass();
-            aliases = template.getAliases();
+            elementPosition       = template.getElementPosition();
+            minCardinality        = template.getMinCardinality();
+            maxCardinality        = template.getMaxCardinality();
+            allowsDuplicateValues = template.getAllowsDuplicateValues();
+            orderedValues         = template.getOrderedValues();
+            sortOrder             = template.getSortOrder();
+            minimumLength         = template.getMinimumLength();
+            length                = template.getLength();
+            precision             = template.getPrecision();
+            isNullable            = template.getIsNullable();
+            defaultValueOverride  = template.getDefaultValueOverride();
+            nativeJavaClass       = template.getNativeJavaClass();
+            aliases               = template.getAliases();
+            schemaType            = template.getSchemaType();
         }
     }
 
@@ -153,7 +150,7 @@ public class SchemaAttributeProperties extends SchemaElementProperties
      *
      * @return boolean flag
      */
-    public boolean isAllowsDuplicateValues()
+    public boolean getAllowsDuplicateValues()
     {
         return allowsDuplicateValues;
     }
@@ -175,7 +172,7 @@ public class SchemaAttributeProperties extends SchemaElementProperties
      *
      * @return boolean flag
      */
-    public boolean isOrderedValues()
+    public boolean getOrderedValues()
     {
         return orderedValues;
     }
@@ -263,20 +260,20 @@ public class SchemaAttributeProperties extends SchemaElementProperties
      *
      * @return int
      */
-    public int getSignificantDigits()
+    public int getPrecision()
     {
-        return significantDigits;
+        return precision;
     }
 
 
     /**
      * Set up the number of significant digits to the right of decimal point.
      *
-     * @param significantDigits int
+     * @param precision int
      */
-    public void setSignificantDigits(int significantDigits)
+    public void setPrecision(int precision)
     {
-        this.significantDigits = significantDigits;
+        this.precision = precision;
     }
 
 
@@ -285,7 +282,7 @@ public class SchemaAttributeProperties extends SchemaElementProperties
      *
      * @return boolean
      */
-    public boolean isNullable()
+    public boolean getIsNullable()
     {
         return isNullable;
     }
@@ -296,7 +293,7 @@ public class SchemaAttributeProperties extends SchemaElementProperties
      *
      * @param nullable boolean
      */
-    public void setNullable(boolean nullable)
+    public void setIsNullable(boolean nullable)
     {
         isNullable = nullable;
     }
@@ -320,24 +317,6 @@ public class SchemaAttributeProperties extends SchemaElementProperties
     public void setDefaultValueOverride(String defaultValueOverride)
     {
         this.defaultValueOverride = defaultValueOverride;
-    }
-
-    /**
-     * Return the anchorGUID defined for this schema attribute.
-     *
-     * @return String anchorGUID defined for this schema attribute.
-     */
-    public String getAnchorGUID() {
-        return anchorGUID;
-    }
-
-    /**
-     * Set up the anchorGUID of this schema attribute
-     *
-     * @param anchorGUID GUID of the anchor entity
-     */
-    public void setAnchorGUID(String anchorGUID) {
-        this.anchorGUID = anchorGUID;
     }
 
 
@@ -395,6 +374,27 @@ public class SchemaAttributeProperties extends SchemaElementProperties
 
 
     /**
+     * Set up SchemaType for this schema attribute.
+     *
+     * @return schema type properties
+     */
+    public SchemaTypeProperties getSchemaType()
+    {
+        return schemaType;
+    }
+
+
+    /**
+     * Set up SchemaType for this schema attribute.
+     *
+     * @param schemaType schema type properties
+     */
+    public void setSchemaType(SchemaTypeProperties schemaType)
+    {
+        this.schemaType = schemaType;
+    }
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -410,15 +410,15 @@ public class SchemaAttributeProperties extends SchemaElementProperties
                 ", orderedValues=" + orderedValues +
                 ", defaultValueOverride='" + defaultValueOverride + '\'' +
                 ", sortOrder=" + sortOrder +
-                ", anchorGUID='" + anchorGUID + '\'' +
                 ", minimumLength=" + minimumLength +
                 ", length=" + length +
-                ", significantDigits=" + significantDigits +
+                ", significantDigits=" + precision +
                 ", isNullable=" + isNullable +
                 ", nativeJavaClass='" + nativeJavaClass + '\'' +
                 ", aliases=" + aliases +
-                ", nullable=" + isNullable() +
-                ", deprecated=" + isDeprecated() +
+                ", schemaType=" + schemaType +
+                ", nullable=" + getIsNullable() +
+                ", deprecated=" + getIsDeprecated() +
                 ", displayName='" + getDisplayName() + '\'' +
                 ", description='" + getDescription() + '\'' +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
@@ -459,13 +459,13 @@ public class SchemaAttributeProperties extends SchemaElementProperties
                 orderedValues == that.orderedValues &&
                 minimumLength == that.minimumLength &&
                 length == that.length &&
-                significantDigits == that.significantDigits &&
+                precision == that.precision &&
                 isNullable == that.isNullable &&
                 Objects.equals(defaultValueOverride, that.defaultValueOverride) &&
                 sortOrder == that.sortOrder &&
-                Objects.equals(anchorGUID, that.anchorGUID) &&
                 Objects.equals(nativeJavaClass, that.nativeJavaClass) &&
-                Objects.equals(aliases, that.aliases);
+                Objects.equals(aliases, that.aliases) &&
+                Objects.equals(schemaType, that.schemaType);
     }
 
 
@@ -477,9 +477,7 @@ public class SchemaAttributeProperties extends SchemaElementProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(),elementPosition, minCardinality,
-                            maxCardinality, allowsDuplicateValues, orderedValues, defaultValueOverride,
-                            sortOrder, anchorGUID, minimumLength, length, significantDigits, isNullable,
-                            nativeJavaClass, aliases);
+        return Objects.hash(super.hashCode(), elementPosition, minCardinality, maxCardinality, allowsDuplicateValues, orderedValues,
+                            defaultValueOverride, sortOrder, minimumLength, length, precision, isNullable, nativeJavaClass, aliases, schemaType);
     }
 }

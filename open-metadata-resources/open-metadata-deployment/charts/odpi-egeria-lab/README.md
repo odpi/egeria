@@ -194,6 +194,9 @@ service:
 ```
 
 and then change the port numbers accordingly.
+
+Refer to the existing values file for additional ports in this section that may reflect new components as added
+
 You can then deploy using
 `helm install lab odpi-egeria-lab -f lab.yaml` which will override standard defaults with your choices
 

@@ -103,6 +103,12 @@ public class AssetLineageAdmin extends AccessServiceAdmin {
         }
     }
 
+    /**
+     * Returns the list of lineage classifications
+     *
+     * @param accessServiceConfig Asset Lineage Configuration
+     * @return the list of the lineage classifications
+     */
     private Set<String> getLineageClassificationTypes(AccessServiceConfig accessServiceConfig) {
 
         if (accessServiceConfig.getAccessServiceOptions() != null) {

@@ -20,15 +20,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  * This means it must be handled assuming it may be part of many constructs.
  * This is particularly important on delete.
  */
-public class ConnectorTypeHandler
+public class ConnectorTypeHandler extends RootHandler
 {
-    private String                  serviceName;
-    private String                  serverName;
-    private OMRSRepositoryHelper    repositoryHelper;
-    private RepositoryHandler       repositoryHandler;
-    private InvalidParameterHandler invalidParameterHandler;
-
-
     /**
      * Construct the handler information needed to interact with the repository services
      *
@@ -44,11 +37,11 @@ public class ConnectorTypeHandler
                                 RepositoryHandler       repositoryHandler,
                                 OMRSRepositoryHelper    repositoryHelper)
     {
-        this.serviceName = serviceName;
-        this.serverName = serverName;
-        this.invalidParameterHandler = invalidParameterHandler;
-        this.repositoryHandler = repositoryHandler;
-        this.repositoryHelper = repositoryHelper;
+        super(serviceName,
+              serverName,
+              invalidParameterHandler,
+              repositoryHandler,
+              repositoryHelper);
     }
 
 
@@ -120,6 +113,8 @@ public class ConnectorTypeHandler
      * the supplied connectorType object.
      *
      * @param userId calling userId
+     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software server capability entity that represented the external source
      * @param connectorType object to add
      *
      * @return unique identifier of the connectorType in the repository.
@@ -128,20 +123,22 @@ public class ConnectorTypeHandler
      * @throws PropertyServerException problem accessing the property server
      */
     public String saveConnectorType(String                 userId,
+                                    String                 externalSourceGUID,
+                                    String                 externalSourceName,
                                     ConnectorType          connectorType) throws InvalidParameterException,
                                                                                  PropertyServerException,
                                                                                  UserNotAuthorizedException
     {
-        final String  methodName        = "addConnectorType";
+        final String  methodName = "saveConnectorType";
 
         String existingConnectorType = this.findConnectorType(userId, connectorType, methodName);
         if (existingConnectorType == null)
         {
-            return this.addConnectorType(userId, connectorType);
+            return this.addConnectorType(userId, externalSourceGUID, externalSourceName, connectorType);
         }
         else
         {
-            return this.updateConnectorType(userId, existingConnectorType, connectorType);
+            return this.updateConnectorType(userId, externalSourceGUID, externalSourceName, existingConnectorType, connectorType);
         }
     }
     
@@ -150,6 +147,8 @@ public class ConnectorTypeHandler
      * Add a new connectorType entity object.
      *
      * @param userId calling userId
+     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software server capability entity that represented the external source
      * @param connectorType object to add
      *
      * @return unique identifier of the connectorType in the repository.
@@ -158,11 +157,13 @@ public class ConnectorTypeHandler
      * @throws PropertyServerException problem accessing the property server
      */
     String  addConnectorType(String                 userId,
+                             String                 externalSourceGUID,
+                             String                 externalSourceName,
                              ConnectorType          connectorType) throws InvalidParameterException,
                                                                           PropertyServerException,
                                                                           UserNotAuthorizedException
     {
-        final String  methodName        = "addConnectorType";
+        final String  methodName = "addConnectorType";
 
         ConnectorTypeBuilder connectorTypeBuilder = new ConnectorTypeBuilder(connectorType.getQualifiedName(),
                                                                              connectorType.getDisplayName(),
@@ -177,6 +178,8 @@ public class ConnectorTypeHandler
                                                                              serviceName,
                                                                              serverName);
         return repositoryHandler.createEntity(userId,
+                                              externalSourceGUID,
+                                              externalSourceName,
                                               ConnectorTypeMapper.CONNECTOR_TYPE_GUID,
                                               ConnectorTypeMapper.CONNECTOR_TYPE_NAME,
                                               connectorTypeBuilder.getInstanceProperties(methodName),
@@ -188,6 +191,8 @@ public class ConnectorTypeHandler
      * Update a stored connectorType.
      *
      * @param userId userId
+     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software server capability entity that represented the external source
      * @param existingConnectorTypeGUID unique identifier for a connector type
      * @param connectorType new connectorType values
      *
@@ -198,12 +203,14 @@ public class ConnectorTypeHandler
      * @throws PropertyServerException problem accessing the property server
      */
     String updateConnectorType(String         userId,
+                               String         externalSourceGUID,
+                               String         externalSourceName,
                                String         existingConnectorTypeGUID,
                                ConnectorType  connectorType) throws InvalidParameterException,
                                                                     PropertyServerException,
                                                                     UserNotAuthorizedException
     {
-        final String  methodName        = "updateConnectorType";
+        final String  methodName  = "updateConnectorType";
 
         ConnectorTypeBuilder connectorTypeBuilder = new ConnectorTypeBuilder(connectorType.getQualifiedName(),
                                                                              connectorType.getDisplayName(),
@@ -217,12 +224,14 @@ public class ConnectorTypeHandler
                                                                              repositoryHelper,
                                                                              serviceName,
                                                                              serverName);
-        repositoryHandler.updateEntity(userId,
-                                       existingConnectorTypeGUID,
-                                       ConnectorTypeMapper.CONNECTOR_TYPE_GUID,
-                                       ConnectorTypeMapper.CONNECTOR_TYPE_NAME,
-                                       connectorTypeBuilder.getInstanceProperties(methodName),
-                                       methodName);
+        repositoryHandler.updateEntityProperties(userId,
+                                                 externalSourceGUID,
+                                                 externalSourceName,
+                                                 existingConnectorTypeGUID,
+                                                 ConnectorTypeMapper.CONNECTOR_TYPE_GUID,
+                                                 ConnectorTypeMapper.CONNECTOR_TYPE_NAME,
+                                                 connectorTypeBuilder.getInstanceProperties(methodName),
+                                                 methodName);
 
         return existingConnectorTypeGUID;
     }
@@ -233,21 +242,27 @@ public class ConnectorTypeHandler
      * definition.
      *
      * @param userId calling user
+     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software server capability entity that represented the external source
      * @param connectorTypeGUID object to delete
      *
      * @throws InvalidParameterException the entity guid is not known
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
      */
-    public void removeConnectorType(String                 userId,
-                                    String                 connectorTypeGUID) throws InvalidParameterException,
-                                                                                     PropertyServerException,
-                                                                                     UserNotAuthorizedException
+    public void removeConnectorType(String         userId,
+                                    String         externalSourceGUID,
+                                    String         externalSourceName,
+                                    String         connectorTypeGUID) throws InvalidParameterException,
+                                                                             PropertyServerException,
+                                                                             UserNotAuthorizedException
     {
         final String  methodName = "removeConnectorType";
         final String  guidParameterName = "connectorTypeGUID";
 
         repositoryHandler.removeEntityOnLastUse(userId,
+                                                externalSourceGUID,
+                                                externalSourceName,
                                                 connectorTypeGUID,
                                                 guidParameterName,
                                                 ConnectorTypeMapper.CONNECTOR_TYPE_GUID,
@@ -282,7 +297,8 @@ public class ConnectorTypeHandler
 
         ConnectorTypeConverter converter = new ConnectorTypeConverter(connectorTypeEntity,
                                                                       repositoryHelper,
-                                                                      serviceName);
+                                                                      serviceName,
+                                                                      serverName);
 
         return converter.getBean();
     }

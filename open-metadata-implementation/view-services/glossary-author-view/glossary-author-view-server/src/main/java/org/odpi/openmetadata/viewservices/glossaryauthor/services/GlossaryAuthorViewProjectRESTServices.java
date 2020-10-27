@@ -2,14 +2,14 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.viewservices.glossaryauthor.services;
 
+import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.SubjectAreaNodeClients;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.project.Project;
-import org.odpi.openmetadata.accessservices.subjectarea.responses.*;
+import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
-import org.odpi.openmetadata.viewservices.glossaryauthor.handlers.ProjectHandler;
 
 import java.util.Date;
 import java.util.List;
@@ -59,8 +59,8 @@ public class GlossaryAuthorViewProjectRESTServices extends BaseGlossaryAuthorVie
         // should not be called without a supplied project - the calling layer should not allow this.
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            ProjectHandler handler = instanceHandler.getProjectHandler(serverName, userId, methodName);
-            Project createdProject = handler.createProject(userId, suppliedProject);
+            SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
+            Project createdProject = clients.projects().create(userId, suppliedProject);
             response.addResult(createdProject);
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, methodName);
@@ -94,8 +94,8 @@ public class GlossaryAuthorViewProjectRESTServices extends BaseGlossaryAuthorVie
         AuditLog auditLog = null;
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            ProjectHandler handler = instanceHandler.getProjectHandler(serverName, userId, methodName);
-            Project obtainedProject = handler.getProjectByGuid(userId, guid);
+            SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
+            Project obtainedProject = clients.projects().getByGUID(userId, guid);
             response.addResult(obtainedProject);
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, methodName);
@@ -114,7 +114,6 @@ public class GlossaryAuthorViewProjectRESTServices extends BaseGlossaryAuthorVie
      * @param offset             the starting element number for this set of results.  This is used when retrieving elements
      *                           beyond the first page of results. Zero means the results start from the first element.
      * @param pageSize           the maximum number of elements that can be returned on this request.
-     *                           0 means there is no limit to the page size
      * @param sequencingOrder    the sequencing order for the results.
      * @param sequencingProperty the name of the property that should be used to sequence the results.
      * @return A list of glossaries meeting the search Criteria
@@ -131,7 +130,7 @@ public class GlossaryAuthorViewProjectRESTServices extends BaseGlossaryAuthorVie
             Date asOfTime,
             String searchCriteria,
             int offset,
-            int pageSize,
+            Integer pageSize,
             SequencingOrder sequencingOrder,
             String sequencingProperty
     ) {
@@ -141,17 +140,21 @@ public class GlossaryAuthorViewProjectRESTServices extends BaseGlossaryAuthorVie
         SubjectAreaOMASAPIResponse<Project> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
         try {
+            if (pageSize == null) {
+                pageSize = invalidParameterHandler.getMaxPagingSize();
+            }
+            invalidParameterHandler.validatePaging(offset, pageSize, methodName);
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            ProjectHandler handler = instanceHandler.getProjectHandler(serverName, userId, methodName);
+            SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
             FindRequest findRequest = new FindRequest();
             findRequest.setSearchCriteria(searchCriteria);
             findRequest.setAsOfTime(asOfTime);
-            findRequest.setOffset(offset);
+            findRequest.setStartingFrom(offset);
             findRequest.setPageSize(pageSize);
             findRequest.setSequencingOrder(sequencingOrder);
             findRequest.setSequencingProperty(sequencingProperty);
 
-            List<Project> projects = handler.findProject(userId, findRequest);
+            List<Project> projects = clients.projects().find(userId, findRequest);
             response.addAllResults(projects);
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, methodName);
@@ -170,7 +173,6 @@ public class GlossaryAuthorViewProjectRESTServices extends BaseGlossaryAuthorVie
      * @param offset             the starting element number for this set of results.  This is used when retrieving elements
      *                           beyond the first page of results. Zero means the results start from the first element.
      * @param pageSize           the maximum number of elements that can be returned on this request.
-     *                           0 means there is not limit to the page size
      * @param sequencingOrder    the sequencing order for the results.
      * @param sequencingProperty the name of the property that should be used to sequence the results.
      * @return a response which when successful contains the project relationships
@@ -199,16 +201,20 @@ public class GlossaryAuthorViewProjectRESTServices extends BaseGlossaryAuthorVie
         SubjectAreaOMASAPIResponse<Line> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
         try {
+            if (pageSize == null) {
+                pageSize = invalidParameterHandler.getMaxPagingSize();
+            }
+            invalidParameterHandler.validatePaging(offset, pageSize, methodName);
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            ProjectHandler handler = instanceHandler.getProjectHandler(serverName, userId, methodName);
+            SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
             FindRequest findRequest = new FindRequest();
             findRequest.setAsOfTime(asOfTime);
-            findRequest.setOffset(offset);
+            findRequest.setStartingFrom(offset);
             findRequest.setPageSize(pageSize);
             findRequest.setSequencingOrder(sequencingOrder);
             findRequest.setSequencingProperty(sequencingProperty);
 
-            List<Line> lines =  handler.getProjectRelationships(userId, guid, findRequest);
+            List<Line> lines =  clients.projects().getRelationships(userId, guid, findRequest);
             response.addAllResults(lines);
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, methodName);
@@ -252,13 +258,13 @@ public class GlossaryAuthorViewProjectRESTServices extends BaseGlossaryAuthorVie
         // should not be called without a supplied project - the calling layer should not allow this.
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            ProjectHandler handler = instanceHandler.getProjectHandler(serverName, userId, methodName);
+            SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
             Project updatedProject;
 
             if (isReplace) {
-                updatedProject = handler.replaceProject(userId, guid, project);
+                updatedProject = clients.projects().replace(userId, guid, project);
             } else {
-                updatedProject = handler.updateProject(userId, guid, project);
+                updatedProject = clients.projects().update(userId, guid, project);
             }
             response.addResult(updatedProject);
         }  catch (Throwable error) {
@@ -309,11 +315,11 @@ public class GlossaryAuthorViewProjectRESTServices extends BaseGlossaryAuthorVie
         // should not be called without a supplied project - the calling layer should not allow this.
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            ProjectHandler handler = instanceHandler.getProjectHandler(serverName, userId, methodName);
+            SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
             if (isPurge) {
-                handler.purgeProject(userId, guid);
+                clients.projects().purge(userId, guid);
             } else {
-                handler.deleteProject(userId, guid);
+                clients.projects().delete(userId, guid);
             }
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, methodName);
@@ -351,8 +357,8 @@ public class GlossaryAuthorViewProjectRESTServices extends BaseGlossaryAuthorVie
         // should not be called without a supplied project - the calling layer should not allow this.
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            ProjectHandler handler = instanceHandler.getProjectHandler(serverName, userId, methodName);
-            Project project = handler.restoreProject(userId, guid);
+            SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
+            Project project = clients.projects().restore(userId, guid);
             response.addResult(project);
         }  catch (Throwable error) {
             response = getResponseForError(error, auditLog, className, methodName);

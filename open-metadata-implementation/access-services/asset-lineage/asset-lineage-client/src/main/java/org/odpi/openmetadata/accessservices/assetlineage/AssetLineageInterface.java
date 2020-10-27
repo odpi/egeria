@@ -15,14 +15,15 @@ public interface AssetLineageInterface {
 
     /**
      * Scan the cohort based on the given entity type and publish the contexts for the found entities to the out topic
+     * Returns a list that contains entities GUID that were published out.
      *
-     * @param serverName name of server instance to call
-     * @param userId     the name of the calling user
-     * @param entityType the name of the relationship type
-     * @return a list of unique identifiers (guids) of the available entities with the given type provided as a response
-     * @throws InvalidParameterException one of the parameters is null or invalid
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
+     * @param serverName the server name
+     * @param userId     the user id
+     * @param entityType the entity type
+     * @return the list of entities GUIDs that were published out
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     List<String> publishEntities(String serverName, String userId, String entityType) throws InvalidParameterException,
             PropertyServerException,

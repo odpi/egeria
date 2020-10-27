@@ -4,6 +4,7 @@ package org.odpi.openmetadata.frameworks.connectors.properties;
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -20,9 +21,7 @@ import java.util.Objects;
  *         <li>AssetMapSchemaType is for an attribute of type Map</li>
  *     </ul>
  *     Most assets will be linked to a AssetComplexSchemaType.
- * <p>
- *     StructSchemaType elements can be linked to one another using SchemaLink.
- * </p>
+ *
  */
 public abstract class AssetSchemaType extends AssetSchemaElement
 {
@@ -45,13 +44,13 @@ public abstract class AssetSchemaType extends AssetSchemaElement
         {
             assetSchemaType = new AssetEnumSchemaType(parentAsset, (EnumSchemaType)bean);
         }
-        else if (bean instanceof BoundedSchemaType)
-        {
-            assetSchemaType = new AssetBoundedSchemaType(parentAsset, (BoundedSchemaType)bean);
-        }
         else if (bean instanceof LiteralSchemaType)
         {
             assetSchemaType = new AssetLiteralSchemaType(parentAsset, (LiteralSchemaType)bean);
+        }
+        else if (bean instanceof ExternalSchemaType)
+        {
+            assetSchemaType = new AssetExternalSchemaType(parentAsset, (ExternalSchemaType)bean);
         }
         else if (bean instanceof ComplexSchemaType)
         {
@@ -223,6 +222,40 @@ public abstract class AssetSchemaType extends AssetSchemaElement
 
 
     /**
+     * Return the formula used to combine the values of the queries.  Each query is numbers 0, 1, ... and the
+     * formula has placeholders in it to show how the query results are combined.
+     *
+     * @return String formula
+     */
+    public String getFormula()
+    {
+        if (schemaTypeBean == null)
+        {
+            return null;
+        }
+
+        return this.getSchemaTypeBean().getFormula();
+    }
+
+
+
+    /**
+     * Return the list of queries that are used to create the derived schema element.
+     *
+     * @return list of queries
+     */
+    public List<DerivedSchemaTypeQueryTarget> getQueries()
+    {
+        if (schemaTypeBean == null)
+        {
+            return null;
+        }
+
+        return this.getSchemaTypeBean().getQueries();
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -236,10 +269,14 @@ public abstract class AssetSchemaType extends AssetSchemaElement
                 ", author='" + getAuthor() + '\'' +
                 ", usage='" + getUsage() + '\'' +
                 ", encodingStandard='" + getEncodingStandard() + '\'' +
+                ", formula='" + getFormula() + '\'' +
+                ", queries=" + getQueries() +
+                ", deprecated=" + isDeprecated() +
                 ", displayName='" + getDisplayName() + '\'' +
                 ", description='" + getDescription() + '\'' +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", meanings=" + getMeanings() +
+                ", securityTags=" + getSecurityTags() +
                 ", additionalProperties=" + getAdditionalProperties() +
                 ", type=" + getType() +
                 ", GUID='" + getGUID() + '\'' +

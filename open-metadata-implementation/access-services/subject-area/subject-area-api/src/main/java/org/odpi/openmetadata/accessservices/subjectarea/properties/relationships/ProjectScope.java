@@ -26,21 +26,21 @@ public class ProjectScope extends Line {
     /*
      * Set up end 1.
      */
-    protected final static String END_1_NODE_TYPE = "Project";
-    protected final static String END_1_ATTRIBUTE_NAME = "impactingProjects";
-    protected final static String END_1_ATTRIBUTE_DESCRIPTION = "The projects that are making changes to these elements.";
-    protected final static RelationshipEndCardinality END_1_CARDINALITY = RelationshipEndCardinality.ANY_NUMBER;
-    protected final static LineEnd LINE_END_1 = new LineEnd(END_1_NODE_TYPE,
+     protected static final String END_1_NODE_TYPE = "Project";
+     protected static final String END_1_ATTRIBUTE_NAME = "impactingProjects";
+     protected static final String END_1_ATTRIBUTE_DESCRIPTION = "The projects that are making changes to these elements.";
+     protected static final RelationshipEndCardinality END_1_CARDINALITY = RelationshipEndCardinality.ANY_NUMBER;
+     protected static final LineEnd LINE_END_1 = new LineEnd(END_1_NODE_TYPE,
             END_1_ATTRIBUTE_NAME, END_1_ATTRIBUTE_DESCRIPTION, END_1_CARDINALITY);
 
     /*
      * Set up end 2.
      */
-    protected final static String END_2_NODE_TYPE = "Referenceable";
-    protected final static String END_2_ATTRIBUTE_NAME = "projectScope";
-    protected final static String END_2_ATTRIBUTE_DESCRIPTION = "The elements that are being changed by this project.";
-    protected final static RelationshipEndCardinality END_2_CARDINALITY = RelationshipEndCardinality.ANY_NUMBER;
-    protected final static LineEnd LINE_END_2 = new LineEnd(END_2_NODE_TYPE,
+     protected static final String END_2_NODE_TYPE = "Referenceable";
+     protected static final String END_2_ATTRIBUTE_NAME = "projectScope";
+     protected static final String END_2_ATTRIBUTE_DESCRIPTION = "The elements that are being changed by this project.";
+     protected static final RelationshipEndCardinality END_2_CARDINALITY = RelationshipEndCardinality.ANY_NUMBER;
+     protected static final LineEnd LINE_END_2 = new LineEnd(END_2_NODE_TYPE,
             END_2_ATTRIBUTE_NAME, END_2_ATTRIBUTE_DESCRIPTION, END_2_CARDINALITY);
 
     public ProjectScope() {

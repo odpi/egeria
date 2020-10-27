@@ -3,12 +3,12 @@
 
 package org.odpi.openmetadata.accessservices.assetowner.api;
 
+import org.odpi.openmetadata.accessservices.assetowner.metadataelements.AssetElement;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
 import org.odpi.openmetadata.frameworks.discovery.properties.Annotation;
 import org.odpi.openmetadata.frameworks.discovery.properties.AnnotationStatus;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryAnalysisReport;
@@ -36,10 +36,10 @@ public interface AssetReviewInterface
      * @throws PropertyServerException there is a problem access in the property server
      * @throws UserNotAuthorizedException the user does not have access to the properties
      */
-    List<Asset>  getAssetsByName(String   userId,
-                                 String   name,
-                                 int      startFrom,
-                                 int      pageSize) throws InvalidParameterException,
+    List<AssetElement>  getAssetsByName(String   userId,
+                                        String   name,
+                                        int      startFrom,
+                                        int      pageSize) throws InvalidParameterException,
                                                            PropertyServerException,
                                                            UserNotAuthorizedException;
 
@@ -59,12 +59,12 @@ public interface AssetReviewInterface
      * @throws PropertyServerException there is a problem access in the property server
      * @throws UserNotAuthorizedException the user does not have access to the properties
      */
-    List<Asset>  findAssets(String   userId,
-                            String   searchString,
-                            int      startFrom,
-                            int      pageSize) throws InvalidParameterException,
-                                                      PropertyServerException,
-                                                      UserNotAuthorizedException;
+    List<AssetElement>  findAssets(String   userId,
+                                   String   searchString,
+                                   int      startFrom,
+                                   int      pageSize) throws InvalidParameterException,
+                                                             PropertyServerException,
+                                                             UserNotAuthorizedException;
 
 
     /**
@@ -77,10 +77,10 @@ public interface AssetReviewInterface
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException there was a problem that occurred within the property server.
      */
-    Asset   getAssetSummary(String  userId,
-                            String  assetGUID) throws InvalidParameterException,
-                                                      UserNotAuthorizedException,
-                                                      PropertyServerException;
+    AssetElement   getAssetSummary(String  userId,
+                                   String  assetGUID) throws InvalidParameterException,
+                                                             UserNotAuthorizedException,
+                                                             PropertyServerException;
 
 
     /**

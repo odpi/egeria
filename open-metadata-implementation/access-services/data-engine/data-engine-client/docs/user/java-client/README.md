@@ -6,7 +6,14 @@
 
 The Data Engine OMAS client interface supports the creation of process, ports, schema types and corresponding relationships.
 
-There is a single client called `DataEngineImpl`.  It has two constructors:
+Different implementations available:
+
+* `DataEngineRESTClient` - Default client implementation interacting via HTTP transport mechanism and default OCF REST client.
+* `DataEngineRESTConfigurationClient` - An extension to the REST interface that can be used as helper to automate configuration of the event based client by retrieving connection details used to build the client topic connector.
+* `DataEngineEventClient` - Client implementation interacting via Events transport mechanism. It is using `DataEngineInTopicClientConnector` that produces events to the input topic of Data Engine access service.
+
+
+HTTP based REST clients can be constructed in following way:
 
 * No authentication embedded in the HTTP request - for test systems.
 * Basic authentication using a userId and password embedded in the HTTP request.
@@ -17,17 +24,36 @@ where the Data Engine OMAS is running and its [server name](../../../../../docs/
 Here is a code example with the user id and password specified:
 
 ```java
-DatEngine   client = new DataEngineImpl   ("cocoMDS1",
+DataEngineClient client = new DataEngineRESTClient   ("cocoMDS1",
                                            "https://localhost:9444",
                                            "cocoUI",
                                            "cocoUIPassword");
 
 ```
-
 This client is set up to call the `cocoMDS1` server running on the `https://localhost:9444`
 OMAG Server Platform.  The userId and password is for the application
 where the client is running.  The userId of the real end user is passed
 on each request.
+
+Similarly, extended REST configuration client can help retrieving additional configuration details from the remote server can be constructed in following way:
+
+```java
+DataEngineRESTConfigurationClient client = new DataEngineRESTConfigurationClient("remoteServerName",
+                                        "https://localhost:9444",
+                                        "remoteUserName",
+                                        "remoteUserPassword");
+ConnectionResponse connectionResponse = client.getInTopicConnection("remoteServerName","remoteUserName");
+```
+
+Event based client can be constructed by injecting instance of the DataEngineInTopicClientConnector.
+In the example below we can create the connector with remote configuration retrieved previously and pass it to the event based client:
+
+```java
+
+DataEngineInTopicClientConnector topicConnector = (DataEngineInTopicClientConnector) connectorBroker.getConnector(connectionResponse.getConnection());
+
+DataEngineClient client = new DataEngineEventClient(dataEngineInTopicClientConnector);
+```
 
 ## Client operations
 

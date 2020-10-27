@@ -141,21 +141,22 @@ public class RegisteredDiscoveryService extends DiscoveryServiceProperties
     {
         return "RegisteredDiscoveryService{" +
                 "discoveryRequestTypes=" + discoveryRequestTypes +
-                ", defaultAnalysisParameters='" + defaultAnalysisParameters + '\'' +
-                ", displayName='" + displayName + '\'' +
-                ", shortDescription='" + shortDescription + '\'' +
-                ", description='" + description + '\'' +
-                ", owner='" + owner + '\'' +
-                ", ownerType=" + ownerType +
-                ", zoneMembership=" + zoneMembership +
-                ", qualifiedName='" + qualifiedName + '\'' +
-                ", additionalProperties=" + additionalProperties +
-                ", extendedProperties=" + extendedProperties +
-                ", meanings=" + meanings +
-                ", type=" + type +
-                ", guid='" + guid + '\'' +
-                ", url='" + url + '\'' +
-                ", classifications=" + classifications +
+                ", defaultAnalysisParameters=" + defaultAnalysisParameters +
+                ", qualifiedName='" + getQualifiedName() + '\'' +
+                ", displayName='" + getDisplayName() + '\'' +
+                ", description='" + getDescription() + '\'' +
+                ", owner='" + getOwner() + '\'' +
+                ", ownerType=" + getOwnerType() +
+                ", zoneMembership=" + getZoneMembership() +
+                ", originOrganizationGUID='" + getOriginOrganizationGUID() + '\'' +
+                ", originBusinessCapabilityGUID='" + getOriginBusinessCapabilityGUID() + '\'' +
+                ", otherOriginValues=" + getOtherOriginValues() +
+                ", additionalProperties=" + getAdditionalProperties() +
+                ", connection=" + getConnection() +
+                ", headerVersion=" + getHeaderVersion() +
+                ", elementHeader=" + getElementHeader() +
+                ", typeName='" + getTypeName() + '\'' +
+                ", extendedProperties=" + getExtendedProperties() +
                 '}';
     }
 

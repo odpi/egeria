@@ -951,6 +951,37 @@ public class OMRSArchiveHelper extends OMRSRepositoryPropertiesUtilities
                                                   TypeDefLink                   validEntityDef,
                                                   boolean                       propagatable)
     {
+        /*
+         * Set up the supplied validEntityType as an array and call the method to create the ClassificationDef.
+         */
+        ArrayList<TypeDefLink>   validEntityDefs = new ArrayList<>();
+        validEntityDefs.add(validEntityDef);
+
+        return this.getClassificationDef(guid, name, superType, description, descriptionGUID, validEntityDefs, propagatable);
+    }
+
+
+    /**
+     * Returns a basic ClassificationDef without any attributes.   The caller is responsible for adding the
+     * attribute definitions.
+     *
+     * @param guid unique identifier for the classification
+     * @param name name of the classification
+     * @param superType Super type for this classification (null for top-level)
+     * @param description short description of the classification
+     * @param descriptionGUID unique identifier of the glossary term that describes this classification.
+     * @param validEntityDefs which entities can this classification be linked to.
+     * @param propagatable can the classification propagate over relationships?
+     * @return ClassificationDef with no attributes defined.
+     */
+    public ClassificationDef getClassificationDef(String                        guid,
+                                                  String                        name,
+                                                  TypeDefLink                   superType,
+                                                  String                        description,
+                                                  String                        descriptionGUID,
+                                                  List<TypeDefLink>             validEntityDefs,
+                                                  boolean                       propagatable)
+    {
         ClassificationDef classificationDef = new ClassificationDef();
 
         classificationDef.setHeaderVersion(TypeDefElementHeader.CURRENT_TYPE_DEF_HEADER_VERSION);
@@ -985,8 +1016,6 @@ public class OMRSArchiveHelper extends OMRSRepositoryPropertiesUtilities
         /*
          * Set up the supplied validEntityTypes and propagatable flag.
          */
-        ArrayList<TypeDefLink>   validEntityDefs = new ArrayList<>();
-        validEntityDefs.add(validEntityDef);
         classificationDef.setValidEntityDefs(validEntityDefs);
         classificationDef.setPropagatable(propagatable);
 

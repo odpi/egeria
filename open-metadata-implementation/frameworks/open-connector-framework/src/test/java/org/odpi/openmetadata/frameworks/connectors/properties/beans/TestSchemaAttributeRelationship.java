@@ -13,7 +13,7 @@ import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
 /**
- * Validate that the SchemaLink bean can be cloned, compared, serialized, deserialized and printed as a String.
+ * Validate that the SchemaAttributeRelationship bean can be cloned, compared, serialized, deserialized and printed as a String.
  */
 public class TestSchemaAttributeRelationship
 {
@@ -38,7 +38,6 @@ public class TestSchemaAttributeRelationship
     {
         SchemaAttributeRelationship testObject = new SchemaAttributeRelationship();
 
-        testObject.setLinkGUID("TestLinkGUID");
         testObject.setLinkType("TestLinkType");
         testObject.setLinkedAttributeGUID("TestLinkedAttributeGUID");
         testObject.setLinkedAttributeName("TestLinkedAttributeName");
@@ -55,7 +54,6 @@ public class TestSchemaAttributeRelationship
      */
     private void validateResultObject(SchemaAttributeRelationship resultObject)
     {
-        assertTrue(resultObject.getLinkGUID().equals("TestLinkGUID"));
         assertTrue(resultObject.getLinkType().equals("TestLinkType"));
         assertTrue(resultObject.getLinkedAttributeGUID().equals("TestLinkedAttributeGUID"));
         assertTrue(resultObject.getLinkedAttributeName().equals("TestLinkedAttributeName"));
@@ -70,7 +68,6 @@ public class TestSchemaAttributeRelationship
     {
         SchemaAttributeRelationship nullObject = new SchemaAttributeRelationship();
 
-        assertTrue(nullObject.getLinkGUID() == null);
         assertTrue(nullObject.getLinkType() == null);
         assertTrue(nullObject.getLinkedAttributeGUID() == null);
         assertTrue(nullObject.getLinkedAttributeName() == null);
@@ -78,7 +75,6 @@ public class TestSchemaAttributeRelationship
 
         nullObject = new SchemaAttributeRelationship(null);
 
-        assertTrue(nullObject.getLinkGUID() == null);
         assertTrue(nullObject.getLinkType() == null);
         assertTrue(nullObject.getLinkProperties() == null);
         assertTrue(nullObject.getLinkedAttributeGUID() == null);

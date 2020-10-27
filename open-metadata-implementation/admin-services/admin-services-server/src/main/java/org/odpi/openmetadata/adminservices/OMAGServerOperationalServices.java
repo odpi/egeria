@@ -23,6 +23,7 @@ import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.admin.OCFMeta
 import org.odpi.openmetadata.conformance.server.ConformanceSuiteOperationalServices;
 import org.odpi.openmetadata.dataplatformservices.admin.DataPlatformOperationalServices;
 import org.odpi.openmetadata.governanceservers.discoveryengineservices.server.DiscoveryServerOperationalServices;
+import org.odpi.openmetadata.governanceservers.integrationdaemonservices.server.IntegrationDaemonOperationalServices;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
@@ -192,8 +193,9 @@ public class OMAGServerOperationalServices
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        List<String>           activatedServiceList = new ArrayList<>();
-        SuccessMessageResponse response             = new SuccessMessageResponse();
+        List<String>                    activatedServiceList = new ArrayList<>();
+        OMAGOperationalServicesInstance instance             = null;
+        SuccessMessageResponse          response             = new SuccessMessageResponse();
 
         try
         {
@@ -237,9 +239,9 @@ public class OMAGServerOperationalServices
              * in response to subsequent REST calls for the server.  These instances provide the multi-tenant
              * support in Egeria.
              */
-            OMAGOperationalServicesInstance instance = new OMAGOperationalServicesInstance(serverName,
-                                                                                           CommonServicesDescription.ADMIN_OPERATIONAL_SERVICES.getServiceName(),
-                                                                                           configuration.getMaxPageSize());
+            instance = new OMAGOperationalServicesInstance(serverName,
+                                                           CommonServicesDescription.ADMIN_OPERATIONAL_SERVICES.getServiceName(),
+                                                           configuration.getMaxPageSize());
 
             /*
              * Save the configuration that is going to be used to start the server for this instance.  This configuration can be queried by
@@ -549,22 +551,27 @@ public class OMAGServerOperationalServices
         catch (UserNotAuthorizedException error)
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
+            cleanUpRunningServiceInstances(userId, serverName, methodName, instance);
         }
         catch (OMAGConfigurationErrorException  error)
         {
             exceptionHandler.captureConfigurationErrorException(response, error);
+            cleanUpRunningServiceInstances(userId, serverName, methodName, instance);
         }
         catch (OMAGInvalidParameterException error)
         {
             exceptionHandler.captureInvalidParameterException(response, error);
+            cleanUpRunningServiceInstances(userId, serverName, methodName, instance);
         }
         catch (OMAGNotAuthorizedException error)
         {
             exceptionHandler.captureNotAuthorizedException(response, error);
+            cleanUpRunningServiceInstances(userId, serverName, methodName, instance);
         }
         catch (Throwable  error)
         {
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+            cleanUpRunningServiceInstances(userId, serverName, methodName, instance);
         }
 
         restCallLogger.logRESTCallReturn(token, response.toString());
@@ -711,7 +718,8 @@ public class OMAGServerOperationalServices
                                                   error);
 
                             throw new OMAGConfigurationErrorException(OMAGAdminErrorCode.UNEXPECTED_INITIALIZATION_EXCEPTION.getMessageDefinition(serverName,
-                                                                                                                                                  accessServiceConfig.getAccessServiceName()),
+                                                                                                                                                  accessServiceConfig.getAccessServiceName(),
+                                                                                                                                                  error.getMessage()),
                                                                       this.getClass().getName(),
                                                                       methodName,
                                                                       error);
@@ -823,7 +831,8 @@ public class OMAGServerOperationalServices
                                               error);
 
                         throw new OMAGConfigurationErrorException(OMAGAdminErrorCode.UNEXPECTED_INITIALIZATION_EXCEPTION.getMessageDefinition(serverName,
-                                                                                                                                              viewServiceConfig.getViewServiceName()),
+                                                                                                                                              viewServiceConfig.getViewServiceName(),
+                                                                                                                                              error.getMessage()),
                                                                   this.getClass().getName(),
                                                                   methodName,
                                                                   error);
@@ -852,6 +861,7 @@ public class OMAGServerOperationalServices
 
 
     /**
+     * Create an instance of the access service's admin class from the class name in the configuration.
      *
      * @param accessServiceConfig configuration for the access service
      * @param auditLog logging destination
@@ -914,6 +924,7 @@ public class OMAGServerOperationalServices
                                                       methodName);
         }
     }
+
 
     /**
      * Get the View Service admin class for a named server's view service configuration.
@@ -998,10 +1009,6 @@ public class OMAGServerOperationalServices
                                               OMRSOperationalServices         operationalRepositoryServices,
                                               List<String>                    activatedServiceList) throws OMAGConfigurationErrorException
     {
-        /*
-         * Initialize the Data Platform Services.  This is a governance server that extracts technical metadata from
-         * a data platform and catalogs it in an open metadata server.
-         */
         if (ServerTypeClassification.DATA_PLATFORM_SERVER.equals(serverTypeClassification))
         {
             DataPlatformOperationalServices dataPlatformOperationalServices
@@ -1029,6 +1036,7 @@ public class OMAGServerOperationalServices
         {
             DataEngineProxyOperationalServices operationalDataEngineProxyServices
                     = new DataEngineProxyOperationalServices(configuration.getLocalServerName(),
+                                                             configuration.getLocalServerId(),
                                                              configuration.getLocalServerUserId(),
                                                              configuration.getLocalServerPassword());
 
@@ -1063,6 +1071,28 @@ public class OMAGServerOperationalServices
                                                           GovernanceServicesDescription.DISCOVERY_ENGINE_SERVICES.getServiceWiki()));
 
             activatedServiceList.add(GovernanceServicesDescription.DISCOVERY_ENGINE_SERVICES.getServiceName());
+        }
+
+        /*
+         * Initialize the Discovery Engine Services for discovery server.  This is a governance server for running automated metadata discovery.
+         */
+        else if (ServerTypeClassification.INTEGRATION_DAEMON.equals(serverTypeClassification))
+        {
+            IntegrationDaemonOperationalServices integrationDaemonOperationalServices
+                    = new IntegrationDaemonOperationalServices(configuration.getLocalServerName(),
+                                                               configuration.getLocalServerUserId(),
+                                                               configuration.getLocalServerPassword(),
+                                                               configuration.getMaxPageSize());
+
+            instance.setOperationalIntegrationDaemon(integrationDaemonOperationalServices);
+            integrationDaemonOperationalServices.initialize(configuration.getIntegrationServicesConfig(),
+                                                            operationalRepositoryServices.getAuditLog(
+                                                               GovernanceServicesDescription.INTEGRATION_DAEMON_SERVICES.getServiceCode(),
+                                                               GovernanceServicesDescription.INTEGRATION_DAEMON_SERVICES.getServiceName(),
+                                                               GovernanceServicesDescription.INTEGRATION_DAEMON_SERVICES.getServiceDescription(),
+                                                               GovernanceServicesDescription.INTEGRATION_DAEMON_SERVICES.getServiceWiki()));
+
+            activatedServiceList.add(GovernanceServicesDescription.INTEGRATION_DAEMON_SERVICES.getServiceName());
         }
 
         /*
@@ -1180,6 +1210,35 @@ public class OMAGServerOperationalServices
     }
 
 
+
+    /**
+     * Called when server start up fails.  The aim is to clean up any partially running services.
+     * Any exceptions are ignored as the real cause of the error is already captured.
+     *
+     * @param userId calling user
+     * @param serverName name of this server
+     * @param methodName calling method
+     * @param instance a list of the running services
+     */
+    private void cleanUpRunningServiceInstances(String                          userId,
+                                                String                          serverName,
+                                                String                          methodName,
+                                                OMAGOperationalServicesInstance instance)
+    {
+        try
+        {
+            deactivateRunningServiceInstances(userId, serverName, methodName, instance, false);
+        }
+        catch (Exception  error)
+        {
+            /*
+             * Ignore exception as real cause of error is already caught.
+             */
+        }
+    }
+
+
+
     /**
      * Shutdown any running services for a specific server instance.
      *
@@ -1228,6 +1287,21 @@ public class OMAGServerOperationalServices
                 }
 
                 /*
+                 * Shutdown the view services
+                 */
+                if (instance.getOperationalViewServiceAdminList() != null)
+                {
+                    for (ViewServiceAdmin viewServiceAdmin : instance.getOperationalViewServiceAdminList())
+                    {
+                        if (viewServiceAdmin != null)
+                        {
+                            viewServiceAdmin.shutdown();
+                        }
+                    }
+                }
+
+
+                /*
                  * Shutdown the OCF metadata management services
                  */
                 if (instance.getOperationalOCFMetadataServices() != null)
@@ -1241,6 +1315,14 @@ public class OMAGServerOperationalServices
                 if (instance.getOperationalDiscoveryServer() != null)
                 {
                     instance.getOperationalDiscoveryServer().terminate();
+                }
+
+                /*
+                 * Shutdown the integration daemon
+                 */
+                if (instance.getOperationalIntegrationDaemon() != null)
+                {
+                    instance.getOperationalIntegrationDaemon().terminate();
                 }
 
                 /*
@@ -1331,9 +1413,9 @@ public class OMAGServerOperationalServices
 
                  throw error;
             }
-        }
 
-        platformInstanceMap.shutdownServerInstance(userId, serverName, methodName);
+            platformInstanceMap.shutdownServerInstance(userId, serverName, methodName);
+        }
     }
 
 

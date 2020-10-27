@@ -175,7 +175,7 @@ public class DataEngineCommonHandler {
         Optional<EntityDetail> retrievedEntity = Optional.ofNullable(repositoryHandler.getUniqueEntityByName(userId, qualifiedName,
                 CommonMapper.QUALIFIED_NAME_PROPERTY_NAME, properties, entityTypeDef.getGUID(), entityTypeDef.getName(), methodName));
 
-        log.debug("Searching for entity with qualifiedName: {}. Result is {}", qualifiedName,
+        log.trace("Searching for entity with qualifiedName: {}. Result is {}", qualifiedName,
                 retrievedEntity.map(InstanceHeader::getGUID).orElse(null));
 
         return retrievedEntity;

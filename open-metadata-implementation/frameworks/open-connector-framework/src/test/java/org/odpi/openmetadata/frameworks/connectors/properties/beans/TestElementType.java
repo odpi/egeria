@@ -45,7 +45,7 @@ public class TestElementType
         testObject.setElementTypeDescription("TestTypeDescription");
         testObject.setElementSourceServer("TestSourceServer");
         testObject.setElementOrigin(ElementOrigin.CONTENT_PACK);
-        testObject.setElementHomeMetadataCollectionId("TestHomeId");
+        testObject.setElementMetadataCollectionId("TestHomeId");
         testObject.setElementLicense("TestLicense");
 
         return testObject;
@@ -66,7 +66,7 @@ public class TestElementType
         assertTrue(resultObject.getElementTypeDescription().equals("TestTypeDescription"));
         assertTrue(resultObject.getElementSourceServer().equals("TestSourceServer"));
         assertTrue(resultObject.getElementOrigin().equals(ElementOrigin.CONTENT_PACK));
-        assertTrue(resultObject.getElementHomeMetadataCollectionId().equals("TestHomeId"));
+        assertTrue(resultObject.getElementMetadataCollectionId().equals("TestHomeId"));
         assertTrue(resultObject.getElementLicense().equals("TestLicense"));
     }
 

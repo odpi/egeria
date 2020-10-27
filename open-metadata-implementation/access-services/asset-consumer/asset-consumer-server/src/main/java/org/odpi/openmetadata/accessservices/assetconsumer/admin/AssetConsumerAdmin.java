@@ -79,6 +79,7 @@ public class AssetConsumerAdmin extends AccessServiceAdmin
                                                                        repositoryConnector.getRepositoryHelper(),
                                                                        repositoryConnector.getRepositoryValidator(),
                                                                        accessServiceConfig.getAccessServiceName(),
+                                                                       serverName,
                                                                        supportedZones,
                                                                        auditLog);
                 super.registerWithEnterpriseTopic(accessServiceConfig.getAccessServiceName(),

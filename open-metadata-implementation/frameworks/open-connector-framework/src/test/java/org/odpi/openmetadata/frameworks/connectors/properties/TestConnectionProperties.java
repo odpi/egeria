@@ -15,12 +15,12 @@ import static org.testng.Assert.assertTrue;
  */
 public class TestConnectionProperties
 {
-    private ElementType          type                 = new ElementType();
-    private List<Classification> classifications      = new ArrayList<>();
-    private Map<String, String>  additionalProperties = new HashMap<>();
-    private Map<String, Object>  securedProperties    = new HashMap<>();
-    private ConnectorType        connectorType        = new ConnectorType();
-    private Endpoint             endpoint             = new Endpoint();
+    private ElementType                 type                 = new ElementType();
+    private List<ElementClassification> classifications      = new ArrayList<>();
+    private Map<String, String>         additionalProperties = new HashMap<>();
+    private Map<String, String>         securedProperties    = new HashMap<>();
+    private ConnectorType               connectorType        = new ConnectorType();
+    private Endpoint                    endpoint             = new Endpoint();
 
 
     /**
@@ -209,17 +209,17 @@ public class TestConnectionProperties
      */
     @Test public void testSecuredProperties()
     {
-        Map<String, Object>  propertyMap = new HashMap<>();
+        Map<String, String>  propertyMap = new HashMap<>();
 
         propertyMap.put("property1", "TestString");
-        propertyMap.put("property2", new Integer(2));
+        propertyMap.put("property2", "2");
 
         Connection connectionBean = new Connection();
         connectionBean.setSecuredProperties(propertyMap);
 
         ConnectionProperties testObject = new ConnectionProperties(connectionBean);
 
-        Map<String, Object> securedProperties = testObject.getSecuredProperties();
+        Map<String, String> securedProperties = testObject.getSecuredProperties();
 
         assertTrue(securedProperties.keySet() != null);
 
@@ -229,7 +229,7 @@ public class TestConnectionProperties
 
         propertyName = iterator.next();
         assertTrue(propertyName.equals("property2"));
-        assertTrue(securedProperties.get(propertyName).equals(new Integer(2)));
+        assertTrue(securedProperties.get(propertyName).equals("2"));
 
         propertyName = iterator.next();
         assertTrue(propertyName.equals("property1"));

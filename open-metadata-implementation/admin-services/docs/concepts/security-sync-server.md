@@ -15,7 +15,7 @@ The security sync server is paired with the
 * [Setting basic properties for an OMAG server](../user/configuring-omag-server-basic-properties.md)
 * [Configuring the audit log destinations](../user/configuring-the-audit-log.md)
 * [Configuring the server security connector](../user/configuring-the-server-security-connector.md)
-* [Configuring the Security Sync Services](../user/configuring-the-security-sync-services.md)
+* [Configuring the Security Sync Services](../user/configuring-the-integration-services.md)
 
 ----
 * Return to [Integration Daemon](integration-daemon.md).

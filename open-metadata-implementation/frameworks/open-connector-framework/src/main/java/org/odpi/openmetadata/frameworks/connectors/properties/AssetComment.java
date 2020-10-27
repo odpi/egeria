@@ -144,7 +144,7 @@ public class AssetComment extends AssetElementHeader
      */
     public boolean isPublic()
     {
-        return commentBean.isPublic();
+        return commentBean.getIsPublic();
     }
 
 
