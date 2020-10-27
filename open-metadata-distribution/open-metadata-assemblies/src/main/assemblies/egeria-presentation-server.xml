@@ -28,7 +28,6 @@
                 <include>public/**</include>
             </includes>
             <excludes>
-              <exclude>package-lock.json</exclude>
               <exclude>node_modules/**</exclude>
             </excludes>
             <fileMode>0755</fileMode>

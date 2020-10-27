@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector;
 
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
+import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSLogicErrorException;
 
 /**
  * The GraphOMRSRepositoryConnector is a connector to a local open metadata repository that uses a graph store
@@ -28,17 +30,31 @@ public class GraphOMRSRepositoryConnector extends OMRSRepositoryConnector
      */
     public void setMetadataCollectionId(String metadataCollectionId)
     {
+        String methodName = "setMetadataCollectionId";
+
         super.metadataCollectionId = metadataCollectionId;
 
-        if (metadataCollectionId != null)
+        try
         {
-            /*
-             * Initialize the metadata collection only once the connector is properly set up.
-             */
-            super.metadataCollection = new GraphOMRSMetadataCollection(this, super.serverName,
-                                                                       repositoryHelper, repositoryValidator,
-                                                                       metadataCollectionId, auditLog,
-                                                                       connectionBean.getConfigurationProperties());
+
+            if (metadataCollectionId != null)
+            {
+                /*
+                 * Initialize the metadata collection only once the connector is properly set up.
+                 */
+                super.metadataCollection = new GraphOMRSMetadataCollection(this, super.serverName,
+                                                                           repositoryHelper, repositoryValidator,
+                                                                           metadataCollectionId, auditLog,
+                                                                           connectionBean.getConfigurationProperties());
+            }
+
+        }
+        catch (Throwable   error)
+        {
+            throw new OMRSLogicErrorException(OMRSErrorCode.NULL_METADATA_COLLECTION.getMessageDefinition(repositoryName),
+                                              this.getClass().getName(),
+                                              methodName,
+                                              error);
         }
     }
 }
