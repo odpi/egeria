@@ -23,10 +23,10 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/.m2
-          key: ${{ runner.os }}-maven-j8-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ runner.os }}-maven-j8
+          key: ${{ runner.os }}-maven-java8-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-maven-java8
       - name: Build with Maven
-        run: mvn -B -DargLine="-XX:+TieredCompilation -XX:TieredStopAtLevel=1" clean install --file pom.xml
+        run: mvn -B -DargLine="-XX:+TieredCompilation -XX:TieredStopAtLevel=1" clean verify --file pom.xml
       - name: Upload assemblies
         uses: actions/upload-artifact@v2
         with:
