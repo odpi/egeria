@@ -26,9 +26,8 @@ jobs:
           restore-keys: ${{ runner.os }}-maven-j8
       - name: Build with Maven
         run: mvn -B -XX:+TieredCompilation -XX:TieredStopAtLevel=1 clean install --file pom.xml
-      - name: Save assemblies
-        run: mkdir staging && cp open-metadata-distribution/open-metadata-assemblies/target/*.gz staging
       - name: Upload assemblies
+        uses: actions/upload-artifact@v2
         with:
           name: Assemblies
-          path: staging
+          path: open-metadata-distribution/open-metadata-assemblies/target/*.gz
