@@ -141,7 +141,9 @@ public class OpenMetadataTypesArchive
         update0010BaseModel();
         update0011ManagingReferenceables();
         update0012SearchKeywords();
+        update0017ExternalIdentifiers();
         update0030HostsAndPlatforms();
+        add0056AssetManager();
         add0057IntegrationCapabilities();
         update0150Feedback();
         update0215SoftwareComponents();
@@ -657,7 +659,6 @@ public class OpenMetadataTypesArchive
         return entityDef;
     }
 
-
     private RelationshipDef addSearchKeywordLinkRelationship()
     {
         final String guid            = "d2f8df24-6905-49b8-b389-31b2da156ece";
@@ -766,6 +767,168 @@ public class OpenMetadataTypesArchive
         return relationshipDef;
     }
 
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    /**
+     * 0017 External Identifier - add new properties for integration
+     */
+    private void update0017ExternalIdentifiers()
+    {
+        this.archiveBuilder.addEnumDef(getPermittedSynchronizationEnum());
+        this.archiveBuilder.addTypeDefPatch(updateExternalIdEntity());
+        this.archiveBuilder.addTypeDefPatch(updateExternalIdScopeRelationship());
+    }
+
+    private EnumDef getPermittedSynchronizationEnum()
+    {
+        final String guid            = "973a9f4c-93fa-43a5-a0c5-d97dbd164e78";
+        final String name            = "PermittedSynchronization";
+        final String description     = "Defines the synchronization rules between a third party technology and open metadata.";
+        final String descriptionGUID = null;
+
+        EnumDef enumDef = archiveHelper.getEmptyEnumDef(guid, name, description, descriptionGUID);
+
+        ArrayList<EnumElementDef> elementDefs = new ArrayList<>();
+        EnumElementDef            elementDef;
+
+        final int    element1Ordinal         = 0;
+        final String element1Value           = "BothDirections";
+        final String element1Description     = "Metadata exchange is permitted in both directions.";
+        final String element1DescriptionGUID = null;
+
+        elementDef = archiveHelper.getEnumElementDef(element1Ordinal,
+                                                     element1Value,
+                                                     element1Description,
+                                                     element1DescriptionGUID);
+        elementDefs.add(elementDef);
+
+        final int    element2Ordinal         = 1;
+        final String element2Value           = "ToThirdParty";
+        final String element2Description     = "The third party technology is logically downstream of open metadata and is just receiving metadata.";
+        final String element2DescriptionGUID = null;
+
+        elementDef = archiveHelper.getEnumElementDef(element2Ordinal,
+                                                     element2Value,
+                                                     element2Description,
+                                                     element2DescriptionGUID);
+        elementDefs.add(elementDef);
+
+        final int    element3Ordinal         = 2;
+        final String element3Value           = "FromThirdParty";
+        final String element3Description     = "The third party technology is logically upstream and is publishing metadata to open metadata.";
+        final String element3DescriptionGUID = null;
+
+        elementDef = archiveHelper.getEnumElementDef(element3Ordinal,
+                                                     element3Value,
+                                                     element3Description,
+                                                     element3DescriptionGUID);
+        elementDefs.add(elementDef);
+
+
+        final int    element8Ordinal         = 99;
+        final String element8Value           = "Other";
+        final String element8Description     = "Another synchronization rule.";
+        final String element8DescriptionGUID = null;
+
+        elementDef = archiveHelper.getEnumElementDef(element8Ordinal,
+                                                     element8Value,
+                                                     element8Description,
+                                                     element8DescriptionGUID);
+        elementDefs.add(elementDef);
+
+        enumDef.setElementDefs(elementDefs);
+
+        return enumDef;
+    }
+
+
+    private TypeDefPatch updateExternalIdEntity()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "ExternalId";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "mappingProperties";
+        final String attribute1Description     = "Additional properties to aid the mapping to the the element in an external metadata source.";
+        final String attribute1DescriptionGUID = null;
+        final String attribute2Name            = "lastSynchronized";
+        final String attribute2Description     = "Timestamp documenting the last time the metadata element in the external metadata source was synchronized with open metadata.";
+        final String attribute2DescriptionGUID = null;
+
+        property = archiveHelper.getMapStringStringTypeDefAttribute(attribute1Name,
+                                                                    attribute1Description,
+                                                                    attribute1DescriptionGUID);
+
+        properties.add(property);
+
+        property = archiveHelper.getDateTypeDefAttribute(attribute2Name,
+                                                         attribute2Description,
+                                                         attribute2DescriptionGUID);
+        properties.add(property);
+
+
+        typeDefPatch.setPropertyDefinitions(properties);
+        return typeDefPatch;
+    }
+
+
+
+    private TypeDefPatch updateExternalIdScopeRelationship()
+    {
+        /*
+         * Create the Patch
+         */
+        final String typeName = "ExternalIdScope";
+
+        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(typeName);
+
+        typeDefPatch.setUpdatedBy(originatorName);
+        typeDefPatch.setUpdateTime(creationDate);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "permittedSynchronization";
+        final String attribute1Description     = "Defines the permitted directions of flow of metadata updates between open metadata and a third party technology.";
+        final String attribute1DescriptionGUID = null;
+        final String attribute2Name            = "description";
+        final String attribute2Description     = "Additional description of the type of synchronization occurring.";
+        final String attribute2DescriptionGUID = null;
+
+
+        property = archiveHelper.getEnumTypeDefAttribute("PermittedSynchronization",
+                                                         attribute1Name,
+                                                         attribute1Description,
+                                                         attribute1DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
+        properties.add(property);
+
+
+        typeDefPatch.setPropertyDefinitions(properties);
+
+        return typeDefPatch;
+    }
+
 
     /*
      * -------------------------------------------------------------------------------------------------------
@@ -824,6 +987,40 @@ public class OpenMetadataTypesArchive
         typeDefPatch.setPropertyDefinitions(properties);
         return typeDefPatch;
     }
+
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+
+    /**
+     * 0056 - Asset Managers are metadata stores that are not functional enough to register as a cohort member.
+     */
+    private void add0056AssetManager()
+    {
+        this.archiveBuilder.addEntityDef(addAssetManagerEntity());
+    }
+
+
+    private EntityDef addAssetManagerEntity()
+    {
+        final String guid            = "03170ce7-edf1-4e94-b6ab-2d5cbbf1f13c";
+        final String name            = "AssetManager";
+        final String description     = "Defines a capability that manages metadata about assets.";
+        final String descriptionGUID = null;
+
+        final String superTypeName = "SoftwareServerCapability";
+
+        return archiveHelper.getDefaultEntityDef(guid,
+                                                 name,
+                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 description,
+                                                 descriptionGUID);
+
+    }
+
 
 
     /*

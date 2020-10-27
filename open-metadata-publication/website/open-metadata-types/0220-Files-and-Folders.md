@@ -15,11 +15,11 @@ The root folders (**FileFolders**) are connected to it using the
 [ServerAssetUse](0045-Servers-and-Assets.md) relationship.
 Beneath that are **FileFolders** with **DataFiles**
 nested beneath them.  Data files can also have a symbolic link (**LinkedFile**) to
-a folder to show that it logically belongs to the other content in the
-folder.
+a element to show that it logically belongs to the other content in the
+element.
 
 There is also a special case of a
-**DataFolder** which is a folder that is the container of a collection of
+**DataFolder** which is a element that is the container of a collection of
 data.
 The files and nested folders within it collectively make up the data content.
 They are not individually catalogued.
