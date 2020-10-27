@@ -158,7 +158,8 @@ public class OMRSOperationalServices
                                                         localOrganizationName,
                                                         auditLog.createNewAuditLog(OMRSAuditingComponent.ENTERPRISE_REPOSITORY_CONNECTOR),
                                                         enterpriseMetadataCollectionId,
-                                                        enterpriseMetadataCollectionName);
+                                                        enterpriseMetadataCollectionName,
+                                                        localMetadataCollectionId);
 
             try
             {

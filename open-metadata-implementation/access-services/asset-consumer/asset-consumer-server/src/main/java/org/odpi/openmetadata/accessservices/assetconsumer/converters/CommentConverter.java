@@ -149,6 +149,7 @@ public class CommentConverter<B> extends AssetConsumerOMASConverter<B>
             if (instancePropertiesMap != null)
             {
                 instancePropertiesMap.remove(OpenMetadataAPIMapper.COMMENT_TYPE_PROPERTY_NAME);
+                instancePropertiesMap.remove(OpenMetadataAPIMapper.COMMENT_TYPE_PROPERTY_NAME_DEP);
             }
 
             properties.setInstanceProperties(instancePropertiesMap);

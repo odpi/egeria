@@ -12,8 +12,8 @@ export default function TaskDropDown({ onChange }) {
       onChange={onChange}
     >
       <option value="search">Search</option>
-      <option selected value="crud">CRUD</option>
-      <option value="glossaries">
+      <option value="crud">CRUD</option>
+      <option selected value="glossaries">
         Glossary Authoring
       </option>
     </select>
