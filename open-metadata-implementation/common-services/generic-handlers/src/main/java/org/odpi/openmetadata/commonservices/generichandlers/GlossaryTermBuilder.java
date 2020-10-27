@@ -113,7 +113,7 @@ public class GlossaryTermBuilder extends ReferenceableBuilder
         {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
-                                                                      OpenMetadataAPIMapper.TERM_SUMMARY_PROPERTY_NAME,
+                                                                      OpenMetadataAPIMapper.SUMMARY_PROPERTY_NAME,
                                                                       description,
                                                                       methodName);
         }
@@ -131,7 +131,7 @@ public class GlossaryTermBuilder extends ReferenceableBuilder
         {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
-                                                                      OpenMetadataAPIMapper.TERM_EXAMPLES_PROPERTY_NAME,
+                                                                      OpenMetadataAPIMapper.EXAMPLES_PROPERTY_NAME,
                                                                       description,
                                                                       methodName);
         }
@@ -140,7 +140,7 @@ public class GlossaryTermBuilder extends ReferenceableBuilder
         {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
-                                                                      OpenMetadataAPIMapper.TERM_ABBREVIATION_PROPERTY_NAME,
+                                                                      OpenMetadataAPIMapper.ABBREVIATION_PROPERTY_NAME,
                                                                       description,
                                                                       methodName);
         }
@@ -149,7 +149,7 @@ public class GlossaryTermBuilder extends ReferenceableBuilder
         {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
-                                                                      OpenMetadataAPIMapper.TERM_USAGE_PROPERTY_NAME,
+                                                                      OpenMetadataAPIMapper.USAGE_PROPERTY_NAME,
                                                                       description,
                                                                       methodName);
         }

@@ -208,6 +208,8 @@ public class OpenMetadataAPIGenericHandler<B>
      * Add the requested classification to the matching entity in the repository.
      *
      * @param userId calling user
+     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software server capability entity that represented the external source
      * @param beanGUID unique identifier of the entity in the repositories
      * @param beanGUIDParameterName parameter name that passed the beanGUID
      * @param beanGUIDTypeName type of bean
@@ -339,6 +341,44 @@ public class OpenMetadataAPIGenericHandler<B>
      * Remove the requested classification from the matching entity in the repository.
      *
      * @param userId calling user
+     * @param beanGUID unique identifier of the entity in the repositories
+     * @param beanGUIDParameterName parameter name that passed the beanGUID
+     * @param beanGUIDTypeName type of bean
+     * @param classificationTypeGUID unique identifier of classification type
+     * @param classificationTypeName unique name of classification type
+     * @param methodName calling method
+     * @throws InvalidParameterException the classification name is null
+     * @throws PropertyServerException there is a problem with the repositories
+     * @throws UserNotAuthorizedException the user is not allowed to update the security tags
+     */
+    void removeClassificationFromRepository(String userId,
+                                            String beanGUID,
+                                            String beanGUIDParameterName,
+                                            String beanGUIDTypeName,
+                                            String classificationTypeGUID,
+                                            String classificationTypeName,
+                                            String methodName) throws InvalidParameterException,
+                                                                      PropertyServerException,
+                                                                      UserNotAuthorizedException
+    {
+        removeClassificationFromRepository(userId,
+                                           null,
+                                           null,
+                                           beanGUID,
+                                           beanGUIDParameterName,
+                                           beanGUIDTypeName,
+                                           classificationTypeGUID,
+                                           classificationTypeName,
+                                           methodName);
+    }
+
+
+    /**
+     * Remove the requested classification from the matching entity in the repository.
+     *
+     * @param userId calling user
+     * @param externalSourceGUID guid of the software server capability entity that represented the external source - null for local
+     * @param externalSourceName name of the software server capability entity that represented the external source
      * @param beanGUID unique identifier of the entity in the repositories
      * @param beanGUIDParameterName parameter name that passed the beanGUID
      * @param beanGUIDTypeName type of bean
@@ -3250,6 +3290,7 @@ public class OpenMetadataAPIGenericHandler<B>
         final String newEntityParameterName = "newEntityGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
 
         /*
          * This call ensures the template exists and is the correct type.

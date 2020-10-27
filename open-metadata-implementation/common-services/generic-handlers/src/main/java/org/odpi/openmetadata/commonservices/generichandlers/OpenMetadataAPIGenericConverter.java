@@ -2008,6 +2008,28 @@ public abstract class OpenMetadataAPIGenericConverter<B>
     }
 
 
+    /**
+     * Extract and delete the language property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string text or null
+     */
+    protected String removeLanguage(InstanceProperties instanceProperties)
+    {
+        final String methodName = "removeLanguage";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataAPIMapper.LANGUAGE_PROPERTY_NAME,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
+
+
 
 
     /**
