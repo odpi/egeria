@@ -6,9 +6,7 @@ package org.odpi.openmetadata.accessservices.assetmanager.server;
 import org.odpi.openmetadata.accessservices.assetmanager.handlers.GlossaryExchangeHandler;
 import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.*;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.*;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.GlossaryElementsResponse;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.GlossaryRequestBody;
-import org.odpi.openmetadata.accessservices.assetmanager.rest.TemplateRequestBody;
+import org.odpi.openmetadata.accessservices.assetmanager.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
@@ -19,8 +17,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.slf4j.LoggerFactory;
-import java.util.List;
-import java.util.Map;
+
 
 
 /**
@@ -328,28 +325,65 @@ public class GlossaryExchangeRESTServices
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
      * @param glossaryGUID unique identifier of the metadata element to remove
-     * @param glossaryExternalIdentifier unique identifier of the glossary in the external asset manager
-     * @param organizingPrinciple description of how the glossary is organized
+     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
      *
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse setGlossaryAsTaxonomy(String serverName,
-                                              String userId,
-                                              String assetManagerGUID,
-                                              String assetManagerName,
-                                              String glossaryGUID,
-                                              String glossaryExternalIdentifier,
-                                              String organizingPrinciple)
+    public VoidResponse setGlossaryAsTaxonomy(String                            serverName,
+                                              String                            userId,
+                                              String                            glossaryGUID,
+                                              TaxonomyClassificationRequestBody requestBody)
     {
-        final String methodName = "XXX";
-        // todo
-        return null;
+        final String methodName = "setGlossaryAsTaxonomy";
+
+        RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
+                handler.setGlossaryAsTaxonomy(userId,
+                                              requestBody.getMetadataCorrelationProperties(),
+                                              glossaryGUID,
+                                              requestBody.getOrganizingPrinciple(),
+                                              methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
     }
 
 
@@ -358,26 +392,61 @@ public class GlossaryExchangeRESTServices
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
      * @param glossaryGUID unique identifier of the metadata element to remove
-     * @param glossaryExternalIdentifier unique identifier of the glossary in the external asset manager
+     * @param requestBody correlation properties for the external asset manager
      *
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse clearGlossaryAsTaxonomy(String serverName,
-                                                String userId,
-                                                String assetManagerGUID,
-                                                String assetManagerName,
-                                                String glossaryGUID,
-                                                String glossaryExternalIdentifier)
+    public VoidResponse clearGlossaryAsTaxonomy(String                        serverName,
+                                                String                        userId,
+                                                String                        glossaryGUID,
+                                                MetadataCorrelationProperties requestBody)
     {
-        final String methodName = "XXX";
-        // todo
-        return null;
+        final String methodName = "clearGlossaryAsTaxonomy";
+
+        RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
+                handler.clearGlossaryAsTaxonomy(userId, requestBody, glossaryGUID, methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
     }
 
 
@@ -390,28 +459,65 @@ public class GlossaryExchangeRESTServices
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
      * @param glossaryGUID unique identifier of the metadata element to remove
-     * @param glossaryExternalIdentifier unique identifier of the glossary in the external asset manager
-     * @param scope description of the situations where this glossary is relevant.
+     * @param requestBody description of the situations where this glossary is relevant.
      *
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse setGlossaryAsCanonical(String serverName,
-                                               String userId,
-                                               String assetManagerGUID,
-                                               String assetManagerName,
-                                               String glossaryGUID,
-                                               String glossaryExternalIdentifier,
-                                               String scope)
+    public VoidResponse setGlossaryAsCanonical(String                                       serverName,
+                                               String                                       userId,
+                                               String                                       glossaryGUID,
+                                               CanonicalVocabularyClassificationRequestBody requestBody)
     {
-        final String methodName = "XXX";
-        // todo
-        return null;
+        final String methodName = "setGlossaryAsCanonical";
+
+        RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
+                handler.setGlossaryAsCanonical(userId,
+                                               requestBody.getMetadataCorrelationProperties(),
+                                               glossaryGUID,
+                                               requestBody.getScope(),
+                                               methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
     }
 
 
@@ -420,26 +526,61 @@ public class GlossaryExchangeRESTServices
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
      * @param glossaryGUID unique identifier of the metadata element to remove
-     * @param glossaryExternalIdentifier unique identifier of the glossary in the external asset manager
+     * @param requestBody correlation properties for the external asset manager
      *
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse clearGlossaryAsCanonical(String serverName,
-                                                 String userId,
-                                                 String assetManagerGUID,
-                                                 String assetManagerName,
-                                                 String glossaryGUID,
-                                                 String glossaryExternalIdentifier)
+    public VoidResponse clearGlossaryAsCanonical(String                        serverName,
+                                                 String                        userId,
+                                                 String                        glossaryGUID,
+                                                 MetadataCorrelationProperties requestBody)
     {
-        final String methodName = "XXX";
-        // todo
-        return null;
+        final String methodName = "clearGlossaryAsCanonical";
+
+        RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
+                handler.clearGlossaryAsCanonical(userId, requestBody, glossaryGUID, methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
     }
 
 
@@ -449,9 +590,7 @@ public class GlossaryExchangeRESTServices
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
-     * @param searchString string to find in the properties
+     * @param requestBody string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -460,17 +599,60 @@ public class GlossaryExchangeRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public GlossaryElementsResponse findGlossaries(String serverName,
-                                                   String userId,
-                                                   String assetManagerGUID,
-                                                   String assetManagerName,
-                                                   String searchString,
-                                                   int    startFrom,
-                                                   int    pageSize)
+    public GlossaryElementsResponse findGlossaries(String                  serverName,
+                                                   String                  userId,
+                                                   int                     startFrom,
+                                                   int                     pageSize,
+                                                   SearchStringRequestBody requestBody)
     {
-        final String methodName = "XXX";
-        // todo
-        return null;
+        final String methodName = "findGlossaries";
+
+        RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        GlossaryElementsResponse response = new GlossaryElementsResponse();
+        AuditLog                 auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
+                handler.findGlossaries(userId,
+                                       requestBody.getAssetManagerGUID(),
+                                       requestBody.getAssetManagerName(),
+                                       requestBody.getSearchString(),
+                                       startFrom,
+                                       pageSize,
+                                       methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
     }
 
 
@@ -480,9 +662,7 @@ public class GlossaryExchangeRESTServices
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
-     * @param name name to search for
+     * @param requestBody name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -491,17 +671,61 @@ public class GlossaryExchangeRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<GlossaryElement>   getGlossariesByName(String serverName,
-                                                       String userId,
-                                                       String assetManagerGUID,
-                                                       String assetManagerName,
-                                                       String name,
-                                                       int    startFrom,
-                                                       int    pageSize)
+    public GlossaryElementsResponse   getGlossariesByName(String          serverName,
+                                                          String          userId,
+                                                          int             startFrom,
+                                                          int             pageSize,
+                                                          NameRequestBody requestBody)
     {
-        final String methodName = "XXX";
-        // todo
-        return null;
+        final String methodName = "getGlossariesByName";
+
+        RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        GlossaryElementsResponse response = new GlossaryElementsResponse();
+        AuditLog                 auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
+                handler.getGlossariesByName(userId,
+                                       requestBody.getAssetManagerGUID(),
+                                       requestBody.getAssetManagerName(),
+                                       requestBody.getName(),
+                                       requestBody.getNameParameterName(),
+                                       startFrom,
+                                       pageSize,
+                                       methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
     }
 
 
@@ -510,26 +734,68 @@ public class GlossaryExchangeRESTServices
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param requestBody asset manager identifiers
      *
      * @return list of matching metadata elements or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<GlossaryElement>   getGlossariesForAssetManager(String serverName,
-                                                                String userId,
-                                                                String assetManagerGUID,
-                                                                String assetManagerName,
-                                                                int    startFrom,
-                                                                int    pageSize)
+    public GlossaryElementsResponse   getGlossariesForAssetManager(String                             serverName,
+                                                                   String                             userId,
+                                                                   int                                startFrom,
+                                                                   int                                pageSize,
+                                                                   AssetManagerIdentifiersRequestBody requestBody)
     {
-        final String methodName = "XXX";
-        // todo
-        return null;
+        final String methodName = "getGlossariesForAssetManager";
+
+        RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        GlossaryElementsResponse response = new GlossaryElementsResponse();
+        AuditLog                 auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
+                handler.getGlossariesForAssetManager(userId,
+                                                     requestBody.getAssetManagerGUID(),
+                                                     requestBody.getAssetManagerName(),
+                                                     startFrom,
+                                                     pageSize,
+                                                     methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
     }
 
 
@@ -538,24 +804,65 @@ public class GlossaryExchangeRESTServices
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
      * @param openMetadataGUID unique identifier of the requested metadata element
+     * @param requestBody asset manager identifiers
      *
      * @return matching metadata element or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public GlossaryElement getGlossaryByGUID(String serverName,
-                                             String userId,
-                                             String assetManagerGUID,
-                                             String assetManagerName,
-                                             String openMetadataGUID)
+    public GlossaryElementResponse getGlossaryByGUID(String                             serverName,
+                                                     String                             userId,
+                                                     String                             openMetadataGUID,
+                                                     AssetManagerIdentifiersRequestBody requestBody)
     {
-        final String methodName = "XXX";
-        // todo
-        return null;
+        final String methodName = "getGlossaryByGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        GlossaryElementResponse response = new GlossaryElementResponse();
+        AuditLog                auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
+                handler.getGlossaryByGUID(userId,
+                                          requestBody.getAssetManagerGUID(),
+                                          requestBody.getAssetManagerName(),
+                                          openMetadataGUID,
+                                          methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
     }
 
 
@@ -564,24 +871,59 @@ public class GlossaryExchangeRESTServices
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
-     * @param glossaryExternalIdentifier unique identifier of the requested metadata element from the asset manager
+     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
      *
      * @return matching metadata element or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public GlossaryElement getGlossaryByExternalIdentifier(String serverName,
-                                                           String userId,
-                                                           String assetManagerGUID,
-                                                           String assetManagerName,
-                                                           String glossaryExternalIdentifier)
+    public GlossaryElementResponse getGlossaryByExternalIdentifier(String                        serverName,
+                                                                   String                        userId,
+                                                                   MetadataCorrelationProperties requestBody)
     {
-        final String methodName = "XXX";
-        // todo
-        return null;
+        final String methodName = "getGlossaryByExternalIdentifier";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        GlossaryElementResponse response = new GlossaryElementResponse();
+        AuditLog                auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
+                handler.getGlossaryByExternalIdentifier(userId, requestBody, methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
     }
 
 
@@ -594,31 +936,66 @@ public class GlossaryExchangeRESTServices
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
      * @param glossaryGUID unique identifier of the glossary where the category is located
-     * @param glossaryCategoryExternalIdentifier unique identifier of the glossary category in the external asset manager
-     * @param mappingProperties additional properties to help with the mapping of the elements in the
-     *                          external asset manager and open metadata
-     * @param glossaryCategoryProperties properties about the glossary category to store
+     * @param requestBody properties about the glossary category to store
      *
      * @return unique identifier of the new glossary category or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public GUIDResponse createGlossaryCategory(String                     serverName,
-                                               String                     userId,
-                                               String                     assetManagerGUID,
-                                               String                     assetManagerName,
-                                               String                     glossaryGUID,
-                                               String                     glossaryCategoryExternalIdentifier,
-                                               Map<String, String>        mappingProperties,
-                                               GlossaryCategoryProperties glossaryCategoryProperties)
+    public GUIDResponse createGlossaryCategory(String                      serverName,
+                                               String                      userId,
+                                               String                      glossaryGUID,
+                                               GlossaryCategoryRequestBody requestBody)
     {
-        final String methodName = "XXX";
-        // todo
-        return null;
+        final String methodName = "createGlossaryCategory";
+
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        GUIDResponse response = new GUIDResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
+                handler.createGlossaryCategory(userId,
+                                               glossaryGUID,
+                                               requestBody.getMetadataCorrelationProperties(),
+                                               requestBody.getElementProperties(),
+                                               methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
     }
 
 
@@ -627,33 +1004,68 @@ public class GlossaryExchangeRESTServices
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
      * @param templateGUID unique identifier of the metadata element to copy
      * @param glossaryGUID unique identifier of the glossary where the category is located
-     * @param glossaryCategoryExternalIdentifier unique identifier of the glossary category in the external asset manager
-     * @param mappingProperties additional properties to help with the mapping of the elements in the
-     *                          external asset manager and open metadata
-     * @param templateProperties properties that override the template
+     * @param requestBody properties that override the template
      *
      * @return unique identifier of the new glossary category or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public GUIDResponse createGlossaryCategoryFromTemplate(String              serverName,
-                                                           String              userId,
-                                                           String              assetManagerGUID,
-                                                           String              assetManagerName,
-                                                           String              templateGUID,
-                                                           String              glossaryGUID,
-                                                           String              glossaryCategoryExternalIdentifier,
-                                                           Map<String, String> mappingProperties,
-                                                           TemplateProperties  templateProperties)
+    public GUIDResponse createGlossaryCategoryFromTemplate(String               serverName,
+                                                           String               userId,
+                                                           String               glossaryGUID,
+                                                           String               templateGUID,
+                                                           TemplateRequestBody  requestBody)
     {
-        final String methodName = "XXX";
-        // todo
-        return null;
+        final String methodName = "createGlossaryCategoryFromTemplate";
+
+        RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        GUIDResponse response = new GUIDResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
+                response.setGUID(handler.createGlossaryCategoryFromTemplate(userId,
+                                                                            glossaryGUID,
+                                                                            requestBody.getMetadataCorrelationProperties(),
+                                                                            templateGUID,
+                                                                            requestBody.getElementProperties(),
+                                                                            methodName));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
     }
 
 
@@ -662,28 +1074,65 @@ public class GlossaryExchangeRESTServices
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
      * @param glossaryCategoryGUID unique identifier of the metadata element to update
-     * @param glossaryCategoryExternalIdentifier unique identifier of the glossary category in the external asset manager
-     * @param glossaryCategoryProperties new properties for the metadata element
+     * @param requestBody new properties for the metadata element
      *
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse updateGlossaryCategory(String                     serverName,
-                                               String                     userId,
-                                               String                     assetManagerGUID,
-                                               String                     assetManagerName,
-                                               String                     glossaryCategoryGUID,
-                                               String                     glossaryCategoryExternalIdentifier,
-                                               GlossaryCategoryProperties glossaryCategoryProperties)
+    public VoidResponse updateGlossaryCategory(String                      serverName,
+                                               String                      userId,
+                                               String                      glossaryCategoryGUID,
+                                               GlossaryCategoryRequestBody requestBody)
     {
-        final String methodName = "XXX";
-        // todo
-        return null;
+        final String methodName = "updateGlossaryCategory";
+
+        RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
+                handler.updateGlossaryCategory(userId,
+                                               requestBody.getMetadataCorrelationProperties(),
+                                               glossaryCategoryGUID,
+                                               requestBody.getElementProperties(),
+                                               methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
     }
 
 
@@ -692,26 +1141,68 @@ public class GlossaryExchangeRESTServices
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
      * @param glossaryParentCategoryGUID unique identifier of the glossary category in the external asset manager that is to be the super-category
      * @param glossaryChildCategoryGUID unique identifier of the glossary category in the external asset manager that is to be the subcategory
+     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
      *
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse setupCategoryParent(String serverName,
-                                            String userId,
-                                            String assetManagerGUID,
-                                            String assetManagerName,
-                                            String glossaryParentCategoryGUID,
-                                            String glossaryChildCategoryGUID)
+    public VoidResponse setupCategoryParent(String                             serverName,
+                                            String                             userId,
+                                            String                             glossaryParentCategoryGUID,
+                                            String                             glossaryChildCategoryGUID,
+                                            AssetManagerIdentifiersRequestBody requestBody)
     {
-        final String methodName = "XXX";
-        // todo
-        return null;
+        final String methodName = "setupCategoryParent";
+
+        RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
+                handler.setupCategoryParent(userId,
+                                            requestBody.getAssetManagerGUID(),
+                                            requestBody.getAssetManagerName(),
+                                            glossaryParentCategoryGUID,
+                                            glossaryChildCategoryGUID,
+                                            methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
     }
 
 
@@ -720,26 +1211,68 @@ public class GlossaryExchangeRESTServices
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
      * @param glossaryParentCategoryGUID unique identifier of the glossary category in the external asset manager that is to be the super-category
      * @param glossaryChildCategoryGUID unique identifier of the glossary category in the external asset manager that is to be the subcategory
+     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
      *
      * @return void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse clearCategoryParent(String serverName,
-                                            String userId,
-                                            String assetManagerGUID,
-                                            String assetManagerName,
-                                            String glossaryParentCategoryGUID,
-                                            String glossaryChildCategoryGUID)
+    public VoidResponse clearCategoryParent(String                             serverName,
+                                            String                             userId,
+                                            String                             glossaryParentCategoryGUID,
+                                            String                             glossaryChildCategoryGUID,
+                                            AssetManagerIdentifiersRequestBody requestBody)
     {
-        final String methodName = "XXX";
-        // todo
-        return null;
+        final String methodName = "clearCategoryParent";
+
+        RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
+                handler.clearCategoryParent(userId,
+                                            requestBody.getAssetManagerGUID(),
+                                            requestBody.getAssetManagerName(),
+                                            glossaryParentCategoryGUID,
+                                            glossaryChildCategoryGUID,
+                                            methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
     }
 
 
@@ -748,26 +1281,60 @@ public class GlossaryExchangeRESTServices
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
      * @param glossaryCategoryGUID unique identifier of the metadata element to remove
-     * @param glossaryCategoryExternalIdentifier unique identifier of the glossary category in the external asset manager
+     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
      *
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse removeGlossaryCategory(String serverName,
-                                               String userId,
-                                               String assetManagerGUID,
-                                               String assetManagerName,
-                                               String glossaryCategoryGUID,
-                                               String glossaryCategoryExternalIdentifier)
+    public VoidResponse removeGlossaryCategory(String                        serverName,
+                                               String                        userId,
+                                               String                        glossaryCategoryGUID,
+                                               MetadataCorrelationProperties requestBody)
     {
-        final String methodName = "XXX";
-        // todo
-        return null;
+        final String methodName = "removeGlossaryCategory";
+        RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
+                handler.removeGlossaryCategory(userId, requestBody, glossaryCategoryGUID, methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
     }
 
 
@@ -777,28 +1344,69 @@ public class GlossaryExchangeRESTServices
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
-     * @param searchString string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param requestBody string to find in the properties and correlators
      *
      * @return list of matching metadata elements or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<GlossaryCategoryElement>   findGlossaryCategories(String serverName,
-                                                                  String userId,
-                                                                  String assetManagerGUID,
-                                                                  String assetManagerName,
-                                                                  String searchString,
-                                                                  int    startFrom,
-                                                                  int    pageSize)
+    public GlossaryCategoryElementsResponse findGlossaryCategories(String                  serverName,
+                                                                   String                  userId,
+                                                                   int                     startFrom,
+                                                                   int                     pageSize,
+                                                                   SearchStringRequestBody requestBody)
     {
-        final String methodName = "XXX";
-        // todo
-        return null;
+        final String methodName = "findGlossaryCategories";
+
+        RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        GlossaryCategoryElementsResponse response = new GlossaryCategoryElementsResponse();
+        AuditLog                 auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
+                handler.findGlossaryCategories(userId,
+                                               requestBody.getAssetManagerGUID(),
+                                               requestBody.getAssetManagerName(),
+                                               requestBody.getSearchString(),
+                                               startFrom,
+                                               pageSize,
+                                               methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
     }
 
 
@@ -807,26 +1415,24 @@ public class GlossaryExchangeRESTServices
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
      * @param glossaryGUID unique identifier of the glossary to query
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param requestBody asset manager identifiers
      *
      * @return list of metadata elements describing the categories associated with the requested glossary or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<GlossaryCategoryElement>   getCategoriesForGlossary(String serverName,
-                                                                    String userId,
-                                                                    String assetManagerGUID,
-                                                                    String assetManagerName,
-                                                                    String glossaryGUID,
-                                                                    int    startFrom,
-                                                                    int    pageSize)
+    public GlossaryCategoryElementsResponse getCategoriesForGlossary(String                             serverName,
+                                                                     String                             userId,
+                                                                     String                             glossaryGUID,
+                                                                     int                                startFrom,
+                                                                     int                                pageSize,
+                                                                     AssetManagerIdentifiersRequestBody requestBody)
     {
-        final String methodName = "XXX";
+        final String methodName = "getCategoriesForGlossary";
         // todo
         return null;
     }
@@ -838,9 +1444,7 @@ public class GlossaryExchangeRESTServices
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
-     * @param name name to search for
+     * @param requestBody name to search for and correlators
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      *
@@ -849,15 +1453,13 @@ public class GlossaryExchangeRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<GlossaryCategoryElement>   getGlossaryCategoriesByName(String serverName,
-                                                                       String userId,
-                                                                       String assetManagerGUID,
-                                                                       String assetManagerName,
-                                                                       String name,
-                                                                       int    startFrom,
-                                                                       int    pageSize)
+    public GlossaryCategoryElementsResponse   getGlossaryCategoriesByName(String          serverName,
+                                                                          String          userId,
+                                                                          int             startFrom,
+                                                                          int             pageSize,
+                                                                          NameRequestBody requestBody)
     {
-        final String methodName = "XXX";
+        final String methodName = "getGlossaryCategoriesByName";
         // todo
         return null;
     }
@@ -868,24 +1470,65 @@ public class GlossaryExchangeRESTServices
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
      * @param glossaryCategoryGUID unique identifier of the requested metadata element
+     * @param requestBody asset manager identifiers
      *
      * @return requested metadata element or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public GlossaryCategoryElement getGlossaryCategoryByGUID(String serverName,
-                                                             String userId,
-                                                             String assetManagerGUID,
-                                                             String assetManagerName,
-                                                             String glossaryCategoryGUID)
+    public GlossaryCategoryElementResponse getGlossaryCategoryByGUID(String                             serverName,
+                                                                     String                             userId,
+                                                                     String                             glossaryCategoryGUID,
+                                                                     AssetManagerIdentifiersRequestBody requestBody)
     {
-        final String methodName = "XXX";
-        // todo
-        return null;
+        final String methodName = "getGlossaryCategoryByGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        GlossaryCategoryElementResponse response = new GlossaryCategoryElementResponse();
+        AuditLog                auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
+                handler.getGlossaryCategoryByGUID(userId,
+                                                  requestBody.getAssetManagerGUID(),
+                                                  requestBody.getAssetManagerName(),
+                                                  glossaryCategoryGUID,
+                                                  methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
     }
 
 
@@ -895,25 +1538,20 @@ public class GlossaryExchangeRESTServices
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
      * @param glossaryCategoryGUID unique identifier of the requested metadata element
+     * @param requestBody asset manager identifiers
      *
-     * @return parent glossary category element
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @return parent glossary category element or
+     * InvalidParameterException  one of the parameters is invalid or
+     * UserNotAuthorizedException the user is not authorized to issue this request or
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public GlossaryCategoryElement getGlossaryCategoryParent(String serverName,
-                                                             String userId,
-                                                             String assetManagerGUID,
-                                                             String assetManagerName,
-                                                             String glossaryCategoryGUID) throws InvalidParameterException,
-                                                                                                 UserNotAuthorizedException,
-                                                                                                 PropertyServerException
+    public GlossaryCategoryElementResponse getGlossaryCategoryParent(String                             serverName,
+                                                                     String                             userId,
+                                                                     String                             glossaryCategoryGUID,
+                                                                     AssetManagerIdentifiersRequestBody requestBody)
     {
-        final String methodName = "XXX";
+        final String methodName = "getGlossaryCategoryParent";
         // todo
         return null;
     }
@@ -922,29 +1560,26 @@ public class GlossaryExchangeRESTServices
     /**
      * Retrieve the glossary category metadata element with the supplied unique identifier.
      *
+     * @param serverName name of the server to route the request to
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
      * @param glossaryCategoryGUID unique identifier of the requested metadata element
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param requestBody asset manager identifiers
      *
-     * @return list of glossary category element
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @return list of glossary category elements or
+     * InvalidParameterException  one of the parameters is invalid or
+     * UserNotAuthorizedException the user is not authorized to issue this request or
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<GlossaryCategoryElement> getGlossarySubCategories(String userId,
-                                                                  String assetManagerGUID,
-                                                                  String assetManagerName,
-                                                                  String glossaryCategoryGUID,
-                                                                  int    startFrom,
-                                                                  int    pageSize) throws InvalidParameterException,
-                                                                                          UserNotAuthorizedException,
-                                                                                          PropertyServerException
+    public GlossaryCategoryElementsResponse getGlossarySubCategories(String                             serverName,
+                                                                     String                             userId,
+                                                                     String                             glossaryCategoryGUID,
+                                                                     int                                startFrom,
+                                                                     int                                pageSize,
+                                                                     AssetManagerIdentifiersRequestBody requestBody)
     {
-        final String methodName = "XXX";
+        final String methodName = "getGlossarySubCategories";
         // todo
         return null;
     }
@@ -959,29 +1594,20 @@ public class GlossaryExchangeRESTServices
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
      * @param glossaryGUID unique identifier of the glossary where the term is located
-     * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
-     * @param mappingProperties additional properties to help with the mapping of the elements in the
-     *                          external asset manager and open metadata
-     * @param glossaryTermProperties properties for the glossary term
+     * @param requestBody properties for the glossary term
      *
      * @return unique identifier of the new metadata element for the glossary term or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public GUIDResponse createGlossaryTerm(String                 serverName,
-                                           String                 userId,
-                                           String                 assetManagerGUID,
-                                           String                 assetManagerName,
-                                           String                 glossaryGUID,
-                                           String                 glossaryTermExternalIdentifier,
-                                           Map<String, String>    mappingProperties,
-                                           GlossaryTermProperties glossaryTermProperties)
+    public GUIDResponse createGlossaryTerm(String                  serverName,
+                                           String                  userId,
+                                           String                  glossaryGUID,
+                                           GlossaryTermRequestBody requestBody)
     {
-        final String methodName = "XXX";
+        final String methodName = "createGlossaryTerm";
         // todo
         return null;
     }
@@ -992,31 +1618,20 @@ public class GlossaryExchangeRESTServices
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
      * @param glossaryGUID unique identifier of the glossary where the term is located
-     * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
-     * @param mappingProperties additional properties to help with the mapping of the elements in the
-     *                          external asset manager and open metadata
-     * @param glossaryTermProperties properties for the glossary term
-     * @param initialStatus glossary term status to use when the object is created
+     * @param requestBody properties for the glossary term
      *
      * @return unique identifier of the new metadata element for the glossary term or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public GUIDResponse createControlledGlossaryTerm(String                 serverName,
-                                                     String                 userId,
-                                                     String                 assetManagerGUID,
-                                                     String                 assetManagerName,
-                                                     String                 glossaryGUID,
-                                                     String                 glossaryTermExternalIdentifier,
-                                                     Map<String, String>    mappingProperties,
-                                                     GlossaryTermProperties glossaryTermProperties,
-                                                     GlossaryTermStatus     initialStatus)
+    public GUIDResponse createControlledGlossaryTerm(String                            serverName,
+                                                     String                            userId,
+                                                     String                            glossaryGUID,
+                                                     ControlledGlossaryTermRequestBody requestBody)
     {
-        final String methodName = "XXX";
+        final String methodName = "createControlledGlossaryTerm";
         // todo
         return null;
     }
@@ -1027,31 +1642,22 @@ public class GlossaryExchangeRESTServices
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
      * @param templateGUID unique identifier of the metadata element to copy
      * @param glossaryGUID unique identifier of the glossary where the glossary term is located.
-     * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
-     * @param mappingProperties additional properties to help with the mapping of the elements in the
-     *                          external asset manager and open metadata
-     * @param templateProperties properties that override the template
+     * @param requestBody properties that override the template
      *
      * @return unique identifier of the new metadata element for the glossary term or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public GUIDResponse createGlossaryTermFromTemplate(String              serverName,
-                                                       String              userId,
-                                                       String              assetManagerGUID,
-                                                       String              assetManagerName,
-                                                       String              templateGUID,
-                                                       String              glossaryGUID,
-                                                       String              glossaryTermExternalIdentifier,
-                                                       Map<String, String> mappingProperties,
-                                                       TemplateProperties  templateProperties)
+    public GUIDResponse createGlossaryTermFromTemplate(String               serverName,
+                                                       String               userId,
+                                                       String               glossaryGUID,
+                                                       String               templateGUID,
+                                                       TemplateRequestBody  requestBody)
     {
-        final String methodName = "XXX";
+        final String methodName = "createGlossaryTermFromTemplate";
         // todo
         return null;
     }
@@ -1062,26 +1668,20 @@ public class GlossaryExchangeRESTServices
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
      * @param glossaryTermGUID unique identifier of the glossary term to update
-     * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
-     * @param glossaryTermProperties new properties for the glossary term
+     * @param requestBody new properties for the glossary term
      *
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse updateGlossaryTerm(String                 serverName,
-                                           String                 userId,
-                                           String                 assetManagerGUID,
-                                           String                 assetManagerName,
-                                           String                 glossaryTermGUID,
-                                           String                 glossaryTermExternalIdentifier,
-                                           GlossaryTermProperties glossaryTermProperties)
+    public VoidResponse updateGlossaryTerm(String                  serverName,
+                                           String                  userId,
+                                           String                  glossaryTermGUID,
+                                           GlossaryTermRequestBody requestBody)
     {
-        final String methodName = "XXX";
+        final String methodName = "updateGlossaryTerm";
         // todo
         return null;
     }
@@ -1093,26 +1693,20 @@ public class GlossaryExchangeRESTServices
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
      * @param glossaryTermGUID unique identifier of the glossary term to update
-     * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
-     * @param glossaryTermStatus new properties for the glossary term
+     * @param requestBody status and correlation properties
      *
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse updateGlossaryTermStatus(String             serverName,
-                                                 String             userId,
-                                                 String             assetManagerGUID,
-                                                 String             assetManagerName,
-                                                 String             glossaryTermGUID,
-                                                 String             glossaryTermExternalIdentifier,
-                                                 GlossaryTermStatus glossaryTermStatus)
+    public VoidResponse updateGlossaryTermStatus(String                        serverName,
+                                                 String                        userId,
+                                                 String                        glossaryTermGUID,
+                                                 GlossaryTermStatusRequestBody requestBody)
     {
-        final String methodName = "XXX";
+        final String methodName = "updateGlossaryTermStatus";
         // todo
         return null;
     }
@@ -1123,26 +1717,22 @@ public class GlossaryExchangeRESTServices
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
      * @param glossaryCategoryGUID unique identifier of the glossary category
      * @param glossaryTermGUID unique identifier of the glossary term
-     * @param categorizationProperties properties for the categorization relationship
+     * @param requestBody properties for the categorization relationship
      *
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse setupTermCategory(String                     serverName,
-                                          String                     userId,
-                                          String                     assetManagerGUID,
-                                          String                     assetManagerName,
-                                          String                     glossaryCategoryGUID,
-                                          String                     glossaryTermGUID,
-                                          GlossaryTermCategorization categorizationProperties)
+    public VoidResponse setupTermCategory(String                    serverName,
+                                          String                    userId,
+                                          String                    glossaryCategoryGUID,
+                                          String                    glossaryTermGUID,
+                                          CategorizationRequestBody requestBody)
     {
-        final String methodName = "XXX";
+        final String methodName = "setupTermCategory";
         // todo
         return null;
     }
@@ -1153,8 +1743,6 @@ public class GlossaryExchangeRESTServices
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
      * @param glossaryCategoryGUID unique identifier of the glossary category
      * @param glossaryTermGUID unique identifier of the glossary term
      *
@@ -1163,14 +1751,13 @@ public class GlossaryExchangeRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse clearTermCategory(String serverName,
-                                          String userId,
-                                          String assetManagerGUID,
-                                          String assetManagerName,
-                                          String glossaryCategoryGUID,
-                                          String glossaryTermGUID)
+    public VoidResponse clearTermCategory(String                             serverName,
+                                          String                             userId,
+                                          String                             glossaryCategoryGUID,
+                                          String                             glossaryTermGUID,
+                                          AssetManagerIdentifiersRequestBody requestBody)
     {
-        final String methodName = "XXX";
+        final String methodName = "clearTermCategory";
         // todo
         return null;
     }
@@ -1181,28 +1768,24 @@ public class GlossaryExchangeRESTServices
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
      * @param relationshipTypeName name of the type of relationship to create
      * @param glossaryTermOneGUID unique identifier of the glossary term at end 1
      * @param glossaryTermTwoGUID unique identifier of the glossary term at end 2
-     * @param relationshipsProperties properties for the categorization relationship
+     * @param requestBody properties for the relationship
      *
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse setupTermRelationship(String                   serverName,
-                                              String                   userId,
-                                              String                   assetManagerGUID,
-                                              String                   assetManagerName,
-                                              String                   relationshipTypeName,
-                                              String                   glossaryTermOneGUID,
-                                              String                   glossaryTermTwoGUID,
-                                              GlossaryTermRelationship relationshipsProperties)
+    public VoidResponse setupTermRelationship(String                      serverName,
+                                              String                      userId,
+                                              String                      glossaryTermOneGUID,
+                                              String                      relationshipTypeName,
+                                              String                      glossaryTermTwoGUID,
+                                              TermRelationshipRequestBody requestBody)
     {
-        final String methodName = "XXX";
+        final String methodName = "setupTermRelationship";
         // todo
         return null;
     }
@@ -1213,28 +1796,24 @@ public class GlossaryExchangeRESTServices
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
      * @param relationshipTypeName name of the type of relationship to create
      * @param glossaryTermOneGUID unique identifier of the glossary term at end 1
      * @param glossaryTermTwoGUID unique identifier of the glossary term at end 2
-     * @param relationshipsProperties properties for the categorization relationship
+     * @param requestBody properties for the relationship
      *
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse updateTermRelationship(String                   serverName,
-                                               String                   userId,
-                                               String                   assetManagerGUID,
-                                               String                   assetManagerName,
-                                               String                   relationshipTypeName,
-                                               String                   glossaryTermOneGUID,
-                                               String                   glossaryTermTwoGUID,
-                                               GlossaryTermRelationship relationshipsProperties)
+    public VoidResponse updateTermRelationship(String                      serverName,
+                                               String                      userId,
+                                               String                      glossaryTermOneGUID,
+                                               String                      relationshipTypeName,
+                                               String                      glossaryTermTwoGUID,
+                                               TermRelationshipRequestBody requestBody)
     {
-        final String methodName = "XXX";
+        final String methodName = "updateTermRelationship";
         // todo
         return null;
     }
@@ -1245,26 +1824,24 @@ public class GlossaryExchangeRESTServices
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
      * @param relationshipTypeName name of the type of relationship to create
      * @param glossaryTermOneGUID unique identifier of the glossary term at end 1
      * @param glossaryTermTwoGUID unique identifier of the glossary term at end 2
+     * @param requestBody properties of the relationship
      *
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse clearTermRelationship(String serverName,
-                                              String userId,
-                                              String assetManagerGUID,
-                                              String assetManagerName,
-                                              String relationshipTypeName,
-                                              String glossaryTermOneGUID,
-                                              String glossaryTermTwoGUID)
+    public VoidResponse clearTermRelationship(String                             serverName,
+                                              String                             userId,
+                                              String                             glossaryTermOneGUID,
+                                              String                             relationshipTypeName,
+                                              String                             glossaryTermTwoGUID,
+                                              AssetManagerIdentifiersRequestBody requestBody)
     {
-        final String methodName = "XXX";
+        final String methodName = "clearTermRelationship";
         // todo
         return null;
     }
@@ -1276,24 +1853,20 @@ public class GlossaryExchangeRESTServices
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
      * @param glossaryTermGUID unique identifier of the metadata element to update
-     * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
+     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
      *
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse setTermAsAbstractConcept(String serverName,
-                                                 String userId,
-                                                 String assetManagerGUID,
-                                                 String assetManagerName,
-                                                 String glossaryTermGUID,
-                                                 String glossaryTermExternalIdentifier)
+    public VoidResponse setTermAsAbstractConcept(String                        serverName,
+                                                 String                        userId,
+                                                 String                        glossaryTermGUID,
+                                                 MetadataCorrelationProperties requestBody)
     {
-        final String methodName = "XXX";
+        final String methodName = "setTermAsAbstractConcept";
         // todo
         return null;
     }
@@ -1304,24 +1877,20 @@ public class GlossaryExchangeRESTServices
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
      * @param glossaryTermGUID unique identifier of the metadata element to update
-     * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
+     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
      *
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse clearTermAsAbstractConcept(String serverName,
-                                                   String userId,
-                                                   String assetManagerGUID,
-                                                   String assetManagerName,
-                                                   String glossaryTermGUID,
-                                                   String glossaryTermExternalIdentifier)
+    public VoidResponse clearTermAsAbstractConcept(String                        serverName,
+                                                   String                        userId,
+                                                   String                        glossaryTermGUID,
+                                                   MetadataCorrelationProperties requestBody)
     {
-        final String methodName = "XXX";
+        final String methodName = "clearTermAsAbstractConcept";
         // todo
         return null;
     }
@@ -1332,24 +1901,20 @@ public class GlossaryExchangeRESTServices
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
      * @param glossaryTermGUID unique identifier of the metadata element to update
-     * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
+     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
      *
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse setTermAsDataValue(String serverName,
-                                           String userId,
-                                           String assetManagerGUID,
-                                           String assetManagerName,
-                                           String glossaryTermGUID,
-                                           String glossaryTermExternalIdentifier)
+    public VoidResponse setTermAsDataValue(String                        serverName,
+                                           String                        userId,
+                                           String                        glossaryTermGUID,
+                                           MetadataCorrelationProperties requestBody)
     {
-        final String methodName = "XXX";
+        final String methodName = "setTermAsDataValue";
         // todo
         return null;
     }
@@ -1360,24 +1925,20 @@ public class GlossaryExchangeRESTServices
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
      * @param glossaryTermGUID unique identifier of the metadata element to update
-     * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
+     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
      *
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse clearTermAsDataValue(String serverName,
-                                             String userId,
-                                             String assetManagerGUID,
-                                             String assetManagerName,
-                                             String glossaryTermGUID,
-                                             String glossaryTermExternalIdentifier)
+    public VoidResponse clearTermAsDataValue(String                        serverName,
+                                             String                        userId,
+                                             String                        glossaryTermGUID,
+                                             MetadataCorrelationProperties requestBody)
     {
-        final String methodName = "XXX";
+        final String methodName = "clearTermAsDataValue";
         // todo
         return null;
     }
@@ -1388,26 +1949,20 @@ public class GlossaryExchangeRESTServices
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
      * @param glossaryTermGUID unique identifier of the metadata element to update
-     * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
-     * @param activityType type of activity
+     * @param requestBody type of activity and correlators
      *
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse setTermAsActivity(String                   serverName,
-                                          String                   userId,
-                                          String                   assetManagerGUID,
-                                          String                   assetManagerName,
-                                          String                   glossaryTermGUID,
-                                          String                   glossaryTermExternalIdentifier,
-                                          GlossaryTermActivityType activityType)
+    public VoidResponse setTermAsActivity(String                                serverName,
+                                          String                                userId,
+                                          String                                glossaryTermGUID,
+                                          ActivityTermClassificationRequestBody requestBody)
     {
-        final String methodName = "XXX";
+        final String methodName = "setTermAsActivity";
         // todo
         return null;
     }
@@ -1418,24 +1973,20 @@ public class GlossaryExchangeRESTServices
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
      * @param glossaryTermGUID unique identifier of the metadata element to update
-     * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
+     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
      *
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse clearTermAsActivity(String serverName,
-                                            String userId,
-                                            String assetManagerGUID,
-                                            String assetManagerName,
-                                            String glossaryTermGUID,
-                                            String glossaryTermExternalIdentifier)
+    public VoidResponse clearTermAsActivity(String                        serverName,
+                                            String                        userId,
+                                            String                        glossaryTermGUID,
+                                            MetadataCorrelationProperties requestBody)
     {
-        final String methodName = "XXX";
+        final String methodName = "clearTermAsActivity";
         // todo
         return null;
     }
@@ -1446,26 +1997,20 @@ public class GlossaryExchangeRESTServices
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
      * @param glossaryTermGUID unique identifier of the metadata element to update
-     * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
-     * @param contextDefinition more details of the context
+     * @param requestBody more details of the context
      *
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse setTermAsContext(String                        serverName,
-                                         String                        userId,
-                                         String                        assetManagerGUID,
-                                         String                        assetManagerName,
-                                         String                        glossaryTermGUID,
-                                         String                        glossaryTermExternalIdentifier,
-                                         GlossaryTermContextDefinition contextDefinition)
+    public VoidResponse setTermAsContext(String                                     serverName,
+                                         String                                     userId,
+                                         String                                     glossaryTermGUID,
+                                         ContextDefinitionClassificationRequestBody requestBody)
     {
-        final String methodName = "XXX";
+        final String methodName = "setTermAsContext";
         // todo
         return null;
     }
@@ -1476,24 +2021,20 @@ public class GlossaryExchangeRESTServices
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
      * @param glossaryTermGUID unique identifier of the metadata element to update
-     * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
+     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
      *
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse clearTermAsContext(String serverName,
-                                           String userId,
-                                           String assetManagerGUID,
-                                           String assetManagerName,
-                                           String glossaryTermGUID,
-                                           String glossaryTermExternalIdentifier)
+    public VoidResponse clearTermAsContext(String                        serverName,
+                                           String                        userId,
+                                           String                        glossaryTermGUID,
+                                           MetadataCorrelationProperties requestBody)
     {
-        final String methodName = "XXX";
+        final String methodName = "clearTermAsContext";
         // todo
         return null;
     }
@@ -1504,24 +2045,20 @@ public class GlossaryExchangeRESTServices
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
      * @param glossaryTermGUID unique identifier of the metadata element to update
-     * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
+     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
      *
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse setTermAsSpineObject(String serverName,
-                                             String userId,
-                                             String assetManagerGUID,
-                                             String assetManagerName,
-                                             String glossaryTermGUID,
-                                             String glossaryTermExternalIdentifier)
+    public VoidResponse setTermAsSpineObject(String                        serverName,
+                                             String                        userId,
+                                             String                        glossaryTermGUID,
+                                             MetadataCorrelationProperties requestBody)
     {
-        final String methodName = "XXX";
+        final String methodName = "setTermAsSpineObject";
         // todo
         return null;
     }
@@ -1532,24 +2069,20 @@ public class GlossaryExchangeRESTServices
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
      * @param glossaryTermGUID unique identifier of the metadata element to update
-     * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
+     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
      *
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse clearTermAsSpineObject(String serverName,
-                                               String userId,
-                                               String assetManagerGUID,
-                                               String assetManagerName,
-                                               String glossaryTermGUID,
-                                               String glossaryTermExternalIdentifier)
+    public VoidResponse clearTermAsSpineObject(String                        serverName,
+                                               String                        userId,
+                                               String                        glossaryTermGUID,
+                                               MetadataCorrelationProperties requestBody)
     {
-        final String methodName = "XXX";
+        final String methodName = "clearTermAsSpineObject";
         // todo
         return null;
     }
@@ -1561,24 +2094,20 @@ public class GlossaryExchangeRESTServices
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
      * @param glossaryTermGUID unique identifier of the metadata element to update
-     * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
+     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
      *
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse setTermAsSpineAttribute(String serverName,
-                                                String userId,
-                                                String assetManagerGUID,
-                                                String assetManagerName,
-                                                String glossaryTermGUID,
-                                                String glossaryTermExternalIdentifier)
+    public VoidResponse setTermAsSpineAttribute(String                        serverName,
+                                                String                        userId,
+                                                String                        glossaryTermGUID,
+                                                MetadataCorrelationProperties requestBody)
     {
-        final String methodName = "XXX";
+        final String methodName = "setTermAsSpineAttribute";
         // todo
         return null;
     }
@@ -1589,24 +2118,20 @@ public class GlossaryExchangeRESTServices
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
      * @param glossaryTermGUID unique identifier of the metadata element to update
-     * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
+     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
      *
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse clearTermAsSpineAttribute(String serverName,
-                                                  String userId,
-                                                  String assetManagerGUID,
-                                                  String assetManagerName,
-                                                  String glossaryTermGUID,
-                                                  String glossaryTermExternalIdentifier)
+    public VoidResponse clearTermAsSpineAttribute(String                        serverName,
+                                                  String                        userId,
+                                                  String                        glossaryTermGUID,
+                                                  MetadataCorrelationProperties requestBody)
     {
-        final String methodName = "XXX";
+        final String methodName = "clearTermAsSpineAttribute";
         // todo
         return null;
     }
@@ -1617,24 +2142,20 @@ public class GlossaryExchangeRESTServices
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
      * @param glossaryTermGUID unique identifier of the metadata element to update
-     * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
+     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
      *
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse setTermAsObjectIdentifier(String serverName,
-                                                  String userId,
-                                                  String assetManagerGUID,
-                                                  String assetManagerName,
-                                                  String glossaryTermGUID,
-                                                  String glossaryTermExternalIdentifier)
+    public VoidResponse setTermAsObjectIdentifier(String                        serverName,
+                                                  String                        userId,
+                                                  String                        glossaryTermGUID,
+                                                  MetadataCorrelationProperties requestBody)
     {
-        final String methodName = "XXX";
+        final String methodName = "setTermAsObjectIdentifier";
         // todo
         return null;
     }
@@ -1645,24 +2166,20 @@ public class GlossaryExchangeRESTServices
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
      * @param glossaryTermGUID unique identifier of the metadata element to update
-     * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
+     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
      *
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse clearTermAsObjectIdentifier(String serverName,
-                                                    String userId,
-                                                    String assetManagerGUID,
-                                                    String assetManagerName,
-                                                    String glossaryTermGUID,
-                                                    String glossaryTermExternalIdentifier)
+    public VoidResponse clearTermAsObjectIdentifier(String                        serverName,
+                                                    String                        userId,
+                                                    String                        glossaryTermGUID,
+                                                    MetadataCorrelationProperties requestBody)
     {
-        final String methodName = "XXX";
+        final String methodName = "clearTermAsObjectIdentifier";
         // todo
         return null;
     }
@@ -1673,24 +2190,20 @@ public class GlossaryExchangeRESTServices
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
      * @param glossaryTermGUID unique identifier of the metadata element to remove
-     * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
+     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
      *
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse removeGlossaryTerm(String serverName,
-                                           String userId,
-                                           String assetManagerGUID,
-                                           String assetManagerName,
-                                           String glossaryTermGUID,
-                                           String glossaryTermExternalIdentifier)
+    public VoidResponse removeGlossaryTerm(String                        serverName,
+                                           String                        userId,
+                                           String                        glossaryTermGUID,
+                                           MetadataCorrelationProperties requestBody)
     {
-        final String methodName = "XXX";
+        final String methodName = "removeGlossaryTerm";
         // todo
         return null;
     }
@@ -1702,28 +2215,69 @@ public class GlossaryExchangeRESTServices
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
-     * @param searchString string to find in the properties
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param requestBody asset manager identifiers and search string
      *
      * @return list of matching metadata elements or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<GlossaryTermElement>   findGlossaryTerms(String serverName,
-                                                         String userId,
-                                                         String assetManagerGUID,
-                                                         String assetManagerName,
-                                                         String searchString,
-                                                         int    startFrom,
-                                                         int    pageSize)
+    public GlossaryTermElementsResponse findGlossaryTerms(String                  serverName,
+                                                          String                  userId,
+                                                          int                     startFrom,
+                                                          int                     pageSize,
+                                                          SearchStringRequestBody requestBody)
     {
-        final String methodName = "XXX";
-        // todo
-        return null;
+        final String methodName = "findGlossaryTerms";
+
+        RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        GlossaryTermElementsResponse response = new GlossaryTermElementsResponse();
+        AuditLog                 auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
+                handler.findGlossaryTerms(userId,
+                                          requestBody.getAssetManagerGUID(),
+                                          requestBody.getAssetManagerName(),
+                                          requestBody.getSearchString(),
+                                          startFrom,
+                                          pageSize,
+                                          methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
     }
 
 
@@ -1732,26 +2286,24 @@ public class GlossaryExchangeRESTServices
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
      * @param glossaryCategoryGUID unique identifier of the glossary category of interest
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param requestBody asset manager identifiers
      *
      * @return list of associated metadata elements or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<GlossaryTermElement>    getTermsForGlossaryCategory(String serverName,
-                                                                    String userId,
-                                                                    String assetManagerGUID,
-                                                                    String assetManagerName,
-                                                                    String glossaryCategoryGUID,
-                                                                    int    startFrom,
-                                                                    int    pageSize)
+    public GlossaryTermElementsResponse getTermsForGlossaryCategory(String                             serverName,
+                                                                    String                             userId,
+                                                                    String                             glossaryCategoryGUID,
+                                                                    int                                startFrom,
+                                                                    int                                pageSize,
+                                                                    AssetManagerIdentifiersRequestBody requestBody)
     {
-        final String methodName = "XXX";
+        final String methodName = "getTermsForGlossaryCategory";
         // todo
         return null;
     }
@@ -1763,26 +2315,22 @@ public class GlossaryExchangeRESTServices
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
-     * @param name name to search for
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param requestBody asset manager identifiers and name
      *
      * @return list of matching metadata elements or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<GlossaryTermElement>   getGlossaryTermsByName(String serverName,
-                                                              String userId,
-                                                              String assetManagerGUID,
-                                                              String assetManagerName,
-                                                              String name,
-                                                              int    startFrom,
-                                                              int    pageSize)
+    public GlossaryTermElementsResponse   getGlossaryTermsByName(String          serverName,
+                                                                 String          userId,
+                                                                 int             startFrom,
+                                                                 int             pageSize,
+                                                                 NameRequestBody requestBody)
     {
-        final String methodName = "XXX";
+        final String methodName = "getGlossaryTermsByName";
         // todo
         return null;
     }
@@ -1793,24 +2341,64 @@ public class GlossaryExchangeRESTServices
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
      * @param guid unique identifier of the requested metadata element
+     * @param requestBody asset manager identifiers
      *
      * @return matching metadata element or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public GlossaryTermElement getGlossaryTermByGUID(String serverName,
-                                                     String userId,
-                                                     String assetManagerGUID,
-                                                     String assetManagerName,
-                                                     String guid)
+    public GlossaryTermElementResponse getGlossaryTermByGUID(String                             serverName,
+                                                             String                             userId,
+                                                             String                             guid,
+                                                             AssetManagerIdentifiersRequestBody requestBody)
     {
-        final String methodName = "XXX";
-        // todo
-        return null;
+        final String methodName = "getGlossaryTermByGUID";
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        GlossaryTermElementResponse response = new GlossaryTermElementResponse();
+        AuditLog                    auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
+                handler.getGlossaryTermByGUID(userId,
+                                              requestBody.getAssetManagerGUID(),
+                                              requestBody.getAssetManagerName(),
+                                              guid,
+                                              methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
     }
 
 
@@ -1828,22 +2416,18 @@ public class GlossaryExchangeRESTServices
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
-     * @param linkProperties properties of the link
+     * @param requestBody properties of the link
      *
      * @return unique identifier of the external reference or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public GUIDResponse createExternalGlossaryLink(String                         serverName,
-                                                   String                         userId,
-                                                   String                         assetManagerGUID,
-                                                   String                         assetManagerName,
-                                                   ExternalGlossaryLinkProperties linkProperties)
+    public GUIDResponse createExternalGlossaryLink(String                          serverName,
+                                                   String                          userId,
+                                                   ExternalGlossaryLinkRequestBody requestBody)
     {
-        final String methodName = "XXX";
+        final String methodName = "createExternalGlossaryLink";
         // todo
         return null;
     }
@@ -1854,24 +2438,20 @@ public class GlossaryExchangeRESTServices
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
      * @param externalLinkGUID unique identifier of the external reference
-     * @param linkProperties properties of the link
+     * @param requestBody properties of the link
      *
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse updateExternalGlossaryLink(String                         serverName,
-                                                   String                         userId,
-                                                   String                         assetManagerGUID,
-                                                   String                         assetManagerName,
-                                                   String                         externalLinkGUID,
-                                                   ExternalGlossaryLinkProperties linkProperties)
+    public VoidResponse updateExternalGlossaryLink(String                          serverName,
+                                                   String                          userId,
+                                                   String                          externalLinkGUID,
+                                                   ExternalGlossaryLinkRequestBody requestBody)
     {
-        final String methodName = "XXX";
+        final String methodName = "updateExternalGlossaryLink";
         // todo
         return null;
     }
@@ -1882,22 +2462,20 @@ public class GlossaryExchangeRESTServices
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
      * @param externalLinkGUID unique identifier of the external reference
+     * @param requestBody asset manager identifiers
      *
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse removeExternalGlossaryLink(String serverName,
-                                                   String userId,
-                                                   String assetManagerGUID,
-                                                   String assetManagerName,
-                                                   String externalLinkGUID)
+    public VoidResponse removeExternalGlossaryLink(String                             serverName,
+                                                   String                             userId,
+                                                   String                             externalLinkGUID,
+                                                   AssetManagerIdentifiersRequestBody requestBody)
     {
-        final String methodName = "XXX";
+        final String methodName = "removeExternalGlossaryLink";
         // todo
         return null;
     }
@@ -1908,24 +2486,22 @@ public class GlossaryExchangeRESTServices
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
      * @param externalLinkGUID unique identifier of the external reference
      * @param glossaryGUID unique identifier of the metadata element to attach
+     * @param requestBody asset manager identifiers
      *
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse attachExternalLinkToGlossary(String serverName,
-                                                     String userId,
-                                                     String assetManagerGUID,
-                                                     String assetManagerName,
-                                                     String externalLinkGUID,
-                                                     String glossaryGUID)
+    public VoidResponse attachExternalLinkToGlossary(String                             serverName,
+                                                     String                             userId,
+                                                     String                             externalLinkGUID,
+                                                     String                             glossaryGUID,
+                                                     AssetManagerIdentifiersRequestBody requestBody)
     {
-        final String methodName = "XXX";
+        final String methodName = "attachExternalLinkToGlossary";
         // todo
         return null;
     }
@@ -1936,24 +2512,22 @@ public class GlossaryExchangeRESTServices
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
      * @param externalLinkGUID unique identifier of the external reference
      * @param glossaryGUID unique identifier of the metadata element to remove
+     * @param requestBody asset manager identifiers
      *
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse detachExternalLinkFromGlossary(String serverName,
-                                                       String userId,
-                                                       String assetManagerGUID,
-                                                       String assetManagerName,
-                                                       String externalLinkGUID,
-                                                       String glossaryGUID)
+    public VoidResponse detachExternalLinkFromGlossary(String                             serverName,
+                                                       String                             userId,
+                                                       String                             externalLinkGUID,
+                                                       String                             glossaryGUID,
+                                                       AssetManagerIdentifiersRequestBody requestBody)
     {
-        final String methodName = "XXX";
+        final String methodName = "detachExternalLinkFromGlossary";
         // todo
         return null;
     }
@@ -1973,13 +2547,13 @@ public class GlossaryExchangeRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<ExternalGlossaryLinkElement> getExternalLinksForGlossary(String serverName,
-                                                                         String userId,
-                                                                         String glossaryGUID,
-                                                                         int    startFrom,
-                                                                         int    pageSize)
+    public ExternalGlossaryLinkElementsResponse getExternalLinksForGlossary(String serverName,
+                                                                            String userId,
+                                                                            String glossaryGUID,
+                                                                            int    startFrom,
+                                                                            int    pageSize)
     {
-        final String methodName = "XXX";
+        final String methodName = "getExternalLinksForGlossary";
         // todo
         return null;
     }
@@ -1999,13 +2573,13 @@ public class GlossaryExchangeRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<GlossaryElement> getGlossariesForExternalLink(String serverName,
-                                                              String userId,
-                                                              String externalLinkGUID,
-                                                              int    startFrom,
-                                                              int    pageSize)
+    public GlossaryElementsResponse getGlossariesForExternalLink(String serverName,
+                                                                 String userId,
+                                                                 String externalLinkGUID,
+                                                                 int    startFrom,
+                                                                 int    pageSize)
     {
-        final String methodName = "XXX";
+        final String methodName = "getGlossariesForExternalLink";
         // todo
         return null;
     }
@@ -2017,26 +2591,22 @@ public class GlossaryExchangeRESTServices
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
      * @param externalLinkGUID unique identifier of the external reference
      * @param glossaryCategoryGUID unique identifier for the the glossary category
-     * @param linkProperties properties of the link
+     * @param requestBody properties of the link
      *
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse attachExternalCategoryLink(String                                serverName,
-                                                   String                                userId,
-                                                   String                                assetManagerGUID,
-                                                   String                                assetManagerName,
-                                                   String                                externalLinkGUID,
-                                                   String                                glossaryCategoryGUID,
-                                                   ExternalGlossaryElementLinkProperties linkProperties)
+    public VoidResponse attachExternalCategoryLink(String                                 serverName,
+                                                   String                                 userId,
+                                                   String                                 externalLinkGUID,
+                                                   String                                 glossaryCategoryGUID,
+                                                   ExternalGlossaryElementLinkRequestBody requestBody)
     {
-        final String methodName = "XXX";
+        final String methodName = "attachExternalCategoryLink";
         // todo
         return null;
     }
@@ -2047,24 +2617,22 @@ public class GlossaryExchangeRESTServices
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
      * @param externalLinkGUID unique identifier of the external reference
      * @param glossaryCategoryGUID unique identifier for the the glossary category
+     * @param requestBody asset manager identifiers
      *
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse detachExternalCategoryLink(String serverName,
-                                                   String userId,
-                                                   String assetManagerGUID,
-                                                   String assetManagerName,
-                                                   String externalLinkGUID,
-                                                   String glossaryCategoryGUID)
+    public VoidResponse detachExternalCategoryLink(String                             serverName,
+                                                   String                             userId,
+                                                   String                             externalLinkGUID,
+                                                   String                             glossaryCategoryGUID,
+                                                   AssetManagerIdentifiersRequestBody requestBody)
     {
-        final String methodName = "XXX";
+        final String methodName = "detachExternalCategoryLink";
         // todo
         return null;
     }
@@ -2076,11 +2644,9 @@ public class GlossaryExchangeRESTServices
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
      * @param externalLinkGUID unique identifier of the external reference
      * @param glossaryTermGUID unique identifier for the the glossary category
-     * @param linkProperties properties of the link
+     * @param requestBody properties of the link
      *
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
@@ -2089,13 +2655,11 @@ public class GlossaryExchangeRESTServices
      */
     public VoidResponse attachExternalTermLink(String                                serverName,
                                                String                                userId,
-                                               String                                assetManagerGUID,
-                                               String                                assetManagerName,
                                                String                                externalLinkGUID,
                                                String                                glossaryTermGUID,
-                                               ExternalGlossaryElementLinkProperties linkProperties)
+                                               ExternalGlossaryElementLinkProperties requestBody)
     {
-        final String methodName = "XXX";
+        final String methodName = "attachExternalTermLink";
         // todo
         return null;
     }
@@ -2106,24 +2670,22 @@ public class GlossaryExchangeRESTServices
      *
      * @param serverName name of the server to route the request to
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
      * @param externalLinkGUID unique identifier of the external reference
      * @param glossaryTermGUID unique identifier for the the glossary category
+     * @param requestBody asset manager identifiers
      *
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse detachExternalTermLink(String serverName,
-                                               String userId,
-                                               String assetManagerGUID,
-                                               String assetManagerName,
-                                               String externalLinkGUID,
-                                               String glossaryTermGUID)
+    public VoidResponse detachExternalTermLink(String                             serverName,
+                                               String                             userId,
+                                               String                             externalLinkGUID,
+                                               String                             glossaryTermGUID,
+                                               AssetManagerIdentifiersRequestBody requestBody)
     {
-        final String detachExternalTermLink = "XXX";
+        final String methodName = "detachExternalTermLink";
         // todo
         return null;
     }

@@ -890,9 +890,10 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         invalidParameterHandler.validateName(assetManagerName, assetManagerNameParameterName, methodName);
         invalidParameterHandler.validateGUID(glossaryExternalIdentifier, externalIdParameterName, methodName);
 
-        AssetManagerIdentifiersRequestBody requestBody = new AssetManagerIdentifiersRequestBody();
+        MetadataCorrelationProperties requestBody = new MetadataCorrelationProperties();
         requestBody.setAssetManagerGUID(assetManagerGUID);
         requestBody.setAssetManagerName(assetManagerName);
+        requestBody.setExternalIdentifier(glossaryExternalIdentifier);
 
         final String urlTemplate = urlTemplatePrefix + "/retrieve-by-external-identifier";
 
@@ -1970,7 +1971,7 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
      * @param relationshipTypeName name of the type of relationship to create
      * @param glossaryTermOneGUID unique identifier of the glossary term at end 1
      * @param glossaryTermTwoGUID unique identifier of the glossary term at end 2
-     * @param relationshipsProperties properties for the categorization relationship
+     * @param relationshipsProperties properties for the relationship
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -1989,17 +1990,19 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         final String methodName                      = "setupTermRelationship";
         final String glossaryParentGUIDParameterName = "glossaryTermOneGUID";
         final String glossaryChildGUIDParameterName  = "glossaryTermTwoGUID";
+        final String glossaryTypeParameterName  = "relationshipTypeName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(glossaryTermOneGUID, glossaryParentGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(glossaryTermTwoGUID, glossaryChildGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(relationshipTypeName, glossaryTypeParameterName, methodName);
 
         TermRelationshipRequestBody requestBody = new TermRelationshipRequestBody();
         requestBody.setAssetManagerGUID(assetManagerGUID);
         requestBody.setAssetManagerName(assetManagerName);
         requestBody.setProperties(relationshipsProperties);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/terms/{2}/terms/{3}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/terms/{2}/relationships/{3}/terms/{4}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
@@ -2007,6 +2010,7 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
                                         serverName,
                                         userId,
                                         glossaryTermOneGUID,
+                                        relationshipTypeName,
                                         glossaryTermTwoGUID);
     }
 
@@ -2020,7 +2024,7 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
      * @param relationshipTypeName name of the type of relationship to create
      * @param glossaryTermOneGUID unique identifier of the glossary term at end 1
      * @param glossaryTermTwoGUID unique identifier of the glossary term at end 2
-     * @param relationshipsProperties properties for the categorization relationship
+     * @param relationshipsProperties properties for the relationship
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -2049,7 +2053,7 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         requestBody.setAssetManagerName(assetManagerName);
         requestBody.setProperties(relationshipsProperties);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/terms/{2}/terms/{3}/update";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/terms/{2}/relationships/{3}/terms/{4}/update";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
@@ -2057,6 +2061,7 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
                                         serverName,
                                         userId,
                                         glossaryTermOneGUID,
+                                        relationshipTypeName,
                                         glossaryTermTwoGUID);
     }
 
@@ -2096,7 +2101,7 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         requestBody.setAssetManagerGUID(assetManagerGUID);
         requestBody.setAssetManagerName(assetManagerName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/terms/{2}/terms/{3}/remove";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/terms/{2}/relationships/{3}/terms/{4}/remove";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
@@ -2104,6 +2109,7 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
                                         serverName,
                                         userId,
                                         glossaryTermOneGUID,
+                                        relationshipTypeName,
                                         glossaryTermTwoGUID);
     }
 
