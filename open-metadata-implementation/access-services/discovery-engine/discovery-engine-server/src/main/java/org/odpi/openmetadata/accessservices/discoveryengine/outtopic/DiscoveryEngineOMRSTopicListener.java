@@ -3,7 +3,7 @@
 
 package org.odpi.openmetadata.accessservices.discoveryengine.outtopic;
 
-import org.odpi.openmetadata.commonservices.odf.metadatamanagement.mappers.DiscoveryEnginePropertiesMapper;
+import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListenerBase;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
@@ -63,11 +63,11 @@ public class DiscoveryEngineOMRSTopicListener extends OMRSTopicListenerBase
             {
                 if (repositoryHelper.isTypeOf(sourceName,
                                               type.getTypeDefName(),
-                                              DiscoveryEnginePropertiesMapper.DISCOVERY_ENGINE_TYPE_NAME))
+                                              OpenMetadataAPIMapper.DISCOVERY_ENGINE_TYPE_NAME))
                 {
                     eventPublisher.publishRefreshDiscoveryEngineEvent(entity.getGUID(),
                                                                       repositoryHelper.getStringProperty(sourceName,
-                                                                                                         DiscoveryEnginePropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                                                         OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                                                                          entity.getProperties(),
                                                                                                          methodName));
                 }
@@ -95,7 +95,7 @@ public class DiscoveryEngineOMRSTopicListener extends OMRSTopicListenerBase
             {
                 if (repositoryHelper.isTypeOf(sourceName,
                                               type.getTypeDefName(),
-                                              DiscoveryEnginePropertiesMapper.SUPPORTED_DISCOVERY_SERVICE_TYPE_NAME))
+                                              OpenMetadataAPIMapper.SUPPORTED_DISCOVERY_SERVICE_TYPE_NAME))
                 {
                     EntityProxy end2 = relationship.getEntityTwoProxy();
 
@@ -103,12 +103,12 @@ public class DiscoveryEngineOMRSTopicListener extends OMRSTopicListenerBase
                     {
                         eventPublisher.publishRefreshDiscoveryServiceEvent(end2.getGUID(),
                                                                            repositoryHelper.getStringProperty(sourceName,
-                                                                                                              DiscoveryEnginePropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                                                              OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
                                                                                                               end2.getUniqueProperties(),
                                                                                                               methodName),
                                                                            relationship.getGUID(),
                                                                            repositoryHelper.getStringArrayProperty(sourceName,
-                                                                                                                   DiscoveryEnginePropertiesMapper.DISCOVERY_REQUEST_TYPES_PROPERTY_NAME,
+                                                                                                                   OpenMetadataAPIMapper.DISCOVERY_REQUEST_TYPES_PROPERTY_NAME,
                                                                                                                    relationship.getProperties(),
                                                                                                                    methodName));
                     }
@@ -198,21 +198,23 @@ public class DiscoveryEngineOMRSTopicListener extends OMRSTopicListenerBase
     /**
      * A new classification has been added to an entity.
      *
-     * @param sourceName                     name of the source of the event.  It may be the cohort name for incoming events or the
-     *                                       local repository, or event mapper name.
-     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
+     * @param sourceName  name of the source of the event.  It may be the cohort name for incoming events or the
+     *                   local repository, or event mapper name.
+     * @param originatorMetadataCollectionId  unique identifier for the metadata collection hosted by the server that
      *                                       sent the event.
-     * @param originatorServerName           name of the server that the event came from.
-     * @param originatorServerType           type of server that the event came from.
-     * @param originatorOrganizationName     name of the organization that owns the server that sent the event.
-     * @param entity                         details of the entity with the new classification added.
+     * @param originatorServerName  name of the server that the event came from.
+     * @param originatorServerType  type of server that the event came from.
+     * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
+     * @param entity  details of the entity with the new classification added. No guarantee this is all of the classifications.
+     * @param classification new classification
      */
-    public void processClassifiedEntityEvent(String sourceName,
-                                             String originatorMetadataCollectionId,
-                                             String originatorServerName,
-                                             String originatorServerType,
-                                             String originatorOrganizationName,
-                                             EntityDetail entity)
+    public void processClassifiedEntityEvent(String         sourceName,
+                                             String         originatorMetadataCollectionId,
+                                             String         originatorServerName,
+                                             String         originatorServerType,
+                                             String         originatorOrganizationName,
+                                             EntityDetail   entity,
+                                             Classification classification)
     {
         final String methodName = "processClassifiedEntityEvent";
 
@@ -223,21 +225,23 @@ public class DiscoveryEngineOMRSTopicListener extends OMRSTopicListenerBase
     /**
      * A classification has been removed from an entity.
      *
-     * @param sourceName                     name of the source of the event.  It may be the cohort name for incoming events or the
-     *                                       local repository, or event mapper name.
-     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
+     * @param sourceName  name of the source of the event.  It may be the cohort name for incoming events or the
+     *                   local repository, or event mapper name.
+     * @param originatorMetadataCollectionId  unique identifier for the metadata collection hosted by the server that
      *                                       sent the event.
-     * @param originatorServerName           name of the server that the event came from.
-     * @param originatorServerType           type of server that the event came from.
-     * @param originatorOrganizationName     name of the organization that owns the server that sent the event.
-     * @param entity                         details of the entity after the classification has been removed.
+     * @param originatorServerName  name of the server that the event came from.
+     * @param originatorServerType  type of server that the event came from.
+     * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
+     * @param entity  details of the entity after the classification has been removed. No guarantee this is all of the classifications.
+     * @param originalClassification classification that was removed
      */
-    public void processDeclassifiedEntityEvent(String sourceName,
-                                               String originatorMetadataCollectionId,
-                                               String originatorServerName,
-                                               String originatorServerType,
-                                               String originatorOrganizationName,
-                                               EntityDetail entity)
+    public void processDeclassifiedEntityEvent(String         sourceName,
+                                               String         originatorMetadataCollectionId,
+                                               String         originatorServerName,
+                                               String         originatorServerType,
+                                               String         originatorOrganizationName,
+                                               EntityDetail   entity,
+                                               Classification originalClassification)
     {
         final String methodName = "processDeclassifiedEntityEvent";
 
@@ -246,23 +250,40 @@ public class DiscoveryEngineOMRSTopicListener extends OMRSTopicListenerBase
 
 
     /**
+     * A classification has been removed from an entity.
+     *
+     * @param sourceName  name of the source of the event.  It may be the cohort name for incoming events or the
+     *                   local repository, or event mapper name.
+     * @param originatorMetadataCollectionId  unique identifier for the metadata collection hosted by the server that
+     *                                       sent the event.
+     * @param originatorServerName  name of the server that the event came from.
+     * @param originatorServerType  type of server that the event came from.
+     * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
+     * @param entity  details of the entity after the classification has been removed. No guarantee this is all of the classifications.
+     * @param originalClassification classification that was removed
+     */
+    /**
      * An existing classification has been changed on an entity.
      *
-     * @param sourceName                     name of the source of the event.  It may be the cohort name for incoming events or the
-     *                                       local repository, or event mapper name.
-     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
+     * @param sourceName  name of the source of the event.  It may be the cohort name for incoming events or the
+     *                   local repository, or event mapper name.
+     * @param originatorMetadataCollectionId  unique identifier for the metadata collection hosted by the server that
      *                                       sent the event.
-     * @param originatorServerName           name of the server that the event came from.
-     * @param originatorServerType           type of server that the event came from.
-     * @param originatorOrganizationName     name of the organization that owns the server that sent the event.
-     * @param entity                         details of the entity after the classification has been changed.
+     * @param originatorServerName  name of the server that the event came from.
+     * @param originatorServerType  type of server that the event came from.
+     * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
+     * @param entity  details of the entity after the classification has been changed. No guarantee this is all of the classifications.
+     * @param originalClassification classification that was removed
+     * @param classification new classification
      */
-    public void processReclassifiedEntityEvent(String       sourceName,
-                                               String       originatorMetadataCollectionId,
-                                               String       originatorServerName,
-                                               String       originatorServerType,
-                                               String       originatorOrganizationName,
-                                               EntityDetail entity)
+    public void processReclassifiedEntityEvent(String         sourceName,
+                                               String         originatorMetadataCollectionId,
+                                               String         originatorServerName,
+                                               String         originatorServerType,
+                                               String         originatorOrganizationName,
+                                               EntityDetail   entity,
+                                               Classification originalClassification,
+                                               Classification classification)
     {
         final String methodName = "processReclassifiedEntityEvent";
 

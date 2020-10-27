@@ -4,7 +4,6 @@ package org.odpi.openmetadata.accessservices.assetowner.rest;
 
 import com.fasterxml.jackson.annotation.*;
 
-import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;

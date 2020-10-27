@@ -329,13 +329,13 @@ public class FileSystemOnboardingResource
 
 
     /**
-     * Retrieve a FileSystem asset by its unique identifier (GUID).
+     * Retrieve a FileSystemProperties asset by its unique identifier (GUID).
      *
      * @param serverName name of calling server
      * @param userId calling user
      * @param fileSystemGUID unique identifier used to locate the file system
      *
-     * @return FileSystem properties or
+     * @return FileSystemProperties properties or
      * InvalidParameterException one of the parameters is null or invalid or
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem.
@@ -351,7 +351,7 @@ public class FileSystemOnboardingResource
 
 
     /**
-     * Retrieve a FileSystem asset by its unique name.
+     * Retrieve a FileSystemProperties asset by its unique name.
      *
      * @param serverName name of calling server
      * @param userId calling user
@@ -398,13 +398,13 @@ public class FileSystemOnboardingResource
 
 
     /**
-     * Retrieve a Folder asset by its unique identifier (GUID).
+     * Retrieve a FolderProperties asset by its unique identifier (GUID).
      *
      * @param serverName name of calling server
      * @param userId calling user
      * @param folderGUID unique identifier used to locate the folder
      *
-     * @return Folder properties or
+     * @return FolderProperties properties or
      * InvalidParameterException one of the parameters is null or invalid or
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem.
@@ -426,7 +426,7 @@ public class FileSystemOnboardingResource
      * @param userId calling user
      * @param requestBody path name
      *
-     * @return Folder properties or
+     * @return FolderProperties properties or
      * InvalidParameterException one of the parameters is null or invalid or
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem.

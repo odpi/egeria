@@ -13,9 +13,9 @@ to perform a variety of use cases.
 There are four main ways to run Egeria on your machine:
 * Download the Egeria repository from GitHub, build it and run the resulting image.
 * Download the Egeria docker image and run it as a standalone container using docker desktop.
-* Download the Egeria repository and use the docker-compose scripts to run egeria with a supporting cast for other
+* Download the Egeria repository and use the docker-compose scripts to run egeria with a supporting cast of other
   technologies.
-* Download the Egeria repository and use the kubernetes helm charts to run egeria with a supporting cast for other
+* Download the Egeria repository and use the kubernetes helm charts to run egeria with a supporting cast of other
   technologies.
   
 This is in addition to the different ways that developers run Egeria when they are testing their contributions.

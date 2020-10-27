@@ -18,10 +18,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes(
         {
-                @JsonSubTypes.Type(value = GovernanceResponsibility.class, name = "GovernanceResponsibility"),
-                @JsonSubTypes.Type(value = GovernanceProcedure.class, name = "GovernanceProcedure")
+                @JsonSubTypes.Type(value = GovernanceResponsibilityProperties.class, name = "GovernanceResponsibilityProperties"),
+                @JsonSubTypes.Type(value = GovernanceProcedureProperties.class, name = "GovernanceProcedureProperties")
         })
-public abstract class OrganizationalControl extends GovernanceControl
+public abstract class OrganizationalControl extends GovernanceControlProperties
 {
     private static final long    serialVersionUID = 1L;
 
@@ -56,21 +56,20 @@ public abstract class OrganizationalControl extends GovernanceControl
         return "OrganizationalControl{" +
                 "relatedGovernanceDrivers=" + getRelatedGovernanceDrivers() +
                 ", governanceControls=" + getGovernanceControls() +
+                ", title='" + getTitle() + '\'' +
+                ", summary='" + getSummary() + '\'' +
                 ", description='" + getDescription() + '\'' +
                 ", scope='" + getScope() + '\'' +
                 ", status=" + getStatus() +
                 ", priority='" + getPriority() + '\'' +
                 ", implications=" + getImplications() +
                 ", outcomes=" + getOutcomes() +
-                ", externalReferences=" + getExternalReferences() +
-                ", additionalProperties=" + getAdditionalProperties() +
                 ", governanceMetrics=" + getGovernanceMetrics() +
                 ", governanceZones=" + getGovernanceZones() +
-                ", GUID='" + getGUID() + '\'' +
-                ", type='" + getType() + '\'' +
-                ", documentId='" + getDocumentId() + '\'' +
-                ", title='" + getTitle() + '\'' +
-                ", summary='" + getSummary() + '\'' +
+                ", typeName='" + getTypeName() + '\'' +
+                ", qualifiedName='" + getQualifiedName() + '\'' +
+                ", additionalProperties=" + getAdditionalProperties() +
+                ", extendedProperties=" + getExtendedProperties() +
                 '}';
     }
 }

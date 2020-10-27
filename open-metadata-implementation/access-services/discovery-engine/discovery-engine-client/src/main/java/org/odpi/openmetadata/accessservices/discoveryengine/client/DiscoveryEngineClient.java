@@ -2,15 +2,13 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.discoveryengine.client;
 
+import org.odpi.openmetadata.accessservices.discoveryengine.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.ConnectedAssetClientBase;
-import org.odpi.openmetadata.commonservices.odf.metadatamanagement.client.ODFRESTClient;
-import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Classification;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.discovery.properties.*;
 
@@ -520,19 +518,21 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
     {
         final String   methodName = "updateDiscoveryAnalysisReport";
         final String   reportParameterName = "updatedReport";
+        final String   reportHeaderParameterName = "updatedReport.getElementHeader";
         final String   reportGUIDParameterName = "updatedReport.getGUID()";
         final String   urlTemplate = "/servers/{0}/open-metadata/access-services/discovery-engine/users/{1}/discovery-analysis-reports/{2}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateObject(updatedReport, reportParameterName, methodName);
-        invalidParameterHandler.validateGUID(updatedReport.getGUID(), reportGUIDParameterName, methodName);
+        invalidParameterHandler.validateObject(updatedReport.getElementHeader(), reportHeaderParameterName, methodName);
+        invalidParameterHandler.validateGUID(updatedReport.getElementHeader().getGUID(), reportGUIDParameterName, methodName);
 
         VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
                                                                   serverPlatformRootURL + urlTemplate,
                                                                   updatedReport,
                                                                   serverName,
                                                                   userId,
-                                                                  updatedReport.getGUID());
+                                                                  updatedReport.getElementHeader().getGUID());
 
     }
 
@@ -980,7 +980,10 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateObject(annotation, annotationParameterName, methodName);
-        invalidParameterHandler.validateGUID(annotation.getGUID(), annotationGUIDParameterName, methodName);
+
+        ElementHeader elementHeader = annotation.getElementHeader();
+
+        invalidParameterHandler.validateGUID(elementHeader.getGUID(), annotationGUIDParameterName, methodName);
 
         restClient.callVoidPostRESTCall(methodName,
                                         serverPlatformRootURL + urlTemplate,
@@ -988,7 +991,7 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
                                         serverName,
                                         userId,
                                         discoveryReportGUID,
-                                        annotation.getGUID());
+                                        elementHeader.getGUID());
     }
 
 

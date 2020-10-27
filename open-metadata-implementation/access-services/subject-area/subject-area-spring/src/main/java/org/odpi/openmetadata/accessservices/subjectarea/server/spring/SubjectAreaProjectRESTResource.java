@@ -15,9 +15,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 
-import static org.odpi.openmetadata.accessservices.subjectarea.server.services.SubjectAreaRESTServicesInstance.*;
-
-
 /**
  * The SubjectAreaRESTServicesInstance provides the org.odpi.openmetadata.accessservices.subjectarea.server-side implementation of the SubjectArea Open Metadata
  * Access Service (OMAS).  This interface provides Project authoring interfaces for subject area experts.
@@ -26,7 +23,7 @@ import static org.odpi.openmetadata.accessservices.subjectarea.server.services.S
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/subject-area")
 @Tag(name = "Subject Area OMAS", description = "The Subject Area OMAS supports subject matter experts who are documenting their knowledge about a particular subject. This includes glossary terms, reference data, validation rules.", externalDocs = @ExternalDocumentation(description = "Subject Area Open Metadata Access Service (OMAS)", url = "https://egeria.odpi.org/open-metadata-implementation/access-services/subject-area/"))
 public class SubjectAreaProjectRESTResource {
-    private SubjectAreaProjectRESTServices restAPI = new SubjectAreaProjectRESTServices();
+    private final SubjectAreaProjectRESTServices restAPI = new SubjectAreaProjectRESTServices();
 
     /**
      * Default constructor
@@ -92,10 +89,9 @@ public class SubjectAreaProjectRESTResource {
      * @param userId             unique identifier for requesting user, under which the request is performed
      * @param searchCriteria     String expression matching Project property values. If not specified then all glossaries are returned.
      * @param asOfTime           the glossaries returned as they were at this time. null indicates at the current time.
-     * @param offset             the starting element number for this set of results.  This is used when retrieving elements
+     * @param startingFrom             the starting element number for this set of results.  This is used when retrieving elements
      *                           beyond the first page of results. Zero means the results start from the first element.
      * @param pageSize           the maximum number of elements that can be returned on this request.
-     *                           0 means there is no limit to the page size
      * @param sequencingOrder    the sequencing order for the results.
      * @param sequencingProperty the name of the property that should be used to sequence the results.
      * @return A list of glossaries meeting the search Criteria
@@ -111,12 +107,12 @@ public class SubjectAreaProjectRESTResource {
     public SubjectAreaOMASAPIResponse<Project> findProject(@PathVariable String serverName, @PathVariable String userId,
                                                            @RequestParam(value = "searchCriteria", required = false) String searchCriteria,
                                                            @RequestParam(value = "asOfTime", required = false) Date asOfTime,
-                                                           @RequestParam(value = "offset", required = false, defaultValue = PAGE_OFFSET_DEFAULT_VALUE) Integer offset,
-                                                           @RequestParam(value = "pageSize", required = false, defaultValue = PAGE_SIZE_DEFAULT_VALUE) Integer pageSize,
+                                                           @RequestParam(value = "startingFrom", required = false, defaultValue = "0") Integer startingFrom,
+                                                           @RequestParam(value = "pageSize", required = false) Integer pageSize,
                                                            @RequestParam(value = "sequencingOrder", required = false) SequencingOrder sequencingOrder,
                                                            @RequestParam(value = "sequencingProperty", required = false) String sequencingProperty
     ) {
-        return restAPI.findProject(serverName, userId, searchCriteria, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
+        return restAPI.findProject(serverName, userId, searchCriteria, asOfTime, startingFrom, pageSize, sequencingOrder, sequencingProperty);
     }
 
     /**
@@ -126,10 +122,9 @@ public class SubjectAreaProjectRESTResource {
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the Project to get
      * @param asOfTime the relationships returned as they were at this time. null indicates at the current time. If specified, the date is in milliseconds since 1970-01-01 00:00:00.
-     * @param offset  the starting element number for this set of results.  This is used when retrieving elements
+     * @param startingFrom  the starting element number for this set of results.  This is used when retrieving elements
      *                 beyond the first page of results. Zero means the results start from the first element.
      * @param pageSize the maximum number of elements that can be returned on this request.
-     *                 0 means there is not limit to the page size
      * @param sequencingOrder the sequencing order for the results.
      * @param sequencingProperty the name of the property that should be used to sequence the results.
      * @return a response which when successful contains the Project relationships
@@ -147,27 +142,23 @@ public class SubjectAreaProjectRESTResource {
     public SubjectAreaOMASAPIResponse<Line> getProjectRelationships(@PathVariable String serverName, @PathVariable String userId,
                                                                     @PathVariable String guid,
                                                                     @RequestParam(value = "asOfTime", required = false) Date asOfTime,
-                                                                    @RequestParam(value = "offset", required = false, defaultValue = PAGE_OFFSET_DEFAULT_VALUE) Integer offset,
-                                                                    @RequestParam(value = "pageSize", required = false, defaultValue = PAGE_SIZE_DEFAULT_VALUE) Integer pageSize,
+                                                                    @RequestParam(value = "startingFrom", required = false, defaultValue = "0") Integer startingFrom,
+                                                                    @RequestParam(value = "pageSize", required = false) Integer pageSize,
                                                                     @RequestParam(value = "sequencingOrder", required = false) SequencingOrder sequencingOrder,
                                                                     @RequestParam(value = "sequencingProperty", required = false) String sequencingProperty
     ) {
-        return restAPI.getProjectRelationships(serverName, userId, guid, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
+        return restAPI.getProjectRelationships(serverName, userId, guid, asOfTime, startingFrom, pageSize, sequencingOrder, sequencingProperty);
     }
 
-    /*
+    /**
      * Get the terms in this project.
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the Project to get
-     * @param asOfTime the relationships returned as they were at this time. null indicates at the current time. If specified, the date is in milliseconds since 1970-01-01 00:00:00.
-     * @param offset  the starting element number for this set of results.  This is used when retrieving elements
+     * @param startingFrom  the starting element number for this set of results.  This is used when retrieving elements
      *                 beyond the first page of results. Zero means the results start from the first element.
      * @param pageSize the maximum number of elements that can be returned on this request.
-     *                 0 means there is not limit to the page size
-     * @param sequencingOrder the sequencing order for the results.
-     * @param sequencingProperty the name of the property that should be used to sequence the results.
      * @return a response which when successful contains the Project relationships
      * when not successful the following Exception responses can occur
      * <ul>
@@ -180,9 +171,11 @@ public class SubjectAreaProjectRESTResource {
     @GetMapping(path = "/users/{userId}/projects/{guid}/terms")
     public SubjectAreaOMASAPIResponse<Term> getProjectTerms(@PathVariable String serverName,
                                                             @PathVariable String userId,
-                                                            @PathVariable String guid
+                                                            @PathVariable String guid,
+                                                            @RequestParam(value = "startingFrom", required = false, defaultValue = "0") Integer startingFrom,
+                                                            @RequestParam(value = "pageSize", required = false) Integer pageSize
     ) {
-        return restAPI.getProjectTerms(serverName, userId, guid);
+        return restAPI.getProjectTerms(serverName, userId, guid, startingFrom, pageSize);
     }
 
     /**

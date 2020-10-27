@@ -3,12 +3,12 @@
 import React, { createContext, useReducer } from "react";
 import PropTypes from "prop-types";
 import getNodeType from "../components/properties/NodeTypes.js";
-export const GlossaryAuthorContext = createContext();
-export const GlossaryAuthorContextConsumer = GlossaryAuthorContext.Consumer;
-const GlossaryAuthorContextProvider = (props) => {
+export const GlossaryAuthorCRUDContext = createContext();
+export const GlossaryAuthorCRUDContextConsumer = GlossaryAuthorCRUDContext.Consumer;
+const GlossaryAuthorCRUDContextProvider = (props) => {
   console.log(
-    "GlossaryAuthorContext GlossaryAuthorContextProvider",
-    GlossaryAuthorContextProvider
+    "GlossaryAuthorCRUDContext GlossaryAuthorCRUDContextProvider",
+    GlossaryAuthorCRUDContextProvider
   );
   // get the nodeTypes here as the getNodeType accesses a context, which must be accessed at the top level of functional React component
   const termNodeType = getNodeType("term");
@@ -420,7 +420,7 @@ const GlossaryAuthorContextProvider = (props) => {
   };
 
   return (
-    <GlossaryAuthorContext.Provider
+    <GlossaryAuthorCRUDContext.Provider
       value={{
         // exposed state
         currentNodeType,
@@ -460,10 +460,10 @@ const GlossaryAuthorContextProvider = (props) => {
       }}
     >
       {props.children}
-    </GlossaryAuthorContext.Provider>
+    </GlossaryAuthorCRUDContext.Provider>
   );
 };
-GlossaryAuthorContextProvider.propTypes = {
+GlossaryAuthorCRUDContextProvider.propTypes = {
   children: PropTypes.node,
 };
-export default GlossaryAuthorContextProvider;
+export default GlossaryAuthorCRUDContextProvider;

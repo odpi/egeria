@@ -3,11 +3,11 @@
 package org.odpi.openmetadata.viewservices.rex.handlers;
 
 
+import org.odpi.openmetadata.adminservices.configuration.properties.ResourceEndpointConfig;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceGraph;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefLink;
@@ -33,9 +33,11 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefGallery;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
+import org.odpi.openmetadata.viewservices.rex.api.ffdc.RexViewErrorCode;
 import org.odpi.openmetadata.viewservices.rex.api.properties.ClassificationExplorer;
 import org.odpi.openmetadata.viewservices.rex.api.properties.EntityExplorer;
 import org.odpi.openmetadata.viewservices.rex.api.properties.RelationshipExplorer;
+import org.odpi.openmetadata.viewservices.rex.api.properties.ResourceEndpoint;
 import org.odpi.openmetadata.viewservices.rex.api.properties.RexEntityDigest;
 import org.odpi.openmetadata.viewservices.rex.api.properties.RexExpandedEntityDetail;
 import org.odpi.openmetadata.viewservices.rex.api.properties.RexExpandedRelationship;
@@ -49,7 +51,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -69,18 +70,167 @@ public class RexViewHandler
     private static final int TRUNCATED_STRING_LENGTH = 24;
 
 
+    /*
+     * viewServiceOptions should have been validated in the Admin layer.
+     * The viewServiceOptions contains a list of resource endpoints that the
+     * view service can connect to. It is formatted like this:
+     *
+     *  "resourceEndpoints" : [
+     *            {
+     *               "class"              : "ResourceEndpointConfig",
+     *               "resourceCategory"   : "Platform",
+     *               "platformName"       : "Platform1",
+     *               "platformRootURL"    : "https://localhost:8082",
+     *               "description"        : "Egeria deployment on local development server"
+     *           },
+     *           {
+     *               "class"              : "ResourceEndpointConfig",
+     *               "resourceCategory"   : "Platform",
+     *               "platformName"       : "Platform2",
+     *               "platformRootURL"    : "https://localhost:9443",
+     *               "description"        : "Egeria deployment on local test server"
+     *           },
+     *           {
+     *               "class"              : "ResourceEndpointConfig",
+     *               "resourceCategory"   : "Server",
+     *               "serverName"         : "Metadata_Server",
+     *               "serverInstanceName" : "Metadata Server 1",
+     *               "platformName"       : "Platform1",
+     *               "description"        : "Metadata server for development testing"
+     *           },
+     *           {
+     *               "class"              : "ResourceEndpointConfig",
+     *               "resourceCategory"   : "Server",
+     *               "serverName"         : "Metadata_Server2",
+     *               "serverInstanceName" : "Metadata Server 2",
+     *               "platformName"       : "Platform2",
+     *               "description"        : "Metadata server used as home for test artefacts"
+     *           }
+     *       ]
+     */
+
+    private Map<String, ResourceEndpoint>  configuredPlatforms = null;          // map is keyed using platformRootURL
+    private Map<String, ResourceEndpoint>  configuredServerInstances   = null;  // map is keyed using serverName+platformRootURL so each instance is unique
+
+
+
+
     /**
-     * Constructor for the RexViewHandler
+     * Default constructor for TexViewHandler
      */
     public RexViewHandler() {
 
     }
 
+
+    /**
+     * Constructor for RexViewHandler with configured resourceEndpoints
+     * @param resourceEndpoints
+     */
+    public RexViewHandler(List<ResourceEndpointConfig>  resourceEndpoints) {
+
+        /*
+         * Populate map of resources with their endpoints....
+         */
+
+        // TODO - It would be desirable to add validation rules to ensure uniqueness etc.
+
+        if (resourceEndpoints != null && !resourceEndpoints.isEmpty()) {
+            configuredPlatforms         = new HashMap<>();
+            configuredServerInstances   = new HashMap<>();
+
+            resourceEndpoints.forEach(res -> {
+
+                String resCategory   = res.getResourceCategory();
+                ResourceEndpoint rep = new ResourceEndpoint(res);
+
+                String resName = null;
+
+                switch (resCategory) {
+                    case "Platform":
+                        resName = res.getPlatformName();
+                        configuredPlatforms.put(resName, rep);
+                        break;
+
+                    case "Server":
+                        resName = res.getServerInstanceName();
+                        configuredServerInstances.put(resName, rep);
+                        break;
+
+                    default:
+                        // Unsupported category is ignored
+                        break;
+
+                }
+            });
+        }
+
+    }
+
+
+
+    /**
+     * getResourceEndpoints - returns a list of the configured resource endpoints. Does not include discovered resource endpoints.
+     *
+     * @param userId  userId under which the request is performed
+     * @param methodName The name of the method being invoked
+     * This method will return the resource endpoints that have been configured for the view service
+     *
+     */
+    public Map<String, List<ResourceEndpoint>> getResourceEndpoints(String userId, String methodName)
+
+    {
+
+        List<ResourceEndpoint> platformList = new ArrayList<>();
+        List<ResourceEndpoint> serverList   = new ArrayList<>();
+
+        platformList.addAll(configuredPlatforms.values());
+        serverList.addAll(configuredServerInstances.values());
+
+        Map<String, List<ResourceEndpoint>> returnMap = new HashMap<>();
+        returnMap.put("platformList",platformList);
+        returnMap.put("serverList",serverList);
+        return returnMap;
+    }
+
+
+
+    /**
+     * resolvePlatformRootURL
+     *
+     * This method will look up the configured root URL for the named platform.
+     *
+     * @param platformName
+     * @return resolved platform URL Root
+     * @throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException
+     */
+    private String resolvePlatformRootURL(String platformName, String methodName) throws InvalidParameterException
+
+    {
+        String platformRootURL = null;
+
+        if (platformName != null) {
+            ResourceEndpoint resource = configuredPlatforms.get(platformName);
+            if (resource != null) {
+                platformRootURL = resource.getResourceRootURL();
+            }
+        }
+        if (platformName == null || platformRootURL == null) {
+            throw new InvalidParameterException(RexViewErrorCode.VIEW_SERVICE_NULL_PLATFORM_NAME.getMessageDefinition(),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                "platformName");
+        }
+
+        return platformRootURL;
+    }
+    
+
     /**
      * Retrieve type information from the repository server
      * @param userId  userId under which the request is performed
      * @param repositoryServerName The name of the repository server to interrogate
-     * @param repositoryServerURLRoot The URL root of the repository server to interrogate
+     * @param platformName The name of the platform running the repository server to interrogate
      * @param enterpriseOption Whether the query is at cohort level or server specific
      * @param methodName The name of the method being invoked
      * @return response containing the TypeExplorer object.
@@ -94,7 +244,7 @@ public class RexViewHandler
      */
     public TypeExplorer getTypeExplorer(String    userId,
                                         String    repositoryServerName,
-                                        String    repositoryServerURLRoot,
+                                        String    platformName,
                                         boolean   enterpriseOption,
                                         String    methodName)
     throws
@@ -103,6 +253,8 @@ public class RexViewHandler
         UserNotAuthorizedException
 
     {
+
+        String platformRootURL = resolvePlatformRootURL(platformName, methodName);
 
         try {
 
@@ -113,9 +265,9 @@ public class RexViewHandler
             MetadataCollectionServicesClient repositoryServicesClient;
 
             if (!enterpriseOption) {
-                repositoryServicesClient = this.getLocalRepositoryServicesClient(repositoryServerName, repositoryServerURLRoot);
+                repositoryServicesClient = this.getLocalRepositoryServicesClient(repositoryServerName, platformRootURL);
             } else {
-                repositoryServicesClient = this.getEnterpriseRepositoryServicesClient(repositoryServerName, repositoryServerURLRoot);
+                repositoryServicesClient = this.getEnterpriseRepositoryServicesClient(repositoryServerName, platformRootURL);
             }
 
             TypeExplorer tex = new TypeExplorer();
@@ -175,7 +327,7 @@ public class RexViewHandler
      * Retrieve entity (by GUID) from the repository server
      * @param userId  userId under which the request is performed
      * @param repositoryServerName The name of the repository server to interrogate
-     * @param repositoryServerURLRoot The URL root of the repository server to interrogate
+     * @param platformName The name of the platform running the repository server to interrogate
      * @param enterpriseOption Whether the query is at cohort level or server specific
      * @param entityGUID the GUID of the entity to retrieve
      * @param methodName The name of the method being invoked
@@ -192,7 +344,7 @@ public class RexViewHandler
      */
     public RexExpandedEntityDetail getEntity(String    userId,
                                              String    repositoryServerName,
-                                             String    repositoryServerURLRoot,
+                                             String    platformName,
                                              boolean   enterpriseOption,
                                              String    entityGUID,
                                              String    methodName)
@@ -204,6 +356,7 @@ public class RexViewHandler
     EntityProxyOnlyException
 
     {
+        String platformRootURL = resolvePlatformRootURL(platformName, methodName);
 
         try {
 
@@ -214,9 +367,9 @@ public class RexViewHandler
             MetadataCollectionServicesClient repositoryServicesClient;
 
             if (!enterpriseOption) {
-                repositoryServicesClient = this.getLocalRepositoryServicesClient(repositoryServerName, repositoryServerURLRoot);
+                repositoryServicesClient = this.getLocalRepositoryServicesClient(repositoryServerName, platformRootURL);
             } else {
-                repositoryServicesClient = this.getEnterpriseRepositoryServicesClient(repositoryServerName, repositoryServerURLRoot);
+                repositoryServicesClient = this.getEnterpriseRepositoryServicesClient(repositoryServerName, platformRootURL);
             }
 
 
@@ -224,7 +377,7 @@ public class RexViewHandler
 
             TypeExplorer typeExplorer = getTypeExplorer(userId,
                                                         repositoryServerName,
-                                                        repositoryServerURLRoot,
+                                                        platformName,
                                                         enterpriseOption,
                                                         methodName);
 
@@ -250,7 +403,7 @@ public class RexViewHandler
      * Retrieve relationship (by GUID) from the repository server
      * @param userId  userId under which the request is performed
      * @param repositoryServerName The name of the repository server to interrogate
-     * @param repositoryServerURLRoot The URL root of the repository server to interrogate
+     * @param platformName The name of the platform running the repository server to interrogate
      * @param enterpriseOption Whether the query is at cohort level or server specific
      * @param relationshipGUID the GUID of the relationship to retrieve
      * @param methodName The name of the method being invoked
@@ -267,7 +420,7 @@ public class RexViewHandler
      */
     public RexExpandedRelationship getRelationship(String    userId,
                                                    String    repositoryServerName,
-                                                   String    repositoryServerURLRoot,
+                                                   String    platformName,
                                                    boolean   enterpriseOption,
                                                    String    relationshipGUID,
                                                    String    methodName)
@@ -279,6 +432,8 @@ public class RexViewHandler
 
     {
 
+        String platformRootURL = resolvePlatformRootURL(platformName, methodName);
+
         try {
 
             /*
@@ -288,9 +443,9 @@ public class RexViewHandler
             MetadataCollectionServicesClient repositoryServicesClient;
 
             if (!enterpriseOption) {
-                repositoryServicesClient = this.getLocalRepositoryServicesClient(repositoryServerName, repositoryServerURLRoot);
+                repositoryServicesClient = this.getLocalRepositoryServicesClient(repositoryServerName, platformRootURL);
             } else {
-                repositoryServicesClient = this.getEnterpriseRepositoryServicesClient(repositoryServerName, repositoryServerURLRoot);
+                repositoryServicesClient = this.getEnterpriseRepositoryServicesClient(repositoryServerName, platformRootURL);
             }
 
 
@@ -300,7 +455,7 @@ public class RexViewHandler
 
             TypeExplorer typeExplorer = getTypeExplorer(userId,
                                                         repositoryServerName,
-                                                        repositoryServerURLRoot,
+                                                        platformName,
                                                         enterpriseOption,
                                                         methodName);
 
@@ -332,7 +487,7 @@ public class RexViewHandler
      * Retrieve entities (by text search) from the repository server
      * @param userId  userId under which the request is performed
      * @param repositoryServerName The name of the repository server to interrogate
-     * @param repositoryServerURLRoot The URL root of the repository server to interrogate
+     * @param platformName The name of the platform running the repository server to interrogate
      * @param enterpriseOption Whether the query is at cohort level or server specific
      * @param searchText the search expression that entities must match
      * @param entityTypeName the name of a type used to filter the entity search
@@ -354,7 +509,7 @@ public class RexViewHandler
      */
     public Map<String, RexEntityDigest> findEntities(String       userId,
                                                      String       repositoryServerName,
-                                                     String       repositoryServerURLRoot,
+                                                     String       platformName,
                                                      boolean      enterpriseOption,
                                                      String       searchText,
                                                      String       entityTypeName,
@@ -371,6 +526,8 @@ public class RexViewHandler
 
     {
 
+        String platformRootURL = resolvePlatformRootURL(platformName, methodName);
+
         try {
 
             /*
@@ -380,14 +537,14 @@ public class RexViewHandler
             MetadataCollectionServicesClient repositoryServicesClient;
 
             if (!enterpriseOption) {
-                repositoryServicesClient = this.getLocalRepositoryServicesClient(repositoryServerName, repositoryServerURLRoot);
+                repositoryServicesClient = this.getLocalRepositoryServicesClient(repositoryServerName, platformRootURL);
             } else {
-                repositoryServicesClient = this.getEnterpriseRepositoryServicesClient(repositoryServerName, repositoryServerURLRoot);
+                repositoryServicesClient = this.getEnterpriseRepositoryServicesClient(repositoryServerName, platformRootURL);
             }
 
             TypeExplorer typeExplorer = getTypeExplorer(userId,
                                                         repositoryServerName,
-                                                        repositoryServerURLRoot,
+                                                        platformName,
                                                         enterpriseOption,
                                                         methodName);
 
@@ -447,7 +604,7 @@ public class RexViewHandler
      * Retrieve relationships (by text search) from the repository server
      * @param userId  userId under which the request is performed
      * @param repositoryServerName The name of the repository server to interrogate
-     * @param repositoryServerURLRoot The URL root of the repository server to interrogate
+     * @param platformName The name of the platform running the repository server to interrogate
      * @param enterpriseOption Whether the query is at cohort level or server specific
      * @param searchText the search expression that relationships must match
      * @param relationshipTypeName the name of a type used to filter the relationship search
@@ -468,7 +625,7 @@ public class RexViewHandler
      */
     public Map<String, RexRelationshipDigest> findRelationships(String    userId,
                                                                 String    repositoryServerName,
-                                                                String    repositoryServerURLRoot,
+                                                                String    platformName,
                                                                 boolean   enterpriseOption,
                                                                 String    searchText,
                                                                 String    relationshipTypeName,
@@ -484,6 +641,8 @@ public class RexViewHandler
 
     {
 
+        String platformRootURL = resolvePlatformRootURL(platformName, methodName);
+
         try {
 
             /*
@@ -493,14 +652,14 @@ public class RexViewHandler
             MetadataCollectionServicesClient repositoryServicesClient;
 
             if (!enterpriseOption) {
-                repositoryServicesClient = this.getLocalRepositoryServicesClient(repositoryServerName, repositoryServerURLRoot);
+                repositoryServicesClient = this.getLocalRepositoryServicesClient(repositoryServerName, platformRootURL);
             } else {
-                repositoryServicesClient = this.getEnterpriseRepositoryServicesClient(repositoryServerName, repositoryServerURLRoot);
+                repositoryServicesClient = this.getEnterpriseRepositoryServicesClient(repositoryServerName, platformRootURL);
             }
 
             TypeExplorer typeExplorer = getTypeExplorer(userId,
                                                         repositoryServerName,
-                                                        repositoryServerURLRoot,
+                                                        platformName,
                                                         enterpriseOption,
                                                         methodName);
 
@@ -567,7 +726,7 @@ public class RexViewHandler
      * Retrieve the neighborhood surrounding an entity for pre-traversal.
      * @param userId  userId under which the request is performed
      * @param repositoryServerName The name of the repository server to interrogate
-     * @param repositoryServerURLRoot The URL root of the repository server to interrogate
+     * @param platformName The name of the platform running the repository server to interrogate
      * @param enterpriseOption Whether the query is at cohort level or server specific
      * @param entityGUID the identity of the entity from which to traverse
      * @param depth the depth to which the method should traverse
@@ -589,7 +748,7 @@ public class RexViewHandler
      */
     public RexPreTraversal preTraversal(String          userId,
                                            String          repositoryServerName,
-                                           String          repositoryServerURLRoot,
+                                           String          platformName,
                                            boolean         enterpriseOption,
                                            String          entityGUID,
                                            int             depth,
@@ -606,6 +765,8 @@ public class RexViewHandler
 
     {
 
+        String platformRootURL = resolvePlatformRootURL(platformName, methodName);
+
         try {
 
             /*
@@ -615,9 +776,9 @@ public class RexViewHandler
             MetadataCollectionServicesClient repositoryServicesClient;
 
             if (!enterpriseOption) {
-                repositoryServicesClient = this.getLocalRepositoryServicesClient(repositoryServerName, repositoryServerURLRoot);
+                repositoryServicesClient = this.getLocalRepositoryServicesClient(repositoryServerName, platformRootURL);
             } else {
-                repositoryServicesClient = this.getEnterpriseRepositoryServicesClient(repositoryServerName, repositoryServerURLRoot);
+                repositoryServicesClient = this.getEnterpriseRepositoryServicesClient(repositoryServerName, platformRootURL);
             }
 
             /*
@@ -626,7 +787,7 @@ public class RexViewHandler
 
             TypeExplorer typeExplorer = getTypeExplorer(userId,
                                                         repositoryServerName,
-                                                        repositoryServerURLRoot,
+                                                        platformName,
                                                         enterpriseOption,
                                                         methodName);
 
@@ -763,7 +924,7 @@ public class RexViewHandler
      * Retrieve the neighborhood surrounding an entity.
      * @param userId  userId under which the request is performed
      * @param repositoryServerName The name of the repository server to interrogate
-     * @param repositoryServerURLRoot The URL root of the repository server to interrogate
+     * @param platformName The name of the platform running the repository server to interrogate
      * @param enterpriseOption Whether the query is at cohort level or server specific
      * @param entityGUID the identity of the entity from which to traverse
      * @param depth the depth to which the method should traverse
@@ -788,7 +949,7 @@ public class RexViewHandler
      */
     public RexTraversal traversal(String          userId,
                                      String          repositoryServerName,
-                                     String          repositoryServerURLRoot,
+                                     String          platformName,
                                      boolean         enterpriseOption,
                                      String          entityGUID,
                                      int             depth,
@@ -808,6 +969,8 @@ public class RexViewHandler
 
     {
 
+        String platformRootURL = resolvePlatformRootURL(platformName, methodName);
+
         try {
 
             /*
@@ -817,9 +980,9 @@ public class RexViewHandler
             MetadataCollectionServicesClient repositoryServicesClient;
 
             if (!enterpriseOption) {
-                repositoryServicesClient = this.getLocalRepositoryServicesClient(repositoryServerName, repositoryServerURLRoot);
+                repositoryServicesClient = this.getLocalRepositoryServicesClient(repositoryServerName, platformRootURL);
             } else {
-                repositoryServicesClient = this.getEnterpriseRepositoryServicesClient(repositoryServerName, repositoryServerURLRoot);
+                repositoryServicesClient = this.getEnterpriseRepositoryServicesClient(repositoryServerName, platformRootURL);
             }
 
             /*
@@ -828,7 +991,7 @@ public class RexViewHandler
 
             TypeExplorer typeExplorer = getTypeExplorer(userId,
                                                         repositoryServerName,
-                                                        repositoryServerURLRoot,
+                                                        platformName,
                                                         enterpriseOption,
                                                         methodName);
 
@@ -998,18 +1161,18 @@ public class RexViewHandler
      * connect to the local repository.
      *
      * @param serverName
-     * @param serverURLRoot
+     * @param serverRootURL
      * @throws InvalidParameterException
      */
     private LocalRepositoryServicesClient getLocalRepositoryServicesClient(String serverName,
-                                                                           String serverURLRoot)
+                                                                           String serverRootURL)
     throws
     InvalidParameterException
 
     {
         /*
          * The serverName is used as the repositoryName
-         * The serverURLRoot is used as part of the restURLRoot, along with the serverName
+         * The serverRootURL is used as part of the restRootURL, along with the serverName
          */
 
         /*
@@ -1017,8 +1180,8 @@ public class RexViewHandler
          * here because we want to surface it to the REST API that called this method so that the
          * exception can be wrapped and a suitable indication sent in the REST Response.
          */
-        String restURLRoot = serverURLRoot + "/servers/" + serverName;
-        LocalRepositoryServicesClient client = new LocalRepositoryServicesClient(serverName, restURLRoot);
+        String restRootURL = serverRootURL + "/servers/" + serverName;
+        LocalRepositoryServicesClient client = new LocalRepositoryServicesClient(serverName, restRootURL);
 
         return client;
     }
@@ -1031,17 +1194,17 @@ public class RexViewHandler
      * perform federation.
      *
      * @param serverName
-     * @param serverURLRoot
+     * @param serverRootURL
      * @throws InvalidParameterException
      */
     private EnterpriseRepositoryServicesClient getEnterpriseRepositoryServicesClient(String serverName,
-                                                                                     String serverURLRoot)
+                                                                                     String serverRootURL)
     throws
     InvalidParameterException
     {
         /*
          * The serverName is used as the repositoryName
-         * The serverURLRoot is used as part of the restURLRoot, along with the serverName
+         * The serverRootURL is used as part of the restRootURL, along with the serverName
          */
 
         /*
@@ -1049,8 +1212,8 @@ public class RexViewHandler
          * here because we want to surface it to the REST API that called this method so that the
          * exception can be wrapped and a suitable indication sent in the REST Response.
          */
-        String restURLRoot = serverURLRoot + "/servers/" + serverName;
-        EnterpriseRepositoryServicesClient client = new EnterpriseRepositoryServicesClient(serverName, restURLRoot);
+        String restRootURL = serverRootURL + "/servers/" + serverName;
+        EnterpriseRepositoryServicesClient client = new EnterpriseRepositoryServicesClient(serverName, restRootURL);
 
         return client;
     }

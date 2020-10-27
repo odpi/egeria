@@ -5,6 +5,7 @@ package org.odpi.openmetadata.repositoryservices.events.beans.v1;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceGraph;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
@@ -35,6 +36,8 @@ public class OMRSEventV1InstanceSection implements Serializable
     private EntityDetail   entity                           = null;
     private Relationship   originalRelationship             = null;
     private Relationship   relationship                     = null;
+    private Classification originalClassification           = null;
+    private Classification classification                   = null;
     private InstanceGraph  instanceBatch                    = null;
     private String         homeMetadataCollectionId         = null;
     private String         originalHomeMetadataCollectionId = null;
@@ -123,6 +126,26 @@ public class OMRSEventV1InstanceSection implements Serializable
     public void setRelationship(Relationship relationship)
     {
         this.relationship = relationship;
+    }
+
+    public Classification getOriginalClassification()
+    {
+        return originalClassification;
+    }
+
+    public void setOriginalClassification(Classification originalClassification)
+    {
+        this.originalClassification = originalClassification;
+    }
+
+    public Classification getClassification()
+    {
+        return classification;
+    }
+
+    public void setClassification(Classification classification)
+    {
+        this.classification = classification;
     }
 
     public InstanceGraph getInstanceBatch()

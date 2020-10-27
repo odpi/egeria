@@ -16,6 +16,7 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
  *     <li><ul>
  *         <li>500 - internal error</li>
  *         <li>400 - invalid parameters</li>
+ *         <li>403 - forbidden</li>
  *         <li>404 - not found</li>
  *         <li>409 - data conflict errors - eg item already defined</li>
  *     </ul></li>
@@ -31,24 +32,54 @@ public enum RepositoryHandlerErrorCode implements ExceptionMessageSet
             "An unsupported property named {0} was passed to the repository services by the {1} request for open metadata access service {2} on server {3}; error message was: {4}",
             "The system is unable to process the request because it has no place to store the property.",
             "Correct the types and property names of the properties passed on the request."),
-    USER_NOT_AUTHORIZED(400, "OMAG-REPOSITORY-HANDLER-400-002",
-            "User {0} is not authorized to issue the {1} request for open metadata access service {2} on server {3}",
-            "The system is unable to process the request because the user should not be making this request.",
-            "Verify the access rights of the user."),
-    PROPERTY_SERVER_ERROR(400, "OMAG-REPOSITORY-HANDLER-400-003",
-            "An unexpected error was returned by the metadata server during {1} request for open metadata access service {2} on server {3}; message was {0}",
-            "The system is unable to process the request because of an internal error.",
-            "Verify the sanity of the server.  This is probably a logic error.  If you can not work out what happened, ask the ODPi Egeria community for help."),
-    INVALID_PROPERTY_VALUE(400, "OMAG-REPOSITORY-HANDLER-400-004",
+    INVALID_PARAMETER(400, "OMAG-REPOSITORY-HANDLER-400-002",
+            "The {0} parameter passed by the {1} request for open metadata access service {2} on server " +
+                             "{3} is invalid; value passed was: {4}",
+            "The system is unable to process the request because it does no know how to process this value.",
+            "Correct the value of the properties passed on the request."),
+    BAD_CLASSIFICATION_PROPERTIES(400, "OMAG-REPOSITORY-HANDLER-400-003",
+                                  "Service {0} is unable to process the properties supplied with classification {1}.  The associated error message was: {2}",
+                                  "The system is unable to create a new instance with invalid properties in any of the classifications.",
+                                  "Correct the classification parameters passed with this request."),
+    INVALID_TYPE(404, "OMAG-REPOSITORY-HANDLER-400-004",
+            "An unsupported type named {0} was passed to the repository services by the {1} request for open metadata access service {2} " +
+                             "on server {3}; error message was: {4}",
+            "The system is unable to process the request because the repository services are unable to store the supplied information.",
+            "Change the call being made - or look to expand the collective capabilities of the available repositories by " +
+                         "connecting an Egeria metadata server to the open metadata repository cohort that this server is connected to."),
+    INVALID_PROPERTY_VALUE(400, "OMAG-REPOSITORY-HANDLER-400-005",
             "The property named {0} with value of {1} supplied on method {2} does not match the stored value of {3} for entity {4}",
             "The system is unable to process the request because there is a possibility that the caller is requesting changes to the wrong object.",
             "Correct the values of the properties passed on the request and retry."),
-    DUPLICATE_CREATE_REQUEST(400, "OMAG-REPOSITORY-HANDLER-400-005",
+    DUPLICATE_CREATE_REQUEST(400, "OMAG-REPOSITORY-HANDLER-400-006",
             "Unable to create a new {0} with {1} of {2} as there is already an entity of that name with guid {3}",
             "The system is unable to create the requested entity because there is an entity of the same name already defined.",
             "Either use the existing entity or change the name for the new one and re-run the create request."),
+    WRONG_EXTERNAL_SOURCE(400, "OMAG-REPOSITORY-HANDLER-400-007",
+            "Method {0} running on behalf of external source {1} ({2}) is unable to modify {3} instance {4} because " +
+                                     "it is has metadata provenance of {5} with an externalSourceGUID of {6} and an externalSourceName of {7}",
+            "The system is unable to modify the requested instance because it does not have the correct " +
+                                  "ownership rights to the instance.",
+            "Route the request through a different process that is set up to use the correct external source identifiers."),
+    LOCAL_CANNOT_CHANGE_EXTERNAL(400, "OMAG-REPOSITORY-HANDLER-400-008",
+            "Method {0} is unable to modify {1} instance {2} because it is has metadata provenance of {3} with " +
+                                  "an externalSourceGUID of {4} and an externalSourceName of {5} because user {6} is using a local cohort interface",
+            "The system is unable to modify the requested instance because it does not have ownership rights to the " +
+                                  "instance.",
+            "Route the request through a process that is set up to use the correct external source identifiers."),
+    USER_NOT_AUTHORIZED(403, "OMAG-REPOSITORY-HANDLER-403-001",
+            "User {0} is not authorized to issue the {1} request for open metadata access service {2} on server {3}",
+            "The system is unable to process the request because the user should not be making this request.",
+            "Verify the access rights of the user."),
+    ONLY_CREATOR_CAN_DELETE(403, "OMAG-REPOSITORY-HANDLER-403-002",
+            "The {0} method is unable to delete the requested relationship between {1} {2} and {3} {4} because it " +
+                                    "was not created by the requesting user {5}",
+            "The request fails because the user does not have the rights to take this action.",
+            "Retry the request with a relationship created with this user, or request that the user who created " +
+                                    "the relationship issues the delete request."),
     INSTANCE_WRONG_TYPE_FOR_GUID(404, "OMAG-REPOSITORY-HANDLER-404-001",
-            "The {0} method has retrieved a object for unique identifier (guid) {1} which is of type {2} rather than type {3}",
+            "The {0} method has retrieved a object for unique identifier (guid) {1} which is of type {2} rather than type {3} on behalf " +
+                    "of method {4}",
             "The service is not able to return the requested object.",
             "Check that the unique identifier is correct and the metadata server(s) supporting the service is running."),
     OMRS_NOT_INITIALIZED(404, "OMAG-REPOSITORY-HANDLER-404-002",
@@ -93,11 +124,17 @@ public enum RepositoryHandlerErrorCode implements ExceptionMessageSet
             "Multiple {0} entities where found with a name of {1}: the identifiers of the returned entities are {2}; the calling method is {3}, the name parameter is {4} and the server is {5}",
             "The system is unable to process a request because multiple entities have been discovered and it is unsure which entity to use.",
             "Investigate why multiple entities exist.  Then retry the request once the issue is resolved."),
+
     NULL_ENTITY_RETURNED_FOR_CLASSIFICATION(404, "OMAG-REPOSITORY-HANDLER-404-011",
             "A null entity was returned to method {0} of server {1} during a request to add a classification of type {4} (guid {3}) to entity {2} with properties of: {5}",
             "The system is unable to process a request because it can not find the requested entity to update.",
             "This may be a logic error or a configuration error (such as the cohort does not contain the correct members.  Look for errors in the " +
                                                     "server's audit log and console to understand and correct the source of any error."),
+    PROPERTY_SERVER_ERROR(500, "OMAG-REPOSITORY-HANDLER-500-001",
+                          "An unexpected error {4} was returned to {5} by the metadata server during {1} request for open metadata access service " +
+                                  "{2} on server {3}; message was {0}",
+                          "The system is unable to process the request because of an internal error.",
+                          "Verify the sanity of the server.  This is probably a logic error.  If you can not work out what happened, ask the ODPi Egeria community for help."),
     ;
 
     private ExceptionMessageDefinition messageDefinition;

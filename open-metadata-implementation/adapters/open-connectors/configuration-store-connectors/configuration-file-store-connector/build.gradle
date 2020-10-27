@@ -8,9 +8,9 @@ dependencies {
     implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
     implementation project(':open-metadata-implementation:admin-services:admin-services-api')
-    implementation 'org.slf4j:slf4j-api:1.7.30'
-    implementation 'commons-io:commons-io:2.7'
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.1'
+    implementation 'org.slf4j:slf4j-api'
+    implementation 'commons-io:commons-io'
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
 }
 
 description = 'Configuration File Store Connector'

@@ -153,19 +153,27 @@ public class AssetEnumSchemaType extends AssetSimpleSchemaType
     public String toString()
     {
         return "AssetEnumSchemaType{" +
-                "dataType='" + getDataType() + '\'' +
+                "parentAsset=" + parentAsset +
+                ", dataType='" + getDataType() + '\'' +
                 ", defaultValue='" + getDefaultValue() + '\'' +
-                ", displayName='" + getDisplayName() + '\'' +
                 ", versionNumber='" + getVersionNumber() + '\'' +
                 ", author='" + getAuthor() + '\'' +
                 ", usage='" + getUsage() + '\'' +
                 ", encodingStandard='" + getEncodingStandard() + '\'' +
-                ", extendedProperties=" + getExtendedProperties() +
+                ", formula='" + getFormula() + '\'' +
+                ", queries=" + getQueries() +
+                ", deprecated=" + isDeprecated() +
+                ", displayName='" + getDisplayName() + '\'' +
+                ", description='" + getDescription() + '\'' +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
+                ", meanings=" + getMeanings() +
+                ", securityTags=" + getSecurityTags() +
                 ", additionalProperties=" + getAdditionalProperties() +
                 ", type=" + getType() +
                 ", GUID='" + getGUID() + '\'' +
                 ", URL='" + getURL() + '\'' +
+                ", assetClassifications=" + getAssetClassifications() +
+                ", extendedProperties=" + getExtendedProperties() +
                 '}';
     }
 

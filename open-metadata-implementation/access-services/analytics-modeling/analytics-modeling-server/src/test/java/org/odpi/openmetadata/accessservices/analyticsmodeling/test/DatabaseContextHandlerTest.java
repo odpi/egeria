@@ -268,11 +268,12 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 
 		// assert result
 		assertNotNull(moduleResponse);
-		List<Table> tables = moduleResponse.getModule().getDataSource().get(0).getTable();
+		List<Table> tables = moduleResponse.getPhysicalModule().getDataSource().get(0).getTable();
 
 		assertEquals(4, tables.size(), "Failed to retrieve tables.");
 
 		String module = TestUtilities.readJsonFile("/src/test/resources/", "getModule");
+		TestUtilities.validateGUIDs(moduleResponse);
 		TestUtilities.assertObjectJson(moduleResponse, module);
 	}
 

@@ -7,7 +7,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.discovery.DiscoveryAnalysisReportStore;
-import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryAnalysisReport;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryRequestStatus;
 
 import java.util.Map;
