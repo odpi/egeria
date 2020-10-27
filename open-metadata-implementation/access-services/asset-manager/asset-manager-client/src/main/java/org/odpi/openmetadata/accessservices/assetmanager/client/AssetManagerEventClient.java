@@ -5,9 +5,9 @@ package org.odpi.openmetadata.accessservices.assetmanager.client;
 import org.odpi.openmetadata.accessservices.assetmanager.api.AssetManagerEventInterface;
 import org.odpi.openmetadata.accessservices.assetmanager.api.AssetManagerEventListener;
 import org.odpi.openmetadata.accessservices.assetmanager.connectors.outtopic.AssetManagerOutTopicClientConnector;
+import org.odpi.openmetadata.accessservices.assetmanager.ffdc.AssetManagerErrorCode;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.OCFRESTClient;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.ffdc.OMAGOCFErrorCode;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.ConnectionResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
@@ -138,10 +138,10 @@ public class AssetManagerEventClient implements AssetManagerEventInterface
 
             if (connector == null)
             {
-                throw new ConnectorCheckedException(OMAGOCFErrorCode.NULL_CONNECTOR_RETURNED.getMessageDefinition(topicConnection.getQualifiedName(),
-                                                                                                                  serviceName,
-                                                                                                                  serverName,
-                                                                                                                  serverPlatformURLRoot),
+                throw new ConnectorCheckedException(AssetManagerErrorCode.NULL_CONNECTOR_RETURNED.getMessageDefinition(topicConnection.getQualifiedName(),
+                                                                                                                       serviceName,
+                                                                                                                       serverName,
+                                                                                                                       serverPlatformURLRoot),
                                                     this.getClass().getName(),
                                                     methodName);
             }
@@ -154,7 +154,7 @@ public class AssetManagerEventClient implements AssetManagerEventInterface
             }
             else
             {
-                throw new ConnectorCheckedException(OMAGOCFErrorCode.WRONG_TYPE_OF_CONNECTOR.getMessageDefinition(topicConnection.getQualifiedName(),
+                throw new ConnectorCheckedException(AssetManagerErrorCode.WRONG_TYPE_OF_CONNECTOR.getMessageDefinition(topicConnection.getQualifiedName(),
                                                                                                                   serviceName,
                                                                                                                   serverName,
                                                                                                                   serverPlatformURLRoot,

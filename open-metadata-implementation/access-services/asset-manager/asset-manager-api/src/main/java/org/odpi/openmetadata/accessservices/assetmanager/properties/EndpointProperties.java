@@ -14,9 +14,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * EndpointProperties describes the properties of a server endpoint.  The endpoint is linked
- * the the data manager's server and describes its network endpoint.  It is also linked to connection objects
- * that are used by clients to connect to the data manager.  A connection is linked to each asset
- * that is hosted on the data manager.
+ * to the asset manager's server and describes its network endpoint.  It is also linked to connection objects
+ * that are used by clients to connect to the asset manager.  A connection is linked to each asset
+ * that is hosted on the asset manager.
  */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)

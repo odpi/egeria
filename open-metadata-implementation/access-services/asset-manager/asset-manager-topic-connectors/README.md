@@ -3,7 +3,7 @@
 
 # Asset Manager Open Metadata Access Service (OMAS) Connectors
 
-The data manager connectors are the interfaces of the
+The asset manager connectors are the interfaces of the
 connectors supported by the Asset Manager OMAS.
 
 Currently there are two connectors, one for the client

@@ -27,7 +27,7 @@ public enum AssetManagerAuditCode implements AuditLogMessageSet
                          OMRSAuditLogRecordSeverity.STARTUP,
                          "The Asset Manager Open Metadata Access Service (OMAS) is initializing a new server instance",
                          "The local server has started up a new instance of the Asset Manager OMAS.  This service " +
-                                 "supports the exchange of metadata between data managers.",
+                                 "supports the exchange of metadata between asset managers.",
                          "No action is required if the Asset Manager OMAS service is expected to be started in this server.  If " +
                                  "this service is not required then it can be removed from the access service " +
                                  "list in the configuration document for this server.  It will then not be started " +
@@ -35,9 +35,9 @@ public enum AssetManagerAuditCode implements AuditLogMessageSet
 
     SERVICE_PUBLISHING("OMAS-ASSET-MANAGER-0002",
                        OMRSAuditLogRecordSeverity.STARTUP,
-                       "The Asset Manager Open Metadata Access Service (OMAS) is ready to publish data manager notifications to topic {0}",
+                       "The Asset Manager Open Metadata Access Service (OMAS) is ready to publish asset manager notifications to topic {0}",
                        "The local server has started up the event publisher for the Asset Manager OMAS.  " +
-                               "It will begin publishing data manager metadata changes to its out topic.",
+                               "It will begin publishing asset manager metadata changes to its out topic.",
                        "This is part of the normal start up of the service. Check that there are no errors from the event bus."),
 
     SERVICE_INITIALIZED("OMAS-ASSET-MANAGER-0005",
@@ -91,8 +91,8 @@ public enum AssetManagerAuditCode implements AuditLogMessageSet
                     OMRSAuditLogRecordSeverity.EVENT,
                     "The Asset Manager Open Metadata Access Service (OMAS) has sent event: {0}",
                     "The access service sends out notifications about changes to assets located on " +
-                            "data managers.  This message is to create a record of the events that are being published.",
-                    "This event indicates that one of the assets within a data manager has changed."),
+                            "asset managers.  This message is to create a record of the events that are being published.",
+                    "This event indicates that one of the assets within a asset manager has changed."),
 
     PROCESS_EVENT_EXCEPTION("OMAS-ASSET-MANAGER-0014",
                             OMRSAuditLogRecordSeverity.EXCEPTION,

@@ -27,7 +27,7 @@ import java.util.Map;
 
 /**
  * The AssetManagerRESTServices provides the server-side implementation of the services
- * that are generic for all types of data managers.
+ * that are generic for all types of asset managers.
  */
 public class AssetManagerRESTServices
 {

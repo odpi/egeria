@@ -9,7 +9,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectionResponse;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * Server-side REST API support for data manager independent REST endpoints
+ * Server-side REST API support for asset manager independent REST endpoints
  */
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/asset-manager/users/{userId}")
