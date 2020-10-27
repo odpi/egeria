@@ -83,7 +83,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
                                 OMRSRepositoryValidator      repositoryValidator,
                                 String                       metadataCollectionId,
                                 AuditLog                     auditLog,
-                                Map<String, Object>          storageProperties)
+                                Map<String, Object>          storageProperties) throws RepositoryErrorException
     {
         /*
          * The metadata collection Id is the unique Id for the metadata collection.  It is managed by the super class.
@@ -102,8 +102,12 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
                     storageProperties);
         }
         catch(RepositoryErrorException e) {
+            /*
+             * Log the error here, but also rethrow the exception to the caller so that the connector sees it and can throw an
+             * OMRSLogicErrorException.
+             */
             log.error("{} could not create graph metadata collection for repository name {}", methodName, repositoryName);
-            // Little point throwing the exception any higher here - the error has been logged at all levels;
+            throw e;
         }
     }
 
