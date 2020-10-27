@@ -26,7 +26,7 @@ jobs:
           key: ${{ runner.os }}-maven-j11-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-maven-j11
       - name: Build with Maven
-        run: mvn -XX:+TieredCompilation -XX:TieredStopAtLevel=1 -XX:GCTimeRatio=99 -B clean install --file pom.xml
+        run: mvn -DargLine="-XX:+TieredCompilation -XX:TieredStopAtLevel=1 -XX:GCTimeRatio=99" -B clean install --file pom.xml
       - name: Upload assemblies
         uses: actions/upload-artifact@v2
         with:
