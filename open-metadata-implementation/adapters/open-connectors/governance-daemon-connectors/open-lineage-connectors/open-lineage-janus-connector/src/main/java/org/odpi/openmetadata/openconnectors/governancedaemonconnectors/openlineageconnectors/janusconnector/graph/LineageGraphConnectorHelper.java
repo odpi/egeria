@@ -143,7 +143,6 @@ public class LineageGraphConnectorHelper {
             }
             log.error("Exception while querying ultimate source horizontal lineage of guid " + guid + ". Executed rollback.");
             log.error("Message: " + e.getMessage());
-            e.printStackTrace();
         }
 
         return Optional.of(getCondensedLineage(guid, g, sourceGraph, getLineageVertices(sourcesList), SOURCE_CONDENSATION, includeProcesses));
@@ -187,7 +186,6 @@ public class LineageGraphConnectorHelper {
             }
             log.error("Exception while querying ultimate destination horizontal lineage of guid " + guid + ". Executed rollback.");
             log.error("Message: " + e.getMessage());
-            e.printStackTrace();
         }
 
         return Optional.of(getCondensedLineage(guid, g, destinationGraph, getLineageVertices(destinationsList), DESTINATION_CONDENSATION,
@@ -229,7 +227,6 @@ public class LineageGraphConnectorHelper {
             }
             log.error("Exception while querying end to end horizontal lineage of guid " + guid + ". Executed rollback.");
             log.error("Message: " + e.getMessage());
-            e.printStackTrace();
         }
 
         return Optional.of(getLineageVerticesAndEdges(endToEndGraph, includeProcesses));
@@ -291,7 +288,6 @@ public class LineageGraphConnectorHelper {
             }
             log.error("Exception while querying glossary term vertical lineage of guid " + guid + ". Executed rollback.");
             log.error("Message: " + e.getMessage());
-            e.printStackTrace();
         }
 
         return Optional.of(getLineageVerticesAndEdges(subGraph, true));
@@ -322,7 +318,6 @@ public class LineageGraphConnectorHelper {
             }
             log.error("Exception while querying relational column vertical lineage of guid " + guid + ". Executed rollback.");
             log.error("Message: " + e.getMessage());
-            e.printStackTrace();
         }
 
         return Optional.of(getLineageVerticesAndEdges(subGraph, true));
@@ -353,7 +348,6 @@ public class LineageGraphConnectorHelper {
             }
             log.error("Exception while querying tabular column vertical lineage of guid " + guid + ". Executed rollback.");
             log.error("Message: " + e.getMessage());
-            e.printStackTrace();
         }
 
         return Optional.of(getLineageVerticesAndEdges(subGraph, true));
