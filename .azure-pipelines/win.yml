@@ -15,6 +15,7 @@ stages:
   - stage: Verify
     jobs:
       - job: VerifyBuild
+        timeoutInMinutes: 180
         pool:
           vmImage: 'windows-latest'
         strategy:
