@@ -2,7 +2,7 @@
 # Copyright Contributors to the ODPi Egeria project.
 name: "Maven Java 1.8"
 
-on: 
+on:
   push:
     branches: [master, egeria-feature-*, egeria-release-*]
   pull_request:
@@ -27,7 +27,7 @@ jobs:
       - name: Build with Maven
         run: mvn -B -XX:+TieredCompilation -XX:TieredStopAtLevel=1 clean install --file pom.xml
       - name: Save assemblies
- >>     run: mkdir staging && cp open-metadata-distribution/open-metadata-assemblies/target/*.gz staging
+        run: mkdir staging && cp open-metadata-distribution/open-metadata-assemblies/target/*.gz staging
       - name: Upload assemblies
         with:
           name: Assemblies

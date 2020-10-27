@@ -2,7 +2,7 @@
 # Copyright Contributors to the ODPi Egeria project.
 name: "Maven Java 11"
 
-on: 
+on:
   push:
     branches: [master, egeria-feature-*, egeria-release-*]
   pull_request:
