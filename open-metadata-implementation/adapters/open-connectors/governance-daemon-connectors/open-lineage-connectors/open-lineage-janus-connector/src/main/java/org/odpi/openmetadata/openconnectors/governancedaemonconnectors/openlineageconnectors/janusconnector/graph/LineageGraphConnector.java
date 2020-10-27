@@ -108,7 +108,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
                         errorCode.getUserAction());
             }
 
-            this.helper = new LineageGraphConnectorHelper(g);
+            this.helper = new LineageGraphConnectorHelper(g, graphFactory.isSupportingTransactions());
 
         } catch (JanusConnectorException error) {
             log.error("The Lineage graph could not be initialized due to an error", error);
