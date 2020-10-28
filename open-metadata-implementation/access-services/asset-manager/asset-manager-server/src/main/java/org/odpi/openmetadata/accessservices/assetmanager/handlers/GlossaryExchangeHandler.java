@@ -1014,6 +1014,7 @@ public class GlossaryExchangeHandler
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param name name to search for
+     * @param nameParameterName parameter name
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      * @param methodName calling method
@@ -1028,11 +1029,71 @@ public class GlossaryExchangeHandler
                                                                        String assetManagerGUID,
                                                                        String assetManagerName,
                                                                        String name,
+                                                                       String nameParameterName,
                                                                        int    startFrom,
                                                                        int    pageSize,
                                                                        String methodName) throws InvalidParameterException,
                                                                                                  UserNotAuthorizedException,
                                                                                                  PropertyServerException
+    {
+        // todo
+        return null;
+    }
+
+
+    /**
+     * Retrieve the glossary category metadata element with the supplied unique identifier.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param glossaryCategoryGUID unique identifier of the requested metadata element
+     * @param methodName calling method
+     *
+     * @return parent glossary category element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public GlossaryCategoryElement getGlossaryCategoryParent(String userId,
+                                                             String assetManagerGUID,
+                                                             String assetManagerName,
+                                                             String glossaryCategoryGUID,
+                                                             String methodName) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
+    {
+        // todo
+        return null;
+    }
+
+
+    /**
+     * Retrieve the glossary category metadata element with the supplied unique identifier.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param glossaryCategoryGUID unique identifier of the requested metadata element
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of glossary category element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<GlossaryCategoryElement> getGlossarySubCategories(String userId,
+                                                                  String assetManagerGUID,
+                                                                  String assetManagerName,
+                                                                  String glossaryCategoryGUID,
+                                                                  int    startFrom,
+                                                                  int    pageSize,
+                                                                  String methodName) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException
     {
         // todo
         return null;
@@ -1075,12 +1136,8 @@ public class GlossaryExchangeHandler
      * Create a new metadata element to represent a glossary term.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
      * @param glossaryGUID unique identifier of the glossary where the term is located
-     * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
-     * @param mappingProperties additional properties to help with the mapping of the elements in the
-     *                          external asset manager and open metadata
+     * @param correlationProperties properties to help with the mapping of the elements in the external asset manager and open metadata
      * @param glossaryTermProperties properties for the glossary term
      * @param methodName calling method
      *
@@ -1090,16 +1147,13 @@ public class GlossaryExchangeHandler
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createGlossaryTerm(String                 userId,
-                                     String                 assetManagerGUID,
-                                     String                 assetManagerName,
-                                     String                 glossaryGUID,
-                                     String                 glossaryTermExternalIdentifier,
-                                     Map<String, String>    mappingProperties,
-                                     GlossaryTermProperties glossaryTermProperties,
-                                     String                 methodName) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException
+    public String createGlossaryTerm(String                        userId,
+                                     String                        glossaryGUID,
+                                     MetadataCorrelationProperties correlationProperties,
+                                     GlossaryTermProperties        glossaryTermProperties,
+                                     String                        methodName) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
     {
         // todo
         return null;
@@ -1110,12 +1164,8 @@ public class GlossaryExchangeHandler
      * Create a new metadata element to represent a glossary term whose lifecycle is managed through a controlled workflow.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param correlationProperties properties to help with the mapping of the elements in the external asset manager and open metadata
      * @param glossaryGUID unique identifier of the glossary where the term is located
-     * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
-     * @param mappingProperties additional properties to help with the mapping of the elements in the
-     *                          external asset manager and open metadata
      * @param glossaryTermProperties properties for the glossary term
      * @param initialStatus glossary term status to use when the object is created
      * @param methodName calling method
@@ -1126,17 +1176,14 @@ public class GlossaryExchangeHandler
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createControlledGlossaryTerm(String                 userId,
-                                               String                 assetManagerGUID,
-                                               String                 assetManagerName,
-                                               String                 glossaryGUID,
-                                               String                 glossaryTermExternalIdentifier,
-                                               Map<String, String>    mappingProperties,
-                                               GlossaryTermProperties glossaryTermProperties,
-                                               GlossaryTermStatus     initialStatus,
-                                               String                 methodName) throws InvalidParameterException,
-                                                                                         UserNotAuthorizedException,
-                                                                                         PropertyServerException
+    public String createControlledGlossaryTerm(String                        userId,
+                                               String                        glossaryGUID,
+                                               MetadataCorrelationProperties correlationProperties,
+                                               GlossaryTermProperties        glossaryTermProperties,
+                                               GlossaryTermStatus            initialStatus,
+                                               String                        methodName) throws InvalidParameterException,
+                                                                                                UserNotAuthorizedException,
+                                                                                                PropertyServerException
     {
         // todo
         return null;
@@ -1147,13 +1194,9 @@ public class GlossaryExchangeHandler
      * Create a new metadata element to represent a glossary term using an existing metadata element as a template.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param glossaryGUID unique identifier of the glossary where the category is located
+     * @param correlationProperties properties to help with the mapping of the elements in the external asset manager and open metadata
      * @param templateGUID unique identifier of the metadata element to copy
-     * @param glossaryGUID unique identifier of the glossary where the glossary term is located.
-     * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
-     * @param mappingProperties additional properties to help with the mapping of the elements in the
-     *                          external asset manager and open metadata
      * @param templateProperties properties that override the template
      * @param methodName calling method
      *
@@ -1163,17 +1206,14 @@ public class GlossaryExchangeHandler
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createGlossaryTermFromTemplate(String              userId,
-                                                 String              assetManagerGUID,
-                                                 String              assetManagerName,
-                                                 String              templateGUID,
-                                                 String              glossaryGUID,
-                                                 String              glossaryTermExternalIdentifier,
-                                                 Map<String, String> mappingProperties,
-                                                 TemplateProperties  templateProperties,
-                                                 String              methodName) throws InvalidParameterException,
-                                                                                        UserNotAuthorizedException,
-                                                                                        PropertyServerException
+    public String createGlossaryTermFromTemplate(String                        userId,
+                                                 String                        glossaryGUID,
+                                                 MetadataCorrelationProperties correlationProperties,
+                                                 String                        templateGUID,
+                                                 TemplateProperties            templateProperties,
+                                                 String                        methodName) throws InvalidParameterException,
+                                                                                                  UserNotAuthorizedException,
+                                                                                                  PropertyServerException
     {
         // todo
         return null;
@@ -1184,10 +1224,8 @@ public class GlossaryExchangeHandler
      * Update the properties of the metadata element representing a glossary term.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param correlationProperties properties to help with the mapping of the elements in the external asset manager and open metadata
      * @param glossaryTermGUID unique identifier of the glossary term to update
-     * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
      * @param glossaryTermProperties new properties for the glossary term
      * @param methodName calling method
      *
@@ -1195,15 +1233,13 @@ public class GlossaryExchangeHandler
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void updateGlossaryTerm(String                 userId,
-                                   String                 assetManagerGUID,
-                                   String                 assetManagerName,
-                                   String                 glossaryTermGUID,
-                                   String                 glossaryTermExternalIdentifier,
-                                   GlossaryTermProperties glossaryTermProperties,
-                                   String                 methodName) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException
+    public void updateGlossaryTerm(String                        userId,
+                                   MetadataCorrelationProperties correlationProperties,
+                                   String                        glossaryTermGUID,
+                                   GlossaryTermProperties        glossaryTermProperties,
+                                   String                        methodName) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
     {
         // todo
     }
@@ -1214,10 +1250,8 @@ public class GlossaryExchangeHandler
      * a controlled glossary term.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param correlationProperties properties to help with the mapping of the elements in the external asset manager and open metadata
      * @param glossaryTermGUID unique identifier of the glossary term to update
-     * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
      * @param glossaryTermStatus new properties for the glossary term
      * @param methodName calling method
      *
@@ -1225,15 +1259,13 @@ public class GlossaryExchangeHandler
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void updateGlossaryTermStatus(String             userId,
-                                         String             assetManagerGUID,
-                                         String             assetManagerName,
-                                         String             glossaryTermGUID,
-                                         String             glossaryTermExternalIdentifier,
-                                         GlossaryTermStatus glossaryTermStatus,
-                                         String             methodName) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException
+    public void updateGlossaryTermStatus(String                        userId,
+                                         MetadataCorrelationProperties correlationProperties,
+                                         String                        glossaryTermGUID,
+                                         GlossaryTermStatus            glossaryTermStatus,
+                                         String                        methodName) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException
     {
         // todo
     }
@@ -1301,8 +1333,8 @@ public class GlossaryExchangeHandler
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
-     * @param relationshipTypeName name of the type of relationship to create
      * @param glossaryTermOneGUID unique identifier of the glossary term at end 1
+     * @param relationshipTypeName name of the type of relationship to create
      * @param glossaryTermTwoGUID unique identifier of the glossary term at end 2
      * @param relationshipsProperties properties for the categorization relationship
      * @param methodName calling method
@@ -1314,8 +1346,8 @@ public class GlossaryExchangeHandler
     public void setupTermRelationship(String                   userId,
                                       String                   assetManagerGUID,
                                       String                   assetManagerName,
-                                      String                   relationshipTypeName,
                                       String                   glossaryTermOneGUID,
+                                      String                   relationshipTypeName,
                                       String                   glossaryTermTwoGUID,
                                       GlossaryTermRelationship relationshipsProperties,
                                       String                   methodName) throws InvalidParameterException,
@@ -1332,8 +1364,8 @@ public class GlossaryExchangeHandler
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
-     * @param relationshipTypeName name of the type of relationship to create
      * @param glossaryTermOneGUID unique identifier of the glossary term at end 1
+     * @param relationshipTypeName name of the type of relationship to create
      * @param glossaryTermTwoGUID unique identifier of the glossary term at end 2
      * @param relationshipsProperties properties for the categorization relationship
      * @param methodName calling method
@@ -1345,8 +1377,8 @@ public class GlossaryExchangeHandler
     public void updateTermRelationship(String                   userId,
                                        String                   assetManagerGUID,
                                        String                   assetManagerName,
-                                       String                   relationshipTypeName,
                                        String                   glossaryTermOneGUID,
+                                       String                   relationshipTypeName,
                                        String                   glossaryTermTwoGUID,
                                        GlossaryTermRelationship relationshipsProperties,
                                        String                   methodName) throws InvalidParameterException,
@@ -1363,8 +1395,8 @@ public class GlossaryExchangeHandler
      * @param userId calling user
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
-     * @param relationshipTypeName name of the type of relationship to create
      * @param glossaryTermOneGUID unique identifier of the glossary term at end 1
+     * @param relationshipTypeName name of the type of relationship to create
      * @param glossaryTermTwoGUID unique identifier of the glossary term at end 2
      * @param methodName calling method
      *
@@ -1375,8 +1407,8 @@ public class GlossaryExchangeHandler
     public void clearTermRelationship(String userId,
                                       String assetManagerGUID,
                                       String assetManagerName,
-                                      String relationshipTypeName,
                                       String glossaryTermOneGUID,
+                                      String relationshipTypeName,
                                       String glossaryTermTwoGUID,
                                       String methodName) throws InvalidParameterException,
                                                                 UserNotAuthorizedException,
@@ -1391,24 +1423,20 @@ public class GlossaryExchangeHandler
      * Classify the glossary term to indicate that it describes an abstract concept.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param correlationProperties properties to help with the mapping of the elements in the external asset manager and open metadata
      * @param glossaryTermGUID unique identifier of the metadata element to update
-     * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void setTermAsAbstractConcept(String userId,
-                                         String assetManagerGUID,
-                                         String assetManagerName,
-                                         String glossaryTermGUID,
-                                         String glossaryTermExternalIdentifier,
-                                         String methodName) throws InvalidParameterException,
-                                                                   UserNotAuthorizedException,
-                                                                   PropertyServerException
+    public void setTermAsAbstractConcept(String                        userId,
+                                         MetadataCorrelationProperties correlationProperties,
+                                         String                        glossaryTermGUID,
+                                         String                        methodName) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException
     {
         // todo
     }
@@ -1418,24 +1446,20 @@ public class GlossaryExchangeHandler
      * Remove the abstract concept designation from the glossary term.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param correlationProperties properties to help with the mapping of the elements in the external asset manager and open metadata
      * @param glossaryTermGUID unique identifier of the metadata element to update
-     * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void clearTermAsAbstractConcept(String userId,
-                                           String assetManagerGUID,
-                                           String assetManagerName,
-                                           String glossaryTermGUID,
-                                           String glossaryTermExternalIdentifier,
-                                           String methodName) throws InvalidParameterException,
-                                                                     UserNotAuthorizedException,
-                                                                     PropertyServerException
+    public void clearTermAsAbstractConcept(String                        userId,
+                                           MetadataCorrelationProperties correlationProperties,
+                                           String                        glossaryTermGUID,
+                                           String                        methodName) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException
     {
         // todo
     }
@@ -1445,24 +1469,20 @@ public class GlossaryExchangeHandler
      * Classify the glossary term to indicate that it describes a data value.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param correlationProperties properties to help with the mapping of the elements in the external asset manager and open metadata
      * @param glossaryTermGUID unique identifier of the metadata element to update
-     * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void setTermAsDataValue(String userId,
-                                   String assetManagerGUID,
-                                   String assetManagerName,
-                                   String glossaryTermGUID,
-                                   String glossaryTermExternalIdentifier,
-                                   String methodName) throws InvalidParameterException,
-                                                             UserNotAuthorizedException,
-                                                             PropertyServerException
+    public void setTermAsDataValue(String                        userId,
+                                   MetadataCorrelationProperties correlationProperties,
+                                   String                        glossaryTermGUID,
+                                   String                        methodName) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
     {
         // todo
     }
@@ -1472,24 +1492,20 @@ public class GlossaryExchangeHandler
      * Remove the data value designation from the glossary term.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param correlationProperties properties to help with the mapping of the elements in the external asset manager and open metadata
      * @param glossaryTermGUID unique identifier of the metadata element to update
-     * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void clearTermAsDataValue(String userId,
-                                     String assetManagerGUID,
-                                     String assetManagerName,
-                                     String glossaryTermGUID,
-                                     String glossaryTermExternalIdentifier,
-                                     String methodName) throws InvalidParameterException,
-                                                               UserNotAuthorizedException,
-                                                               PropertyServerException
+    public void clearTermAsDataValue(String                        userId,
+                                     MetadataCorrelationProperties correlationProperties,
+                                     String                        glossaryTermGUID,
+                                     String                        methodName) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
     {
         // todo
     }
@@ -1499,10 +1515,8 @@ public class GlossaryExchangeHandler
      * Classify the glossary term to indicate that it describes a data value.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param correlationProperties properties to help with the mapping of the elements in the external asset manager and open metadata
      * @param glossaryTermGUID unique identifier of the metadata element to update
-     * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
      * @param activityType type of activity
      * @param methodName calling method
      *
@@ -1510,15 +1524,13 @@ public class GlossaryExchangeHandler
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void setTermAsActivity(String                   userId,
-                                  String                   assetManagerGUID,
-                                  String                   assetManagerName,
-                                  String                   glossaryTermGUID,
-                                  String                   glossaryTermExternalIdentifier,
-                                  GlossaryTermActivityType activityType,
-                                  String                   methodName) throws InvalidParameterException,
-                                                                              UserNotAuthorizedException,
-                                                                              PropertyServerException
+    public void setTermAsActivity(String                        userId,
+                                  MetadataCorrelationProperties correlationProperties,
+                                  String                        glossaryTermGUID,
+                                  GlossaryTermActivityType      activityType,
+                                  String                        methodName) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
     {
         // todo
     }
@@ -1528,24 +1540,20 @@ public class GlossaryExchangeHandler
      * Remove the activity designation from the glossary term.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param correlationProperties properties to help with the mapping of the elements in the external asset manager and open metadata
      * @param glossaryTermGUID unique identifier of the metadata element to update
-     * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void clearTermAsActivity(String userId,
-                                    String assetManagerGUID,
-                                    String assetManagerName,
-                                    String glossaryTermGUID,
-                                    String glossaryTermExternalIdentifier,
-                                    String methodName) throws InvalidParameterException,
-                                                              UserNotAuthorizedException,
-                                                              PropertyServerException
+    public void clearTermAsActivity(String                        userId,
+                                    MetadataCorrelationProperties correlationProperties,
+                                    String                        glossaryTermGUID,
+                                    String                        methodName) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
     {
         // todo
     }
@@ -1555,10 +1563,8 @@ public class GlossaryExchangeHandler
      * Classify the glossary term to indicate that it describes a context.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param correlationProperties properties to help with the mapping of the elements in the external asset manager and open metadata
      * @param glossaryTermGUID unique identifier of the metadata element to update
-     * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
      * @param contextDefinition more details of the context
      * @param methodName calling method
      *
@@ -1567,10 +1573,8 @@ public class GlossaryExchangeHandler
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public void setTermAsContext(String                        userId,
-                                 String                        assetManagerGUID,
-                                 String                        assetManagerName,
+                                 MetadataCorrelationProperties correlationProperties,
                                  String                        glossaryTermGUID,
-                                 String                        glossaryTermExternalIdentifier,
                                  GlossaryTermContextDefinition contextDefinition,
                                  String                        methodName) throws InvalidParameterException,
                                                                                   UserNotAuthorizedException,
@@ -1584,24 +1588,20 @@ public class GlossaryExchangeHandler
      * Remove the context definition designation from the glossary term.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param correlationProperties properties to help with the mapping of the elements in the external asset manager and open metadata
      * @param glossaryTermGUID unique identifier of the metadata element to update
-     * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void clearTermAsContext(String userId,
-                                   String assetManagerGUID,
-                                   String assetManagerName,
-                                   String glossaryTermGUID,
-                                   String glossaryTermExternalIdentifier,
-                                   String methodName) throws InvalidParameterException,
-                                                             UserNotAuthorizedException,
-                                                             PropertyServerException
+    public void clearTermAsContext(String                        userId,
+                                   MetadataCorrelationProperties correlationProperties,
+                                   String                        glossaryTermGUID,
+                                   String                        methodName) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
     {
         // todo
     }
@@ -1611,24 +1611,20 @@ public class GlossaryExchangeHandler
      * Classify the glossary term to indicate that it describes a spine object.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param correlationProperties properties to help with the mapping of the elements in the external asset manager and open metadata
      * @param glossaryTermGUID unique identifier of the metadata element to update
-     * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void setTermAsSpineObject(String userId,
-                                     String assetManagerGUID,
-                                     String assetManagerName,
-                                     String glossaryTermGUID,
-                                     String glossaryTermExternalIdentifier,
-                                     String methodName) throws InvalidParameterException,
-                                                               UserNotAuthorizedException,
-                                                               PropertyServerException
+    public void setTermAsSpineObject(String                        userId,
+                                     MetadataCorrelationProperties correlationProperties,
+                                     String                        glossaryTermGUID,
+                                     String                        methodName) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
     {
         // todo
     }
@@ -1638,24 +1634,20 @@ public class GlossaryExchangeHandler
      * Remove the spine object designation from the glossary term.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param correlationProperties properties to help with the mapping of the elements in the external asset manager and open metadata
      * @param glossaryTermGUID unique identifier of the metadata element to update
-     * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void clearTermAsSpineObject(String userId,
-                                       String assetManagerGUID,
-                                       String assetManagerName,
-                                       String glossaryTermGUID,
-                                       String glossaryTermExternalIdentifier,
-                                       String methodName) throws InvalidParameterException,
-                                                                 UserNotAuthorizedException,
-                                                                 PropertyServerException
+    public void clearTermAsSpineObject(String                        userId,
+                                       MetadataCorrelationProperties correlationProperties,
+                                       String                        glossaryTermGUID,
+                                       String                        methodName) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
     {
         // todo
     }
@@ -1666,24 +1658,20 @@ public class GlossaryExchangeHandler
      * Classify the glossary term to indicate that it describes a spine attribute.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param correlationProperties properties to help with the mapping of the elements in the external asset manager and open metadata
      * @param glossaryTermGUID unique identifier of the metadata element to update
-     * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void setTermAsSpineAttribute(String userId,
-                                        String assetManagerGUID,
-                                        String assetManagerName,
-                                        String glossaryTermGUID,
-                                        String glossaryTermExternalIdentifier,
-                                        String methodName) throws InvalidParameterException,
-                                                                  UserNotAuthorizedException,
-                                                                  PropertyServerException
+    public void setTermAsSpineAttribute(String                        userId,
+                                        MetadataCorrelationProperties correlationProperties,
+                                        String                        glossaryTermGUID,
+                                        String                        methodName) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException
     {
         // todo
     }
@@ -1693,24 +1681,20 @@ public class GlossaryExchangeHandler
      * Remove the spine attribute designation from the glossary term.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param correlationProperties properties to help with the mapping of the elements in the external asset manager and open metadata
      * @param glossaryTermGUID unique identifier of the metadata element to update
-     * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void clearTermAsSpineAttribute(String userId,
-                                          String assetManagerGUID,
-                                          String assetManagerName,
-                                          String glossaryTermGUID,
-                                          String glossaryTermExternalIdentifier,
-                                          String methodName) throws InvalidParameterException,
-                                                                    UserNotAuthorizedException,
-                                                                    PropertyServerException
+    public void clearTermAsSpineAttribute(String                        userId,
+                                          MetadataCorrelationProperties correlationProperties,
+                                          String                        glossaryTermGUID,
+                                          String                        methodName) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
     {
         // todo
     }
@@ -1720,24 +1704,20 @@ public class GlossaryExchangeHandler
      * Classify the glossary term to indicate that it describes an object identifier.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param correlationProperties properties to help with the mapping of the elements in the external asset manager and open metadata
      * @param glossaryTermGUID unique identifier of the metadata element to update
-     * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void setTermAsObjectIdentifier(String userId,
-                                          String assetManagerGUID,
-                                          String assetManagerName,
-                                          String glossaryTermGUID,
-                                          String glossaryTermExternalIdentifier,
-                                          String methodName) throws InvalidParameterException,
-                                                                    UserNotAuthorizedException,
-                                                                    PropertyServerException
+    public void setTermAsObjectIdentifier(String                        userId,
+                                          MetadataCorrelationProperties correlationProperties,
+                                          String                        glossaryTermGUID,
+                                          String                        methodName) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
     {
         // todo
     }
@@ -1747,24 +1727,20 @@ public class GlossaryExchangeHandler
      * Remove the object identifier designation from the glossary term.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
+     * @param correlationProperties properties to help with the mapping of the elements in the external asset manager and open metadata
      * @param glossaryTermGUID unique identifier of the metadata element to update
-     * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void clearTermAsObjectIdentifier(String userId,
-                                            String assetManagerGUID,
-                                            String assetManagerName,
-                                            String glossaryTermGUID,
-                                            String glossaryTermExternalIdentifier,
-                                            String methodName) throws InvalidParameterException,
-                                                                      UserNotAuthorizedException,
-                                                                      PropertyServerException
+    public void clearTermAsObjectIdentifier(String                        userId,
+                                            MetadataCorrelationProperties correlationProperties,
+                                            String                        glossaryTermGUID,
+                                            String                        methodName) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
     {
         // todo
     }
@@ -1774,24 +1750,20 @@ public class GlossaryExchangeHandler
      * Remove the metadata element representing a glossary term.
      *
      * @param userId calling user
-     * @param assetManagerGUID unique identifier of software server capability representing the caller
-     * @param assetManagerName unique name of software server capability representing the caller
-     * @param glossaryTermGUID unique identifier of the metadata element to remove
-     * @param glossaryTermExternalIdentifier unique identifier of the glossary term in the external asset manager
+     * @param correlationProperties properties to help with the mapping of the elements in the external asset manager and open metadata
+     * @param glossaryTermGUID unique identifier of the metadata element to update
      * @param methodName calling method
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void removeGlossaryTerm(String userId,
-                                   String assetManagerGUID,
-                                   String assetManagerName,
-                                   String glossaryTermGUID,
-                                   String glossaryTermExternalIdentifier,
-                                   String methodName) throws InvalidParameterException,
-                                                             UserNotAuthorizedException,
-                                                             PropertyServerException
+    public void removeGlossaryTerm(String                        userId,
+                                   MetadataCorrelationProperties correlationProperties,
+                                   String                        glossaryTermGUID,
+                                   String                        methodName) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
     {
         // todo
     }
@@ -1870,6 +1842,7 @@ public class GlossaryExchangeHandler
      * @param assetManagerGUID unique identifier of software server capability representing the caller
      * @param assetManagerName unique name of software server capability representing the caller
      * @param name name to search for
+     * @param nameParameterName prarmeter supplying the name property
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      * @param methodName calling method
@@ -1884,6 +1857,7 @@ public class GlossaryExchangeHandler
                                                               String assetManagerGUID,
                                                               String assetManagerName,
                                                               String name,
+                                                              String nameParameterName,
                                                               int    startFrom,
                                                               int    pageSize,
                                                               String methodName) throws InvalidParameterException,
@@ -2029,8 +2003,8 @@ public class GlossaryExchangeHandler
     public void attachExternalLinkToGlossary(String userId,
                                              String assetManagerGUID,
                                              String assetManagerName,
-                                             String externalLinkGUID,
                                              String glossaryGUID,
+                                             String externalLinkGUID,
                                              String methodName) throws InvalidParameterException,
                                                                        UserNotAuthorizedException,
                                                                        PropertyServerException
@@ -2056,8 +2030,8 @@ public class GlossaryExchangeHandler
     public void detachExternalLinkFromGlossary(String userId,
                                                String assetManagerGUID,
                                                String assetManagerName,
-                                               String externalLinkGUID,
                                                String glossaryGUID,
+                                               String externalLinkGUID,
                                                String methodName) throws InvalidParameterException,
                                                                          UserNotAuthorizedException,
                                                                          PropertyServerException
@@ -2098,6 +2072,8 @@ public class GlossaryExchangeHandler
      * Return the glossaries connected to an external glossary source.
      *
      * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
      * @param externalLinkGUID unique identifier of the metadata element for the external glossary link of interest
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
@@ -2110,6 +2086,8 @@ public class GlossaryExchangeHandler
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public List<GlossaryElement> getGlossariesForExternalLink(String userId,
+                                                              String assetManagerGUID,
+                                                              String assetManagerName,
                                                               String externalLinkGUID,
                                                               int    startFrom,
                                                               int    pageSize,
@@ -2141,8 +2119,8 @@ public class GlossaryExchangeHandler
     public void attachExternalCategoryLink(String                                userId,
                                            String                                assetManagerGUID,
                                            String                                assetManagerName,
-                                           String                                externalLinkGUID,
                                            String                                glossaryCategoryGUID,
+                                           String                                externalLinkGUID,
                                            ExternalGlossaryElementLinkProperties linkProperties,
                                            String                                methodName) throws InvalidParameterException,
                                                                                                     UserNotAuthorizedException,
@@ -2169,8 +2147,8 @@ public class GlossaryExchangeHandler
     public void detachExternalCategoryLink(String userId,
                                            String assetManagerGUID,
                                            String assetManagerName,
-                                           String externalLinkGUID,
                                            String glossaryCategoryGUID,
+                                           String externalLinkGUID,
                                            String methodName) throws InvalidParameterException,
                                                                      UserNotAuthorizedException,
                                                                      PropertyServerException
@@ -2198,8 +2176,8 @@ public class GlossaryExchangeHandler
     public void attachExternalTermLink(String                                userId,
                                        String                                assetManagerGUID,
                                        String                                assetManagerName,
-                                       String                                externalLinkGUID,
                                        String                                glossaryTermGUID,
+                                       String                                externalLinkGUID,
                                        ExternalGlossaryElementLinkProperties linkProperties,
                                        String                                methodName) throws InvalidParameterException,
                                                                                                 UserNotAuthorizedException,
@@ -2226,8 +2204,8 @@ public class GlossaryExchangeHandler
     public void detachExternalTermLink(String userId,
                                        String assetManagerGUID,
                                        String assetManagerName,
-                                       String externalLinkGUID,
                                        String glossaryTermGUID,
+                                       String externalLinkGUID,
                                        String methodName) throws InvalidParameterException,
                                                                  UserNotAuthorizedException,
                                                                  PropertyServerException

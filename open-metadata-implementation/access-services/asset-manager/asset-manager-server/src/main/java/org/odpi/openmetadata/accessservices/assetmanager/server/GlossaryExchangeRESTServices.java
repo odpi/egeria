@@ -4,7 +4,6 @@
 package org.odpi.openmetadata.accessservices.assetmanager.server;
 
 import org.odpi.openmetadata.accessservices.assetmanager.handlers.GlossaryExchangeHandler;
-import org.odpi.openmetadata.accessservices.assetmanager.metadataelements.*;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.*;
 import org.odpi.openmetadata.accessservices.assetmanager.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
@@ -38,8 +37,6 @@ public class GlossaryExchangeRESTServices
     public GlossaryExchangeRESTServices()
     {
     }
-
-
 
 
     /* ========================================================
@@ -951,7 +948,6 @@ public class GlossaryExchangeRESTServices
     {
         final String methodName = "createGlossaryCategory";
 
-
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         GUIDResponse response = new GUIDResponse();
@@ -1433,8 +1429,53 @@ public class GlossaryExchangeRESTServices
                                                                      AssetManagerIdentifiersRequestBody requestBody)
     {
         final String methodName = "getCategoriesForGlossary";
-        // todo
-        return null;
+
+        RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        GlossaryCategoryElementsResponse response = new GlossaryCategoryElementsResponse();
+        AuditLog                 auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
+                handler.getCategoriesForGlossary(userId,
+                                                 requestBody.getAssetManagerGUID(),
+                                                 requestBody.getAssetManagerName(),
+                                                 glossaryGUID,
+                                                 startFrom,
+                                                 pageSize,
+                                                 methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
     }
 
 
@@ -1460,8 +1501,54 @@ public class GlossaryExchangeRESTServices
                                                                           NameRequestBody requestBody)
     {
         final String methodName = "getGlossaryCategoriesByName";
-        // todo
-        return null;
+
+        RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        GlossaryCategoryElementsResponse response = new GlossaryCategoryElementsResponse();
+        AuditLog                 auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
+                handler.getGlossaryCategoriesByName(userId,
+                                                    requestBody.getAssetManagerGUID(),
+                                                    requestBody.getAssetManagerName(),
+                                                    requestBody.getName(),
+                                                    requestBody.getNameParameterName(),
+                                                    startFrom,
+                                                    pageSize,
+                                                    methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
     }
 
 
@@ -1488,7 +1575,7 @@ public class GlossaryExchangeRESTServices
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         GlossaryCategoryElementResponse response = new GlossaryCategoryElementResponse();
-        AuditLog                auditLog = null;
+        AuditLog                        auditLog = null;
 
         try
         {
@@ -1552,8 +1639,51 @@ public class GlossaryExchangeRESTServices
                                                                      AssetManagerIdentifiersRequestBody requestBody)
     {
         final String methodName = "getGlossaryCategoryParent";
-        // todo
-        return null;
+
+        RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        GlossaryCategoryElementResponse response = new GlossaryCategoryElementResponse();
+        AuditLog                        auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
+                handler.getGlossaryCategoryParent(userId,
+                                                  requestBody.getAssetManagerGUID(),
+                                                  requestBody.getAssetManagerName(),
+                                                  glossaryCategoryGUID,
+                                                  methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
     }
 
 
@@ -1580,8 +1710,53 @@ public class GlossaryExchangeRESTServices
                                                                      AssetManagerIdentifiersRequestBody requestBody)
     {
         final String methodName = "getGlossarySubCategories";
-        // todo
-        return null;
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        GlossaryCategoryElementsResponse response = new GlossaryCategoryElementsResponse();
+        AuditLog                         auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
+                handler.getGlossarySubCategories(userId,
+                                                 requestBody.getAssetManagerGUID(),
+                                                 requestBody.getAssetManagerName(),
+                                                 glossaryCategoryGUID,
+                                                 startFrom,
+                                                 pageSize,
+                                                 methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
     }
 
 
@@ -1608,8 +1783,51 @@ public class GlossaryExchangeRESTServices
                                            GlossaryTermRequestBody requestBody)
     {
         final String methodName = "createGlossaryTerm";
-        // todo
-        return null;
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        GUIDResponse response = new GUIDResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
+                handler.createGlossaryTerm(userId,
+                                           glossaryGUID,
+                                           requestBody.getMetadataCorrelationProperties(),
+                                           requestBody.getElementProperties(),
+                                           methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
     }
 
 
@@ -1632,8 +1850,52 @@ public class GlossaryExchangeRESTServices
                                                      ControlledGlossaryTermRequestBody requestBody)
     {
         final String methodName = "createControlledGlossaryTerm";
-        // todo
-        return null;
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        GUIDResponse response = new GUIDResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
+                handler.createControlledGlossaryTerm(userId,
+                                                     glossaryGUID,
+                                                     requestBody.getMetadataCorrelationProperties(),
+                                                     requestBody.getElementProperties(),
+                                                     requestBody.getInitialStatus(),
+                                                     methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
     }
 
 
@@ -1658,8 +1920,52 @@ public class GlossaryExchangeRESTServices
                                                        TemplateRequestBody  requestBody)
     {
         final String methodName = "createGlossaryTermFromTemplate";
-        // todo
-        return null;
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        GUIDResponse response = new GUIDResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
+                handler.createGlossaryTermFromTemplate(userId,
+                                                       glossaryGUID,
+                                                       requestBody.getMetadataCorrelationProperties(),
+                                                       templateGUID,
+                                                       requestBody.getElementProperties(),
+                                                       methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
     }
 
 
@@ -1682,8 +1988,51 @@ public class GlossaryExchangeRESTServices
                                            GlossaryTermRequestBody requestBody)
     {
         final String methodName = "updateGlossaryTerm";
-        // todo
-        return null;
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
+                handler.updateGlossaryTerm(userId,
+                                           requestBody.getMetadataCorrelationProperties(),
+                                           glossaryTermGUID,
+                                           requestBody.getElementProperties(),
+                                           methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
     }
 
 
@@ -1707,8 +2056,51 @@ public class GlossaryExchangeRESTServices
                                                  GlossaryTermStatusRequestBody requestBody)
     {
         final String methodName = "updateGlossaryTermStatus";
-        // todo
-        return null;
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
+                handler.updateGlossaryTermStatus(userId,
+                                                 requestBody.getMetadataCorrelationProperties(),
+                                                 glossaryTermGUID,
+                                                 requestBody.getGlossaryTermStatus(),
+                                                 methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
     }
 
 
@@ -1733,8 +2125,53 @@ public class GlossaryExchangeRESTServices
                                           CategorizationRequestBody requestBody)
     {
         final String methodName = "setupTermCategory";
-        // todo
-        return null;
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
+                handler.setupTermCategory(userId,
+                                          requestBody.getAssetManagerGUID(),
+                                          requestBody.getAssetManagerName(),
+                                          glossaryCategoryGUID,
+                                          glossaryTermGUID,
+                                          requestBody.getCategorizationProperties(),
+                                          methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
     }
 
 
@@ -1759,8 +2196,52 @@ public class GlossaryExchangeRESTServices
                                           AssetManagerIdentifiersRequestBody requestBody)
     {
         final String methodName = "clearTermCategory";
-        // todo
-        return null;
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
+                handler.clearTermCategory(userId,
+                                          requestBody.getAssetManagerGUID(),
+                                          requestBody.getAssetManagerName(),
+                                          glossaryCategoryGUID,
+                                          glossaryTermGUID,
+                                          methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
     }
 
 
@@ -1787,8 +2268,54 @@ public class GlossaryExchangeRESTServices
                                               TermRelationshipRequestBody requestBody)
     {
         final String methodName = "setupTermRelationship";
-        // todo
-        return null;
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
+                handler.setupTermRelationship(userId,
+                                               requestBody.getAssetManagerGUID(),
+                                               requestBody.getAssetManagerName(),
+                                               glossaryTermOneGUID,
+                                               relationshipTypeName,
+                                               glossaryTermTwoGUID,
+                                               requestBody.getProperties(),
+                                               methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
     }
 
 
@@ -1815,8 +2342,54 @@ public class GlossaryExchangeRESTServices
                                                TermRelationshipRequestBody requestBody)
     {
         final String methodName = "updateTermRelationship";
-        // todo
-        return null;
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
+                handler.updateTermRelationship(userId,
+                                               requestBody.getAssetManagerGUID(),
+                                               requestBody.getAssetManagerName(),
+                                               glossaryTermOneGUID,
+                                               relationshipTypeName,
+                                               glossaryTermTwoGUID,
+                                               requestBody.getProperties(),
+                                               methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
     }
 
 
@@ -1843,8 +2416,53 @@ public class GlossaryExchangeRESTServices
                                               AssetManagerIdentifiersRequestBody requestBody)
     {
         final String methodName = "clearTermRelationship";
-        // todo
-        return null;
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
+                handler.clearTermRelationship(userId,
+                                              requestBody.getAssetManagerGUID(),
+                                              requestBody.getAssetManagerName(),
+                                              glossaryTermOneGUID,
+                                              relationshipTypeName,
+                                              glossaryTermTwoGUID,
+                                              methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
     }
 
 
@@ -1868,8 +2486,50 @@ public class GlossaryExchangeRESTServices
                                                  MetadataCorrelationProperties requestBody)
     {
         final String methodName = "setTermAsAbstractConcept";
-        // todo
-        return null;
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
+                handler.setTermAsAbstractConcept(userId,
+                                                 requestBody,
+                                                 glossaryTermGUID,
+                                                 methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
     }
 
 
@@ -1892,8 +2552,50 @@ public class GlossaryExchangeRESTServices
                                                    MetadataCorrelationProperties requestBody)
     {
         final String methodName = "clearTermAsAbstractConcept";
-        // todo
-        return null;
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
+                handler.clearTermAsAbstractConcept(userId,
+                                                   requestBody,
+                                                   glossaryTermGUID,
+                                                   methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
     }
 
 
@@ -1916,8 +2618,50 @@ public class GlossaryExchangeRESTServices
                                            MetadataCorrelationProperties requestBody)
     {
         final String methodName = "setTermAsDataValue";
-        // todo
-        return null;
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
+                handler.setTermAsDataValue(userId,
+                                           requestBody,
+                                           glossaryTermGUID,
+                                           methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
     }
 
 
@@ -1940,8 +2684,47 @@ public class GlossaryExchangeRESTServices
                                              MetadataCorrelationProperties requestBody)
     {
         final String methodName = "clearTermAsDataValue";
-        // todo
-        return null;
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
+                handler.clearTermAsDataValue(userId, requestBody, glossaryTermGUID, methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
     }
 
 
@@ -1964,8 +2747,51 @@ public class GlossaryExchangeRESTServices
                                           ActivityTermClassificationRequestBody requestBody)
     {
         final String methodName = "setTermAsActivity";
-        // todo
-        return null;
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
+                handler.setTermAsActivity(userId,
+                                          requestBody.getMetadataCorrelationProperties(),
+                                          glossaryTermGUID,
+                                          requestBody.getActivityType(),
+                                          methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
     }
 
 
@@ -1988,8 +2814,47 @@ public class GlossaryExchangeRESTServices
                                             MetadataCorrelationProperties requestBody)
     {
         final String methodName = "clearTermAsActivity";
-        // todo
-        return null;
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
+                handler.clearTermAsActivity(userId, requestBody, glossaryTermGUID, methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
     }
 
 
@@ -2012,8 +2877,51 @@ public class GlossaryExchangeRESTServices
                                          ContextDefinitionClassificationRequestBody requestBody)
     {
         final String methodName = "setTermAsContext";
-        // todo
-        return null;
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
+                handler.setTermAsContext(userId,
+                                         requestBody.getMetadataCorrelationProperties(),
+                                         glossaryTermGUID,
+                                         requestBody.getContextDefinition(),
+                                         methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
     }
 
 
@@ -2036,8 +2944,47 @@ public class GlossaryExchangeRESTServices
                                            MetadataCorrelationProperties requestBody)
     {
         final String methodName = "clearTermAsContext";
-        // todo
-        return null;
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
+                handler.clearTermAsContext(userId, requestBody, glossaryTermGUID, methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
     }
 
 
@@ -2060,8 +3007,47 @@ public class GlossaryExchangeRESTServices
                                              MetadataCorrelationProperties requestBody)
     {
         final String methodName = "setTermAsSpineObject";
-        // todo
-        return null;
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
+                handler.setTermAsSpineObject(userId, requestBody, glossaryTermGUID, methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
     }
 
 
@@ -2084,8 +3070,47 @@ public class GlossaryExchangeRESTServices
                                                MetadataCorrelationProperties requestBody)
     {
         final String methodName = "clearTermAsSpineObject";
-        // todo
-        return null;
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
+                handler.clearTermAsSpineObject(userId, requestBody, glossaryTermGUID, methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
     }
 
 
@@ -2109,8 +3134,47 @@ public class GlossaryExchangeRESTServices
                                                 MetadataCorrelationProperties requestBody)
     {
         final String methodName = "setTermAsSpineAttribute";
-        // todo
-        return null;
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
+                handler.setTermAsSpineAttribute(userId, requestBody, glossaryTermGUID, methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
     }
 
 
@@ -2133,8 +3197,47 @@ public class GlossaryExchangeRESTServices
                                                   MetadataCorrelationProperties requestBody)
     {
         final String methodName = "clearTermAsSpineAttribute";
-        // todo
-        return null;
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
+                handler.clearTermAsSpineAttribute(userId, requestBody, glossaryTermGUID, methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
     }
 
 
@@ -2157,8 +3260,47 @@ public class GlossaryExchangeRESTServices
                                                   MetadataCorrelationProperties requestBody)
     {
         final String methodName = "setTermAsObjectIdentifier";
-        // todo
-        return null;
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
+                handler.setTermAsObjectIdentifier(userId, requestBody, glossaryTermGUID, methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
     }
 
 
@@ -2181,8 +3323,47 @@ public class GlossaryExchangeRESTServices
                                                     MetadataCorrelationProperties requestBody)
     {
         final String methodName = "clearTermAsObjectIdentifier";
-        // todo
-        return null;
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
+                handler.clearTermAsObjectIdentifier(userId, requestBody, glossaryTermGUID, methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
     }
 
 
@@ -2205,8 +3386,47 @@ public class GlossaryExchangeRESTServices
                                            MetadataCorrelationProperties requestBody)
     {
         final String methodName = "removeGlossaryTerm";
-        // todo
-        return null;
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
+                handler.removeGlossaryTerm(userId, requestBody, glossaryTermGUID, methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
     }
 
 
@@ -2305,8 +3525,53 @@ public class GlossaryExchangeRESTServices
                                                                     AssetManagerIdentifiersRequestBody requestBody)
     {
         final String methodName = "getTermsForGlossaryCategory";
-        // todo
-        return null;
+
+        RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        GlossaryTermElementsResponse response = new GlossaryTermElementsResponse();
+        AuditLog                     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
+                handler.getTermsForGlossaryCategory(userId,
+                                                    requestBody.getAssetManagerGUID(),
+                                                    requestBody.getAssetManagerName(),
+                                                    glossaryCategoryGUID,
+                                                    startFrom,
+                                                    pageSize,
+                                                    methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
     }
 
 
@@ -2332,8 +3597,54 @@ public class GlossaryExchangeRESTServices
                                                                  NameRequestBody requestBody)
     {
         final String methodName = "getGlossaryTermsByName";
-        // todo
-        return null;
+
+        RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        GlossaryTermElementsResponse response = new GlossaryTermElementsResponse();
+        AuditLog                     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
+                handler.getGlossaryTermsByName(userId,
+                                               requestBody.getAssetManagerGUID(),
+                                               requestBody.getAssetManagerName(),
+                                               requestBody.getName(),
+                                               requestBody.getNameParameterName(),
+                                               startFrom,
+                                               pageSize,
+                                               methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
     }
 
 
@@ -2429,8 +3740,51 @@ public class GlossaryExchangeRESTServices
                                                    ExternalGlossaryLinkRequestBody requestBody)
     {
         final String methodName = "createExternalGlossaryLink";
-        // todo
-        return null;
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        GUIDResponse response = new GUIDResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
+                handler.createExternalGlossaryLink(userId,
+                                                   requestBody.getAssetManagerGUID(),
+                                                   requestBody.getAssetManagerName(),
+                                                   requestBody.getElementProperties(),
+                                                   methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
     }
 
 
@@ -2453,8 +3807,53 @@ public class GlossaryExchangeRESTServices
                                                    ExternalGlossaryLinkRequestBody requestBody)
     {
         final String methodName = "updateExternalGlossaryLink";
-        // todo
-        return null;
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
+                handler.updateExternalGlossaryLink(userId,
+                                                   requestBody.getAssetManagerGUID(),
+                                                   requestBody.getAssetManagerName(),
+                                                   externalLinkGUID,
+                                                   requestBody.getElementProperties(),
+                                                   methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+
     }
 
 
@@ -2477,8 +3876,51 @@ public class GlossaryExchangeRESTServices
                                                    AssetManagerIdentifiersRequestBody requestBody)
     {
         final String methodName = "removeExternalGlossaryLink";
-        // todo
-        return null;
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
+                handler.removeExternalGlossaryLink(userId,
+                                                   requestBody.getAssetManagerGUID(),
+                                                   requestBody.getAssetManagerName(),
+                                                   externalLinkGUID,
+                                                   methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
     }
 
 
@@ -2498,13 +3940,57 @@ public class GlossaryExchangeRESTServices
      */
     public VoidResponse attachExternalLinkToGlossary(String                             serverName,
                                                      String                             userId,
-                                                     String                             externalLinkGUID,
                                                      String                             glossaryGUID,
+                                                     String                             externalLinkGUID,
                                                      AssetManagerIdentifiersRequestBody requestBody)
     {
         final String methodName = "attachExternalLinkToGlossary";
-        // todo
-        return null;
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
+                handler.attachExternalLinkToGlossary(userId,
+                                                   requestBody.getAssetManagerGUID(),
+                                                   requestBody.getAssetManagerName(),
+                                                   glossaryGUID,
+                                                   externalLinkGUID,
+                                                   methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
     }
 
 
@@ -2529,8 +4015,52 @@ public class GlossaryExchangeRESTServices
                                                        AssetManagerIdentifiersRequestBody requestBody)
     {
         final String methodName = "detachExternalLinkFromGlossary";
-        // todo
-        return null;
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
+                handler.detachExternalLinkFromGlossary(userId,
+                                                       requestBody.getAssetManagerGUID(),
+                                                       requestBody.getAssetManagerName(),
+                                                       glossaryGUID,
+                                                       externalLinkGUID,
+                                                       methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
     }
 
 
@@ -2555,8 +4085,39 @@ public class GlossaryExchangeRESTServices
                                                                             int    pageSize)
     {
         final String methodName = "getExternalLinksForGlossary";
-        // todo
-        return null;
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        ExternalGlossaryLinkElementsResponse response = new ExternalGlossaryLinkElementsResponse();
+        AuditLog                             auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
+            handler.getExternalLinksForGlossary(userId, glossaryGUID, startFrom, pageSize, methodName);
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
     }
 
 
@@ -2568,6 +4129,7 @@ public class GlossaryExchangeRESTServices
      * @param externalLinkGUID unique identifier of the metadata element for the external glossary link of interest
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
+     * @param requestBody asset manager identifiers
      *
      * @return list of glossaries or
      * InvalidParameterException  one of the parameters is invalid
@@ -2578,11 +4140,57 @@ public class GlossaryExchangeRESTServices
                                                                  String userId,
                                                                  String externalLinkGUID,
                                                                  int    startFrom,
-                                                                 int    pageSize)
+                                                                 int    pageSize,
+                                                                 AssetManagerIdentifiersRequestBody requestBody)
     {
         final String methodName = "getGlossariesForExternalLink";
-        // todo
-        return null;
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        GlossaryElementsResponse response = new GlossaryElementsResponse();
+        AuditLog                 auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
+                handler.getGlossariesForExternalLink(userId,
+                                                     requestBody.getAssetManagerGUID(),
+                                                     requestBody.getAssetManagerName(),
+                                                     externalLinkGUID,
+                                                     startFrom,
+                                                     pageSize,
+                                                     methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
     }
 
 
@@ -2603,13 +4211,58 @@ public class GlossaryExchangeRESTServices
      */
     public VoidResponse attachExternalCategoryLink(String                                 serverName,
                                                    String                                 userId,
-                                                   String                                 externalLinkGUID,
                                                    String                                 glossaryCategoryGUID,
+                                                   String                                 externalLinkGUID,
                                                    ExternalGlossaryElementLinkRequestBody requestBody)
     {
         final String methodName = "attachExternalCategoryLink";
-        // todo
-        return null;
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
+                handler.attachExternalCategoryLink(userId,
+                                                   requestBody.getAssetManagerGUID(),
+                                                   requestBody.getAssetManagerName(),
+                                                   glossaryCategoryGUID,
+                                                   externalLinkGUID,
+                                                   requestBody.getElementProperties(),
+                                                   methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
     }
 
 
@@ -2634,8 +4287,52 @@ public class GlossaryExchangeRESTServices
                                                    AssetManagerIdentifiersRequestBody requestBody)
     {
         final String methodName = "detachExternalCategoryLink";
-        // todo
-        return null;
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
+                handler.detachExternalCategoryLink(userId,
+                                                   requestBody.getAssetManagerGUID(),
+                                                   requestBody.getAssetManagerName(),
+                                                   glossaryCategoryGUID,
+                                                   externalLinkGUID,
+                                                   methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
     }
 
 
@@ -2654,15 +4351,60 @@ public class GlossaryExchangeRESTServices
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse attachExternalTermLink(String                                serverName,
-                                               String                                userId,
-                                               String                                externalLinkGUID,
-                                               String                                glossaryTermGUID,
-                                               ExternalGlossaryElementLinkProperties requestBody)
+    public VoidResponse attachExternalTermLink(String                                 serverName,
+                                               String                                 userId,
+                                               String                                 externalLinkGUID,
+                                               String                                 glossaryTermGUID,
+                                               ExternalGlossaryElementLinkRequestBody requestBody)
     {
         final String methodName = "attachExternalTermLink";
-        // todo
-        return null;
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
+                handler.attachExternalTermLink(userId,
+                                               requestBody.getAssetManagerGUID(),
+                                               requestBody.getAssetManagerName(),
+                                               glossaryTermGUID,
+                                               externalLinkGUID,
+                                               requestBody.getElementProperties(),
+                                               methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
     }
 
 
@@ -2687,7 +4429,51 @@ public class GlossaryExchangeRESTServices
                                                AssetManagerIdentifiersRequestBody requestBody)
     {
         final String methodName = "detachExternalTermLink";
-        // todo
-        return null;
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
+                handler.detachExternalTermLink(userId,
+                                               requestBody.getAssetManagerGUID(),
+                                               requestBody.getAssetManagerName(),
+                                               glossaryTermGUID,
+                                               externalLinkGUID,
+                                               methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
     }
 }

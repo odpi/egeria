@@ -1124,8 +1124,8 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
                                     String assetManagerName,
                                     String glossaryParentCategoryGUID,
                                     String glossaryChildCategoryGUID) throws InvalidParameterException,
-                                                                                           UserNotAuthorizedException,
-                                                                                           PropertyServerException
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
     {
         final String methodName                      = "setupCategoryParent";
         final String glossaryParentGUIDParameterName = "glossaryParentCategoryGUID";
@@ -1141,7 +1141,7 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         requestBody.setAssetManagerGUID(assetManagerGUID);
         requestBody.setAssetManagerName(assetManagerName);
 
-        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/categories/{2}/subcategory/{3}";
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/categories/{2}/subcategories/{3}";
 
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
@@ -1532,7 +1532,7 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         requestBody.setAssetManagerGUID(assetManagerGUID);
         requestBody.setAssetManagerName(assetManagerName);
 
-        final String urlTemplate = urlTemplatePrefix + "/categories/{2}/subcategories?startFrom={3}&pageSize={4}";
+        final String urlTemplate = urlTemplatePrefix + "/categories/{2}/subcategories/retrieve?startFrom={3}&pageSize={4}";
 
         GlossaryCategoryElementsResponse restResult = restClient.callGlossaryCategoriesPostRESTCall(methodName,
                                                                                                     urlTemplate,
@@ -1990,7 +1990,7 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         final String methodName                      = "setupTermRelationship";
         final String glossaryParentGUIDParameterName = "glossaryTermOneGUID";
         final String glossaryChildGUIDParameterName  = "glossaryTermTwoGUID";
-        final String glossaryTypeParameterName  = "relationshipTypeName";
+        final String glossaryTypeParameterName       = "relationshipTypeName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(glossaryTermOneGUID, glossaryParentGUIDParameterName, methodName);
@@ -2967,8 +2967,28 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
                                                                                                    UserNotAuthorizedException,
                                                                                                    PropertyServerException
     {
-        // todo
-        return null;
+        final String methodName                  = "createExternalGlossaryLink";
+        final String propertiesParameterName     = "linkProperties";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(assetManagerGUID, assetManagerGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(assetManagerName, assetManagerNameParameterName, methodName);
+        invalidParameterHandler.validateObject(linkProperties, propertiesParameterName, methodName);
+
+        ExternalGlossaryLinkRequestBody requestBody = new ExternalGlossaryLinkRequestBody();
+        requestBody.setAssetManagerGUID(assetManagerGUID);
+        requestBody.setAssetManagerName(assetManagerName);
+        requestBody.setElementProperties(linkProperties);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/external-links";
+
+        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
+                                                                  urlTemplate,
+                                                                  requestBody,
+                                                                  serverName,
+                                                                  userId);
+
+        return restResult.getGUID();
     }
 
 
@@ -2993,7 +3013,29 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
                                                                                                  UserNotAuthorizedException,
                                                                                                  PropertyServerException
     {
-        // todo
+        final String methodName                  = "updateExternalGlossaryLink";
+        final String guidParameterName           = "externalLinkGUID";
+        final String propertiesParameterName     = "linkProperties";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(assetManagerGUID, assetManagerGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(assetManagerName, assetManagerNameParameterName, methodName);
+        invalidParameterHandler.validateGUID(externalLinkGUID, guidParameterName, methodName);
+        invalidParameterHandler.validateObject(linkProperties, propertiesParameterName, methodName);
+
+        ExternalGlossaryLinkRequestBody requestBody = new ExternalGlossaryLinkRequestBody();
+        requestBody.setAssetManagerGUID(assetManagerGUID);
+        requestBody.setAssetManagerName(assetManagerName);
+        requestBody.setElementProperties(linkProperties);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/external-links/{2}";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        externalLinkGUID);
     }
 
 
@@ -3016,7 +3058,26 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
                                                                            UserNotAuthorizedException,
                                                                            PropertyServerException
     {
-        // todo
+        final String methodName        = "removeExternalGlossaryLink";
+        final String guidParameterName = "externalLinkGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(assetManagerGUID, assetManagerGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(assetManagerName, assetManagerNameParameterName, methodName);
+        invalidParameterHandler.validateGUID(externalLinkGUID, guidParameterName, methodName);
+
+        AssetManagerIdentifiersRequestBody requestBody = new AssetManagerIdentifiersRequestBody();
+        requestBody.setAssetManagerGUID(assetManagerGUID);
+        requestBody.setAssetManagerName(assetManagerName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/external-links/{2}/remove";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        externalLinkGUID);
     }
 
 
@@ -3041,7 +3102,29 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
                                                                          UserNotAuthorizedException,
                                                                          PropertyServerException
     {
-        // todo
+        final String methodName                = "attachExternalLinkToGlossary";
+        final String guidParameterName         = "externalLinkGUID";
+        final String glossaryGUIDParameterName = "glossaryGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(assetManagerGUID, assetManagerGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(assetManagerName, assetManagerNameParameterName, methodName);
+        invalidParameterHandler.validateGUID(glossaryGUID, glossaryGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(externalLinkGUID, guidParameterName, methodName);
+
+        AssetManagerIdentifiersRequestBody requestBody = new AssetManagerIdentifiersRequestBody();
+        requestBody.setAssetManagerGUID(assetManagerGUID);
+        requestBody.setAssetManagerName(assetManagerName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/{2}/external-links/{3}";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        glossaryGUID,
+                                        externalLinkGUID);
     }
 
 
@@ -3066,7 +3149,29 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
                                                                            UserNotAuthorizedException,
                                                                            PropertyServerException
     {
-        // todo
+        final String methodName                = "detachExternalLinkFromGlossary";
+        final String guidParameterName         = "externalLinkGUID";
+        final String glossaryGUIDParameterName = "glossaryGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(assetManagerGUID, assetManagerGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(assetManagerName, assetManagerNameParameterName, methodName);
+        invalidParameterHandler.validateGUID(glossaryGUID, glossaryGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(externalLinkGUID, guidParameterName, methodName);
+
+        AssetManagerIdentifiersRequestBody requestBody = new AssetManagerIdentifiersRequestBody();
+        requestBody.setAssetManagerGUID(assetManagerGUID);
+        requestBody.setAssetManagerName(assetManagerName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/{2}/external-links/{3}/remove";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        glossaryGUID,
+                                        externalLinkGUID);
     }
 
 
@@ -3091,8 +3196,24 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
                                                                                                  UserNotAuthorizedException,
                                                                                                  PropertyServerException
     {
-        // todo
-        return null;
+        final String methodName        = "getExternalLinksForGlossary";
+        final String guidParameterName = "glossaryGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(glossaryGUID, guidParameterName, methodName);
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        final String urlTemplate = urlTemplatePrefix + "/{2}/external-links/retrieve?startFrom={3}&pageSize={4}";
+
+        ExternalGlossaryLinkElementsResponse restResult = restClient.callExternalGlossaryLinksGetRESTCall(methodName,
+                                                                                                          urlTemplate,
+                                                                                                          serverName,
+                                                                                                          userId,
+                                                                                                          glossaryGUID,
+                                                                                                          startFrom,
+                                                                                                          validatedPageSize);
+
+        return restResult.getElementList();
     }
 
 
@@ -3100,6 +3221,8 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
      * Return the glossaries connected to an external glossary source.
      *
      * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
      * @param externalLinkGUID unique identifier of the metadata element for the external glossary link of interest
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
@@ -3111,14 +3234,37 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public List<GlossaryElement> getGlossariesForExternalLink(String userId,
+                                                              String assetManagerGUID,
+                                                              String assetManagerName,
                                                               String externalLinkGUID,
                                                               int    startFrom,
                                                               int    pageSize) throws InvalidParameterException,
                                                                                       UserNotAuthorizedException,
                                                                                       PropertyServerException
     {
-        // todo
-        return null;
+        final String methodName        = "getGlossariesForExternalLink";
+        final String guidParameterName = "externalLinkGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(externalLinkGUID, guidParameterName, methodName);
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        AssetManagerIdentifiersRequestBody requestBody = new AssetManagerIdentifiersRequestBody();
+        requestBody.setAssetManagerGUID(assetManagerGUID);
+        requestBody.setAssetManagerName(assetManagerName);
+
+        final String urlTemplate = urlTemplatePrefix + "/by-external-links/{2}/retrieve?startFrom={3}&pageSize={4}";
+
+        GlossaryElementsResponse restResult = restClient.callGlossariesPostRESTCall(methodName,
+                                                                                    urlTemplate,
+                                                                                    requestBody,
+                                                                                    serverName,
+                                                                                    userId,
+                                                                                    externalLinkGUID,
+                                                                                    startFrom,
+                                                                                    validatedPageSize);
+
+        return restResult.getElementList();
     }
 
 
@@ -3146,7 +3292,30 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
                                                                                                         UserNotAuthorizedException,
                                                                                                         PropertyServerException
     {
-        // todo
+        final String methodName                = "attachExternalCategoryLink";
+        final String guidParameterName         = "externalLinkGUID";
+        final String glossaryGUIDParameterName = "glossaryCategoryGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(assetManagerGUID, assetManagerGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(assetManagerName, assetManagerNameParameterName, methodName);
+        invalidParameterHandler.validateGUID(glossaryCategoryGUID, glossaryGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(externalLinkGUID, guidParameterName, methodName);
+
+        ExternalGlossaryElementLinkRequestBody requestBody = new ExternalGlossaryElementLinkRequestBody();
+        requestBody.setAssetManagerGUID(assetManagerGUID);
+        requestBody.setAssetManagerName(assetManagerName);
+        requestBody.setElementProperties(linkProperties);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/categories/{2}/external-links/{3}";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        glossaryCategoryGUID,
+                                        externalLinkGUID);
     }
 
 
@@ -3171,7 +3340,29 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
                                                                                UserNotAuthorizedException,
                                                                                PropertyServerException
     {
-        // todo
+        final String methodName                = "detachExternalCategoryLink";
+        final String guidParameterName         = "externalLinkGUID";
+        final String glossaryGUIDParameterName = "glossaryCategoryGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(assetManagerGUID, assetManagerGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(assetManagerName, assetManagerNameParameterName, methodName);
+        invalidParameterHandler.validateGUID(glossaryCategoryGUID, glossaryGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(externalLinkGUID, guidParameterName, methodName);
+
+        AssetManagerIdentifiersRequestBody requestBody = new AssetManagerIdentifiersRequestBody();
+        requestBody.setAssetManagerGUID(assetManagerGUID);
+        requestBody.setAssetManagerName(assetManagerName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/categories/{2}/external-links/{3}/remove";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        glossaryCategoryGUID,
+                                        externalLinkGUID);
     }
 
 
@@ -3199,7 +3390,30 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
                                                                                                     UserNotAuthorizedException,
                                                                                                     PropertyServerException
     {
-        // todo
+        final String methodName                = "attachExternalTermLink";
+        final String guidParameterName         = "externalLinkGUID";
+        final String glossaryGUIDParameterName = "glossaryTermGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(assetManagerGUID, assetManagerGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(assetManagerName, assetManagerNameParameterName, methodName);
+        invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(externalLinkGUID, guidParameterName, methodName);
+
+        ExternalGlossaryElementLinkRequestBody requestBody = new ExternalGlossaryElementLinkRequestBody();
+        requestBody.setAssetManagerGUID(assetManagerGUID);
+        requestBody.setAssetManagerName(assetManagerName);
+        requestBody.setElementProperties(linkProperties);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/terms/{2}/external-links/{3}";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        glossaryTermGUID,
+                                        externalLinkGUID);
     }
 
 
@@ -3224,6 +3438,28 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
                                                                        UserNotAuthorizedException,
                                                                        PropertyServerException
     {
-        // todo
+        final String methodName                = "detachExternalTermLink";
+        final String guidParameterName         = "externalLinkGUID";
+        final String glossaryGUIDParameterName = "glossaryTermGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(assetManagerGUID, assetManagerGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(assetManagerName, assetManagerNameParameterName, methodName);
+        invalidParameterHandler.validateGUID(glossaryTermGUID, glossaryGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(externalLinkGUID, guidParameterName, methodName);
+
+        AssetManagerIdentifiersRequestBody requestBody = new AssetManagerIdentifiersRequestBody();
+        requestBody.setAssetManagerGUID(assetManagerGUID);
+        requestBody.setAssetManagerName(assetManagerName);
+
+        final String urlTemplate = serverPlatformURLRoot + urlTemplatePrefix + "/terms/{2}/external-links/{3}/remove";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        urlTemplate,
+                                        requestBody,
+                                        serverName,
+                                        userId,
+                                        glossaryTermGUID,
+                                        externalLinkGUID);
     }
 }

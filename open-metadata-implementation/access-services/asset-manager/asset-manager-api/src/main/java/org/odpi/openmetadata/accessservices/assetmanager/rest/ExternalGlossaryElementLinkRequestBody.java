@@ -7,10 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.accessservices.assetmanager.properties.ExternalGlossaryElementLinkProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.GlossaryCategoryProperties;
-import org.odpi.openmetadata.accessservices.assetmanager.properties.MetadataCorrelationProperties;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -23,11 +20,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ExternalGlossaryElementLinkRequestBody implements Serializable
+public class ExternalGlossaryElementLinkRequestBody extends AssetManagerIdentifiersRequestBody
 {
     private static final long    serialVersionUID = 1L;
 
-    private MetadataCorrelationProperties         metadataCorrelationProperties = null;
     private ExternalGlossaryElementLinkProperties elementProperties             = null;
 
 
@@ -49,31 +45,8 @@ public class ExternalGlossaryElementLinkRequestBody implements Serializable
     {
         if (template != null)
         {
-            metadataCorrelationProperties = template.getMetadataCorrelationProperties();
             elementProperties = template.getElementProperties();
         }
-    }
-
-
-    /**
-     * Return the properties used to correlate the external metadata element with the open metadata element.
-     *
-     * @return properties object
-     */
-    public MetadataCorrelationProperties getMetadataCorrelationProperties()
-    {
-        return metadataCorrelationProperties;
-    }
-
-
-    /**
-     * Set up the properties used to correlate the external metadata element with the open metadata element.
-     *
-     * @param metadataCorrelationProperties properties object
-     */
-    public void setMetadataCorrelationProperties(MetadataCorrelationProperties metadataCorrelationProperties)
-    {
-        this.metadataCorrelationProperties = metadataCorrelationProperties;
     }
 
 
@@ -107,9 +80,10 @@ public class ExternalGlossaryElementLinkRequestBody implements Serializable
     @Override
     public String toString()
     {
-        return "GlossaryCategoryRequestBody{" +
-                       "metadataCorrelationProperties=" + metadataCorrelationProperties +
-                       ", elementProperties=" + elementProperties +
+        return "ExternalGlossaryElementLinkRequestBody{" +
+                       "elementProperties=" + elementProperties +
+                       ", assetManagerGUID='" + getAssetManagerGUID() + '\'' +
+                       ", assetManagerName='" + getAssetManagerName() + '\'' +
                        '}';
     }
 
@@ -132,8 +106,7 @@ public class ExternalGlossaryElementLinkRequestBody implements Serializable
             return false;
         }
         ExternalGlossaryElementLinkRequestBody that = (ExternalGlossaryElementLinkRequestBody) objectToCompare;
-        return Objects.equals(getMetadataCorrelationProperties(), that.getMetadataCorrelationProperties()) &&
-                       Objects.equals(getElementProperties(), that.getElementProperties());
+        return Objects.equals(getElementProperties(), that.getElementProperties());
     }
 
 
@@ -145,6 +118,6 @@ public class ExternalGlossaryElementLinkRequestBody implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), metadataCorrelationProperties, elementProperties);
+        return Objects.hash(super.hashCode(), elementProperties);
     }
 }

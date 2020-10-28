@@ -1548,6 +1548,8 @@ public interface GlossaryExchangeInterface
      * Return the glossaries connected to an external glossary source.
      *
      * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
      * @param externalLinkGUID unique identifier of the metadata element for the external glossary link of interest
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
@@ -1559,6 +1561,8 @@ public interface GlossaryExchangeInterface
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     List<GlossaryElement> getGlossariesForExternalLink(String userId,
+                                                       String assetManagerGUID,
+                                                       String assetManagerName,
                                                        String externalLinkGUID,
                                                        int    startFrom,
                                                        int    pageSize) throws InvalidParameterException,

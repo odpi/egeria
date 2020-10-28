@@ -22,12 +22,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ExternalGlossaryLinkRequestBody implements Serializable
+public class ExternalGlossaryLinkRequestBody extends AssetManagerIdentifiersRequestBody
 {
     private static final long    serialVersionUID = 1L;
 
-    private MetadataCorrelationProperties  metadataCorrelationProperties = null;
-    private ExternalGlossaryLinkProperties elementProperties             = null;
+    private ExternalGlossaryLinkProperties elementProperties = null;
 
 
     /**
@@ -48,33 +47,9 @@ public class ExternalGlossaryLinkRequestBody implements Serializable
     {
         if (template != null)
         {
-            metadataCorrelationProperties = template.getMetadataCorrelationProperties();
             elementProperties = template.getElementProperties();
         }
     }
-
-
-    /**
-     * Return the properties used to correlate the external metadata element with the open metadata element.
-     *
-     * @return properties object
-     */
-    public MetadataCorrelationProperties getMetadataCorrelationProperties()
-    {
-        return metadataCorrelationProperties;
-    }
-
-
-    /**
-     * Set up the properties used to correlate the external metadata element with the open metadata element.
-     *
-     * @param metadataCorrelationProperties properties object
-     */
-    public void setMetadataCorrelationProperties(MetadataCorrelationProperties metadataCorrelationProperties)
-    {
-        this.metadataCorrelationProperties = metadataCorrelationProperties;
-    }
-
 
     /**
      * Return the properties for the element.
@@ -106,9 +81,10 @@ public class ExternalGlossaryLinkRequestBody implements Serializable
     @Override
     public String toString()
     {
-        return "GlossaryCategoryRequestBody{" +
-                       "metadataCorrelationProperties=" + metadataCorrelationProperties +
-                       ", elementProperties=" + elementProperties +
+        return "ExternalGlossaryLinkRequestBody{" +
+                       "elementProperties=" + elementProperties +
+                       ", assetManagerGUID='" + getAssetManagerGUID() + '\'' +
+                       ", assetManagerName='" + getAssetManagerName() + '\'' +
                        '}';
     }
 
@@ -131,8 +107,7 @@ public class ExternalGlossaryLinkRequestBody implements Serializable
             return false;
         }
         ExternalGlossaryLinkRequestBody that = (ExternalGlossaryLinkRequestBody) objectToCompare;
-        return Objects.equals(getMetadataCorrelationProperties(), that.getMetadataCorrelationProperties()) &&
-                       Objects.equals(getElementProperties(), that.getElementProperties());
+        return Objects.equals(getElementProperties(), that.getElementProperties());
     }
 
 
@@ -144,6 +119,6 @@ public class ExternalGlossaryLinkRequestBody implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), metadataCorrelationProperties, elementProperties);
+        return Objects.hash(super.hashCode(), elementProperties);
     }
 }
