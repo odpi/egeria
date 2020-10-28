@@ -1748,8 +1748,8 @@ class GraphOMRSMetadataStore {
              * it is essential that propCriteria is not empty. For example, suppose this is a find... ByPropertyValue
              * with searchCriteria, in which only string properties will be included in the MatchProperties. If the
              * type has no string properties then there is no overlap and it is impossible for ALL or ANY matches to
-             * be satisfied. For matchCriteria NONE we can assert that the relationship but since we still need to
-             * retrieve the vertex from the graoh (to construct the relationship) it is better to let that case continue.
+             * be satisfied. For matchCriteria NONE we need to retrieve the vertex from the graph (to construct the
+             * entity) so let that case continue.
              */
 
 
@@ -2293,10 +2293,9 @@ class GraphOMRSMetadataStore {
              * it is essential that propCriteria is not empty. For example, suppose this is a find... ByPropertyValue
              * with searchCriteria, in which only string properties will be included in the MatchProperties. If the
              * type has no string properties then there is no overlap and it is impossible for ALL or ANY matches to
-             * be satisfied. For matchCriteria NONE we can assert that the relationship but since we still need to
-             * retrieve the vertex from the graoh (to construct the relationship) it is better to let that case continue.
+             * be satisfied. For matchCriteria NONE we need to retrieve the vertex from the graph (to construct the
+             * relationship) so let that case continue.
              */
-
 
             switch (matchCriteria) {
                 case ALL:
