@@ -1431,7 +1431,8 @@ class GraphOMRSMetadataStore {
         GraphTraversalSource g = instanceGraph.traversal();
 
         GraphTraversal<Vertex, Vertex> gt = g.V().hasLabel("Entity");
-        if (typeDefName != null) {
+        if (typeDefName != null)
+        {
             gt = gt.has(PROPERTY_KEY_ENTITY_TYPE_NAME, typeDefName);
         }
 
@@ -1478,7 +1479,6 @@ class GraphOMRSMetadataStore {
 
         Set<String> corePropertyNames = corePropertyTypes.keySet();
 
-
         TypeDef typeDef = repositoryHelper.getTypeDefByName(repositoryName, typeDefName);
         GraphOMRSMapperUtils mapperUtils = new GraphOMRSMapperUtils();
         Map<String, String> qualifiedPropertyNames = mapperUtils.getQualifiedPropertyNamesForTypeDef(typeDef, repositoryName, repositoryHelper);
@@ -1486,15 +1486,15 @@ class GraphOMRSMetadataStore {
         Set<String> typeDefinedPropertyNames = qualifiedPropertyNames.keySet();
 
 
-        // This relies on the graph to enforce property validity - it does not pre-check that match properties are valid for requested type.
-
-        if (matchProperties != null) {
+        if (matchProperties != null)
+        {
 
             List<DefaultGraphTraversal> propCriteria = new ArrayList<>();
 
             Iterator<String> propNames = matchProperties.getPropertyNames();
 
-            while (propNames.hasNext()) {
+            while (propNames.hasNext())
+            {
 
 
                 String propName = propNames.next();
@@ -1502,7 +1502,9 @@ class GraphOMRSMetadataStore {
 
                 String propNameToSearch = null;
 
-                // Mapping is String for all properties (core or type-specific) except for the subset of core properties that use Full-Text
+                /*
+                 * Mapping is String for all properties (core or type-specific) except for the subset of core properties that use Full-Text
+                 */
                 GraphOMRSGraphFactory.MixedIndexMapping mapping = GraphOMRSGraphFactory.MixedIndexMapping.String;
 
                 /*
@@ -1510,7 +1512,8 @@ class GraphOMRSMetadataStore {
                  * Core properties take precedence over TDAs (in the event of a name clash)
                  */
 
-                if (corePropertyNames.contains(propName)) {
+                if (corePropertyNames.contains(propName))
+                {
 
                     /*
                      * Treat the match property as a reference to a core property
@@ -1520,11 +1523,59 @@ class GraphOMRSMetadataStore {
                      * primitive def category of string.
                      */
 
-                    propNameToSearch = PROPERTY_KEY_PREFIX_ENTITY + propName;
-                    mapping = corePropertyMixedIndexMappings.get(propNameToSearch);
+                    /*
+                     *  Validate the type - so that a more meaningful error message can be delivered to the user, instead of a mid-traversal complaint about an anonymous key.
+                     */
+                    String javaTypeForMatchProperty = null;
+                    PrimitiveDefCategory mpCat;
+                    InstancePropertyValue mpv = matchProperties.getPropertyValue(propName);
+                    InstancePropertyCategory mpvCat = mpv.getInstancePropertyCategory();
+                    if (mpvCat == InstancePropertyCategory.PRIMITIVE)
+                    {
+                        PrimitivePropertyValue ppv = (PrimitivePropertyValue) mpv;
+                        mpCat = ppv.getPrimitiveDefCategory();
+                        javaTypeForMatchProperty = mpCat.getJavaClassName();
+                    }
+                    else
+                    {
+                        log.debug("{} non-primitive match property {} ignored", methodName, propName);
+                    }
+                    /*
+                     * This needs to be compared to the type of the core property...
+                     */
+
+                    String javaTypeForCoreProperty = corePropertyTypes.get(propName);
+
+                    if (javaTypeForCoreProperty != null && javaTypeForMatchProperty != null)
+                    {
+                        if (javaTypeForCoreProperty.equals(javaTypeForMatchProperty))
+                        {
+                            /*
+                             * Types match, OK to include the property
+                             */
+                            propNameToSearch = PROPERTY_KEY_PREFIX_ENTITY + propName;
+                            mapping = corePropertyMixedIndexMappings.get(propNameToSearch);
+                        }
+                        else
+                        {
+
+                            throw new InvalidParameterException(
+                                    GraphOMRSErrorCode.INVALID_MATCH_PROPERTY.getMessageDefinition(
+                                            propName,
+                                            javaTypeForMatchProperty,
+                                            javaTypeForCoreProperty,
+                                            methodName,
+                                            this.getClass().getName(),
+                                            repositoryName),
+                                    this.getClass().getName(),
+                                    methodName,
+                                    "matchProperties");
+                        }
+                    }
 
                 }
-                else if (typeDefinedPropertyNames.contains(propName)) {
+                else if (typeDefinedPropertyNames.contains(propName))
+                {
 
                     /*
                      * Treat the match property as a reference to a type-defined property. Check that it's type matches the TDA.
@@ -1532,9 +1583,11 @@ class GraphOMRSMetadataStore {
 
                     List<TypeDefAttribute> propertiesDef = repositoryHelper.getAllPropertiesForTypeDef(repositoryName, typeDef, methodName);
 
-                    for (TypeDefAttribute propertyDef : propertiesDef) {
+                    for (TypeDefAttribute propertyDef : propertiesDef)
+                    {
                         String definedPropertyName = propertyDef.getAttributeName();
-                        if (definedPropertyName.equals(propName)) {
+                        if (definedPropertyName.equals(propName))
+                        {
 
                             /*
                              * The match property name matches the name of a type-defined attribute
@@ -1545,22 +1598,27 @@ class GraphOMRSMetadataStore {
                             PrimitiveDefCategory mpCat = OM_PRIMITIVE_TYPE_UNKNOWN;
                             InstancePropertyValue mpv = matchProperties.getPropertyValue(propName);
                             InstancePropertyCategory mpvCat = mpv.getInstancePropertyCategory();
-                            if (mpvCat == InstancePropertyCategory.PRIMITIVE) {
+                            if (mpvCat == InstancePropertyCategory.PRIMITIVE)
+                            {
                                 PrimitivePropertyValue ppv = (PrimitivePropertyValue) mpv;
                                 mpCat = ppv.getPrimitiveDefCategory();
-                            } else {
+                            }
+                            else
+                            {
                                 log.debug("{} non-primitive match property {} ignored", methodName, propName);
                             }
 
                             PrimitiveDefCategory pdCat = OM_PRIMITIVE_TYPE_UNKNOWN;
                             AttributeTypeDef atd = propertyDef.getAttributeType();
                             AttributeTypeDefCategory atdCat = atd.getCategory();
-                            if (atdCat == PRIMITIVE) {
+                            if (atdCat == PRIMITIVE)
+                            {
                                 PrimitiveDef pdef = (PrimitiveDef) atd;
                                 pdCat = pdef.getPrimitiveDefCategory();
                             }
 
-                            if (mpCat != OM_PRIMITIVE_TYPE_UNKNOWN && pdCat != OM_PRIMITIVE_TYPE_UNKNOWN && mpCat == pdCat) {
+                            if (mpCat != OM_PRIMITIVE_TYPE_UNKNOWN && pdCat != OM_PRIMITIVE_TYPE_UNKNOWN && mpCat == pdCat)
+                            {
                                 /*
                                  * Types match
                                  */
@@ -1571,6 +1629,20 @@ class GraphOMRSMetadataStore {
                                 propNameToSearch = PROPERTY_KEY_PREFIX_ENTITY + qualifiedPropertyName;
                                 mapping = GraphOMRSGraphFactory.MixedIndexMapping.String;
 
+                            }
+                            else
+                            {
+                                throw new InvalidParameterException(
+                                        GraphOMRSErrorCode.INVALID_MATCH_PROPERTY.getMessageDefinition(
+                                                propName,
+                                                mpCat.toString(),
+                                                pdCat.toString(),
+                                                methodName,
+                                                this.getClass().getName(),
+                                                repositoryName),
+                                        this.getClass().getName(),
+                                        methodName,
+                                        "matchProperties");
                             }
                             /*
                              * If types matched the code above will have set propNameToSearch. If the types did not match we should give up on this property - there should not be
@@ -1586,38 +1658,46 @@ class GraphOMRSMetadataStore {
 
                 }
 
-                if (propNameToSearch == null) {
+                if (propNameToSearch == null)
+                {
 
                     /*
                      * The match property is neither a core nor a type-defined property with matching name and type.
                      * If matchCriteria is ALL we need to give up at this point.
                      * If matchCriteria is ANY or NONE we can continue but just ignore this match property.
                      */
-                    if (matchCriteria == MatchCriteria.ALL) {
+                    if (matchCriteria == MatchCriteria.ALL)
+                    {
                         g.tx().rollback();
                         return null;
-                    } else {
+                    }
+                    else
+                    {
                         /*
                          * Skip this property but process the rest
                          */
                         continue;
                     }
 
-                } else {
+                }
+                else
+                {
                     /*
                      * Incorporate the property (propNameToSearch) into propCriteria for the traversal...
                      */
 
                     InstancePropertyValue ipv = matchProperties.getPropertyValue(propName);
                     InstancePropertyCategory ipvCat = ipv.getInstancePropertyCategory();
-                    if (ipvCat == InstancePropertyCategory.PRIMITIVE) {
+                    if (ipvCat == InstancePropertyCategory.PRIMITIVE)
+                    {
                         // Primitives will have been stored in the graph as such
                         PrimitivePropertyValue ppv = (PrimitivePropertyValue) ipv;
                         PrimitiveDefCategory pCat = ppv.getPrimitiveDefCategory();
                         Object primValue = ppv.getPrimitiveValue();
                         log.debug("{} primitive match property has key {} value {}", methodName, propName, primValue);
                         DefaultGraphTraversal t = new DefaultGraphTraversal();
-                        switch (pCat) {
+                        switch (pCat)
+                        {
 
                             case OM_PRIMITIVE_TYPE_STRING:
 
@@ -1627,14 +1707,20 @@ class GraphOMRSMetadataStore {
                                 log.debug("{} primitive match property search string {}", methodName, searchString);
 
                                 // NB This is using a JG specific approach to text predicates - see the static import above. From TP 3.4.0 try to use the TP text predicates.
-                                if (mapping == GraphOMRSGraphFactory.MixedIndexMapping.Text) {
+                                if (mapping == GraphOMRSGraphFactory.MixedIndexMapping.Text)
+                                {
                                     t = (DefaultGraphTraversal) t.has(propNameToSearch, Text.textContainsRegex(searchString)); // for a field indexed using Text mapping use textContains or textContainsRegex
-                                } else {
-                                    if (!fullMatch) {
+                                }
+                                else
+                                {
+                                    if (!fullMatch)
+                                    {
                                         // A partial match is sufficient...i.e. a value containing the search value as a substring will match
                                         String ANYCHARS = ".*";
                                         t = (DefaultGraphTraversal) t.has(propNameToSearch, Text.textRegex(ANYCHARS + searchString + ANYCHARS));         // for a field indexed using String mapping use textRegex
-                                    } else {
+                                    }
+                                    else
+                                    {
                                         // Must be a full match...
                                         t = (DefaultGraphTraversal) t.has(propNameToSearch, Text.textRegex(searchString));
                                     }
@@ -1648,7 +1734,9 @@ class GraphOMRSMetadataStore {
                         }
                         log.debug("{} primitive match property has property criterion {}", methodName, t);
                         propCriteria.add(t);
-                    } else {
+                    }
+                    else
+                    {
                         log.debug("{} non-primitive match property {} ignored", methodName, propName);
                     }
                 }
@@ -1665,23 +1753,28 @@ class GraphOMRSMetadataStore {
              */
 
 
-            switch (matchCriteria) {
+            switch (matchCriteria)
+            {
                 case ALL:
-                    if (propCriteria.isEmpty()) {
+                    if (propCriteria.isEmpty())
+                    {
                         g.tx().rollback();
                         return null;
                     }
-                    else {
+                    else
+                    {
                         gt = gt.and(propCriteria.toArray(new DefaultGraphTraversal[0]));
                         log.debug("{} traversal looks like this --> {} ", methodName, gt);
                     }
                     break;
                 case ANY:
-                    if (propCriteria.isEmpty()) {
+                    if (propCriteria.isEmpty())
+                    {
                         g.tx().rollback();
                         return null;
                     }
-                    else {
+                    else
+                    {
                         gt = gt.or(propCriteria.toArray(new DefaultGraphTraversal[0]));
                         log.debug("{} traversal looks like this --> {} ", methodName, gt);
                     }
@@ -1708,36 +1801,27 @@ class GraphOMRSMetadataStore {
         }
 
 
-
-        try
+        while (gt.hasNext())
         {
+            Vertex vertex = gt.next();
+            log.debug("{} found vertex {}", methodName, vertex);
 
-
-            while (gt.hasNext())
+            EntityDetail entityDetail = new EntityDetail();
+            try
             {
-                Vertex vertex = gt.next();
-                log.debug("{} found vertex {}", methodName, vertex);
-
-                EntityDetail entityDetail = new EntityDetail();
-                try
+                // Check if we have stumbled on a proxy somehow, and if so avoid processing it.
+                Boolean isProxy = entityMapper.isProxy(vertex);
+                if (!isProxy)
                 {
-                    // Check if we have stumbled on a proxy somehow, and if so avoid processing it.
-                    Boolean isProxy = entityMapper.isProxy(vertex);
-                    if (!isProxy)
-                    {
-                        entityMapper.mapVertexToEntityDetail(vertex, entityDetail);
-                        entities.add(entityDetail);
-                    }
-                } catch (Exception e)
-                {
-                    log.error("{} caught exception from entity mapper, entity being ignored, {}", methodName, e.getMessage());
-                    continue;
+                    entityMapper.mapVertexToEntityDetail(vertex, entityDetail);
+                    entities.add(entityDetail);
                 }
             }
-
-        }
-        catch (Throwable t) {
-            log.debug("dummy for breakpoint");
+            catch (Exception e)
+            {
+                log.error("{} caught exception from entity mapper, entity being ignored, {}", methodName, e.getMessage());
+                continue;
+            }
         }
 
         g.tx().commit();
@@ -1989,9 +2073,6 @@ class GraphOMRSMetadataStore {
         Set<String> typeDefinedPropertyNames = qualifiedPropertyNames.keySet();
 
 
-        // This relies on the graph to enforce property validity - it does not pre-check that match properties are valid for requested type.
-
-
         if (matchProperties != null) {
 
             List<DefaultGraphTraversal> propCriteria = new ArrayList<>();
@@ -2009,8 +2090,10 @@ class GraphOMRSMetadataStore {
                 // Mapping is String for all properties (core or type-specific) except for the subset of core properties that use Full-Text
                 GraphOMRSGraphFactory.MixedIndexMapping mapping = GraphOMRSGraphFactory.MixedIndexMapping.String;
 
+
                 /*
                  * Check if this is a core property (from InstanceAuditHeader)
+                 * Core properties take precedence over TDAs (in the event of a name clash)
                  */
 
                 if (corePropertyNames.contains(propName)) {
@@ -2023,10 +2106,55 @@ class GraphOMRSMetadataStore {
                      * primitive def category of string.
                      */
 
-                    propNameToSearch = PROPERTY_KEY_PREFIX_RELATIONSHIP + propName;
-                    mapping = corePropertyMixedIndexMappings.get(propNameToSearch);
+                    /*
+                     *  Validate the type - so that a more meaningful error message can be delivered to the user, instead of a mid-traversal complaint about an anonymous key.
+                     */
+                    String javaTypeForMatchProperty = null;
+                    PrimitiveDefCategory mpCat;
+                    InstancePropertyValue mpv = matchProperties.getPropertyValue(propName);
+                    InstancePropertyCategory mpvCat = mpv.getInstancePropertyCategory();
+                    if (mpvCat == InstancePropertyCategory.PRIMITIVE) {
+                        PrimitivePropertyValue ppv = (PrimitivePropertyValue) mpv;
+                        mpCat = ppv.getPrimitiveDefCategory();
+                        javaTypeForMatchProperty = mpCat.getJavaClassName();
+                    } else {
+                        log.debug("{} non-primitive match property {} ignored", methodName, propName);
+                    }
+                    /*
+                     * This needs to be compared to the type of the core property...
+                     */
+
+                    String javaTypeForCoreProperty = corePropertyTypes.get(propName);
+
+                    if (javaTypeForCoreProperty != null && javaTypeForMatchProperty != null )
+                    {
+                        if (javaTypeForCoreProperty.equals(javaTypeForMatchProperty))
+                        {
+                            /*
+                             * Types match, OK to include the property
+                             */
+                            propNameToSearch = PROPERTY_KEY_PREFIX_RELATIONSHIP + propName;
+                            mapping = corePropertyMixedIndexMappings.get(propNameToSearch);
+                        }
+                        else
+                        {
+
+                            throw new InvalidParameterException(
+                                    GraphOMRSErrorCode.INVALID_MATCH_PROPERTY.getMessageDefinition(
+                                            propName,
+                                            javaTypeForMatchProperty,
+                                            javaTypeForCoreProperty,
+                                            methodName,
+                                            this.getClass().getName(),
+                                            repositoryName),
+                                    this.getClass().getName(),
+                                    methodName,
+                                    "matchProperties");
+                        }
+                    }
 
                 }
+
                 else if (typeDefinedPropertyNames.contains(propName)) {
 
                     /*
@@ -2273,24 +2401,24 @@ class GraphOMRSMetadataStore {
         // will be prefixed in the finder method that actually looks for matching elements in the graph.
 
         // Only include the core properties for the type category
+        Set<String> relevantCoreProperties = new HashSet();
 
-        Iterator<String> relevantCoreProperties = null;
         switch (typeDef.getCategory()) {
             case ENTITY_DEF:
-                relevantCoreProperties = corePropertiesEntity.keySet().iterator();
+                relevantCoreProperties = corePropertiesEntity.keySet();
                 break;
             case RELATIONSHIP_DEF:
-                relevantCoreProperties = corePropertiesRelationship.keySet().iterator();
+                relevantCoreProperties = corePropertiesRelationship.keySet();
                 break;
             case CLASSIFICATION_DEF:
-                relevantCoreProperties = corePropertiesClassification.keySet().iterator();
+                relevantCoreProperties = corePropertiesClassification.keySet();
                 break;
         }
 
-        if (relevantCoreProperties != null) {
-            while (relevantCoreProperties.hasNext()) {
-                //for (String corePropName : relevantCoreProperties) {
-                String corePropName = relevantCoreProperties.next();
+        Iterator<String> relevantCorePropertiesIterator = relevantCoreProperties.iterator();
+        if (relevantCorePropertiesIterator != null) {
+            while (relevantCorePropertiesIterator.hasNext()) {
+                String corePropName = relevantCorePropertiesIterator.next();
                 if (corePropertyTypes.get(corePropName).equals("java.lang.String") && !corePropName.equals(PROPERTY_NAME_TYPE_NAME)) {
                     PrimitivePropertyValue ppv = new PrimitivePropertyValue();
                     ppv.setPrimitiveDefCategory(OM_PRIMITIVE_TYPE_STRING);
@@ -2313,7 +2441,20 @@ class GraphOMRSMetadataStore {
 
                     String propertyName = typeDefAttribute.getAttributeName();
 
-                    if (propertyName != null) {
+                    /*
+                     * Only include the property if it's name does not conflict with a core property name.
+                     * This could occur if any of the type defined attributes of the type has had a name clash,
+                     * even if it has subsequently been deprecated. The type of the clashing TDA may conflict
+                     * with the core property. For example the core property 'version' is a Java 'long', whereas
+                     * the (deprecated) SoftwareServerCapability property 'version' was a Java 'String'. It still
+                     * exists in the type definition, so need to avoid it here.
+                     * Therefore check that any propertyName is NOT in the keySet of relevantCoreProperties (whether
+                     * that property was included in stringMatchProperties or is of another (non-string) type.
+                     */
+
+                    if (propertyName != null &&
+                        (relevantCoreProperties == null || !relevantCoreProperties.contains(propertyName) ) )
+                    {
 
                         AttributeTypeDef atd = typeDefAttribute.getAttributeType();
                         AttributeTypeDefCategory atdCategory = atd.getCategory();
