@@ -17,6 +17,7 @@ import RepositoryExplorer from "./components/RepositoryExplorer/RepositoryExplor
 import TypeExplorer from "./components/TypeExplorer/TypeExplorer";
 import ServerAuthor from "./components/ServerAuthor/ServerAuthor";
 import { IdentificationContext } from "./contexts/IdentificationContext";
+import ServerAuthorContext  from "./contexts/ServerAuthorContext";
 
 import {
   Header,
@@ -32,7 +33,6 @@ import {
 
 export default function Frame(props) {
   const identificationContext = useContext(IdentificationContext);
-  console.log("Frame context", {identificationContext});
   const rootUrl = identificationContext.getBrowserURL("");
   const homeUrl = identificationContext.getBrowserURL("home");
   const glossaryUrl = identificationContext.getBrowserURL("glossary-author");
@@ -128,7 +128,9 @@ export default function Frame(props) {
                     <TypeExplorer />
                   </Route>
                   <Route path={serverUrl}>
-                    <ServerAuthor />
+                    <ServerAuthorContext>
+                      <ServerAuthor />
+                    </ServerAuthorContext>
                   </Route>
                 </section>
               </div>
