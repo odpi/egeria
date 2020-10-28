@@ -44,6 +44,7 @@ const Login = () => {
           identificationContext.setUserId(userId);
           identificationContext.setUser(res.user);
           identificationContext.setAuthenticated(true);
+          // TODO original url prop. 
           const path = identificationContext.getBrowserURL(''); 
           history.push(path);
         } else {

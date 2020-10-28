@@ -38,7 +38,7 @@ public class GlossaryFVT {
 
     public GlossaryFVT(String url, String serverName, String userId) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         SubjectAreaRestClient client = new SubjectAreaRestClient(serverName, url);
-        subjectAreaGlossary = new SubjectAreaGlossaryClient(client);
+        subjectAreaGlossary = new SubjectAreaGlossaryClient<>(client);
         this.serverName = serverName;
         this.userId = userId;
         createdGlossariesSet = new HashSet<>();
@@ -51,7 +51,7 @@ public class GlossaryFVT {
         runIt(url, FVTConstants.SERVER_NAME2, FVTConstants.USERID);
     }
 
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         try {
             String url = RunAllFVTOn2Servers.getUrl(args);
             runWith2Servers(url);
@@ -153,6 +153,12 @@ public class GlossaryFVT {
         results = findGlossaries("This is a Glossary with spaces in name");
         if (results.size() != 1) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected 1 back on the find got " + results.size());
+        }
+        // make sure there is a category with the name
+        createGlossary(DEFAULT_TEST_GLOSSARY_NAME);
+        Glossary glossaryForUniqueQFN2= createGlossary(DEFAULT_TEST_GLOSSARY_NAME);
+        if (glossaryForUniqueQFN2 == null || glossaryForUniqueQFN2.equals("")) {
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected qualified name to be set");
         }
     }
 

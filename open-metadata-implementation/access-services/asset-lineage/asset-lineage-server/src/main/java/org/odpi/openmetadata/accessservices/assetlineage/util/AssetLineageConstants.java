@@ -3,11 +3,14 @@
 package org.odpi.openmetadata.accessservices.assetlineage.util;
 
 import java.util.Collections;
-import java.util.Set;
-import java.util.HashSet;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
+/**
+ * Constants for Open Metadata Types names used to build lineage functionality
+ */
 public final class AssetLineageConstants {
 
     public static final String LINEAGE_CLASSIFICATION_TYPES_KEY = "LineageClassificationTypes";

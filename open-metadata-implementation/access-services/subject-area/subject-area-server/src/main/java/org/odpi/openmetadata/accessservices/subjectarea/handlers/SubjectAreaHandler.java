@@ -6,10 +6,13 @@ package org.odpi.openmetadata.accessservices.subjectarea.handlers;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectAreaCheckedException;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.OmasObject;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineType;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Node;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.CategorySummary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.GlossarySummary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.CategoryAnchor;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.TermAnchor;
@@ -18,6 +21,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.ILineMapp
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.INodeMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.Mapper;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.MappersFactory;
+import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.entities.CategoryMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.entities.GlossaryMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
@@ -45,6 +49,7 @@ public abstract class SubjectAreaHandler {
     protected static final String PROJECT_TYPE_NAME = "Project";
 
     protected static final String TERM_ANCHOR_RELATIONSHIP_NAME = "TermAnchor";
+    protected static final String TERM_CATEGORIZATION_RELATIONSHIP_NAME = "TermCategorization";
     protected static final String PROJECT_SCOPE_RELATIONSHIP_NAME = "ProjectScope";
     protected static final String CATEGORY_ANCHOR_RELATIONSHIP_NAME = "CategoryAnchor";
     protected static final String CATEGORY_HIERARCHY_LINK_RELATIONSHIP_NAME ="CategoryHierarchyLink";
@@ -72,7 +77,7 @@ public abstract class SubjectAreaHandler {
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws UserNotAuthorizedException user not authorized to issue this request.
-     * @throws PropertyServerException problem retrieving the entity.
+     * @throws PropertyServerException problem retrieving the Glossary.
      */
     GlossarySummary getGlossarySummary(String restAPIName,
                                        String userId,
@@ -88,6 +93,35 @@ public abstract class SubjectAreaHandler {
             Glossary glossary = glossaryMapper.map(entityDetail.get());
             // TODO sort out icons
             return SubjectAreaUtils.extractGlossarySummaryFromGlossary(glossary, line);
+        }
+
+        return null;
+    }
+    /**
+     * Get category summary
+     * @param restAPIName rest API Name
+     * @param userId userid under which to issue to the get of the related media
+     * @param line category relationship {@link TermAnchor} or {@link CategoryAnchor}
+     * @return category summary
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException problem retrieving the Category.
+     */
+    CategorySummary getCategorySummary(String restAPIName,
+                                       String userId,
+                                       Line line) throws UserNotAuthorizedException,
+                                                         PropertyServerException,
+                                                         InvalidParameterException,
+                                                         SubjectAreaCheckedException
+    {
+        String categoryGuid = line.getEnd1().getNodeGuid();
+        Optional<EntityDetail> entityDetail = oMRSAPIHelper.callOMRSGetEntityByGuid(userId, categoryGuid, CATEGORY_TYPE_NAME, restAPIName);
+        if (entityDetail.isPresent()) {
+            CategoryMapper CategoryMapper = mappersFactory.get(CategoryMapper.class);
+            Category category = CategoryMapper.map(entityDetail.get());
+            // TODO sort out icons
+            return SubjectAreaUtils.extractCategorySummaryFromCategory(category, line);
         }
 
         return null;
@@ -119,7 +153,7 @@ public abstract class SubjectAreaHandler {
     }
 
     /**
-     * Get All relationships for entity
+     * Get All relationships for Node
      *
      * @param methodName         name of the method being called.
      * @param userId             unique identifier for requesting user, under which the request is performed
@@ -264,6 +298,21 @@ public abstract class SubjectAreaHandler {
                     methodName,
                     "glossary",
                     null);
+        }
+    }
+    /**
+     * Set unique qualifiedName into the supplied Node. The qualified name needs to be unique and is supplied on an addnEtity omrs call.
+     * Prior to the add, we do not know the guid of the entity. We do not want to add an entity, then immediately update it; as these changes to
+     * entity identity would be propagated across the cohort. So we set the qualified name by concatinating the supplied seed, an @ symbol and a newly generated UUID.
+     *
+     * The assumption is that this method is supplied a node that contains a name.
+     *
+     * @param node Node to set the unique qualified name into
+     */
+    protected void setUniqueQualifiedNameIfBlank(Node node) {
+        String qualifiedName = node.getQualifiedName();
+        if (qualifiedName == null || qualifiedName.trim().equals("")) {
+            node.setQualifiedName(node.getName() + "@" + UUID.randomUUID().toString());
         }
     }
 }

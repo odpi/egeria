@@ -67,7 +67,7 @@ public class CategoryFVT {
 
     public CategoryFVT(String url, String serverName, String userId) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         SubjectAreaRestClient client = new SubjectAreaRestClient(serverName, url);
-        subjectAreaCategory = new SubjectAreaCategoryClient(client);
+        subjectAreaCategory = new SubjectAreaCategoryClient<>(client);
         glossaryFVT = new GlossaryFVT(url, serverName, userId);
         this.serverName = serverName;
         this.userId = userId;
@@ -172,6 +172,12 @@ public class CategoryFVT {
         results = findCategories("This is a Category with spaces in name");
         if (results.size() != 1) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected 1 back on the find got " + results.size());
+        }
+        // make sure there is a category with the name
+        createCategory(DEFAULT_TEST_CATEGORY_NAME, glossaryGuid);
+        Category categoryForUniqueQFN2= createCategory(DEFAULT_TEST_CATEGORY_NAME, glossaryGuid);
+        if (categoryForUniqueQFN2 == null || categoryForUniqueQFN2.equals("")) {
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected qualified name to be set");
         }
     }
 

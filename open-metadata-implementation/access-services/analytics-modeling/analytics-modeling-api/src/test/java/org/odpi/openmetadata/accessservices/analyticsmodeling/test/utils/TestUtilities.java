@@ -34,7 +34,7 @@ public class TestUtilities {
 			fail("Can't write JSON for object " + ds.getClass().getName());
 		}
 		String output = new String(baos.toByteArray(), StandardCharsets.UTF_8);
-		assertEquals(master, output, ds.getClass().getName() + " json failed.");
+		assertEquals(output, master, ds.getClass().getName() + " json failed.");
 	}
 	
 	static public <T extends Object> T readObjectJson(String json, Class<T> cls) {

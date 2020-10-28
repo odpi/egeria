@@ -93,6 +93,7 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
                 ExceptionMessageDefinition messageDefinition = SubjectAreaErrorCode.GLOSSARY_CATEGORY_CREATE_WITHOUT_NAME.getMessageDefinition();
                 throw new InvalidParameterException(messageDefinition, className, methodName, "Name", null);
             } else {
+                setUniqueQualifiedNameIfBlank(suppliedCategory);
                 CategoryMapper categoryMapper = mappersFactory.get(CategoryMapper.class);
                 EntityDetail categoryEntityDetail = categoryMapper.map(suppliedCategory);
                 GlossarySummary suppliedGlossary = suppliedCategory.getGlossary();
@@ -297,8 +298,8 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
             InputValidator.validateNodeType(className, methodName, suppliedCategory.getNodeType(), NodeType.Category, NodeType.SubjectAreaDefinition);
 
             response = getCategoryByGuid(userId, guid);
-            if (response.getHead() != null) {
-                Category currentCategory = (Category) response.getHead();
+            if (response.head().isPresent()) {
+                Category currentCategory = response.head().get();
                 if (isReplace)
                     // copy over attributes
                     replaceAttributes(currentCategory, suppliedCategory);

@@ -4,7 +4,10 @@
   animation: shake 0.5s;
   animation-iteration-count: 1;
 }
-
+.left-20 {
+   position: relative;
+   left: -20px;
+}
 .my-container {
   display: flex;
   justify-content: space-evenly;
@@ -127,8 +130,6 @@
   display: flex;
   justify-content: flex-end;
 }
-
-
 
 @keyframes shake {
   0% { transform: translate(1px, 1px) rotate(0deg); }

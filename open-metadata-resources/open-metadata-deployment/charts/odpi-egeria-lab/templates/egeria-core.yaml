@@ -18,6 +18,12 @@ spec:
     - port: 9443
       targetPort: 9443
       nodePort: {{ .Values.service.nodeport.core }}
+  {{ if .Values.debug.egeriaJVM }}
+    - name: debug
+      port: 5005
+      targetPort: 5005
+      nodePort: {{ .Values.service.nodeport.debug.core }}
+  {{ end }}
   selector:
     app.kubernetes.io/name: {{ include "myapp.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
@@ -62,8 +68,16 @@ spec:
           envFrom:
             - configMapRef:
                 name: {{ include "myapp.fullname" . }}-configmap
+          env:
+            {{ if .Values.debug.egeriaJVM }}
+            - name: JAVA_DEBUG
+              value:  "true"
+            {{ end }}
           ports:
             - containerPort: 9443
+          {{ if .Values.debug.egeriaJVM }}
+            - containerPort: 5005
+          {{ end }}
           readinessProbe:
             tcpSocket:
               port: 9443

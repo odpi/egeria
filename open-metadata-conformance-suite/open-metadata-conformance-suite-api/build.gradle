@@ -5,8 +5,8 @@
 
 
 dependencies {
-    implementation 'org.slf4j:slf4j-api:1.7.30'
-    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.11.1'
+    implementation 'org.slf4j:slf4j-api'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations'
 }
 
 description = 'Open Metadata Conformance Suite API'

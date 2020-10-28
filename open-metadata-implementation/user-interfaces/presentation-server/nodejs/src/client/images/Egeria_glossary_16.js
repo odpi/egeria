@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 import React from "react";
-import icon from '../../../public/images/egeria_glossary.svg';
+import icon from '../../../public/images/Egeria_glossary.svg';
 
 export default function Egeria_glossary_16(props) {
   return (
