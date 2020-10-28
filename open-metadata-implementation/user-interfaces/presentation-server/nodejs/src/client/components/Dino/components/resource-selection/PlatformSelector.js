@@ -48,7 +48,7 @@ export default function PlatformSelector() {
     if (json !== null) {
       if (json.relatedHTTPCode === 200 ) {
         let platformList = json.platformList;
-        if (platformList !== null) {
+        if (platformList) {
           let newPlatforms = {};
           platformList.forEach(plt => {
             const newPlatform = { "platformName"    : plt.platformName, 
