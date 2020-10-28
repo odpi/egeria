@@ -2152,7 +2152,7 @@ public class GlossaryExchangeService
                                                                                       UserNotAuthorizedException,
                                                                                       PropertyServerException
     {
-        return glossaryManagerClient.getGlossariesForExternalLink(userId, externalLinkGUID, startFrom, pageSize);
+        return glossaryManagerClient.getGlossariesForExternalLink(userId, assetManagerGUID, assetManagerName, externalLinkGUID, startFrom, pageSize);
     }
 
 
