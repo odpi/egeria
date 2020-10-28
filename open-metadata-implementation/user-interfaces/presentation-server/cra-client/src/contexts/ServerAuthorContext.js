@@ -480,7 +480,7 @@ const ServerAuthorContextProvider = props => {
       "Basic configuration",
       "Configure audit log destinations",
       "Preview configuration and deploy instance"
-    ]
+    ];
 
     switch(serverType) {
   

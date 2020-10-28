@@ -258,7 +258,7 @@ router.post("/open-metadata/admin-services/*", (req, res) => {
       key: router.get('key'),
       rejectUnauthorized: false,
     }),
-  }
+  };
   if (config) apiReq.data = config;
   axios(apiReq)
     .then(function (response) {
@@ -301,7 +301,7 @@ router.delete("/open-metadata/admin-services/*", (req, res) => {
       key: router.get('key'),
       rejectUnauthorized: false,
     }),
-  }
+  };
   if (config) apiReq.data = config;
   axios(apiReq)
     .then(function (response) {

@@ -11,7 +11,6 @@ import {
   Row,
   TileGroup,
   RadioTile,
-  SelectableTile,
 } from "carbon-components-react";
 import axios from "axios";
 
@@ -40,7 +39,7 @@ export default function ServerAuthor() {
     newServerName,
     newServerLocalServerType, setNewServerLocalServerType,
     newServerSecurityConnector,
-    availableAccessServices, setAvailableAccessServices,
+    availableAccessServices,
     selectedAccessServices,
     newServerRepository,
     newServerCohorts,
@@ -67,7 +66,6 @@ export default function ServerAuthor() {
     basicConfigFormStartRef,
     discoveryEnginesFormStartRef,
     stewardshipEnginesFormStartRef,
-    fetchAccessServices,
     fetchServerConfig,
     generateBasicServerConfig,
     registerCohort,
@@ -377,7 +375,7 @@ export default function ServerAuthor() {
         const url = `/open-metadata/admin-services/users/${userId}/servers/${newServerName}/audit-log-destinations/${destination.id}`;
         const data = {
           tenantId
-        }
+        };
         if (destination.id != "default") {
           data.config = destination.severities.map((s) => s.id);
         }

@@ -32,24 +32,12 @@ export default function ConfigPreview({ options }) {
 
   const { userId, serverName: tenantId } = useContext(IdentificationContext);
   const {
-    newServerName, setNewServerName,
-    newServerLocalURLRoot, setNewServerLocalURLRoot,
-    newServerLocalServerType, setNewServerLocalServerType,
-    newServerOrganizationName, setNewServerOrganizationName,
-    newServerLocalUserId, setNewServerLocalUserId,
-    newServerLocalPassword, setNewServerLocalPassword,
-    newServerSecurityConnector, setNewServerSecurityConnector,
-    availableAccessServices, setAvailableAccessServices,
-    availableAccessServicesTiles, setAvailableAccessServicesTiles,
-    newServerRepository, setNewServerRepository,
-    newServerMaxPageSize, setNewServerMaxPageSize,
-    notificationType, setNotificationType,
-    notificationTitle, setNotificationTitle,
-    notificationSubtitle, setNotificationSubtitle,
-    progressIndicatorIndex, setProgressIndicatorIndex,
-    loadingText, setLoadingText,
+    availableAccessServices,
+    setNotificationType,
+    setNotificationTitle,
+    setNotificationSubtitle,
     newServerConfig, setNewServerConfig,
-    preventDeployment, setPreventDeployment,
+    setPreventDeployment,
     fetchServerConfig,
     setServerAttribute,
   } = useContext(ServerAuthorContext);
@@ -81,7 +69,7 @@ export default function ConfigPreview({ options }) {
       // TODO: Add comparison of new access services to enable vs. existing access services from config
       //       to rule out any unneccessary calls
       accessServiceURLs.push(`/open-metadata/admin-services/users/${userId}/servers/${newServerConfig.localServerName}/access-services/${row.id}`);
-    })
+    });
     for (const enableServiceAccessURL of accessServiceURLs) {
       try {
         const enableServiceAccessResponse = await axios.post(enableServiceAccessURL, {
@@ -126,7 +114,7 @@ export default function ConfigPreview({ options }) {
       // TODO: Add comparison of new access services to disable vs. existing access services from config
       //       to rule out any unneccessary calls
       accessServiceURLs.push(`/open-metadata/admin-services/users/${userId}/servers/${newServerConfig.localServerName}/access-services/${row.id}`);
-    })
+    });
     for (const disableServiceAccessURL of accessServiceURLs) {
       try {
         const disableServiceAccessResponse = await axios.delete(disableServiceAccessURL, {

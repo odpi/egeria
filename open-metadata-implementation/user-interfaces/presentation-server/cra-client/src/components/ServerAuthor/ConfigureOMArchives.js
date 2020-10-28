@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
-import React, { useContext, useReducer } from "react";
+import React, { useContext } from "react";
 import {
   Button,
   TextInput,

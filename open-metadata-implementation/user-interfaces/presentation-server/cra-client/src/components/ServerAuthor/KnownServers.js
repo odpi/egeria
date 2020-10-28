@@ -1,36 +1,28 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import {
   Button,
   DataTable,
-  Link,
   OverflowMenu,
   OverflowMenuItem,
-  TextInput,
-  Tooltip,
 } from "carbon-components-react";
 import {
   CheckmarkOutline16,
-  Edit16,
   MisuseOutline16,
-  Save16,
-  TrashCan16,
 } from "@carbon/icons-react";
 import axios from "axios";
 import { IdentificationContext } from "../../contexts/IdentificationContext";
 import { ServerAuthorContext } from "../../contexts/ServerAuthorContext";
-// import './serverConfig.scss';
 
 export default function KnownServers() {
 
   const { userId, serverName: tenantId } = useContext(IdentificationContext);
   const {
     knownServers, setKnownServers,
-    notificationType, setNotificationType,
-    notificationTitle, setNotificationTitle,
-    notificationSubtitle, setNotificationSubtitle,
-    loadingText, setLoadingText,
+    setNotificationType,
+    setNotificationTitle,
+    setNotificationSubtitle,
     fetchKnownServers,
     showConfigForm,
   } = useContext(ServerAuthorContext);
@@ -41,7 +33,7 @@ export default function KnownServers() {
     const serverURLs = [];
     selectedRows.forEach((row) => {
       serverURLs.push(`/open-metadata/admin-services/users/${userId}/servers/${row.id}/instance`);
-    })
+    });
     for (const url of serverURLs) {
       try {
         const startServerResponse = await axios.post(url, {
@@ -86,7 +78,7 @@ export default function KnownServers() {
         url += '/instance';
       }
       serverURLs.push(url);
-    })
+    });
     for (const url of serverURLs) {
       try {
         const stopServerResponse = await axios.delete(url, {
