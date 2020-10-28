@@ -186,7 +186,7 @@ subprojects {
             runtime("org.janusgraph:janusgraph-cql:0.5.2")
             runtime("org.janusgraph:janusgraph-es:0.5.2")
             runtime("org.janusgraph:janusgraph-lucene:0.5.2")
-            runtime("org.xerial.snappy:snappy-java:1.1.7.7")
+            runtime("org.xerial.snappy:snappy-java:1.1.8")
             testImplementation("junit:junit:4.13")
             testImplementation("org.glassfish:javax.json:1.1.4")
             testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.0")
