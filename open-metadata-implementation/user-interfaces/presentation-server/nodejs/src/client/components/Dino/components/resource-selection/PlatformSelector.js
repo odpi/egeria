@@ -139,9 +139,8 @@ export default function PlatformSelector() {
   return (
     <div className="resource-controls">
 
-      <p>Accessible Platforms</p>
+      <p>Platforms</p>
 
-      <label htmlFor="platformSelector">Platforms: </label>
       <select className="platform-selector"
               id="platformSelector"
               name="platformSelector"  

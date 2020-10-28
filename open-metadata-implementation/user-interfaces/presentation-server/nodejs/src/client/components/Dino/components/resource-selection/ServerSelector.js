@@ -145,9 +145,8 @@ export default function ServerSelector() {
   return (
     <div className="resource-controls">
 
-      <p>Direct Server Links</p>
+      <p>Servers</p>
 
-      <label htmlFor="serverSelector">Servers: </label>
       <select className="server-selector"
               id="serverSelector"
               name="serverSelector"
