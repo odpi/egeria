@@ -156,7 +156,7 @@ export default function ServerSelector() {
               size = "5" >
         {
           serverNameListSorted.length === 0 && 
-          ( <option value="dummy" disabled defaultValue>No servers yet - please add one!</option> )
+          ( <option value="dummy" disabled defaultValue>No servers...</option> )
         }
         {
           serverNameListSorted.length > 0 && 

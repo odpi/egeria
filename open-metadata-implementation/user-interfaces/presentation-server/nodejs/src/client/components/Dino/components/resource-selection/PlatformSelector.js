@@ -150,7 +150,7 @@ export default function PlatformSelector() {
               size = "5" >
       {
         platformNameListSorted.length === 0 && 
-        ( <option value="dummy" disabled defaultValue>No platforms yet - please add one!</option> )
+        ( <option value="dummy" disabled defaultValue>No platforms...</option> )
       }
       {
         platformNameListSorted.length > 0 && 
