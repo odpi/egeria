@@ -22,7 +22,7 @@ dependencies {
     runtimeOnly 'org.janusgraph:janusgraph-cql:0.5.2'
     runtimeOnly 'joda-time:joda-time:2.10.6'
     runtimeOnly 'org.antlr:antlr-runtime:3.5.2'
-    runtimeOnly 'org.xerial.snappy:snappy-java:1.1.7.7'
+    runtimeOnly 'org.xerial.snappy:snappy-java:1.1.8'
     implementation 'com.fasterxml.jackson.core:jackson-annotations'
 
 }
