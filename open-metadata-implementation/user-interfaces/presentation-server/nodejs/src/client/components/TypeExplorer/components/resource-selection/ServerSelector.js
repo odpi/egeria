@@ -50,7 +50,7 @@ export default function ServerSelector() {
     if (json !== null) {
       if (json.relatedHTTPCode === 200 ) {
         let serverList = json.serverList;
-        if (serverList !== null) {
+        if (serverList) {
           let newServers = {};
           serverList.forEach(svr => {
             const newServer = { "serverInstanceName"  : svr.serverInstanceName, 
