@@ -1745,6 +1745,7 @@ public class GlossaryExchangeRESTServices
      * @param userId calling user
      * @param glossaryCategoryGUID unique identifier of the glossary category
      * @param glossaryTermGUID unique identifier of the glossary term
+     * @param requestBody asset manager identifiers
      *
      * @return  void or
      * InvalidParameterException  one of the parameters is invalid

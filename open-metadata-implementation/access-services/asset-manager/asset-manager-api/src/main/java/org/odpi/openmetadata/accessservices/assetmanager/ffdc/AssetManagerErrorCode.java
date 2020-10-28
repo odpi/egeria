@@ -70,14 +70,14 @@ public enum AssetManagerErrorCode implements ExceptionMessageSet
                                         "The system detected an unexpected error during start up and is now in an unknown start.",
                                         "The error message should indicate the cause of the error.  Otherwise look for errors in the remote server's audit log and console to understand and correct the source of the error."),
 
-    NULL_CONNECTOR_RETURNED(500, "OMAG-ASSET-MANAGER-500-001",
+    NULL_CONNECTOR_RETURNED(500, "OMAS-ASSET-MANAGER-500-006",
                                     "The requested connector for connection named {0} has not been created.  The connection was provided by the {1} service" +
                                     " running in OMAG Server {2} at {3}",
                                     "The system is unable to create a connector which means some of its services will not work.",
                                     "This problem is likely to be caused by an incorrect connection object.  Check the settings on the Connection" +
                                     "and correct if necessary.  If the connection is correct, contact the Egeria community for help."),
 
-    WRONG_TYPE_OF_CONNECTOR(500, "OMAG-ASSET-MANAGER-500-002",
+    WRONG_TYPE_OF_CONNECTOR(500, "OMAS-ASSET-MANAGER-500-007",
                                     "The connector generated from the connection named {0} return by the {1} service running in OMAG Server {2} at {3} is " +
                                     "not of the required type. It should be an instance of {4}",
                                     "The system is unable to create the required connector which means some of its services will not work.",
