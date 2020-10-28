@@ -64,9 +64,9 @@ export default function InstanceRetrieval(props) {
         <div className="retrieval-controls">
 
           <div className="retrieval-fields">
-          <p>
-          Get an instance by GUID
-          </p>
+
+          <p className="descriptive-text">Get an instance by GUID</p>
+
           <label htmlFor="category">Category: </label>
           <input type="radio"
                  id="catEntity"

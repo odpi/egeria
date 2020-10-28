@@ -93,9 +93,10 @@ public class DinoViewHandler
 
         // TODO - It would be desirable to add validation rules to ensure uniqueness etc.
 
+        configuredPlatforms         = new HashMap<>();
+        configuredServerInstances   = new HashMap<>();
+
         if (resourceEndpoints != null && !resourceEndpoints.isEmpty()) {
-            configuredPlatforms         = new HashMap<>();
-            configuredServerInstances   = new HashMap<>();
 
             resourceEndpoints.forEach(res -> {
 
@@ -135,16 +136,26 @@ public class DinoViewHandler
     public Map<String, List<ResourceEndpoint>> getResourceEndpoints(String userId, String methodName)
 
     {
-
-        List<ResourceEndpoint> platformList = new ArrayList<>();
-        List<ResourceEndpoint> serverList   = new ArrayList<>();
-
-        platformList.addAll(configuredPlatforms.values());
-        serverList.addAll(configuredServerInstances.values());
-
         Map<String, List<ResourceEndpoint>> returnMap = new HashMap<>();
+
+        List<ResourceEndpoint> platformList = null;
+        List<ResourceEndpoint> serverList   = null;
+
+        if (!configuredPlatforms.isEmpty())
+        {
+            platformList = new ArrayList<>();
+            platformList.addAll(configuredPlatforms.values());
+        }
+
+        if (!configuredServerInstances.isEmpty())
+        {
+            serverList = new ArrayList<>();
+            serverList.addAll(configuredServerInstances.values());
+        }
+
         returnMap.put("platformList",platformList);
         returnMap.put("serverList",serverList);
+
         return returnMap;
     }
 
