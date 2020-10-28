@@ -39,7 +39,7 @@ public enum GraphOMRSAuditCode implements AuditLogMessageSet
 
     GRAPH_REPOSITORY_HAS_DIFFERENT_METADATA_COLLECTION_ID("OMRS-GRAPH-REPOSITORY-0002",
             OMRSAuditLogRecordSeverity.EXCEPTION,
-            "The OMRS Graph Database {0} contains a metadataCollectionId {1} that does not match the repository's metadataCollectionId {2}.",
+            "The OMRS Graph Database {0} contains a metadataCollectionId {1} that does not match the requested metadataCollectionId {2}.",
             "The graph database is for a different metadata repository. Cannot proceed with initialization of the graph repository.",
             "The likely cause of this error is either that the configuration document for the server has been deleted and recreated, " +
                                                                   "causing a new metadata collection id to be generated or there are two servers " +
