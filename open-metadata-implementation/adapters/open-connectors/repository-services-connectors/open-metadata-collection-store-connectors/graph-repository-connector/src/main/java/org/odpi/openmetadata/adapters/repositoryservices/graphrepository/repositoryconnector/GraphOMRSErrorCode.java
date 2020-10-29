@@ -116,6 +116,10 @@ public enum GraphOMRSErrorCode implements ExceptionMessageSet
             "There is an already a relationship with GUID {0} so cannot honor request to create relationship in {1} method of class {2} to open metadata repository {3}",
             "The system is unable to perform the request because there is already a relationship with the same GUID.",
             "Correct the caller's code and retry the create request."),
+    INVALID_MATCH_PROPERTY(400, "OMRS-GRAPH-REPOSITORY-400-024",
+                           "The match property with name {0} is of type {1} instead of the correct type {2} - reported by the {3} method of class {4} to open metadata repository {5}",
+                           "The system is unable to perform the request because the match properties are not valid.",
+                           "Check the named match property is not deprecated and has the correct type, then retry the request."),
 
     ;
 
