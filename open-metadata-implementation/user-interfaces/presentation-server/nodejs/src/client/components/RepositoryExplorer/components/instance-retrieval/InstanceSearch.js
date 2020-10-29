@@ -427,9 +427,9 @@ export default function InstanceSearch(props) {
       <div className="retrieval-controls">
 
         <div className="retrieval-fields">
-        <p>
-        Search for instances
-        </p>
+
+        <p className="descriptive-text">Search for instances</p>
+
         <label htmlFor="category">Category: </label>
         <input type="radio"
                id="searchCatEntity"

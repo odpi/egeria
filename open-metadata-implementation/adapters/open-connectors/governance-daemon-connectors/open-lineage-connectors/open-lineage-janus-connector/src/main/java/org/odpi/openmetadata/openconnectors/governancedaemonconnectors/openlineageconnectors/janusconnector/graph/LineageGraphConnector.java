@@ -25,6 +25,7 @@ import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlinea
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -108,7 +109,7 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
                         errorCode.getUserAction());
             }
 
-            this.helper = new LineageGraphConnectorHelper(g);
+            this.helper = new LineageGraphConnectorHelper(g, graphFactory.isSupportingTransactions());
 
         } catch (JanusConnectorException error) {
             log.error("The Lineage graph could not be initialized due to an error", error);
@@ -193,13 +194,15 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
 
         Vertex vertexToStart;
         if (schemaElementVertices != null) {
-            Vertex columnOut = null;
+            List<Vertex> columnOutList = new ArrayList<>();
             for (Vertex schemaElementVertex : schemaElementVertices) {
                 vertexToStart = isSchemaElementLinkedToProcess(g, schemaElementVertex, process);
                 if (vertexToStart != null) {
-                    columnOut = findPathForOutputAsset(vertexToStart, g, columnIn);
+                    columnOutList.addAll(findPathForOutputAsset(vertexToStart, g, columnIn));
                 }
-                moveColumnProcessColumn(columnIn, columnOut, process);
+                for (Vertex columnOut : columnOutList) {
+                    addNodesAndEdgesForQuerying(columnIn, columnOut, process);
+                }
             }
         }
     }
@@ -229,20 +232,12 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
     }
 
     /**
-     * Initiates the process of copying the input and output vertices to the MainGraph.
+     * Returns true if the vertex is null or doesn't have a valid guid
      *
-     * @param columnIn  - The vertex of the input schema element
-     * @param columnOut - THe vertex of the output schema element
-     * @param process   - The vertex of the process.
+     * @param column - The vertex to of the schema element
      */
-    private void moveColumnProcessColumn(Vertex columnIn, Vertex columnOut, Vertex process) {
-        if (columnOut != null) {
-            String columnOutGuid = getGuid(columnOut);
-            String columnInGuid = getGuid(columnIn);
-            if (!columnOutGuid.isEmpty() && !columnInGuid.isEmpty()) {
-                addNodesAndEdgesForQuerying(columnIn, columnOut, process);
-            }
-        }
+    private boolean isColumnEmpty(Vertex column) {
+        return (column == null || !StringUtils.isNotEmpty(getGuid(column)));
     }
 
     /**
@@ -253,6 +248,9 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
      * @param process   - The vertex of the process.
      */
     private void addNodesAndEdgesForQuerying(Vertex columnIn, Vertex columnOut, Vertex process) {
+        if (isColumnEmpty(columnIn) || isColumnEmpty(columnOut)) {
+            return;
+        }
 
         final String processGuid = getGuid(process);
         final String processName =
@@ -650,40 +648,36 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
     }
 
     /**
-     * Returns the vertex of the schema element in the output of a process.
+     * Returns a list of vertices of output schema elements
      *
      * @param endingVertex   - The vertex that is being checked if it is the output schema element
      * @param g              - Graph traversal object
      * @param startingVertex - The vertex of the input schema element
      *
-     * @return Return a vertex of the output schema element
+     * @return Return a list of vertices of output schema elements
      */
-    private Vertex findPathForOutputAsset(Vertex endingVertex, GraphTraversalSource g, Vertex startingVertex) {
-        final String VERTEX = "vertex";
+    private List<Vertex> findPathForOutputAsset(Vertex endingVertex, GraphTraversalSource g, Vertex startingVertex) {
         //add null check for endingVertex
         if (endingVertex == null) {
             return null;
         }
 
+        List<Vertex> endVertices = new ArrayList<>();
         try {
-            Iterator<Vertex> end = g.V(endingVertex.id())
-                    .or(__.in(ATTRIBUTE_FOR_SCHEMA).in(ASSET_SCHEMA_TYPE)
-                                    .has(PROPERTY_KEY_LABEL, DATA_FILE).store(VERTEX),
-                            __.in(NESTED_SCHEMA_ATTRIBUTE).has(PROPERTY_KEY_LABEL, RELATIONAL_TABLE)
-                                    .store(VERTEX)).select(VERTEX).unfold();
+            if (isEndColumn(g, endingVertex)) {
+                endVertices.add(endingVertex);
+            } else {
+                List<Vertex> nextVertices = g.V(endingVertex.id()).out(LINEAGE_MAPPING).toList();
 
-            if (!end.hasNext()) {
-                List<Vertex> next = g.V(endingVertex.id()).out(LINEAGE_MAPPING).toList();
-                Vertex nextVertex = null;
-                for (Vertex vert : next) {
-                    if (vert.equals(startingVertex)) {
+                for (Vertex vertex : nextVertices) {
+                    if (vertex.equals(startingVertex)) {
                         continue;
                     }
-                    nextVertex = vert;
+                    Optional.ofNullable(findPathForOutputAsset(vertex, g, endingVertex)).ifPresent(endVertices::addAll);
                 }
-                return findPathForOutputAsset(nextVertex, g, endingVertex);
+
             }
-            return endingVertex;
+            return endVertices;
         } catch (Exception e) {
             if (log.isDebugEnabled()) {
                 log.debug("Vertex does not exist with guid {} and display name {}", startingVertex.id(),
@@ -691,6 +685,23 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
             }
             return null;
         }
+    }
+
+    /**
+     * Returns true if the vertex is part of an asset
+     *
+     * @param g      - Graph traversal object
+     * @param vertex - The vertex of the schema element
+     */
+    private boolean isEndColumn(GraphTraversalSource g, Vertex vertex) {
+        final String VERTEX = "vertex";
+
+        Iterator<Vertex> end = g.V(vertex.id())
+                .or(__.in(ATTRIBUTE_FOR_SCHEMA).in(ASSET_SCHEMA_TYPE)
+                                .has(PROPERTY_KEY_LABEL, DATA_FILE).store(VERTEX),
+                        __.in(NESTED_SCHEMA_ATTRIBUTE).has(PROPERTY_KEY_LABEL, RELATIONAL_TABLE)
+                                .store(VERTEX)).select(VERTEX).unfold();
+        return end.hasNext();
     }
 
     private Iterator<Vertex> checkIfVertexExist(String guid, Object version) {
