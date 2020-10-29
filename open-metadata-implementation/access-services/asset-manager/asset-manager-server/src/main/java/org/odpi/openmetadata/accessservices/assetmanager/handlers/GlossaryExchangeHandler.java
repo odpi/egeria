@@ -120,12 +120,15 @@ public class GlossaryExchangeHandler
                                                                                            UserNotAuthorizedException,
                                                                                            PropertyServerException
     {
+        final String guidParameterName             = "elementGUID";
+        final String typeNameParameterName         = "elementTypeName";
         final String correlationParameterName      = "correlationProperties";
         final String assetManagerGUIDParameterName = "correlationProperties.assetManagerGUID";
         final String assetManagerNameParameterName = "correlationProperties.assetManagerName";
-        final String identifierParameterName       = "correlationProperties.assetManagerName";
+        final String identifierParameterName       = "correlationProperties.externalIdentifier";
 
-
+        invalidParameterHandler.validateGUID(elementGUID, guidParameterName, methodName);
+        invalidParameterHandler.validateName(elementTypeName, typeNameParameterName, methodName);
         invalidParameterHandler.validateObject(correlationProperties, correlationParameterName, methodName);
         invalidParameterHandler.validateGUID(correlationProperties.getAssetManagerGUID(), assetManagerGUIDParameterName, methodName);
         invalidParameterHandler.validateName(correlationProperties.getAssetManagerName(), assetManagerNameParameterName, methodName);
@@ -1800,6 +1803,40 @@ public class GlossaryExchangeHandler
         // todo
         return null;
     }
+
+
+    /**
+     * Retrieve the list of glossary terms associated with a glossary.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param glossaryGUID unique identifier of the glossary of interest
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param methodName calling method
+     *
+     * @return list of associated metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<GlossaryTermElement>    getTermsForGlossary(String userId,
+                                                            String assetManagerGUID,
+                                                            String assetManagerName,
+                                                            String glossaryGUID,
+                                                            int    startFrom,
+                                                            int    pageSize,
+                                                            String methodName) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
+    {
+        // todo
+        return null;
+    }
+
+
 
 
     /**

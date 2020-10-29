@@ -3503,6 +3503,80 @@ public class GlossaryExchangeRESTServices
 
 
     /**
+     * Retrieve the list of glossary terms associated with a glossary.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param glossaryGUID unique identifier of the glossary of interest
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param requestBody asset manager identifiers
+     *
+     * @return list of associated metadata elements or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public GlossaryTermElementsResponse getTermsForGlossary(String                             serverName,
+                                                            String                             userId,
+                                                            String                             glossaryGUID,
+                                                            int                                startFrom,
+                                                            int                                pageSize,
+                                                            AssetManagerIdentifiersRequestBody requestBody)
+    {
+        final String methodName = "getTermsForGlossary";
+
+        RESTCallToken token      = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        GlossaryTermElementsResponse response = new GlossaryTermElementsResponse();
+        AuditLog                     auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                GlossaryExchangeHandler handler = instanceHandler.getGlossaryManagerHandler(userId, serverName, methodName);
+
+                handler.getTermsForGlossary(userId,
+                                            requestBody.getAssetManagerGUID(),
+                                            requestBody.getAssetManagerName(),
+                                            glossaryGUID,
+                                            startFrom,
+                                            pageSize,
+                                            methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+
+    /**
      * Retrieve the list of glossary terms associated with a glossary category.
      *
      * @param serverName name of the server to route the request to
@@ -3573,6 +3647,7 @@ public class GlossaryExchangeRESTServices
 
         return response;
     }
+
 
 
     /**

@@ -1868,6 +1868,29 @@ public class GlossaryExchangeService
 
 
     /**
+     * Retrieve the list of glossary terms associated with a glossary.
+     *
+     * @param glossaryGUID unique identifier of the glossary of interest
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of associated metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<GlossaryTermElement>    getTermsForGlossary(String glossaryGUID,
+                                                            int    startFrom,
+                                                            int    pageSize) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
+    {
+        return glossaryManagerClient.getTermsForGlossary(userId, assetManagerGUID, assetManagerName, glossaryGUID, startFrom, pageSize);
+    }
+
+
+    /**
      * Retrieve the list of glossary terms associated with a glossary category.
      *
      * @param glossaryCategoryGUID unique identifier of the glossary category of interest

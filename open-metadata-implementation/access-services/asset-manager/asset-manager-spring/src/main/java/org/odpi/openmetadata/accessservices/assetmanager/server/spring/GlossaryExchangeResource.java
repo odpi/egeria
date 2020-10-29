@@ -575,7 +575,7 @@ public class GlossaryExchangeResource
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/glossaries/{glossaryGUID}/categories")
+    @PostMapping(path = "/glossaries/{glossaryGUID}/categories/retrieve")
 
     public GlossaryCategoryElementsResponse getCategoriesForGlossary(@PathVariable String                             serverName,
                                                                      @PathVariable String                             userId,
@@ -1343,6 +1343,34 @@ public class GlossaryExchangeResource
 
 
     /**
+     * Retrieve the list of glossary terms associated with a glossary.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param glossaryGUID unique identifier of the glossary of interest
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param requestBody asset manager identifiers
+     *
+     * @return list of associated metadata elements or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/glossaries/{glossaryGUID}/terms/retrieve")
+
+    public GlossaryTermElementsResponse getTermsForGlossary(@PathVariable String                             serverName,
+                                                            @PathVariable String                             userId,
+                                                            @PathVariable String                             glossaryGUID,
+                                                            @RequestParam int                                startFrom,
+                                                            @RequestParam int                                pageSize,
+                                                            @RequestBody  AssetManagerIdentifiersRequestBody requestBody)
+    {
+        return restAPI.getTermsForGlossary(serverName, userId, glossaryGUID, startFrom, pageSize, requestBody);
+    }
+
+
+    /**
      * Retrieve the list of glossary terms associated with a glossary category.
      *
      * @param serverName name of the server to route the request to
@@ -1357,7 +1385,7 @@ public class GlossaryExchangeResource
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/glossaries/categories/{glossaryCategoryGUID}/terms")
+    @PostMapping(path = "/glossaries/categories/{glossaryCategoryGUID}/terms/retrieve")
 
     public GlossaryTermElementsResponse getTermsForGlossaryCategory(@PathVariable String                             serverName,
                                                                     @PathVariable String                             userId,

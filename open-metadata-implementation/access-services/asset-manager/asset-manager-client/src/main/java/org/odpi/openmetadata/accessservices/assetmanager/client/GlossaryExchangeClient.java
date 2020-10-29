@@ -1330,7 +1330,7 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         invalidParameterHandler.validateName(assetManagerName, assetManagerNameParameterName, methodName);
         int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
 
-        final String urlTemplate = urlTemplatePrefix + "/{2}/categories?startFrom={3}&pageSize={4}";
+        final String urlTemplate = urlTemplatePrefix + "/{2}/categories/retrieve?startFrom={3}&pageSize={4}";
 
         AssetManagerIdentifiersRequestBody requestBody = new AssetManagerIdentifiersRequestBody();
         requestBody.setAssetManagerGUID(assetManagerGUID);
@@ -2786,6 +2786,58 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
 
 
     /**
+     * Retrieve the list of glossary terms associated with a glossary.
+     *
+     * @param userId calling user
+     * @param assetManagerGUID unique identifier of software server capability representing the caller
+     * @param assetManagerName unique name of software server capability representing the caller
+     * @param glossaryGUID unique identifier of the glossary of interest
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     *
+     * @return list of associated metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<GlossaryTermElement>    getTermsForGlossary(String userId,
+                                                            String assetManagerGUID,
+                                                            String assetManagerName,
+                                                            String glossaryGUID,
+                                                            int    startFrom,
+                                                            int    pageSize) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
+    {
+        final String methodName        = "getTermsForGlossary";
+        final String guidParameterName = "glossaryGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(glossaryGUID, guidParameterName, methodName);
+        int validatedPageSize = invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        AssetManagerIdentifiersRequestBody requestBody = new AssetManagerIdentifiersRequestBody();
+        requestBody.setAssetManagerGUID(assetManagerGUID);
+        requestBody.setAssetManagerName(assetManagerName);
+
+        final String urlTemplate = urlTemplatePrefix + "/{2}/terms/retrieve?startFrom={3}&pageSize={4}";
+
+        GlossaryTermElementsResponse restResult = restClient.callGlossaryTermsPostRESTCall(methodName,
+                                                                                           urlTemplate,
+                                                                                           requestBody,
+                                                                                           serverName,
+                                                                                           userId,
+                                                                                           glossaryGUID,
+                                                                                           startFrom,
+                                                                                           validatedPageSize);
+
+        return restResult.getElementList();
+    }
+
+
+
+    /**
      * Retrieve the list of glossary terms associated with a glossary category.
      *
      * @param userId calling user
@@ -2821,7 +2873,7 @@ public class GlossaryExchangeClient implements GlossaryExchangeInterface
         requestBody.setAssetManagerGUID(assetManagerGUID);
         requestBody.setAssetManagerName(assetManagerName);
 
-        final String urlTemplate = urlTemplatePrefix + "/categories/{2}/terms?startFrom={3}&pageSize={4}";
+        final String urlTemplate = urlTemplatePrefix + "/categories/{2}/terms/retrieve?startFrom={3}&pageSize={4}";
 
         GlossaryTermElementsResponse restResult = restClient.callGlossaryTermsPostRESTCall(methodName,
                                                                                            urlTemplate,
