@@ -45,7 +45,7 @@ import org.testng.annotations.Test;
 
 public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 
-	private static final String DATABASE_ADWENTURE_WORKS = "AdventureWorks";
+	private static final String DATABASE_ADVENTURE_WORKS = "AdventureWorks";
 	private static final String DATABASE_GOSALES = "GOSALES";
 	private static final String DATA_TYPE_DECIMAL = "DECIMAL";
 	private static final String DATA_TYPE_INTEGER = "INTEGER";
@@ -106,7 +106,7 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 	public void getDatabases() throws AnalyticsModelingCheckedException {
 		// setup repository
 		createDatabaseEntity(DATABASE_GOSALES, SERVER_TYPE_MS_SQL, "1.0");
-		createDatabaseEntity(DATABASE_ADWENTURE_WORKS, SERVER_TYPE_MS_SQL, "2.0");
+		createDatabaseEntity(DATABASE_ADVENTURE_WORKS, SERVER_TYPE_MS_SQL, "2.0");
 
 		// test
 		List<ResponseContainerDatabase> databases = databaseContextHandler.getDatabases(USER_ID, FROM_INDEX, PAGE_SIZE);
@@ -126,7 +126,7 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 	public void getDatabasesPage() throws AnalyticsModelingCheckedException {
 		// setup repository with four databases sorted: AdwentureWorks, DB_3, DB_4, GOSALES
 		createDatabaseEntity(DATABASE_GOSALES, SERVER_TYPE_MS_SQL, "1.0");
-		createDatabaseEntity(DATABASE_ADWENTURE_WORKS, SERVER_TYPE_MS_SQL, "2.0");
+		createDatabaseEntity(DATABASE_ADVENTURE_WORKS, SERVER_TYPE_MS_SQL, "2.0");
 		createDatabaseEntity("DB_3", SERVER_TYPE_MS_SQL, "1.0");
 		createDatabaseEntity("DB_4", SERVER_TYPE_MS_SQL, "2.0");
 		createDatabaseEntity("DB_5", SERVER_TYPE_MS_SQL, "2.0");
@@ -219,14 +219,14 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 		// setup repository
 		EntityDetail entityDB = createDatabaseEntity(DATABASE_GOSALES, SERVER_TYPE_MS_SQL, "1.0");
 		createDatabaseSchemaEntity(entityDB.getGUID(), SCHEMA_DBO);
-		entityDB = createDatabaseEntity("AdventureWorks", SERVER_TYPE_MS_SQL, "1.0");
+		entityDB = createDatabaseEntity(DATABASE_ADVENTURE_WORKS, SERVER_TYPE_MS_SQL, "1.0");
 		createDatabaseSchemaEntity(entityDB.getGUID(), SCHEMA_DBO);
 
 		List<ResponseContainerDatabaseSchema> schemas = databaseContextHandler
 				.getDatabaseSchemas(entityDB.getGUID(),FROM_INDEX, PAGE_SIZE);
 		assertNotNull(schemas);
 		assertTrue(schemas.size() == 1, "Failed to retrieve database schema.");
-		assertEquals("AdventureWorks", schemas.get(0).getCatalog());
+		assertEquals(DATABASE_ADVENTURE_WORKS, schemas.get(0).getCatalog());
 	}
 
 	@Test

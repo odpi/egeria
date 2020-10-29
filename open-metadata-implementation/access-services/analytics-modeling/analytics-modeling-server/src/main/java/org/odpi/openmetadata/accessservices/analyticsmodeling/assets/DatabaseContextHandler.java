@@ -119,8 +119,6 @@ public class DatabaseContextHandler {
 				.map(this::buildDatabase)
 				.filter(Objects::nonNull).collect(Collectors.toList());
 		
-		ret.sort(Comparator.comparing(rdb->rdb.getDbName().toUpperCase()));
-		
 		return ret;
 	}
 
@@ -150,15 +148,6 @@ public class DatabaseContextHandler {
 		return list.subList(startFrom,  toElement);
 	}
 	
-	private ResponseContainerDatabase buildDatabase(EntityDetail e) {
-		ResponseContainerDatabase ret = new ResponseContainerDatabase();
-		ret.setDbName(this.getEntityStringProperty(e, Constants.NAME));
-		ret.setDbType(this.getEntityStringProperty(e, Constants.TYPE));
-		ret.setDbVersion(this.getEntityStringProperty(e, Constants.VERSION));
-		ret.setGUID(e.getGUID());
-		return ret;
-	}
-
 	private ResponseContainerDatabase buildDatabase(DatabaseElement e) {
 		ResponseContainerDatabase ret = new ResponseContainerDatabase();
 		ret.setDbName(e.getDatabaseProperties().getDisplayName());
