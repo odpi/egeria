@@ -70,10 +70,12 @@
 			<groupId>org.odpi.egeria</groupId>
 			<artifactId>repository-services-apis</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>org.odpi.egeria</groupId>
-			<artifactId>generic-handlers</artifactId>
+			<artifactId>repository-handler</artifactId>
 		</dependency>
+		
 		<dependency>
 			<groupId>org.odpi.egeria</groupId>
 			<artifactId>data-manager-api</artifactId>
@@ -81,6 +83,10 @@
 		<dependency>
 			<groupId>org.odpi.egeria</groupId>
 			<artifactId>data-manager-server</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.odpi.egeria</groupId>
+			<artifactId>generic-handlers</artifactId>
 		</dependency>
 
 		<dependency>
