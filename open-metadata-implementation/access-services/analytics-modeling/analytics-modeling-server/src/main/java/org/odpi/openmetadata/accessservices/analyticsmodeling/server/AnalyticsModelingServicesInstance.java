@@ -7,7 +7,20 @@ import java.util.List;
 
 import org.odpi.openmetadata.accessservices.analyticsmodeling.assets.DatabaseContextHandler;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.contentmanager.OMEntityDao;
+import org.odpi.openmetadata.accessservices.datamanager.converters.DatabaseColumnConverter;
+import org.odpi.openmetadata.accessservices.datamanager.converters.DatabaseConverter;
+import org.odpi.openmetadata.accessservices.datamanager.converters.DatabaseSchemaConverter;
+import org.odpi.openmetadata.accessservices.datamanager.converters.DatabaseTableConverter;
+import org.odpi.openmetadata.accessservices.datamanager.converters.DatabaseViewConverter;
+import org.odpi.openmetadata.accessservices.datamanager.converters.SchemaTypeConverter;
+import org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseColumnElement;
+import org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseElement;
+import org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseSchemaElement;
+import org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseTableElement;
+import org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseViewElement;
+import org.odpi.openmetadata.accessservices.datamanager.metadataelements.SchemaTypeElement;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
+import org.odpi.openmetadata.commonservices.generichandlers.RelationalDataHandler;
 import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -20,6 +33,14 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 public class AnalyticsModelingServicesInstance extends OMASServiceInstance
 {
     private DatabaseContextHandler databaseContextHandler;
+    
+    private RelationalDataHandler<DatabaseElement,
+							    DatabaseSchemaElement,
+							    DatabaseTableElement,
+							    DatabaseViewElement,
+							    DatabaseColumnElement,
+							    SchemaTypeElement>                         relationalDataHandler;
+
 
     /**
      * Set up the local repository connector that will service the REST Calls
@@ -40,7 +61,32 @@ public class AnalyticsModelingServicesInstance extends OMASServiceInstance
         
         OMEntityDao omEntityDao = new OMEntityDao(repositoryConnector, supportedZones, auditLog);
 
-        databaseContextHandler = new DatabaseContextHandler(omEntityDao, invalidParameterHandler);
+        this.relationalDataHandler = new RelationalDataHandler<>(
+        		new DatabaseConverter<>(repositoryHelper, serviceName,serverName),
+                DatabaseElement.class,
+                new DatabaseSchemaConverter<>(repositoryHelper, serviceName,serverName),
+                DatabaseSchemaElement.class,
+                new DatabaseTableConverter<>(repositoryHelper, serviceName,serverName),
+                DatabaseTableElement.class,
+                new DatabaseViewConverter<>(repositoryHelper, serviceName,serverName),
+                DatabaseViewElement.class,
+                new DatabaseColumnConverter<>(repositoryHelper, serviceName, serverName),
+                DatabaseColumnElement.class,
+                new SchemaTypeConverter<>(repositoryHelper, serviceName, serverName),
+                SchemaTypeElement.class,
+                serviceName,
+                serverName,
+                invalidParameterHandler,
+                repositoryHandler,
+                repositoryHelper,
+                localServerUserId,
+                securityVerifier,
+                supportedZones,
+                defaultZones,
+                publishZones,
+                auditLog);
+        
+        databaseContextHandler = new DatabaseContextHandler(relationalDataHandler, omEntityDao, invalidParameterHandler);
     }
 
 

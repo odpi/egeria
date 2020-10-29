@@ -28,6 +28,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.repositoryservices.archivemanager.OMRSArchiveManager;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.MapPropertyValue;
@@ -63,14 +64,20 @@ public class InMemoryRepositoryTest {
     private OMRSRepositoryContentManager localRepositoryContentManager = null;
     protected OMEntityDaoForTests omEntityDao;
     
+    protected OMRSMetadataCollection metadataCollection;
+    
     final private String context = "Analytics Modeling OMAS test";
     
     public void setup() throws Exception {
         MockitoAnnotations.initMocks(this);
         omEntityDao = new OMEntityDaoForTests(enterpriseConnector, Collections.emptyList(), auditLog);
         omEntityDao.setContext("JUnitTest");
-
+        
         OMRSRepositoryConnector repositoryConnector = initializeInMemoryRepositoryConnector();
+        
+        metadataCollection = repositoryConnector.getMetadataCollection();
+
+      
         when(enterpriseConnector.getMetadataCollection()).thenReturn(repositoryConnector.getMetadataCollection());
         when(enterpriseConnector.getRepositoryHelper()).thenReturn(repositoryConnector.getRepositoryHelper());
 
