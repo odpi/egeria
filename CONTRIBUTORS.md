@@ -15,7 +15,9 @@ This file recognizes the people who have make an important contribution to Egeri
 | Chris Nott |  chris_nott@uk.ibm.com |
 | Billy Bittles |  wbittles@uk.ibm.com |
 | Ilya Ksenofontov |  fonto.trg@gmail.com |
-
+| Jacob Madsen |  jacob.madsen@ibm.com |
+| David Kneisly |  dskneisl@us.ibm.com |
+| Brian Gillikin |  brian.gillikin@ibm.com |
 
 
 To understand how to become an Egeria contributor see the [Egeria Operations Guide](Egeria-Operations.md).
