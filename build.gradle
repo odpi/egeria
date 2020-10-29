@@ -163,7 +163,7 @@ subprojects {
             implementation("org.springframework.security:spring-security-core:5.4.1")
             implementation("org.springframework.security:spring-security-ldap:5.4.1")
             implementation("org.springframework.security:spring-security-web:5.4.1")
-            implementation("org.springframework:spring-aop:5.2.9.RELEASE")
+            implementation("org.springframework:spring-aop:5.3.0")
             implementation("org.springframework:spring-beans:5.2.9.RELEASE")
             implementation("org.springframework:spring-context:5.2.9.RELEASE")
             implementation("org.springframework:spring-core:5.2.9.RELEASE")
