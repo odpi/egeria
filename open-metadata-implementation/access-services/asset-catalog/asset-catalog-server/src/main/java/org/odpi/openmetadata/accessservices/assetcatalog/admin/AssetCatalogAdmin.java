@@ -21,7 +21,7 @@ import java.util.List;
  */
 public class AssetCatalogAdmin extends AccessServiceAdmin {
 
-    public static final String SUPPORTED_TYPES_FOR_SEARCH = "SupportedTypesForSearch";
+    public static final String SUPPORTED_TYPES_FOR_SEARCH = "supportedTypesForSearch";
     private AuditLog auditLog;
     private String serverName;
     private AssetCatalogServicesInstance instance;
