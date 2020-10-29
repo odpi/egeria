@@ -176,7 +176,7 @@ subprojects {
             // testng also used in our 'source' code to support unit tests
             implementation("org.testng:testng:7.3.0")
             implementation("org.yaml:snakeyaml:1.27")
-            runtime("joda-time:joda-time:2.10.6")
+            runtime("joda-time:joda-time:2.10.8")
             runtime("org.antlr:antlr-runtime:3.5.2")
             runtime("org.apache.jena:jena-arq:3.16.0")
             runtime("org.codehaus.jackson:jackson-core-asl:1.9.13")
