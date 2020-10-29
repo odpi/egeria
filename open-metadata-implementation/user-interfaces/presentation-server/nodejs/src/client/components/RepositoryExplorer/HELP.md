@@ -27,7 +27,11 @@ If you know the GUID of the metadata instance you wish to retrieve, enter the GU
 
 &nbsp;
 
-If you don't know the GUID you can use the Search tool further to the right. Enter search text in the `Search text` field. The search text should be a string value that will match any string property of the instance you are looking for. It can contain a regular expression. For example you could specify a search string containing `".*egeria.*"` which would match any property value containing the string `"egeria"`. The Egeria-provided repositories support general regexp syntax. You can optionally narrow the search by setting the type filters just beneath. Then press the `Search for instances` button. This will initiate a search for metadata instances matching the criteria you specified. The results of the search operation will be displayed in a dialog, from which you can select which instances to retrieve. These instances will be added to the graph.
+If you don't know the GUID you can use the Search tool further to the right. Enter search text in the `Search text` field. The search text should be a string value that will match any string property of the instance you are looking for. The Egeria-provided repositories support general regular expression syntax, so you could specify a search string like `".*egeria.*"` which would match any property value containing the string `"egeria"`. You can literalize special characters; the search string `".*egeria\.repository.*"` would match values containining the string `"egeria.repository"`. Other repositories might not support regular expressions, or might support a constrained regexp syntax. In the latter case you might need to literalize the search expression by using the `"\Q...\E"` escape sequence, for example `"\Qother.repository\E"`, in which all characters between the `\Q` and `\E` are interpreted as literals.
+
+&nbsp;
+
+You can optionally narrow a search by setting the type filters just beneath the `Search text` field. Then press the `Search for instances` button. This will initiate a search for metadata instances matching the criteria you specified. The results of the search operation will be displayed in a dialog, from which you can select which instances to retrieve. These instances will be added to the graph.
 
 &nbsp;
 
