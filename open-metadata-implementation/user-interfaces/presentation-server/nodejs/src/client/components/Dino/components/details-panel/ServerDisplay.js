@@ -9,7 +9,6 @@ import { RequestContext }                      from "../../contexts/RequestConte
 import ServerConfigServicesDisplay             from "./ServerConfigServicesDisplay";
 import ServerConfigEventBusDisplay             from "./ServerConfigEventBusDisplay";
 import ServerConfigRepositoryServicesDisplay   from "./ServerConfigRepositoryServicesDisplay";
-import ServerConfigAuditTrailDisplay           from "./ServerConfigAuditTrailDisplay";
 import ServerServicesDisplay                   from "./ServerServicesDisplay";
 import ServerCohortsDisplay                    from "./ServerCohortsDisplay";
 import ServerStatusDisplay                     from "./ServerStatusDisplay";
@@ -404,7 +403,7 @@ export default function ServerDisplay() {
 
               {
               displayedConfig && (displayMode === "stored" || displayMode === "active") &&
-              <ul>
+              <ul className="details-sublist">
 
                 <li>
                   <div className="type-details-item-bold">Local Server Name : </div>
@@ -536,15 +535,19 @@ export default function ServerDisplay() {
         </div>
       </div>
 
-      <button className="collapsible" onClick={flipSection}> Server Status Log: </button>
+      <button className="collapsible" onClick={flipSection}> Server Status: </button>
       <div className="content">
-        <ServerStatusDisplay serverStatus={serverDetails.serverStatus}></ServerStatusDisplay>
+        <ServerStatusDisplay serverName={serverDetails.serverName} serverStatus={serverDetails.serverStatus}>
+        </ServerStatusDisplay>
       </div>
       <br/>
-      
-      <button onClick = { () => getServerAuditLog(serverDetails.guid) }  >
+
+      <button className="collapsible" onClick={flipSection}> Server Audit Log: </button>
+      <div className="content">
+        <button onClick = { () => getServerAuditLog(serverDetails.guid) }  >
           Server Audit Log
-      </button>
+        </button>
+      </div>
 
       <AuditLogHandler   status                = { auditLogStatus }
                          auditLog              = { auditLog }
