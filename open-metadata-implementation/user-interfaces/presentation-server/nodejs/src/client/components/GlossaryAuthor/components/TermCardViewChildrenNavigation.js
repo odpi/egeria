@@ -14,13 +14,12 @@ import { issueRestGet, issueRestDelete } from "./RestCaller";
 
 import { Link } from "react-router-dom";
 
-export default function CardViewChildrenNavigation({
-  nodeTypeName,
+export default function TermCardViewChildrenNavigation({
   getURLForChildren,
   match,
 }) {
   const [nodes, setNodes] = useState([]);
-  const nodeType = getNodeType(nodeTypeName);
+  const nodeType = getNodeType("term");
   const [errorMsg, setErrorMsg] = useState();
   const [selectedNodeGuid, setSelectedNodeGuid] = useState();
 
@@ -79,7 +78,7 @@ export default function CardViewChildrenNavigation({
   };
 
   function getAddNodeUrl() {
-    return match.path + "/add-" + nodeTypeName;
+    return match.path + "/add-term";
   }
   function getEditNodeUrl() {
     return match.path + "/edit-node/" + selectedNodeGuid;
@@ -133,7 +132,7 @@ export default function CardViewChildrenNavigation({
               heading={node.name}
               guid={node.systemAttributes.guid}
               body={node.description}
-              icon={getChildIcon()}
+              icon={Term32}
               isSelected={isSelected(node.systemAttributes.guid)}
               setSelected={setSelected}
               // link={getNodeChildrenUrl(node.systemAttributes.guid)}

@@ -1,15 +1,14 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 import React from "react";
-import CardViewChildrenNavigation from "./CardViewChildrenNavigation";
+import TermCardViewChildrenNavigation from "./TermCardViewChildrenNavigation";
 import { withRouter } from "react-router-dom";
 /**
  * This is a card view of Terms
  */
 const GlossaryAuthorTermsNavigation = (props) => {
   return (
-      <CardViewChildrenNavigation
-        nodeTypeName="term"
+      <TermCardViewChildrenNavigation
         match={props.match}
         getURLForChildren={props.getTermsURL}
       />

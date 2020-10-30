@@ -1,8 +1,8 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Toggle } from "carbon-components-react";
-import CardViewChildrenNavigation from "./CardViewChildrenNavigation";
+import CategoryCardViewChildrenNavigation from "./CategoryCardViewChildrenNavigation";
 import { withRouter } from "react-router-dom";
 /**
  * This is a card view of Categories
@@ -29,8 +29,7 @@ const GlossaryAuthorCategoriesNavigation = (props) => {
         id="category-filter-toggle"
         onToggle={onToggleTop}
       />
-      <CardViewChildrenNavigation
-        nodeTypeName="category"
+      <CategoryCardViewChildrenNavigation
         match={props.match}
         getURLForChildren={props.getCategoriesURL}
         isCategoryAll={isCategoryAll}
