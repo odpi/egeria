@@ -126,7 +126,7 @@ subprojects {
             implementation("org.apache.lucene:lucene-queryparser:8.6.3")
             implementation("org.apache.lucene:lucene-spatial:8.4.1")
             implementation("org.apache.lucene:lucene-spatial-extras:8.6.3")
-            implementation("org.apache.ranger:ranger-plugins-common:1.2.0")
+            implementation("org.apache.ranger:ranger-plugins-common:2.1.0")
             implementation("org.apache.tinkerpop:gremlin-core:3.4.8")
             implementation("org.apache.tinkerpop:gremlin-driver:3.4.8")
             implementation("org.apache.tinkerpop:tinkergraph-gremlin:3.4.8")
