@@ -159,7 +159,7 @@
         <avro.version>1.10.0</avro.version>
         <derby.version>10.8.3.1</derby.version>
         <hadoop.version>2.9.2</hadoop.version>
-        <ranger.version>1.2.0</ranger.version>
+        <ranger.version>2.1.0</ranger.version>
         <plexus.version>3.3.0</plexus.version>
         <quartz.version>2.3.2</quartz.version>
         <lucene.version>8.4.1</lucene.version>
