@@ -70,8 +70,14 @@ public class TexViewRESTServices {
             TexViewHandler handler = instanceHandler.getTexViewHandler(userId, serverName, methodName);
 
             Map<String, List<ResourceEndpoint>> lists =  handler.getResourceEndpoints(userId, methodName);
-            response.setPlatformList(lists.get("platformList"));
-            response.setServerList(lists.get("serverList"));
+            List<ResourceEndpoint> platformList = null;
+            List<ResourceEndpoint> serverList = null;
+            if (lists != null) {
+                platformList = lists.get("platformList");
+                serverList = lists.get("serverList");
+            }
+            response.setPlatformList(platformList);
+            response.setServerList(serverList);
 
         } catch (InvalidParameterException error) {
             restExceptionHandler.captureInvalidParameterException(response, error);
