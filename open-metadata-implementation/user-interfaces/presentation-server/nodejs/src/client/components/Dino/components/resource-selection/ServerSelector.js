@@ -49,7 +49,7 @@ export default function ServerSelector() {
     if (json !== null) {
       if (json.relatedHTTPCode === 200 ) {
         let serverList = json.serverList;
-        if (serverList !== null) {
+        if (serverList) {
           let newServers = {};
           serverList.forEach(svr => {
             const newServer = { "serverInstanceName"  : svr.serverInstanceName, 
@@ -63,7 +63,41 @@ export default function ServerSelector() {
         }
       }
     }
+    /*
+     * On failure ... json could be null or contain a bad relatedHTTPCode
+     */
+     reportFailedOperation("getServers",json);
   }
+  
+  /*
+   * Always accept the operation name because operation name is needed even in the case where json is null
+   */
+  const reportFailedOperation = (operation, json) => {
+    if (json !== null) {
+      if (json.relatedHTTPCode === 200 ) {
+        /*
+         * Operation succeeded but did not return anything useful...
+         */
+        alert("No servers were found - they are optional and can be added to the configuration of the Dino View Service");
+      }
+      else {
+        /*
+         * Operation reported failure
+         */
+        const relatedHTTPCode = json.relatedHTTPCode;
+        const exceptionMessage = json.exceptionErrorMessage;
+        /*
+         * TODO - could be changed to cross-UI means of user notification... for now rely on alerts
+         */
+        alert("Operation "+operation+" failed with status "+relatedHTTPCode+" and message "+exceptionMessage);
+      }
+    }
+    else {
+      alert("Operation "+operation+" did not get a response from the view server");
+    }
+  }
+
+
 
   if (!serversLoaded) {
     getServers();
@@ -145,9 +179,8 @@ export default function ServerSelector() {
   return (
     <div className="resource-controls">
 
-      <p>Direct Server Links</p>
+      <p className="descriptive-text">Servers</p>
 
-      <label htmlFor="serverSelector">Servers: </label>
       <select className="server-selector"
               id="serverSelector"
               name="serverSelector"
@@ -156,7 +189,7 @@ export default function ServerSelector() {
               size = "5" >
         {
           serverNameListSorted.length === 0 && 
-          ( <option value="dummy" disabled defaultValue>No servers yet - please add one!</option> )
+          ( <option value="dummy" disabled defaultValue>No servers...</option> )
         }
         {
           serverNameListSorted.length > 0 && 

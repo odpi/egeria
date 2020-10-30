@@ -280,7 +280,7 @@ public class PortHandler {
                         PortPropertiesMapper.PORT_DELEGATION_TYPE_NAME, PortPropertiesMapper.PORT_TYPE_NAME, externalSourceName, null);
             } else {
                 dataEngineCommonHandler.throwInvalidParameterException(DataEngineErrorCode.INVALID_PORT_TYPE, methodName,
-                        parameterName, delegatesToQualifiedName, portType.getName());
+                        parameterName, delegatesToQualifiedName, delegatedPortType);
             }
         } else {
             dataEngineCommonHandler.throwInvalidParameterException(DataEngineErrorCode.PORT_NOT_FOUND, methodName,
