@@ -124,7 +124,7 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 
 	@Test
 	public void getDatabasesPage() throws AnalyticsModelingCheckedException {
-		// setup repository with four databases sorted: AdwentureWorks, DB_3, DB_4, GOSALES
+		// setup repository with four databases sorted: AdventureWorks, DB_3, DB_4, DB_5, GOSALES
 		createDatabaseEntity(DATABASE_GOSALES, SERVER_TYPE_MS_SQL, "1.0");
 		createDatabaseEntity(DATABASE_ADVENTURE_WORKS, SERVER_TYPE_MS_SQL, "2.0");
 		createDatabaseEntity("DB_3", SERVER_TYPE_MS_SQL, "1.0");

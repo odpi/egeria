@@ -114,19 +114,17 @@ public class DatabaseContextHandler {
 		setContext(methodName);
 		
 		List<DatabaseElement> databases = findDatabases(userId, startFrom, pageSize, methodName);
-		List<ResponseContainerDatabase> ret = Optional.ofNullable(databases).map(Collection::stream).orElseGet(Stream::empty)
+		return Optional.ofNullable(databases).map(Collection::stream).orElseGet(Stream::empty)
 				.parallel()
 				.map(this::buildDatabase)
 				.filter(Objects::nonNull).collect(Collectors.toList());
-		
-		return ret;
 	}
 
 	private List<DatabaseElement> findDatabases(String userId, Integer startFrom, Integer pageSize, String methodName)
 			throws AnalyticsModelingCheckedException
 	{
 		try {
-			return relationalDataHandler.findDatabases(userId, ".*", startFrom, pageSize, methodName);
+			return relationalDataHandler.findDatabases(userId, startFrom, pageSize, methodName);
 		} catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException | UserNotAuthorizedException
 				| PropertyServerException ex) {
 			throw new AnalyticsModelingCheckedException(
