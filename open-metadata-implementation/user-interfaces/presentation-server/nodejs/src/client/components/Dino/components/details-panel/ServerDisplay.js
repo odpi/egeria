@@ -14,6 +14,8 @@ import ServerServicesDisplay                   from "./ServerServicesDisplay";
 import ServerCohortsDisplay                    from "./ServerCohortsDisplay";
 import ServerStatusDisplay                     from "./ServerStatusDisplay";
 import AuditLogHandler                         from "./AuditLogHandler";
+import ConfigLogHandler                        from "./ConfigLogHandler";
+
 
 
 import "./details-panel.scss";
@@ -57,6 +59,8 @@ export default function ServerDisplay() {
   const [auditLog, setAuditLog]             = useState({});
 
 
+  const [configLogStatus, setConfigLogStatus] = useState("idle");
+  const [configLog, setConfigLog]             = useState({});
 
   /*
    * Handler for flopping a collapsible
@@ -220,6 +224,22 @@ export default function ServerDisplay() {
   };
 
 
+
+  /*
+   * Handler to render sevrer config audit trail in portal
+   */
+  const displayServerConfigLog = (serverName, configAuditTrail) => {
+    setConfigLog({"serverName" : serverName , "configAuditTrail" : configAuditTrail });
+    setConfigLogStatus("complete");
+  }
+
+  const cancelConfigLogModal = () => {
+    setConfigLogStatus("idle");
+  };
+
+  const submitConfigLogModal = () => {
+    setConfigLogStatus("idle");
+  };
 
   /*
    * It would be possible to specialize the display of a server depending on its server type.
@@ -453,13 +473,15 @@ export default function ServerDisplay() {
                 </li>
 
                 <li>
-                  <button className="collapsible" onClick={flipSection}> Server Configuration Audit Trail: </button>
-                  <div className="content">
-                    <ServerConfigAuditTrailDisplay trail={
-                    displayedConfig && displayedConfig.auditTrail}></ServerConfigAuditTrailDisplay>
-                  </div>
-                </li>
+                  <button onClick = { () => displayServerConfigLog(serverDetails.serverName, displayedConfig.auditTrail) }>
+                    Server Configuration Audit Trail:
+                  </button>
 
+                  <ConfigLogHandler   status                = { configLogStatus }
+                                      configLog             = { configLog }
+                                      onCancel              = { cancelConfigLogModal }
+                                      onSubmit              = { submitConfigLogModal } />
+                </li>
 
               </ul>
               }
