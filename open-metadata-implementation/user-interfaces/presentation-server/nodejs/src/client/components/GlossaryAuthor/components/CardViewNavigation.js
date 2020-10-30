@@ -115,13 +115,15 @@ export default function CardViewNavigation({ match, nodeTypeName }) {
     setExactMatch(checkBox.checked);
   };
 
-  const getNodeChildrenUrl = (guid) => {
-    if (guid) {
-    return match.path + "/glossaries/" + guid + "/children";
-    } else {
+  function getNodeChildrenUrl() {
       return match.path + "/glossaries/" + selectedNodeGuid + "/children";
-    }
-  };
+  }
+ /**
+  * The function returns another function; this is required by react Link. The below syntax is required to be able to handle the parameter.   
+  * Not working ...
+  */
+  const getNodeChildrenUrlUsingGuid = (guid) => () => { return `${match.path}/glossaries/${guid}/children`; }
+
   function getAddNodeUrl() {
     return match.path + "/glossaries/add-node";
   }
@@ -144,7 +146,7 @@ export default function CardViewNavigation({ match, nodeTypeName }) {
   return (
     <div>
       <div className="bx--grid">
-        <NodeCardSection heading="nodes" className="landing-page__r3">
+        <NodeCardSection heading="Glossaries" className="landing-page__r3">
           <article className="node-card__controls bx--col-sm-4 bx--col-md-1 bx--col-lg-1 bx--col-xlg-1 bx--col-max-1">
             Choose {nodeType.key}
           </article>
@@ -205,7 +207,7 @@ export default function CardViewNavigation({ match, nodeTypeName }) {
               icon={<GlossaryImage />}
               isSelected={isSelected(node.systemAttributes.guid)}
               setSelected={setSelected}
-              link={getNodeChildrenUrl(node.systemAttributes.guid)}
+              link={getNodeChildrenUrlUsingGuid(node.systemAttributes.guid)}
             />
           ))}
           {nodes.length == 0 && <div>No {nodeType.plural} found!</div>}

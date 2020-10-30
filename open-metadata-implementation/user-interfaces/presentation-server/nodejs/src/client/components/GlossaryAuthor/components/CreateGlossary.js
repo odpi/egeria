@@ -21,7 +21,7 @@ import Info16 from "@carbon/icons-react/lib/information/16";
 import { issueRestCreate } from "./RestCaller";
 
 export default function CreateGlossary(props) {
-  const [createBody, setCreateBody] = useState({});
+  const [createBody, setCreateBody] =     ({});
   const [createdNode, setCreatedNode] = useState();
   const [errorMsg, setErrorMsg] = useState();
   const currentNodeType = getNodeType("glossary");

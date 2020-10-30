@@ -10,13 +10,24 @@ import QuickTerms from "../QuickTerms";
 import GlossaryChildren from "../NodeChildren";
 import CreateGlossary from "../CreateGlossary";
 import UpdateGlossary from "../UpdateGlossary";
+import GlossaryAuthorCategoriesNavigation from "../GlossaryAuthorCategoriesNavigation";
+import GlossaryAuthorTermsNavigation from "../GlossaryAuthorTermsNavigation";
 
 export default function GlossaryAuthorRoutes({ glossaryAuthorURL }) {
 
   console.log("glossaryAuthorURL=" + glossaryAuthorURL);
 
   function getGlossariesPath() {
-    const path = glossaryAuthorURL + "/glossaries";
+    let path;
+    const currentLocationArray = glossaryAuthorURL.split("/");
+    const lastSegment = currentLocationArray[currentLocationArray.length -1];
+    if (lastSegment == "glossaries") {
+      // if we are navigated to via the task drop down we get a url ending with glossaries
+      path = glossaryAuthorURL;
+    } else {
+      // if we are navigated to as the default component loaded under glossary-author then we need to append the glossaries
+      path = glossaryAuthorURL + "/glossaries";
+    }
     console.log("getGlossariesPath " + path);
     return path;
   }
@@ -33,6 +44,16 @@ export default function GlossaryAuthorRoutes({ glossaryAuthorURL }) {
   function getGlossaryChildrenPath() {
     const path = getGlossariesPath() + "/:guid/children";
     console.log("getGlossaryChildren " + path);
+    return path;
+  }
+  function getGlossaryTermsChildrenPath() {
+    const path = getGlossaryChildrenPath() + "/terms";
+    console.log("getGlossaryTermsChildrenPath " + path);
+    return path;
+  }
+  function getGlossaryCategoriesChildrenPath() {
+    const path = getGlossaryChildrenPath() + "/categories";
+    console.log("getGlossaryCategoriesChildrenPath " + path);
     return path;
   }
   function getGlossariesEditPath() {
@@ -63,6 +84,8 @@ export default function GlossaryAuthorRoutes({ glossaryAuthorURL }) {
       <Route path={getSearchPath()} component={GlossaryAuthorSearch}></Route>
       <Route path={getQuickTermsPath()} component={QuickTerms}></Route>
       <Route path={getGlossaryChildrenPath()} component={GlossaryChildren}></Route>
+      <Route path={getGlossaryTermsChildrenPath()} component={GlossaryAuthorTermsNavigation}></Route>
+      <Route path={getGlossaryCategoriesChildrenPath()} component={GlossaryAuthorCategoriesNavigation}></Route>
       <Route
         path={getGlossariesPath()}
         component={GlossaryAuthorNavigation}
