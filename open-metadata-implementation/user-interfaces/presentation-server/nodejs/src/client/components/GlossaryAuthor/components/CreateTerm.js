@@ -2,11 +2,11 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 import React from "react";
 import getNodeType from "./properties/NodeTypes.js";
-import UpdateNode from "./UpdateNode";
+import CreateNode from "./CreateNode";
 
-export default function UpdateGlossary(props) {
-  console.log("UpdateGlossary");
+export default function CreateTerm(props) {
+  console.log("CreateTerm");
   return (
-   <UpdateNode currentNodeType={getNodeType("glossary")} />
+   <CreateNode currentNodeType={getNodeType("term")} />
   );
 }

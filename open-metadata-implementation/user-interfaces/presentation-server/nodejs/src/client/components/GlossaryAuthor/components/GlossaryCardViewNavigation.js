@@ -15,9 +15,9 @@ import useDebounce from "./useDebounce";
 
 import { Link } from "react-router-dom";
 
-export default function CardViewNavigation({ match, nodeTypeName }) {
+export default function GlossaryCardViewNavigation({ match }) {
   const [nodes, setNodes] = useState([]);
-  const nodeType = getNodeType(nodeTypeName);
+  const nodeType = getNodeType("glossary");
   // State and setter for search term
   const [filterCriteria, setFilterCriteria] = useState("");
   const [exactMatch, setExactMatch] = useState(false);

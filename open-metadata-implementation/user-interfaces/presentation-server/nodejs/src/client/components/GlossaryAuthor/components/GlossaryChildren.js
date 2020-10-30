@@ -6,9 +6,9 @@ import GlossaryAuthorTermsNavigation from "./GlossaryAuthorTermsNavigation";
 import GlossaryAuthorCategoriesNavigation from "./GlossaryAuthorCategoriesNavigation";
 import getNodeType from "./properties/NodeTypes";
 
-export default function NodeChildren(props) {
+export default function GlossaryChildren(props) {
   console.log("NodeChildren(props) " + props);
-  const guid = props.match.params.guid;
+  const guid = props.match.params.glossaryguid;
 
   const [showTerms, setShowTerms] = useState(false);
   const onChange = (e) => {
@@ -31,8 +31,7 @@ export default function NodeChildren(props) {
       childName = "categories";
     }
     console.log("getChildrenURL guid " + guid);
-    const url =
-      getNodeType("glossary").url + "/" + guid + "/" + childName;
+    const url = getNodeType("glossary").url + "/" + guid + "/" + childName;
     console.log("getChildrenURL url " + url);
     return url;
   };
@@ -44,10 +43,12 @@ export default function NodeChildren(props) {
         <Switch name="terms" text="Terms" />
       </ContentSwitcher>
       {showTerms && (
-        <GlossaryAuthorTermsNavigation getTermsURL={(getChildrenURL())} />
+        <GlossaryAuthorTermsNavigation getTermsURL={getChildrenURL()} />
       )}
       {!showTerms && (
-        <GlossaryAuthorCategoriesNavigation getCategoriesURL={getChildrenURL()} />
+        <GlossaryAuthorCategoriesNavigation
+          getCategoriesURL={getChildrenURL()}
+        />
       )}
     </div>
   );
