@@ -20,19 +20,19 @@ import Info16 from "@carbon/icons-react/lib/information/16";
 import { issueRestCreate } from "./RestCaller";
 
 export default function CreateNode(props) {
-  const [createBody, setCreateBody] =     ({});
+  const [createBody, setCreateBody] = useState({});
   const [createdNode, setCreatedNode] = useState();
   const [errorMsg, setErrorMsg] = useState();
   const [restCallInProgress, setRestCallInProgress] = useState(false);
 
-  console.log("CreateGlossary");
+  console.log("CreateNode");
 
   /**
    * If there was an error the button has a class added to it to cause it to shake. After the animation ends, we need to remove the class.
    * @param {*} e end anomation event
    */
   const handleOnAnimationEnd = (e) => {
-    document.getElementById("NodeCreateViewButton").classList.remove("shaker");
+    document.getElementById(createLabelIdForSubmitButton()).classList.remove("shaker");
   };
 
   const handleClick = (e) => {
@@ -40,6 +40,11 @@ export default function CreateNode(props) {
     e.preventDefault();
     setRestCallInProgress(true);
     let body = createBody;
+    if (props.glossaryGuid) {
+      let glossary= {};
+      glossary.guid = props.glossaryGuid;
+      body.glossary = glossary;
+    } 
     // TODO consider moving this up to a node controller as per the CRUD pattern.
     // inthe meantime this will be self contained.
     const url = props.currentNodeType.url;
@@ -72,8 +77,11 @@ export default function CreateNode(props) {
     console.log("Error on Create " + msg);
     setErrorMsg(msg);
   };
-  const createLabelId = (labelKey) => {
-    return "text-input-" + labelKey;
+  const createLabelIdForAttribute = (labelKey) => {
+    return "text-input-create"+props.currentNodeType.name +"-"+ labelKey;
+  };
+  const createLabelIdForSubmitButton = (labelKey) => {
+    return props.currentNodeType.name + "CreateViewButton";
   };
   const setAttribute = (item, value) => {
     console.log("setAttribute " + item.key + ",value=" + value);
@@ -268,13 +276,13 @@ export default function CreateNode(props) {
                 return (
                   <div className="bx--form-item" key={item.key}>
                     <label
-                      htmlFor={createLabelId(item.key)}
+                      htmlFor={createLabelIdForAttribute(item.key)}
                       className="bx--label"
                     >
                       {item.label} <Info16 />
                     </label>
                     <input
-                      id={createLabelId(item.key)}
+                      id={createLabelIdForAttribute(item.key)}
                       type="text"
                       className="bx--text-input"
                       value={item.name}
@@ -288,13 +296,13 @@ export default function CreateNode(props) {
               <AccordionItem title="Advanced options">
                 <DatePicker dateFormat="m/d/Y" datePickerType="range">
                   <DatePickerInput
-                    id="date-picker-range-start"
+                    // id={}"date-picker-range-start"
                     placeholder="mm/dd/yyyy"
                     labelText="Effective from date"
                     type="text"
                   />
                   <DatePickerInput
-                    id="date-picker-range-end"
+                    // id="date-picker-range-end"
                     placeholder="mm/dd/yyyy"
                     labelText="Effective to date"
                     type="text"
@@ -305,7 +313,7 @@ export default function CreateNode(props) {
             <div style={{ color: "red" }}>{errorMsg}</div>
             <div className="bx--form-item">
               <button
-                id="NodeCreateViewButton"
+                id={createLabelIdForSubmitButton()}
                 className="bx--btn bx--btn--primary"
                 disabled={!validateForm()}
                 onClick={handleClick}

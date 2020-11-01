@@ -7,6 +7,6 @@ import UpdateNode from "./UpdateNode";
 export default function UpdateGlossary(props) {
   console.log("UpdateGlossary");
   return (
-   <UpdateNode currentNodeType={getNodeType("glossary")} />
+   <UpdateNode currentNodeType={getNodeType("glossary")} guid={props.match.params.guidtoedit} />
   );
 }

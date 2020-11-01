@@ -131,7 +131,7 @@ export default function GlossaryCardViewNavigation({ match }) {
     return match.path + "/glossaries/" + selectedNodeGuid + "/quick-terms";
   }
   function getEditNodeUrl() {
-    return match.path + "/glossaries/edit-node/" + selectedNodeGuid;
+    return match.path + "/glossaries/edit-glossary/" + selectedNodeGuid;
   }
   const onFilterCriteria = (e) => {
     setFilterCriteria(e.target.value);

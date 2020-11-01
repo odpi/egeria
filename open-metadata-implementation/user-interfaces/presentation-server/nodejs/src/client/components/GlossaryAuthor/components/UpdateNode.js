@@ -19,11 +19,11 @@ import { useParams } from "react-router-dom";
 import Info16 from "@carbon/icons-react/lib/information/16";
 import { issueRestUpdate, issueRestGet } from "./RestCaller";
 
-export default function UpdateGlossary(props) {
+export default function UpdateNode(props) {
   const [updateBody, setUpdateBody] = useState({});
   const [currentNode, setCurrentNode] = useState();
   const [errorMsg, setErrorMsg] = useState();
-  console.log("UpdateGlossary");
+  console.log("UpdateNode");
   const url = getUrl();
 
   const initialGet = () => {
@@ -31,8 +31,8 @@ export default function UpdateGlossary(props) {
     return "Getting details";
   };
   function getUrl() {
-    const { guid } = useParams();
-    return props.currentNodeType.url + "/" + guid;
+    const { guidtoedit } = useParams();
+    return props.currentNodeType.url + "/" + guidtoedit;
   }
 
   const handleClickUpdate = (e) => {
@@ -80,9 +80,9 @@ export default function UpdateGlossary(props) {
 
     return true;
   };
-  // const updateLabelId = (labelKey) => {
-  //   return "text-input-" + labelKey;
-  // };
+  const updateLabelId = (labelKey) => {
+    return "text-input-update"+props.currentNodeType.name +"-"+ labelKey;
+  };
   const setAttribute = (item, value) => {
     console.log("setAttribute " + item.key + ",value=" + value);
     let myUpdateBody = updateBody;
@@ -99,9 +99,6 @@ export default function UpdateGlossary(props) {
       key: "value",
     },
   ];
-  const updateLabelId = (labelKey) => {
-    return "text-input-" + labelKey;
-  };
 
   const getUpdatedTableTitle = () => {
     return "Successfully updated " + currentNode.name;
@@ -195,13 +192,13 @@ export default function UpdateGlossary(props) {
           <AccordionItem title="Advanced options">
             <DatePicker dateFormat="m/d/Y" datePickerType="range">
               <DatePickerInput
-                id="date-picker-range-start"
+                // id="date-picker-range-start"
                 placeholder="mm/dd/yyyy"
                 labelText="Effective from date"
                 type="text"
               />
               <DatePickerInput
-                id="date-picker-range-end"
+                // id="date-picker-range-end"
                 placeholder="mm/dd/yyyy"
                 labelText="Effective to date"
                 type="text"

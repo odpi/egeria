@@ -79,7 +79,7 @@ const GlossaryAuthorTermsNavigation = (props) => {
     return props.match.url  + "/terms/add-term";
   }
   function getEditNodeUrl() {
-    return props.match.url  + "/terms/edit-node/" + selectedNodeGuid;
+    return props.match.url  + "/terms/edit-term/" + selectedNodeGuid;
   }
   const isSelected = (nodeGuid) => {
     return nodeGuid == selectedNodeGuid;

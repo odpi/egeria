@@ -18,13 +18,12 @@ import GlossaryAuthorCategoriesNavigation from "../GlossaryAuthorCategoriesNavig
 import GlossaryAuthorTermsNavigation from "../GlossaryAuthorTermsNavigation";
 
 export default function GlossaryAuthorRoutes({ glossaryAuthorURL }) {
-
   console.log("glossaryAuthorURL=" + glossaryAuthorURL);
 
   function getGlossariesPath() {
     let path;
     const currentLocationArray = glossaryAuthorURL.split("/");
-    const lastSegment = currentLocationArray[currentLocationArray.length -1];
+    const lastSegment = currentLocationArray[currentLocationArray.length - 1];
     if (lastSegment == "glossaries") {
       // if we are navigated to via the task drop down we get a url ending with glossaries
       path = glossaryAuthorURL;
@@ -61,16 +60,16 @@ export default function GlossaryAuthorRoutes({ glossaryAuthorURL }) {
     return path;
   }
   function getGlossaryChildrenEditTermPath() {
-    const path = getGlossaryTermsChildrenPath() + "/edit-term/:childguid";
+    const path = getGlossaryTermsChildrenPath() + "/edit-term/:guidtoedit";
     console.log("getGlossaryChildrenEditTermPath() " + path);
     return path;
   }
   function getGlossaryChildrenEditCategoryPath() {
-    const path = getGlossaryCategoriesChildrenPath() +"/edit-category/:childguid";
+    const path =
+      getGlossaryCategoriesChildrenPath() + "/edit-category/:guidtoedit";
     console.log("getGlossaryChildrenEditCategoryPath() " + path);
     return path;
   }
-
 
   function getGlossaryTermsChildrenPath() {
     const path = getGlossaryChildrenPath() + "/terms";
@@ -83,7 +82,7 @@ export default function GlossaryAuthorRoutes({ glossaryAuthorURL }) {
     return path;
   }
   function getGlossariesEditPath() {
-    return getGlossariesPath() + "/edit-node/:glossaryguid";
+    return getGlossariesPath() + "/edit-glossary/:guidtoedit";
   }
   function getCrudPath() {
     const path = glossaryAuthorURL + "/crud";
@@ -97,33 +96,54 @@ export default function GlossaryAuthorRoutes({ glossaryAuthorURL }) {
   }
   return (
     <Switch>
-      <Route
-        path={getGlossariesAddPath()}
-        component={CreateGlossary}
-      ></Route>
+      <Route path={getGlossariesAddPath()} component={CreateGlossary}></Route>
       <Route path={getGlossariesEditPath()} component={UpdateGlossary}></Route>
       <Route
         exact
         path={getGlossariesPath()}
         component={GlossaryAuthorNavigation}
       ></Route>
+      <Route
+        path={getGlossaryChildrenAddTermPath()}
+        exact
+        component={CreateTerm}
+      ></Route>
+      <Route
+        path={getGlossaryChildrenAddCategoryPath()}
+        exact
+        component={CreateCategory}
+      ></Route>
+      <Route
+        path={getGlossaryChildrenEditTermPath()}
+        exact
+        component={UpdateTerm}
+      ></Route>
+      <Route
+        path={getGlossaryChildrenEditCategoryPath()}
+        exact
+        component={UpdateCategory}
+      ></Route>
+
       <Route path={getSearchPath()} component={GlossaryAuthorSearch}></Route>
       <Route path={getQuickTermsPath()} component={QuickTerms}></Route>
-      <Route path={getGlossaryChildrenPath()} component={GlossaryChildren}></Route>
-      <Route path={getGlossaryTermsChildrenPath()} component={GlossaryAuthorTermsNavigation}></Route>
-      <Route path={getGlossaryCategoriesChildrenPath()} component={GlossaryAuthorCategoriesNavigation}></Route>
-      <Route path={getGlossaryChildrenAddTermPath()} component={CreateTerm}></Route>
-      <Route path={getGlossaryChildrenAddCategoryPath()} component={CreateCategory}></Route>
-      <Route path={getGlossaryChildrenEditTermPath()} component={UpdateTerm}></Route>
-      <Route path={getGlossaryChildrenEditCategoryPath()} component={UpdateCategory}></Route>
+      <Route
+        path={getGlossaryChildrenPath()}
+        component={GlossaryChildren}
+      ></Route>
+      <Route
+        path={getGlossaryTermsChildrenPath()}
+        component={GlossaryAuthorTermsNavigation}
+      ></Route>
+      <Route
+        path={getGlossaryCategoriesChildrenPath()}
+        component={GlossaryAuthorCategoriesNavigation}
+      ></Route>
+
       <Route
         path={getGlossariesPath()}
         component={GlossaryAuthorNavigation}
       ></Route>
-      <Route
-        path={getCrudPath()}
-        component={GlossaryAuthorCRUD}
-      ></Route>
+      <Route path={getCrudPath()} component={GlossaryAuthorCRUD}></Route>
       <Route
         path={glossaryAuthorURL}
         exact

@@ -94,7 +94,7 @@ const GlossaryAuthorCategoriesNavigation = (props) => {
     return props.match.url + "/categories/add-category";
   }
   function getEditNodeUrl() {
-    return props.match.url + "/categories/edit-node/" + selectedNodeGuid;
+    return props.match.url + "/categories/edit-category/" + selectedNodeGuid;
   }
   const isSelected = (nodeGuid) => {
     return nodeGuid == selectedNodeGuid;

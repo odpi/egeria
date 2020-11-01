@@ -7,6 +7,6 @@ import UpdateNode from "./UpdateNode";
 export default function UpdateCategory(props) {
   console.log("UpdateCategory");
   return (
-   <UpdateNode currentNodeType={getNodeType("category")} />
+   <UpdateNode currentNodeType={getNodeType("category")} guid={props.match.params.guidtoedit} />
   );
 }

@@ -17,8 +17,8 @@ export default function QuickTerms(props) {
 
   const url = getUrl();
   function getUrl() {
-    const { guid } = useParams();
-    return glossaryNodeType.url + "/" + guid + "/terms";
+    const { glossaryguid } = useParams();
+    return glossaryNodeType.url + "/" + glossaryguid + "/terms";
   }
   const validateForm = () => {
     if (terms.length == 0) {

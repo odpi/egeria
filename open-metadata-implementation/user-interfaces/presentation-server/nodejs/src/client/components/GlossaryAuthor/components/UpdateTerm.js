@@ -7,6 +7,6 @@ import UpdateNode from "./UpdateNode";
 export default function UpdateTerm(props) {
   console.log("UpdateTerm");
   return (
-   <UpdateNode currentNodeType={getNodeType("term")} />
+   <UpdateNode currentNodeType={getNodeType("term")} guid={props.match.params.guidtoedit} />
   );
 }

@@ -7,6 +7,6 @@ import CreateNode from "./CreateNode";
 export default function CreateTerm(props) {
   console.log("CreateTerm");
   return (
-   <CreateNode currentNodeType={getNodeType("term")} />
+   <CreateNode currentNodeType={getNodeType("term")} glossaryGuid={props.match.params.glossaryguid}/>
   );
 }
