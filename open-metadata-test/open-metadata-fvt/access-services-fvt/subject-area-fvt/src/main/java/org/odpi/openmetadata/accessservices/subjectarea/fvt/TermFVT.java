@@ -583,6 +583,6 @@ public class TermFVT {
     }
     public List<Category> getCategoriesAPI(String termGuid) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
 
-        return subjectAreaTermClient.getCategories(userId, termGuid);
+        return subjectAreaTermClient.getCategories(userId, termGuid, new FindRequest());
     }
 }
