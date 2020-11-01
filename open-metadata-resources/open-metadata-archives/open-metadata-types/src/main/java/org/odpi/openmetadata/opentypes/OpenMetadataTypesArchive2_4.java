@@ -28,7 +28,7 @@ import java.util.List;
  * the models into the areas and then the individual models to simplify the maintenance of this class
  * </p>
  */
-public class OpenMetadataTypesArchive
+public class OpenMetadataTypesArchive2_4
 {
     /*
      * This is the header information for the archive.
@@ -37,7 +37,7 @@ public class OpenMetadataTypesArchive
     private static final String                  archiveName        = "Open Metadata Types";
     private static final String                  archiveDescription = "Standard types for open metadata repositories.";
     private static final OpenMetadataArchiveType archiveType        = OpenMetadataArchiveType.CONTENT_PACK;
-    private static final String                  archiveVersion     = "2.5";
+    private static final String                  archiveVersion     = "2.4";
     private static final String                  originatorName     = "ODPi Egeria";
     private static final String                  originatorLicense  = "Apache 2.0";
     private static final Date                    creationDate       = new Date(1588261366992L);
@@ -55,7 +55,7 @@ public class OpenMetadataTypesArchive
     /**
      * Default constructor sets up the archive builder.  This in turn sets up the header for the archive.
      */
-    public OpenMetadataTypesArchive()
+    public OpenMetadataTypesArchive2_4()
     {
         this.archiveBuilder = new OMRSArchiveBuilder(archiveGUID,
                                                      archiveName,
@@ -81,7 +81,7 @@ public class OpenMetadataTypesArchive
      *
      * @param archiveBuilder accumulator for types
      */
-    public OpenMetadataTypesArchive(OMRSArchiveBuilder archiveBuilder)
+    public OpenMetadataTypesArchive2_4(OMRSArchiveBuilder archiveBuilder)
     {
         this.archiveBuilder = archiveBuilder;
 
@@ -145,7 +145,7 @@ public class OpenMetadataTypesArchive
      */
     public void getOriginalTypes()
     {
-        OpenMetadataTypesArchive2_4  previousTypes = new OpenMetadataTypesArchive2_4(archiveBuilder);
+        OpenMetadataTypesArchive2_0  previousTypes = new OpenMetadataTypesArchive2_0(archiveBuilder);
 
         /*
          * Pull the types from previous releases.
@@ -156,9 +156,17 @@ public class OpenMetadataTypesArchive
         /*
          * Calls for new and changed types go here
          */
-        update0017ExternalIdentifiers();
-        add0056AssetManager();
-        updateClashingControlProperties();
+        update0010BaseModel();
+        update0011ManagingReferenceables();
+        update0012SearchKeywords();
+        update0030HostsAndPlatforms();
+        add0057IntegrationCapabilities();
+        update0150Feedback();
+        update0215SoftwareComponents();
+        update04xxGovernanceEnums();
+        update05xxSchemaAttributes();
+        update0545ReferenceData();
+        update06xxDiscovery();
     }
 
 
