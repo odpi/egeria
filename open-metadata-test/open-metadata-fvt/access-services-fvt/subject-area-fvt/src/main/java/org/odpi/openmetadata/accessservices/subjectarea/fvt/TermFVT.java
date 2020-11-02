@@ -592,6 +592,6 @@ public class TermFVT {
         FindRequest findRequest = new FindRequest();
         findRequest.setPageSize(pageSize);
         findRequest.setStartingFrom(startingFrom);
-        return subjectAreaTermClient.getCategories(userId, termGuid, new FindRequest());
+        return subjectAreaTermClient.getCategories(userId, termGuid, findRequest);
     }
 }
