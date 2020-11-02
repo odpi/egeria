@@ -98,6 +98,55 @@
     <!-- POM packaging means that this module has sub-modules -->
     <packaging>pom</packaging>
 
+    <!-- Multiple repos for redundancy - artifacts we use are expected to be on both -->
+
+    <repositories>
+        <repository>
+            <id>0-JCenter</id>
+            <url>https://jcenter.bintray.com/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </repository>
+        <repository>
+            <id>1-MavenCentral</id>
+            <url>https://repo1.maven.org/maven2/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>0-JCenter</id>
+            <url>https://jcenter.bintray.com/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </pluginRepository>
+        <pluginRepository>
+            <id>1-MavenCentral</id>
+            <url>https://repo1.maven.org/maven2/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </pluginRepository>
+    </pluginRepositories>
+
+
     <modules>
 
         <module>open-metadata-implementation</module>
@@ -140,7 +189,7 @@
         <spring-boot.version>2.3.3.RELEASE</spring-boot.version>
         <spring.version>5.3.0</spring.version>
         <spring-security.version>5.4.1</spring-security.version>
-        <spring-data.version>2.3.4.RELEASE</spring-data.version>
+        <spring-data.version>2.4.0</spring-data.version>
         <servo-core.version>0.13.0</servo-core.version>
         <netflix-zuul.version>2.2.5.RELEASE</netflix-zuul.version>
         <tomcat.version>9.0.39</tomcat.version>
@@ -183,7 +232,7 @@
         <classgraph.version>4.8.90</classgraph.version>
         <swagger.version>2.1.5</swagger.version>
         <groovy.version>3.0.6</groovy.version>
-        <micrometer-registry-prometheus.version>1.5.6</micrometer-registry-prometheus.version>
+        <micrometer-registry-prometheus.version>1.6.0</micrometer-registry-prometheus.version>
         <jcl-over-slf4j.version>1.7.30</jcl-over-slf4j.version>
         <reflections.version>0.9.12</reflections.version>
         <HdrHistogram.version>2.1.12</HdrHistogram.version>
@@ -3343,7 +3392,7 @@
                                 <plugin>
                                     <groupId>com.h3xstream.findsecbugs</groupId>
                                     <artifactId>findsecbugs-plugin</artifactId>
-                                    <version>1.10.1</version> <!-- Auto-update to the latest stable -->
+                                    <version>1.11.0</version> <!-- Auto-update to the latest stable -->
                                 </plugin>
                             </plugins>
                         </configuration>
