@@ -124,7 +124,7 @@ public class DatabaseContextHandler {
 			throws AnalyticsModelingCheckedException
 	{
 		try {
-			return relationalDataHandler.findDatabases(userId, startFrom, pageSize, methodName);
+			return relationalDataHandler.getDatabases(userId, startFrom, pageSize, methodName);
 		} catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException | UserNotAuthorizedException
 				| PropertyServerException ex) {
 			throw new AnalyticsModelingCheckedException(
