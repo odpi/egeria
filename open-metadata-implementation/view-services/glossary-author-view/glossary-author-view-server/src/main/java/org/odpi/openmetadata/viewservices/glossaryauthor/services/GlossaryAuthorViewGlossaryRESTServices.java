@@ -487,7 +487,7 @@ public class GlossaryAuthorViewGlossaryRESTServices extends BaseGlossaryAuthorVi
                                                               String userId,
                                                               String guid,
                                                               int startingFrom,
-                                                              Integer pagesize,
+                                                              Integer pageSize,
                                                               Boolean onlyTop) {
 
         final String methodName = "getCategories";
@@ -496,12 +496,12 @@ public class GlossaryAuthorViewGlossaryRESTServices extends BaseGlossaryAuthorVi
         SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
         FindRequest findRequest = new FindRequest();
-        if (pagesize == null) {
-            pagesize = invalidParameterHandler.getMaxPagingSize();
+        if (pageSize == null) {
+            pageSize = invalidParameterHandler.getMaxPagingSize();
         }
         try {
-            invalidParameterHandler.validatePaging(startingFrom, pagesize, methodName);
-            findRequest.setPageSize(pagesize);
+            invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
+            findRequest.setPageSize(pageSize);
             findRequest.setStartingFrom(startingFrom);
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
@@ -517,7 +517,7 @@ public class GlossaryAuthorViewGlossaryRESTServices extends BaseGlossaryAuthorVi
                                                      String userId,
                                                      String guid,
                                                      int startingFrom,
-                                                     Integer pagesize
+                                                     Integer pageSize
                                                     ) {
 
         final String methodName = "getTerms";
@@ -526,12 +526,12 @@ public class GlossaryAuthorViewGlossaryRESTServices extends BaseGlossaryAuthorVi
         SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
         FindRequest findRequest = new FindRequest();
-        if (pagesize == null) {
-            pagesize = invalidParameterHandler.getMaxPagingSize();
+        if (pageSize == null) {
+            pageSize = invalidParameterHandler.getMaxPagingSize();
         }
         try {
-            invalidParameterHandler.validatePaging(startingFrom, pagesize, methodName);
-            findRequest.setPageSize(pagesize);
+            invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
+            findRequest.setPageSize(pageSize);
             findRequest.setStartingFrom(startingFrom);
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
