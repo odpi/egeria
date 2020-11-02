@@ -18,6 +18,7 @@ import {
 import { useParams } from "react-router-dom";
 import Info16 from "@carbon/icons-react/lib/information/16";
 import { issueRestUpdate, issueRestGet } from "./RestCaller";
+import { useHistory } from "react-router-dom";
 
 export default function UpdateNode(props) {
   const [updateBody, setUpdateBody] = useState({});
@@ -25,6 +26,7 @@ export default function UpdateNode(props) {
   const [errorMsg, setErrorMsg] = useState();
   console.log("UpdateNode");
   const url = getUrl();
+  let history = useHistory();
 
   const initialGet = () => {
     issueRestGet(url, onSuccessfulGet, onErrorGet);
@@ -163,7 +165,7 @@ export default function UpdateNode(props) {
     // use props.history, as there is another window history object in scope in the event listener
     console.log(props.history);
     // go  back
-    props.history.goBack();
+    history.goBack();
   };
   return (
     <div>
