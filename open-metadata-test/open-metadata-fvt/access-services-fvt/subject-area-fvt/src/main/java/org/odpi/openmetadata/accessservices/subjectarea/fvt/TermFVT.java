@@ -389,7 +389,7 @@ public class TermFVT {
         if (updatedTerm4cats2.getCategories().size() != 2) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected update to gain 2 categorizations.");
         }
-        if (getCategoriesAPI(updatedTerm4cats2.getSystemAttributes().getGUID()).size() !=2) {
+        if (getCategoriesAPI(updatedTerm4cats2.getSystemAttributes().getGUID(),0,5).size() !=2) {
             throw new SubjectAreaFVTCheckedException("ERROR: Use API call to check update to gain 2 categorizations");
         }
 
