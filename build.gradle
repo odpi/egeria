@@ -9,7 +9,9 @@
 */
 
 buildscript {
-    repositories { jcenter()
+    repositories { 
+        jcenter()
+        mavenCentral()
     }
 
     dependencies {
