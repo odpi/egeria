@@ -352,7 +352,7 @@ public class TermFVT {
         if (createdTerm4cats2.getCategories().size() != 2) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected 2 categories returned");
         }
-        List<Category> categories = getCategoriesAPI(createdTerm4cats2.getSystemAttributes().getGUID());
+        List<Category> categories = getCategoriesAPI(createdTerm4cats2.getSystemAttributes().getGUID(),0,5);
         if (categories.size() !=2) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected 2 categories returned on get Categories API call");
         }
