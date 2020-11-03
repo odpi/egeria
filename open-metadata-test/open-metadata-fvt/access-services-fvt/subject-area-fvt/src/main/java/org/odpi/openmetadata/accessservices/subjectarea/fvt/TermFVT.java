@@ -352,7 +352,7 @@ public class TermFVT {
         if (createdTerm4cats2.getCategories().size() != 2) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected 2 categories returned");
         }
-        List<Category> categories = getCategoriesAPI(createdTerm4cats2.getSystemAttributes().getGUID());
+        List<Category> categories = getCategoriesAPI(createdTerm4cats2.getSystemAttributes().getGUID(),0,5);
         if (categories.size() !=2) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected 2 categories returned on get Categories API call");
         }
@@ -363,16 +363,23 @@ public class TermFVT {
         if (updatedTerm4cats2.getCategories().size() != 2) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected 2 categories returned");
         }
-        if (getCategoriesAPI(updatedTerm4cats2.getSystemAttributes().getGUID()).size() !=2) {
+        if (getCategoriesAPI(updatedTerm4cats2.getSystemAttributes().getGUID(),0,5).size() !=2) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected 2 categories returned on get Categories API call after update");
         }
+        if (getCategoriesAPI(updatedTerm4cats2.getSystemAttributes().getGUID(),1,5).size() !=1) {
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 1 categories returned on get Categories API call after update startingFrom 1");
+        }
+        if (getCategoriesAPI(updatedTerm4cats2.getSystemAttributes().getGUID(),0,1).size() !=1) {
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected 1 categories returned on get Categories API call after update pageSize 1");
+        }
+
         // replace categories with null
         createdTerm4cats.setCategories(null);
         Term replacedTerm4cats = replaceTerm(createdTerm4cats.getSystemAttributes().getGUID(), createdTerm4cats);
         if (replacedTerm4cats.getCategories() != null) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected replace with null to get rid of the categorizations.");
         }
-        List<Category> cats = getCategoriesAPI(replacedTerm4cats.getSystemAttributes().getGUID());
+        List<Category> cats = getCategoriesAPI(replacedTerm4cats.getSystemAttributes().getGUID(),0,5);
         if (cats ==null || cats.size() != 0) {
             throw new SubjectAreaFVTCheckedException("ERROR: Use API call to check replace with null to get rid of the categorizations.");
         }
@@ -382,7 +389,7 @@ public class TermFVT {
         if (updatedTerm4cats2.getCategories().size() != 2) {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected update to gain 2 categorizations.");
         }
-        if (getCategoriesAPI(updatedTerm4cats2.getSystemAttributes().getGUID()).size() !=2) {
+        if (getCategoriesAPI(updatedTerm4cats2.getSystemAttributes().getGUID(),0,5).size() !=2) {
             throw new SubjectAreaFVTCheckedException("ERROR: Use API call to check update to gain 2 categorizations");
         }
 
@@ -581,8 +588,10 @@ public class TermFVT {
             throw new SubjectAreaFVTCheckedException("ERROR: Expected " +existingTermCount + " Terms to be found, got " + terms.size());
         }
     }
-    public List<Category> getCategoriesAPI(String termGuid) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-
-        return subjectAreaTermClient.getCategories(userId, termGuid);
+    public List<Category> getCategoriesAPI(String termGuid,int startingFrom, int pageSize) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        FindRequest findRequest = new FindRequest();
+        findRequest.setPageSize(pageSize);
+        findRequest.setStartingFrom(startingFrom);
+        return subjectAreaTermClient.getCategories(userId, termGuid, findRequest);
     }
 }
