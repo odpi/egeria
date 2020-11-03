@@ -68,31 +68,6 @@ export default function ServerCohortsDisplay(props) {
   };
 
 
-  /*
-   * As the user flips a cohort section, expand the cohort details display and add the cohort 
-   * to the gens so that it appears in the topology diagram.
-   */
-  //const flipSectionAndLoadCohort = (evt) => {
-  //
-  //  let cohortName = evt.target.id;
-  //  resourcesContext.loadCohortFromServer(serverName, cohortName);
-  //
-  //  /*
-  //   * Use currentTarget (not target) - because we need to operate relative to the button,
-  //   * which is where the handler is defined, in order for the content section to be the sibling.
-  //   */
-  //  const element = evt.currentTarget;
-  //  element.classList.toggle("active");
-  //  const content = element.nextElementSibling;
-  //  if (content.style.display === "block") {
-  //    content.style.display = "none";
-  //  }
-  //  else {
-  //    content.style.display = "block";
-  //  }
-  //};
-
-
 
   const formatCohort = (cohortDetails) => {
     let cohortName = cohortDetails.cohortDescription.cohortName;
@@ -117,13 +92,20 @@ export default function ServerCohortsDisplay(props) {
                   <div>MetadataCollectionId : {localRegistration.metadataCollectionId}</div>
                 </div>      
               </li>
+
               <li>
                 <button className="collapsible" onClick={flipSection}> Remote Registrations: </button>
                 <div className="content">
-                <ul className="type-details-list">     
-                  {formatRegistrations(remoteRegistrations)}
-                </ul>
-                </div>      
+                  { !remoteRegistrations &&
+                    <div>None</div>
+                  }
+                  { remoteRegistrations &&
+                    <ul className="type-details-list">
+                      {formatRegistrations(remoteRegistrations)}
+                    </ul>
+                  }
+                </div>
+
               </li>
               <li>
                 <button className="collapsible" onClick={flipSection}> Connections: </button>
@@ -143,19 +125,35 @@ export default function ServerCohortsDisplay(props) {
  
 
   const expandConnections = (connections) => {
+
     return (
-      <ul className="type-details-list">     
-        {formatConnections(connections)}
-      </ul>
+
+      <div>
+      { !connections &&
+        <div>
+          <div>None</div>
+        </div>
+      }
+
+      { connections &&
+        <ul className="type-details-list">
+          {formatConnections(connections)}
+        </ul>
+      }
+      </div>
+
     );
   }
 
   const formatConnections = (connections) => {
-    let formattedConnections = connections.map( (connection) => 
-      <li className="type-details-list-item" key={connection.position}> 
-        {formatConnection(connection)}
-      </li>  
-    );
+    let formattedConnections;
+    if (connections) {
+      formattedConnections = connections.map( (connection) =>
+        <li className="type-details-list-item" key={connection.position}>
+          {formatConnection(connection)}
+        </li>
+      );
+    }
     return formattedConnections;
   }
 
@@ -174,11 +172,14 @@ export default function ServerCohortsDisplay(props) {
   }
 
   const formatRegistrations = (registrations) => {
-    let formattedRegistrations = registrations.map( (registration) => 
-      <li className="details-sublist-item" key={registration.registrationTime}> 
-        {formatRegistration(registration)}
-      </li>  
-    );
+    let formattedRegistrations;
+    if (registrations) {
+      formattedRegistrations = registrations.map( (registration) =>
+        <li className="details-sublist-item" key={registration.registrationTime}>
+          {formatRegistration(registration)}
+        </li>
+      );
+    }
     return formattedRegistrations;
   }
 

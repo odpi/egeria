@@ -3,6 +3,9 @@
 package org.odpi.openmetadata.viewservices.glossaryauthor.services;
 
 import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.SubjectAreaNodeClients;
+import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.categories.SubjectAreaCategoryClient;
+import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.terms.SubjectAreaTermClient;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
@@ -357,6 +360,31 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
             response.addResult(term);
         }  catch (Throwable error) {
             response =  getResponseForError(error, auditLog, className, methodName);
+        }
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+    public SubjectAreaOMASAPIResponse<Category> getCategories(String serverName, String userId, String guid, Integer startingFrom, Integer pageSize) {
+        final String methodName = "getCategories";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
+        AuditLog auditLog = null;
+        FindRequest findRequest = new FindRequest();
+        if (pageSize == null) {
+            pageSize = invalidParameterHandler.getMaxPagingSize();
+        }
+        try {
+            invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
+            findRequest.setPageSize(pageSize);
+            findRequest.setStartingFrom(startingFrom);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
+            List<Category> categories = ((SubjectAreaTermClient) clients.categories()).getCategories(userId, guid, findRequest);
+            response.addAllResults(categories);
+        } catch (Throwable error) {
+            response = getResponseForError(error, auditLog, className, methodName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
