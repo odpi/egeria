@@ -6,6 +6,7 @@ import Add32 from "../../../images/Egeria_add_32";
 import Delete32 from "../../../images/Egeria_delete_32";
 import Edit32 from "../../../images/Egeria_edit_32";
 import Term32 from "../../../images/Egeria_term_32";
+import ParentChild32 from "../../../images/Egeria_parent_child_32";
 import { LocalNodeCard, NodeCardSection } from "./NodeCard/NodeCard";
 import GlossaryImage from "../../../images/Egeria_glossary_32";
 import getNodeType from "./properties/NodeTypes.js";
@@ -14,9 +15,9 @@ import useDebounce from "./useDebounce";
 
 import { Link } from "react-router-dom";
 
-export default function CardViewNavigation({ match, nodeTypeName }) {
+export default function GlossaryCardViewNavigation({ match }) {
   const [nodes, setNodes] = useState([]);
-  const nodeType = getNodeType(nodeTypeName);
+  const nodeType = getNodeType("glossary");
   // State and setter for search term
   const [filterCriteria, setFilterCriteria] = useState("");
   const [exactMatch, setExactMatch] = useState(false);
@@ -114,9 +115,15 @@ export default function CardViewNavigation({ match, nodeTypeName }) {
     setExactMatch(checkBox.checked);
   };
 
-  const getNodeChildrenUrl = (guid) => {
-    return match.path + "/glossaries/" + guid + "/children";
-  };
+  function getNodeChildrenUrl() {
+      return match.path + "/glossaries/" + selectedNodeGuid + "/children";
+  }
+ /**
+  * The function returns another function; this is required by react Link. The below syntax is required to be able to handle the parameter.   
+  * Not working ...
+  */
+  const getNodeChildrenUrlUsingGuid = (guid) => () => { return `${match.path}/glossaries/${guid}/children`; }
+
   function getAddNodeUrl() {
     return match.path + "/glossaries/add-node";
   }
@@ -124,7 +131,7 @@ export default function CardViewNavigation({ match, nodeTypeName }) {
     return match.path + "/glossaries/" + selectedNodeGuid + "/quick-terms";
   }
   function getEditNodeUrl() {
-    return match.path + "/glossaries/edit-node/" + selectedNodeGuid;
+    return match.path + "/glossaries/edit-glossary/" + selectedNodeGuid;
   }
   const onFilterCriteria = (e) => {
     setFilterCriteria(e.target.value);
@@ -139,7 +146,7 @@ export default function CardViewNavigation({ match, nodeTypeName }) {
   return (
     <div>
       <div className="bx--grid">
-        <NodeCardSection heading="nodes" className="landing-page__r3">
+        <NodeCardSection heading="Glossaries" className="landing-page__r3">
           <article className="node-card__controls bx--col-sm-4 bx--col-md-1 bx--col-lg-1 bx--col-xlg-1 bx--col-max-1">
             Choose {nodeType.key}
           </article>
@@ -172,6 +179,11 @@ export default function CardViewNavigation({ match, nodeTypeName }) {
                 </Link>
               )}
               {selectedNodeGuid && (
+                  <Link to={getNodeChildrenUrl}>
+                    <ParentChild32 kind="primary" />
+                  </Link>
+              )}
+              {selectedNodeGuid && (
                 <Link to={getEditNodeUrl()}>
                   <Edit32 kind="primary" />
                 </Link>
@@ -195,7 +207,7 @@ export default function CardViewNavigation({ match, nodeTypeName }) {
               icon={<GlossaryImage />}
               isSelected={isSelected(node.systemAttributes.guid)}
               setSelected={setSelected}
-              link={getNodeChildrenUrl(node.systemAttributes.guid)}
+              link={getNodeChildrenUrlUsingGuid(node.systemAttributes.guid)}
             />
           ))}
           {nodes.length == 0 && <div>No {nodeType.plural} found!</div>}

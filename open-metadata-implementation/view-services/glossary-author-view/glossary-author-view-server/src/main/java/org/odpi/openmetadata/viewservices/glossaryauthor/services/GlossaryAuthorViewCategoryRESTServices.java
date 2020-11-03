@@ -3,9 +3,12 @@
 package org.odpi.openmetadata.viewservices.glossaryauthor.services;
 
 import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.SubjectAreaNodeClients;
+import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.categories.SubjectAreaCategoryClient;
+import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.glossaries.SubjectAreaGlossaryClient;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -359,4 +362,54 @@ public class GlossaryAuthorViewCategoryRESTServices extends BaseGlossaryAuthorVi
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
+
+    public SubjectAreaOMASAPIResponse<Category> getCategoryChildren(String serverName, String userId, String guid, Integer startingFrom, Integer pageSize) {
+        final String methodName = "getCategoryChildren";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
+        AuditLog auditLog = null;
+        FindRequest findRequest = new FindRequest();
+        if (pageSize == null) {
+            pageSize = invalidParameterHandler.getMaxPagingSize();
+        }
+        try {
+            invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
+            findRequest.setPageSize(pageSize);
+            findRequest.setStartingFrom(startingFrom);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
+            List<Category> categories = ((SubjectAreaCategoryClient) clients.categories()).getCategoryChildren(userId, guid, findRequest);
+            response.addAllResults(categories);
+        } catch (Throwable error) {
+            response = getResponseForError(error, auditLog, className, methodName);
+        }
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+    public SubjectAreaOMASAPIResponse<Term> getCategorizedTerms(String serverName, String userId, String guid, Integer startingFrom, Integer pageSize) {
+            final String methodName = "getCategorizedTerms";
+
+            RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+            SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
+            AuditLog auditLog = null;
+            FindRequest findRequest = new FindRequest();
+            if (pageSize == null) {
+                pageSize = invalidParameterHandler.getMaxPagingSize();
+            }
+            try {
+                invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
+                findRequest.setPageSize(pageSize);
+                findRequest.setStartingFrom(startingFrom);
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+                SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
+                List<Term> terms = ((SubjectAreaCategoryClient)clients.categories()).getTerms(userId, guid, findRequest);
+                response.addAllResults(terms);
+            } catch (Throwable error) {
+                response = getResponseForError(error, auditLog, className, methodName);
+            }
+            restCallLogger.logRESTCallReturn(token, response.toString());
+            return response;
+        }
 }

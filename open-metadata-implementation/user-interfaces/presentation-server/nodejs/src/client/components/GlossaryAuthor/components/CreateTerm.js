@@ -4,9 +4,9 @@ import React from "react";
 import getNodeType from "./properties/NodeTypes.js";
 import CreateNode from "./CreateNode";
 
-export default function CreateGlossary(props) {
-  console.log("CreateGlossary");
+export default function CreateTerm(props) {
+  console.log("CreateTerm");
   return (
-   <CreateNode currentNodeType={getNodeType("glossary")} />
+   <CreateNode currentNodeType={getNodeType("term")} glossaryGuid={props.match.params.glossaryguid}/>
   );
 }

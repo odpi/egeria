@@ -1,18 +1,26 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
-import React                               from "react";
+import React, { useState }                from "react";
 
 import PropTypes                           from "prop-types";
 
 import "./details-panel.scss";
 
+import ServerRunHistoryHandler             from "./ServerRunHistoryHandler";
+
 
 export default function ServerStatusDisplay(props) {
 
   const inStatus         = props.serverStatus;
+  const serverName       = props.serverName;
 
   let outStatus;
+
+
+
+  const [historyStatus, setHistoryStatus]     = useState("idle");
+  const [history, setHistory]                 = useState({});
 
   
   /*
@@ -45,6 +53,23 @@ export default function ServerStatusDisplay(props) {
     );
   }
 
+  /*
+   * Handler to render sevrer config audit trail in portal
+   */
+  const displayServerRunHistory = (serverName, history) => {
+    setHistory({"serverName" : serverName , "history" : history });
+    setHistoryStatus("complete");
+  }
+
+  const cancelHistoryModal = () => {
+    setHistoryStatus("idle");
+  };
+
+  const submitHistoryModal = () => {
+    setHistoryStatus("idle");
+  };
+
+
 
   const serverRunHistory = (history) => {
 
@@ -68,15 +93,17 @@ export default function ServerStatusDisplay(props) {
           <li className="details-sublist-item">Server Status : {inStatus.isActive ? <span>ACTIVE</span> : <span>STOPPED</span>}</li>
           <li className="details-sublist-item">Server Start Time : {inStatus.isActive ? inStatus.serverStartTime : <i>not applicable</i>}</li>
           <li className="details-sublist-item">Server End Time : {inStatus.isActive ? <i>not applicable</i>  : inStatus.serverEndTime}</li>
-          <li className="details-sublist-item">
-            <button className="collapsible" onClick={flipSection}> Server Run History : </button>
-            <div className="content">
-              {inStatus.serverHistory ? 
-              <ul className="details-sublist">
-                {serverRunHistory(inStatus.serverHistory)}
-              </ul>
-              : <i>empty</i>}
-            </div>
+
+
+          <li>
+          <button onClick = { () => displayServerRunHistory(serverName, inStatus.serverHistory) }>
+            Server Run History
+            </button>
+            <ServerRunHistoryHandler   status                = { historyStatus }
+                                       serverName            = { serverName }
+                                       history               = { inStatus.serverHistory }
+                                       onCancel              = { cancelHistoryModal }
+                                       onSubmit              = { submitHistoryModal } />
           </li>
         </ul>
       </div>
@@ -109,5 +136,6 @@ export default function ServerStatusDisplay(props) {
 }
 
 ServerStatusDisplay.propTypes = {
-  serverStatus: PropTypes.object
+  serverName   : PropTypes.string,
+  serverStatus : PropTypes.object
 };
