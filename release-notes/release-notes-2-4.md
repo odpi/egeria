@@ -3,8 +3,6 @@
 
 # Release 2.4 (October 2020)
 
-Release 2.4 adds:
-
 * The [Integration Daemon](https://github.com/odpi/egeria/blob/master/open-metadata-implementation/admin-services/docs/concepts/integration-daemon.md) now makes is simpler to exchange metadata with third party technology 
   such as catalogs and databases.
 * The Repository explorer User Interface ('REX') can now be configured with a list of available 
@@ -15,6 +13,13 @@ Release 2.4 adds:
   and 
   [Configuring the Presentation Server](https://github.com/odpi/egeria/blob/master/open-metadata-implementation/admin-services/docs/user/configuring-the-presentation-server.md)
   .
+* The [Business UI ](https://github.com/odpi/egeria/tree/master/open-metadata-implementation/user-interfaces/ui-chassis/ui-chassis-spring)
+  no longer includes static content. It is now required to deploy the [egeria-ui]( https://github.com/odpi/egeria-ui)
+  project in addition to the spring application.
+  A [docker image](https://hub.docker.com/r/odpi/egeria-uistatic) is available, 
+  and the [docker-compose](https://github.com/odpi/egeria/blob/master/open-metadata-resources/open-metadata-tutorials/lab-infrastructure-guide/running-docker-compose.md) 
+  & [Kubernetes](https://github.com/odpi/egeria/blob/master/open-metadata-resources/open-metadata-tutorials/lab-infrastructure-guide/running-kubernetes.md) 
+  lab environments include this pre-configured.
 * Additional [Access Services Functional Verification tests](https://github.com/odpi/egeria/tree/master/open-metadata-test/open-metadata-fvt/access-services-fvt) have been added to improve code quality
 * Bug fixes
 * Dependency updates
