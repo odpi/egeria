@@ -19,12 +19,12 @@ import { Link } from "react-router-dom";
 
 const GlossaryAuthorCategoriesNavigation = (props) => {
   const [nodes, setNodes] = useState([]);
-  const nodeType = getNodeType("category");
   const [errorMsg, setErrorMsg] = useState();
   const [selectedNodeGuid, setSelectedNodeGuid] = useState();
   const [isCategoryAll, setIsCategoryAll] = useState(false);
   console.log("GlossaryAuthorCategoriesNavigation " + props);
 
+  const nodeType = getNodeType("category");
   useEffect(() => {
     getChildren();
   }, [selectedNodeGuid]);
@@ -104,14 +104,6 @@ const GlossaryAuthorCategoriesNavigation = (props) => {
   };
   return (
     <div>
-      <Toggle
-        aria-label="topCategorytoggle"
-        defaultToggled
-        labelA="All Categories"
-        labelB="Top Categories"
-        id="category-filter-toggle"
-        onToggle={onToggleTop}
-      />
       <div className="bx--grid">
         <NodeCardSection>
           <article className="node-card__controls bx--col-sm-4 bx--col-md-1 bx--col-lg-3 bx--col-xlg-3 bx--col-max-2">
@@ -133,6 +125,14 @@ const GlossaryAuthorCategoriesNavigation = (props) => {
             </div>
           </article>
         </NodeCardSection>
+        <Toggle
+        aria-label="topCategoryToggle"
+        defaultToggled
+        labelA="All Categories"
+        labelB="Top Categories"
+        id="category-filter-toggle"
+        onToggle={onToggleTop}
+      />
 
         <NodeCardSection className="landing-page__r3">
           <article style={{ color: "red" }}>{errorMsg}</article>

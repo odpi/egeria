@@ -18,12 +18,15 @@ import {
 } from "carbon-components-react";
 import Info16 from "@carbon/icons-react/lib/information/16";
 import { issueRestCreate } from "./RestCaller";
+import { useHistory } from "react-router-dom";
 
 export default function CreateNode(props) {
   const [createBody, setCreateBody] = useState({});
   const [createdNode, setCreatedNode] = useState();
   const [errorMsg, setErrorMsg] = useState();
   const [restCallInProgress, setRestCallInProgress] = useState(false);
+
+  let history = useHistory();
 
   console.log("CreateNode");
 
@@ -160,10 +163,10 @@ export default function CreateNode(props) {
   };
   const onClickBack = () => {
     console.log("Back clicked");
-    // use props.history, as there is another window history object in scope in the event listener
-    console.log(props.history);
+    // use history, as there is another window history object in scope in the event listener
+    console.log(history);
     // go  back
-    props.history.goBack();
+    history.goBack();
   };
   return (
     <div>

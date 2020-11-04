@@ -5,10 +5,12 @@ import { ContentSwitcher, Switch } from "carbon-components-react";
 import GlossaryAuthorTermsNavigation from "./GlossaryAuthorTermsNavigation";
 import GlossaryAuthorCategoriesNavigation from "./GlossaryAuthorCategoriesNavigation";
 import getNodeType from "./properties/NodeTypes";
+import { useHistory } from "react-router-dom";
 
 export default function GlossaryChildren(props) {
   console.log("NodeChildren(props) " + props);
   const guid = props.match.params.glossaryguid;
+  let history = useHistory();
 
   const [showTerms, setShowTerms] = useState(false);
   const onChange = (e) => {
@@ -16,7 +18,7 @@ export default function GlossaryChildren(props) {
     const url = props.match.url + "/" + chosenContent;
     console.log("pushing url " + url);
 
-    props.history.push(url);
+    history.push(url);
     if (chosenContent == "terms") {
       setShowTerms(true);
     } else {
