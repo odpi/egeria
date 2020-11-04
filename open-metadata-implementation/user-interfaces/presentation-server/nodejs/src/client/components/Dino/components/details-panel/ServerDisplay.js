@@ -9,11 +9,12 @@ import { RequestContext }                      from "../../contexts/RequestConte
 import ServerConfigServicesDisplay             from "./ServerConfigServicesDisplay";
 import ServerConfigEventBusDisplay             from "./ServerConfigEventBusDisplay";
 import ServerConfigRepositoryServicesDisplay   from "./ServerConfigRepositoryServicesDisplay";
-import ServerConfigAuditTrailDisplay           from "./ServerConfigAuditTrailDisplay";
 import ServerServicesDisplay                   from "./ServerServicesDisplay";
 import ServerCohortsDisplay                    from "./ServerCohortsDisplay";
 import ServerStatusDisplay                     from "./ServerStatusDisplay";
 import AuditLogHandler                         from "./AuditLogHandler";
+import ConfigLogHandler                        from "./ConfigLogHandler";
+
 
 
 import "./details-panel.scss";
@@ -57,6 +58,8 @@ export default function ServerDisplay() {
   const [auditLog, setAuditLog]             = useState({});
 
 
+  const [configLogStatus, setConfigLogStatus] = useState("idle");
+  const [configLog, setConfigLog]             = useState({});
 
   /*
    * Handler for flopping a collapsible
@@ -222,6 +225,22 @@ export default function ServerDisplay() {
 
 
   /*
+   * Handler to render sevrer config audit trail in portal
+   */
+  const displayServerConfigLog = (serverName, configAuditTrail) => {
+    setConfigLog({"serverName" : serverName , "configAuditTrail" : configAuditTrail });
+    setConfigLogStatus("complete");
+  }
+
+  const cancelConfigLogModal = () => {
+    setConfigLogStatus("idle");
+  };
+
+  const submitConfigLogModal = () => {
+    setConfigLogStatus("idle");
+  };
+
+  /*
    * It would be possible to specialize the display of a server depending on its server type.
    * 
    * A View Server can host view-services
@@ -324,28 +343,29 @@ export default function ServerDisplay() {
       <div className="type-details-item-bold">Server Type : </div>
       <div className="type-details-item">{serverDetails.serverClassification.serverTypeName}</div>
       <div className="type-details-item">{serverDetails.serverClassification.serverTypeDescription}</div>
-        
+
       <button className="collapsible" onClick={flipSection}> Services: </button>
       <div className="content">
         <ServerServicesDisplay serverName={serverDetails.serverName} serviceList={serverDetails.serverServicesList}></ServerServicesDisplay>
-      </div>      
+      </div>
       <br/>
 
       <button className="collapsible" onClick={flipSection}> Cohorts: </button>
       <div className="content">
         <ServerCohortsDisplay serverName={serverDetails.serverName} cohortDetails={serverDetails.cohortDetails}></ServerCohortsDisplay>
-      </div>      
+      </div>
       <br/>
+
+
 
       <div>
       <button className="collapsible" onClick={flipConfigSection}> Server Configuration: </button>
         <div className="content">
-          
           <div>
            { (loading === "loading") && <div>Loading...</div>}
           </div>
           <div>
-           { (loading === "loaded") && 
+           { (loading === "loaded") &&
             <div>
 
               <label htmlFor="layoutMode">Display : </label>
@@ -382,9 +402,9 @@ export default function ServerDisplay() {
               <br/>
 
               {
-              displayedConfig && (displayMode === "stored" || displayMode === "active") && 
-              <ul>
-               
+              displayedConfig && (displayMode === "stored" || displayMode === "active") &&
+              <ul className="details-sublist">
+
                 <li>
                   <div className="type-details-item-bold">Local Server Name : </div>
                   <div className="type-details-item">{
@@ -434,7 +454,6 @@ export default function ServerDisplay() {
                     displayedConfig && displayedConfig.viewServicesConfig}></ServerConfigServicesDisplay>
                   </div>
                 </li>
-      
 
                 <li>
                   <button className="collapsible" onClick={flipSection}> Repository Services Configuration: </button>
@@ -443,6 +462,7 @@ export default function ServerDisplay() {
                     displayedConfig && displayedConfig.repositoryServicesConfig}></ServerConfigRepositoryServicesDisplay>
                   </div>
                 </li>
+
                 <li>
                   <button className="collapsible" onClick={flipSection}> Event Bus Configuration: </button>
                   <div className="content">
@@ -452,15 +472,19 @@ export default function ServerDisplay() {
                 </li>
 
                 <li>
-                  <button className="collapsible" onClick={flipSection}> Server Configuration Audit Trail: </button>
-                  <div className="content">
-                    <ServerConfigAuditTrailDisplay trail={
-                    displayedConfig && displayedConfig.auditTrail}></ServerConfigAuditTrailDisplay>
-                  </div>
+                  <button onClick = { () => displayServerConfigLog(serverDetails.serverName, displayedConfig.auditTrail) }>
+                    Server Configuration Audit Trail:
+                  </button>
+
+                  <ConfigLogHandler   status                = { configLogStatus }
+                                      configLog             = { configLog }
+                                      onCancel              = { cancelConfigLogModal }
+                                      onSubmit              = { submitConfigLogModal } />
                 </li>
-      
+
               </ul>
               }
+
               {
                 (displayMode === "diffs") &&
                 <div>
@@ -481,52 +505,61 @@ export default function ServerDisplay() {
                       </div>
 
                       <label htmlFor="incAuditTrail">Include Config Audit Trail entries </label>
-                      <input type="checkbox" 
-                        id="cbIncAuditTrail" 
-                        name="cbIncAuditTrail" 
-                        onChange={updateIncAuditTrailOption} 
-                        checked={ incAuditTrailOption } 
+                      <input type="checkbox"
+                        id="cbIncAuditTrail"
+                        name="cbIncAuditTrail"
+                        onChange={updateIncAuditTrailOption}
+                        checked={ incAuditTrailOption }
                         value={ incAuditTrailOption }  />
 
 
-                      <ul className="type-details-list">     
+                      <ul className="type-details-list">
                         {
-                          Object.keys(differences).map( diff => 
+                          Object.keys(differences).map( diff =>
                             (incAuditTrailOption || diff.split('.')[0] !== "auditTrail") &&
-                            <li className="type-details-item" key={diff}> 
+                            <li className="type-details-item" key={diff}>
                               <div className="div-bold">{diff}</div>
                               <div>Active: {differences[diff].active ? differences[diff].active : <i>blank</i>}</div>
                               <div>Stored: {differences[diff].stored ? differences[diff].stored : <i>blank</i>}</div>
-                            </li>  
+                            </li>
                           )
-                        } 
+                        }
                       </ul>
                     </div>
                   }
                 </div>
               }
+
             </div>}
           </div>
         </div>
       </div>
-      <button className="collapsible" onClick={flipSection}> Server Status Log: </button>
+
+      <button className="collapsible" onClick={flipSection}> Server Status: </button>
       <div className="content">
-        <ServerStatusDisplay serverStatus={serverDetails.serverStatus}></ServerStatusDisplay>
-      </div>      
+        <ServerStatusDisplay serverName={serverDetails.serverName} serverStatus={serverDetails.serverStatus}>
+        </ServerStatusDisplay>
+      </div>
       <br/>
-      
-      <button 
-          onClick = { () => getServerAuditLog(serverDetails.guid) }  >
+
+      <button className="collapsible" onClick={flipSection}> Server Audit Log: </button>
+      <div className="content">
+        <button onClick = { () => getServerAuditLog(serverDetails.guid) }  >
           Server Audit Log
-      </button>
+        </button>
+      </div>
 
       <AuditLogHandler   status                = { auditLogStatus }
                          auditLog              = { auditLog }
                          onCancel              = { cancelAuditLogModal }
                          onSubmit              = { submitAuditLogModal } />
 
+
+
     </div>
   );
+
+
 }
 
 
