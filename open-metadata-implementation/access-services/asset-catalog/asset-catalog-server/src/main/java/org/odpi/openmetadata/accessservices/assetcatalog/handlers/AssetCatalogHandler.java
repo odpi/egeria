@@ -89,8 +89,8 @@ public class AssetCatalogHandler {
         this.commonHandler = new CommonHandler(sourceName, repositoryHandler, repositoryHelper, errorHandler);
         if (CollectionUtils.isNotEmpty(supportedTypesForSearch)) {
             this.supportedTypesForSearch = supportedTypesForSearch;
+            Collections.sort(supportedTypesForSearch);
         }
-        Collections.sort(supportedTypesForSearch);
         this.assetConverter = new AssetConverter(sourceName, repositoryHelper);
     }
 
