@@ -182,7 +182,7 @@ public class GlossaryAuthorViewGlossaryRESTResource {
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      * */
-    @GetMapping(path = "/users/{userId}/glossaries/{guid}/terms")
+    @GetMapping(path = "/{guid}/terms")
     public SubjectAreaOMASAPIResponse<Term> getGlossaryTerms(@PathVariable String serverName,
                                                              @PathVariable String userId,
                                                              @PathVariable String guid,
@@ -209,7 +209,7 @@ public class GlossaryAuthorViewGlossaryRESTResource {
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      * */
-    @GetMapping(path = "/users/{userId}/glossaries/{guid}/categories")
+    @GetMapping(path = "/{guid}/categories")
     public SubjectAreaOMASAPIResponse<Category> getGlossaryCategories(@PathVariable String serverName,
                                                                       @PathVariable String userId,
                                                                       @PathVariable String guid,
