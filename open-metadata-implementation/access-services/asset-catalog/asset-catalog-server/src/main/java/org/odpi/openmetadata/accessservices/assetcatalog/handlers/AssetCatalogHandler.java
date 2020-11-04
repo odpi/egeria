@@ -480,7 +480,7 @@ public class AssetCatalogHandler {
      */
     public List<Type> getSupportedTypes(String userId, String typeName) {
         if (typeName != null && !typeName.isEmpty()) {
-            return getSupportedTypesCollector(userId, typeName);
+            return getSupportedTypesWithDescendants(userId, typeName);
         }
 
         return getSupportedTypes(userId, supportedTypesForSearch.toArray(new String[0]));
@@ -1432,7 +1432,7 @@ public class AssetCatalogHandler {
      * @param supportedTypesForSearch the list of types
      * @return a list of types and all of sub-types recursive
      */
-    private List<Type> getSupportedTypesCollector(String userId, String... supportedTypesForSearch) {
+    private List<Type> getSupportedTypesWithDescendants(String userId, String... supportedTypesForSearch) {
         List<Type> response = new ArrayList<>();
         for (String type : supportedTypesForSearch) {
             List<Type> typeContext = commonHandler.getTypeContext(userId, type);
