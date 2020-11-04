@@ -23,7 +23,7 @@ export default function GlossaryViewNavigation({ match }) {
   const [isCardView, setIsCardView] = useState(true);
   const [total, setTotal] = useState(0);
   const [pageNumber, setPageNumber] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize, setPageSize] = useState(5);
 
   const nodeType = getNodeType("glossary");
   // State and setter for search term
@@ -83,6 +83,7 @@ export default function GlossaryViewNavigation({ match }) {
 
   function refreshNodes(results, passedPageSize, passedPageNumber) {
     let selectedInResults = false;
+    setTotal(results.length);
     if (results && results.length > 0) {
       // if page = 1 and pageSize 10, searchTableRowsStart = 1
       // if page = 2 and pageSize 10, searchTableRowsStart = 11
