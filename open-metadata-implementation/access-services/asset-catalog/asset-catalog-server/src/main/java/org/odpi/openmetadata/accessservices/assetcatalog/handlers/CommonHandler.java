@@ -64,7 +64,7 @@ public class CommonHandler {
      *
      * @param userId      user identifier that issues the call
      * @param typeDefName the type definition name
-     * @return a list of sub-types
+     * @return a list of sub-types recursive
      */
     List<Type> getTypeContext(String userId, String typeDefName) {
         List<Type> response = new ArrayList<>();

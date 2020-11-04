@@ -1430,7 +1430,7 @@ public class AssetCatalogHandler {
      *
      * @param userId      user identifier that issues the call
      * @param supportedTypesForSearch the list of types
-     * @return the list of Type and all subtypes inherit from them
+     * @return a list of types and all of sub-types recursive
      */
     private List<Type> getSupportedTypesCollector(String userId, String... supportedTypesForSearch) {
         List<Type> response = new ArrayList<>();
