@@ -5,7 +5,6 @@ import React from "react";
 import { Route, Switch } from "react-router-dom";
 import GlossaryAuthorCRUD from "../GlossaryAuthorCRUD";
 import GlossaryAuthorNavigation from "../GlossaryAuthorNavigation";
-import GlossaryAuthorSearch from "../GlossaryAuthorSearch";
 import QuickTerms from "../QuickTerms";
 import GlossaryChildren from "../GlossaryChildren";
 import CreateGlossary from "../CreateGlossary";
@@ -124,7 +123,6 @@ export default function GlossaryAuthorRoutes({ glossaryAuthorURL }) {
         component={UpdateCategory}
       ></Route>
 
-      <Route path={getSearchPath()} component={GlossaryAuthorSearch}></Route>
       <Route path={getQuickTermsPath()} component={QuickTerms}></Route>
       <Route
         path={getGlossaryChildrenPath()}
