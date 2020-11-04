@@ -19,15 +19,10 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.contentmanager.OMEntityDao;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.AnalyticsModelingErrorCode;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.exceptions.AnalyticsModelingCheckedException;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.metadata.Database;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.model.*;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.model.module.*;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.utils.Constants;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseColumnElement;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseElement;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseSchemaElement;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseTableElement;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseViewElement;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.SchemaTypeElement;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.commonservices.generichandlers.RelationalDataHandler;
@@ -54,20 +49,18 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  * Database metadata is retrieved from OMRS using object of type
  * {@link org.odpi.openmetadata.accessservices.analyticsmodeling.contentmanager.OMEntityDao}<br>
  * All repository logic should be handled there.<br>
- * 
- * 
  */
 public class DatabaseContextHandler {
 
-
 	public static final String DATA_SOURCE_GUID = "dataSourceGUID";
 	
-	private RelationalDataHandler<DatabaseElement, 
-									DatabaseSchemaElement, 
-									DatabaseTableElement, 
-									DatabaseViewElement, 
-									DatabaseColumnElement, 
-									SchemaTypeElement> relationalDataHandler;
+	private RelationalDataHandler<Database, 
+									Object, 
+									Object, 
+									Object, 
+									Object, 
+									Object> relationalDataHandler;
+	
 	private OMEntityDao omEntityDao;
 	private InvalidParameterHandler invalidParameterHandler;
 	
@@ -79,7 +72,7 @@ public class DatabaseContextHandler {
 	}
 
 	public DatabaseContextHandler(
-		RelationalDataHandler<DatabaseElement, DatabaseSchemaElement, DatabaseTableElement, DatabaseViewElement, DatabaseColumnElement, SchemaTypeElement> relationalDataHandler, 
+		RelationalDataHandler<Database, Object, Object, Object, Object, Object> relationalDataHandler, 
 		OMEntityDao omEntityDao, 
 		InvalidParameterHandler invalidParameterHandler) {
 		
@@ -113,14 +106,14 @@ public class DatabaseContextHandler {
 		String methodName = "getDatabases";
 		setContext(methodName);
 		
-		List<DatabaseElement> databases = findDatabases(userId, startFrom, pageSize, methodName);
+		List<Database> databases = findDatabases(userId, startFrom, pageSize, methodName);
 		return Optional.ofNullable(databases).map(Collection::stream).orElseGet(Stream::empty)
 				.parallel()
 				.map(this::buildDatabase)
 				.filter(Objects::nonNull).collect(Collectors.toList());
 	}
 
-	private List<DatabaseElement> findDatabases(String userId, Integer startFrom, Integer pageSize, String methodName)
+	private List<Database> findDatabases(String userId, Integer startFrom, Integer pageSize, String methodName)
 			throws AnalyticsModelingCheckedException
 	{
 		try {
@@ -146,12 +139,12 @@ public class DatabaseContextHandler {
 		return list.subList(startFrom,  toElement);
 	}
 	
-	private ResponseContainerDatabase buildDatabase(DatabaseElement e) {
+	private ResponseContainerDatabase buildDatabase(Database e) {
 		ResponseContainerDatabase ret = new ResponseContainerDatabase();
-		ret.setDbName(e.getDatabaseProperties().getDisplayName());
-		ret.setDbType(e.getDatabaseProperties().getDatabaseType());
-		ret.setDbVersion(e.getDatabaseProperties().getDatabaseVersion());
-		ret.setGUID(e.getElementHeader().getGUID());
+		ret.setDbName(e.getName());
+		ret.setDbType(e.getType());
+		ret.setDbVersion(e.getVersion());
+		ret.setGUID(e.getGuid());
 		return ret;
 	}
 

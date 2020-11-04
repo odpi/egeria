@@ -13,8 +13,11 @@ import java.util.stream.Collectors;
 
 import org.odpi.openmetadata.accessservices.analyticsmodeling.assets.DatabaseContextHandler;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.contentmanager.OMEntityDao;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.converter.DatabaseConverter;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.converter.EmptyConverter;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.AnalyticsModelingErrorCode;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.exceptions.AnalyticsModelingCheckedException;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.metadata.Database;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.model.ResponseContainerDatabase;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.model.ResponseContainerDatabaseSchema;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.model.ResponseContainerModule;
@@ -22,18 +25,6 @@ import org.odpi.openmetadata.accessservices.analyticsmodeling.model.ResponseCont
 import org.odpi.openmetadata.accessservices.analyticsmodeling.model.module.Table;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.test.utils.TestUtilities;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.utils.Constants;
-import org.odpi.openmetadata.accessservices.datamanager.converters.DatabaseColumnConverter;
-import org.odpi.openmetadata.accessservices.datamanager.converters.DatabaseConverter;
-import org.odpi.openmetadata.accessservices.datamanager.converters.DatabaseSchemaConverter;
-import org.odpi.openmetadata.accessservices.datamanager.converters.DatabaseTableConverter;
-import org.odpi.openmetadata.accessservices.datamanager.converters.DatabaseViewConverter;
-import org.odpi.openmetadata.accessservices.datamanager.converters.SchemaTypeConverter;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseColumnElement;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseElement;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseSchemaElement;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseTableElement;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.DatabaseViewElement;
-import org.odpi.openmetadata.accessservices.datamanager.metadataelements.SchemaTypeElement;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.commonservices.generichandlers.RelationalDataHandler;
@@ -73,20 +64,20 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 				metadataCollection,
 	            PAGE_SIZE);
 
-		RelationalDataHandler<DatabaseElement, DatabaseSchemaElement, DatabaseTableElement, DatabaseViewElement, DatabaseColumnElement, SchemaTypeElement> relationalDataHandler =
+		RelationalDataHandler<Database, Object, Object, Object, Object, Object> relationalDataHandler =
 		new RelationalDataHandler<>(
-        		new DatabaseConverter<>(omrsRepositoryHelper, serviceName,serverName),
-                DatabaseElement.class,
-                new DatabaseSchemaConverter<>(omrsRepositoryHelper, serviceName,serverName),
-                DatabaseSchemaElement.class,
-                new DatabaseTableConverter<>(omrsRepositoryHelper, serviceName,serverName),
-                DatabaseTableElement.class,
-                new DatabaseViewConverter<>(omrsRepositoryHelper, serviceName,serverName),
-                DatabaseViewElement.class,
-                new DatabaseColumnConverter<>(omrsRepositoryHelper, serviceName, serverName),
-                DatabaseColumnElement.class,
-                new SchemaTypeConverter<>(omrsRepositoryHelper, serviceName, serverName),
-                SchemaTypeElement.class,
+        		new DatabaseConverter(omrsRepositoryHelper, serviceName,serverName),
+                Database.class,
+        		new EmptyConverter(omrsRepositoryHelper, serviceName,serverName),
+                Object.class,
+        		new EmptyConverter(omrsRepositoryHelper, serviceName,serverName),
+                Object.class,
+        		new EmptyConverter(omrsRepositoryHelper, serviceName,serverName),
+                Object.class,
+        		new EmptyConverter(omrsRepositoryHelper, serviceName,serverName),
+                Object.class,
+        		new EmptyConverter(omrsRepositoryHelper, serviceName,serverName),
+                Object.class,
                 serviceName,
                 serverName,
                 invalidParameterHandler,
@@ -117,9 +108,8 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 				.findFirst().orElse(null);
 		assertNotNull(gs);
 		assertNotNull(gs.getGUID());
-// todo: properties are not copied from Entity: fix converter used in RelationalDataHandler
-//		assertEquals(SERVER_TYPE_MS_SQL, gs.getDbType());
-//		assertEquals("1.0", gs.getDbVersion());
+		assertEquals(SERVER_TYPE_MS_SQL, gs.getDbType());
+		assertEquals("1.0", gs.getDbVersion());
 	}
 
 	@Test
