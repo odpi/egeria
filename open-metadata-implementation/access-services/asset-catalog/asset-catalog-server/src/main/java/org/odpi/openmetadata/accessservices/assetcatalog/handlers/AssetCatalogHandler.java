@@ -95,6 +95,7 @@ public class AssetCatalogHandler {
         if (CollectionUtils.isNotEmpty(supportedTypesForSearch)) {
             this.supportedTypesForSearch = supportedTypesForSearch;
         }
+        Collections.sort(supportedTypesForSearch);
         this.assetConverter = new AssetConverter(sourceName, repositoryHelper);
     }
 
@@ -487,7 +488,7 @@ public class AssetCatalogHandler {
             return getSupportedTypesCollector(userId, typeName);
         }
 
-        return getSupportedTypesCollector(userId, supportedTypesForSearch.toArray(new String[0]));
+        return getSupportedTypes(userId, supportedTypesForSearch.toArray(new String[0]));
     }
 
     private List<AssetDescription> getAssetDescriptionsAfterValidation(String methodName,
@@ -1430,11 +1431,34 @@ public class AssetCatalogHandler {
         return entityNeighborhood;
     }
 
+    /**
+     *
+     * @param userId      user identifier that issues the call
+     * @param supportedTypesForSearch the list of types
+     * @return the list of Type and all subtypes inherit from them
+     */
     private List<Type> getSupportedTypesCollector(String userId, String... supportedTypesForSearch) {
         List<Type> response = new ArrayList<>();
         for (String type : supportedTypesForSearch) {
             List<Type> typeContext = commonHandler.getTypeContext(userId, type);
             response.addAll(typeContext);
+        }
+        return response;
+    }
+
+    /**
+     *
+     * @param userId      user identifier that issues the call
+     * @param supportedTypesForSearch the list of types
+     * @return the list of types by names
+     */
+    private List<Type> getSupportedTypes(String userId, String... supportedTypesForSearch) {
+        List<Type> response = new ArrayList<>();
+        for (String typeName : supportedTypesForSearch) {
+            Type type = commonHandler.getTypeByTypeDefName(userId, typeName);
+            if(type != null) {
+                response.add(type);
+            }
         }
         return response;
     }
