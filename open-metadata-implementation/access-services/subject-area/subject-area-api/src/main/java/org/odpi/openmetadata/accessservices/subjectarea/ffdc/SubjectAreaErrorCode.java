@@ -244,7 +244,7 @@ public enum SubjectAreaErrorCode implements ExceptionMessageSet {
     UNEXPECTED_EXCEPTION(400, "OMAS-SUBJECT-AREA-400-070",
             "An unexpected Exception occurred. The Exception message is {0}.",
             "The system encountered an unexpected exception.",
-            "Review the exception message to assess whether this is a logic error (in which case raise a git issue against Egeria, or a resource constraint - in which case address that issue."),
+            "Review the exception message to assess whether this is a logic error, in which case raise a git issue against Egeria, or a resource constraint - in which case address that issue."),
     BAD_OUT_TOPIC_CONNECTION(400, "OMAS-SUBJECT-AREA-400-071",
             "The Subject Area Open Metadata Access Service (OMAS) has been passed an invalid connection for publishing events.  The connection was {0}.  The resulting exception of {1} included the following message: {2}",
             "The access service has not been passed valid configuration for its out topic connection.",

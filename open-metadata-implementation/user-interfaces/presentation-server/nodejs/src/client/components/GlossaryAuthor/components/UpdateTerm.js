@@ -4,9 +4,9 @@ import React from "react";
 import getNodeType from "./properties/NodeTypes.js";
 import UpdateNode from "./UpdateNode";
 
-export default function UpdateGlossary(props) {
-  console.log("UpdateGlossary");
+export default function UpdateTerm(props) {
+  console.log("UpdateTerm");
   return (
-   <UpdateNode currentNodeType={getNodeType("glossary")} guid={props.match.params.guidtoedit} />
+   <UpdateNode currentNodeType={getNodeType("term")} guid={props.match.params.guidtoedit} />
   );
 }
