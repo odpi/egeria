@@ -6,7 +6,6 @@ import Add32 from "../../../images/Egeria_add_32";
 import Delete32 from "../../../images/Egeria_delete_32";
 import Edit32 from "../../../images/Egeria_edit_32";
 import Term32 from "../../../images/Egeria_term_32";
-import ParentChild32 from "../../../images/Egeria_parent_child_32";
 import { LocalNodeCard, NodeCardSection } from "./NodeCard/NodeCard";
 import { withRouter } from "react-router-dom";
 import getNodeType from "./properties/NodeTypes.js";
@@ -173,11 +172,6 @@ const GlossaryAuthorTermsNavigation = (props) => {
               <Link to={getAddNodeUrl}>
                 <Add32 kind="primary" />
               </Link>
-              {selectedNodeGuid && (
-                <Link to={props.getTermsURL}>
-                  <ParentChild32 kind="primary" />
-                </Link>
-              )}
               {selectedNodeGuid && (
                 <Link to={getEditNodeUrl()}>
                   <Edit32 kind="primary" />
