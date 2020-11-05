@@ -114,6 +114,11 @@ public enum AnalyticsModelingErrorCode implements ExceptionMessageSet {
 			"Databases could not be fetched.",
 			"The system is unable to process the request.", 
 			"Review the exception to resolve the issue."),
+	FAILED_FETCH_DATABASE_SCHEMAS(
+			"OMAS-ANALYTICS-MODELING-017", 
+			"Schemas for database {} could not be fetched.",
+			"The system is unable to process the request.", 
+			"Review the exception to resolve the issue."),
 
 	UNKNOWN_ERROR(
 			"OMAS-ANALYTICS-MODELING-500", 
