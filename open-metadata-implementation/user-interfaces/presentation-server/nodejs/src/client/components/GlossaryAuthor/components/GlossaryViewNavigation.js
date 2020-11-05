@@ -2,21 +2,30 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 import React, { useState, useEffect } from "react";
 
+import { Pagination, Toggle } from "carbon-components-react";
 import Add32 from "../../../images/Egeria_add_32";
 import Delete32 from "../../../images/Egeria_delete_32";
 import Edit32 from "../../../images/Egeria_edit_32";
 import Term32 from "../../../images/Egeria_term_32";
+import ParentChild32 from "../../../images/Egeria_parent_child_32";
 import { LocalNodeCard, NodeCardSection } from "./NodeCard/NodeCard";
 import GlossaryImage from "../../../images/Egeria_glossary_32";
 import getNodeType from "./properties/NodeTypes.js";
 import { issueRestGet, issueRestDelete } from "./RestCaller";
 import useDebounce from "./useDebounce";
+import NodeTableView from "./views/NodeTableView";
 
 import { Link } from "react-router-dom";
 
-export default function CardViewNavigation({ match, nodeTypeName }) {
+export default function GlossaryViewNavigation({ match }) {
   const [nodes, setNodes] = useState([]);
-  const nodeType = getNodeType(nodeTypeName);
+  const [completeResults, setCompleteResults] = useState([]);
+  const [isCardView, setIsCardView] = useState(true);
+  const [total, setTotal] = useState(0);
+  const [pageNumber, setPageNumber] = useState(1);
+  const [pageSize, setPageSize] = useState(5);
+
+  const nodeType = getNodeType("glossary");
   // State and setter for search term
   const [filterCriteria, setFilterCriteria] = useState("");
   const [exactMatch, setExactMatch] = useState(false);
@@ -43,6 +52,70 @@ export default function CardViewNavigation({ match, nodeTypeName }) {
     // If the exactMatch changes then we need to re-issue the search.
     [debouncedFilterCriteria, exactMatch]
   );
+  const paginationProps = () => ({
+    disabled: false,
+    page: pageNumber,
+    pagesUnknown: true,
+    pageInputDisabled: false,
+    backwardText: "Previous page",
+    forwardText: "Next page",
+    totalItems: total,
+    pageSize: pageSize,
+    pageSizes: [5, 10, 50, 100],
+    itemsPerPageText: "Items per page:",
+    onChange: onPagination,
+  });
+  // driven when pagination options have changed - page size or page number
+  const onPagination = (options) => {
+    console.log("onPaginationChange");
+    console.log(options);
+    // save the pagination options in state
+    //setPaginationOptions(options);
+    setPageSize(options.pageSize);
+    setPageNumber(options.page);
+    refreshNodes(completeResults, options.pageSize, options.page);
+  };
+
+  // Refresh the displayed nodes search results
+  // this involves taking the results and pagination options and calculating nodes that is the subset needs to be displayed 
+  // The results, page size and page number are passed as arguments, rather than picked up from state, as the state updates
+  // are done asynchronously in a render cycle.   
+
+  function refreshNodes(results, passedPageSize, passedPageNumber) {
+    let selectedInResults = false;
+    setTotal(results.length);
+    if (results && results.length > 0) {
+      // if page = 1 and pageSize 10, searchTableRowsStart = 1
+      // if page = 2 and pageSize 10, searchTableRowsStart = 11
+      // if page = 2 and pageSize 10 and results.length = 15, searchTableRowsStart = 11 , searchTableRowsSize = 5
+      const searchTableRowsStart = (passedPageNumber - 1) * passedPageSize;
+      let searchTableRowsSize = passedPageSize;
+      // if the last page is not complete ensure that we only specify up the end of the what is actually there in the results.
+      if (searchTableRowsStart + searchTableRowsSize - 1 > results.length) {
+        searchTableRowsSize = results.length - searchTableRowsStart;
+      }
+      const slicedResults = results.slice(
+        searchTableRowsStart,
+        searchTableRowsStart + searchTableRowsSize
+      );
+      slicedResults.map(function (row) {
+        row.id = row.systemAttributes.guid;
+        if (
+          selectedNodeGuid && selectedNodeGuid == row.id
+        ) {
+          row.isSelected = true;
+          selectedInResults = true;
+        }
+      });
+      setNodes(slicedResults);
+    } else {
+      setNodes([]);
+    }
+    // we have selectedNode but it is not in the search results - we must have deleted it.
+    if (!selectedInResults) {
+      setSelectedNodeGuid(undefined);
+    }
+  }
   const processUserCriteriaAndIssueSearch = () => {
     // sort out the actual search criteria.
     let actualDebounceCriteria = debouncedFilterCriteria;
@@ -71,6 +144,7 @@ export default function CardViewNavigation({ match, nodeTypeName }) {
     if (selectedNodeGuid) {
       nodes.forEach(deleteIfSelected);
     }
+   
   };
   /**
    * Delete the supplied glossary if it's guid matches the selected one.
@@ -93,13 +167,19 @@ export default function CardViewNavigation({ match, nodeTypeName }) {
   const onErrorDelete = (msg) => {
     console.log("Error on delete " + msg);
     setErrorMsg(msg);
-    // setNodes([]);
   };
 
   const onSuccessfulSearch = (json) => {
     setErrorMsg("");
     console.log("onSuccessfulSearch " + json.result);
-    setNodes(json.result);
+
+    json.result.map(function (row) {
+      row.id = row.systemAttributes.guid;
+    });
+    refreshNodes(json.result, pageSize, pageNumber);
+    setCompleteResults(json.result);
+
+    // setNodes(json.result);
   };
 
   const onErrorSearch = (msg) => {
@@ -114,8 +194,24 @@ export default function CardViewNavigation({ match, nodeTypeName }) {
     setExactMatch(checkBox.checked);
   };
 
-  const getNodeChildrenUrl = (guid) => {
-    return match.path + "/glossaries/" + guid + "/children";
+  function getNodeChildrenUrl() {
+    return match.path + "/glossaries/" + selectedNodeGuid + "/children";
+  }
+  /**
+   * The function returns another function; this is required by react Link. The below syntax is required to be able to handle the parameter.
+   * Not working ...
+   */
+  const getNodeChildrenUrlUsingGuid = (guid) => () => {
+    return `${match.path}/glossaries/${guid}/children`;
+  };
+
+  const onToggleCard = () => {
+    console.log("onToggleCard");
+    if (isCardView) {
+      setIsCardView(false);
+    } else {
+      setIsCardView(true);
+    }
   };
   function getAddNodeUrl() {
     return match.path + "/glossaries/add-node";
@@ -124,7 +220,7 @@ export default function CardViewNavigation({ match, nodeTypeName }) {
     return match.path + "/glossaries/" + selectedNodeGuid + "/quick-terms";
   }
   function getEditNodeUrl() {
-    return match.path + "/glossaries/edit-node/" + selectedNodeGuid;
+    return match.path + "/glossaries/edit-glossary/" + selectedNodeGuid;
   }
   const onFilterCriteria = (e) => {
     setFilterCriteria(e.target.value);
@@ -139,7 +235,7 @@ export default function CardViewNavigation({ match, nodeTypeName }) {
   return (
     <div>
       <div className="bx--grid">
-        <NodeCardSection heading="nodes" className="landing-page__r3">
+        <NodeCardSection heading="Glossaries" className="landing-page__r3">
           <article className="node-card__controls bx--col-sm-4 bx--col-md-1 bx--col-lg-1 bx--col-xlg-1 bx--col-max-1">
             Choose {nodeType.key}
           </article>
@@ -172,6 +268,11 @@ export default function CardViewNavigation({ match, nodeTypeName }) {
                 </Link>
               )}
               {selectedNodeGuid && (
+                <Link to={getNodeChildrenUrl}>
+                  <ParentChild32 kind="primary" />
+                </Link>
+              )}
+              {selectedNodeGuid && (
                 <Link to={getEditNodeUrl()}>
                   <Edit32 kind="primary" />
                 </Link>
@@ -184,22 +285,46 @@ export default function CardViewNavigation({ match, nodeTypeName }) {
         <NodeCardSection className="landing-page__r3">
           <article style={{ color: "red" }}>{errorMsg}</article>
         </NodeCardSection>
-
         <NodeCardSection className="landing-page__r3">
-          {nodes.map((node) => (
-            <LocalNodeCard
-              key={node.systemAttributes.guid}
-              heading={node.name}
-              guid={node.systemAttributes.guid}
-              body={node.description}
-              icon={<GlossaryImage />}
-              isSelected={isSelected(node.systemAttributes.guid)}
-              setSelected={setSelected}
-              link={getNodeChildrenUrl(node.systemAttributes.guid)}
-            />
-          ))}
-          {nodes.length == 0 && <div>No {nodeType.plural} found!</div>}
+          <Toggle
+            aria-label="glossaryCardTableToggle"
+            defaultToggled
+            labelA="Table View"
+            labelB="Card View"
+            id="glossary-cardtable-toggle"
+            onToggle={onToggleCard}
+          />
         </NodeCardSection>
+        {isCardView && (
+          <NodeCardSection className="landing-page__r3">
+            {nodes.map((node) => (
+              <LocalNodeCard
+                key={node.systemAttributes.guid}
+                heading={node.name}
+                guid={node.systemAttributes.guid}
+                body={node.description}
+                icon={<GlossaryImage />}
+                isSelected={isSelected(node.systemAttributes.guid)}
+                setSelected={setSelected}
+                link={getNodeChildrenUrlUsingGuid(node.systemAttributes.guid)}
+              />
+            ))}
+          </NodeCardSection>
+        )}
+        {!isCardView && (
+          <NodeTableView
+            // tableKey={getNextTableKey()}
+            nodeType={nodeType}
+            nodes={nodes}
+            setSelected={setSelected}
+          />
+        )}
+        {nodes.length == 0 && <div>No {nodeType.plural} found!</div>}
+        {nodes.length > 0 && (
+          <div className="search-item">
+            <Pagination {...paginationProps()} />
+          </div>
+        )}
       </div>
     </div>
   );
