@@ -2,7 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 import React, { useState } from "react";
 import { ContentSwitcher, Switch } from "carbon-components-react";
-import GlossaryViewNavigation from "./GlossaryViewNavigation";
+import StartingGlossaryNavigation from "./StartingGlossaryNavigation";
+import StartingTermNavigation from "./StartingTermNavigation";
+import StartingCategoryNavigation from "./StartingCategoryNavigation";
 import { useHistory, withRouter } from "react-router-dom";
 
 function GlossaryAuthorNavigation(props) {
@@ -15,12 +17,27 @@ function GlossaryAuthorNavigation(props) {
 
   const onChange = (e) => {
     const chosenContent = `${e.name}`;
-    const url = props.match.url + "/" + chosenContent;
+
+   // props.match.url could be anything 
+
+    const arrayOfURLSegments = props.match.url.split("/");
+    let workingUrl = ""
+    let keepAppending = true;
+    for (let i=0;i<arrayOfURLSegments.length;i++) {
+      const currentSegment =  arrayOfURLSegments[i];
+      if (keepAppending && currentSegment.length > 0) {
+        workingUrl = workingUrl +"/" + currentSegment;
+      } 
+      if (currentSegment == "glossary-author" ) {
+        keepAppending=false;
+       } 
+    }
+   
+    const url = workingUrl + "/" + chosenContent;
     console.log("pushing url " + url);
 
     history.push(url);
     setCurrentNodeTypeToShow(chosenContent);
-
   };
 
   return (
@@ -30,7 +47,15 @@ function GlossaryAuthorNavigation(props) {
         <Switch name="categories" text="Categories" />
         <Switch name="terms" text="Terms" />
       </ContentSwitcher>
-      {currentNodeTypeToShow == "glossaries" && <GlossaryViewNavigation match={props.match}/>}
+      {currentNodeTypeToShow == "glossaries" && (
+        <StartingGlossaryNavigation match={props.match} />
+      )}
+      {currentNodeTypeToShow == "terms" && (
+        <StartingTermNavigation match={props.match} />
+      )}
+      {currentNodeTypeToShow == "categories" && (
+        <StartingCategoryNavigation match={props.match} />
+      )}
     </div>
   );
 }

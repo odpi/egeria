@@ -10,14 +10,14 @@ import Term32 from "../../../images/Egeria_term_32";
 import ParentChild32 from "../../../images/Egeria_parent_child_32";
 import { LocalNodeCard, NodeCardSection } from "./NodeCard/NodeCard";
 import GlossaryImage from "../../../images/Egeria_glossary_32";
-import getNodeType from "./properties/NodeTypes.js";
 import { issueRestGet, issueRestDelete } from "./RestCaller";
 import useDebounce from "./useDebounce";
 import NodeTableView from "./views/NodeTableView";
+import getNodeType from "./properties/NodeTypes.js";
 
 import { Link } from "react-router-dom";
 
-export default function GlossaryViewNavigation({ match }) {
+export default function StartingNodeNavigation({ match, nodeTypeName }) {
   const [nodes, setNodes] = useState([]);
   const [completeResults, setCompleteResults] = useState([]);
   const [isCardView, setIsCardView] = useState(true);
@@ -25,7 +25,6 @@ export default function GlossaryViewNavigation({ match }) {
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(5);
 
-  const nodeType = getNodeType("glossary");
   // State and setter for search term
   const [filterCriteria, setFilterCriteria] = useState("");
   const [exactMatch, setExactMatch] = useState(false);
@@ -39,6 +38,7 @@ export default function GlossaryViewNavigation({ match }) {
   const [errorMsg, setErrorMsg] = useState();
   const [selectedNodeGuid, setSelectedNodeGuid] = useState();
 
+  const nodeType = getNodeType(nodeTypeName);
   // Here's where the API call happens
   // We use useEffect since this is an asynchronous action
   useEffect(
@@ -147,11 +147,11 @@ export default function GlossaryViewNavigation({ match }) {
    
   };
   /**
-   * Delete the supplied glossary if it's guid matches the selected one.
-   * @param {*} glossary
+   * Delete the supplied node if it's guid matches the selected one.
+   * @param {*} node
    */
-  const deleteIfSelected = (glossary) => {
-    if (glossary.systemAttributes.guid == selectedNodeGuid) {
+  const deleteIfSelected = (node) => {
+    if (node.systemAttributes.guid == selectedNodeGuid) {
       const guid = selectedNodeGuid;
       const url = nodeType.url + "/" + guid;
       issueRestDelete(url, onSuccessfulDelete, onErrorDelete);
@@ -195,14 +195,16 @@ export default function GlossaryViewNavigation({ match }) {
   };
 
   function getNodeChildrenUrl() {
-    return match.path + "/glossaries/" + selectedNodeGuid + "/children";
+    // return match.path + "/" + nodeType.plural + "/" + selectedNodeGuid + "/children";
+    return match.path + "/" + selectedNodeGuid + "/children";
   }
   /**
    * The function returns another function; this is required by react Link. The below syntax is required to be able to handle the parameter.
    * Not working ...
    */
   const getNodeChildrenUrlUsingGuid = (guid) => () => {
-    return `${match.path}/glossaries/${guid}/children`;
+    // return `${match.path}/" + nodeType.plural + "/${guid}/children`;
+    return `${match.path}/${guid}/children`;
   };
 
   const onToggleCard = () => {
@@ -214,13 +216,16 @@ export default function GlossaryViewNavigation({ match }) {
     }
   };
   function getAddNodeUrl() {
-    return match.path + "/glossaries/add-node";
+    // return match.path + "/" + nodeType.plural + "/add-" + nodeTypeName;
+    return match.path + "/add-" + nodeTypeName;
   }
   function getQuickTermsUrl() {
-    return match.path + "/glossaries/" + selectedNodeGuid + "/quick-terms";
+    // return match.path + "/" + nodeType.plural + "/" + selectedNodeGuid + "/quick-terms";
+    return match.path + "/" + selectedNodeGuid + "/quick-terms";
   }
   function getEditNodeUrl() {
-    return match.path + "/glossaries/edit-glossary/" + selectedNodeGuid;
+    return match.path + "/edit-" + nodeTypeName + "/" + selectedNodeGuid;
+    // return match.path + "/" + nodeType.plural + "/edit-" + nodeTypeName + "/" + selectedNodeGuid;
   }
   const onFilterCriteria = (e) => {
     setFilterCriteria(e.target.value);
@@ -235,7 +240,7 @@ export default function GlossaryViewNavigation({ match }) {
   return (
     <div>
       <div className="bx--grid">
-        <NodeCardSection heading="Glossaries" className="landing-page__r3">
+        <NodeCardSection heading={nodeType.plural} className="landing-page__r3">
           <article className="node-card__controls bx--col-sm-4 bx--col-md-1 bx--col-lg-1 bx--col-xlg-1 bx--col-max-1">
             Choose {nodeType.key}
           </article>
@@ -287,11 +292,11 @@ export default function GlossaryViewNavigation({ match }) {
         </NodeCardSection>
         <NodeCardSection className="landing-page__r3">
           <Toggle
-            aria-label="glossaryCardTableToggle"
+            aria-label="nodeCardTableToggle"
             defaultToggled
             labelA="Table View"
             labelB="Card View"
-            id="glossary-cardtable-toggle"
+            id="node-cardtable-toggle"
             onToggle={onToggleCard}
           />
         </NodeCardSection>
