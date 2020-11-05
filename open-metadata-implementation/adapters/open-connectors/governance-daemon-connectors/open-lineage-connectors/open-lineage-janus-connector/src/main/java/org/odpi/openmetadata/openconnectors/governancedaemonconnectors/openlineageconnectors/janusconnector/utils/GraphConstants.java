@@ -83,6 +83,8 @@ public class GraphConstants {
 
     // SUB-PROCESS REAL PROCESS GUID
     public static final String PROPERTY_KEY_PROCESS_GUID = "processGuid";
+    public static final String PROPERTY_KEY_COLUMN_IN_GUID = "columnInGuid";
+    public static final String PROPERTY_KEY_COLUMN_OUT_GUID = "columnOutGuid";
 
     public static final String PROPERTY_KEY_ENTITY_NODE_ID = PROPERTY_KEY_PREFIX_ELEMENT + PROPERTY_NAME_NODE_ID;
     public static final String PROPERTY_KEY_ENTITY_GUID = PROPERTY_KEY_PREFIX_ELEMENT + PROPERTY_NAME_GUID;
@@ -147,6 +149,9 @@ public class GraphConstants {
         corePropertyTypes.put(PROPERTY_NAME_PROXY, "java.lang.Boolean");
         corePropertyTypes.put(PROPERTY_NAME_NODE_ID, JAVA_STRING);
         corePropertyTypes.put(PROPERTY_NAME_METADATA_ID, JAVA_STRING);
+//        corePropertyTypes.put(PROPERTY_KEY_COLUMN_IN_GUID, JAVA_STRING);
+//        corePropertyTypes.put(PROPERTY_KEY_COLUMN_OUT_GUID, JAVA_STRING);
+//        corePropertyTypes.put(PROPERTY_KEY_PROCESS_GUID, JAVA_STRING);
     }
 
     public static final ImmutableMap<String, String> immutableCorePropertyTypes = ImmutableMap.copyOf(corePropertyTypes);

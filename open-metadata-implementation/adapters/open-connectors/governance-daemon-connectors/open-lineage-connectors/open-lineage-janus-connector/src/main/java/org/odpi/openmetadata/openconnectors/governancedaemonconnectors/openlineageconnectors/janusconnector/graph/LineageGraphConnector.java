@@ -63,6 +63,8 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_INCLUDED_IN;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_TABLE_DATA_FLOW;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.NODE_LABEL_SUB_PROCESS;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_COLUMN_IN_GUID;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_COLUMN_OUT_GUID;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_DISPLAY_NAME;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_ENTITY_CREATED_BY;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_ENTITY_CREATE_TIME;
@@ -253,16 +255,22 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
         }
 
         final String processGuid = getGuid(process);
+        final String columnInGuid = getGuid(columnIn);
+        final String columnOutGuid = getGuid(columnOut);
         final String processName =
                 g.V(process.id()).elementMap(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).toList().get(0).get(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).toString();
 
-        Iterator<Vertex> t = g.V(columnIn.id()).outE(EDGE_LABEL_COLUMN_DATA_FLOW).inV().has("processGuid", processGuid);
+        Iterator<Vertex> t = g.V(columnIn.id()).outE(EDGE_LABEL_COLUMN_DATA_FLOW).inV()
+                .has(PROPERTY_KEY_COLUMN_OUT_GUID, columnOutGuid)
+                .has(PROPERTY_KEY_PROCESS_GUID, processGuid);
 
         if (!t.hasNext()) {
             Vertex subProcess = g.addV(NODE_LABEL_SUB_PROCESS)
                     .property(PROPERTY_KEY_ENTITY_NODE_ID, UUID.randomUUID().toString())
-                    .property(PROPERTY_KEY_PROCESS_GUID, processGuid)
                     .property(PROPERTY_KEY_DISPLAY_NAME, processName)
+                    .property(PROPERTY_KEY_PROCESS_GUID, processGuid)
+                    .property(PROPERTY_KEY_COLUMN_IN_GUID, columnInGuid)
+                    .property(PROPERTY_KEY_COLUMN_OUT_GUID, columnOutGuid)
                     .next();
 
             g.V(columnIn.id()).addE(EDGE_LABEL_COLUMN_DATA_FLOW).to(g.V(subProcess.id())).next();
