@@ -2,12 +2,11 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 import React from "react";
 import TaskDropDown from "./TaskDropDown";
-import { withRouter } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
-
-const GlossaryAuthorTaskRouting = ({ history, glossaryAuthorURL }) => {
+export default function GlossaryAuthorTaskRouting({ glossaryAuthorURL }) {
   console.log("BaseGlossaryAuthorTaskRouting history");
-  console.log(history);
+  let history = useHistory();
 
   /**
    * This event is bubbled up to this component from the dropdown. 
@@ -24,6 +23,4 @@ const GlossaryAuthorTaskRouting = ({ history, glossaryAuthorURL }) => {
     history.push(url);
   };
   return <TaskDropDown onChange={onChange} />;
-};
-
-export default withRouter(GlossaryAuthorTaskRouting);
+}

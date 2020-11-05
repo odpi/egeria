@@ -336,7 +336,7 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
      * @param guid       guid of the category to get terms
      * @param termHandler Term handler
      * @param startingFrom return results starting from element
-     * @param maxPageSize maximum number of elements to bereturned
+     * @param maxPageSize maximum number of elements to be returned
      * @return A list of terms owned by the glossary
      * when not successful the following Exception responses can occur
      * <ul>
@@ -345,7 +345,7 @@ public class SubjectAreaGlossaryHandler extends SubjectAreaHandler {
      * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      * */
-    public SubjectAreaOMASAPIResponse<Term> getTerms(String userId, String guid, SubjectAreaTermHandler termHandler, int startingFrom, int maxPageSize) {
+    public SubjectAreaOMASAPIResponse<Term> getTerms(String userId, String guid, SubjectAreaTermHandler termHandler, Integer startingFrom, int maxPageSize) {
         final String methodName = "getTerms";
         SubjectAreaOMASAPIResponse<Term>  response = getRelatedNodesForEnd1(methodName, userId, guid, TERM_ANCHOR_RELATIONSHIP_NAME, TermMapper.class, startingFrom, maxPageSize);
         List<Term> allTerms = new ArrayList<>();

@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 import { GlossaryAuthorCRUDContext } from "../../contexts/GlossaryAuthorCRUDContext";
 import {
   Accordion,
