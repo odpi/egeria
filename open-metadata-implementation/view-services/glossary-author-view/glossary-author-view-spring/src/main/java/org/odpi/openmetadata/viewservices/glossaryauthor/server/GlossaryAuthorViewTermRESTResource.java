@@ -91,7 +91,7 @@ public class GlossaryAuthorViewTermRESTResource {
      * @param userId             userid
      * @param searchCriteria     String expression matching Term property values .
      * @param asOfTime           the terms returned as they were at this time. null indicates at the current time.
-     * @param offset             the starting element number for this set of results.  This is used when retrieving elements
+     * @param startingFrom          the starting element number for this set of results.  This is used when retrieving elements
      *                           beyond the first page of results. Zero means the results start from the first element.
      * @param pageSize           the maximum number of elements that can be returned on this request.
      * @param sequencingOrder    the sequencing order for the results.
@@ -108,12 +108,12 @@ public class GlossaryAuthorViewTermRESTResource {
     public SubjectAreaOMASAPIResponse<Term> findTerm(@PathVariable String serverName, @PathVariable String userId,
                                                      @RequestParam(value = "searchCriteria", required = false) String searchCriteria,
                                                      @RequestParam(value = "asOfTime", required = false) Date asOfTime,
-                                                     @RequestParam(value = "offset", required = false) Integer offset,
+                                                     @RequestParam(value = "startingFrom", required = false) Integer startingFrom,
                                                      @RequestParam(value = "pageSize", required = false) Integer pageSize,
                                                      @RequestParam(value = "sequencingOrder", required = false) SequencingOrder sequencingOrder,
                                                      @RequestParam(value = "sequencingProperty", required = false) String sequencingProperty
     ) {
-        return restAPI.findTerm(serverName, userId, asOfTime, searchCriteria, offset, pageSize, sequencingOrder, sequencingProperty);
+        return restAPI.findTerm(serverName, userId, asOfTime, searchCriteria, startingFrom, pageSize, sequencingOrder, sequencingProperty);
     }
 
     /**
@@ -123,7 +123,7 @@ public class GlossaryAuthorViewTermRESTResource {
      * @param userId             userid
      * @param guid               guid of the term to get
      * @param asOfTime           the relationships returned as they were at this time. null indicates at the current time. If specified, the date is in milliseconds since 1970-01-01 00:00:00.
-     * @param offset             the starting element number for this set of results.  This is used when retrieving elements
+     * @param startingFrom          the starting element number for this set of results.  This is used when retrieving elements
      *                           beyond the first page of results. Zero means the results start from the first element.
      * @param pageSize           the maximum number of elements that can be returned on this request.
      * @param sequencingOrder    the sequencing order for the results.
@@ -140,13 +140,13 @@ public class GlossaryAuthorViewTermRESTResource {
     public SubjectAreaOMASAPIResponse<Line> getTermRelationships(@PathVariable String serverName, @PathVariable String userId,
                                                                  @PathVariable String guid,
                                                                  @RequestParam(value = "asOfTime", required = false) Date asOfTime,
-                                                                 @RequestParam(value = "offset", required = false) Integer offset,
+                                                                 @RequestParam(value = "startingFrom", required = false) Integer startingFrom,
                                                                  @RequestParam(value = "pageSize", required = false) Integer pageSize,
                                                                  @RequestParam(value = "sequencingOrder", required = false) SequencingOrder sequencingOrder,
                                                                  @RequestParam(value = "sequencingProperty", required = false) String sequencingProperty
 
     ) {
-        return restAPI.getTermRelationships(serverName, userId, guid, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
+        return restAPI.getTermRelationships(serverName, userId, guid, asOfTime, startingFrom, pageSize, sequencingOrder, sequencingProperty);
     }
 
     /**
