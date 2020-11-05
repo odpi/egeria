@@ -708,6 +708,9 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
                 }
 
             }
+            if (graphFactory.isSupportingTransactions()) {
+                g.tx().commit();
+            }
             return endVertices;
         } catch (Exception e) {
             if (log.isDebugEnabled()) {
