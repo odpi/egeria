@@ -8,6 +8,9 @@ import java.util.List;
  * Analytics Modeling service module.
  * <br>Sample:<br>
  * {<br>
+ *	&emsp;	"property": [&nbsp;
+ *	&emsp;		{@link org.odpi.openmetadata.accessservices.analyticsmodeling.model.module.PropertyType}<br>
+ *	&emsp;	],<br>
  *	&emsp;	"identifier": "AdventureWorks2014.Person",<br>
  *	&emsp;	"version": "9.0",<br>
  *	&emsp;	"dataSource": [&nbsp;
@@ -16,7 +19,7 @@ import java.util.List;
  *	}
  *
  */
-public class MetadataModule implements IModuleObject {
+public class MetadataModule extends BaseObjectType {
 
 	private String identifier;
 	private String version = "9.0";	// fixed version matching MOSER XSD on the moment of development.

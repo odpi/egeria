@@ -8,6 +8,9 @@ import java.util.List;
  *	Abstraction of the table in MOSER module.
  *	<br>Sample:<br>
  * 	{<br>
+ *	&emsp;	"property": [&nbsp;
+ *	&emsp;		{@link org.odpi.openmetadata.accessservices.analyticsmodeling.model.module.PropertyType}<br>
+ *	&emsp;	],<br>
  *	&emsp;	"name": "Address",<br>
  *	&emsp;	"tableItem": [&nbsp;
  *	&emsp;		{@link org.odpi.openmetadata.accessservices.analyticsmodeling.model.module.TableItem}
@@ -22,7 +25,7 @@ import java.util.List;
  *
  *
  */
-public class Table implements IModuleObject {
+public class Table extends BaseObjectType {
 
 	private String name;
 	private List <TableItem> tableItem;

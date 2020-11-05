@@ -102,8 +102,7 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
     @Override
     public List<String> createOrUpdateProcesses(String userId, List<Process> processes) throws
                                                                                         InvalidParameterException,
-                                                                                        PropertyServerException,
-                                                                                        UserNotAuthorizedException {
+                                                                                        PropertyServerException {
 
         invalidParameterHandler.validateUserId(userId, PROCESSES_METHOD_NAME);
 
@@ -228,12 +227,7 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
 
     private void callVoidPostRESTCall(String userId, String methodName, String urlTemplate, DataEngineOMASAPIRequestBody requestBody,
                                       Object... params) throws PropertyServerException, InvalidParameterException, UserNotAuthorizedException {
-        VoidResponse restResult = super.callVoidPostRESTCall(methodName, serverPlatformRootURL
-                + urlTemplate, requestBody, serverName, userId, params);
-
-        exceptionHandler.detectAndThrowInvalidParameterException(restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(restResult);
+        super.callVoidPostRESTCall(methodName, serverPlatformRootURL + urlTemplate, requestBody, serverName, userId, params);
     }
 
     private String callGUIDPostRESTCall(String userId, String methodName, String urlTemplate, DataEngineOMASAPIRequestBody requestBody,
@@ -249,14 +243,9 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
     }
 
     private List<String> callProcessListPostRESTCall(String userId, String methodName, String urlTemplate, ProcessesRequestBody requestBody,
-                                                     Object... params) throws PropertyServerException, InvalidParameterException,
-                                                                              UserNotAuthorizedException {
+                                                     Object... params) throws PropertyServerException {
         ProcessListResponse restResult = super.callPostRESTCall(methodName, ProcessListResponse.class, serverPlatformRootURL + urlTemplate,
                 requestBody, serverName, userId, params);
-
-        exceptionHandler.detectAndThrowInvalidParameterException(restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(restResult);
 
         return restResult.getGUIDs();
     }

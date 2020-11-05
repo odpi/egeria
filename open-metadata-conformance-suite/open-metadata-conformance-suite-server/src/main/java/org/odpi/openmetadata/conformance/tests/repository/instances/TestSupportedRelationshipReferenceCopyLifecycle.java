@@ -1248,7 +1248,7 @@ public class TestSupportedRelationshipReferenceCopyLifecycle extends RepositoryC
 
         Map<String, Serializable> mappingProperties = new HashMap<>();
         mappingProperties.put("stringMappingPropertyKey", "stringMappingPropertyValue");
-        mappingProperties.put("integerMappingPropertyKey", new Integer(12));
+        mappingProperties.put("integerMappingPropertyKey", 12);
 
         /*
          * Save a reference copy of the 'remote' entity

@@ -91,6 +91,7 @@ export default function ServerConfigServicesDisplay(props) {
        * Access Services
        */
       case "AccessServiceConfig":
+        console.log("Call formatAccessService for service "+service.accessServiceName);
         formattedService = formatAccessService(service);
         break;
 
@@ -170,13 +171,33 @@ export default function ServerConfigServicesDisplay(props) {
           <li className="details-sublist-item">Operational Status : {svc.accessServiceOperationalStatus ? svc.accessServiceOperationalStatus : <i>blank</i>}</li>
           <li className="details-sublist-item">URL Marker : {svc.accessServiceURLMarker ? svc.accessServiceURLMarker : <i>blank</i>}</li>
           <li className="details-sublist-item">Wiki : {svc.accessServiceWiki ? svc.accessServiceWiki : <i>blank</i>}</li>
-          <li className="details-sublist-item">Options : {svc.accessServiceOptions ? svc.accessServiceOptions : <i>blank</i>}</li>
-          <li className="details-sublist-item">In Topic Connection : {svc.accessServiceInTopic ? formatAccessServiceTopic(svc.accessServiceInTopic) : <i>blank</i>}</li>
-          <li className="details-sublist-item">Out Topic Connection : {svc.accessServiceOutTopic ? formatAccessServiceTopic(svc.accessServiceOutTopic) : <i>blank</i>}</li>
+          <li>
+            <button className="collapsible" onClick={flipSection}> Access Services Options: </button>
+              <div className="content">
+                {svc.accessServiceOptions ? formatAccessServiceOptions(svc.accessServiceOptions) : <i>blank</i>}
+              </div>
+          </li>
+
+          <li>
+            <button className="collapsible" onClick={flipSection}> Access Services In Topic: </button>
+              <div className="content">
+                {svc.accessServiceInTopic ? formatAccessServiceTopic(svc.accessServiceInTopic) : <i>blank</i>}
+              </div>
+          </li>
+
+          <li>
+            <button className="collapsible" onClick={flipSection}> Access Service Out Topic: </button>
+              <div className="content">
+                {svc.accessServiceOutTopic ? formatAccessServiceTopic(svc.accessServiceOutTopic) : <i>blank</i>}
+              </div>
+          </li>
+
         </ul>
       </div>
     );
   }
+
+
 
   const formatResourceEndpointList = (endpointList) => {
     return (
@@ -188,12 +209,124 @@ export default function ServerConfigServicesDisplay(props) {
   
   const formattedResourceEndpoints = (endpointList) => {
     let listEntries = null;
-    listEntries = endpointList.map( (ept) =>   
+    if (endpointList) {
+      listEntries = endpointList.map( (ept) =>
         <li className="details-sublist-item" key={ept.serverInstanceName}> 
           {ept.resourceCategory} {ept.serverInstanceName} {ept.platformRootURL}
         </li>
-    );
+      );
+    }
     return listEntries;
+  }
+
+
+  /*
+   * AccessSercviceOptions is a Map<String,Object>
+   */
+  const formatAccessServiceOptions = (serviceOptions) => {
+    let serviceOptionsList = null;
+    let serviceOptionsUnsorted = Object.keys(serviceOptions);
+    if (serviceOptionsUnsorted) {
+      let serviceOptionsSorted   = serviceOptionsUnsorted.sort();
+      /*
+       * Use the name to index into the map in sorted order and display each option appropriately for its type
+       */
+      serviceOptionsList = serviceOptionsSorted.map( (optionName) =>
+          <li className="details-sublist-item" key={optionName}>
+            <button className="collapsible" id={optionName} onClick={flipSection}> {optionName} : </button>
+            <div className="content">
+              {formatAccessServiceOption(optionName, serviceOptions[optionName])}
+            </div>
+          </li>
+      );
+    }
+    return (
+      <ul className="details-sublist">
+        {serviceOptionsList}
+      </ul>
+    );
+  }
+
+  const formatAccessServiceOption = (name, option) => {
+    let ret;
+
+    switch (name) {
+
+      /*
+       * Explicitly handle known uses of the service options so that we can tailor the format
+       * in which they are displayed.
+       */
+
+      case "SupportedZones" :
+        ret = formatZones(option);
+        break;
+
+      case "DefaultZones" :
+        ret = formatZones(option);
+        break;
+
+      case "KarmaPointPlateau" :
+        ret = formatKarma(option);
+        break;
+
+      /*
+       * For other (unspecified) options, these are untyped arbitrary objects, so just return a
+       * serialization of the object perhaps with a size limit and advice to the user to consult
+       * the config directly....
+       */
+
+      default:
+        ret = JSON.stringify(option);
+        let len = ret.length;
+        let MAX_LENGTH = 50;
+        if (len > MAX_LENGTH) {
+          let truncatedOption = ret.substring(0,MAX_LENGTH) + "...";
+          /*
+           * Because the serialized version is too long for the details panel, include link to
+           * display the full enchilada
+           */
+          let truncatedRet = (
+            <div>
+            {truncatedOption}
+            <button className="text-button" onClick={() => alert("Access Service Option "+name+":\n"+JSON.stringify(option))}> <i>[more]</i> </button> 
+            </div>
+          );
+          ret = truncatedRet;
+        }
+    }
+    return ret;
+  }
+
+
+  /*
+   * zones are a JSON list of strings
+   */
+  const formatZones = (zoneList) => {
+    let ret = (
+      <ul>
+        {formattedZones(zoneList)}
+      </ul>
+    );
+    return ret;
+  }
+
+  const formattedZones = (zoneList) => {
+    let listEntries = null;
+    if (zoneList) {
+      listEntries = zoneList.map( (zone) =>
+        <li className="details-sublist-item" key={zone}>
+          {zone}
+        </li>
+      );
+    }
+    return listEntries;
+  }
+
+  /*
+   * karma is a string
+   */
+  const formatKarma = (karma) => {
+    return karma;
   }
 
 
@@ -201,9 +334,17 @@ export default function ServerConfigServicesDisplay(props) {
       return (
         <div>
           <ul>
-            <li className="details-sublist-item">Connector Type : {topicCfg.connectorType.displayName} </li>
-            <li className="details-sublist-item">Configuration Properties : {topicCfg.configurationProperties ? formatTopicConfigurationProperties(topicCfg.configurationProperties) : <i>blank</i>}</li>   
-            <li className="details-sublist-item">Endpoint : {topicCfg.endpoint && topicCfg.endpoint.address ? topicCfg.endpoint.address : <i>blank</i>}</li>
+            <li className="details-sublist-item">Connector Type :
+              {topicCfg && topicCfg.connectorType  && topicCfg.connectorType.displayName ? topicCfg.connectorType.displayName : <i>blank</i>}
+            </li>
+
+            <li className="details-sublist-item">Configuration Properties :
+              {topicCfg && topicCfg.configurationProperties ? formatTopicConfigurationProperties(topicCfg.configurationProperties) : <i>blank</i>}
+            </li>
+
+            <li className="details-sublist-item">Endpoint :
+              {topicCfg && topicCfg.endpoint && topicCfg.endpoint.address ? topicCfg.endpoint.address : <i>blank</i>}
+            </li>
           </ul>
         </div>
       );
@@ -215,9 +356,12 @@ export default function ServerConfigServicesDisplay(props) {
       <div>
         <ul>
           <li className="details-sublist-item">Producer : 
-            {cfgProperties.producer ? formatBootstrapEndpoints(cfgProperties.producer) : <i>blank</i>}</li>
+            {cfgProperties && cfgProperties.producer ? formatBootstrapEndpoints(cfgProperties.producer) : <i>blank</i>}
+          </li>
+
           <li className="details-sublist-item">Consumer : 
-            {cfgProperties.consumer ? formatBootstrapEndpoints(cfgProperties.consumer) : <i>blank</i>}</li> 
+            {cfgProperties && cfgProperties.consumer ? formatBootstrapEndpoints(cfgProperties.consumer) : <i>blank</i>}
+          </li>
         </ul>
       </div>
     );
@@ -239,12 +383,14 @@ export default function ServerConfigServicesDisplay(props) {
    */
   const formattedBootstrapEndpoints = (endpointList) => {
     let listEntries = null;
-    let endpoints = endpointList.split(',');
-    listEntries = endpoints.map( (ept) =>   
-        <li className="details-sublist-item" key={ept}> 
-          {ept}
-        </li>
-    );
+    if (endpointList) {
+      let endpoints = endpointList.split(',');
+      listEntries = endpoints.map( (ept) =>
+          <li className="details-sublist-item" key={ept}>
+            {ept}
+          </li>
+      );
+    }
     return listEntries;
   }
 
@@ -255,6 +401,7 @@ export default function ServerConfigServicesDisplay(props) {
    * to be displayed
    */
   const expandServices = (inServices) => {
+    let serviceList;
 
     /*
      * Put services into a map keyed by service name
@@ -269,12 +416,13 @@ export default function ServerConfigServicesDisplay(props) {
      * Sort the service names
      */
     let serviceNamesUnsorted = Object.keys(serviceMap);
+    if (serviceNamesUnsorted) {
     let serviceNamesSorted   = serviceNamesUnsorted.sort();
     
     /* 
      * Use the name to index into the map in sorted order and display service appropriately for the service type
      */
-    let serviceList = serviceNamesSorted.map( (svcName) => 
+    serviceList = serviceNamesSorted.map( (svcName) =>
         <li className="details-sublist-item" key={svcName}> 
           <button className="collapsible" id={svcName} onClick={flipSection}> {svcName} : </button>
           <div className="content">
@@ -282,6 +430,10 @@ export default function ServerConfigServicesDisplay(props) {
           </div>
         </li>
     );
+    }
+    else {
+      serviceList = null;
+    }
 
     return serviceList;
   };
@@ -299,11 +451,11 @@ export default function ServerConfigServicesDisplay(props) {
   }
   else {
    
-    outServices = (              
+    console.log("There are services to be parsed...");
+    outServices = (
       <ul className="type-details-container">       
        {expandServices(inServices)}          
       </ul>
-      
     );
   }
 

@@ -42,7 +42,7 @@ public class LineageGraphConnectorHelperTest {
     public static void beforeClass() {
         Graph graph = JanusGraphFactory.build().set("storage.backend", "inmemory").open();
         GraphTraversalSource g = graph.traversal();
-        mainGraphConnector = new LineageGraphConnectorHelper(g);
+        mainGraphConnector = new LineageGraphConnectorHelper(g, true);
 
         addColumnLineageData(g);
 
