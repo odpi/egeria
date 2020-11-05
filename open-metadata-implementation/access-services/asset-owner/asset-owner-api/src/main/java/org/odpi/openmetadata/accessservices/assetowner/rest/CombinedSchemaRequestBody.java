@@ -16,7 +16,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * SchemaRequestBody carries the parameters for created a new schema to attach to
+ * CombinedSchemaRequestBody carries the parameters for created a new schema to attach to
  * an asset.  A limited number of SchemaAttributes can accompany the SchemaType.
  * If more SchemaAttributes are needed then use addSchemaAttributesToSchema() method.
  */

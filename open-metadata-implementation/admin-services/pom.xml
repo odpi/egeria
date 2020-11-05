@@ -38,13 +38,4 @@
         <module>admin-services-spring</module>
     </modules>
 
-    <dependencies>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>open-connector-framework</artifactId>
-        </dependency>
-
-    </dependencies>
-
 </project>

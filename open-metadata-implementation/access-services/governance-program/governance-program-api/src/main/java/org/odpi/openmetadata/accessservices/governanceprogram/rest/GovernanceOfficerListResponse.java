@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.governanceprogram.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceOfficer;
+import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceOfficerProperties;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,7 +27,7 @@ public class GovernanceOfficerListResponse extends GovernanceProgramOMASAPIRespo
 {
     private static final long    serialVersionUID = 1L;
 
-    private List<GovernanceOfficer>  governanceOfficers = null;
+    private List<GovernanceOfficerProperties> governanceOfficers = null;
 
 
     /**
@@ -60,7 +60,7 @@ public class GovernanceOfficerListResponse extends GovernanceProgramOMASAPIRespo
      *
      * @return list of objects or null
      */
-    public List<GovernanceOfficer> getGovernanceOfficers()
+    public List<GovernanceOfficerProperties> getGovernanceOfficers()
     {
         if (governanceOfficers == null)
         {
@@ -82,7 +82,7 @@ public class GovernanceOfficerListResponse extends GovernanceProgramOMASAPIRespo
      *
      * @param governanceOfficers - list of objects or null
      */
-    public void setGovernanceOfficers(List<GovernanceOfficer> governanceOfficers)
+    public void setGovernanceOfficers(List<GovernanceOfficerProperties> governanceOfficers)
     {
         this.governanceOfficers = governanceOfficers;
     }

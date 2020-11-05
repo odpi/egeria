@@ -162,19 +162,24 @@ public  class AssetComplexSchemaType extends AssetSchemaType
         return "AssetComplexSchemaType{" +
                 "schemaAttributes=" + schemaAttributes +
                 ", parentAsset=" + parentAsset +
-                ", displayName='" + getDisplayName() + '\'' +
                 ", versionNumber='" + getVersionNumber() + '\'' +
                 ", author='" + getAuthor() + '\'' +
                 ", usage='" + getUsage() + '\'' +
                 ", encodingStandard='" + getEncodingStandard() + '\'' +
-                ", extendedProperties=" + getExtendedProperties() +
+                ", formula='" + getFormula() + '\'' +
+                ", queries=" + getQueries() +
+                ", deprecated=" + isDeprecated() +
+                ", displayName='" + getDisplayName() + '\'' +
+                ", description='" + getDescription() + '\'' +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
+                ", meanings=" + getMeanings() +
+                ", securityTags=" + getSecurityTags() +
                 ", additionalProperties=" + getAdditionalProperties() +
-                ", extendedProperties=" + getExtendedProperties() +
                 ", type=" + getType() +
                 ", GUID='" + getGUID() + '\'' +
                 ", URL='" + getURL() + '\'' +
                 ", assetClassifications=" + getAssetClassifications() +
+                ", extendedProperties=" + getExtendedProperties() +
                 '}';
     }
 

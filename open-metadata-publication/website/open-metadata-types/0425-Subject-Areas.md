@@ -24,7 +24,7 @@ This includes:
 * Preferred data structures and schemas.
 
 The effort required to author and maintain these definitions, plus the governance process required to
-ensure they are used wherever appropriate is offset by the savings in managing and using the shared
+ensure they are used wherever appropriate is startingFrom by the savings in managing and using the shared
 data associated with the subject area.
 
 ## Open Metadata Types

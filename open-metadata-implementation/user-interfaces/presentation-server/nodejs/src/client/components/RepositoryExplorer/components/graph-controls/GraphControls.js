@@ -90,7 +90,7 @@ export default function GraphControls(props) {
     /*
      * No filtering is applied to the pre-traversal...
      */
-    repositoryServerContext.repositoryPOST("instances/pre-traversal", 
+    repositoryServerContext.repositoryPOST("instances/pre-traversal",
       { entityGUID : entityGUID,
         depth      : 1            },  // depth is always limited to 1
         _preTraversal); 

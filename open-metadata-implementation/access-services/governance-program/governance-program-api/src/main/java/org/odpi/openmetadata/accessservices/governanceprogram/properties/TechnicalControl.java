@@ -4,9 +4,6 @@ package org.odpi.openmetadata.accessservices.governanceprogram.properties;
 
 import com.fasterxml.jackson.annotation.*;
 
-import java.util.List;
-import java.util.Objects;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -21,10 +18,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes(
         {
-                @JsonSubTypes.Type(value = GovernanceRule.class, name = "GovernanceRule"),
-                @JsonSubTypes.Type(value = GovernanceProcess.class, name = "GovernanceProcess")
+                @JsonSubTypes.Type(value = GovernanceRuleProperties.class, name = "GovernanceRuleProperties"),
+                @JsonSubTypes.Type(value = GovernanceProcessProperties.class, name = "GovernanceProcessProperties")
         })
-public abstract class TechnicalControl extends GovernanceControl
+public abstract class TechnicalControl extends GovernanceControlProperties
 {
     private static final long    serialVersionUID = 1L;
 
@@ -57,21 +54,22 @@ public abstract class TechnicalControl extends GovernanceControl
     public String toString()
     {
         return "TechnicalControl{" +
-                "description='" + getDescription() + '\'' +
+                "relatedGovernanceDrivers=" + getRelatedGovernanceDrivers() +
+                ", governanceControls=" + getGovernanceControls() +
+                ", title='" + getTitle() + '\'' +
+                ", summary='" + getSummary() + '\'' +
+                ", description='" + getDescription() + '\'' +
                 ", scope='" + getScope() + '\'' +
                 ", status=" + getStatus() +
                 ", priority='" + getPriority() + '\'' +
                 ", implications=" + getImplications() +
                 ", outcomes=" + getOutcomes() +
-                ", externalReferences=" + getExternalReferences() +
-                ", additionalProperties=" + getAdditionalProperties() +
                 ", governanceMetrics=" + getGovernanceMetrics() +
                 ", governanceZones=" + getGovernanceZones() +
-                ", GUID='" + getGUID() + '\'' +
-                ", type='" + getType() + '\'' +
-                ", documentId='" + getDocumentId() + '\'' +
-                ", title='" + getTitle() + '\'' +
-                ", summary='" + getSummary() + '\'' +
+                ", typeName='" + getTypeName() + '\'' +
+                ", qualifiedName='" + getQualifiedName() + '\'' +
+                ", additionalProperties=" + getAdditionalProperties() +
+                ", extendedProperties=" + getExtendedProperties() +
                 '}';
     }
 }

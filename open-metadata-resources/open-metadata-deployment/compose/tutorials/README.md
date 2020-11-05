@@ -21,6 +21,7 @@ Components included are:
    - Development server - dev:9443 internally, localhost:19445 externally
    - Factory server     - factory:9443 internally, localhost:19446 externally
    - Egeria ui          - ui:8443 internally (https), localhost:18443 externally (https)
+   - Static content     - staticui:80 internally (https), localhost:10080 externally (https)
  * kafka - kafka:9092 internally, localhost:19092 externally - standard Bitnami image
  * zookeeper - zookeeper:2181 internally, localhost:12181 externally- standard Bitnami image
  * notebook - notebook:8888 internally, localhost:18888 externally (lab version, base image) - see https://jupyter-docker-stacks.readthedocs.io/en/latest/

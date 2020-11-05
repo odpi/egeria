@@ -41,7 +41,7 @@ public class GlossaryAuthorViewAdmin extends ViewServiceAdmin {
      * @param viewServiceConfigurationProperties specific configuration properties for this view service.
      * @param auditLog                           audit log component for logging messages.
      * @param serverUserName                     user id to use to issue calls to the remote server.
-     * @param maxPageSize                        maximum page size. 0 means unlimited
+     * @param maxPageSize                        maximum page size.
      * @throws OMAGConfigurationErrorException invalid parameters in the configuration properties.
      */
     @Override

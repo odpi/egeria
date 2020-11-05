@@ -1030,7 +1030,7 @@ public enum OMRSAuditCode implements AuditLogMessageSet
 
     UNEXPECTED_EXCEPTION_FROM_EVENT("OMRS-AUDIT-9011",
                        OMRSAuditLogRecordSeverity.EXCEPTION,
-                       "An incoming event of type {0} from {1} ({2}) generated an exception with message {3}",
+                       "An incoming event of type {0} from {1} ({2}) generated an exception of type {3} with message {4}",
                        "The contents of the event were not accepted by the local repository.",
                        "Review the exception and resolve the issue that the local repository detected."),
 

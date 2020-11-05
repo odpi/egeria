@@ -29,6 +29,7 @@ public class ElementHeader implements Serializable
     private ElementType   type = null;
     private ElementOrigin origin = null;
 
+    private List<ElementClassification> classifications = null;
 
     /**
      * Default constructor used by subclasses
@@ -50,6 +51,7 @@ public class ElementHeader implements Serializable
             guid   = template.getGUID();
             type   = template.getType();
             origin = template.getOrigin();
+            classifications = template.getClassifications();
         }
     }
 
@@ -129,6 +131,39 @@ public class ElementHeader implements Serializable
 
 
     /**
+     * Return the list of classifications associated with the metadata element.
+     *
+     * @return Classifications  list of classifications
+     */
+    public List<ElementClassification> getClassifications()
+    {
+        if (classifications == null)
+        {
+            return null;
+        }
+        else if (classifications.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return new ArrayList<>(classifications);
+        }
+    }
+
+
+    /**
+     * Set up the classifications associated with this metadata element.
+     *
+     * @param classifications list of classifications
+     */
+    public void setClassifications(List<ElementClassification> classifications)
+    {
+        this.classifications = classifications;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -137,9 +172,11 @@ public class ElementHeader implements Serializable
     public String toString()
     {
         return "ElementHeader{" +
-                "type=" + type +
+                "guid='" + guid + '\'' +
+                ", type=" + type +
                 ", origin=" + origin +
-                ", guid='" + getGUID() + '\'' +
+                ", classifications=" + classifications +
+                ", GUID='" + getGUID() + '\'' +
                 '}';
     }
 
@@ -163,7 +200,8 @@ public class ElementHeader implements Serializable
         ElementHeader that = (ElementHeader) objectToCompare;
         return Objects.equals(getType(), that.getType()) &&
                 Objects.equals(guid, that.guid) &&
-                Objects.equals(getOrigin(), that.getOrigin());
+                Objects.equals(getOrigin(), that.getOrigin()) &&
+                Objects.equals(classifications, that.classifications);
     }
 
 
@@ -175,6 +213,6 @@ public class ElementHeader implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(guid, type, origin);
+        return Objects.hash(guid, type, origin, classifications);
     }
 }

@@ -82,7 +82,7 @@ public class ValidValuesAssignmentConsumer extends ValidValuesAssignment
     {
         return "ValidValuesAssignmentConsumer{" +
                 "consumer=" + consumer +
-                ", strictRequirement=" + isStrictRequirement() +
+                ", strictRequirement=" + getStrictRequirement() +
                 '}';
     }
 

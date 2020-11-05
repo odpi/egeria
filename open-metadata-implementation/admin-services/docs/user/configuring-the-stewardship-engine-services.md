@@ -51,11 +51,11 @@ added in error.
 DELETE {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{stewardshipServerName}/stewardship-server
 ```
 
+
 ----
-Return to [Configuring the stewardship server](../concepts/stewardship-server.md#Configuring-the-Stewardship-Server).
-
-
-
+* Return to [Configuring an OMAG Server](configuring-an-omag-server.md)
+* Return to [the Stewardship Server](../concepts/stewardship-server.md)
+* Return to [configuration document structure](../concepts/configuration-document.md)
 
 
 ----

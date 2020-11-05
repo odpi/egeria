@@ -4,22 +4,38 @@ package org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.
 
 
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.accumulators.MaintenanceAccumulator;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 
-import java.util.Date;
+import java.util.*;
 
 /**
  * GetEntityExecutor provides the executor for the isEntityKnown and getEntityDetail methods.
+ * The Entity is received from metadata repositories until the entity from the home repository is retrieved.
+ * The classifications are saved from each retrieval and the latest version of the entity.
+ *
+ * When the home repository's version is retrieved, it switches to phase two where calls to getHomeClassifications are
+ * made to the remaining repositories.  This is to pick up any stray classifications.
+ *
+ * The two phases are used to take advantage of an optimization in the OMRSRESTRepositoryConnector which remembers if a
+ * remote repository does not support a call.
+ * The getHomeClassifications methods are only supported by repositories that support the the ability to home classifications on
+ * entities from other repositories.  This means that the phase two calls will only go remote if the remote repository
+ * supports the getHomeClassifications method.
  */
 public class GetEntityExecutor extends RepositoryExecutorBase
 {
-    private String                 entityGUID;
-    private boolean                allExceptions   = true;
-    private Date                   asOfTime        = null;
-    private EntityDetail           retrievedEntity = null;
-    private MaintenanceAccumulator accumulator     = new MaintenanceAccumulator();
+    private String                      entityGUID;
+    private boolean                     allExceptions       = true;
+    private Date                        asOfTime            = null;
+
+    private boolean                     inPhaseOne          = true;
+    private EntityDetail                latestEntity        = null;
+    private Map<String, Classification> homeClassifications = new HashMap<>();
+
+    private MaintenanceAccumulator      accumulator         = new MaintenanceAccumulator();
 
 
 
@@ -76,35 +92,99 @@ public class GetEntityExecutor extends RepositoryExecutorBase
     public boolean issueRequestToRepository(String                 metadataCollectionId,
                                             OMRSMetadataCollection metadataCollection)
     {
-        boolean result = false;
-
         try
         {
             /*
              * Issue the request and return if it succeeds
              */
-            if (asOfTime == null)
+            if (inPhaseOne) /* retrieving entity */
             {
-                if (allExceptions)
+                EntityDetail retrievedEntity;
+                if (asOfTime == null)
                 {
-                    retrievedEntity = metadataCollection.getEntityDetail(userId,
-                                                                         entityGUID);
+                    if (allExceptions)
+                    {
+                        retrievedEntity = metadataCollection.getEntityDetail(userId, entityGUID);
+                    }
+                    else
+                    {
+                        retrievedEntity = metadataCollection.isEntityKnown(userId, entityGUID);
+                    }
                 }
                 else
                 {
-                    retrievedEntity = metadataCollection.isEntityKnown(userId,
-                                                                       entityGUID);
+                    retrievedEntity = metadataCollection.getEntityDetail(userId, entityGUID, asOfTime);
+                }
+
+                if (retrievedEntity != null)
+                {
+                    /*
+                     * The classifications from every retrieved entity are harvested.
+                     */
+                    if (retrievedEntity.getClassifications() != null)
+                    {
+                        for (Classification entityClassification : retrievedEntity.getClassifications())
+                        {
+                            if (entityClassification != null)
+                            {
+                                /*
+                                 * Only home classifications are saved.
+                                 */
+                                if (metadataCollectionId.equals(entityClassification.getMetadataCollectionId()))
+                                {
+                                    homeClassifications.put(entityClassification.getName(), entityClassification);
+                                }
+                            }
+                        }
+                    }
+
+                    if (metadataCollectionId.equals(retrievedEntity.getMetadataCollectionId()))
+                    {
+                        /*
+                         * The home repository is found - assume it is the latest version - moving to phase two
+                         */
+                        latestEntity = retrievedEntity;
+                        inPhaseOne = false;
+                    }
+                    else if (latestEntity == null)
+                    {
+                        latestEntity = retrievedEntity;
+                    }
+                    else
+                    {
+                        if (retrievedEntity.getVersion() > latestEntity.getVersion())
+                        {
+                            latestEntity = retrievedEntity;
+                        }
+                    }
                 }
             }
-            else
+            else /* retrieving additional classifications */
             {
-                retrievedEntity = metadataCollection.getEntityDetail(userId,
-                                                                     entityGUID,
-                                                                     asOfTime);
-            }
-            if (retrievedEntity != null)
-            {
-                result = true;
+                List<Classification> homeClassifications;
+
+                if (asOfTime == null)
+                {
+                    homeClassifications = metadataCollection.getHomeClassifications(userId, entityGUID);
+                }
+                else
+                {
+                    homeClassifications = metadataCollection.getHomeClassifications(userId, entityGUID, asOfTime);
+                }
+
+                /*
+                 * Home classifications override any matching classifications stored in the entity.
+                 */
+                if (homeClassifications != null)
+                {
+                    for (Classification homeClassification : homeClassifications)
+                    {
+                        if (homeClassification != null)
+                        {
+                            this.homeClassifications.put(homeClassification.getName(), homeClassification);
+                        }
+                    }
+                }
             }
         }
         catch (InvalidParameterException error)
@@ -132,7 +212,7 @@ public class GetEntityExecutor extends RepositoryExecutorBase
             accumulator.captureGenericException(error);
         }
 
-        return result;
+        return false;
     }
 
 
@@ -149,9 +229,18 @@ public class GetEntityExecutor extends RepositoryExecutorBase
                                                 RepositoryErrorException,
                                                 UserNotAuthorizedException
     {
-        if (retrievedEntity != null)
+        if (latestEntity != null)
         {
-            return retrievedEntity;
+            if (homeClassifications.isEmpty())
+            {
+                latestEntity.setClassifications(null);
+            }
+            else
+            {
+                latestEntity.setClassifications(new ArrayList<>(homeClassifications.values()));
+            }
+
+            return latestEntity;
         }
 
         accumulator.throwCapturedRepositoryErrorException();
@@ -180,6 +269,7 @@ public class GetEntityExecutor extends RepositoryExecutorBase
                                                    UserNotAuthorizedException
     {
         EntityDetail  entity = this.isEntityKnown();
+
         if (entity != null)
         {
             return entity;

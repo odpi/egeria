@@ -12,10 +12,7 @@ import java.util.Objects;
  * <p>
  *     SchemaAttribute describes a single attribute within a schema.  The attribute has a name, order in the
  *     schema and cardinality.
- *     Its type is another SchemaElement (either StructSchemaType, MapSchemaType or PrimitiveSchemaType).
- * </p>
- * <p>
- *     If it is a PrimitiveSchemaType it may have an override for the default value within.
+ *     Its type is another SchemaElement of type SchemaType.  SchemaType has many
  * </p>
  */
 public class AssetSchemaAttribute extends AssetReferenceable
@@ -89,18 +86,6 @@ public class AssetSchemaAttribute extends AssetReferenceable
 
 
     /**
-     * Returns a clone of this object.
-     *
-     * @param parentAsset description of the asset that this schema element is attached to.
-     * @return clone of this object
-     */
-    public AssetSchemaAttribute cloneAssetSchemaAttribute(AssetDescriptor parentAsset)
-    {
-        return new AssetSchemaAttribute(parentAsset, this);
-    }
-
-
-    /**
      * Return the bean with all of the properties.
      *
      * @return schema attribute bean
@@ -116,7 +101,7 @@ public class AssetSchemaAttribute extends AssetReferenceable
      *
      * @return String attribute name
      */
-    public String getAttributeName() { return schemaAttributeBean.getAttributeName(); }
+    public String getAttributeName() { return schemaAttributeBean.getDisplayName(); }
 
 
     /**
@@ -174,7 +159,7 @@ public class AssetSchemaAttribute extends AssetReferenceable
      */
     public boolean allowsDuplicateValues()
     {
-        return schemaAttributeBean.isAllowsDuplicateValues();
+        return schemaAttributeBean.getAllowsDuplicateValues();
     }
 
 
@@ -185,7 +170,7 @@ public class AssetSchemaAttribute extends AssetReferenceable
      */
     public boolean hasOrderedValues()
     {
-        return schemaAttributeBean.isOrderedValues();
+        return schemaAttributeBean.getOrderedValues();
     }
 
 
@@ -240,23 +225,6 @@ public class AssetSchemaAttribute extends AssetReferenceable
 
 
     /**
-     * Return the Link information used to retrieve the schema type if it comes from another schema.
-     * Null is returned if the type is private to this schema.
-     *
-     * @return Schema link information
-     */
-    public AssetSchemaLink getExternalSchemaLink()
-    {
-        if ((schemaAttributeBean != null) && (schemaAttributeBean.getExternalAttributeType() != null))
-        {
-            return new AssetSchemaLink(super.getParentAsset(), schemaAttributeBean.getExternalAttributeType());
-        }
-
-        return null;
-    }
-
-
-    /**
      * Return any relationships to other schema attributes.  This could be relationships in a Graph or foreign key relationships
      * in a relational schema
      *
@@ -301,10 +269,10 @@ public class AssetSchemaAttribute extends AssetReferenceable
                 ", cardinality='" + getCardinality() + '\'' +
                 ", defaultValueOverride='" + getDefaultValueOverride() + '\'' +
                 ", localSchemaType=" + getLocalSchemaType() +
-                ", externalSchemaLink=" + getExternalSchemaLink() +
                 ", attributeRelationships=" + getAttributeRelationships() +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", meanings=" + getMeanings() +
+                ", securityTags=" + getSecurityTags() +
                 ", additionalProperties=" + getAdditionalProperties() +
                 ", type=" + getType() +
                 ", GUID='" + getGUID() + '\'' +
