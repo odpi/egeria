@@ -69,7 +69,7 @@ public class AnalyticsModelingRestServices {
 			
 			DatabasesResponse response = new DatabasesResponse();
 			List<ResponseContainerDatabase> databases = getHandler()
-					.getDatabaseContextHandler(serverName, userId, methodName).getDatabases(startFrom, pageSize);
+					.getDatabaseContextHandler(serverName, userId, methodName).getDatabases(userId, startFrom, pageSize);
 			response.setDatabasesList(databases);
 			ret = response;
 		} catch (AnalyticsModelingCheckedException e) {
