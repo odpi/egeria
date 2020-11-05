@@ -15,9 +15,11 @@ import org.odpi.openmetadata.accessservices.analyticsmodeling.assets.DatabaseCon
 import org.odpi.openmetadata.accessservices.analyticsmodeling.contentmanager.OMEntityDao;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.converter.DatabaseConverter;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.converter.EmptyConverter;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.converter.SchemaConverter;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.AnalyticsModelingErrorCode;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.exceptions.AnalyticsModelingCheckedException;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.metadata.Database;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.metadata.Schema;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.model.ResponseContainerDatabase;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.model.ResponseContainerDatabaseSchema;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.model.ResponseContainerModule;
@@ -64,12 +66,12 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 				metadataCollection,
 	            PAGE_SIZE);
 
-		RelationalDataHandler<Database, Object, Object, Object, Object, Object> relationalDataHandler =
+		RelationalDataHandler<Database, Schema, Object, Object, Object, Object> relationalDataHandler =
 		new RelationalDataHandler<>(
         		new DatabaseConverter(omrsRepositoryHelper, serviceName,serverName),
                 Database.class,
-        		new EmptyConverter(omrsRepositoryHelper, serviceName,serverName),
-                Object.class,
+        		new SchemaConverter(omrsRepositoryHelper, serviceName,serverName),
+                Schema.class,
         		new EmptyConverter(omrsRepositoryHelper, serviceName,serverName),
                 Object.class,
         		new EmptyConverter(omrsRepositoryHelper, serviceName,serverName),
@@ -153,7 +155,7 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 		String guidDataSource = entityDB.getGUID();
 		// test
 		List<ResponseContainerDatabaseSchema> schemas = databaseContextHandler
-				.getDatabaseSchemas(guidDataSource, FROM_INDEX, PAGE_SIZE);
+				.getDatabaseSchemas(USER_ID, guidDataSource, FROM_INDEX, PAGE_SIZE);
 		assertTrue(schemas.isEmpty(), "Schemas list expected to be empty.");
 
 	}
@@ -167,7 +169,7 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 		createDatabaseSchemaEntity(guidDataSource, "sys");
 
 		List<ResponseContainerDatabaseSchema> schemas = databaseContextHandler
-				.getDatabaseSchemas(guidDataSource,FROM_INDEX, PAGE_SIZE);
+				.getDatabaseSchemas(USER_ID, guidDataSource,FROM_INDEX, PAGE_SIZE);
 		assertNotNull(schemas);
 		assertTrue(schemas.size() == 2, "Failed to retrieve database schemas.");
 
@@ -180,27 +182,36 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 
 	@Test
 	public void getDatabaseSchemasPage() throws AnalyticsModelingCheckedException, InvalidParameterException {
-		// setup repository with four schemas sorted: dbo, s1, s2, sys
+		// setup repository with four schemas sorted: dbo, s1, s2, s3, sys
 		EntityDetail entityDB = createDatabaseEntity(DATABASE_GOSALES, SERVER_TYPE_MS_SQL, "1.0");
 		String guidDataSource = entityDB.getGUID();
 		createDatabaseSchemaEntity(guidDataSource, SCHEMA_DBO);
 		createDatabaseSchemaEntity(guidDataSource, "s1");
 		createDatabaseSchemaEntity(guidDataSource, "s2");
+		createDatabaseSchemaEntity(guidDataSource, "s3");
 		createDatabaseSchemaEntity(guidDataSource, "sys");
 
 		List<ResponseContainerDatabaseSchema> schemas = databaseContextHandler
-				.getDatabaseSchemas(guidDataSource, 1, 2);
+				.getDatabaseSchemas(USER_ID, guidDataSource, 0, 2);
 		assertNotNull(schemas);
-		assertTrue(schemas.size() == 2, "Failed to retrieve database schemas.");
+		assertTrue(schemas.size() == 2, "Failed to retrieve database schemas first page.");
 
-		assertEquals(schemas.get(0).getSchema(), "s1");
-		assertEquals(schemas.get(1).getSchema(), "s2");
+		List<ResponseContainerDatabaseSchema> schemas2 = databaseContextHandler
+				.getDatabaseSchemas(USER_ID, guidDataSource, 2, 2);
+		assertNotNull(schemas2);
+		assertTrue(schemas2.size() == 2, "Failed to retrieve database schemas full page.");
 
-		// test paging boundaries
-		assertTrue(databaseContextHandler.getDatabaseSchemas(guidDataSource, 1, 0).size() == 3,
-				"Return all elemnts starting from.");
-		assertTrue(databaseContextHandler.getDatabaseSchemas(guidDataSource, 1, 5).size() == 3,
-				"Adjust upper boundary.");
+		List<ResponseContainerDatabaseSchema> schemas3 = databaseContextHandler
+				.getDatabaseSchemas(USER_ID, guidDataSource, 4, 2);
+		assertNotNull(schemas3);
+		assertTrue(schemas3.size() == 1, "Failed to retrieve database schemas last incomplete page.");
+
+		schemas.addAll(schemas2);
+		schemas.addAll(schemas3);
+		
+		assertEquals(String.join(";", schemas.stream().map(ResponseContainerDatabaseSchema::getSchema).sorted().collect(Collectors.toList())),
+				"dbo;s1;s2;s3;sys",
+				"All five schemas should be fetched");
 	}
 
 	@Test
@@ -213,7 +224,7 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 		createDatabaseSchemaEntity(entityDB.getGUID(), SCHEMA_DBO);
 
 		List<ResponseContainerDatabaseSchema> schemas = databaseContextHandler
-				.getDatabaseSchemas(entityDB.getGUID(),FROM_INDEX, PAGE_SIZE);
+				.getDatabaseSchemas(USER_ID, entityDB.getGUID(),FROM_INDEX, PAGE_SIZE);
 		assertNotNull(schemas);
 		assertTrue(schemas.size() == 1, "Failed to retrieve database schema.");
 		assertEquals(DATABASE_ADVENTURE_WORKS, schemas.get(0).getCatalog());
@@ -361,7 +372,7 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 	public void getDatabaseSchemasInvalidParameter() {
 
 		InvalidParameterException thrown = expectThrows(InvalidParameterException.class,
-				() -> databaseContextHandler.getDatabaseSchemas(null, FROM_INDEX, PAGE_SIZE));
+				() -> databaseContextHandler.getDatabaseSchemas(USER_ID, null, FROM_INDEX, PAGE_SIZE));
 		assertEquals(thrown.getParameterName(), DatabaseContextHandler.DATA_SOURCE_GUID, "Incorrect parameter name.");
 	}
 
