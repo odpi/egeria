@@ -43,7 +43,8 @@ export default function CreateTermWizard(props) {
   };
 
   return (
-    <div className="some-container">
+    <div>
+      <h1 Create Term Wizard />
       <ProgressIndicator currentIndex={currentStepIndex}>
         <ProgressStep
           label="Set Glossary"
@@ -57,32 +58,40 @@ export default function CreateTermWizard(props) {
       </ProgressIndicator>
       <div>
         {currentStepIndex == 0 && (
-          <div>
-            <Button
-              kind="secondary"
-              onClick={handleChoseGlossaryOnClick}
-              disabled={!validateGlossaryForm()}
-            >
-              Next
-            </Button>
-            <StartingNodeNavigation
-              match={props.match}
-              nodeTypeName="glossary"
-              onSelectCallback={onGlossarySelect}
-            />
-          </div>
-        )}
-        {currentStepIndex == 1 && !termCreated && (
-          <Button kind="secondary" onClick={handleReChooseGlossaryOnClick}>
-            Previous
+          <Button
+            kind="secondary"
+            onClick={handleChoseGlossaryOnClick}
+            disabled={!validateGlossaryForm()}
+          >
+            Next
           </Button>
         )}
-        {currentStepIndex == 1 && (
-          <CreateNode
-            currentNodeType={getNodeType("term")}
-            glossaryGuid={glossaryGuid}
-            onCreateCallback={onCreate}
+        {currentStepIndex == 0 && !termCreated && (
+          <h3>Choose a Glossary that you want the Term to be created in.</h3>
+        )}
+        {currentStepIndex == 0 && (
+          <StartingNodeNavigation
+            match={props.match}
+            nodeTypeName="glossary"
+            onSelectCallback={onGlossarySelect}
           />
+        )}
+        {currentStepIndex == 1 && !termCreated && (
+          <div>
+            <Button kind="secondary" onClick={handleReChooseGlossaryOnClick}>
+              Previous
+            </Button>
+            <h3>Create the Term in the chosen Glossary.</h3>
+          </div>
+        )}
+        {currentStepIndex == 1 && (
+          <div>
+            <CreateNode
+              currentNodeType={getNodeType("term")}
+              glossaryGuid={glossaryGuid}
+              onCreateCallback={onCreate}
+            />
+          </div>
         )}
       </div>
     </div>
