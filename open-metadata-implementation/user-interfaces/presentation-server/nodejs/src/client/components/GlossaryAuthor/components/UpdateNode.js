@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import {
   Accordion,
   AccordionItem,
+  Button,
   DatePicker,
   DatePickerInput,
   DataTable,
@@ -250,20 +251,21 @@ export default function UpdateNode(props) {
         </Accordion>
       )}
        <div style={{ color: "red" }}>{errorMsg}</div>
-      <button
+      <Button
         className="bx--btn bx--btn--primary"
         onClick={handleClickUpdate}
         type="button"
       >
         Update
-      </button>
-      <button
+      </Button>
+      <Button
+        kind="secondary"
         className="bx--btn bx--btn--primary"
         onClick={onClickBack}
         type="button"
       >
         Back
-      </button>
+      </Button>
     </div>
   );
 }

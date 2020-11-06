@@ -6,26 +6,42 @@ import {
   ProgressStep,
   Button,
 } from "carbon-components-react";
+import StartingNodeNavigation from "./StartingNodeNavigation";
+import CreateNode from "./CreateNode";
+import getNodeType from "./properties/NodeTypes.js";
 
 export default function CreateTermWizard(props) {
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
-  const [glossaryGuid, setGlossaryguid] = useState();
+  const [glossaryGuid, setGlossaryGuid] = useState();
+  const [termCreated, setTermCreated] = useState();
   console.log("CreateTermWizard");
 
-  const handleOnClick = (e) => {
+  const handleChoseGlossaryOnClick = (e) => {
     e.preventDefault();
     if (currentStepIndex == 0) {
       setCurrentStepIndex(1);
-      setGlossaryGuid("test");
     }
-  }
+  };
+  const handleReChooseGlossaryOnClick = (e) => {
+    e.preventDefault();
+    if (currentStepIndex == 1) {
+      setCurrentStepIndex(0);
+    }
+  };
   const validateGlossaryForm = () => {
     let isValid = false;
     if (glossaryGuid) {
-      isValid= true;
+      isValid = true;
     }
     return isValid;
-  }
+  };
+  const onGlossarySelect = (guid) => {
+    setGlossaryGuid(guid);
+  };
+  const onCreate = () => {
+    setTermCreated(true);
+  };
+
   return (
     <div className="some-container">
       <ProgressIndicator currentIndex={currentStepIndex}>
@@ -40,11 +56,34 @@ export default function CreateTermWizard(props) {
         />
       </ProgressIndicator>
       <div>
-        <Button
-                type="submit"
-                onClick={handleOnClick}
-                disabled={!validateGlossaryForm()}
-              >Next</Button>    
+        {currentStepIndex == 0 && (
+          <div>
+            <Button
+              kind="secondary"
+              onClick={handleChoseGlossaryOnClick}
+              disabled={!validateGlossaryForm()}
+            >
+              Next
+            </Button>
+            <StartingNodeNavigation
+              match={props.match}
+              nodeTypeName="glossary"
+              onSelectCallback={onGlossarySelect}
+            />
+          </div>
+        )}
+        {currentStepIndex == 1 && !termCreated && (
+          <Button kind="secondary" onClick={handleReChooseGlossaryOnClick}>
+            Previous
+          </Button>
+        )}
+        {currentStepIndex == 1 && (
+          <CreateNode
+            currentNodeType={getNodeType("term")}
+            glossaryGuid={glossaryGuid}
+            onCreateCallback={onCreate}
+          />
+        )}
       </div>
     </div>
   );
