@@ -12,6 +12,7 @@ import GlossaryChildren from "../GlossaryChildren";
 import CreateGlossary from "../CreateGlossary";
 import UpdateGlossary from "../UpdateGlossary";
 import CreateTerm from "../CreateTerm";
+import CreateTermWizard from "../CreateTermWizard";
 import UpdateTerm from "../UpdateTerm";
 import CreateCategory from "../CreateCategory";
 import UpdateCategory from "../UpdateCategory";
@@ -146,7 +147,7 @@ export default function GlossaryAuthorRoutes({ glossaryAuthorURL }) {
   return (
     <Switch>
       <Route path={getGlossariesAddPath()} component={CreateGlossary}></Route>
-      <Route path={getTermsAddPath()} component={CreateTerm}></Route>
+      <Route path={getTermsAddPath()} component={CreateTermWizard}></Route>
       <Route path={getCategoriesAddPath()} component={CreateCategory}></Route>
       <Route path={getGlossariesEditPath()} component={UpdateGlossary}></Route>
       <Route path={getTermsEditPath()} component={UpdateTerm}></Route>

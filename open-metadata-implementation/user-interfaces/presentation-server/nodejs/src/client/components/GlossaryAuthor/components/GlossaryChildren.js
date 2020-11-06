@@ -1,18 +1,39 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ContentSwitcher, Switch } from "carbon-components-react";
 import GlossaryAuthorTermsNavigation from "./GlossaryAuthorTermsNavigation";
 import GlossaryAuthorCategoriesNavigation from "./GlossaryAuthorCategoriesNavigation";
 import getNodeType from "./properties/NodeTypes";
-import { useHistory } from "react-router-dom";
+import { useHistory, withRouter } from "react-router-dom";
 
-export default function GlossaryChildren(props) {
+function GlossaryChildren(props) {
   console.log("NodeChildren(props) " + props);
+  const [selectedContentIndex, setSelectedContentIndex] = useState(0);
+ /**
+  * this useEffect is required so that the content in the content switcher is kept in step with the url.
+  * This is required when the back button is pressed returning from a child component.  
+  */
+  useEffect(() => {
+    const arrayOfURLSegments = location.pathname.split("/");
+    const lastSegment = arrayOfURLSegments[arrayOfURLSegments.length - 1];
+    let index = 0;
+    if (lastSegment == "terms") {
+      index = 1;
+    }
+    console.log(
+      "GlossaryChildren useEffect url=" +
+      location.pathname +
+        " ,lastSegment=" +
+        lastSegment +
+        " ,index=" +
+        index
+    );
+    setSelectedContentIndex(index);
+  }, []);
   const guid = props.match.params.glossaryguid;
   let history = useHistory();
 
-  const [showTerms, setShowTerms] = useState(false);
   const onChange = (e) => {
     const chosenContent = `${e.name}`;
     const url = props.match.url + "/" + chosenContent;
@@ -20,14 +41,14 @@ export default function GlossaryChildren(props) {
 
     history.push(url);
     if (chosenContent == "terms") {
-      setShowTerms(true);
+      setSelectedContentIndex(1);
     } else {
-      setShowTerms(false);
+      setSelectedContentIndex(0);
     }
   };
   const getChildrenURL = () => {
     let childName;
-    if (showTerms) {
+    if (selectedContentIndex == 1) {
       childName = "terms";
     } else {
       childName = "categories";
@@ -40,18 +61,20 @@ export default function GlossaryChildren(props) {
 
   return (
     <div>
-      <ContentSwitcher onChange={onChange}>
+      <ContentSwitcher selectedIndex={selectedContentIndex} onChange={onChange}>
         <Switch name="categories" text="Categories" />
         <Switch name="terms" text="Terms" />
       </ContentSwitcher>
-      {showTerms && (
-        <GlossaryAuthorTermsNavigation getTermsURL={getChildrenURL()} />
-      )}
-      {!showTerms && (
+
+      {selectedContentIndex == 0 && (
         <GlossaryAuthorCategoriesNavigation
           getCategoriesURL={getChildrenURL()}
         />
       )}
+      {selectedContentIndex == 1 && (
+        <GlossaryAuthorTermsNavigation getTermsURL={getChildrenURL()} />
+      )}
     </div>
   );
 }
+export default withRouter(GlossaryChildren);
