@@ -196,7 +196,6 @@ export default function StartingNodeNavigation({
   };
 
   function getNodeChildrenUrl() {
-    // return match.path + "/" + nodeType.plural + "/" + selectedNodeGuid + "/children";
     return match.path + "/" + selectedNodeGuid + "/children";
   }
   /**
@@ -204,7 +203,6 @@ export default function StartingNodeNavigation({
    * Not working ...
    */
   const getNodeChildrenUrlUsingGuid = (guid) => () => {
-    // return `${match.path}/" + nodeType.plural + "/${guid}/children`;
     return `${match.path}/${guid}/children`;
   };
 
@@ -241,7 +239,7 @@ export default function StartingNodeNavigation({
   return (
     <div>
       <div className="bx--grid">
-        <NodeCardSection heading={nodeType.plural} className="landing-page__r3">
+        <NodeCardSection className="landing-page__r3">
           <article className="node-card__controls bx--col-sm-4 bx--col-md-1 bx--col-lg-1 bx--col-xlg-1 bx--col-max-1">
             Choose {nodeType.key}
           </article>
