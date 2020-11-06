@@ -680,6 +680,35 @@ public class RelationalDataHandler<DATABASE,
                                           pageSize,
                                           methodName);
     }
+    
+    /**
+     * Retrieve the list of database metadata elements.
+     *
+     * @param userId calling user
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param methodName calling method
+     *
+     * @return list of database metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<DATABASE> getDatabases(String userId,
+                                        int    startFrom,
+                                        int    pageSize,
+                                        String methodName) throws InvalidParameterException,
+                                                                  UserNotAuthorizedException,
+                                                                  PropertyServerException
+    {
+        return databaseHandler.getBeansByType(userId,
+                                          OpenMetadataAPIMapper.DATABASE_TYPE_GUID,
+                                          OpenMetadataAPIMapper.DATABASE_TYPE_NAME,
+                                          startFrom,
+                                          pageSize,
+                                          methodName);
+    }
 
 
     /**
