@@ -18,11 +18,10 @@ import { issueRestGet, issueRestDelete } from "./RestCaller";
 
 import { Link } from "react-router-dom";
 
-const GlossaryAuthorCategoriesNavigation = (props) => {
+const GlossaryAuthorChildCategoriesNavigation = (props) => {
   const [nodes, setNodes] = useState([]);
   const [errorMsg, setErrorMsg] = useState();
   const [selectedNodeGuid, setSelectedNodeGuid] = useState();
-  const [onlyTop, setOnlyTop] = useState(false);
   const [completeResults, setCompleteResults] = useState([]);
   const [isCardView, setIsCardView] = useState(true);
   const [total, setTotal] = useState(0);
@@ -34,22 +33,13 @@ const GlossaryAuthorCategoriesNavigation = (props) => {
   const nodeType = getNodeType("category");
   useEffect(() => {
     getChildren();
-  }, [selectedNodeGuid, onlyTop]);
+  }, [selectedNodeGuid]);
 
   const getChildren = () => {
     // encode the URI. Be aware the more recent RFC3986 for URLs makes use of square brackets which are reserved (for IPv6)
-    const url = encodeURI(props.getCategoriesURL  + "?onlyTop="+onlyTop);
-    issueRestGet(url, onSuccessfulGetChildren, onErrorGetChildren);
+    issueRestGet(encodeURI(props.getCategoriesURL), onSuccessfulGetChildren, onErrorGetChildren);
   };
 
-  const onToggleTop = () => {
-    console.log("onToggleTop");
-    if (onlyTop) {
-      setOnlyTop(false);
-    } else {
-      setOnlyTop(true);
-    }
-  };
   const paginationProps = () => ({
     disabled: false,
     page: pageNumber,
@@ -200,14 +190,6 @@ const GlossaryAuthorCategoriesNavigation = (props) => {
             </div>
           </article>
         </NodeCardSection>
-        <Toggle
-          aria-label="topCategoryToggle"
-          defaultToggled
-          labelA="All Categories"
-          labelB="Top Categories"
-          id="category-filter-toggle"
-          onToggle={onToggleTop}
-        />
         <NodeCardSection className="landing-page__r3">
           <Toggle
             aria-label="nodeCardTableToggle"
@@ -254,4 +236,4 @@ const GlossaryAuthorCategoriesNavigation = (props) => {
     </div>
   );
 };
-export default withRouter(GlossaryAuthorCategoriesNavigation);
+export default withRouter(GlossaryAuthorChildCategoriesNavigation);

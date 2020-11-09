@@ -18,8 +18,8 @@ export default function QuickTerms(props) {
   let history = useHistory();
   const url = getUrl();
   function getUrl() {
-    const { glossaryguid } = useParams();
-    return glossaryNodeType.url + "/" + glossaryguid + "/terms";
+    const { nodeguid } = useParams();
+    return glossaryNodeType.url + "/" + nodeguid + "/terms";
   }
   const validateForm = () => {
     if (terms.length == 0) {

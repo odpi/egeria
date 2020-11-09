@@ -2,13 +2,13 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 import React, { useState, useEffect } from "react";
 import { ContentSwitcher, Switch } from "carbon-components-react";
-import StartingGlossaryNavigation from "./StartingGlossaryNavigation";
-import StartingTermNavigation from "./StartingTermNavigation";
-import StartingCategoryNavigation from "./StartingCategoryNavigation";
+import GlossaryAuthorTermsNavigation from "./GlossaryAuthorTermsNavigation";
+import GlossaryAuthorCategoriesNavigation from "./GlossaryAuthorCategoriesNavigation";
+import getNodeType from "./properties/NodeTypes";
 import { useHistory, withRouter } from "react-router-dom";
 
-function GlossaryAuthorNavigation(props) {
-  console.log("GlossaryAuthorNavigation");
+function NodeChildren(props) {
+  console.log("NodeChildren(props) " + props);
   const [selectedContentIndex, setSelectedContentIndex] = useState(0);
   /**
    * this useEffect is required so that the content in the content switcher is kept in step with the url.
@@ -18,14 +18,11 @@ function GlossaryAuthorNavigation(props) {
     const arrayOfURLSegments = location.pathname.split("/");
     const lastSegment = arrayOfURLSegments[arrayOfURLSegments.length - 1];
     let index = 0;
-    if (lastSegment == "categories") {
+    if (lastSegment == "terms") {
       index = 1;
     }
-    if (lastSegment == "terms") {
-      index = 2;
-    }
     console.log(
-      "glossaryAuthorNavigation useEffect url=" +
+      "NodeChildren useEffect url=" +
         location.pathname +
         " ,lastSegment=" +
         lastSegment +
@@ -34,59 +31,53 @@ function GlossaryAuthorNavigation(props) {
     );
     setSelectedContentIndex(index);
   }, []);
-
+  const guid = props.parentguid;
   let history = useHistory();
 
   const onChange = (e) => {
     const chosenContent = `${e.name}`;
-
-    // props.match.url could be anything
-
-    const arrayOfURLSegments = props.match.url.split("/");
-    let workingUrl = "";
-    let keepAppending = true;
-    for (let i = 0; i < arrayOfURLSegments.length; i++) {
-      const currentSegment = arrayOfURLSegments[i];
-      if (keepAppending && currentSegment.length > 0) {
-        workingUrl = workingUrl + "/" + currentSegment;
-      }
-      if (currentSegment == "glossary-author") {
-        keepAppending = false;
-      }
-    }
-
-    const url = workingUrl + "/" + chosenContent;
+    const url = props.match.url + "/" + chosenContent;
     console.log("pushing url " + url);
 
     // Use replace rather than push so the content switcher changes are not navigated through the back button, which would be uninituitive.
     history.replace(url);
 
-    let index = 0;
-    if (chosenContent == "categories") {
-      index = 1;
-    } else if (chosenContent == "terms") {
-      index = 2;
+    if (chosenContent == "terms") {
+      setSelectedContentIndex(1);
+    } else {
+      setSelectedContentIndex(0);
     }
-    setSelectedContentIndex(index);
+  };
+  const getChildrenURL = () => {
+    let childName;
+    if (selectedContentIndex == 1) {
+      childName = "terms";
+    } else {
+      childName = "categories";
+    }
+    console.log("getChildrenURL guid " + guid);
+    const url =
+      getNodeType(props.nodeTypeName).url + "/" + guid + "/" + childName;
+    console.log("getChildrenURL url " + url);
+    return url;
   };
 
   return (
     <div>
       <ContentSwitcher selectedIndex={selectedContentIndex} onChange={onChange}>
-        <Switch name="glossaries" text="Glossaries" />
         <Switch name="categories" text="Categories" />
         <Switch name="terms" text="Terms" />
       </ContentSwitcher>
+
       {selectedContentIndex == 0 && (
-        <StartingGlossaryNavigation match={props.match} />
+        <GlossaryAuthorCategoriesNavigation
+          getCategoriesURL={getChildrenURL()}
+        />
       )}
       {selectedContentIndex == 1 && (
-        <StartingCategoryNavigation match={props.match} />
-      )}
-      {selectedContentIndex == 2 && (
-        <StartingTermNavigation match={props.match} />
+        <GlossaryAuthorTermsNavigation getTermsURL={getChildrenURL()} />
       )}
     </div>
   );
 }
-export default withRouter(GlossaryAuthorNavigation);
+export default withRouter(NodeChildren);

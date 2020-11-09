@@ -4,10 +4,10 @@ import React from "react";
 import NodeChildren from "./NodeChildren";
 import { withRouter } from "react-router-dom";
 
-function GlossaryChildren(props) {
+function CategoryChildren(props) {
   const getParentGuid = () => {
-    return props.match.params.glossaryguid;
+    return props.match.params.categoryguid;
   };
-  return <NodeChildren nodeTypeName="glossary" parentguid={getParentGuid()} />;
+  return <NodeChildren nodeTypeName="category" parentguid={getParentGuid()} />;
 }
-export default withRouter(GlossaryChildren);
+export default withRouter(CategoryChildren);
