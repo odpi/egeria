@@ -269,7 +269,7 @@ export default function InstanceSearch(props) {
            */
           searchUniqueCategory   = "Relationship";
           searchUniqueInstance   = selectedInstances[0];
-          searchUniqueGUID       = searchUniqueInstance.relationshipGUID;
+          searchUniqueGUID       = searchUniqueInstance.relationshipDigest.relationshipGUID;
         }
       }
 
@@ -291,7 +291,9 @@ export default function InstanceSearch(props) {
       else {
         rexTraversal.operation = "relationshipSearch";
       }
-      rexTraversal.serverName = repositoryServerContext.repositoryServerName;      
+      rexTraversal.serverName = repositoryServerContext.repositoryServer.serverName;
+      rexTraversal.platformName = repositoryServerContext.repositoryServer.platformName;
+      rexTraversal.enterpriseOption = repositoryServerContext.enterpriseOption;
       rexTraversal.searchText = searchText;
       
 
@@ -313,8 +315,15 @@ export default function InstanceSearch(props) {
           rexTraversal.entities[entityGUID] = instance;                  
         }
         else {
-          var relationshipGUID = instance.relationshipGUID;
-          rexTraversal.relationships[relationshipGUID] = instance;        
+          const relationshipGUID = instance.relationshipDigest.relationshipGUID;
+          rexTraversal.relationships[relationshipGUID] = instance.relationshipDigest;
+
+          // Add the entity digests for this relationship to the traversal - they are also in the searchResults
+          let end1GUID = instance.relationshipDigest.end1GUID;
+          let end2GUID = instance.relationshipDigest.end2GUID;
+
+          rexTraversal.entities[end1GUID] = instance.end1Digest;
+          rexTraversal.entities[end2GUID] = instance.end2Digest;
         }
     
       });
@@ -393,7 +402,7 @@ export default function InstanceSearch(props) {
        * Search was for relationships
        */
       list = searchResults.map((item) => {
-        if (item.relationshipGUID === guid) {
+        if (item.relationshipDigest.relationshipGUID === guid) {
           const prevChecked = item.checked;
           return Object.assign(item, { checked : !prevChecked });            
         }
@@ -471,7 +480,8 @@ export default function InstanceSearch(props) {
                            searchType            = { searchType }
                            searchText            = { searchText }
                            searchClassifications = { Object.keys(searchClassifications) }
-                           serverName            = { repositoryServerContext.repositoryServerName }
+                           serverName            = { repositoryServerContext.repositoryServer.serverName }
+                           enterpriseOption      = { repositoryServerContext.enterpriseOption }
                            results               = { searchResults }
                            selectCallback        = { selectCallback }
                            setAllCallback        = { setAllCallback }
