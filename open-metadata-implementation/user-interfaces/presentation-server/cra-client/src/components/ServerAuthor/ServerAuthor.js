@@ -1,213 +1,879 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-import React, { useContext, useEffect, useRef, useState } from "react";
+
+import React, { useContext } from "react";
 import {
-  Button,
   CodeSnippet,
   Column,
-  Form,
-  FormGroup,
   Grid,
   InlineNotification,
   Loading,
-  MultiSelect,
-  ProgressIndicator,
-  ProgressStep,
   Row,
-  Select,
-  SelectItem,
-  TextInput,
+  TileGroup,
+  RadioTile,
 } from "carbon-components-react";
 import axios from "axios";
 
 import { IdentificationContext } from "../../contexts/IdentificationContext";
-import generateServerConfig from "./generateServerConfig";
-import accessServices from "./accessServices";
+import { ServerAuthorContext } from "../../contexts/ServerAuthorContext";
+import serverTypes from "./defaults/serverTypes";
+
+import KnownServers from "./KnownServers";
+import ConfigurationSteps from "./ConfigurationSteps";
+import NavigationButtons from "./NavigationButtons";
+import BasicConfig from "./BasicConfig";
+import ConfigureAccessServices from "./ConfigureAccessServices";
+import ConfigureAuditLog from "./ConfigureAuditLog";
+import RegisterCohorts from "./RegisterCohorts";
+import ConfigureOMArchives from "./ConfigureOMArchives";
+import ConfigureRepositoryProxyConnectors from "./ConfigureRepositoryProxyConnectors";
+import ConfigureViewServices from "./ConfigureViewServices";
+import ConfigureDiscoveryEngines from "./ConfigureDiscoveryEngines";
+import ConfigureStewardshipEngines from "./ConfigureStewardshipEngines";
+import ConfigPreview from "./ConfigPreview";
 
 export default function ServerAuthor() {
 
-  const { userId: originalUserId } = useContext(IdentificationContext);
-  const [userId] = useState(originalUserId);
-  const [newServerName, setNewServerName] = useState("");
-  const [newServerLocalURLRoot, setNewServerLocalURLRoot] = useState("https://localhost:19443");
-  const [newServerLocalServerType, setNewServerLocalServerType] = useState("Open Metadata and Governance Server");
-  const [newServerOrganizationName, setNewServerOrganizationName] = useState("");
-  const [newServerLocalUserId, setNewServerLocalUserId] = useState("");
-  const [newServerLocalPassword, setNewServerLocalPassword] = useState("");
-  const [newServerAccessServices, setNewServerAccessServices] = useState([]);
-  const [newServerRepository, setNewServerRepository] = useState("");
-  const [newServerMaxPageSize, setNewServerMaxPageSize] = useState(1000);
-  const [notificationKind, setNotificationKind] = useState("");
-  const [notificationTitle, setNotificationTitle] = useState("");
-  const [notificationSubtitle, setNotificationSubtitle] = useState("");
-  const [progressIndicatorIndex, setProgressIndicatorIndex] = useState(0);
+  const { userId, serverName: tenantId } = useContext(IdentificationContext);
+  const {
+    newServerName,
+    newServerLocalServerType, setNewServerLocalServerType,
+    newServerSecurityConnector,
+    availableAccessServices,
+    selectedAccessServices,
+    newServerRepository,
+    newServerCohorts,
+    newServerOMArchives,
+    newServerProxyConnector,
+    newServerEventMapperConnector,
+    newServerEventSource,
+    availableViewServices,
+    selectedViewServices,
+    newServerViewServiceRemoteServerURLRoot,
+    newServerViewServiceRemoteServerName,
+    selectedDiscoveryEngines,
+    newServerDiscoveryEngineRemoteServerName,
+    newServerDiscoveryEngineRemoteServerURLRoot,
+    selectedStewardshipEngines,
+    newServerStewardshipEngineRemoteServerName,
+    newServerStewardshipEngineRemoteServerURLRoot,
+    notificationType, setNotificationType,
+    notificationTitle, setNotificationTitle,
+    notificationSubtitle, setNotificationSubtitle,
+    progressIndicatorIndex, setProgressIndicatorIndex,
+    loadingText, setLoadingText,
+    setNewServerConfig,
+    basicConfigFormStartRef,
+    discoveryEnginesFormStartRef,
+    stewardshipEnginesFormStartRef,
+    fetchServerConfig,
+    generateBasicServerConfig,
+    registerCohort,
+    configureAccessServices,
+    configureArchiveFile,
+    configureRepositoryProxyConnector,
+    configureRepositoryEventMapperConnector,
+    configureViewServices,
+    configureDiscoveryEngineClient,
+    configureDiscoveryEngines,
+    configureStewardshipEngineClient,
+    configureStewardshipEngines,
+    serverConfigurationSteps,
+  } = useContext(ServerAuthorContext);
 
-  const formStartRef = useRef(null);
+  // Navigation
 
-  useEffect(() => {
-    formStartRef.current.focus();
-  }, []);
+  const sectionMapping = {
+    ["Select server type"]: "server-type-container",
+    ["Basic configuration"]: "config-basic-container",
+    ["Configure audit log destinations"]: "audit-log-container",
+    ["Preview configuration and deploy instance"]: "config-preview-container",
+    ["Select access services"]: "access-services-container",
+    ["Register to a cohort"]: "cohort-container",
+    ["Configure the open metadata archives"]: "archives-container",
+    ["Configure the repository proxy connectors"]: "repository-proxy-container",
+    ["Configure the Open Metadata View Services (OMVS)"]: "view-services-container",
+    ["Configure the discovery engine services"]: "discovery-engines-container",
+    ["Configure the security sync services"]: "security-sync-container",
+    ["Configure the stewardship engine services"]: "stewardship-engines-container",
+  }
 
-  const fetchServerConfig = async () => {
-    const fetchServerConfigURL = `/open-metadata/admin-services/users/${userId}/servers/${newServerName}/configuration`;
-    try {
-      const fetchServerConfigResponse = await axios.get(fetchServerConfigURL, {
-        params: {
-          platformURL: newServerLocalURLRoot
-        }
-      });
-      console.debug({fetchServerConfigResponse});
-      if (fetchServerConfigResponse.data.relatedHTTPCode == 200) {
-        return fetchServerConfigResponse.data.omagserverConfig;
-      } else {
-        throw new Error("error in fetchServerConfigResponse");
-      }
-    } catch(error) {
-      console.error("error fetching config from platform", {error});
-      throw error;
+  const showPreviousStep = () => {
+    const steps = serverConfigurationSteps(newServerLocalServerType);
+    if (progressIndicatorIndex == 0) {
+      return null;
+    }
+    const previous = steps[progressIndicatorIndex - 1];
+    for (let el of document.querySelectorAll('.hideable')) el.style.display = 'none';
+    document.getElementById(sectionMapping[previous]).style.display = "block";
+  }
+
+  const showNextStep = () => {
+    const steps = serverConfigurationSteps(newServerLocalServerType);
+    if (progressIndicatorIndex == steps.length) {
+      return null;
+    }
+    const next = steps[progressIndicatorIndex + 1];
+    for (let el of document.querySelectorAll('.hideable')) el.style.display = 'none';
+    document.getElementById(sectionMapping[next]).style.display = "block";
+    switch (next) {
+      case "Basic configuration":
+        basicConfigFormStartRef.current.focus();
+      case "Configure the discovery engine services":
+        discoveryEnginesFormStartRef.current.focus();
+      case "Configure the stewardship engine services":
+        stewardshipEnginesFormStartRef.current.focus();
     }
   }
 
+  const handleBackToPreviousStep = e => {
+    e.preventDefault();
+    showPreviousStep();
+    setProgressIndicatorIndex(progressIndicatorIndex - 1);
+  }
+
+  // Server Type
+
+  const handleServerTypeSelection = async e => {
+    e.preventDefault();
+    showNextStep();
+    setProgressIndicatorIndex(progressIndicatorIndex + 1);
+  }
+
+  // Basic Config
+
   const handleBasicConfig = async e => {
     e.preventDefault();
-    console.log("server-author-basic-config-form submitted");
+    // Generate server config
+    setLoadingText("Generating server configuration...");
     document.getElementById("config-basic-container").style.display = "none";
     document.getElementById("loading-container").style.display = "block";
-    const configOptions = {
-      userId,
-      newServerName,
-      newServerLocalURLRoot,
-      newServerLocalServerType,
-      newServerOrganizationName,
-      newServerLocalUserId,
-      newServerLocalPassword,
-    }
     let serverConfig;
     try {
-      serverConfig = generateServerConfig(configOptions);
+      serverConfig = generateBasicServerConfig();
     } catch(error) {
-      console.error("error generating server config", {error});
-      alert(error);
+      console.error("Error generating server config", { error });
+      setNotificationType("error");
+      setNotificationTitle("Configuration Error");
+      setNotificationSubtitle("Error generating OMAG server configuration file. " + error.message);
+      document.getElementById("loading-container").style.display = "none";
+      document.getElementById("config-basic-container").style.display = "block";
+      document.getElementById("notification-container").style.display = "block";
       return;
     }
     // Post server config
+    setLoadingText("Storing basic server configuration on OMAG server platform...");
     const setServerConfigURL = `/open-metadata/admin-services/users/${userId}/servers/${newServerName}/configuration`;
     try {
       const setServerConfigResponse = await axios.post(setServerConfigURL, {
         config: serverConfig,
-        platformURL: newServerLocalURLRoot,
+        tenantId,
       }, {
         headers: {
           'Content-Type': 'application/json'
         },
+        timeout: 30000,
       });
       if (setServerConfigResponse.data.relatedHTTPCode == 200) {
-        document.getElementById("config-preview").innerHTML = JSON.stringify(serverConfig, null, 2);
-        setProgressIndicatorIndex(1);
-        document.getElementById("loading-container").style.display = "none";
-        document.getElementById("config-advanced-container").style.display = "block";
+        setNewServerConfig(serverConfig);
+        console.log("Finished updating config preview");
       } else {
         console.error(setServerConfigResponse.data);
-        throw new Error("error in setServerConfigResponse")
+        throw new Error("Error in setServerConfigResponse");
       }
     } catch(error) {
-      console.error("error sending config to platform", {error});
-      setNotificationKind("error");
-      setNotificationTitle("Configuration Error")
-      setNotificationSubtitle("Error sending server configuration to the platform.");
+      console.error("Error sending config to platform", { error });
+      setNewServerConfig(null);
+      setNotificationType("error");
+      if (error.code && error.code == 'ECONNABORTED') {
+        setNotificationTitle("Connection Error");
+        setNotificationSubtitle("Error connecting to the platform. Please ensure the OMAG server platform is available.");  
+      } else {
+        setNotificationTitle("Configuration Error");
+        setNotificationSubtitle("Error sending server configuration to the platform.");
+      }
       document.getElementById("loading-container").style.display = "none";
       document.getElementById("config-basic-container").style.display = "block";
       document.getElementById("notification-container").style.display = "block";
+      return;
     }
-  }
-
-  const handleBackToBasicConfig = e => {
-    e.preventDefault();
-    console.log("back to basic config");
-    document.getElementById("config-advanced-container").style.display = "none";
-    document.getElementById("config-basic-container").style.display = "block";
-    setProgressIndicatorIndex(0);
-  }
-
-  const handleAdvancedConfig = async e => {
-    e.preventDefault();
-    console.log("server-author-advanced-config-form submitted");
-    document.getElementById("config-advanced-container").style.display = "none";
-    document.getElementById("loading-container").style.display = "block";
-    // Enable Access Services
-    setNewServerAccessServices("asset-owner"); // TODO: use array of access services
-    const enableServiceAccessURL = `/open-metadata/admin-services/users/${userId}/servers/${newServerName}/access-services/${newServerAccessServices}`;
+    // Enable chosen repository
+    if (newServerLocalServerType == "Metadata Server") {
+      setLoadingText("Enabling chosen local repository...");
+      const enableRepositoryURL = `/open-metadata/admin-services/users/${userId}/servers/${newServerName}/local-repository/mode/${newServerRepository}`;
+      try {
+        const enableRepositoryURLResponse = await axios.post(enableRepositoryURL, {
+          config: '',
+          tenantId,
+        }, {
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          timeout: 30000,
+        });
+        if (enableRepositoryURLResponse.data.relatedHTTPCode != 200) {
+          console.error(enableRepositoryURLResponse.data);
+          throw new Error("Error in enableRepositoryURLResponse");
+        }
+      } catch(error) {
+        console.error("Error enabling chosen repository", { error });
+        setNotificationType("error");
+        if (error.code && error.code == 'ECONNABORTED') {
+          setNotificationTitle("Connection Error");
+          setNotificationSubtitle("Error connecting to the platform. Please ensure the OMAG server platform is available.");  
+        } else {
+          setNotificationTitle("Configuration Error");
+          setNotificationSubtitle(`Error enabling ${newServerRepository} repository for the server.`);
+        }
+        document.getElementById("loading-container").style.display = "none";
+        document.getElementById("config-basic-container").style.display = "block";
+        document.getElementById("notification-container").style.display = "block";
+        return;
+      }
+    }
+    // Configure event bus
+    setLoadingText("Configuring event bus...");
+    const configureEventBusURL = `/open-metadata/admin-services/users/${userId}/servers/${newServerName}/event-bus?topicURLRoot=egeriaTopics`;
     try {
-      const enableServiceAccessResponse = await axios.post(enableServiceAccessURL, {
+      const configureEventBusURLResponse = await axios.post(configureEventBusURL, {
         config: '',
-        platformURL: newServerLocalURLRoot,
+        tenantId,
       }, {
         headers: {
           'Content-Type': 'application/json'
         },
+        timeout: 30000,
       });
-      if (enableServiceAccessResponse.data.relatedHTTPCode == 200) {
-        // Enable chosen repository
-        const enableRepositoryURL = `/open-metadata/admin-services/users/${userId}/servers/${newServerName}/local-repository/mode/${newServerRepository}`;
-        try {
-          const enableRepositoryURLResponse = await axios.post(enableRepositoryURL, {
-            config: '',
-            platformURL: newServerLocalURLRoot,
-          }, {
-            headers: {
-              'Content-Type': 'application/json'
-            },
-          });
-          if (enableRepositoryURLResponse.data.relatedHTTPCode == 200) {
-            try {
-              const serverConfig = await fetchServerConfig();
-              document.getElementById("config-preview").innerHTML = JSON.stringify(serverConfig, null, 2);
-              document.getElementById("loading-container").style.display = "none";
-              document.getElementById("config-preview-container").style.display = "block";
-              setProgressIndicatorIndex(2);
-            } catch(error) {
-              console.error("error fetching server config", {error});
-              setNotificationKind("error");
-              setNotificationTitle("Configuration Error")
-              setNotificationSubtitle(`Error fetching configuration for the server.`);
-              document.getElementById("loading-container").style.display = "none";
-              document.getElementById("config-advanced-container").style.display = "block";
-              document.getElementById("notification-container").style.display = "block";
-            }
-          }
-        } catch(error) {
-          console.error("error enabling chosen repository", {error});
-          setNotificationKind("error");
-          setNotificationTitle("Configuration Error")
-          setNotificationSubtitle(`Error enabling ${newServerRepository} repository for the server.`);
-          document.getElementById("loading-container").style.display = "none";
-          document.getElementById("config-advanced-container").style.display = "block";
-          document.getElementById("notification-container").style.display = "block";
-        }
-
+      if (configureEventBusURLResponse.data.relatedHTTPCode != 200) {
+        console.error(configureEventBusURLResponse.data);
+        throw new Error("Error in configureEventBusURLResponse");
       }
     } catch(error) {
-      console.error("error enabling service access", {error});
-      setNotificationKind("error");
-      setNotificationTitle("Configuration Error")
-      setNotificationSubtitle("Error enabling service access to the server.");
+      console.error("error configuring event bus", { error });
+      setNotificationType("error");
+      if (error.code && error.code == 'ECONNABORTED') {
+        setNotificationTitle("Connection Error");
+        setNotificationSubtitle("Error connecting to the platform. Please ensure the OMAG server platform is available.");  
+      } else {
+        setNotificationTitle("Configuration Error");
+        setNotificationSubtitle(`Error configuring event bus.`);
+      }
       document.getElementById("loading-container").style.display = "none";
-      document.getElementById("config-advanced-container").style.display = "block";
+      document.getElementById("config-basic-container").style.display = "block";
+      document.getElementById("notification-container").style.display = "block";
+      return;
+    }
+    // Configure security connector
+    if (newServerSecurityConnector != "") {
+      setLoadingText("Configuring security connector...");
+      const configureSecurityConnectorURL = `/open-metadata/admin-services/users/${userId}/servers/${newServerName}/security/connection`;
+      try {
+        const configureSecurityConnectorURLResponse = await axios.post(configureSecurityConnectorURL, {
+          config: {
+            "class": "Connection",
+            "connectorType": {
+                "class": "ConnectorType",
+                "connectorProviderClassName": newServerSecurityConnector
+            }
+          },
+          tenantId,
+        }, {
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          timeout: 30000,
+        });
+        if (configureSecurityConnectorURLResponse.data.relatedHTTPCode != 200) {
+          console.error(configureSecurityConnectorURLResponse.data);
+          throw new Error("Error in configureSecurityConnectorURLResponse");
+        }
+      } catch(error) {
+        console.error("error configuring security connector", { error });
+        setNotificationType("error");
+        if (error.code && error.code == 'ECONNABORTED') {
+          setNotificationTitle("Connection Error");
+          setNotificationSubtitle("Error connecting to the platform. Please ensure the OMAG server platform is available.");  
+        } else {
+          setNotificationTitle("Configuration Error");
+          setNotificationSubtitle(`Error configuring security connector. Please ensure the fully qualified name is correct.`);
+        }
+        document.getElementById("loading-container").style.display = "none";
+        document.getElementById("config-basic-container").style.display = "block";
+        document.getElementById("notification-container").style.display = "block";
+        return;
+      }
+    }
+    // Direct User to Next Step
+    showNextStep();
+    setProgressIndicatorIndex(progressIndicatorIndex + 1);
+  }
+
+  // Access Services (optional)
+
+  const handleAccessServicesConfig = async () => {
+    setLoadingText("Enabling access services...");
+    document.getElementById("access-services-container").style.display = "none";
+    document.getElementById("loading-container").style.display = "block";
+    // Enable Access Services
+    try {
+      if (selectedAccessServices.length == availableAccessServices.length) {
+        configureAccessServices();
+      } else {
+        for (const service of selectedAccessServices) {
+          setLoadingText(`Enabling ${service} access service...`);
+          configureAccessServices(service);
+        }
+      }
+    } catch(error) {
+      setNotificationType("error");
+      if (error.code && error.code == "ECONNABORTED") {
+        setNotificationTitle("Connection Error");
+        setNotificationSubtitle("Error connecting to the platform. Please ensure the OMAG server platform is available.");
+      } else {
+        setNotificationTitle("Configuration Error");
+        setNotificationSubtitle(`Error enabling the access service(s).`);
+      }
+      document.getElementById("loading-container").style.display = "none";
+      document.getElementById("access-services-container").style.display = "block";
+      document.getElementById("notification-container").style.display = "block";
+      return;
+    }
+    // Fetch Server Config
+    setLoadingText("Fetching final stored server configuration...");
+    try {
+      const serverConfig = await fetchServerConfig();
+      setNewServerConfig(serverConfig);
+      showNextStep();
+      setProgressIndicatorIndex(progressIndicatorIndex + 1);
+    } catch(error) {
+      console.error("error fetching server config", {error});
+      setNotificationType("error");
+      if (error.code && error.code == "ECONNABORTED") {
+        setNotificationTitle("Connection Error");
+        setNotificationSubtitle("Error connecting to the platform. Please ensure the OMAG server platform is available.");
+      } else {
+        setNotificationTitle("Configuration Error");
+        setNotificationSubtitle(`Error fetching configuration for the server.`);
+      }
+      document.getElementById("loading-container").style.display = "none";
+      document.getElementById("access-services-container").style.display = "block";
       document.getElementById("notification-container").style.display = "block";
     }
   }
 
-  const handleBackToAdvancedConfig = e => {
-    e.preventDefault();
-    console.log("back to advanced config");
-    document.getElementById("config-preview-container").style.display = "none";
-    document.getElementById("config-advanced-container").style.display = "block";
-    setProgressIndicatorIndex(1);
+  // Audit Log Destionations
+
+  const configureAuditLogDestinations = async (auditLogDestinations) => {
+    setLoadingText("Configuring audit log destinations...");
+    document.getElementById("audit-log-container").style.display = "none";
+    document.getElementById("loading-container").style.display = "block";
+    // Enable Audit Log Destinations
+    console.log({auditLogDestinations});
+    const chosenAuditLogDestinations = auditLogDestinations.filter((destination) => destination.selected);
+    for (const destination of chosenAuditLogDestinations) {
+      try {
+        const url = `/open-metadata/admin-services/users/${userId}/servers/${newServerName}/audit-log-destinations/${destination.id}`;
+        const data = {
+          tenantId
+        };
+        if (destination.id != "default") {
+          data.config = destination.severities.map((s) => s.id);
+        }
+        setLoadingText(`Enabling the ${destination.label} audit log destination...`);
+        const enableAuditLogDestinationResponse = await axios.post(url, data, {
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          timeout: 30000,
+        });
+        if (enableAuditLogDestinationResponse.data.relatedHTTPCode != 200) {
+          console.error(enableAuditLogDestinationResponse.data);
+          throw new Error("Error in enableAuditLogDestinationResponse");
+        }
+      } catch(error) {
+        console.error(`Error enabling the ${destination.label} audit log destination`, { error });
+        setNotificationType("error");
+        if (error.code && error.code == "ECONNABORTED") {
+          setNotificationTitle("Connection Error");
+          setNotificationSubtitle("Error connecting to the platform. Please ensure the OMAG server platform is available.");
+        } else {
+          setNotificationTitle("Configuration Error");
+          setNotificationSubtitle(`Error enabling the ${destination.label} audit log destination`);
+        }
+        document.getElementById("loading-container").style.display = "none";
+        document.getElementById("audit-log-container").style.display = "block";
+        document.getElementById("notification-container").style.display = "block";
+        return;
+      }
+    }
+    // Fetch Server Config
+    setLoadingText("Fetching final stored server configuration...");
+    try {
+      const serverConfig = await fetchServerConfig();
+      setNewServerConfig(serverConfig);
+      showNextStep();
+      setProgressIndicatorIndex(progressIndicatorIndex + 1);
+    } catch(error) {
+      console.error("error fetching server config", {error});
+      setNotificationType("error");
+      if (error.code && error.code == "ECONNABORTED") {
+        setNotificationTitle("Connection Error");
+        setNotificationSubtitle("Error connecting to the platform. Please ensure the OMAG server platform is available.");
+      } else {
+        setNotificationTitle("Configuration Error");
+        setNotificationSubtitle(`Error fetching configuration for the server.`);
+      }
+      document.getElementById("loading-container").style.display = "none";
+      document.getElementById("audit-log-container").style.display = "block";
+      document.getElementById("notification-container").style.display = "block";
+    }
   }
+
+  // Optional Steps
+
+  // Register to a cohort
+
+  const handleRegisterCohorts = async () => {
+    setLoadingText("Registering cohort(s)...");
+    document.getElementById("cohort-container").style.display = "none";
+    document.getElementById("loading-container").style.display = "block";
+    // Register Cohorts
+    for (const cohortName of newServerCohorts) {
+      try {
+        setLoadingText(`Registering the OMAG Server to the ${cohortName} cohort...`);
+        await registerCohort(cohortName);
+      } catch(error) {
+        console.error(`Error registering the OMAG Server to the ${cohortName} cohort`, { error });
+        setNotificationType("error");
+        if (error.code && error.code == "ECONNABORTED") {
+          setNotificationTitle("Connection Error");
+          setNotificationSubtitle("Error connecting to the platform. Please ensure the OMAG server platform is available.");
+        } else {
+          setNotificationTitle("Configuration Error");
+          setNotificationSubtitle(`Error registering the OMAG Server to the ${cohortName} cohort`);
+        }
+        document.getElementById("loading-container").style.display = "none";
+        document.getElementById("cohort-container").style.display = "block";
+        document.getElementById("notification-container").style.display = "block";
+        return;
+      }
+    }
+    // Fetch Server Config
+    setLoadingText("Fetching final stored server configuration...");
+    try {
+      const serverConfig = await fetchServerConfig();
+      setNewServerConfig(serverConfig);
+      showNextStep();
+      setProgressIndicatorIndex(progressIndicatorIndex + 1);
+    } catch(error) {
+      console.error("error fetching server config", {error});
+      setNotificationType("error");
+      if (error.code && error.code == "ECONNABORTED") {
+        setNotificationTitle("Connection Error");
+        setNotificationSubtitle("Error connecting to the platform. Please ensure the OMAG server platform is available.");
+      } else {
+        setNotificationTitle("Configuration Error");
+        setNotificationSubtitle(`Error fetching configuration for the server.`);
+      }
+      document.getElementById("loading-container").style.display = "none";
+      document.getElementById("cohort-container").style.display = "block";
+      document.getElementById("notification-container").style.display = "block";
+    }
+  }
+
+  // Configure open metadata archives to load on server startup
+
+  const handleConfigureArchives = async () => {
+    setLoadingText("Configuring archives(s) to load on server startup...");
+    document.getElementById("archives-container").style.display = "none";
+    document.getElementById("loading-container").style.display = "block";
+    // Register Cohorts
+    for (const archiveName of newServerOMArchives) {
+      try {
+        setLoadingText(`Configuring the OMAG Server to load the ${archiveName} archive upon startup...`);
+        await configureArchiveFile(archiveName); // TODO
+      } catch(error) {
+        console.error(`Error configuring the OMAG Server to load the ${archiveName} archive upon startup`, { error });
+        setNotificationType("error");
+        if (error.code && error.code == "ECONNABORTED") {
+          setNotificationTitle("Connection Error");
+          setNotificationSubtitle("Error connecting to the platform. Please ensure the OMAG server platform is available.");
+        } else {
+          setNotificationTitle("Configuration Error");
+          setNotificationSubtitle(`Error configuring the OMAG Server to load the ${archiveName} archive upon startup.`);
+        }
+        document.getElementById("loading-container").style.display = "none";
+        document.getElementById("archives-container").style.display = "block";
+        document.getElementById("notification-container").style.display = "block";
+        return;
+      }
+    }
+    // Fetch Server Config
+    setLoadingText("Fetching final stored server configuration...");
+    try {
+      const serverConfig = await fetchServerConfig();
+      setNewServerConfig(serverConfig);
+      showNextStep();
+      setProgressIndicatorIndex(progressIndicatorIndex + 1);
+    } catch(error) {
+      console.error("error fetching server config", {error});
+      setNotificationType("error");
+      if (error.code && error.code == "ECONNABORTED") {
+        setNotificationTitle("Connection Error");
+        setNotificationSubtitle("Error connecting to the platform. Please ensure the OMAG server platform is available.");
+      } else {
+        setNotificationTitle("Configuration Error");
+        setNotificationSubtitle(`Error fetching configuration for the server.`);
+      }
+      document.getElementById("loading-container").style.display = "none";
+      document.getElementById("archives-container").style.display = "block";
+      document.getElementById("notification-container").style.display = "block";
+    }
+  }
+
+  // Configure the Repository Proxy Connectors
+
+  const handleConfigureRepositoryProxyConnectors = async () => {
+    // If all three fields are blank, skip to next step
+    if (
+      (!newServerProxyConnector || newServerProxyConnector == "") &&
+      (!newServerEventMapperConnector || newServerEventMapperConnector == "") &&
+      (!newServerEventSource || newServerEventSource == "")
+    ) {
+      showNextStep();
+      setProgressIndicatorIndex(progressIndicatorIndex + 1);
+      return;
+    }
+    // If one or two fields are blank, show notification
+    if (
+      (!newServerProxyConnector || newServerProxyConnector == "") ||
+      (!newServerEventMapperConnector || newServerEventMapperConnector == "") ||
+      (!newServerEventSource || newServerEventSource == "")
+    ) {
+      setNotificationType("error");
+      setNotificationTitle("Input Error");
+      setNotificationSubtitle(`All three fields are required to configure the repository proxy connector. Leave all three fields blank to skip this step.`);
+      document.getElementById("notification-container").style.display = "block";
+      return;
+    }
+    setLoadingText("Configuring repository proxy connector...");
+    document.getElementById("repository-proxy-container").style.display = "none";
+    document.getElementById("loading-container").style.display = "block";
+    // Configure the repository proxy connector
+    try {
+      await configureRepositoryProxyConnector(newServerProxyConnector);
+    } catch(error) {
+      setNotificationType("error");
+      if (error.code && error.code == "ECONNABORTED") {
+        setNotificationTitle("Connection Error");
+        setNotificationSubtitle("Error connecting to the platform. Please ensure the OMAG server platform is available.");
+      } else {
+        setNotificationTitle("Configuration Error");
+        setNotificationSubtitle(`Error configuring the repository proxy connector. Please ensure the fully qualified repository proxy connectory name is correct.`);
+      }
+      document.getElementById("loading-container").style.display = "none";
+      document.getElementById("repository-proxy-container").style.display = "block";
+      document.getElementById("notification-container").style.display = "block";
+      return;
+    }
+    // Configure the repository event mapper connector
+    setLoadingText("Configuring repository event mapper connector...");
+    try {
+      await configureRepositoryEventMapperConnector(newServerEventMapperConnector, newServerEventSource);
+    } catch(error) {
+      setNotificationType("error");
+      if (error.code && error.code == "ECONNABORTED") {
+        setNotificationTitle("Connection Error");
+        setNotificationSubtitle("Error connecting to the platform. Please ensure the OMAG server platform is available.");
+      } else {
+        setNotificationTitle("Configuration Error");
+        setNotificationSubtitle(`Error configuring the repository event mapper connector. Please ensure the fully qualified repository event mapper connector name and event source are correct.`);
+      }
+      document.getElementById("loading-container").style.display = "none";
+      document.getElementById("repository-proxy-container").style.display = "block";
+      document.getElementById("notification-container").style.display = "block";
+      return;
+    }
+    // Fetch Server Config
+    setLoadingText("Fetching final stored server configuration...");
+    try {
+      const serverConfig = await fetchServerConfig();
+      setNewServerConfig(serverConfig);
+      showNextStep();
+      setProgressIndicatorIndex(progressIndicatorIndex + 1);
+    } catch(error) {
+      console.error("error fetching server config", {error});
+      setNotificationType("error");
+      if (error.code && error.code == "ECONNABORTED") {
+        setNotificationTitle("Connection Error");
+        setNotificationSubtitle("Error connecting to the platform. Please ensure the OMAG server platform is available.");
+      } else {
+        setNotificationTitle("Configuration Error");
+        setNotificationSubtitle(`Error fetching configuration for the server.`);
+      }
+      document.getElementById("loading-container").style.display = "none";
+      document.getElementById("repository-proxy-container").style.display = "block";
+      document.getElementById("notification-container").style.display = "block";
+    }
+  }
+
+  // Configure the open metadata view services
+
+  const handleConfigureViewServices = async () => {
+    // If all three fields are blank, skip to next step
+    if (
+      (!newServerViewServiceRemoteServerURLRoot || newServerViewServiceRemoteServerURLRoot == "") &&
+      (!newServerViewServiceRemoteServerName || newServerViewServiceRemoteServerName == "") &&
+      (!selectedViewServices || !selectedViewServices.length)
+    ) {
+      showNextStep();
+      setProgressIndicatorIndex(progressIndicatorIndex + 1);
+      return;
+    }
+    // If one or two fields are blank, show notification
+    if (
+      (!newServerViewServiceRemoteServerURLRoot || newServerViewServiceRemoteServerURLRoot == "") ||
+      (!newServerViewServiceRemoteServerName || newServerViewServiceRemoteServerName == "") ||
+      (!selectedViewServices || !selectedViewServices.length)
+    ) {
+      setNotificationType("error");
+      setNotificationTitle("Input Error");
+      setNotificationSubtitle(`All three fields are required to configure the repository proxy connector. Leave all three fields blank to skip this step.`);
+      document.getElementById("notification-container").style.display = "block";
+      return;
+    }
+    setLoadingText("Enabling view services...");
+    document.getElementById("view-services-container").style.display = "none";
+    document.getElementById("loading-container").style.display = "block";
+    // Enable View Services
+    try {
+      if (selectedViewServices.length == availableViewServices.length) {
+        configureViewServices(newServerViewServiceRemoteServerURLRoot, newServerViewServiceRemoteServerName);
+      } else {
+        for (const service of selectedViewServices) {
+          setLoadingText(`Enabling ${service} view service...`);
+          configureViewServices(newServerViewServiceRemoteServerURLRoot, newServerViewServiceRemoteServerName, service);
+        }
+      }
+    } catch(error) {
+      setNotificationType("error");
+      if (error.code && error.code == "ECONNABORTED") {
+        setNotificationTitle("Connection Error");
+        setNotificationSubtitle("Error connecting to the platform. Please ensure the OMAG server platform is available.");
+      } else {
+        setNotificationTitle("Configuration Error");
+        setNotificationSubtitle(`Error enabling the view service(s).`);
+      }
+      document.getElementById("loading-container").style.display = "none";
+      document.getElementById("view-services-container").style.display = "block";
+      document.getElementById("notification-container").style.display = "block";
+      return;
+    }
+    // Fetch Server Config
+    setLoadingText("Fetching final stored server configuration...");
+    try {
+      const serverConfig = await fetchServerConfig();
+      setNewServerConfig(serverConfig);
+      showNextStep();
+      setProgressIndicatorIndex(progressIndicatorIndex + 1);
+    } catch(error) {
+      console.error("error fetching server config", {error});
+      setNotificationType("error");
+      if (error.code && error.code == "ECONNABORTED") {
+        setNotificationTitle("Connection Error");
+        setNotificationSubtitle("Error connecting to the platform. Please ensure the OMAG server platform is available.");
+      } else {
+        setNotificationTitle("Configuration Error");
+        setNotificationSubtitle(`Error fetching configuration for the server.`);
+      }
+      document.getElementById("loading-container").style.display = "none";
+      document.getElementById("view-services-container").style.display = "block";
+      document.getElementById("notification-container").style.display = "block";
+    }
+  }
+
+  // Configure the Discovery Engines
+
+  const handleConfigureDiscoveryEngines = async () => {
+    // If all three fields are blank, skip to next step
+    if (
+      (!newServerDiscoveryEngineRemoteServerURLRoot || newServerDiscoveryEngineRemoteServerURLRoot == "") &&
+      (!newServerDiscoveryEngineRemoteServerName || newServerDiscoveryEngineRemoteServerName == "") &&
+      (!selectedDiscoveryEngines || !selectedDiscoveryEngines.length)
+    ) {
+      showNextStep();
+      setProgressIndicatorIndex(progressIndicatorIndex + 1);
+      return;
+    }
+    // If one or two fields are blank, show notification
+    if (
+      (!newServerDiscoveryEngineRemoteServerURLRoot || newServerDiscoveryEngineRemoteServerURLRoot == "") ||
+      (!newServerDiscoveryEngineRemoteServerName || newServerDiscoveryEngineRemoteServerName == "") ||
+      (!selectedDiscoveryEngines || !selectedDiscoveryEngines.length)
+    ) {
+      setNotificationType("error");
+      setNotificationTitle("Input Error");
+      setNotificationSubtitle(`All three fields are required to configure the discovery engine. Leave all three fields blank to skip this step.`);
+      document.getElementById("notification-container").style.display = "block";
+      return;
+    }
+    setLoadingText("Configuring discovery engine client...");
+    document.getElementById("discovery-engines-container").style.display = "none";
+    document.getElementById("loading-container").style.display = "block";
+    // Configure the discovery engines client
+    try {
+      await configureDiscoveryEngineClient(newServerDiscoveryEngineRemoteServerURLRoot, newServerDiscoveryEngineRemoteServerName);
+    } catch(error) {
+      setNotificationType("error");
+      if (error.code && error.code == "ECONNABORTED") {
+        setNotificationTitle("Connection Error");
+        setNotificationSubtitle("Error connecting to the platform. Please ensure the OMAG server platform is available.");
+      } else {
+        setNotificationTitle("Configuration Error");
+        setNotificationSubtitle(`Error configuring the discovery engine client. Please ensure the metadata server root URL and name are correct.`);
+      }
+      document.getElementById("loading-container").style.display = "none";
+      document.getElementById("discovery-engines-container").style.display = "block";
+      document.getElementById("notification-container").style.display = "block";
+      return;
+    }
+    // Configure the discovery engines
+    setLoadingText("Configuring discovery engines...");
+    try {
+      await configureDiscoveryEngines(selectedDiscoveryEngines);
+    } catch(error) {
+      setNotificationType("error");
+      if (error.code && error.code == "ECONNABORTED") {
+        setNotificationTitle("Connection Error");
+        setNotificationSubtitle("Error connecting to the platform. Please ensure the OMAG server platform is available.");
+      } else {
+        setNotificationTitle("Configuration Error");
+        setNotificationSubtitle(`Error configuring the discovery engines. ${error.message}`);
+      }
+      document.getElementById("loading-container").style.display = "none";
+      document.getElementById("discovery-engines-container").style.display = "block";
+      document.getElementById("notification-container").style.display = "block";
+      return;
+    }
+    // Fetch Server Config
+    setLoadingText("Fetching final stored server configuration...");
+    try {
+      const serverConfig = await fetchServerConfig();
+      setNewServerConfig(serverConfig);
+      showNextStep();
+      setProgressIndicatorIndex(progressIndicatorIndex + 1);
+    } catch(error) {
+      console.error("error fetching server config", {error});
+      setNotificationType("error");
+      if (error.code && error.code == "ECONNABORTED") {
+        setNotificationTitle("Connection Error");
+        setNotificationSubtitle("Error connecting to the platform. Please ensure the OMAG server platform is available.");
+      } else {
+        setNotificationTitle("Configuration Error");
+        setNotificationSubtitle(`Error fetching configuration for the server.`);
+      }
+      document.getElementById("loading-container").style.display = "none";
+      document.getElementById("discovery-engines-container").style.display = "block";
+      document.getElementById("notification-container").style.display = "block";
+    }
+  }
+
+  // Configure the Stewardship Engines
+
+  const handleConfigureStewardshipEngines = async () => {
+    console.log({
+      newServerStewardshipEngineRemoteServerURLRoot,
+      newServerStewardshipEngineRemoteServerName,
+      selectedStewardshipEngines
+    });
+    // If all three fields are blank, skip to next step
+    if (
+      (!newServerStewardshipEngineRemoteServerURLRoot || newServerStewardshipEngineRemoteServerURLRoot == "") &&
+      (!newServerStewardshipEngineRemoteServerName || newServerStewardshipEngineRemoteServerName == "") &&
+      (!selectedStewardshipEngines || !selectedStewardshipEngines.length)
+    ) {
+      showNextStep();
+      setProgressIndicatorIndex(progressIndicatorIndex + 1);
+      return;
+    }
+    // If one or two fields are blank, show notification
+    if (
+      (!newServerStewardshipEngineRemoteServerURLRoot || newServerStewardshipEngineRemoteServerURLRoot == "") ||
+      (!newServerStewardshipEngineRemoteServerName || newServerStewardshipEngineRemoteServerName == "") ||
+      (!selectedStewardshipEngines || !selectedStewardshipEngines.length)
+    ) {
+      setNotificationType("error");
+      setNotificationTitle("Input Error");
+      setNotificationSubtitle(`All three fields are required to configure the stewardship engine. Leave all three fields blank to skip this step.`);
+      document.getElementById("notification-container").style.display = "block";
+      return;
+    }
+    setLoadingText("Configuring stewardship engine client...");
+    document.getElementById("stewardship-engines-container").style.display = "none";
+    document.getElementById("loading-container").style.display = "block";
+    // Configure the stewardship engines client
+    try {
+      await configureStewardshipEngineClient(newServerStewardshipEngineRemoteServerURLRoot, newServerStewardshipEngineRemoteServerName);
+    } catch(error) {
+      setNotificationType("error");
+      if (error.code && error.code == "ECONNABORTED") {
+        setNotificationTitle("Connection Error");
+        setNotificationSubtitle("Error connecting to the platform. Please ensure the OMAG server platform is available.");
+      } else {
+        setNotificationTitle("Configuration Error");
+        setNotificationSubtitle(`Error configuring the stewardship engine client. Please ensure the metadata server root URL and name are correct.`);
+      }
+      document.getElementById("loading-container").style.display = "none";
+      document.getElementById("stewardship-engines-container").style.display = "block";
+      document.getElementById("notification-container").style.display = "block";
+      return;
+    }
+    // Configure the stewardship engines
+    setLoadingText("Configuring stewardship engines...");
+    try {
+      await configureStewardshipEngines(selectedStewardshipEngines);
+    } catch(error) {
+      setNotificationType("error");
+      if (error.code && error.code == "ECONNABORTED") {
+        setNotificationTitle("Connection Error");
+        setNotificationSubtitle("Error connecting to the platform. Please ensure the OMAG server platform is available.");
+      } else {
+        setNotificationTitle("Configuration Error");
+        setNotificationSubtitle(`Error configuring the stewardship engines. ${error.message}`);
+      }
+      document.getElementById("loading-container").style.display = "none";
+      document.getElementById("stewardship-engines-container").style.display = "block";
+      document.getElementById("notification-container").style.display = "block";
+      return;
+    }
+    // Fetch Server Config
+    setLoadingText("Fetching final stored server configuration...");
+    try {
+      const serverConfig = await fetchServerConfig();
+      setNewServerConfig(serverConfig);
+      showNextStep();
+      setProgressIndicatorIndex(progressIndicatorIndex + 1);
+    } catch(error) {
+      console.error("error fetching server config", {error});
+      setNotificationType("error");
+      if (error.code && error.code == "ECONNABORTED") {
+        setNotificationTitle("Connection Error");
+        setNotificationSubtitle("Error connecting to the platform. Please ensure the OMAG server platform is available.");
+      } else {
+        setNotificationTitle("Configuration Error");
+        setNotificationSubtitle(`Error fetching configuration for the server.`);
+      }
+      document.getElementById("loading-container").style.display = "none";
+      document.getElementById("stewardship-engines-container").style.display = "block";
+      document.getElementById("notification-container").style.display = "block";
+    }
+  }
+
+  // Config Preview
 
   const handleDeployConfig = async e => {
     e.preventDefault();
-    console.log("store config and deploy server");
+    setLoadingText("Deploying OMAG server from stored configuration...");
     document.getElementById("config-preview-container").style.display = "none";
     document.getElementById("loading-container").style.display = "block";
     // Issue the instance call to start the new server
@@ -215,285 +881,238 @@ export default function ServerAuthor() {
     try{
       const startServerResponse = await axios.post(startServerURL, {
         config: '',
-        platformURL: newServerLocalURLRoot,
+        tenantId,
       }, {
         headers: {
           'Content-Type': 'application/json'
         },
+        timeout: 30000
       });
       if (startServerResponse.data.relatedHTTPCode == 200) {
-        setNotificationKind("success");
+        setNotificationType("success");
         setNotificationTitle("Success!")
         setNotificationSubtitle(`Server instance deployed from configuration.`);
         document.getElementById("loading-container").style.display = "none";
         document.getElementById("notification-container").style.display = "block";
+        document.getElementById("server-list-container").style.display = "flex";
+      } else {
+        console.error(startServerResponse.data);
+        throw new Error("Error in startServerResponse");
       }
     } catch(error) {
-      console.log("error starting server from stored config", {error});
+      console.error("Error starting server from stored config", { error });
+      setNotificationType("error");
+      if (error.code && error.code == "ECONNABORTED") {
+        setNotificationTitle("Connection Error");
+        setNotificationSubtitle("Error connecting to the platform. Please ensure the OMAG server platform is available.");
+      } else {
+        setNotificationTitle("Deployment Error");
+        setNotificationSubtitle(`Error starting server from stored configuration file.`);
+      }
+      document.getElementById("loading-container").style.display = "none";
+      document.getElementById("config-preview-container").style.display = "block";
+      document.getElementById("notification-container").style.display = "block";
     }
   }
 
+  const serverTypeTiles = serverTypes.map((serverType, i) => {
+    return (
+      <RadioTile
+        id={serverType.id}
+        key={`server-type-${i}`}
+        light={false}
+        name={`server-serverType-${i}`}
+        tabIndex={i}
+        value={serverType.label}
+      >
+        {serverType.label}
+      </RadioTile>
+    )
+  });
+
   return (
+
     <Grid>
 
-      <Row id="config-basic-container">
+      <Row id="server-list-container">
+
         <Column
-          sm={{ span: 4 }}
+          id="server-list"
+          sm={{ span: 8 }}
           md={{ span: 8 }}
-          lg={{ span: 8, offset: 4 }}
+          lg={{ span: 16 }}
         >
+
+          <h1>Known OMAG Servers</h1>
+          <p style={{marginBottom: "24px"}}>Logged in as <CodeSnippet type="inline" >{userId}</CodeSnippet></p>
+
+          <KnownServers />
+
+        </Column>
+
+      </Row>
+
+      <Row id="server-config-container" style={{ display: "none" }}>
+
+        {/* Form Column */}
+
+        <Column
+          id="server-config-forms"
+          sm={{ span: 4 }}
+          md={{ span: 6 }}
+          lg={{ span: 11, offset: 1 }}
+        >
+          
           <h1>Create New OMAG Server</h1>
           <p style={{marginBottom: "24px"}}>Logged in as <CodeSnippet type="inline" >{userId}</CodeSnippet></p>
-          <h4 style={{textAlign: "left", marginBottom: "32px"}}>Basic Configuration</h4>
-          <Form id="server-author-basic-config-form" onSubmit={handleBasicConfig}>
-            <FormGroup>
-              <TextInput
-                type="text"
-                labelText="Server name"
-                name="new-server-name"
-                defaultValue={newServerName}
-                onChange={e => setNewServerName(e.target.value)}
-                placeholder="e.g., cocoMDS1"
-                required
-                style={{marginBottom: "32px"}}
-                ref={formStartRef}
-              />
-              <TextInput
-                type="text"
-                labelText="Local URL root"
-                name="new-server-local-url-root"
-                defaultValue={newServerLocalURLRoot}
-                onChange={e => setNewServerLocalURLRoot(e.target.value)}
-                placeholder="e.g., https://localhost:19443"
-                required
-                style={{marginBottom: "32px"}}
-              />
-              <TextInput
-                type="text"
-                labelText="Local server type"
-                name="new-server-local-server-type"
-                defaultValue={newServerLocalServerType}
-                onChange={e => setNewServerLocalServerType(e.target.value)}
-                placeholder="e.g., Open Metadata and Governance Server"
-                required
-                style={{marginBottom: "32px"}}
-              />
-              <TextInput
-                type="text"
-                labelText="Organization name"
-                name="new-server-organization-name"
-                defaultValue={newServerOrganizationName}
-                onChange={e => setNewServerOrganizationName(e.target.value)}
-                placeholder="e.g., myOrg"
-                required
-                style={{marginBottom: "32px"}}
-              />
-              <TextInput
-                type="text"
-                labelText="Local user ID"
-                name="new-server-local-user-id"
-                defaultValue={newServerLocalUserId}
-                onChange={e => setNewServerLocalUserId(e.target.value)}
-                placeholder="e.g., myMetadataServerUserId"
-                required
-                style={{marginBottom: "32px"}}
-              />
-              <TextInput.PasswordInput
-                labelText="Local password"
-                name="new-server-local-password"
-                defaultValue={newServerLocalPassword}
-                onChange={e => setNewServerLocalPassword(e.target.value)}
-                placeholder="e.g., myMetadataServerPassword"
-                required
-              />
-            </FormGroup>
-            <FormGroup class="bx--btn-set">
-              <Button
-                type="submit"
-                style={{marginTop: "48px", marginBottom: "16px"}}
-                // disabled={!validateForm()}
-              >
-                Proceed to advanced configuration
-              </Button>
-            </FormGroup>
-          </Form>
-        </Column>
-      </Row>
-      
-      <Row id="config-advanced-container" style={{display: "none"}}>
-        <Column
-          sm={{ span: 4 }}
-          md={{ span: 8 }}
-          lg={{ span: 8, offset: 4 }}
-        >
-          <h1>Create New OMAG Server</h1>
-          <p style={{marginBottom: "32px"}}>Logged in as <CodeSnippet type="inline" >{userId}</CodeSnippet></p>
-          <h4 style={{textAlign: "left", marginBottom: "24px"}}>Advanced Configuration (Optional)</h4>
-          <Form id="server-author-advanced-config-form" onSubmit={(e) => e.preventDefault()}>
-            <FormGroup>
-              <MultiSelect
-                id="new-server-access-services"
-                items={accessServices}
-                label="Access Services"
-                onChange={e => setNewServerAccessServices(e && e.selectedItems.length ? e.selectedItems.map((item) => item.id) : [])}
-              >
-                <SelectItem
-                  disabled
-                  hidden
-                  value="placeholder-option"
-                  text="Choose an option"
-                />
-                <SelectItem
-                  value="asset-owner"
-                  text="Asset Owner"
-                />
-              </MultiSelect>
-              <Select
-                name="new-server-repository"
-                defaultValue="placeholder-option"
-                // onChange={e => console.log(e)} // setNewServerRepository(e.options[e.selectedIndex].value)}
-              >
-                <SelectItem
-                  disabled
-                  hidden
-                  value="placeholder-option"
-                  text="Choose an option"
-                />
-                <SelectItem
-                  value="in-memory-repository"
-                  text="In Memory"
-                  onClick={() => setNewServerRepository("in-memory-repository")}
-                />
-                <SelectItem
-                  value="local-graph-repository"
-                  text="Janus Graph"
-                  onClick={() => setNewServerRepository("in-memory-repository")}
-                />
-              </Select>
-              <TextInput
-                type="text"
-                labelText="Max page size"
-                name="new-server-max-page-size"
-                defaultValue={newServerMaxPageSize}
-                onChange={e => setNewServerMaxPageSize(e.target.value)}
-                placeholder="e.g., 1000"
-                style={{marginBottom: "32px"}}
-              />
-            </FormGroup>
-            <FormGroup class="bx--btn-set">
-              <Button
-                kind="secondary"
-                onClick={handleBackToBasicConfig}
-              >
-                Back to basic configuration
-              </Button>
-              <Button
-                type="submit"
-                kind="primary"
-                style={{marginTop: "48px", marginBottom: "16px"}}
-                onClick={handleAdvancedConfig}
-                // disabled={!validateForm()}
-              >
-                Proceed to preview configuration
-              </Button>
-            </FormGroup>
-          </Form>
-        </Column>
-      </Row>
-      
-      <Row id="config-preview-container" style={{display: "none"}}>
-        <Column
-          sm={{ span: 4 }}
-          md={{ span: 6, offset: 1 }}
-          lg={{ span: 12, offset: 2 }}
-        >
-          <h1>Create New OMAG Server</h1>
-          <p style={{marginBottom: "32px"}}>Logged in as <CodeSnippet type="inline" >{userId}</CodeSnippet></p>
-          <h4 style={{textAlign: "left", marginBottom: "24px"}}>Preview Configuration</h4>
-          <CodeSnippet id="config-preview" type="multi"></CodeSnippet>
-          <FormGroup class="bx--btn-set">
-            <Button
-              kind="secondary"
-              onClick={handleBackToAdvancedConfig}
-            >
-              Back to advanced configuration
-            </Button>
-            <Button
-              type="submit"
-              kind="primary"
-              style={{marginTop: "48px", marginBottom: "16px"}}
-              onClick={handleDeployConfig}
-            >
-              Deploy instance
-            </Button>
-          </FormGroup>
-        </Column>
-      </Row>
-      
-      <Row id="loading-container" style={{display: "none"}}>
-        <Column
-          sm={{ span: 4 }}
-          md={{ span: 8 }}
-          lg={{ span: 8, offset: 4 }}
-        >
-          <Loading
-            description="Active loading indicator"
-            withOverlay={false}
-          />
-        </Column>
-      </Row>
 
-      <Row id="notification-container" style={{display: "none"}}>
-        <Column
-          sm={{ span: 4 }}
-          md={{ span: 8 }}
-          lg={{ span: 8, offset: 4 }}
-        >
-          <InlineNotification
-            kind={notificationKind}
-            title={notificationTitle}
-            subtitle={notificationSubtitle}
-          />
-        </Column>
-      </Row>
+          <div id="notification-container" className="hideable" style={{display: "none"}}>
+            <InlineNotification
+              kind={notificationType}
+              title={notificationTitle}
+              subtitle={notificationSubtitle}
+              hideCloseButton={true}
+              timeout={10}
+            />
+          </div>
+        
+          <div id="server-type-container" className="hideable">
+            <h4 style={{textAlign: "left", marginBottom: "32px"}}>Select Server Type</h4>
+            <TileGroup
+              defaultSelected={serverTypes[0].label}
+              name="server-types"
+              valueSelected=""
+              onChange={value => setNewServerLocalServerType(value)}
+            >
+              {serverTypeTiles}
+            </TileGroup>
+            <NavigationButtons handleNextStep={handleServerTypeSelection} />
+          </div>
 
-      <Row id="config-progress-container">
-        <Column
-          sm={{ span: 4 }}
-          md={{ span: 6, offset: 1 }}
-          lg={{ span: 8, offset: 4 }}
-        >
-          <ProgressIndicator
-            id="config-progress-indicator"
-            vertical={false}
-            currentIndex={progressIndicatorIndex}
-            spaceEqually={false}
-          >
-            <ProgressStep
-              label="First step"
-              description="Step 1: OMAG server wizard"
-              secondaryLabel="Basic configuration"
+          <div id="config-basic-container" className="hideable" style={{display: "none"}}>
+            <h4 style={{textAlign: "left", marginBottom: "16px"}}>Basic Configuration</h4>
+            <BasicConfig />
+            <NavigationButtons
+              handlePreviousStep={handleBackToPreviousStep}
+              handleNextStep={handleBasicConfig}
             />
-            <ProgressStep
-              label="Second step"
-              description="Step 2: OMAG server wizard"
-              secondaryLabel="Advanced configuration"
-              /* Advanced config to include:
-                  Max page size,
-                  Enabling Janus graph repository,
-                  Enabling access services (asset-owner by default)
-              */
+          </div>
+          
+          <div id="access-services-container" className="hideable" style={{display: "none"}}>
+            <h4 style={{textAlign: "left", marginBottom: "24px"}}>Select Access Services</h4>
+            <ConfigureAccessServices />
+            <NavigationButtons
+              handlePreviousStep={handleBackToPreviousStep}
+              handleNextStep={handleAccessServicesConfig}
             />
-            <ProgressStep
-              label="Third step"
-              description="Step 3: OMAG server wizard"
-              secondaryLabel="Preview configuration and deploy instance"
+          </div>
+        
+          <div id="audit-log-container" className="hideable" style={{display: "none"}}>
+            <h4 style={{textAlign: "left", marginBottom: "24px"}}>Configure Audit Log Destinations</h4>
+            <ConfigureAuditLog
+              nextAction={(destinations) => configureAuditLogDestinations(destinations)}
+              previousAction={handleBackToPreviousStep}
             />
-          </ProgressIndicator>
+          </div>
+
+          <div id="cohort-container" className="hideable" style={{display: "none"}}>
+            <h4 style={{textAlign: "left", marginBottom: "24px"}}>Register to the following cohort(s):</h4>
+            <RegisterCohorts />
+            <NavigationButtons
+              handlePreviousStep={handleBackToPreviousStep}
+              handleNextStep={handleRegisterCohorts}
+            />
+          </div>
+
+          <div id="archives-container" className="hideable" style={{display: "none"}}>
+            <h4 style={{textAlign: "left", marginBottom: "24px"}}>Configure the Open Metadata Archives that are loaded on server startup</h4>
+            <ConfigureOMArchives />
+            <NavigationButtons
+              handlePreviousStep={handleBackToPreviousStep}
+              handleNextStep={handleConfigureArchives}
+            />
+          </div>
+
+          <div id="repository-proxy-container" className="hideable" style={{display: "none"}}>
+            <h4 style={{textAlign: "left", marginBottom: "24px"}}>Configure the Repository Proxy Connectors</h4>
+            <ConfigureRepositoryProxyConnectors />
+            <NavigationButtons
+              handlePreviousStep={handleBackToPreviousStep}
+              handleNextStep={handleConfigureRepositoryProxyConnectors}
+            />
+          </div>
+
+          <div id="view-services-container" className="hideable" style={{display: "none"}}>
+            <h4 style={{textAlign: "left", marginBottom: "24px"}}>Configure the Open Metadata View Services (OMVSs)</h4>
+            <ConfigureViewServices />
+            <NavigationButtons
+              handlePreviousStep={handleBackToPreviousStep}
+              handleNextStep={handleConfigureViewServices}
+            />
+          </div>
+
+          <div id="discovery-engines-container" className="hideable" style={{display: "none"}}>
+            <h4 style={{textAlign: "left", marginBottom: "24px"}}>Configure the discovery engine services</h4>
+            <ConfigureDiscoveryEngines />
+            <NavigationButtons
+              handlePreviousStep={handleBackToPreviousStep}
+              handleNextStep={handleConfigureDiscoveryEngines}
+            />
+          </div>
+
+          <div id="security-sync-container" className="hideable" style={{display: "none"}}>
+            <h4 style={{textAlign: "left", marginBottom: "24px"}}>Configure the security sync services</h4>
+            <p>Coming Soon!</p>
+            <NavigationButtons
+              handlePreviousStep={handleBackToPreviousStep}
+              handleNextStep={showNextStep}
+            />
+          </div>
+
+          <div id="stewardship-engines-container" className="hideable" style={{display: "none"}}>
+            <h4 style={{textAlign: "left", marginBottom: "24px"}}>Configure the stewardship engine services</h4>
+            <ConfigureStewardshipEngines />
+            <NavigationButtons
+              handlePreviousStep={handleBackToPreviousStep}
+              handleNextStep={handleConfigureStewardshipEngines}
+            />
+          </div>
+
+          <div id="config-preview-container" className="hideable" style={{display: "none"}}>
+            <h4 style={{textAlign: "left", marginBottom: "4px", marginLeft: "1rem"}}>Preview Configuration</h4>
+            <ConfigPreview options={{ editable: true }} />
+            <NavigationButtons
+              handlePreviousStep={handleBackToPreviousStep}
+              handleNextStep={handleDeployConfig}
+            />
+          </div>
+        
+          <div id="loading-container" className="hideable" style={{display: "none"}}>
+            <Loading
+              description="Active loading indicator"
+              withOverlay={false}
+              style={{margin: 'auto'}}
+            />
+            <p>{loadingText}</p>
+          </div>
+
         </Column>
+
+        {/* Progress Indicator Column */}
+        
+        <Column
+          id="config-progress-container"
+          sm={{ span: 4 }}
+          md={{ span: 2 }}
+          lg={{ span: 4 }}
+        >
+          <ConfigurationSteps />
+        </Column>
+
       </Row>
 
     </Grid>
+
   )
 
 }

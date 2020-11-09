@@ -109,7 +109,7 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
      * @param userId             user identifier
      * @param searchCriteria     String expression matching Term property values .
      * @param asOfTime           the glossaries returned as they were at this time. null indicates at the current time.
-     * @param offset             the starting element number for this set of results.  This is used when retrieving elements
+     * @param startingFrom             the starting element number for this set of results.  This is used when retrieving elements
      *                           beyond the first page of results. Zero means the results start from the first element.
      * @param pageSize           the maximum number of elements that can be returned on this request.
      * @param sequencingOrder    the sequencing order for the results.
@@ -127,7 +127,7 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
             String userId,
             Date asOfTime,
             String searchCriteria,
-            int offset,
+            Integer startingFrom,
             Integer pageSize,
             SequencingOrder sequencingOrder,
             String sequencingProperty
@@ -141,13 +141,16 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
             if (pageSize == null) {
                 pageSize = invalidParameterHandler.getMaxPagingSize();
             }
-            invalidParameterHandler.validatePaging(offset, pageSize, methodName);
+            if (startingFrom == null) {
+                startingFrom = 0;
+            }
+            invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
             FindRequest findRequest = new FindRequest();
             findRequest.setSearchCriteria(searchCriteria);
             findRequest.setAsOfTime(asOfTime);
-            findRequest.setStartingFrom(offset);
+            findRequest.setStartingFrom(startingFrom);
             findRequest.setPageSize(pageSize);
             findRequest.setSequencingOrder(sequencingOrder);
             findRequest.setSequencingProperty(sequencingProperty);
@@ -168,7 +171,7 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
      * @param userId             user identifier
      * @param guid               guid of the term to get
      * @param asOfTime           the relationships returned as they were at this time. null indicates at the current time. If specified, the date is in milliseconds since 1970-01-01 00:00:00.
-     * @param offset             the starting element number for this set of results.  This is used when retrieving elements
+     * @param startingFrom          the starting element number for this set of results.  This is used when retrieving elements
      *                           beyond the first page of results. Zero means the results start from the first element.
      * @param pageSize           the maximum number of elements that can be returned on this request.
      * @param sequencingOrder    the sequencing order for the results.
@@ -186,7 +189,7 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
             String userId,
             String guid,
             Date asOfTime,
-            int offset,
+            Integer startingFrom,
             Integer pageSize,
             SequencingOrder sequencingOrder,
             String sequencingProperty
@@ -202,12 +205,15 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
             if (pageSize == null) {
                 pageSize = invalidParameterHandler.getMaxPagingSize();
             }
-            invalidParameterHandler.validatePaging(offset, pageSize, methodName);
+            if (startingFrom == null) {
+                startingFrom = 0;
+            }
+            invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
             FindRequest findRequest = new FindRequest();
             findRequest.setAsOfTime(asOfTime);
-            findRequest.setStartingFrom(offset);
+            findRequest.setStartingFrom(startingFrom);
             findRequest.setPageSize(pageSize);
             findRequest.setSequencingOrder(sequencingOrder);
             findRequest.setSequencingProperty(sequencingProperty);
@@ -374,6 +380,9 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
         FindRequest findRequest = new FindRequest();
         if (pageSize == null) {
             pageSize = invalidParameterHandler.getMaxPagingSize();
+        }
+        if (startingFrom == null) {
+            startingFrom = 0;
         }
         try {
             invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);

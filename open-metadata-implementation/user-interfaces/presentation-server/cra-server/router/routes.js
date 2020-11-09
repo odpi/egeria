@@ -4,6 +4,7 @@ const express = require('express');
 const router = express.Router();
 const path = require('path');
 const axios = require('axios');
+const https = require('https');
 
 const getAxiosInstance = require('../functions/getAxiosInstance');
 const validateURL = require('../validations/validateURL');
@@ -33,7 +34,9 @@ router.post("/login", function (req, res, next) {
         return next(err);
       }
 
-      return res.json({ status: "success" });
+      delete user.password; // <- super secure :)
+
+      return res.json({ status: "success", user });
     });
   })(req, res, next);
 });
@@ -191,34 +194,36 @@ router.get("/servers/*", (req, res) => {
 
 // Handle admin services
 router.get("/open-metadata/admin-services/*", (req, res) => {
-  const incomingUrl = req.path;
-  console.log("/open-metadata/admin-services/* get called " + incomingUrl);
-  if (!(validateAdminURL(incomingUrl))) {
-    res.status(400).send("Error, invalid supplied URL: " + incomingUrl);
+  const incomingPath = req.path;
+  console.log("/open-metadata/admin-services/* get called " + incomingPath);
+  if (!(validateAdminURL(incomingPath))) {
+    res.status(400).send("Error, invalid supplied URL: " + incomingPath);
     return;
   }
-  const {
-    platformURL
-  } = req.query;
+  const servers = (req.app.get('servers'));
+  const urlRoot = servers[req.query.tenantId].remoteURL;
   const apiReq = {
     method: 'get',
-    url: decodeURIComponent(platformURL) + incomingUrl,
+    url: urlRoot + incomingPath,
     httpsAgent: new https.Agent({
       // ca: - at some stage add the certificate authority
       cert: router.get('cert'),
       key: router.get('key'),
       rejectUnauthorized: false,
     }),
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+    }
   }
   axios(apiReq)
     .then(function (response) {
-      console.log({response})
+      // console.log({response});
       const resBody = response.data;
-      console.log({resBody});
+      // console.log({resBody});
       if (resBody.relatedHTTPCode == 200) {
         res.json(resBody);
       } else {
-        throw new Error(resBody.exceptionErrorMessage)
+        throw new Error(resBody.exceptionErrorMessage);
       }
     })
     .catch(function (error) {
@@ -230,42 +235,124 @@ router.get("/open-metadata/admin-services/*", (req, res) => {
 router.post("/open-metadata/admin-services/*", (req, res) => {
   const incomingUrl = req.url;
   console.log("/open-metadata/admin-services/* post called " + incomingUrl);
+  if (!(validateAdminURL(incomingUrl))) {
+    res.status(400).send("Error, invalid supplied URL: " + incomingUrl);
+    return;
+  }
   const {
     config,
-    platformURL,
+    tenantId,
   } = req.body;
-  if (validateAdminURL(incomingUrl)) {
-    const apiReq = {
-      method: 'post',
-      url: platformURL + incomingUrl,
-      headers: { 
-        'Content-Type': 'application/json'
-      },
-      httpsAgent: new https.Agent({
-        // ca: - at some stage add the certificate authority
-        cert: router.get('cert'),
-        key: router.get('key'),
-        rejectUnauthorized: false,
-      }),
-      data: config,
-    }
-    axios(apiReq)
-      .then(function (response) {
-        const resBody = response.data;
-        if (resBody.relatedHTTPCode == 400) {
-          // Config parameter error
-          throw new Error(resBody.exceptionErrorMessage);
-        }
-        res.setHeader("Content-Type", "application/json");
-        res.json(resBody);
-      })
-      .catch(function (error) {
-        console.log(error);
-        res.status(400).send(error);
-      });
-  } else {
+  const servers = (req.app.get('servers'));
+  const urlRoot = servers[tenantId].remoteURL;
+  const apiReq = {
+    method: 'post',
+    url: urlRoot + incomingUrl,
+    headers: { 
+      'Content-Type': 'application/json',
+      "Access-Control-Allow-Origin": "*",
+    },
+    httpsAgent: new https.Agent({
+      // ca: - at some stage add the certificate authority
+      cert: router.get('cert'),
+      key: router.get('key'),
+      rejectUnauthorized: false,
+    }),
+  };
+  if (config) apiReq.data = config;
+  axios(apiReq)
+    .then(function (response) {
+      const resBody = response.data;
+      if (resBody.relatedHTTPCode == 400) {
+        // Config parameter error
+        throw new Error(resBody.exceptionErrorMessage);
+      }
+      res.setHeader("Content-Type", "application/json");
+      res.json(resBody);
+    })
+    .catch(function (error) {
+      console.log(error);
+      res.status(400).send(error);
+    });
+});
+
+router.delete("/open-metadata/admin-services/*", (req, res) => {
+  const incomingUrl = req.url;
+  console.log("/open-metadata/admin-services/* delete called " + incomingUrl);
+  if (!(validateAdminURL(incomingUrl))) {
     res.status(400).send("Error, invalid supplied URL: " + incomingUrl);
+    return;
   }
+  const {
+    config,
+    tenantId,
+  } = req.body;
+  const servers = (req.app.get('servers'));
+  const urlRoot = servers[tenantId].remoteURL;
+  const apiReq = {
+    method: 'delete',
+    url: urlRoot + incomingUrl,
+    headers: { 
+      'Content-Type': 'application/json',
+    },
+    httpsAgent: new https.Agent({
+      // ca: - at some stage add the certificate authority
+      cert: router.get('cert'),
+      key: router.get('key'),
+      rejectUnauthorized: false,
+    }),
+  };
+  if (config) apiReq.data = config;
+  axios(apiReq)
+    .then(function (response) {
+      const resBody = response.data;
+      if (resBody.relatedHTTPCode == 400) {
+        // Config parameter error
+        throw new Error(resBody.exceptionErrorMessage);
+      }
+      res.setHeader("Content-Type", "application/json");
+      res.json(resBody);
+    })
+    .catch(function (error) {
+      console.log(error);
+      res.status(400).send(error);
+    });
+});
+
+// Handle platform services
+router.get("/open-metadata/platform-services/*", (req, res) => {
+  const incomingPath = req.path;
+  console.log("/open-metadata/platform-services/* get called " + incomingPath);
+  // TODO: Add validator for platform url
+  // if (!(validatePlatformURL(incomingPath))) {
+  //   res.status(400).send("Error, invalid supplied URL: " + incomingPath);
+  //   return;
+  // }
+  const servers = (req.app.get('servers'));
+  const urlRoot = servers[req.query.tenantId].remoteURL;
+  const apiReq = {
+    method: 'get',
+    url: urlRoot + incomingPath,
+    httpsAgent: new https.Agent({
+      // ca: - at some stage add the certificate authority
+      cert: router.get('cert'),
+      key: router.get('key'),
+      rejectUnauthorized: false,
+    }),
+  }
+  axios(apiReq)
+    .then(function (response) {
+      const resBody = response.data;
+      if (resBody.relatedHTTPCode == 200) {
+        res.json(resBody);
+      } else {
+        throw new Error(resBody.exceptionErrorMessage)
+      }
+    })
+    .catch(function (error) {
+      console.error({error});
+      res.status(400).send(error);
+    })
 });
 
 module.exports = router;
