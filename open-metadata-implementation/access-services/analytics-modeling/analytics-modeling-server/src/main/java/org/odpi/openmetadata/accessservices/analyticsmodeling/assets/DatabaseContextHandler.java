@@ -19,11 +19,15 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.contentmanager.OMEntityDao;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.AnalyticsModelingErrorCode;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.exceptions.AnalyticsModelingCheckedException;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.metadata.Database;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.model.*;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.model.module.*;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.utils.Constants;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
+import org.odpi.openmetadata.commonservices.generichandlers.RelationalDataHandler;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -45,13 +49,18 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  * Database metadata is retrieved from OMRS using object of type
  * {@link org.odpi.openmetadata.accessservices.analyticsmodeling.contentmanager.OMEntityDao}<br>
  * All repository logic should be handled there.<br>
- * 
- * 
  */
 public class DatabaseContextHandler {
 
-
 	public static final String DATA_SOURCE_GUID = "dataSourceGUID";
+	
+	private RelationalDataHandler<Database, 
+									Object, 
+									Object, 
+									Object, 
+									Object, 
+									Object> relationalDataHandler;
+	
 	private OMEntityDao omEntityDao;
 	private InvalidParameterHandler invalidParameterHandler;
 	
@@ -62,7 +71,12 @@ public class DatabaseContextHandler {
 		mapTypes.put("WVARCHAR", "NVARCHAR");
 	}
 
-	public DatabaseContextHandler(OMEntityDao omEntityDao, InvalidParameterHandler invalidParameterHandler) {
+	public DatabaseContextHandler(
+		RelationalDataHandler<Database, Object, Object, Object, Object, Object> relationalDataHandler, 
+		OMEntityDao omEntityDao, 
+		InvalidParameterHandler invalidParameterHandler) {
+		
+		this.relationalDataHandler = relationalDataHandler;
 		this.omEntityDao = omEntityDao;
 		this.invalidParameterHandler = invalidParameterHandler;
 	}
@@ -80,28 +94,40 @@ public class DatabaseContextHandler {
 	/**
 	 * Get list of databases on the server.
 	 * 
+	 * @param userId for the call.
      * @param startFrom	starting element (used in paging through large result sets)
      * @param pageSize	maximum number of results to return
 	 * @return list of database descriptors.
 	 * @throws AnalyticsModelingCheckedException in case of an repository operation failure.
 	 */
-	public List<ResponseContainerDatabase> getDatabases(Integer startFrom, Integer pageSize) 
+	public List<ResponseContainerDatabase> getDatabases(String userId, Integer startFrom, Integer pageSize) 
 			throws AnalyticsModelingCheckedException {
 		
-		setContext("getDatabases");
-
-		InstanceProperties instanceProperties = omEntityDao.buildMatchingInstanceProperties(Collections.emptyMap(), true);
-		List<EntityDetail> entities = omEntityDao.findEntities(instanceProperties, Constants.DATABASE, 0, 0);
-		List<ResponseContainerDatabase> ret = Optional.ofNullable(entities).map(Collection::stream).orElseGet(Stream::empty)
+		String methodName = "getDatabases";
+		setContext(methodName);
+		
+		List<Database> databases = findDatabases(userId, startFrom, pageSize, methodName);
+		return Optional.ofNullable(databases).map(Collection::stream).orElseGet(Stream::empty)
 				.parallel()
 				.map(this::buildDatabase)
 				.filter(Objects::nonNull).collect(Collectors.toList());
-		
-		ret.sort(Comparator.comparing(rdb->rdb.getDbName().toUpperCase()));
-		
-		return getPage(startFrom, pageSize, ret);
 	}
 
+	private List<Database> findDatabases(String userId, Integer startFrom, Integer pageSize, String methodName)
+			throws AnalyticsModelingCheckedException
+	{
+		try {
+			return relationalDataHandler.getDatabases(userId, startFrom, pageSize, methodName);
+		} catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException | UserNotAuthorizedException
+				| PropertyServerException ex) {
+			throw new AnalyticsModelingCheckedException(
+					AnalyticsModelingErrorCode.FAILED_FETCH_DATABASES.getMessageDefinition(),
+					this.getClass().getSimpleName(),
+					methodName,
+					ex);
+		}
+	}
+	
 	private <T> List<T> getPage(Integer startFrom, Integer pageSize, List<T> list) {
 
 		int toElement = pageSize == 0 ? list.size() : (startFrom + pageSize);
@@ -113,15 +139,14 @@ public class DatabaseContextHandler {
 		return list.subList(startFrom,  toElement);
 	}
 	
-	private ResponseContainerDatabase buildDatabase(EntityDetail e) {
+	private ResponseContainerDatabase buildDatabase(Database e) {
 		ResponseContainerDatabase ret = new ResponseContainerDatabase();
-		ret.setDbName(this.getEntityStringProperty(e, Constants.NAME));
-		ret.setDbType(this.getEntityStringProperty(e, Constants.TYPE));
-		ret.setDbVersion(this.getEntityStringProperty(e, Constants.VERSION));
-		ret.setGUID(e.getGUID());
+		ret.setDbName(e.getName());
+		ret.setDbType(e.getType());
+		ret.setDbVersion(e.getVersion());
+		ret.setGUID(e.getGuid());
 		return ret;
 	}
-
 
 
 	/**

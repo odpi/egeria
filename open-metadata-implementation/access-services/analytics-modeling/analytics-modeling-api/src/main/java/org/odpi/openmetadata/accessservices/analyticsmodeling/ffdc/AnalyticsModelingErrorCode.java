@@ -109,6 +109,11 @@ public enum AnalyticsModelingErrorCode implements ExceptionMessageSet {
 			"The request parameter {0} has invalid value.",
 			"The system is unable to process the request.",
             "Verify parameter value."),
+	FAILED_FETCH_DATABASES(
+			"OMAS-ANALYTICS-MODELING-016", 
+			"Databases could not be fetched.",
+			"The system is unable to process the request.", 
+			"Review the exception to resolve the issue."),
 
 	UNKNOWN_ERROR(
 			"OMAS-ANALYTICS-MODELING-500", 

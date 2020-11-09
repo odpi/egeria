@@ -17,7 +17,11 @@ import getNodeType from "./properties/NodeTypes.js";
 
 import { Link } from "react-router-dom";
 
-export default function StartingNodeNavigation({ match, nodeTypeName }) {
+export default function StartingNodeNavigation({
+  match,
+  nodeTypeName,
+  onSelectCallback,
+}) {
   const [nodes, setNodes] = useState([]);
   const [completeResults, setCompleteResults] = useState([]);
   const [isCardView, setIsCardView] = useState(true);
@@ -77,9 +81,9 @@ export default function StartingNodeNavigation({ match, nodeTypeName }) {
   };
 
   // Refresh the displayed nodes search results
-  // this involves taking the results and pagination options and calculating nodes that is the subset needs to be displayed 
+  // this involves taking the results and pagination options and calculating nodes that is the subset needs to be displayed
   // The results, page size and page number are passed as arguments, rather than picked up from state, as the state updates
-  // are done asynchronously in a render cycle.   
+  // are done asynchronously in a render cycle.
 
   function refreshNodes(results, passedPageSize, passedPageNumber) {
     let selectedInResults = false;
@@ -100,9 +104,7 @@ export default function StartingNodeNavigation({ match, nodeTypeName }) {
       );
       slicedResults.map(function (row) {
         row.id = row.systemAttributes.guid;
-        if (
-          selectedNodeGuid && selectedNodeGuid == row.id
-        ) {
+        if (selectedNodeGuid && selectedNodeGuid == row.id) {
           row.isSelected = true;
           selectedInResults = true;
         }
@@ -144,7 +146,6 @@ export default function StartingNodeNavigation({ match, nodeTypeName }) {
     if (selectedNodeGuid) {
       nodes.forEach(deleteIfSelected);
     }
-   
   };
   /**
    * Delete the supplied node if it's guid matches the selected one.
@@ -195,7 +196,6 @@ export default function StartingNodeNavigation({ match, nodeTypeName }) {
   };
 
   function getNodeChildrenUrl() {
-    // return match.path + "/" + nodeType.plural + "/" + selectedNodeGuid + "/children";
     return match.path + "/" + selectedNodeGuid + "/children";
   }
   /**
@@ -203,7 +203,6 @@ export default function StartingNodeNavigation({ match, nodeTypeName }) {
    * Not working ...
    */
   const getNodeChildrenUrlUsingGuid = (guid) => () => {
-    // return `${match.path}/" + nodeType.plural + "/${guid}/children`;
     return `${match.path}/${guid}/children`;
   };
 
@@ -216,16 +215,13 @@ export default function StartingNodeNavigation({ match, nodeTypeName }) {
     }
   };
   function getAddNodeUrl() {
-    // return match.path + "/" + nodeType.plural + "/add-" + nodeTypeName;
     return match.path + "/add-" + nodeTypeName;
   }
   function getQuickTermsUrl() {
-    // return match.path + "/" + nodeType.plural + "/" + selectedNodeGuid + "/quick-terms";
     return match.path + "/" + selectedNodeGuid + "/quick-terms";
   }
   function getEditNodeUrl() {
     return match.path + "/edit-" + nodeTypeName + "/" + selectedNodeGuid;
-    // return match.path + "/" + nodeType.plural + "/edit-" + nodeTypeName + "/" + selectedNodeGuid;
   }
   const onFilterCriteria = (e) => {
     setFilterCriteria(e.target.value);
@@ -235,12 +231,15 @@ export default function StartingNodeNavigation({ match, nodeTypeName }) {
   };
   const setSelected = (nodeGuid) => {
     setSelectedNodeGuid(nodeGuid);
+    if (onSelectCallback) {
+      onSelectCallback(nodeGuid);
+    }
   };
 
   return (
     <div>
       <div className="bx--grid">
-        <NodeCardSection heading={nodeType.plural} className="landing-page__r3">
+        <NodeCardSection className="landing-page__r3">
           <article className="node-card__controls bx--col-sm-4 bx--col-md-1 bx--col-lg-1 bx--col-xlg-1 bx--col-max-1">
             Choose {nodeType.key}
           </article>
@@ -264,25 +263,29 @@ export default function StartingNodeNavigation({ match, nodeTypeName }) {
           </article>
           <article className="node-card__controls bx--col-sm-4 bx--col-md-1 bx--col-lg-3 bx--col-xlg-3 bx--col-max-2">
             <div className="bx--row">
-              <Link to={getAddNodeUrl}>
-                <Add32 kind="primary" />
-              </Link>
-              {selectedNodeGuid && (
+              {!onSelectCallback && (
+                <Link to={getAddNodeUrl}>
+                  <Add32 kind="primary" />
+                </Link>
+              )}
+              {selectedNodeGuid && !onSelectCallback && (
                 <Link to={getQuickTermsUrl}>
                   <Term32 kind="primary" />
                 </Link>
               )}
-              {selectedNodeGuid && (
+              {selectedNodeGuid && !onSelectCallback && (
                 <Link to={getNodeChildrenUrl}>
                   <ParentChild32 kind="primary" />
                 </Link>
               )}
-              {selectedNodeGuid && (
+              {selectedNodeGuid && !onSelectCallback && (
                 <Link to={getEditNodeUrl()}>
                   <Edit32 kind="primary" />
                 </Link>
               )}
-              {selectedNodeGuid && <Delete32 onClick={() => onClickDelete()} />}
+              {selectedNodeGuid && !onSelectCallback && (
+                <Delete32 onClick={() => onClickDelete()} />
+              )}
             </div>
           </article>
         </NodeCardSection>
