@@ -78,7 +78,12 @@ export default function HistoryResultHandler(props) {
               <div className="inscolumn">
                 <ul>
                   {item.instances.map(inst => (
-                    <li key={inst.label}>{inst.category} {inst.label} ({inst.guid})</li>
+                    <li key={inst.label}>{inst.category} {inst.label} ({inst.guid})
+                           { (inst.provenance === "refCopy" ||
+                             inst.provenance === "home"     ||
+                             inst.provenance === "proxy")
+                             ? " ("+inst.provenance+")" : "" }
+                    </li>
                   ))}                                     
                 </ul>
               </div>
