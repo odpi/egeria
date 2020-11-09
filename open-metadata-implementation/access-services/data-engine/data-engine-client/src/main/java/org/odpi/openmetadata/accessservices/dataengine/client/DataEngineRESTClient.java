@@ -2,25 +2,14 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataengine.client;
 
-import org.odpi.openmetadata.accessservices.dataengine.model.LineageMapping;
-import org.odpi.openmetadata.accessservices.dataengine.model.PortAlias;
-import org.odpi.openmetadata.accessservices.dataengine.model.PortImplementation;
+import org.odpi.openmetadata.accessservices.dataengine.model.*;
 import org.odpi.openmetadata.accessservices.dataengine.model.Process;
-import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
-import org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability;
-import org.odpi.openmetadata.accessservices.dataengine.rest.DataEngineOMASAPIRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.DataEngineRegistrationRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.LineageMappingsRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.PortAliasRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.PortImplementationRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.PortListRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessListResponse;
-import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessesRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.SchemaTypeRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.OCFRESTClient;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -38,6 +27,7 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
     private static final String SCHEMA_TYPE_URL_TEMPLATE = DATA_ENGINE_PATH + "schema-types";
     private static final String PORT_IMPLEMENTATION_URL_TEMPLATE = DATA_ENGINE_PATH + "port-implementations";
     private static final String PORT_ALIAS_URL_TEMPLATE = DATA_ENGINE_PATH + "port-aliases";
+    private static final String PROCESS_HIERARCHY_URL_TEMPLATE = DATA_ENGINE_PATH + "process-hierarchies";
     private static final String LINEAGE_MAPPINGS_URL_TEMPLATE = DATA_ENGINE_PATH + "lineage-mappings";
     private static final String PORTS_TO_PROCESS_URL_TEMPLATE = DATA_ENGINE_PATH + "processes/{2}/ports";
 
@@ -46,6 +36,7 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
     private static final String SCHEMA_TYPE_METHOD_NAME = "createOrUpdateSchemaType";
     private static final String PORT_IMPLEMENTATION_METHOD_NAME = "createOrUpdatePortImplementation";
     private static final String PORT_ALIAS_METHOD_NAME = "createOrUpdatePortAlias";
+    private static final String PROCESS_HIERARCHY_METHOD_NAME = "createOrUpdateProcessHierarchy";
     private static final String LINEAGE_MAPPINGS_METHOD_NAME = "addLineageMappings";
     private static final String PORTS_TO_PROCESS_METHOD_NAME = "addPortsToProcess";
 
@@ -185,6 +176,26 @@ public class DataEngineRESTClient extends OCFRESTClient implements DataEngineCli
 
 
         return callGUIDPostRESTCall(userId, methodName, PORT_ALIAS_URL_TEMPLATE, requestBody);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String addProcessHierarchy(String userId, ProcessHierarchy processHierarchy) throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException {
+        final String methodName = PROCESS_HIERARCHY_METHOD_NAME;
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+
+        ProcessHierarchyRequestBody requestBody = new ProcessHierarchyRequestBody();
+        requestBody.setProcessHierarchy(processHierarchy);
+
+        requestBody.setExternalSourceName(externalSourceName);
+
+
+        return callGUIDPostRESTCall(userId, methodName, PROCESS_HIERARCHY_URL_TEMPLATE, requestBody);
     }
 
     /**
