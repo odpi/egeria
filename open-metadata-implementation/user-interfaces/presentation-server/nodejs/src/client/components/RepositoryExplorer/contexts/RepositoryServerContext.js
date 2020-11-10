@@ -25,7 +25,8 @@ const RepositoryServerContextProvider = (props) => {
   
   const [repositoryServer, setRepositoryServer]  = useState( { serverName : "", platformName : "" } );
 
-  const [enterpriseOption, setEnterpriseOption]  = useState(false);  
+  const [enterpriseOption, setEnterpriseOption]  = useState(false);
+
 
 
   /*
@@ -158,7 +159,8 @@ const RepositoryServerContextProvider = (props) => {
    * needed.
    * 
    * The caller must specify an operation-specific callback function.
-   */ 
+   */
+
   const callGET = (uri, callback) => {
   
     if (identificationContext.userId === "") {
@@ -171,17 +173,37 @@ const RepositoryServerContextProvider = (props) => {
     /* 
      * No body needed
      */
-         
+
     fetch(url, {
       method     : "GET",
       headers    : { Accept: "application/json", "Content-Type": "application/json" },
-    })         
-    .then(res => res.json())
-    .then(res => callback(res))
-    .catch((res) => {
-      alert("Unexpected response from callGET : " + res);
-    });
-
+    })
+    .then(response => {
+      if (response.ok) {
+        response.json()
+        .then(json => {
+          /*
+           * The relatedHTTPCode check (for 200, 400, etc.) is performed in the callback
+           * where there is contextual information about the operation that was performed.
+           */
+          callback(json)
+        });
+      }
+      else {
+        let status = response.status;
+        let statusText = response.statusText;
+        response.text() // returns a promise...
+        .then(text => {
+          return "error detected: statusText "+statusText+" bodyText "+text;
+        })
+        .then(message => {
+          let json = {};
+          json.relatedHTTPCode = status;
+          json.exceptionErrorMessage = message;
+          callback(json);
+        })
+      }
+    })
   };
 
   return (

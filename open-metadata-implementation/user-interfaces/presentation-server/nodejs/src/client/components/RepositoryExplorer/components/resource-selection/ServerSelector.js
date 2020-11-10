@@ -63,6 +63,19 @@ export default function ServerSelector() {
           return;
         }
       }
+      else {
+        console.log("ServerSelector: could not load servers. Error: "+json.relatedHTTPCode+" Message: "+json.exceptionErrorMessage);
+        // This is not the correct way to determine the type of error, but
+        // the better solution requires an overhaul of index.js
+        // TODO - improve error reporting from index.js
+        let message = json.exceptionErrorMessage;
+        console.log("_getServers error handler, message: "+message);
+        if (message.includes("invalid supplied URL")) {
+          let tokens = message.split("/");
+          let tenantName = tokens[2];
+          json.exceptionErrorMessage = "Check the Presentation Server for tenant "+tenantName+" is configured. [Detail "+ json.exceptionErrorMessage + "]";
+        }
+      }
     }
 
     /*
@@ -92,7 +105,7 @@ export default function ServerSelector() {
         /*
          * TODO - could be changed to cross-UI means of user notification... for now rely on alerts
          */
-        alert("Operation "+operation+" failed with status "+relatedHTTPCode+" and message "+exceptionMessage);
+        alert("Operation "+operation+" failed with status "+relatedHTTPCode+". "+exceptionMessage);
       }
     }
     else {
