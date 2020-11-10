@@ -131,6 +131,11 @@
   justify-content: flex-end;
 }
 
+.create-wizard-page-title {
+  background-color: #f0fff1;
+  margin: 40px;
+}
+
 @keyframes shake {
   0% { transform: translate(1px, 1px) rotate(0deg); }
   10% { transform: translate(-1px, -2px) rotate(-1deg); }
