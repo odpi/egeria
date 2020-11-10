@@ -64,7 +64,7 @@ export default function HistoryResultHandler(props) {
 
       let resultsDisplay = (         
 
-        <div className="table" >
+        <div className="history-table" >
           {history.map( item => (
             <div key={item.gen} className="row">
               <div className="gencolumn">
