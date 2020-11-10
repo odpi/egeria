@@ -426,7 +426,7 @@ export default function Diagram(props) {
 
     if (!loc_force) {
       loc_force = d3.forceSimulation(props.nodes)
-        .force('horiz', d3.forceX(width/2).strength(0.01))
+        .force('horiz', d3.forceX(width/2).strength(0.05))
         .force('repulsion', d3.forceManyBody().strength(-500))        
         .alphaDecay(.002)
         .alphaMin(0.001)
@@ -442,7 +442,7 @@ export default function Diagram(props) {
         loc_force.force('vert', d3.forceY().strength(0.1).y(function(d) {return DiagramUtils.yPlacement(d, height, props.numGens);}));
       }      
       else {            
-        loc_force.force('vert', d3.forceY(height/2).strength(0.001))
+        loc_force.force('vert', d3.forceY(height/2).strength(0.05))
       }
 
       loc_force.on('tick', tick);    
