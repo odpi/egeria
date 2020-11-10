@@ -8,20 +8,25 @@ dependencies {
     implementation project(':open-metadata-implementation:admin-services:admin-services-api')
     implementation project(':open-metadata-implementation:admin-services:admin-services-registration')
     implementation project(':open-metadata-implementation:common-services:ffdc-services')
+    implementation project(':open-metadata-implementation:common-services:generic-handlers')
+    implementation project(':open-metadata-implementation:common-services:metadata-security:metadata-security-server')
     implementation project(':open-metadata-implementation:common-services:multi-tenant')
+    implementation project(':open-metadata-implementation:common-services:repository-handler')
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
-    implementation project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-collection-store-connectors:inmemory-repository-connector')
     implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
+    implementation project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-collection-store-connectors:inmemory-repository-connector')
     implementation project(':open-metadata-implementation:repository-services:repository-services-apis')
-    implementation 'org.slf4j:slf4j-api'
     implementation project(':open-metadata-implementation:access-services:analytics-modeling:analytics-modeling-api')
+
+    implementation 'com.fasterxml.jackson.core:jackson-annotations'
     implementation 'org.apache.commons:commons-collections4'
+    implementation 'org.slf4j:slf4j-api'
+
     testImplementation project(':open-metadata-implementation:access-services:analytics-modeling:analytics-modeling-api')
     testImplementation 'org.mockito:mockito-core'
     testImplementation 'org.mockito:mockito-junit-jupiter'
     testImplementation 'org.testng:testng'
     testImplementation project(':open-metadata-implementation:repository-services:repository-services-implementation')
-    implementation 'com.fasterxml.jackson.core:jackson-annotations'
 
     //TODO: Special library used in maven build, process needs porting using gradle's test fixtures - should refactor
     testImplementation project(':open-metadata-implementation:access-services:analytics-modeling:analytics-modeling-api').sourceSets.test.output

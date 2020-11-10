@@ -65,6 +65,8 @@ public class TermMapper extends EntityDetailMapper<Term> {
             term.setExamples(stringValue);
         } else if (propertyName.equals("usage")) {
             term.setUsage(stringValue);
+        } else if (propertyName.equals("summary")) {
+            term.setSummary(stringValue);
         } else {
             foundProperty =false;
         }
@@ -88,6 +90,9 @@ public class TermMapper extends EntityDetailMapper<Term> {
         }
         if (term.getUsage()!=null) {
             SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, term.getUsage(), "usage");
+        }
+        if (term.getSummary()!=null) {
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, term.getSummary(), "summary");
         }
         if (term.getName()!=null) {
             SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, term.getName(), "displayName");

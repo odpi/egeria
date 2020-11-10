@@ -7,6 +7,7 @@ import { Button, Form, FormGroup, TextInput, Loading } from "carbon-components-r
 
 import { issueRestCreate } from "./RestCaller";
 import { useParams } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 export default function QuickTerms(props) {
   const glossaryNodeType = getNodeType("glossary");
@@ -14,11 +15,11 @@ export default function QuickTerms(props) {
   const [termsWithStatus, setTermsWithStatus] = useState([]);
   const [errorMsg, setErrorMsg] = useState();
   const [restCallInProgress, setRestCallInProgress] = useState(false);
-
+  let history = useHistory();
   const url = getUrl();
   function getUrl() {
-    const { guid } = useParams();
-    return glossaryNodeType.url + "/" + guid + "/terms";
+    const { glossaryguid } = useParams();
+    return glossaryNodeType.url + "/" + glossaryguid + "/terms";
   }
   const validateForm = () => {
     if (terms.length == 0) {
@@ -77,7 +78,7 @@ export default function QuickTerms(props) {
       setTermsWithStatus([]);
     } else {
       // go back using the router history
-      props.history.goBack();
+      history.goBack();
     }
   };
 

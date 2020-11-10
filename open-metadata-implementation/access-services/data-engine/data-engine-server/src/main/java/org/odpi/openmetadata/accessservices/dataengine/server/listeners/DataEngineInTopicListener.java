@@ -75,6 +75,9 @@ public class DataEngineInTopicListener implements OpenMetadataTopicListener {
                         case SCHEMA_TYPE_EVENT:
                             dataEngineEventProcessor.processSchemaTypeEvent(dataEngineEvent);
                             break;
+                        case PROCESS_HIERARCHY_EVENT:
+                            dataEngineEventProcessor.processProcessHierarchyEvent(dataEngineEvent);
+                            break;
                         default:
                             log.debug("Ignored instance event - unknown event type");
                             break;
