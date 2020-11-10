@@ -12,6 +12,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.viewservices.rex.api.properties.ResourceEndpoint;
 import org.odpi.openmetadata.viewservices.rex.api.properties.RexPreTraversal;
+import org.odpi.openmetadata.viewservices.rex.api.properties.RexRelationshipAndEntitiesDigest;
 import org.odpi.openmetadata.viewservices.rex.api.properties.RexTraversal;
 import org.odpi.openmetadata.viewservices.rex.api.rest.RexEntityDetailResponse;
 import org.odpi.openmetadata.viewservices.rex.api.rest.RexEntityRequestBody;
@@ -371,13 +372,16 @@ public class RexViewRESTServices {
             if (requestBody != null) {
                 RexViewHandler handler = instanceHandler.getRexViewHandler(userId, serverName, methodName);
 
-                response.setRelationships(handler.findRelationships(userId,
-                                                                    requestBody.getServerName(),
-                                                                    requestBody.getPlatformName(),
-                                                                    requestBody.getEnterpriseOption(),
-                                                                    requestBody.getSearchText(),
-                                                                    requestBody.getTypeName(),
-                                                                    methodName));
+                Map<String, RexRelationshipAndEntitiesDigest> superDigests = handler.findRelationships(userId,
+                                                                                            requestBody.getServerName(),
+                                                                                            requestBody.getPlatformName(),
+                                                                                            requestBody.getEnterpriseOption(),
+                                                                                            requestBody.getSearchText(),
+                                                                                            requestBody.getTypeName(),
+                                                                                            methodName);
+
+                response.setRelationships(superDigests);
+
 
                 response.setSearchCategory("Relationship");
                 response.setSearchText(requestBody.getSearchText());
