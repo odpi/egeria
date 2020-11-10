@@ -25,7 +25,7 @@ const RepositoryServerContextProvider = (props) => {
   
   const [repositoryServer, setRepositoryServer]  = useState( { serverName : "", platformName : "" } );
 
-  const [enterpriseOption, setEnterpriseOption]  = useState(false);
+  const [enterpriseOption, setEnterpriseOption]  = useState(true);
 
 
 
