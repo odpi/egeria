@@ -8,6 +8,6 @@ function CategoryChildren(props) {
   const getParentGuid = () => {
     return props.match.params.categoryguid;
   };
-  return <NodeChildren nodeTypeName="category" parentguid={getParentGuid()} />;
+  return <NodeChildren parentNodeTypeName="category" parentguid={getParentGuid()} />;
 }
 export default withRouter(CategoryChildren);

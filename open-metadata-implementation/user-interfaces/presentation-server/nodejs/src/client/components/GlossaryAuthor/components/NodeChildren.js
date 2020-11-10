@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { ContentSwitcher, Switch } from "carbon-components-react";
 import GlossaryAuthorTermsNavigation from "./GlossaryAuthorTermsNavigation";
 import GlossaryAuthorCategoriesNavigation from "./GlossaryAuthorCategoriesNavigation";
+import GlossaryAuthorChildCategoriesNavigation from "./GlossaryAuthorChildCategoriesNavigation";
 import getNodeType from "./properties/NodeTypes";
 import { useHistory, withRouter } from "react-router-dom";
 
@@ -52,12 +53,14 @@ function NodeChildren(props) {
     let childName;
     if (selectedContentIndex == 1) {
       childName = "terms";
-    } else {
+    } else if (props.parentNodeTypeName == "glossary") {
       childName = "categories";
+    } else if (props.parentNodeTypeName == "category") {
+      childName = "child-categories";
     }
     console.log("getChildrenURL guid " + guid);
     const url =
-      getNodeType(props.nodeTypeName).url + "/" + guid + "/" + childName;
+      getNodeType(props.parentNodeTypeName).url + "/" + guid + "/" + childName;
     console.log("getChildrenURL url " + url);
     return url;
   };
@@ -69,8 +72,13 @@ function NodeChildren(props) {
         <Switch name="terms" text="Terms" />
       </ContentSwitcher>
 
-      {selectedContentIndex == 0 && (
+      {selectedContentIndex == 0 &&  (props.parentNodeTypeName == "glossary") && (
         <GlossaryAuthorCategoriesNavigation
+          getCategoriesURL={getChildrenURL()}
+        />
+      )}
+          {selectedContentIndex == 0 &&  (props.parentNodeTypeName == "category") && (
+        <GlossaryAuthorChildCategoriesNavigation
           getCategoriesURL={getChildrenURL()}
         />
       )}

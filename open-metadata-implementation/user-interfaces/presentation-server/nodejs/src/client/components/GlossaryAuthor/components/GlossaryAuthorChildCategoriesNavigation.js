@@ -28,7 +28,7 @@ const GlossaryAuthorChildCategoriesNavigation = (props) => {
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(5);
 
-  console.log("GlossaryAuthorCategoriesNavigation " + props);
+  console.log("GlossaryAuthorChildCategoriesNavigation " + props);
 
   const nodeType = getNodeType("category");
   useEffect(() => {

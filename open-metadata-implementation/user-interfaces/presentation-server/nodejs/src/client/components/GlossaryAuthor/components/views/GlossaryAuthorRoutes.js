@@ -29,7 +29,7 @@ import CreateCategory from "../CreateCategory";
 import CreateCategoryWizard from "../CreateCategoryWizard";
 import CreateChildCategory from "../CreateChildCategory";
 // Quick terms
-import QuickTerms from "../QuickTerms";
+import GlossaryQuickTerms from "../GlossaryQuickTerms";
 import CreateCategorizedQuickTerms from "../CreateCategorizedQuickTerms";
 // update Category
 import UpdateCategory from "../UpdateCategory";
@@ -116,7 +116,7 @@ export default function GlossaryAuthorRoutes({ glossaryAuthorURL }) {
   }
     // quickterms for category
     function getCategoryQuickTermsPath() {
-      const path = getCategoriesPath() + "/:categoryguid/quick-terms";
+      const path = getCategoriesPath() + "/:categoryguid/quick-category-terms";
       console.log("getCategoryQuickTerms " + path);
       return path;
     }
@@ -248,7 +248,7 @@ export default function GlossaryAuthorRoutes({ glossaryAuthorURL }) {
         component={UpdateCategory}
       ></Route>
 
-      <Route path={getGlossaryQuickTermsPath()} component={QuickTerms}></Route>
+      <Route path={getGlossaryQuickTermsPath()} component={GlossaryQuickTerms}></Route>
       <Route
         path={getGlossaryChildrenPath()}
         component={GlossaryChildren}
@@ -275,6 +275,7 @@ export default function GlossaryAuthorRoutes({ glossaryAuthorURL }) {
       <Route
         path={getCategoryChildrenPath()}
         component={CategoryChildren}
+        exact
       ></Route>
        <Route
         path={getCategoryChildrenAddTermPath()}

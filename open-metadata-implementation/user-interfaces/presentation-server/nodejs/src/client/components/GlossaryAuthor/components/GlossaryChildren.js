@@ -8,6 +8,6 @@ function GlossaryChildren(props) {
   const getParentGuid = () => {
     return props.match.params.glossaryguid;
   };
-  return <NodeChildren nodeTypeName="glossary" parentguid={getParentGuid()} />;
+  return <NodeChildren parentNodeTypeName="glossary" parentguid={getParentGuid()} />;
 }
 export default withRouter(GlossaryChildren);

@@ -85,7 +85,7 @@ export default function CreateNodeWizard(props) {
           </Button>
         )}
         {currentStepIndex == 0 && !nodeCreated && (
-          <h3>{step1Title()}</h3>
+          <h3 className="create-wizard-page-title">{step1Title()}</h3>
         )}
         {currentStepIndex == 0 && (
           <StartingNodeNavigation
@@ -99,7 +99,7 @@ export default function CreateNodeWizard(props) {
             <Button kind="secondary" onClick={handleReChooseGlossaryOnClick}>
               Previous
             </Button>
-             <h3>{step2Title()}</h3>
+             <h3 className="create-wizard-page-title">{step2Title()}</h3>
           </div>
         )}
         {currentStepIndex == 1 && (
