@@ -324,7 +324,7 @@ export default function Diagram(props) {
      * that can be allocated, by which time we are at 100% black. If this number proves to
      * be insufficient, we can shorten the two-stops or assign a single hue, e.g. green.
      */
-    let colorString = repositoryToColor[d.metadataCollectionName];
+    let colorString = repositoryToColor[d.metadataCollectionId];
     if (colorString !== undefined) {
       return colorString;
     }
@@ -340,8 +340,8 @@ export default function Diagram(props) {
           /*
            * Color is available
            */
-          repositoryToColor[d.metadataCollectionName] = colorString;
-          colorToRepository[colorString] = d.metadataCollectionName;
+          repositoryToColor[d.metadataCollectionId] = colorString;
+          colorToRepository[colorString] = d.metadataCollectionId;
           return colorString;
         }
       }
@@ -358,7 +358,7 @@ export default function Diagram(props) {
          * be allocated to a new repository, but not to repositories remembered below.
          */
         const col = '#000';
-        this.repositoryToColor[d.metadataCollectionName] = col;
+        this.repositoryToColor[d.metadataCollectionId] = col;
         return col;
       }
     }

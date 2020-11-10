@@ -80,7 +80,8 @@ export default function DiagramManager(props) {
       newNode.id                     = entityDigest.entityGUID;
       newNode.label                  = entityDigest.label;
       newNode.gen                    = entityDigest.gen;
-      newNode.metadataCollectionName = entityDigest.metadataCollectionName;    
+      newNode.metadataCollectionName = entityDigest.metadataCollectionName;
+      newNode.metadataCollectionId   = entityDigest.metadataCollectionId;
       /*
        * Initialise position to null so that node is given appropriate starting posiiton 
        * by the diagram
@@ -131,12 +132,13 @@ export default function DiagramManager(props) {
        * ask InstancesContext to map the guid to the gen and then again to look up the guid in that gen
        * OR you perform parseEntities and parseRelationships together and look in newNodesMap.
        * If the entity is in this latest gen (quite likely given exploration) the asynchronous state
-       * update to allNodes - performed in parseEntities - will not have happened yet.
+       * update to allNodes - performed when parsing entities (above) - will not have happened yet.
        */
       newLink.source                 = newNodesMap[relationshipDigest.end1GUID];  
       newLink.target                 = newNodesMap[relationshipDigest.end2GUID];
       newLink.gen                    = relationshipDigest.gen;
       newLink.metadataCollectionName = relationshipDigest.metadataCollectionName;  
+      newLink.metadataCollectionId   = relationshipDigest.metadataCollectionId;
 
       /*
        * Look through existing links (newlinksArray) to find multi-edges and set idx accordingly
