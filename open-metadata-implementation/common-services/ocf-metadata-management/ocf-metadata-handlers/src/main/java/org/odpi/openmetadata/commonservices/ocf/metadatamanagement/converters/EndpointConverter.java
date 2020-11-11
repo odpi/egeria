@@ -25,11 +25,13 @@ public class EndpointConverter extends ReferenceableConverter
      */
     public EndpointConverter(EntityDetail             endpointEntity,
                              OMRSRepositoryHelper     repositoryHelper,
-                             String                   serviceName)
+                             String                   serviceName,
+                             String                   serverName)
     {
         super(endpointEntity,
               repositoryHelper,
-              serviceName);
+              serviceName,
+              serverName);
     }
 
 

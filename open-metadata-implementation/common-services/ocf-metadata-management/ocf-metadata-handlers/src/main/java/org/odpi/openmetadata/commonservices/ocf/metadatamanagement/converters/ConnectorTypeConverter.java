@@ -25,11 +25,13 @@ public class ConnectorTypeConverter extends ReferenceableConverter
      */
     public ConnectorTypeConverter(EntityDetail             endpointEntity,
                                   OMRSRepositoryHelper     repositoryHelper,
-                                  String                   serviceName)
+                                  String                   serviceName,
+                                  String                   serverName)
     {
         super(endpointEntity,
               repositoryHelper,
-              serviceName);
+              serviceName,
+              serverName);
     }
 
 

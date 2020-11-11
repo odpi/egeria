@@ -8,7 +8,7 @@ import org.odpi.openmetadata.accessservices.communityprofile.properties.Personal
 import org.odpi.openmetadata.accessservices.communityprofile.properties.UserIdentity;
 import org.odpi.openmetadata.accessservices.governanceprogram.client.GovernanceProgramLeadership;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceDomain;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceOfficer;
+import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceOfficerProperties;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceOfficerAppointee;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -163,14 +163,14 @@ public class GovernanceLeadershipSample
                                                                                       PropertyServerException,
                                                                                       UserNotAuthorizedException
     {
-        GovernanceOfficer governanceOfficer = client.getGovernanceOfficerByGUID(clientUserId, guid);
+        GovernanceOfficerProperties governanceOfficer = client.getGovernanceOfficerByGUID(clientUserId, guid);
 
         System.out.println("----------------------------");
         System.out.println("Governance Officer: " + guid);
         System.out.println("  Domain: " + governanceOfficer.getGovernanceDomain());
         System.out.println("  Appointment Id: " + governanceOfficer.getAppointmentId());
         System.out.println("  Appointment Context: " + governanceOfficer.getAppointmentContext());
-        System.out.println("  Title: " + governanceOfficer.getTitle());
+        System.out.println("  Title: " + governanceOfficer.getQualifiedName());
 
         GovernanceOfficerAppointee appointee = governanceOfficer.getAppointee();
 
@@ -264,7 +264,7 @@ public class GovernanceLeadershipSample
 
         this.printGovernanceOfficer(gplClient, clientUserId, csoGUID);
 
-        List<GovernanceOfficer> governanceOfficers = gplClient.getGovernanceOfficers(clientUserId);
+        List<GovernanceOfficerProperties> governanceOfficers = gplClient.getGovernanceOfficers(clientUserId);
 
         System.out.println(governanceOfficers.size() + " governance officers");
 
@@ -330,16 +330,16 @@ public class GovernanceLeadershipSample
 
         System.out.println(governanceOfficers.size() + " active governance officers");
 
-        for (GovernanceOfficer governanceOfficer : governanceOfficers)
+        for (GovernanceOfficerProperties governanceOfficer : governanceOfficers)
         {
-            System.out.println(governanceOfficer.getAppointee().getProfile().getKnownName() + " is the " + governanceOfficer.getTitle());
+            System.out.println(governanceOfficer.getAppointee().getProfile().getKnownName() + " is the " + governanceOfficer.getQualifiedName());
         }
 
         governanceOfficers = gplClient.getGovernanceOfficersByDomain(clientUserId, GovernanceDomain.PRIVACY);
 
         System.out.println(governanceOfficers.size() + " privacy governance officers");
 
-        for (GovernanceOfficer governanceOfficer : governanceOfficers)
+        for (GovernanceOfficerProperties governanceOfficer : governanceOfficers)
         {
             System.out.println(governanceOfficer.getAppointee().getProfile().getKnownName() +
                                        " is the privacy officer from " + governanceOfficer.getAppointee().getStartDate()
@@ -363,9 +363,9 @@ public class GovernanceLeadershipSample
 
         System.out.println(governanceOfficers.size() + " active governance officers");
 
-        for (GovernanceOfficer governanceOfficer : governanceOfficers)
+        for (GovernanceOfficerProperties governanceOfficer : governanceOfficers)
         {
-            System.out.println(governanceOfficer.getAppointee().getProfile().getKnownName() + " is the " + governanceOfficer.getTitle());
+            System.out.println(governanceOfficer.getAppointee().getProfile().getKnownName() + " is the " + governanceOfficer.getQualifiedName());
         }
 
         /*
@@ -555,9 +555,9 @@ public class GovernanceLeadershipSample
          */
         System.out.println(governanceOfficers.size() + " governance officers");
 
-        for (GovernanceOfficer governanceOfficer : governanceOfficers)
+        for (GovernanceOfficerProperties governanceOfficer : governanceOfficers)
         {
-            System.out.println(governanceOfficer.getAppointee().getProfile().getKnownName() + " is the " + governanceOfficer.getTitle());
+            System.out.println(governanceOfficer.getAppointee().getProfile().getKnownName() + " is the " + governanceOfficer.getQualifiedName());
         }
 
         System.out.println("Deleting all profiles and governance officers");
@@ -607,10 +607,10 @@ public class GovernanceLeadershipSample
         {
             System.out.println(governanceOfficers.size() + " governance officers");
 
-            for (GovernanceOfficer governanceOfficer : governanceOfficers)
+            for (GovernanceOfficerProperties governanceOfficer : governanceOfficers)
             {
                 System.out.println(
-                        governanceOfficer.getAppointee().getProfile().getKnownName() + " is the " + governanceOfficer.getTitle());
+                        governanceOfficer.getAppointee().getProfile().getKnownName() + " is the " + governanceOfficer.getQualifiedName());
             }
             System.exit(-1);
         }

@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.handlers;
 import org.apache.commons.collections4.CollectionUtils;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectAreaCheckedException;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.GovernanceActions;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
@@ -49,10 +50,10 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
      * needed to operate within a single server instance.
      *
      * @param oMRSAPIHelper           omrs API helper
+     * @param maxPageSize             maximum page size
      */
-    public SubjectAreaTermHandler(OMRSAPIHelper oMRSAPIHelper) {
-
-        super(oMRSAPIHelper);
+    public SubjectAreaTermHandler(OMRSAPIHelper oMRSAPIHelper, int maxPageSize) {
+        super(oMRSAPIHelper, maxPageSize);
         termAnchorMapper = mappersFactory.get(TermAnchorMapper.class);
         termCategorizationMapper = mappersFactory.get(TermCategorizationMapper.class);
         categoryMapper = mappersFactory.get(CategoryMapper.class);
@@ -484,6 +485,7 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
         currentTerm.setDescription(newTerm.getDescription());
         currentTerm.setAbbreviation(newTerm.getAbbreviation());
         currentTerm.setExamples(newTerm.getExamples());
+        currentTerm.setSummary(newTerm.getSummary());
         currentTerm.setUsage(newTerm.getUsage());
         currentTerm.setObjectIdentifier(newTerm.isObjectIdentifier());
         currentTerm.setSpineAttribute(newTerm.isSpineAttribute());
@@ -504,6 +506,9 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
         }
         if (newTerm.getUsage() != null) {
             currentTerm.setUsage(newTerm.getUsage());
+        }
+        if (newTerm.getSummary() != null) {
+            currentTerm.setSummary(newTerm.getSummary());
         }
         if (newTerm.getAbbreviation() != null) {
             currentTerm.setAbbreviation(newTerm.getAbbreviation());
@@ -588,6 +593,44 @@ public class SubjectAreaTermHandler extends SubjectAreaHandler {
             response = getTermByGuid(userId, guid);
         } catch (UserNotAuthorizedException | SubjectAreaCheckedException | PropertyServerException e) {
             response.setExceptionInfo(e, className);
+        }
+        return response;
+    }
+    /**
+     * Get the Categories categorizing this Term. The server has a maximum page size defined, the number of Categories returned is limited by that maximum page size.
+     *
+     * @param userId       unique identifier for requesting user, under which the request is performed
+     * @param guid         guid of the category to get terms
+     * @param categoryHandler  category handler
+     * @param startingFrom the starting element number for this set of results.  This is used when retrieving elements
+     * @param pageSize     the maximum number of elements that can be returned on this request.
+     * @return A list of categories categorizing this Term
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
+     * </ul>
+     */
+    public SubjectAreaOMASAPIResponse<Category> getTermCategories(String userId, String guid, SubjectAreaCategoryHandler categoryHandler, Integer startingFrom, Integer pageSize) {
+        final String methodName = "getTermCategories";
+        SubjectAreaOMASAPIResponse<Category>  response = getRelatedNodesForEnd2(methodName, userId, guid, TERM_CATEGORIZATION_RELATIONSHIP_NAME, CategoryMapper.class, startingFrom, pageSize);
+        List<Category> allCategories = new ArrayList<>();
+        // the categories we get back from the mappers only map the parts from the entity. They do not set the parentCategory or the anchor.
+        if (response.getRelatedHTTPCode() == 200 && response.results() !=null && response.results().size() >0) {
+            for (Category mappedCategory: response.results()) {
+                SubjectAreaOMASAPIResponse<Category> categoryResponse = categoryHandler.getCategoryByGuid(userId, mappedCategory.getSystemAttributes().getGUID());
+                if (categoryResponse.getRelatedHTTPCode() == 200) {
+                    allCategories.add(categoryResponse.results().get(0));
+                } else {
+                    response = categoryResponse;
+                    break;
+                }
+            }
+        }
+        if (response.getRelatedHTTPCode() == 200) {
+            response = new SubjectAreaOMASAPIResponse<>();
+            response.addAllResults(allCategories);
         }
         return response;
     }

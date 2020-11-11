@@ -4,7 +4,6 @@ package org.odpi.openmetadata.viewservices.tex.handlers;
 
 
 import org.odpi.openmetadata.adminservices.configuration.properties.ResourceEndpointConfig;
-import org.odpi.openmetadata.commonservices.ffdc.OMAGCommonErrorCode;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
@@ -35,6 +34,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefGallery;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
+import org.odpi.openmetadata.viewservices.tex.api.ffdc.TexViewErrorCode;
 import org.odpi.openmetadata.viewservices.tex.api.properties.ClassificationExplorer;
 import org.odpi.openmetadata.viewservices.tex.api.properties.EntityExplorer;
 import org.odpi.openmetadata.viewservices.tex.api.properties.RelationshipExplorer;
@@ -97,6 +97,18 @@ public class TexViewHandler
 
 
 
+    /**
+     * Default constructor for TexViewHandler
+     */
+    public TexViewHandler() {
+
+    }
+
+
+    /**
+     * TexViewHandler constructor with configured resourceEndpoints
+     * @param resourceEndpoints
+     */
     public TexViewHandler(List<ResourceEndpointConfig>  resourceEndpoints) {
 
 
@@ -106,9 +118,10 @@ public class TexViewHandler
 
         // TODO - It would be desirable to add validation rules to ensure uniqueness etc.
 
+        configuredPlatforms         = new HashMap<>();
+        configuredServerInstances   = new HashMap<>();
+
         if (resourceEndpoints != null && !resourceEndpoints.isEmpty()) {
-            configuredPlatforms         = new HashMap<>();
-            configuredServerInstances   = new HashMap<>();
 
             resourceEndpoints.forEach(res -> {
 
@@ -149,15 +162,26 @@ public class TexViewHandler
 
     {
 
-        List<ResourceEndpoint> platformList = new ArrayList<>();
-        List<ResourceEndpoint> serverList   = new ArrayList<>();
-
-        platformList.addAll(configuredPlatforms.values());
-        serverList.addAll(configuredServerInstances.values());
-
         Map<String, List<ResourceEndpoint>> returnMap = new HashMap<>();
+
+        List<ResourceEndpoint> platformList = null;
+        List<ResourceEndpoint> serverList   = null;
+
+        if (!configuredPlatforms.isEmpty())
+        {
+            platformList = new ArrayList<>();
+            platformList.addAll(configuredPlatforms.values());
+        }
+
+        if (!configuredServerInstances.isEmpty())
+        {
+            serverList = new ArrayList<>();
+            serverList.addAll(configuredServerInstances.values());
+        }
+
         returnMap.put("platformList",platformList);
         returnMap.put("serverList",serverList);
+
         return returnMap;
     }
 
@@ -184,7 +208,7 @@ public class TexViewHandler
             }
         }
         if (platformName == null || platformRootURL == null) {
-            throw new InvalidParameterException(OMAGCommonErrorCode.VIEW_SERVICE_NULL_PLATFORM_NAME.getMessageDefinition(),
+            throw new InvalidParameterException(TexViewErrorCode.VIEW_SERVICE_NULL_PLATFORM_NAME.getMessageDefinition(),
                                                 this.getClass().getName(),
                                                 methodName,
                                                 "platformName");
@@ -197,12 +221,6 @@ public class TexViewHandler
 
 
 
-    /**
-     * Constructor for the TexViewHandler
-     */
-    public TexViewHandler() {
-
-    }
 
     /**
      * Retrieve type information from the repository server

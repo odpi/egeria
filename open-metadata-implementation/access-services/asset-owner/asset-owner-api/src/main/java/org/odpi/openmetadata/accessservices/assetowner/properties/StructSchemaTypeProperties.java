@@ -14,13 +14,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "class")
-@JsonSubTypes(
-        {
-                @JsonSubTypes.Type(value = StructDocumentTypeProperties.class, name = "StructDocumentTypeProperties")
-        })
 public class StructSchemaTypeProperties extends ComplexSchemaTypeProperties
 {
     private static final long     serialVersionUID = 1L;
@@ -61,13 +54,14 @@ public class StructSchemaTypeProperties extends ComplexSchemaTypeProperties
                 ", usage='" + getUsage() + '\'' +
                 ", encodingStandard='" + getEncodingStandard() + '\'' +
                 ", namespace='" + getNamespace() + '\'' +
-                ", deprecated=" + isDeprecated() +
+                ", formula='" + getFormula() + '\'' +
+                ", queries=" + getQueries() +
                 ", displayName='" + getDisplayName() + '\'' +
                 ", description='" + getDescription() + '\'' +
+                ", deprecated=" + getIsDeprecated() +
+                ", typeName='" + getTypeName() + '\'' +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +
-                ", meanings=" + getMeanings() +
-                ", classifications=" + getClassifications() +
                 ", extendedProperties=" + getExtendedProperties() +
                 '}';
     }

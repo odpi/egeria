@@ -158,7 +158,8 @@ public class OMRSOperationalServices
                                                         localOrganizationName,
                                                         auditLog.createNewAuditLog(OMRSAuditingComponent.ENTERPRISE_REPOSITORY_CONNECTOR),
                                                         enterpriseMetadataCollectionId,
-                                                        enterpriseMetadataCollectionName);
+                                                        enterpriseMetadataCollectionName,
+                                                        localMetadataCollectionId);
 
             try
             {
@@ -380,7 +381,7 @@ public class OMRSOperationalServices
                                                    auditLog.createNewAuditLog(OMRSAuditingComponent.REPOSITORY_EVENT_MANAGER));
 
             /*
-             * If the enterprise repositoryservices topic is active, then register an event publisher for it.
+             * If the enterprise repository services topic is active, then register an event publisher for it.
              * This topic is active if the Open Metadata Access Services (OMASs) are active.
              */
             if (enterpriseOMRSTopicConnector != null)
@@ -1128,8 +1129,13 @@ public class OMRSOperationalServices
             localRepositoryConnector.setOrganizationName(localOrganizationName);
             localRepositoryConnector.setRepositoryHelper(new OMRSRepositoryContentHelper(localRepositoryContentManager));
             localRepositoryConnector.setRepositoryValidator(new OMRSRepositoryContentValidator(localRepositoryContentManager));
-            localRepositoryConnector.setMetadataCollectionId(localMetadataCollectionId);
+            /*
+             * Ensure that the metadataCollectionName is set before calling setMetadataCollectionId()
+             * otherwise the connector will create the metadataCollection adopting the (default) server name.
+             */
             localRepositoryConnector.setMetadataCollectionName(localMetadataCollectionName);
+            localRepositoryConnector.setMetadataCollectionId(localMetadataCollectionId);
+
 
             return localRepositoryConnector;
         }

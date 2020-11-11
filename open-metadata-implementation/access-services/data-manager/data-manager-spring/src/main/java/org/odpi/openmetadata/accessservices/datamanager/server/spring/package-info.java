@@ -12,6 +12,6 @@
  * integrator and retrieving the identifiers of a pre-registered data manager.
  *
  * The DatabaseManagerResource supports metadata from database servers and
- * the FileSystemResource supports metadata about unmanaged files on disk.
+ * the FilesResource supports metadata about unmanaged files on disk.
  */
 package org.odpi.openmetadata.accessservices.datamanager.server.spring;

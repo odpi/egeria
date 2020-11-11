@@ -138,7 +138,7 @@ public class DiscoveryEngineHandler
          */
         this.discoveryEngineProperties = configurationClient.getDiscoveryEngineByName(serverUserId, discoveryEngineName);
 
-        if (discoveryEngineProperties == null)
+        if ((discoveryEngineProperties == null) || (discoveryEngineProperties.getElementHeader() == null))
         {
             throw new PropertyServerException(DiscoveryEngineServicesErrorCode.UNKNOWN_DISCOVERY_ENGINE_CONFIG.getMessageDefinition(discoveryEngineName,
                                                                                                                                     configurationClient.getConfigurationServerName(),
@@ -148,7 +148,7 @@ public class DiscoveryEngineHandler
         }
         else
         {
-            this.discoveryEngineGUID = discoveryEngineProperties.getGUID();
+            this.discoveryEngineGUID = discoveryEngineProperties.getElementHeader().getGUID();
             refreshAllServiceConfig();
         }
     }
@@ -691,7 +691,7 @@ public class DiscoveryEngineHandler
          */
         String getDiscoveryServiceGUID()
         {
-            return properties.getGUID();
+            return properties.getElementHeader().getGUID();
         }
 
 

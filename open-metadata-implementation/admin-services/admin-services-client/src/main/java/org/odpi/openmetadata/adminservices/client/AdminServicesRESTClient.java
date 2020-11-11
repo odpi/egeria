@@ -9,6 +9,7 @@ import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationError
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
 import org.odpi.openmetadata.adminservices.rest.*;
+import org.odpi.openmetadata.adminservices.rest.ConnectionResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 
 
@@ -388,6 +389,108 @@ class AdminServicesRESTClient
     }
 
 
+    /**
+     * Issue a GET REST call that returns a AccessServicesResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return AccessServicesResponse
+     * @throws OMAGInvalidParameterException one of the parameters is invalid.
+     * @throws OMAGNotAuthorizedException the user is not authorized to make this request.
+     * @throws OMAGConfigurationErrorException something went wrong with the REST call stack.
+     */
+    AccessServicesResponse callAccessServicesGetRESTCall(String    methodName,
+                                                         String    urlTemplate,
+                                                         Object... params) throws OMAGInvalidParameterException,
+                                                                                  OMAGNotAuthorizedException,
+                                                                                  OMAGConfigurationErrorException
+    {
+        AccessServicesResponse restResult = this.callGetRESTCall(methodName, AccessServicesResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowAdminExceptions(restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a GET REST call that returns a IntegrationServicesResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return IntegrationServicesResponse
+     * @throws OMAGInvalidParameterException one of the parameters is invalid.
+     * @throws OMAGNotAuthorizedException the user is not authorized to make this request.
+     * @throws OMAGConfigurationErrorException something went wrong with the REST call stack.
+     */
+    IntegrationServicesResponse callIntegrationServicesGetRESTCall(String    methodName,
+                                                                   String    urlTemplate,
+                                                                   Object... params) throws OMAGInvalidParameterException,
+                                                                                            OMAGNotAuthorizedException,
+                                                                                            OMAGConfigurationErrorException
+    {
+        IntegrationServicesResponse restResult = this.callGetRESTCall(methodName, IntegrationServicesResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowAdminExceptions(restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a GET REST call that returns a IntegrationServiceConfigResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return IntegrationServiceConfigResponse
+     * @throws OMAGInvalidParameterException one of the parameters is invalid.
+     * @throws OMAGNotAuthorizedException the user is not authorized to make this request.
+     * @throws OMAGConfigurationErrorException something went wrong with the REST call stack.
+     */
+    IntegrationServiceConfigResponse callIntegrationServiceConfigGetRESTCall(String    methodName,
+                                                                             String    urlTemplate,
+                                                                             Object... params) throws OMAGInvalidParameterException,
+                                                                                                      OMAGNotAuthorizedException,
+                                                                                                      OMAGConfigurationErrorException
+    {
+        IntegrationServiceConfigResponse restResult = this.callGetRESTCall(methodName, IntegrationServiceConfigResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowAdminExceptions(restResult);
+
+        return restResult;
+    }
+
+
+    /**
+     * Issue a GET REST call that returns a ViewServicesResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return ViewServicesResponse
+     * @throws OMAGInvalidParameterException one of the parameters is invalid.
+     * @throws OMAGNotAuthorizedException the user is not authorized to make this request.
+     * @throws OMAGConfigurationErrorException something went wrong with the REST call stack.
+     */
+    ViewServicesResponse callViewServicesGetRESTCall(String    methodName,
+                                                     String    urlTemplate,
+                                                     Object... params) throws OMAGInvalidParameterException,
+                                                                              OMAGNotAuthorizedException,
+                                                                              OMAGConfigurationErrorException
+    {
+        ViewServicesResponse restResult = this.callGetRESTCall(methodName, ViewServicesResponse.class, urlTemplate, params);
+
+        exceptionHandler.detectAndThrowAdminExceptions(restResult);
+
+        return restResult;
+    }
 
 
 

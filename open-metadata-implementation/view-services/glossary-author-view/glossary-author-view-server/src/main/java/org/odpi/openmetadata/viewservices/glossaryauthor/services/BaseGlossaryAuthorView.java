@@ -5,6 +5,7 @@ package org.odpi.openmetadata.viewservices.glossaryauthor.services;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectAreaCheckedException;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
+import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
@@ -17,9 +18,8 @@ import org.slf4j.LoggerFactory;
  * An abstract base class providing common methods for glossary authoring services.
  */
 abstract public class BaseGlossaryAuthorView {
-    public static final String PAGE_OFFSET_DEFAULT_VALUE = "0";
-    public static final String PAGE_SIZE_DEFAULT_VALUE = "0";
 
+    protected static final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
     protected static GlossaryAuthorViewInstanceHandler instanceHandler = new GlossaryAuthorViewInstanceHandler();
     protected static RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(GlossaryAuthorViewGlossaryRESTServices.class),
             instanceHandler.getServiceName());

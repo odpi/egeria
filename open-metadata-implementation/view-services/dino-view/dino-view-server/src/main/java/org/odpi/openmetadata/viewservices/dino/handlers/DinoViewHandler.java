@@ -11,7 +11,6 @@ import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationError
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
 import org.odpi.openmetadata.adminservices.rest.ServerTypeClassificationSummary;
-import org.odpi.openmetadata.commonservices.ffdc.OMAGCommonErrorCode;
 import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGService;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -26,6 +25,7 @@ import org.odpi.openmetadata.repositoryservices.clients.MetadataHighwayServicesC
 import org.odpi.openmetadata.repositoryservices.connectors.stores.cohortregistrystore.properties.MemberRegistration;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.odpi.openmetadata.repositoryservices.properties.CohortDescription;
+import org.odpi.openmetadata.viewservices.dino.api.ffdc.DinoViewErrorCode;
 import org.odpi.openmetadata.viewservices.dino.api.properties.DinoServerInstance;
 import org.odpi.openmetadata.viewservices.dino.api.properties.PlatformOverview;
 import org.odpi.openmetadata.viewservices.dino.api.properties.ResourceEndpoint;
@@ -93,9 +93,10 @@ public class DinoViewHandler
 
         // TODO - It would be desirable to add validation rules to ensure uniqueness etc.
 
+        configuredPlatforms         = new HashMap<>();
+        configuredServerInstances   = new HashMap<>();
+
         if (resourceEndpoints != null && !resourceEndpoints.isEmpty()) {
-            configuredPlatforms         = new HashMap<>();
-            configuredServerInstances   = new HashMap<>();
 
             resourceEndpoints.forEach(res -> {
 
@@ -135,16 +136,26 @@ public class DinoViewHandler
     public Map<String, List<ResourceEndpoint>> getResourceEndpoints(String userId, String methodName)
 
     {
-
-        List<ResourceEndpoint> platformList = new ArrayList<>();
-        List<ResourceEndpoint> serverList   = new ArrayList<>();
-
-        platformList.addAll(configuredPlatforms.values());
-        serverList.addAll(configuredServerInstances.values());
-
         Map<String, List<ResourceEndpoint>> returnMap = new HashMap<>();
+
+        List<ResourceEndpoint> platformList = null;
+        List<ResourceEndpoint> serverList   = null;
+
+        if (!configuredPlatforms.isEmpty())
+        {
+            platformList = new ArrayList<>();
+            platformList.addAll(configuredPlatforms.values());
+        }
+
+        if (!configuredServerInstances.isEmpty())
+        {
+            serverList = new ArrayList<>();
+            serverList.addAll(configuredServerInstances.values());
+        }
+
         returnMap.put("platformList",platformList);
         returnMap.put("serverList",serverList);
+
         return returnMap;
     }
 
@@ -171,7 +182,7 @@ public class DinoViewHandler
             }
         }
         if (platformName == null || platformRootURL == null) {
-            throw new InvalidParameterException(OMAGCommonErrorCode.VIEW_SERVICE_NULL_PLATFORM_NAME.getMessageDefinition(),
+            throw new InvalidParameterException(DinoViewErrorCode.VIEW_SERVICE_NULL_PLATFORM_NAME.getMessageDefinition(),
                                                 this.getClass().getName(),
                                                 methodName,
                                                 "platformName");

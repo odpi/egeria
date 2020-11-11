@@ -339,7 +339,7 @@ class PortHandlerTest {
         portHandler.addPortDelegationRelationship(USER, GUID, PortType.INPUT_PORT, DELEGATED_QUALIFIED_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
         verify(dataEngineCommonHandler, times(1)).throwInvalidParameterException(DataEngineErrorCode.INVALID_PORT_TYPE,
-                "addPortDelegationRelationship", DELEGATED_QUALIFIED_NAME, PortType.OUTIN_PORT.getName());
+                "addPortDelegationRelationship", "qualifiedName", DELEGATED_QUALIFIED_NAME, PortType.OUTIN_PORT.getName());
     }
 
 

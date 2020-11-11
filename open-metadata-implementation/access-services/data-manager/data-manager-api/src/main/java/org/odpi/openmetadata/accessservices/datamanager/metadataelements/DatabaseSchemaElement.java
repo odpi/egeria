@@ -21,13 +21,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class DatabaseSchemaElement extends DatabaseSchemaProperties implements MetadataElement,
-                                                                               Serializable
+public class DatabaseSchemaElement implements MetadataElement, Serializable
 {
     private static final long     serialVersionUID = 1L;
 
-    private ElementHeader elementHeader = null;
-
+    private ElementHeader            elementHeader = null;
+    private DatabaseSchemaProperties databaseSchemaProperties = null;
 
     /**
      * Default constructor
@@ -48,6 +47,7 @@ public class DatabaseSchemaElement extends DatabaseSchemaProperties implements M
         if (template != null)
         {
             elementHeader = template.getElementHeader();
+            databaseSchemaProperties = template.getDatabaseSchemaProperties();
         }
     }
 
@@ -77,6 +77,28 @@ public class DatabaseSchemaElement extends DatabaseSchemaProperties implements M
 
 
     /**
+     * Return the properties for the database schema.
+     *
+     * @return schema properties
+     */
+    public DatabaseSchemaProperties getDatabaseSchemaProperties()
+    {
+        return databaseSchemaProperties;
+    }
+
+
+    /**
+     * Set up the database schema properties.
+     *
+     * @param databaseSchemaProperties schema properties
+     */
+    public void setDatabaseSchemaProperties(DatabaseSchemaProperties databaseSchemaProperties)
+    {
+        this.databaseSchemaProperties = databaseSchemaProperties;
+    }
+
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -86,18 +108,7 @@ public class DatabaseSchemaElement extends DatabaseSchemaProperties implements M
     {
         return "DatabaseSchemaElement{" +
                 "elementHeader=" + elementHeader +
-                ", displayName='" + getDisplayName() + '\'' +
-                ", description='" + getDescription() + '\'' +
-                ", owner='" + getOwner() + '\'' +
-                ", ownerCategory=" + getOwnerCategory() +
-                ", zoneMembership=" + getZoneMembership() +
-                ", origin=" + getOrigin() +
-                ", latestChange='" + getLatestChange() + '\'' +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", vendorProperties=" + getVendorProperties() +
-                ", typeName='" + getTypeName() + '\'' +
-                ", extendedProperties=" + getExtendedProperties() +
+                ", databaseSchemaProperties=" + databaseSchemaProperties +
                 '}';
     }
 
@@ -124,7 +135,8 @@ public class DatabaseSchemaElement extends DatabaseSchemaProperties implements M
             return false;
         }
         DatabaseSchemaElement that = (DatabaseSchemaElement) objectToCompare;
-        return Objects.equals(elementHeader, that.elementHeader);
+        return Objects.equals(elementHeader, that.elementHeader) &&
+                Objects.equals(databaseSchemaProperties, that.databaseSchemaProperties);
     }
 
 
@@ -136,6 +148,6 @@ public class DatabaseSchemaElement extends DatabaseSchemaProperties implements M
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementHeader);
+        return Objects.hash(super.hashCode(), elementHeader, databaseSchemaProperties);
     }
 }

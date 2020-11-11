@@ -5,6 +5,9 @@ package org.odpi.openmetadata.accessservices.governanceprogram.handlers;
 
 import org.odpi.openmetadata.accessservices.governanceprogram.ffdc.GovernanceProgramErrorCode;
 import org.odpi.openmetadata.accessservices.governanceprogram.ffdc.exceptions.*;
+import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.ElementHeader;
+import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.ElementType;
+import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceOfficerElement;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.*;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
@@ -20,7 +23,7 @@ import org.slf4j.LoggerFactory;
 import java.util.*;
 
 /**
- * GovernanceOfficerHandler retrieves GovernanceOfficer objects from the property server and maintains the
+ * GovernanceOfficerHandler retrieves GovernanceOfficerProperties objects from the property server and maintains the
  * relationship between the governance officer and the profile of the individual that is appointed as the
  * governance officer.  It runs server-side in the GovernanceProgram
  * OMAS and retrieves entities and relationships through the OMRSRepositoryConnector.
@@ -31,7 +34,7 @@ public class GovernanceOfficerHandler
      * Mapping of Governance Program API property names to open metadata types
      */
     private static final String governanceOfficerTypeGUID               = "578a3510-9ad3-45fe-8ada-e4e9572c37c8";
-    private static final String governanceOfficerTypeName               = "GovernanceOfficer";
+    private static final String governanceOfficerTypeName               = "GovernanceOfficerProperties";
     private static final String appointmentIdPropertyName               = "qualifiedName";
     private static final String titlePropertyName                       = "name";
     private static final String appointmentContextPropertyName          = "scope";
@@ -168,7 +171,7 @@ public class GovernanceOfficerHandler
 
 
     /**
-     * Extract a governance officer bean from the returned GovernanceOfficer entity and any
+     * Extract a governance officer bean from the returned GovernanceOfficerProperties entity and any
      * GovernancePost relationship to Person entity.  The assumption is that this is a 0..1
      * relationship so one entity (or null) is returned.  If lots of relationships are found then the
      * PropertyServerException is thrown.
@@ -179,19 +182,28 @@ public class GovernanceOfficerHandler
      * @return governance officer or null
      * @throws PropertyServerException problem access the property server
      */
-    private GovernanceOfficer   getGovernanceOfficerFromInstances(EntityDetail            governanceOfficerEntity,
-                                                                  String                  userId,
-                                                                  String                  methodName) throws PropertyServerException
+    private GovernanceOfficerElement getGovernanceOfficerFromInstances(EntityDetail            governanceOfficerEntity,
+                                                                       String                  userId,
+                                                                       String                  methodName) throws PropertyServerException
     {
-        GovernanceOfficer governanceOfficer = null;
-        long              now = new Date().getTime();
+        GovernanceOfficerElement    governanceOfficer = null;
+        long                        now               = new Date().getTime();
 
         if (governanceOfficerEntity != null)
         {
-            governanceOfficer = new GovernanceOfficer();
+            governanceOfficer = new GovernanceOfficerElement();
 
-            governanceOfficer.setGUID(governanceOfficerEntity.getGUID());
-            governanceOfficer.setType(governanceOfficerTypeName);
+            ElementHeader header = new ElementHeader();
+
+            header.setGUID(governanceOfficerEntity.getGUID());
+
+            ElementType type = new ElementType();
+
+            type.setTypeName(governanceOfficerTypeName);
+
+            header.setType(type);
+
+            governanceOfficer.setElementHeader(header);
 
             InstanceProperties instanceProperties = governanceOfficerEntity.getProperties();
 
@@ -199,7 +211,7 @@ public class GovernanceOfficerHandler
             {
                 governanceOfficer.setAppointmentId(repositoryHelper.getStringProperty(serviceName, appointmentIdPropertyName, instanceProperties, methodName));
                 governanceOfficer.setAppointmentContext(repositoryHelper.getStringProperty(serviceName, appointmentContextPropertyName, instanceProperties, methodName));
-                governanceOfficer.setTitle(repositoryHelper.getStringProperty(serviceName, titlePropertyName, instanceProperties, methodName));
+                governanceOfficer.setQualifiedName(repositoryHelper.getStringProperty(serviceName, titlePropertyName, instanceProperties, methodName));
                 governanceOfficer.setGovernanceDomain(enumHandler.getGovernanceDomainFromProperties(instanceProperties, governanceDomainPropertyName, methodName));
                 governanceOfficer.setAdditionalProperties(repositoryHelper.getStringMapFromProperty(serviceName, additionalPropertiesName, instanceProperties, methodName));
             }
@@ -236,7 +248,7 @@ public class GovernanceOfficerHandler
                         }
 
                         throw new GovernanceAppointeeNotUniqueException(GovernanceProgramErrorCode.MULTIPLE_INCUMBENTS_FOR_GOVERNANCE_OFFICER.getMessageDefinition(governanceDomain.getName(),
-                                                                                                                                                                   governanceOfficer.getGUID(),
+                                                                                                                                                                   governanceOfficerEntity.getGUID(),
                                                                                                                                                                    governanceOfficer.getAppointmentId(),
                                                                                                                                                                    governanceOfficer.getAppointmentContext(),
                                                                                                                                                                    Integer.toString(currentIncumbents.size())),
@@ -541,6 +553,8 @@ public class GovernanceOfficerHandler
         String governanceOfficerGUID = repositoryHandler.createEntity(userId,
                                                                       governanceOfficerTypeGUID,
                                                                       governanceOfficerTypeName,
+                                                                      null,
+                                                                      null,
                                                                       properties,
                                                                       methodName);
 
@@ -601,12 +615,14 @@ public class GovernanceOfficerHandler
                                                                                additionalProperties);
 
 
-        repositoryHandler.updateEntity(userId,
-                                       governanceOfficerGUID,
-                                       governanceOfficerTypeGUID,
-                                       governanceOfficerTypeName,
-                                       properties,
-                                       methodName);
+        repositoryHandler.updateEntityProperties(userId,
+                                                 null,
+                                                 null,
+                                                 governanceOfficerGUID,
+                                                 governanceOfficerTypeGUID,
+                                                 governanceOfficerTypeName,
+                                                 properties,
+                                                 methodName);
 
         externalReferencesHandler.storeExternalReferences(userId, governanceOfficerGUID, externalReferences);
 
@@ -632,7 +648,8 @@ public class GovernanceOfficerHandler
                                                                                        PropertyServerException,
                                                                                        UserNotAuthorizedException
     {
-        final String        methodName = "deleteGovernanceOfficer";
+        final String methodName = "deleteGovernanceOfficer";
+        final String guidParameter = "governanceOfficerGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(governanceOfficerGUID, governanceOfficerGUIDParameterName, methodName);
@@ -640,7 +657,10 @@ public class GovernanceOfficerHandler
         invalidParameterHandler.validateEnum(governanceDomain, governanceDomainParameterName, methodName);
 
         repositoryHandler.removeEntity(userId,
+                                       null,
+                                       null,
                                        governanceOfficerGUID,
+                                       guidParameter,
                                        governanceOfficerTypeGUID,
                                        governanceOfficerTypeName,
                                        appointmentIdPropertyName,
@@ -661,8 +681,8 @@ public class GovernanceOfficerHandler
      * @throws PropertyServerException the server is not available.
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    public GovernanceOfficer getGovernanceOfficerByGUID(String     userId,
-                                                        String     governanceOfficerGUID) throws InvalidParameterException,
+    public GovernanceOfficerProperties getGovernanceOfficerByGUID(String     userId,
+                                                                  String     governanceOfficerGUID) throws InvalidParameterException,
                                                                                                  PropertyServerException,
                                                                                                  UserNotAuthorizedException
     {
@@ -693,8 +713,8 @@ public class GovernanceOfficerHandler
      * @throws PropertyServerException the server is not available.
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    public GovernanceOfficer    getGovernanceOfficerByAppointmentId(String     userId,
-                                                                    String     appointmentId) throws InvalidParameterException,
+    public GovernanceOfficerProperties getGovernanceOfficerByAppointmentId(String     userId,
+                                                                           String     appointmentId) throws InvalidParameterException,
                                                                                                      PropertyServerException,
                                                                                                      AppointmentIdNotUniqueException,
                                                                                                      UserNotAuthorizedException
@@ -750,9 +770,9 @@ public class GovernanceOfficerHandler
      * @throws PropertyServerException the server is not available.
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    public List<GovernanceOfficer>  getGovernanceOfficers(String     userId) throws InvalidParameterException,
-                                                                                    PropertyServerException,
-                                                                                    UserNotAuthorizedException
+    public List<GovernanceOfficerProperties>  getGovernanceOfficers(String     userId) throws InvalidParameterException,
+                                                                                              PropertyServerException,
+                                                                                              UserNotAuthorizedException
     {
         final String        methodName = "getGovernanceOfficers";
 
@@ -766,7 +786,7 @@ public class GovernanceOfficerHandler
 
         if (governanceOfficerEntities != null)
         {
-            List<GovernanceOfficer>  governanceOfficers = new ArrayList<>();
+            List<GovernanceOfficerProperties> governanceOfficers = new ArrayList<>();
 
             for (EntityDetail   governanceOfficerEntity : governanceOfficerEntities)
             {
@@ -802,17 +822,17 @@ public class GovernanceOfficerHandler
      * @throws PropertyServerException the server is not available.
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    public List<GovernanceOfficer>  getActiveGovernanceOfficers(String     userId) throws InvalidParameterException,
-                                                                                          PropertyServerException,
-                                                                                          UserNotAuthorizedException
+    public List<GovernanceOfficerProperties>  getActiveGovernanceOfficers(String     userId) throws InvalidParameterException,
+                                                                                                    PropertyServerException,
+                                                                                                    UserNotAuthorizedException
     {
 
         final String        methodName = "getActiveGovernanceOfficers";
 
-        List<GovernanceOfficer>   fullList = this.getGovernanceOfficers(userId);
-        List<GovernanceOfficer>   returnList = new ArrayList<>();
+        List<GovernanceOfficerProperties> fullList   = this.getGovernanceOfficers(userId);
+        List<GovernanceOfficerProperties> returnList = new ArrayList<>();
 
-        for (GovernanceOfficer  governanceOfficer : fullList)
+        for (GovernanceOfficerProperties governanceOfficer : fullList)
         {
             if ((governanceOfficer != null) && (governanceOfficer.getAppointee() != null))
             {
@@ -847,8 +867,8 @@ public class GovernanceOfficerHandler
      * @throws PropertyServerException the server is not available.
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
-    public List<GovernanceOfficer>  getGovernanceOfficersByDomain(String             userId,
-                                                                  GovernanceDomain   governanceDomain) throws InvalidParameterException,
+    public List<GovernanceOfficerProperties>  getGovernanceOfficersByDomain(String             userId,
+                                                                            GovernanceDomain   governanceDomain) throws InvalidParameterException,
                                                                                                               PropertyServerException,
                                                                                                               UserNotAuthorizedException
     {
@@ -856,10 +876,10 @@ public class GovernanceOfficerHandler
 
         invalidParameterHandler.validateEnum(governanceDomain, governanceDomainParameterName, methodName);
 
-        List<GovernanceOfficer>   fullList = this.getGovernanceOfficers(userId);
-        List<GovernanceOfficer>   returnList = new ArrayList<>();
+        List<GovernanceOfficerProperties> fullList   = this.getGovernanceOfficers(userId);
+        List<GovernanceOfficerProperties> returnList = new ArrayList<>();
 
-        for (GovernanceOfficer  governanceOfficer : fullList)
+        for (GovernanceOfficerProperties governanceOfficer : fullList)
         {
             if ((governanceOfficer != null) && (governanceOfficer.getGovernanceDomain() == governanceDomain))
             {
@@ -906,10 +926,10 @@ public class GovernanceOfficerHandler
         invalidParameterHandler.validateGUID(governanceOfficerGUID, governanceOfficerGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(profileGUID, profileGUIDParameterName, methodName);
 
-        GovernanceOfficer   governanceOfficer = this.getGovernanceOfficerByGUID(userId, governanceOfficerGUID);
-        Date                endDate = null;
-        Date                now = new Date();
-        Date                actualStartDate = startDate;
+        GovernanceOfficerProperties governanceOfficer = this.getGovernanceOfficerByGUID(userId, governanceOfficerGUID);
+        Date                        endDate           = null;
+        Date                        now               = new Date();
+        Date                        actualStartDate   = startDate;
 
         /*
          * if the start date is null we set it to now.
@@ -974,7 +994,14 @@ public class GovernanceOfficerHandler
         properties.setEffectiveFromTime(startDate);
         properties.setEffectiveToTime(endDate);
 
-        repositoryHandler.createRelationship(userId, governancePostTypeGUID,  profileGUID, governanceOfficerGUID, properties, methodName);
+        repositoryHandler.createRelationship(userId,
+                                             governancePostTypeGUID,
+                                             null,
+                                             null,
+                                             profileGUID,
+                                             governanceOfficerGUID,
+                                             properties,
+                                             methodName);
     }
 
 
@@ -1095,7 +1122,7 @@ public class GovernanceOfficerHandler
 
             properties.setEffectiveToTime(actualEndDate);
 
-            repositoryHandler.updateRelationshipProperties(userId, relievedPost.getGUID(), properties, methodName);
+            repositoryHandler.updateRelationshipProperties(userId, null, null, relievedPost, properties, methodName);
         }
     }
 }

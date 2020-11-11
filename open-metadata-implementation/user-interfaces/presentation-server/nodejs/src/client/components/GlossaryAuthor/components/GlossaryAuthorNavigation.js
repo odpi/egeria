@@ -1,213 +1,92 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 import React, { useState, useEffect } from "react";
+import { ContentSwitcher, Switch } from "carbon-components-react";
+import StartingGlossaryNavigation from "./StartingGlossaryNavigation";
+import StartingTermNavigation from "./StartingTermNavigation";
+import StartingCategoryNavigation from "./StartingCategoryNavigation";
+import { useHistory, withRouter } from "react-router-dom";
 
-import Add32 from "../../../images/Egeria_add_32";
-import Delete32 from "../../../images/Egeria_delete_32";
-import Edit32 from "../../../images/Egeria_edit_32";
-import Term32 from "../../../images/Egeria_term_32";
-import {
-  LocalGlossaryCard,
-  GlossaryCardSection,
-} from "./GlossaryCard/GlossaryCard";
-import GlossaryImage from "../../../images/Egeria_glossary_32";
-import getNodeType from "./properties/NodeTypes.js";
-import { issueRestGet, issueRestDelete } from "./RestCaller";
-import useDebounce from "./useDebounce";
-
-import { Link } from "react-router-dom";
-
-export default function GlossaryAuthorNavigation({ match }) {
-  const [glossaries, setGlossaries] = useState([]);
-  const nodeType = getNodeType("glossary");
-  // State and setter for search term
-  const [filterCriteria, setFilterCriteria] = useState("");
-  const [exactMatch, setExactMatch] = useState(false);
-  // Now we call our hook, passing in the current filterCriteria value.
-  // The hook will only return the latest value (what we passed in) ...
-  // ... if it's been more than 500ms since it was last called.
-  // Otherwise, it will return the previous value of filterCriteria.
-  // The goal is to only have the API call fire when user stops typing ...
-  // ... so that we aren't hitting our API rapidly.
-  const debouncedFilterCriteria = useDebounce(filterCriteria, 500);
-  const [errorMsg, setErrorMsg] = useState();
-  const [selectedGlossaryGuid, setSelectedGlossaryGuid] = useState();
-
-  // Here's where the API call happens
-  // We use useEffect since this is an asynchronous action
-  useEffect(
-    () => {
-      processUserCriteriaAndIssueSearch();
-    },
-    // This is the useEffect input array
-    // Our useEffect function will only execute if this value changes ...
-    // ... and thanks to our hook it will only change if the original ...
-    // value (FilterCriteria) hasn't changed for more than 500ms.
-    // If the exactMatch changes then we need to re-issue the search.
-    [debouncedFilterCriteria, exactMatch]
-  );
-  const processUserCriteriaAndIssueSearch = () => {
-    // sort out the actual search criteria.
-    let actualDebounceCriteria = debouncedFilterCriteria;
-    if (actualDebounceCriteria) {
-      if (!exactMatch) {
-        actualDebounceCriteria = actualDebounceCriteria + ".*";
-      }
-    } else {
-      // by default get everything
-      actualDebounceCriteria = ".*";
-    }
-    // Fire off our API call
-    issueGlossarySearch(actualDebounceCriteria);
-  };
-
-  // issue search for first page of glossaries
-  const issueGlossarySearch = (criteria) => {
-    // encode the URI. Be aware the more recent RFC3986 for URLs makes use of square brackets which are reserved (for IPv6)
-    const url = encodeURI(
-      nodeType.url + "?offset=0&pageSize=1000&searchCriteria=" + criteria
-    );
-    issueRestGet(url, onSuccessfulSearch, onErrorSearch);
-  };
-
-  const onClickDelete = () => {
-    setErrorMsg("");
-    console.log("Delete");
-    if (selectedGlossaryGuid) {
-      glossaries.forEach(deleteIfSelected);
-    }
-  };
+function GlossaryAuthorNavigation(props) {
+  console.log("GlossaryAuthorNavigation");
+  const [selectedContentIndex, setSelectedContentIndex] = useState(0);
   /**
-   * Delete the supplied glossary if it's guid matches the selected one.
-   * @param {*} glossary
+   * this useEffect is required so that the content in the content switcher is kept in step with the url.
+   * This is required when the back button is pressed returning from a child component.
    */
-  const deleteIfSelected = (glossary) => {
-    if (glossary.systemAttributes.guid == selectedGlossaryGuid) {
-      const guid = selectedGlossaryGuid;
-      const url = nodeType.url + "/" + guid;
-      issueRestDelete(url, onSuccessfulDelete, onErrorDelete);
+  useEffect(() => {
+    const arrayOfURLSegments = location.pathname.split("/");
+    const lastSegment = arrayOfURLSegments[arrayOfURLSegments.length - 1];
+    let index = 0;
+    if (lastSegment == "categories") {
+      index = 1;
     }
-  };
+    if (lastSegment == "terms") {
+      index = 2;
+    }
+    console.log(
+      "glossaryAuthorNavigation useEffect url=" +
+        location.pathname +
+        " ,lastSegment=" +
+        lastSegment +
+        " ,index=" +
+        index
+    );
+    setSelectedContentIndex(index);
+  }, []);
 
-  const onSuccessfulDelete = () => {
-    setSelectedGlossaryGuid(undefined);
-    // reprocess the current criteria and issue the search
-    processUserCriteriaAndIssueSearch();
-  };
+  let history = useHistory();
 
-  const onErrorDelete = (msg) => {
-    console.log("Error on delete " + msg);
-    setErrorMsg(msg);
-    // setGlossaries([]);
-  };
+  const onChange = (e) => {
+    const chosenContent = `${e.name}`;
 
-  const onSuccessfulSearch = (json) => {
-    setErrorMsg("");
-    console.log("onSuccessfulSearch " + json.result);
-    setGlossaries(json.result);
-  };
+    // props.match.url could be anything
 
-  const onErrorSearch = (msg) => {
-    console.log("Error on search " + msg);
-    setErrorMsg(msg);
-    setGlossaries([]);
-  };
+    const arrayOfURLSegments = props.match.url.split("/");
+    let workingUrl = "";
+    let keepAppending = true;
+    for (let i = 0; i < arrayOfURLSegments.length; i++) {
+      const currentSegment = arrayOfURLSegments[i];
+      if (keepAppending && currentSegment.length > 0) {
+        workingUrl = workingUrl + "/" + currentSegment;
+      }
+      if (currentSegment == "glossary-author") {
+        keepAppending = false;
+      }
+    }
 
-  const onClickExactMatch = () => {
-    console.log("onClickExactMatch");
-    const checkBox = document.getElementById("glossary_nav_exact_Match");
-    setExactMatch(checkBox.checked);
-  };
+    const url = workingUrl + "/" + chosenContent;
+    console.log("pushing url " + url);
 
-  const getGlossaryChildrenUrl = (guid) => {
-    return match.path + "/" + guid + "/children";
-  };
-  function getAddGlossaryUrl() {
-    return match.path + "/add-glossary";
-  }
-  function getQuickTermsUrl() {
-    return match.path + "/" + selectedGlossaryGuid + "/quick-terms";
-  }
-  function getEditGlossaryUrl() {
-    return match.path + "/edit-glossary/" + selectedGlossaryGuid;
-  }
-  const onFilterCriteria = (e) => {
-    setFilterCriteria(e.target.value);
-  };
-  const isSelected = (glossaryGuid) => {
-    return glossaryGuid == selectedGlossaryGuid;
-  };
-  const setSelected = (glossaryGuid) => {
-    setSelectedGlossaryGuid(glossaryGuid);
+    // Use replace rather than push so the content switcher changes are not navigated through the back button, which would be uninituitive.
+    history.replace(url);
+
+    let index = 0;
+    if (chosenContent == "categories") {
+      index = 1;
+    } else if (chosenContent == "terms") {
+      index = 2;
+    }
+    setSelectedContentIndex(index);
   };
 
   return (
     <div>
-      <div className="bx--grid">
-        <GlossaryCardSection heading="Glossaries" className="landing-page__r3">
-          <article className="glossary-card__controls bx--col-sm-4 bx--col-md-1 bx--col-lg-1 bx--col-xlg-1 bx--col-max-1">
-            Choose glossary
-          </article>
-          <article className="glossary-card__controls bx--col-sm-4 bx--col-md-2 bx--col-lg-4 bx--col-xlg-4 bx--col-max-4">
-            <input
-              type="text"
-              id="filter-input"
-              onChange={onFilterCriteria}
-              placeholder="Filter"
-            />
-          </article>
-          <article className="glossary-card__controls bx--col-sm-4 bx--col-md-1 bx--col-lg-2 bx--col-xlg-2 bx--col-max-2">
-            <div className="glossary-card__exact_control">
-              <label forHtml="exactMatch">Exact Match </label>
-              <input
-                type="checkbox"
-                id="glossary_nav_exact_Match"
-                onClick={onClickExactMatch}
-              />
-            </div>
-          </article>
-          <article className="glossary-card__controls bx--col-sm-4 bx--col-md-1 bx--col-lg-3 bx--col-xlg-3 bx--col-max-2">
-            <div className="bx--row">
-              <Link to={getAddGlossaryUrl}>
-                <Add32 kind="primary" />
-              </Link>
-              {selectedGlossaryGuid && (
-                  <Link to={getQuickTermsUrl}>
-                    <Term32 kind="primary" />
-                  </Link>
-              )}
-              {selectedGlossaryGuid && (
-                <Link to={getEditGlossaryUrl()}>
-                  <Edit32 kind="primary" />
-                </Link>
-              )}
-              {selectedGlossaryGuid && (
-                <Delete32 onClick={() => onClickDelete()} />
-              )}
-            </div>
-          </article>
-        </GlossaryCardSection>
-
-        <GlossaryCardSection className="landing-page__r3">
-          <article style={{ color: "red" }}>{errorMsg}</article>
-        </GlossaryCardSection>
-
-        <GlossaryCardSection className="landing-page__r3">
-          {glossaries.map((glossary) => (
-            <LocalGlossaryCard
-              key={glossary.systemAttributes.guid}
-              heading={glossary.name}
-              guid={glossary.systemAttributes.guid}
-              body={glossary.description}
-              icon={<GlossaryImage />}
-              isSelected={isSelected(glossary.systemAttributes.guid)}
-              setSelected={setSelected}
-              link={getGlossaryChildrenUrl(glossary.systemAttributes.guid)}
-            />
-          ))}
-          {glossaries.length == 0 && <div>No Glossaries found!</div>}
-        </GlossaryCardSection>
-      </div>
+      <ContentSwitcher selectedIndex={selectedContentIndex} onChange={onChange}>
+        <Switch name="glossaries" text="Glossaries" />
+        <Switch name="categories" text="Categories" />
+        <Switch name="terms" text="Terms" />
+      </ContentSwitcher>
+      {selectedContentIndex == 0 && (
+        <StartingGlossaryNavigation match={props.match} />
+      )}
+      {selectedContentIndex == 1 && (
+        <StartingCategoryNavigation match={props.match} />
+      )}
+      {selectedContentIndex == 2 && (
+        <StartingTermNavigation match={props.match} />
+      )}
     </div>
   );
 }
+export default withRouter(GlossaryAuthorNavigation);

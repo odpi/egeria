@@ -10,10 +10,12 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.commo
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.NodeType;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.GlossarySummary;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.CategoryAnchor;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.CategoryHierarchyLink;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.entities.CategoryMapper;
+import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.entities.TermMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.relationships.CategoryAnchorMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.relationships.CategoryHierarchyLinkMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
@@ -26,6 +28,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -45,9 +48,10 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
      * needed to operate within a single server instance.
      *
      * @param oMRSAPIHelper           omrs API helper
+     * @param maxPageSize             maximum page size
      */
-    public SubjectAreaCategoryHandler(OMRSAPIHelper oMRSAPIHelper) {
-        super(oMRSAPIHelper);
+    public SubjectAreaCategoryHandler(OMRSAPIHelper oMRSAPIHelper, int maxPageSize) {
+        super(oMRSAPIHelper, maxPageSize);
     }
 
     /**
@@ -72,12 +76,8 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
-     * <li> ClassificationException              Error processing a classification</li>
-     * <li> StatusNotSupportedException          A status value is not supported</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     public SubjectAreaOMASAPIResponse<Category> createCategory(String userId, Category suppliedCategory) {
@@ -141,13 +141,11 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
      * @return response which when successful contains the category with the requested guid
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata repository service.
-     * <li> InvalidParameterException            one of the parameters is null or invalid.
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-
     public SubjectAreaOMASAPIResponse<Category> getCategoryByGuid(String userId, String guid) {
         final String methodName = "getCategory";
         SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
@@ -173,12 +171,10 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
      * @param userId             unique identifier for requesting user, under which the request is performed
      * @param findRequest        {@link FindRequest}
      * @return A list of Glossaries meeting the search Criteria
-     *
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     *
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     public SubjectAreaOMASAPIResponse<Category> findCategory(String userId, FindRequest findRequest) {
@@ -261,12 +257,11 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
      *
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UserNotAuthorizedException the requesting user is not authorized to issue this request.</li>
-     * <li> InvalidParameterException one of the parameters is null or invalid.</li>
-     * <li> FunctionNotSupportedException   Function not supported.</li>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
-
     public SubjectAreaOMASAPIResponse<Line> getCategoryRelationships(String userId, String guid, FindRequest findRequest) {
         String restAPIName = "getCategoryRelationships";
         return getAllRelationshipsForEntity(restAPIName, userId, guid, findRequest);
@@ -284,11 +279,9 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
      * @return a response which when successful contains the updated category
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     public SubjectAreaOMASAPIResponse<Category> updateCategory(String userId, String guid, Category suppliedCategory, boolean isReplace) {
@@ -366,11 +359,9 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
      * @return a void response
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * <li> EntityNotDeletedException            a soft delete was issued but the category was not deleted.</li>
      * <li> EntityNotPurgedException               a hard delete was issued but the category was not purged</li>
      * </ul>
@@ -403,11 +394,9 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
      * @return response which when successful contains the restored category
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * <li> PropertyServerException              Property server exception. </li>
      * </ul>
      */
     public SubjectAreaOMASAPIResponse<Category> restoreCategory(String userId, String guid) {
@@ -419,6 +408,97 @@ public class SubjectAreaCategoryHandler extends SubjectAreaHandler {
             response = getCategoryByGuid(userId, guid);
         } catch (SubjectAreaCheckedException | PropertyServerException | UserNotAuthorizedException e) {
             response.setExceptionInfo(e, className);
+        }
+
+        return response;
+    }
+
+    /**
+     * Get the terms that are categorized by this Category
+     *
+     * @param userId       unique identifier for requesting user, under which the request is performed
+     * @param guid         guid of the category to get terms
+     * @param termHandler term handler
+     * @param startingFrom initial position in the stored list.
+     * @param pageSize     maximum number of definitions to return on this call.
+     * @return A list of terms is categorized by this Category
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
+     * </ul>
+     * */
+    public SubjectAreaOMASAPIResponse<Term> getCategorizedTerms(String userId, String guid, SubjectAreaTermHandler termHandler, Integer startingFrom, Integer pageSize) {
+        final String methodName = "getTerms";
+        if (pageSize == null) {
+            pageSize = maxPageSize;
+        }
+        SubjectAreaOMASAPIResponse<Term>  response = getRelatedNodesForEnd1(methodName, userId, guid, TERM_CATEGORIZATION_RELATIONSHIP_NAME,  TermMapper.class, startingFrom, pageSize);
+        List<Term> allTerms = new ArrayList<>();
+        // the terms we get back from the mappers only map the parts from the entity. They do not set the glossary.
+        if (response.getRelatedHTTPCode() == 200 && response.results() !=null && response.results().size() >0) {
+            for (Term mappedCategory: response.results()) {
+                SubjectAreaOMASAPIResponse<Term> termResponse = termHandler.getTermByGuid(userId, mappedCategory.getSystemAttributes().getGUID());
+                if (termResponse.getRelatedHTTPCode() == 200) {
+                    allTerms.add(termResponse.results().get(0));
+                } else {
+                    response = termResponse;
+                    break;
+                }
+            }
+        }
+        if (response.getRelatedHTTPCode() == 200) {
+            response = new SubjectAreaOMASAPIResponse<>();
+            response.addAllResults(allTerms);
+        }
+        return response;
+    }
+    /**
+     * Get this Category's child Categories. The server has a maximum page size defined, the number of Categories returned is limited by that maximum page size.
+     *
+     * @param userId       unique identifier for requesting user, under which the request is performed
+     * @param guid         guid of the category to get terms
+     * @param startingFrom the starting element number for this set of results.  This is used when retrieving elements
+     * @param pageSize     the maximum number of elements that can be returned on this request.
+     * @return A list of child categories
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> PropertyServerException              Property server exception. </li>
+     * </ul>
+     **/
+    public SubjectAreaOMASAPIResponse<Category> getCategoryChildren(String userId, String guid, Integer startingFrom, Integer pageSize) {
+        final String methodName = "getCategoryChildren";
+        SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
+        if (pageSize == null) {
+            pageSize = maxPageSize;
+        }
+        SubjectAreaOMASAPIResponse<Category> thisCategoryResponse = getCategoryByGuid(userId, guid);
+        if (thisCategoryResponse.getRelatedHTTPCode() == 200) {
+            boolean foundParent = false;
+            String parentCategoryGuid = thisCategoryResponse.results().get(0).getSystemAttributes().getGUID();
+            SubjectAreaOMASAPIResponse<Category> relatedCategories = getRelatedNodesForEnd1(methodName, userId, guid, CATEGORY_HIERARCHY_LINK_RELATIONSHIP_NAME,  CategoryMapper.class, startingFrom, pageSize);
+            if (relatedCategories != null && relatedCategories.results() != null && relatedCategories.results().size() >0 ) {
+                for (Category relatedCategory: relatedCategories.results()) {
+                    // only add related categories that are not the parent Category.
+                    if (relatedCategory.getSystemAttributes().getGUID().equals(parentCategoryGuid)) {
+                        foundParent = true;
+                    } else {
+                        response.addResult(relatedCategory);
+                    }
+                }
+
+                // if we got back a page of categories and we found a parent which we removed from the results then we need to get another category, which cant be a parent as
+                // a category can only have one parent.
+                if (foundParent && relatedCategories.results().size() == maxPageSize ) {
+                    SubjectAreaOMASAPIResponse<Category>  extraCategoryResponse = getRelatedNodesForEnd1(methodName, userId, guid, CATEGORY_HIERARCHY_LINK_RELATIONSHIP_NAME, CategoryMapper.class, maxPageSize, 1);
+                    if (extraCategoryResponse.getRelatedHTTPCode() == 200 && extraCategoryResponse.results() != null && extraCategoryResponse.results().size() ==1 ) {
+                        response.addResult(extraCategoryResponse.results().get(0));
+                    }
+                }
+            }
         }
 
         return response;

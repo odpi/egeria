@@ -40,9 +40,10 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
      * needed to operate within a single server instance.
      *
      * @param oMRSAPIHelper           OMRS API helper
+     * @param maxPageSize             maximum page size
      */
-    public SubjectAreaProjectHandler(OMRSAPIHelper oMRSAPIHelper) {
-        super(oMRSAPIHelper);
+    public SubjectAreaProjectHandler(OMRSAPIHelper oMRSAPIHelper, int maxPageSize) {
+        super(oMRSAPIHelper, maxPageSize);
     }
 
     /**
@@ -155,7 +156,7 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
             } else {
                 return response;
             }
-        } catch (SubjectAreaCheckedException | PropertyServerException | UserNotAuthorizedException e) {
+        } catch (SubjectAreaCheckedException | PropertyServerException | UserNotAuthorizedException | org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException e) {
             response.setExceptionInfo(e, className);
         }
         return response;
@@ -363,7 +364,11 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
      * Get the terms in this project.
      *
      * @param userId                  unique identifier for requesting user, under which the request is performed
-     * @param guid                    guid of the Project to get
+     * @param guid                    guid of the Project
+     * @param termHandler             Term handler
+     * @param startingFrom            the starting element number for this set of results.  This is used when retrieving elements
+     *                                beyond the first page of results. Zero means the results start from the first element.
+     * @param pageSize                the maximum number of elements that can be returned on this request.
      * @return a response which when successful contains the Project terms
      * when not successful the following Exception responses can occur
      * <ul>
@@ -373,17 +378,28 @@ public class SubjectAreaProjectHandler extends SubjectAreaHandler {
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse<Term> getProjectTerms(String userId, String guid) {
+    public SubjectAreaOMASAPIResponse<Term> getProjectTerms(String userId, String guid, SubjectAreaTermHandler termHandler, Integer startingFrom, Integer pageSize) {
         final String methodName = "getProjectTerms";
-        SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
-        try {
-            List<EntityDetail> entityDetails = oMRSAPIHelper.callGetEntitiesForRelationshipEnd1(
-                    methodName, userId, guid, PROJECT_TYPE_NAME, PROJECT_SCOPE_RELATIONSHIP_NAME);
-            List<Term> terms = convertOmrsToOmas(entityDetails, TermMapper.class);
-            response.addAllResults(terms);
-        } catch (PropertyServerException | SubjectAreaCheckedException | UserNotAuthorizedException e) {
-            response.setExceptionInfo(e, className);
+
+        SubjectAreaOMASAPIResponse<Term>  response = getRelatedNodesForEnd1(methodName, userId, guid, PROJECT_SCOPE_RELATIONSHIP_NAME, TermMapper.class, startingFrom, pageSize);
+        List<Term> allTerms = new ArrayList<>();
+        // the terms we get back from the mappers only map the parts from the entity. They do not set the glossary.
+        if (response.getRelatedHTTPCode() == 200 && response.results() !=null && response.results().size() >0) {
+            for (Term mappedCategory: response.results()) {
+                SubjectAreaOMASAPIResponse<Term> termResponse = termHandler.getTermByGuid(userId, mappedCategory.getSystemAttributes().getGUID());
+                if (termResponse.getRelatedHTTPCode() == 200) {
+                    allTerms.add(termResponse.results().get(0));
+                } else {
+                    response = termResponse;
+                    break;
+                }
+            }
         }
+        if (response.getRelatedHTTPCode() == 200) {
+            response = new SubjectAreaOMASAPIResponse<>();
+            response.addAllResults(allTerms);
+        }
+
         return response;
     }
 }

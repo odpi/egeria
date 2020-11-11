@@ -1507,7 +1507,7 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
     /**
      * Save a new entity that is sourced from an external technology.  The external
      * technology is identified by a GUID and a name.  These can be recorded in a
-     * Software Server Capability (guid and qualifiedName respectively.
+     * Software Server Capability (guid and qualifiedName respectively).
      * The new entity is assigned a new GUID and put
      * in the requested state.  The new entity is returned.
      *
@@ -1551,9 +1551,9 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
     {
         final String  methodName = "addExternalEntity";
 
-       throw new FunctionNotSupportedException(OMRSErrorCode.METHOD_NOT_IMPLEMENTED.getMessageDefinition(methodName,
-                                                                                                         this.getClass().getName(),
-                                                                                                         repositoryName),
+        throw new FunctionNotSupportedException(OMRSErrorCode.METHOD_NOT_IMPLEMENTED.getMessageDefinition(methodName,
+                                                                                                          this.getClass().getName(),
+                                                                                                          repositoryName),
                                                 this.getClass().getName(),
                                                 methodName);
     }
@@ -1757,6 +1757,54 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
                                                                                                       PropertyErrorException,
                                                                                                       UserNotAuthorizedException,
                                                                                                       FunctionNotSupportedException;
+
+
+    /**
+     * Add the requested classification to a specific entity.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityGUID String unique identifier (guid) for the entity.
+     * @param classificationName String name for the classification.
+     * @param externalSourceGUID unique identifier (guid) for the external source.
+     * @param externalSourceName unique name for the external source.
+     * @param classificationOrigin source of the classification
+     * @param classificationOriginGUID if the classification is propagated, this is the unique identifier of the entity where
+     * @param classificationProperties list of properties to set in the classification.
+     * @return EntityDetail showing the resulting entity header, properties and classifications.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection
+     * @throws ClassificationErrorException the requested classification is either not known or not valid
+     *                                         for the entity.
+     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                characteristics in the TypeDef for this classification type
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
+     */
+    public  EntityDetail classifyEntity(String               userId,
+                                        String               entityGUID,
+                                        String               classificationName,
+                                        String               externalSourceGUID,
+                                        String               externalSourceName,
+                                        ClassificationOrigin classificationOrigin,
+                                        String               classificationOriginGUID,
+                                        InstanceProperties   classificationProperties) throws InvalidParameterException,
+                                                                                              RepositoryErrorException,
+                                                                                              EntityNotKnownException,
+                                                                                              ClassificationErrorException,
+                                                                                              PropertyErrorException,
+                                                                                              UserNotAuthorizedException,
+                                                                                              FunctionNotSupportedException
+    {
+        final String  methodName = "classifyEntity (detailed)";
+
+        throw new FunctionNotSupportedException(OMRSErrorCode.METHOD_NOT_IMPLEMENTED.getMessageDefinition(methodName,
+                                                                                                          this.getClass().getName(),
+                                                                                                          repositoryName),
+                                                this.getClass().getName(),
+                                                methodName);
+    }
 
 
     /**
@@ -2380,7 +2428,7 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
      * Save the entity as a reference copy.  The id of the home metadata collection is already set up in the
      * entity.
      *
-     * @param userId unique identifier for requesting server.
+     * @param userId unique identifier for requesting user.
      * @param entity details of the entity to save.
      * @throws InvalidParameterException the entity is null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
@@ -2409,12 +2457,76 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
 
 
     /**
+     * Retrieve any locally homed classifications assigned to the requested entity.  This method is implemented by repository connectors that are able
+     * to store classifications for entities that are homed in another repository.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityGUID unique identifier of the entity with classifications to retrieve
+     * @return list of all of the classifications for this entity that are homed in this repository
+     * @throws InvalidParameterException the entity is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws EntityNotKnownException the entity is not recognized by this repository
+     * @throws UserNotAuthorizedException to calling user is not authorized to retrieve this metadata
+     * @throws FunctionNotSupportedException this method is not supported
+     */
+    public List<Classification> getHomeClassifications(String userId,
+                                                       String entityGUID) throws InvalidParameterException,
+                                                                                       RepositoryErrorException,
+                                                                                       EntityNotKnownException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       FunctionNotSupportedException
+    {
+        final String  methodName = "getHomeClassifications";
+
+        throw new FunctionNotSupportedException(OMRSErrorCode.METHOD_NOT_IMPLEMENTED.getMessageDefinition(methodName,
+                                                                                                          this.getClass().getName(),
+                                                                                                          repositoryName),
+                                                this.getClass().getName(),
+                                                methodName);
+    }
+
+
+    /**
+     * Retrieve any locally homed classifications assigned to the requested entity.  This method is implemented by repository connectors that are able
+     * to store classifications for entities that are homed in another repository.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityGUID unique identifier of the entity with classifications to retrieve
+     * @param asOfTime the time used to determine which version of the entity that is desired.
+     * @return list of all of the classifications for this entity that are homed in this repository
+     * @throws InvalidParameterException the entity is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws EntityNotKnownException the entity is not recognized by this repository
+     * @throws UserNotAuthorizedException to calling user is not authorized to retrieve this metadata
+     * @throws FunctionNotSupportedException this method is not supported
+     */
+    public List<Classification> getHomeClassifications(String userId,
+                                                       String entityGUID,
+                                                       Date   asOfTime) throws InvalidParameterException,
+                                                                               RepositoryErrorException,
+                                                                               EntityNotKnownException,
+                                                                               UserNotAuthorizedException,
+                                                                               FunctionNotSupportedException
+    {
+        final String  methodName = "getHomeClassifications (with history)";
+
+        throw new FunctionNotSupportedException(OMRSErrorCode.METHOD_NOT_IMPLEMENTED.getMessageDefinition(methodName,
+                                                                                                          this.getClass().getName(),
+                                                                                                          repositoryName),
+                                                this.getClass().getName(),
+                                                methodName);
+    }
+
+
+    /**
      * Remove a reference copy of the the entity from the local repository.  This method can be used to
      * remove reference copies from the local cohort, repositories that have left the cohort,
      * or entities that have come from open metadata archives.  It is also an opportunity to remove or
      * soft delete relationships attached to the entity.
      *
-     * @param userId unique identifier for requesting server.
+     * @param userId unique identifier for requesting user.
      * @param entity details of the entity to purge.
      * @throws InvalidParameterException the entity is null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
@@ -2460,7 +2572,7 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
      * passes the EntityDetail object.  This is typically used if purge is called without a previous soft-delete.
      * However it may also be used to purge after a soft-delete.
      *
-     * @param userId unique identifier for requesting server.
+     * @param userId unique identifier for requesting user.
      * @param entity details of the entity to purge.
      * @throws InvalidParameterException the entity is null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
@@ -2523,7 +2635,7 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
      * remove reference copies from the local cohort, repositories that have left the cohort,
      * or entities that have come from open metadata archives.
      *
-     * @param userId unique identifier for requesting server.
+     * @param userId unique identifier for requesting user.
      * @param entityGUID the unique identifier for the entity.
      * @param typeDefGUID the guid of the TypeDef for the relationship used to verify the relationship identity.
      * @param typeDefName the name of the TypeDef for the relationship used to verify the relationship identity.
@@ -2554,7 +2666,7 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
      * The local repository has requested that the repository that hosts the home metadata collection for the
      * specified entity sends out the details of this entity so the local repository can create a reference copy.
      *
-     * @param userId unique identifier for requesting server.
+     * @param userId unique identifier for requesting user.
      * @param entityGUID unique identifier of requested entity.
      * @param typeDefGUID unique identifier of requested entity's TypeDef.
      * @param typeDefName unique name of requested entity's TypeDef.
@@ -2581,10 +2693,111 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
 
 
     /**
+     * Save the classification as a reference copy.  The id of the home metadata collection is already set up in the
+     * classification.  The entity may be either a locally homed entity or a reference copy.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entity entity that the classification is attached to.
+     * @param classification classification to save.
+     *
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                characteristics in the TypeDef for this classification type.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
+     * @throws TypeErrorException the requested type is not known, or not supported in the metadata repository
+     *                            hosting the metadata collection.
+     * @throws EntityConflictException the new entity conflicts with an existing entity.
+     * @throws InvalidEntityException the new entity has invalid contents.
+     * @throws FunctionNotSupportedException the repository does not support reference copies of instances.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public void saveClassificationReferenceCopy(String         userId,
+                                                EntityDetail   entity,
+                                                Classification classification) throws InvalidParameterException,
+                                                                                      RepositoryErrorException,
+                                                                                      TypeErrorException,
+                                                                                      EntityConflictException,
+                                                                                      InvalidEntityException,
+                                                                                      PropertyErrorException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      FunctionNotSupportedException
+    {
+        /*
+         * This is a new method - if this method is not overridden in the implementing repository connector,
+         * the logic below is executed.
+         */
+        if ((metadataCollectionId != null) && (!metadataCollectionId.equals(entity.getMetadataCollectionId())))
+        {
+            try
+            {
+                saveEntityReferenceCopy(userId, entity);
+            }
+            catch (HomeEntityException homeEntity)
+            {
+                // Ignore as if statement makes it impossible.
+            }
+        }
+    }
+
+
+    /**
+     * Remove the reference copy of the classification from the local repository. This method can be used to
+     * remove reference copies from the local cohort, repositories that have left the cohort,
+     * or relationships that have come from open metadata archives.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entity entity that the classification is attached to.
+     * @param classification classification to purge.
+     *
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                characteristics in the TypeDef for this classification type.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws TypeErrorException the requested type is not known, or not supported in the metadata repository
+     *                            hosting the metadata collection.
+     * @throws EntityConflictException the new entity conflicts with an existing entity.
+     * @throws InvalidEntityException the new entity has invalid contents.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
+     */
+    public  void purgeClassificationReferenceCopy(String         userId,
+                                                  EntityDetail   entity,
+                                                  Classification classification) throws InvalidParameterException,
+                                                                                         TypeErrorException,
+                                                                                         PropertyErrorException,
+                                                                                         EntityConflictException,
+                                                                                         InvalidEntityException,
+                                                                                         RepositoryErrorException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         FunctionNotSupportedException
+    {
+        /*
+         * This is a new method - if this method is not overridden in the implementing repository connector,
+         * the logic below is executed.
+         */
+        if ((metadataCollectionId != null) && (! metadataCollectionId.equals(entity.getMetadataCollectionId())))
+        {
+            try
+            {
+                deleteEntityReferenceCopy(userId, entity);
+            }
+            catch (HomeEntityException homeEntity)
+            {
+                // Ignore as if statement makes it impossible.
+            }
+        }
+    }
+
+
+    /**
      * Save the relationship as a reference copy.  The id of the home metadata collection is already set up in the
      * relationship.
      *
-     * @param userId unique identifier for requesting server.
+     * @param userId unique identifier for requesting user.
      * @param relationship relationship to save.
      *
      * @throws InvalidParameterException the relationship is null.
@@ -2621,7 +2834,7 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
      * remove reference copies from the local cohort, repositories that have left the cohort,
      * or relationships that have come from open metadata archives.
      *
-     * @param userId unique identifier for requesting server.
+     * @param userId unique identifier for requesting user.
      * @param relationship relationship to purge.
      *
      * @throws InvalidParameterException the relationship is null.
@@ -2670,7 +2883,7 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
      * remove reference copies from the local cohort, repositories that have left the cohort,
      * or relationships that have come from open metadata archives.
      *
-     * @param userId unique identifier for requesting server.
+     * @param userId unique identifier for requesting user.
      * @param relationship the purged relationship.
      * @throws InvalidParameterException the relationship is null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
@@ -2737,7 +2950,7 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
      * remove reference copies from the local cohort, repositories that have left the cohort,
      * or relationships that have come from open metadata archives.
      *
-     * @param userId unique identifier for requesting server.
+     * @param userId unique identifier for requesting user.
      * @param relationshipGUID the unique identifier for the relationship.
      * @param typeDefGUID the guid of the TypeDef for the relationship used to verify the relationship identity.
      * @param typeDefName the name of the TypeDef for the relationship used to verify the relationship identity.
@@ -2768,7 +2981,7 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
      * specified relationship sends out the details of this relationship so the local repository can create a
      * reference copy.
      *
-     * @param userId unique identifier for requesting server.
+     * @param userId unique identifier for requesting user.
      * @param relationshipGUID unique identifier of the relationship.
      * @param typeDefGUID the guid of the TypeDef for the relationship used to verify the relationship identity.
      * @param typeDefName the name of the TypeDef for the relationship used to verify the relationship identity.
@@ -2798,7 +3011,7 @@ public abstract class OMRSMetadataCollection implements AuditLoggingComponent
      * The id of the home metadata collection is already set up in the instances.
      * Any instances from the home metadata collection are ignored.
      *
-     * @param userId unique identifier for requesting server.
+     * @param userId unique identifier for requesting user.
      * @param instances instances to save.
      * @throws InvalidParameterException the relationship is null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where

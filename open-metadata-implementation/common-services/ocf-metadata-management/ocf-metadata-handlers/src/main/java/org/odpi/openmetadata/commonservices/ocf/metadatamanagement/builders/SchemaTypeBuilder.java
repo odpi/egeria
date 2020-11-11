@@ -4,9 +4,11 @@ package org.odpi.openmetadata.commonservices.ocf.metadatamanagement.builders;
 
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.SchemaElementMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.DerivedSchemaTypeQueryTarget;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -15,9 +17,7 @@ import java.util.Map;
  */
 public class SchemaTypeBuilder extends ReferenceableBuilder
 {
-    private String              displayName;
-
-    private String              typeName             = null;
+    private String              displayName          = null;
     private String              description          = null;
     private boolean             isDeprecated         = false;
     private String              versionNumber        = null;
@@ -25,12 +25,35 @@ public class SchemaTypeBuilder extends ReferenceableBuilder
     private String              usage                = null;
     private String              encodingStandard     = null;
     private String              namespace            = null;
+
+    private String              anchorGUID           = null;
+    /*
+     * Values for simple, primitive, literal types
+     */
     private String              dataType             = null;
     private String              defaultValue         = null;
     private String              fixedValue           = null;
 
-    private int                 maximumElements      = 0;
 
+    /*
+     * Values for a schema type that is a map
+     */
+    private SchemaTypeBuilder mapFrom = null;
+    private SchemaTypeBuilder mapTo   = null;
+
+    /*
+     * Values for a schema type choice
+     */
+    private List<SchemaTypeBuilder>  schemaOptions = null;
+
+    /*
+     * Values for when the schemaType is derived from other values rather than stored
+     */
+    private String                             formula = null;
+    private List<DerivedSchemaTypeQueryTarget> queries = null;
+
+
+    private int                 maximumElements      = 0;
 
     /**
      * Minimal constructor
@@ -54,9 +77,29 @@ public class SchemaTypeBuilder extends ReferenceableBuilder
 
 
     /**
+     * Simple typed constructor
+     *
+     * @param qualifiedName unique name
+     * @param typeName name of the type for this schema element
+     * @param typeId unique identifier of the type for this schema element
+     * @param repositoryHelper helper methods
+     * @param serviceName name of this OMAS
+     * @param serverName name of local server
+     */
+    public SchemaTypeBuilder(String               qualifiedName,
+                             String               typeName,
+                             String               typeId,
+                             OMRSRepositoryHelper repositoryHelper,
+                             String               serviceName,
+                             String               serverName)
+    {
+        super(qualifiedName, typeName, typeId, repositoryHelper, serviceName, serverName);
+    }
+
+
+    /**
      * Constructor supporting all common properties.
      *
-     * @param typeName unique name of schema sub type
      * @param qualifiedName unique name of schema type itself
      * @param displayName new value for the display name.
      * @param description description of the schema type.
@@ -67,13 +110,15 @@ public class SchemaTypeBuilder extends ReferenceableBuilder
      * @param encodingStandard format of the schema.
      * @param namespace namespace where the schema is defined.
      * @param additionalProperties additional properties
+     * @param anchorGUID unique identifier of the anchor object for this schema type
+     * @param typeName unique name of schema sub type
+     * @param typeId unique identifier of the schema subtype
      * @param extendedProperties  properties from the subtype.
      * @param repositoryHelper helper methods
      * @param serviceName name of this OMAS
      * @param serverName name of local server
      */
-    public SchemaTypeBuilder(String               typeName,
-                             String               qualifiedName,
+    public SchemaTypeBuilder(String               qualifiedName,
                              String               displayName,
                              String               description,
                              String               versionNumber,
@@ -83,6 +128,9 @@ public class SchemaTypeBuilder extends ReferenceableBuilder
                              String               encodingStandard,
                              String               namespace,
                              Map<String, String>  additionalProperties,
+                             String               anchorGUID,
+                             String               typeName,
+                             String               typeId,
                              Map<String, Object>  extendedProperties,
                              OMRSRepositoryHelper repositoryHelper,
                              String               serviceName,
@@ -90,12 +138,13 @@ public class SchemaTypeBuilder extends ReferenceableBuilder
     {
         super(qualifiedName,
               additionalProperties,
+              typeName,
+              typeId,
               extendedProperties,
               repositoryHelper,
               serviceName,
               serverName);
 
-        this.typeName = typeName;
         this.displayName = displayName;
         this.description = description;
         this.versionNumber = versionNumber;
@@ -104,17 +153,7 @@ public class SchemaTypeBuilder extends ReferenceableBuilder
         this.usage = usage;
         this.encodingStandard = encodingStandard;
         this.namespace = namespace;
-    }
-
-
-    /**
-     * Set up the unique name for the sub type of this element.
-     *
-     * @param typeName string name
-     */
-    public void setTypeName(String typeName)
-    {
-        this.typeName = typeName;
+        this.anchorGUID = anchorGUID;
     }
 
 
@@ -152,6 +191,91 @@ public class SchemaTypeBuilder extends ReferenceableBuilder
 
 
     /**
+     * Set up the builder to support a map type.  This needs to point to two other schema types.
+     *
+     * @param mapFrom the type of the value that is in the domain of the map
+     * @param mapTo the type of the value that is in the rage of the map
+     */
+    public void setMapTypes(SchemaTypeBuilder   mapFrom,
+                            SchemaTypeBuilder   mapTo)
+    {
+        this.mapFrom = mapFrom;
+        this.mapTo   = mapTo;
+    }
+
+
+    /**
+     * Return the builder for the type of the value that is in the domain of the map.
+     *
+     * @return builder for requested type
+     */
+    public SchemaTypeBuilder  getMapFrom()
+    {
+        return this.mapFrom;
+    }
+
+
+    /**
+     * Return the builder for the type of the value that is in the range of the map.
+     *
+     * @return builder for requested type
+     */
+    public SchemaTypeBuilder  getMapTo()
+    {
+        return this.mapTo;
+    }
+
+
+    /**
+     * Set up the list of types that are represented by a schema option type.
+     *
+     * @param schemaOptions list of builders
+     */
+    public void setSchemaOptions(List<SchemaTypeBuilder> schemaOptions)
+    {
+        this.schemaOptions = schemaOptions;
+    }
+
+
+    /**
+     * Return the list of types that are represented by a schema option type.
+     *
+     * @return list of builders
+     */
+    public List<SchemaTypeBuilder> getSchemaOptions()
+    {
+        return schemaOptions;
+    }
+
+
+    /**
+     * Set up the properties that indicate that the schema element's value is not stored, it is derived from other values.
+     * The formula is stored in the CalculatedValue classification.  If it is null, the queries are ignored.  The queries
+     * are each stored as a DerivedSchemaTypeQueryTarget.
+     *
+     * @param formula expression, possibly with place holders to insert the values returned from the queries
+     * @param queries optional queries to supply values to insert into the formula
+     */
+    public void setDerivedProperties(String                             formula,
+                                     List<DerivedSchemaTypeQueryTarget> queries)
+    {
+        this.formula = formula;
+        this.queries = queries;
+    }
+
+
+    /**
+     * Return whether the schema has a derived value of not.  This is determined from the setting of formula
+     *
+     * @return boolean
+     */
+    public boolean isDerived()
+    {
+        return (! (formula == null));
+    }
+
+
+    /**
      * Set up the maximum number of elements allowed - zero for no limit.  This property is deprecated because
      * it is for BoundedSchemaType which is also deprecated.
      *
@@ -180,7 +304,7 @@ public class SchemaTypeBuilder extends ReferenceableBuilder
         {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
-                                                                      SchemaElementMapper.DISPLAY_NAME_PROPERTY_NAME,
+                                                                      SchemaElementMapper.SCHEMA_DISPLAY_NAME_PROPERTY_NAME,
                                                                       displayName,
                                                                       methodName);
         }
@@ -190,7 +314,7 @@ public class SchemaTypeBuilder extends ReferenceableBuilder
         {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
-                                                                      SchemaElementMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                      SchemaElementMapper.SCHEMA_DESCRIPTION_PROPERTY_NAME,
                                                                       description,
                                                                       methodName);
         }
@@ -199,14 +323,14 @@ public class SchemaTypeBuilder extends ReferenceableBuilder
         {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
-                                                                      SchemaElementMapper.VERSION_NUMBER_PROPERTY_NAME,
+                                                                      SchemaElementMapper.SCHEMA_VERSION_NUMBER_PROPERTY_NAME,
                                                                       versionNumber,
                                                                       methodName);
         }
 
         properties = repositoryHelper.addBooleanPropertyToInstance(serviceName,
                                                                    properties,
-                                                                   SchemaElementMapper.IS_DEPRECATED_PROPERTY_NAME,
+                                                                   SchemaElementMapper.SCHEMA_IS_DEPRECATED_PROPERTY_NAME,
                                                                    isDeprecated,
                                                                    methodName);
 
@@ -214,7 +338,7 @@ public class SchemaTypeBuilder extends ReferenceableBuilder
         {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
-                                                                      SchemaElementMapper.AUTHOR_PROPERTY_NAME,
+                                                                      SchemaElementMapper.SCHEMA_AUTHOR_PROPERTY_NAME,
                                                                       author,
                                                                       methodName);
         }
@@ -223,7 +347,7 @@ public class SchemaTypeBuilder extends ReferenceableBuilder
         {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
-                                                                      SchemaElementMapper.USAGE_PROPERTY_NAME,
+                                                                      SchemaElementMapper.SCHEMA_USAGE_PROPERTY_NAME,
                                                                       usage,
                                                                       methodName);
         }
@@ -232,7 +356,7 @@ public class SchemaTypeBuilder extends ReferenceableBuilder
         {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
-                                                                      SchemaElementMapper.ENCODING_STANDARD_PROPERTY_NAME,
+                                                                      SchemaElementMapper.SCHEMA_ENCODING_STANDARD_PROPERTY_NAME,
                                                                       encodingStandard,
                                                                       methodName);
         }
@@ -241,7 +365,7 @@ public class SchemaTypeBuilder extends ReferenceableBuilder
         {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
-                                                                      SchemaElementMapper.NAMESPACE_PROPERTY_NAME,
+                                                                      SchemaElementMapper.SCHEMA_NAMESPACE_PROPERTY_NAME,
                                                                       namespace,
                                                                       methodName);
         }
@@ -330,7 +454,7 @@ public class SchemaTypeBuilder extends ReferenceableBuilder
 
             properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
-                                                                      SchemaElementMapper.DISPLAY_NAME_PROPERTY_NAME,
+                                                                      SchemaElementMapper.SCHEMA_DISPLAY_NAME_PROPERTY_NAME,
                                                                       literalName,
                                                                       methodName);
         }

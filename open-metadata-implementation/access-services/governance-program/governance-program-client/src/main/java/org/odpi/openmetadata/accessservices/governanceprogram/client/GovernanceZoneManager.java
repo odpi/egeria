@@ -4,15 +4,15 @@
 package org.odpi.openmetadata.accessservices.governanceprogram.client;
 
 import org.odpi.openmetadata.accessservices.governanceprogram.api.GovernanceZoneManagerInterface;
+import org.odpi.openmetadata.accessservices.governanceprogram.metadataelements.GovernanceZoneElement;
+import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceZoneProperties;
+import org.odpi.openmetadata.accessservices.governanceprogram.rest.ZoneListResponse;
+import org.odpi.openmetadata.accessservices.governanceprogram.rest.ZoneResponse;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.gaf.metadatamanagement.rest.ZoneListResponse;
-import org.odpi.openmetadata.commonservices.gaf.metadatamanagement.rest.ZoneRequestBody;
-import org.odpi.openmetadata.commonservices.gaf.metadatamanagement.rest.ZoneResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceZone;
 
 import java.util.List;
 import java.util.Map;
@@ -148,20 +148,24 @@ public class GovernanceZoneManager implements GovernanceZoneManagerInterface
      * @param displayName short display name for the zone
      * @param description description of the governance zone
      * @param criteria the criteria for inclusion in a governance zone
+     * @param scope scope of the organization that this some applies to
+     * @param domainIdentifier the identifier of the governance domain where the zone is managed - 0 means ALL
      * @param additionalProperties additional properties for a governance zone
      *
      * @throws InvalidParameterException qualifiedName or userId is null
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public void  createGovernanceZone(String              userId,
-                                      String              qualifiedName,
-                                      String              displayName,
-                                      String              description,
-                                      String              criteria,
-                                      Map<String, String> additionalProperties) throws InvalidParameterException,
-                                                                                       UserNotAuthorizedException,
-                                                                                       PropertyServerException
+    public void  createGovernanceZone(String               userId,
+                                      String               qualifiedName,
+                                      String               displayName,
+                                      String               description,
+                                      String               criteria,
+                                      String               scope,
+                                      int                  domainIdentifier,
+                                      Map<String, String>  additionalProperties) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
     {
         final String   methodName = "createGovernanceZone";
 
@@ -171,11 +175,14 @@ public class GovernanceZoneManager implements GovernanceZoneManagerInterface
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameter, methodName);
 
-        ZoneRequestBody requestBody = new ZoneRequestBody();
+        GovernanceZoneProperties requestBody = new GovernanceZoneProperties();
 
         requestBody.setQualifiedName(qualifiedName);
         requestBody.setDisplayName(displayName);
         requestBody.setDescription(description);
+        requestBody.setCriteria(criteria);
+        requestBody.setScope(scope);
+        requestBody.setDomainIdentifier(domainIdentifier);
         requestBody.setAdditionalProperties(additionalProperties);
 
         restClient.callVoidPostRESTCall(methodName,
@@ -198,8 +205,8 @@ public class GovernanceZoneManager implements GovernanceZoneManagerInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public GovernanceZone getGovernanceZone(String   userId,
-                                            String   qualifiedName) throws InvalidParameterException,
+    public GovernanceZoneElement getGovernanceZone(String   userId,
+                                                   String   qualifiedName) throws InvalidParameterException,
                                                                            UserNotAuthorizedException,
                                                                            PropertyServerException
     {
@@ -234,11 +241,11 @@ public class GovernanceZoneManager implements GovernanceZoneManagerInterface
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public List<GovernanceZone> getGovernanceZones(String   userId,
-                                                   int      startingFrom,
-                                                   int      maximumResults) throws InvalidParameterException,
-                                                                                   UserNotAuthorizedException,
-                                                                                   PropertyServerException
+    public List<GovernanceZoneElement> getGovernanceZones(String   userId,
+                                                          int      startingFrom,
+                                                          int      maximumResults) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException
     {
         final String   methodName = "getGovernanceZones";
         final String   urlTemplate = "/servers/{0}/open-metadata/access-services/governance-program/users/{1}/governance-zone-manager/governance-zones?startingFrom={4}&maximumResults={5}";

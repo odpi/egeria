@@ -40,12 +40,12 @@ public class OpenLineageServerOperationalServices {
     private int maxPageSize;
 
     private OpenLineageServerConfig openLineageServerConfig;
-    private OpenLineageServerInstance openLineageServerInstance = null;
-    private OMRSAuditLog auditLog = null;
+    private OpenLineageServerInstance openLineageServerInstance;
+    private OMRSAuditLog auditLog;
     private LineageGraph lineageGraphConnector;
     private OpenMetadataTopicConnector inTopicConnector;
     private JobConfiguration backgroundJob;
-    private int jobIntervalInSeconds;
+    private int jobIntervalInSeconds = 120;
 
     /**
      * Constructor used at server startup.

@@ -70,6 +70,14 @@ class DataEngineResourceTest {
     }
 
     @Test
+    void testAddProcessHierarchies() {
+        ProcessHierarchyRequestBody requestBody = new ProcessHierarchyRequestBody();
+        dataEngineResource.addProcessHierarchy(USER, SERVER_NAME, requestBody);
+
+        verify(dataEngineRestServices, times(1)).addProcessHierarchy(USER, SERVER_NAME, requestBody);
+    }
+
+    @Test
     void testCreateProcesses() {
         ProcessesRequestBody requestBody = new ProcessesRequestBody();
         dataEngineResource.createOrUpdateProcesses(USER, SERVER_NAME, requestBody);

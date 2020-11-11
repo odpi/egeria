@@ -19,16 +19,11 @@ metadata instances.
 * **[Repository Handler](repository-handler)** - supports access to multiple related metadata instances from the
 [Open Metadata Repository Services (OMRS)](../repository-services).
 
-In addition, there are shared metadata management functions for
+In addition, there is a shared metadata management module for
 server-side services that make use of the beans defined in the various [frameworks](../frameworks) that underpin Egeria.
-These include:
 
 * **[OCF Metadata Management](ocf-metadata-management)** - managing metadata about assets, connections and all of the
 different types of metadata defined in the asset properties.
-
-* **[ODF Metadata Management](odf-metadata-management)** - managing metadata about discovery services.
-
-* **[GAF Metadata Management](gaf-metadata-management)** - managing metadata about governance requirements and actions.
 
 ----
 Return to [open-metadata-implementation](..).

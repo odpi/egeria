@@ -12,7 +12,6 @@ public class FileSystemProperties extends SoftwareServerCapabilitiesProperties
 {
     private static final long    serialVersionUID = 1L;
 
-    private String              fileSystemType = null;
     private String              format = null;
     private String              encryption = null;
 
@@ -37,7 +36,6 @@ public class FileSystemProperties extends SoftwareServerCapabilitiesProperties
 
         if (template != null)
         {
-            fileSystemType = template.getFileSystemType();
             format = template.getFormat();
             encryption = template.getEncryption();
         }
@@ -52,33 +50,6 @@ public class FileSystemProperties extends SoftwareServerCapabilitiesProperties
     public FileSystemProperties(SoftwareServerCapabilitiesProperties template)
     {
         super(template);
-
-        if (template != null)
-        {
-            fileSystemType = template.getTypeDescription();
-        }
-    }
-
-
-    /**
-     * Return the type of the file system.
-     *
-     * @return string name
-     */
-    public String getFileSystemType()
-    {
-        return fileSystemType;
-    }
-
-
-    /**
-     * Set up the type of the file system.
-     *
-     * @param type string name
-     */
-    public void setFileSystemType(String type)
-    {
-        this.fileSystemType = type;
     }
 
 
@@ -135,8 +106,7 @@ public class FileSystemProperties extends SoftwareServerCapabilitiesProperties
     public String toString()
     {
         return "FileSystemProperties{" +
-                "fileSystemType='" + fileSystemType + '\'' +
-                ", format='" + format + '\'' +
+                "format='" + format + '\'' +
                 ", encryption='" + encryption + '\'' +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +
@@ -169,9 +139,7 @@ public class FileSystemProperties extends SoftwareServerCapabilitiesProperties
             return false;
         }
         FileSystemProperties that = (FileSystemProperties) objectToCompare;
-        return Objects.equals(getFileSystemType(), that.getFileSystemType()) &&
-                       Objects.equals(getFormat(), that.getFormat()) &&
-                       Objects.equals(getEncryption(), that.getEncryption());
+        return Objects.equals(getFormat(), that.getFormat()) && Objects.equals(getEncryption(), that.getEncryption());
     }
 
 
@@ -184,6 +152,6 @@ public class FileSystemProperties extends SoftwareServerCapabilitiesProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getFileSystemType(), getFormat(), getEncryption());
+        return Objects.hash(super.hashCode(), getFormat(), getEncryption());
     }
 }

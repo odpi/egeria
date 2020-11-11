@@ -15,7 +15,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * The PersonalProfile describes an individual who has (or will be) appointed to one of the
- * GovernanceOfficer roles defined in the governance program.  Information about the
+ * GovernanceOfficerProperties roles defined in the governance program.  Information about the
  * personal profile is stored as an Person entity.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
@@ -304,7 +304,7 @@ public class PersonalProfile implements Serializable
     @Override
     public String toString()
     {
-        return "GovernanceOfficer{" +
+        return "GovernanceOfficerProperties{" +
                 "guid='" + guid + '\'' +
                 ", type='" + type + '\'' +
                 ", employeeNumber='" + employeeNumber + '\'' +

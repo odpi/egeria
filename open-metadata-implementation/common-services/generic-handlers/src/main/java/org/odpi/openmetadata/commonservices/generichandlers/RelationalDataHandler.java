@@ -1,0 +1,3598 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
+package org.odpi.openmetadata.commonservices.generichandlers;
+
+import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryErrorHandler;
+import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
+
+import java.util.*;
+
+/**
+ * RelationalDataHandler manages the assets and schemas for relational data.  It is build on the AssetHandler
+ * and the SchemaAttributeHandler.  Its role is to maintain a simple interface that covers databases,
+ * database schemas, database tables and columns.  It automatically creates and links in the schema type
+ * information in the structure and keeps it linked together.
+ */
+public class RelationalDataHandler<DATABASE,
+                                   DATABASE_SCHEMA,
+                                   DATABASE_TABLE,
+                                   DATABASE_VIEW,
+                                   DATABASE_COLUMN,
+                                   SCHEMA_TYPE>
+
+{
+    private String                                               serviceName;
+    private String                                               serverName;
+    private OMRSRepositoryHelper                                 repositoryHelper;
+    private InvalidParameterHandler                              invalidParameterHandler;
+    private AssetHandler<DATABASE>                               databaseHandler;
+    private AssetHandler<DATABASE_SCHEMA>                        databaseSchemaHandler;
+    private SchemaAttributeHandler<DATABASE_TABLE, SCHEMA_TYPE>  databaseTableHandler;
+    private SchemaAttributeHandler<DATABASE_VIEW, SCHEMA_TYPE>   databaseViewHandler;
+    private SchemaAttributeHandler<DATABASE_COLUMN, SCHEMA_TYPE> databaseColumnHandler;
+
+    protected RepositoryErrorHandler errorHandler;
+
+
+    /**
+     * Construct the relational data handler with information needed to work with assets and schemas.
+     *
+     * @param databaseConverter specific converter for the DATABASE bean class
+     * @param databaseClass name of bean class that is represented by the generic class DATABASE
+     * @param databaseSchemaConverter specific converter for the DATABASE_SCHEMA bean class
+     * @param databaseSchemaClass name of bean class that is represented by the generic class DATABASE_SCHEMA
+     * @param databaseTableConverter specific converter for the DATABASE_TABLE bean class
+     * @param databaseTableClass name of bean class that is represented by the generic class DATABASE_TABLE
+     * @param databaseViewConverter specific converter for the DATABASE_VIEW bean class
+     * @param databaseViewClass name of bean class that is represented by the generic class DATABASE_VIEW
+     * @param databaseColumnConverter specific converter for the DATABASE_COLUMN bean class
+     * @param databaseColumnClass name of bean class that is represented by the generic class DATABASE_COLUMN
+     * @param schemaTypeConverter specific converter for the SCHEMA_TYPE bean class
+     * @param schemaTypeClass name of bean class that is represented by the generic class SCHEMA_TYPE
+     * @param serviceName      name of this service
+     * @param serverName       name of the local server
+     * @param invalidParameterHandler handler for managing parameter errors
+     * @param repositoryHandler     manages calls to the repository services
+     * @param repositoryHelper provides utilities for manipulating the repository services objects
+     * @param localServerUserId userId for this server
+     * @param securityVerifier open metadata security services verifier
+     * @param supportedZones list of zones that the access service is allowed to serve Asset instances from.
+     * @param defaultZones list of zones that the access service should set in all new Asset instances.
+     * @param publishZones list of zones that the access service sets up in published Asset instances.
+     * @param auditLog destination for audit log events.
+     */
+    public RelationalDataHandler(OpenMetadataAPIGenericConverter<DATABASE>                       databaseConverter,
+                                 Class<DATABASE>                                                 databaseClass,
+                                 OpenMetadataAPIGenericConverter<DATABASE_SCHEMA>                databaseSchemaConverter,
+                                 Class<DATABASE_SCHEMA>                                          databaseSchemaClass,
+                                 OpenMetadataAPIGenericConverter<DATABASE_TABLE>                 databaseTableConverter,
+                                 Class<DATABASE_TABLE>                                           databaseTableClass,
+                                 OpenMetadataAPIGenericConverter<DATABASE_VIEW>                  databaseViewConverter,
+                                 Class<DATABASE_VIEW>                                            databaseViewClass,
+                                 OpenMetadataAPIGenericConverter<DATABASE_COLUMN>                databaseColumnConverter,
+                                 Class<DATABASE_COLUMN>                                          databaseColumnClass,
+                                 OpenMetadataAPIGenericConverter<SCHEMA_TYPE>                    schemaTypeConverter,
+                                 Class<SCHEMA_TYPE>                                              schemaTypeClass,
+                                 String                                                          serviceName,
+                                 String                                                          serverName,
+                                 InvalidParameterHandler                                         invalidParameterHandler,
+                                 RepositoryHandler                                               repositoryHandler,
+                                 OMRSRepositoryHelper                                            repositoryHelper,
+                                 String                                                          localServerUserId,
+                                 OpenMetadataServerSecurityVerifier                              securityVerifier,
+                                 List<String>                                                    supportedZones,
+                                 List<String>                                                    defaultZones,
+                                 List<String>                                                    publishZones,
+                                 AuditLog                                                        auditLog)
+    {
+        this.serviceName                     = serviceName;
+        this.serverName                      = serverName;
+        this.invalidParameterHandler         = invalidParameterHandler;
+        this.repositoryHelper                = repositoryHelper;
+
+        this.databaseHandler = new AssetHandler<>(databaseConverter,
+                                                  databaseClass,
+                                                  serviceName,
+                                                  serverName,
+                                                  invalidParameterHandler,
+                                                  repositoryHandler,
+                                                  repositoryHelper,
+                                                  localServerUserId,
+                                                  securityVerifier,
+                                                  supportedZones,
+                                                  defaultZones,
+                                                  publishZones,
+                                                  auditLog);
+
+        this.databaseSchemaHandler = new AssetHandler<>(databaseSchemaConverter,
+                                                        databaseSchemaClass,
+                                                        serviceName,
+                                                        serverName,
+                                                        invalidParameterHandler,
+                                                        repositoryHandler,
+                                                        repositoryHelper,
+                                                        localServerUserId,
+                                                        securityVerifier,
+                                                        supportedZones,
+                                                        defaultZones,
+                                                        publishZones,
+                                                        auditLog);
+
+        this.databaseTableHandler = new SchemaAttributeHandler<>(databaseTableConverter,
+                                                                 databaseTableClass,
+                                                                 schemaTypeConverter,
+                                                                 schemaTypeClass,
+                                                                 serviceName,
+                                                                 serverName,
+                                                                 invalidParameterHandler,
+                                                                 repositoryHandler,
+                                                                 repositoryHelper,
+                                                                 localServerUserId,
+                                                                 securityVerifier,
+                                                                 supportedZones,
+                                                                 defaultZones,
+                                                                 publishZones,
+                                                                 auditLog);
+
+        this.databaseViewHandler = new SchemaAttributeHandler<>(databaseViewConverter,
+                                                                databaseViewClass,
+                                                                schemaTypeConverter,
+                                                                schemaTypeClass,
+                                                                serviceName,
+                                                                serverName,
+                                                                invalidParameterHandler,
+                                                                repositoryHandler,
+                                                                repositoryHelper,
+                                                                localServerUserId,
+                                                                securityVerifier,
+                                                                supportedZones,
+                                                                defaultZones,
+                                                                publishZones,
+                                                                auditLog);
+
+        this.databaseColumnHandler = new SchemaAttributeHandler<>(databaseColumnConverter,
+                                                                  databaseColumnClass,
+                                                                  schemaTypeConverter,
+                                                                  schemaTypeClass,
+                                                                  serviceName,
+                                                                  serverName,
+                                                                  invalidParameterHandler,
+                                                                  repositoryHandler,
+                                                                  repositoryHelper,
+                                                                  localServerUserId,
+                                                                  securityVerifier,
+                                                                  supportedZones,
+                                                                  defaultZones,
+                                                                  publishZones,
+                                                                  auditLog);
+
+        this.errorHandler = new RepositoryErrorHandler(repositoryHelper, serviceName, serverName, auditLog);
+    }
+
+
+    /* ========================================================
+     * The database is the top level asset on a database server
+     */
+
+
+    /**
+     * Create a new metadata element to represent a database that is owned by an external element.
+     *
+     * @param userId calling user
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
+     * @param qualifiedName unique name for this database
+     * @param displayName the stored display name property for the database
+     * @param description the stored description property associated with the database
+     * @param owner identifier of the owner
+     * @param ownerTypeOrdinal is the owner identifier a user id, personal profile or team profile
+     * @param zoneMembership governance zones for the database - null means use the default zones set for this service
+     * @param originOrganizationGUID the properties that characterize where this database is from
+     * @param originBusinessCapabilityGUID the properties that characterize where this database is from
+     * @param otherOriginValues the properties that characterize where this database is from
+     * @param createTime the time that the database was created
+     * @param modifiedTime the last known time the data store was modified
+     * @param encodingType the name of the encoding style used in the database
+     * @param encodingLanguage the name of the natural language used for text strings within the database
+     * @param encodingDescription the description of the encoding used in the database
+     * @param databaseType a description of the database type
+     * @param databaseVersion the version of the database - often this is related to the version of its schemas.
+     * @param databaseInstance the name of this database instance - useful if the same schemas are deployed to multiple database instances
+     * @param databaseImportedFrom the source (typically connection name) of the database information
+     * @param additionalProperties any arbitrary properties not part of the type system
+     * @param typeName name of the type that is a subtype of Database - or null to create standard type
+     * @param extendedProperties properties from any subtype
+     * @param vendorProperties additional properties relating to the source of the database technology
+     * @param methodName calling method
+     *
+     * @return unique identifier of the new metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createDatabase(String               userId,
+                                 String               databaseManagerGUID,
+                                 String               databaseManagerName,
+                                 String               qualifiedName,
+                                 String               displayName,
+                                 String               description,
+                                 String               owner,
+                                 int                  ownerTypeOrdinal,
+                                 List<String>         zoneMembership,
+                                 String               originOrganizationGUID,
+                                 String               originBusinessCapabilityGUID,
+                                 Map<String, String>  otherOriginValues,
+                                 Date                 createTime,
+                                 Date                 modifiedTime,
+                                 String               encodingType,
+                                 String               encodingLanguage,
+                                 String               encodingDescription,
+                                 String               databaseType,
+                                 String               databaseVersion,
+                                 String               databaseInstance,
+                                 String               databaseImportedFrom,
+                                 Map<String, String>  additionalProperties,
+                                 String               typeName,
+                                 Map<String, Object>  extendedProperties,
+                                 Map<String, String>  vendorProperties,
+                                 String               methodName) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
+    {
+        final String databaseManagerGUIDParameterName  = "databaseManagerGUID";
+        final String databaseGUIDParameterName         = "databaseGUID";
+        final String qualifiedNameParameterName        = "qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
+
+        databaseHandler.verifyExternalSourceIdentity(userId, databaseManagerGUID, databaseManagerName, methodName);
+
+        String assetTypeName = OpenMetadataAPIMapper.DATABASE_TYPE_NAME;
+
+        if (typeName != null)
+        {
+            assetTypeName = typeName;
+        }
+
+        String assetTypeId = invalidParameterHandler.validateTypeName(assetTypeName,
+                                                                      OpenMetadataAPIMapper.DATABASE_TYPE_NAME,
+                                                                      serviceName,
+                                                                      methodName,
+                                                                      repositoryHelper);
+
+        Map<String, Object> assetExtendedProperties = new HashMap<>();
+        if (extendedProperties != null)
+        {
+            assetExtendedProperties.putAll(extendedProperties);
+        }
+
+        assetExtendedProperties.put(OpenMetadataAPIMapper.CREATE_TIME_PROPERTY_NAME, createTime);
+        assetExtendedProperties.put(OpenMetadataAPIMapper.MODIFIED_TIME_PROPERTY_NAME, modifiedTime);
+        assetExtendedProperties.put(OpenMetadataAPIMapper.ENCODING_TYPE_PROPERTY_NAME, encodingType);
+        assetExtendedProperties.put(OpenMetadataAPIMapper.ENCODING_LANGUAGE_PROPERTY_NAME, encodingLanguage);
+        assetExtendedProperties.put(OpenMetadataAPIMapper.ENCODING_DESCRIPTION_PROPERTY_NAME, encodingDescription);
+        assetExtendedProperties.put(OpenMetadataAPIMapper.DATABASE_TYPE_PROPERTY_NAME, databaseType);
+        assetExtendedProperties.put(OpenMetadataAPIMapper.DATABASE_VERSION_PROPERTY_NAME, databaseVersion);
+        assetExtendedProperties.put(OpenMetadataAPIMapper.DATABASE_INSTANCE_PROPERTY_NAME, databaseInstance);
+        assetExtendedProperties.put(OpenMetadataAPIMapper.DATABASE_IMPORTED_FROM_PROPERTY_NAME, databaseImportedFrom);
+
+        /*
+         * This call will set up the default zones and give ownership of the asset to the calling user.
+         */
+        String databaseGUID = databaseHandler.createAssetInRepository(userId,
+                                                                      databaseManagerGUID,
+                                                                      databaseManagerName,
+                                                                      qualifiedName,
+                                                                      displayName,
+                                                                      description,
+                                                                      zoneMembership,
+                                                                      owner,
+                                                                      ownerTypeOrdinal,
+                                                                      originOrganizationGUID,
+                                                                      originBusinessCapabilityGUID,
+                                                                      otherOriginValues,
+                                                                      additionalProperties,
+                                                                      assetTypeId,
+                                                                      assetTypeName,
+                                                                      assetExtendedProperties,
+                                                                      methodName);
+
+        if (databaseGUID != null)
+        {
+            databaseHandler.setVendorProperties(userId,
+                                                databaseGUID,
+                                                vendorProperties,
+                                                methodName);
+
+            try
+            {
+                InstanceProperties relationshipProperties = repositoryHelper.addEnumPropertyToInstance(serviceName,
+                                                                                                       null,
+                                                                                                       OpenMetadataAPIMapper.USE_TYPE_PROPERTY_NAME,
+                                                                                                       OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
+                                                                                                       OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
+                                                                                                       0,
+                                                                                                       methodName);
+
+                databaseHandler.linkElementToElement(userId,
+                                                     databaseManagerGUID,
+                                                     databaseManagerName,
+                                                     databaseManagerGUID,
+                                                     databaseManagerGUIDParameterName,
+                                                     OpenMetadataAPIMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
+                                                     databaseGUID,
+                                                     databaseGUIDParameterName,
+                                                     OpenMetadataAPIMapper.DATABASE_TYPE_NAME,
+                                                     OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
+                                                     OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
+                                                     relationshipProperties,
+                                                     methodName);
+            }
+            catch (TypeErrorException error)
+            {
+                throw new InvalidParameterException(error, OpenMetadataAPIMapper.USE_TYPE_PROPERTY_NAME);
+            }
+        }
+
+        return databaseGUID;
+    }
+
+
+    /**
+     * Create a new metadata element to represent a database using an existing metadata element as a template.
+     *
+     * @param userId calling user
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
+     * @param templateGUID unique identifier of the metadata element to copy
+     * @param qualifiedName unique name for this database - must not be null
+     * @param displayName the stored display name property for the database - if null, the value from the template is used
+     * @param description the stored description property associated with the database - if null, the value from the template is used.
+     * @param methodName calling method
+     *
+     * @return unique identifier of the new metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createDatabaseFromTemplate(String               userId,
+                                             String               databaseManagerGUID,
+                                             String               databaseManagerName,
+                                             String               templateGUID,
+                                             String               qualifiedName,
+                                             String               displayName,
+                                             String               description,
+                                             String               methodName) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
+    {
+        final String templateGUIDParameterName   = "templateGUID";
+        final String qualifiedNameParameterName  = "qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
+
+        return databaseHandler.addAssetFromTemplate(userId,
+                                                    databaseManagerGUID,
+                                                    databaseManagerName,
+                                                    templateGUID,
+                                                    templateGUIDParameterName,
+                                                    OpenMetadataAPIMapper.DATABASE_TYPE_GUID,
+                                                    OpenMetadataAPIMapper.DATABASE_TYPE_NAME,
+                                                    qualifiedName,
+                                                    qualifiedNameParameterName,
+                                                    displayName,
+                                                    description,
+                                                    methodName);
+    }
+
+
+    /**
+     * Update the metadata element representing a database.
+     *
+     * @param userId calling user
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
+     * @param databaseGUID unique identifier of the metadata element to update
+     * @param qualifiedName unique name for this database
+     * @param displayName the stored display name property for the database
+     * @param description the stored description property associated with the database
+     * @param owner identifier of the owner
+     * @param ownerTypeOrdinal is the owner identifier a user id, personal profile or team profile
+     * @param zoneMembership governance zones for the database - null means use the default zones set for this service
+     * @param originOrganizationGUID the properties that characterize where this database is from
+     * @param originBusinessCapabilityGUID the properties that characterize where this database is from
+     * @param otherOriginValues the properties that characterize where this database is from
+     * @param createTime the time that the database was created
+     * @param modifiedTime the last known time the data store was modified
+     * @param encodingType the name of the encoding style used in the database
+     * @param encodingLanguage the name of the natural language used for text strings within the database
+     * @param encodingDescription the description of the encoding used in the database
+     * @param databaseType a description of the database type
+     * @param databaseVersion the version of the database - often this is related to the version of its schemas.
+     * @param databaseInstance the name of this database instance - useful if the same schemas are deployed to multiple database instances
+     * @param databaseImportedFrom the source (typically connection name) of the database information
+     * @param additionalProperties any arbitrary properties not part of the type system
+     * @param typeName name of the type that is a subtype of Database - or null to create standard type
+     * @param extendedProperties properties from any subtype
+     * @param vendorProperties additional properties relating to the source of the database technology
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void updateDatabase(String               userId,
+                               String               databaseManagerGUID,
+                               String               databaseManagerName,
+                               String               databaseGUID,
+                               String               qualifiedName,
+                               String               displayName,
+                               String               description,
+                               String               owner,
+                               int                  ownerTypeOrdinal,
+                               List<String>         zoneMembership,
+                               String               originOrganizationGUID,
+                               String               originBusinessCapabilityGUID,
+                               Map<String, String>  otherOriginValues,
+                               Date                 createTime,
+                               Date                 modifiedTime,
+                               String               encodingType,
+                               String               encodingLanguage,
+                               String               encodingDescription,
+                               String               databaseType,
+                               String               databaseVersion,
+                               String               databaseInstance,
+                               String               databaseImportedFrom,
+                               Map<String, String>  additionalProperties,
+                               String               typeName,
+                               Map<String, Object>  extendedProperties,
+                               Map<String, String>  vendorProperties,
+                               String               methodName) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException
+    {
+        final String elementGUIDParameterName    = "databaseGUID";
+        final String qualifiedNameParameterName  = "qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(databaseGUID, elementGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
+
+        String assetTypeName = OpenMetadataAPIMapper.DATABASE_TYPE_NAME;
+
+        if (typeName != null)
+        {
+            assetTypeName = typeName;
+        }
+
+        String assetTypeId = invalidParameterHandler.validateTypeName(assetTypeName,
+                                                                      OpenMetadataAPIMapper.DATABASE_TYPE_NAME,
+                                                                      serviceName,
+                                                                      methodName,
+                                                                      repositoryHelper);
+
+        Map<String, Object> assetExtendedProperties = new HashMap<>();
+        if (extendedProperties != null)
+        {
+            assetExtendedProperties.putAll(extendedProperties);
+        }
+
+        assetExtendedProperties.put(OpenMetadataAPIMapper.CREATE_TIME_PROPERTY_NAME, createTime);
+        assetExtendedProperties.put(OpenMetadataAPIMapper.MODIFIED_TIME_PROPERTY_NAME, modifiedTime);
+        assetExtendedProperties.put(OpenMetadataAPIMapper.ENCODING_TYPE_PROPERTY_NAME, encodingType);
+        assetExtendedProperties.put(OpenMetadataAPIMapper.ENCODING_LANGUAGE_PROPERTY_NAME, encodingLanguage);
+        assetExtendedProperties.put(OpenMetadataAPIMapper.ENCODING_DESCRIPTION_PROPERTY_NAME, encodingDescription);
+        assetExtendedProperties.put(OpenMetadataAPIMapper.DATABASE_TYPE_PROPERTY_NAME, databaseType);
+        assetExtendedProperties.put(OpenMetadataAPIMapper.DATABASE_VERSION_PROPERTY_NAME, databaseVersion);
+        assetExtendedProperties.put(OpenMetadataAPIMapper.DATABASE_INSTANCE_PROPERTY_NAME, databaseInstance);
+        assetExtendedProperties.put(OpenMetadataAPIMapper.DATABASE_IMPORTED_FROM_PROPERTY_NAME, databaseImportedFrom);
+
+        databaseHandler.updateAsset(userId,
+                                    databaseManagerGUID,
+                                    databaseManagerName,
+                                    databaseGUID,
+                                    elementGUIDParameterName,
+                                    qualifiedName,
+                                    displayName,
+                                    description,
+                                    additionalProperties,
+                                    assetTypeId,
+                                    assetTypeName,
+                                    assetExtendedProperties,
+                                    methodName);
+
+        databaseHandler.updateAssetOwner(userId, databaseGUID, elementGUIDParameterName, owner, ownerTypeOrdinal, methodName);
+
+        databaseHandler.updateAssetZones(userId, databaseGUID, elementGUIDParameterName, zoneMembership, methodName);
+
+        if ((originOrganizationGUID != null) || (originBusinessCapabilityGUID != null) || (otherOriginValues != null))
+        {
+            final String organizationGUIDParameterName = "originOrganizationGUID";
+            final String businessCapabilityGUIDParameterName = "originBusinessCapabilityGUID";
+
+            databaseHandler.addAssetOrigin(userId,
+                                           databaseGUID,
+                                           elementGUIDParameterName,
+                                           originOrganizationGUID,
+                                           organizationGUIDParameterName,
+                                           originBusinessCapabilityGUID,
+                                           businessCapabilityGUIDParameterName,
+                                           otherOriginValues,
+                                           methodName);
+        }
+        else
+        {
+            databaseHandler.removeAssetOrigin(userId, databaseGUID, elementGUIDParameterName, methodName);
+        }
+
+        if (vendorProperties != null)
+        {
+            databaseHandler.setVendorProperties(userId,
+                                                databaseGUID,
+                                                vendorProperties,
+                                                methodName);
+        }
+    }
+
+
+    /**
+     * Update the zones for the database asset so that it becomes visible to consumers.
+     * (The zones are set to the list of zones in the publishedZones option configured for each
+     * instance of the Data Platform OMAS).
+     *
+     * @param userId calling user
+     * @param databaseGUID unique identifier of the metadata element to publish
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void publishDatabase(String userId,
+                                String databaseGUID,
+                                String methodName) throws InvalidParameterException,
+                                                          UserNotAuthorizedException,
+                                                          PropertyServerException
+    {
+        final String elementGUIDParameterName = "databaseGUID";
+
+        databaseHandler.publishAsset(userId, databaseGUID, elementGUIDParameterName, methodName);
+    }
+
+
+    /**
+     * Update the zones for the database asset so that it is no longer visible to consumers.
+     * (The zones are set to the list of zones in the defaultZones option configured for each
+     * instance of the Data Platform OMAS.  This is the setting when the database is first created).
+     *
+     * @param userId calling user
+     * @param databaseGUID unique identifier of the metadata element to withdraw
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void withdrawDatabase(String userId,
+                                 String databaseGUID,
+                                 String methodName) throws InvalidParameterException,
+                                                           UserNotAuthorizedException,
+                                                           PropertyServerException
+    {
+        final String elementGUIDParameterName = "databaseGUID";
+
+        databaseHandler.withdrawAsset(userId, databaseGUID,elementGUIDParameterName, methodName);
+    }
+
+
+    /**
+     * Remove the metadata element representing a database.
+     *
+     * @param userId calling user
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
+     * @param databaseGUID unique identifier of the metadata element to remove
+     * @param qualifiedName unique name of the metadata element to remove
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void removeDatabase(String userId,
+                               String databaseManagerGUID,
+                               String databaseManagerName,
+                               String databaseGUID,
+                               String qualifiedName,
+                               String methodName) throws InvalidParameterException,
+                                                         UserNotAuthorizedException,
+                                                         PropertyServerException
+    {
+        final String elementGUIDParameterName    = "databaseGUID";
+        final String qualifiedNameParameterName  = "qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(databaseGUID, elementGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
+
+        databaseHandler.deleteBeanInRepository(userId,
+                                               databaseManagerGUID,
+                                               databaseManagerName,
+                                               databaseGUID,
+                                               elementGUIDParameterName,
+                                               OpenMetadataAPIMapper.DATABASE_TYPE_GUID,
+                                               OpenMetadataAPIMapper.DATABASE_TYPE_NAME,
+                                               qualifiedNameParameterName,
+                                               qualifiedName,
+                                               methodName);
+    }
+
+
+    /**
+     * Retrieve the list of database metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param userId calling user
+     * @param searchString string to find in the properties
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param methodName calling method
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<DATABASE> findDatabases(String userId,
+                                        String searchString,
+                                        int    startFrom,
+                                        int    pageSize,
+                                        String methodName) throws InvalidParameterException,
+                                                                  UserNotAuthorizedException,
+                                                                  PropertyServerException
+    {
+        final String searchStringParameterName = "searchString";
+
+        return databaseHandler.findAssets(userId,
+                                          OpenMetadataAPIMapper.DATABASE_TYPE_GUID,
+                                          OpenMetadataAPIMapper.DATABASE_TYPE_NAME,
+                                          searchString,
+                                          searchStringParameterName,
+                                          startFrom,
+                                          pageSize,
+                                          methodName);
+    }
+    
+    /**
+     * Retrieve the list of database metadata elements.
+     *
+     * @param userId calling user
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param methodName calling method
+     *
+     * @return list of database metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<DATABASE> getDatabases(String userId,
+                                        int    startFrom,
+                                        int    pageSize,
+                                        String methodName) throws InvalidParameterException,
+                                                                  UserNotAuthorizedException,
+                                                                  PropertyServerException
+    {
+        return databaseHandler.getBeansByType(userId,
+                                          OpenMetadataAPIMapper.DATABASE_TYPE_GUID,
+                                          OpenMetadataAPIMapper.DATABASE_TYPE_NAME,
+                                          startFrom,
+                                          pageSize,
+                                          methodName);
+    }
+
+
+    /**
+     * Retrieve the list of database metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param userId calling user
+     * @param name name to search for
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param methodName calling method
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<DATABASE>   getDatabasesByName(String userId,
+                                               String name,
+                                               int    startFrom,
+                                               int    pageSize,
+                                               String methodName) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
+    {
+        final String nameParameterName = "name";
+
+        return databaseHandler.getAssetsByName(userId,
+                                               OpenMetadataAPIMapper.DATABASE_TYPE_GUID,
+                                               OpenMetadataAPIMapper.DATABASE_TYPE_NAME,
+                                               name,
+                                               nameParameterName,
+                                               startFrom,
+                                               pageSize,
+                                               methodName);
+    }
+
+
+    /**
+     * Retrieve the list of databases created for the requested database manager.
+     *
+     * @param userId calling user
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param methodName calling method
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @SuppressWarnings(value = "unused")
+    public List<DATABASE>   getDatabasesForDatabaseManager(String userId,
+                                                           String databaseManagerGUID,
+                                                           String databaseManagerName,
+                                                           int    startFrom,
+                                                           int    pageSize,
+                                                           String methodName) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
+    {
+        final String databaseManagerGUIDParameterName = "databaseManagerGUID";
+
+        return databaseHandler.getAttachedElements(userId,
+                                                   databaseManagerGUID,
+                                                   databaseManagerGUIDParameterName,
+                                                   OpenMetadataAPIMapper.DATABASE_MANAGER_CLASSIFICATION_TYPE_NAME,
+                                                   OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_GUID,
+                                                   OpenMetadataAPIMapper.SERVER_ASSET_USE_TYPE_NAME,
+                                                   OpenMetadataAPIMapper.DATABASE_TYPE_NAME,
+                                                   startFrom,
+                                                   pageSize,
+                                                   methodName);
+    }
+
+
+    /**
+     * Retrieve the database metadata element with the supplied unique identifier.
+     *
+     * @param userId calling user
+     * @param guid unique identifier of the requested metadata element
+     * @param methodName calling method
+     *
+     * @return matching metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public DATABASE getDatabaseByGUID(String userId,
+                                      String guid,
+                                      String methodName) throws InvalidParameterException,
+                                                                UserNotAuthorizedException,
+                                                                PropertyServerException
+    {
+        final String guidParameterName = "guid";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(guid, guidParameterName, methodName);
+
+        /*
+         * This call checks type of entity, zones and security.
+         */
+        return databaseHandler.getBeanFromRepository(userId, guid, guidParameterName, OpenMetadataAPIMapper.DATABASE_TYPE_NAME, methodName);
+    }
+
+
+    /* ============================================================================
+     * A database may host one or more database schemas depending on its capability
+     */
+
+    /**
+     * Create a new metadata element to represent a database schema.
+     *
+     * @param userId calling user
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
+     * @param databaseGUID unique identifier of the database where the schema is located
+     * @param qualifiedName unique name for this database schema
+     * @param displayName the stored display name property for the database schema
+     * @param description the stored description property associated with the database schema
+     * @param owner identifier of the owner
+     * @param ownerTypeOrdinal is the owner identifier a user id, personal profile or team profile
+     * @param zoneMembership governance zones for the database schema - null means use the default zones set for this service
+     * @param originOrganizationGUID the properties that characterize where this database schema is from
+     * @param originBusinessCapabilityGUID the properties that characterize where this database schema is from
+     * @param otherOriginValues the properties that characterize where this database schema is from
+     * @param additionalProperties any arbitrary properties not part of the type system
+     * @param typeName name of the type that is a subtype of DeployedDatabaseSchema - or null to create standard type
+     * @param extendedProperties properties from any subtype
+     * @param vendorProperties additional properties relating to the source of the database technology
+     * @param methodName calling method
+     *
+     * @return unique identifier of the new database schema
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createDatabaseSchema(String               userId,
+                                       String               databaseManagerGUID,
+                                       String               databaseManagerName,
+                                       String               databaseGUID,
+                                       String               qualifiedName,
+                                       String               displayName,
+                                       String               description,
+                                       String               owner,
+                                       int                  ownerTypeOrdinal,
+                                       List<String>         zoneMembership,
+                                       String               originOrganizationGUID,
+                                       String               originBusinessCapabilityGUID,
+                                       Map<String, String>  otherOriginValues,
+                                       Map<String, String>  additionalProperties,
+                                       String               typeName,
+                                       Map<String, Object>  extendedProperties,
+                                       Map<String, String>  vendorProperties,
+                                       String               methodName) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
+    {
+        final String parentElementGUIDParameterName = "databaseGUID";
+        final String createdElementGUIDParameterName = "databaseSchemaGUID";
+        final String qualifiedNameParameterName  = "qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(databaseGUID, parentElementGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
+
+        databaseSchemaHandler.verifyExternalSourceIdentity(userId, databaseManagerGUID, databaseManagerName, methodName);
+
+        String assetTypeName = OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME;
+
+        if (typeName != null)
+        {
+            assetTypeName = typeName;
+        }
+
+        String assetTypeId = invalidParameterHandler.validateTypeName(assetTypeName,
+                                                                      OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
+                                                                      serviceName,
+                                                                      methodName,
+                                                                      repositoryHelper);
+
+        /*
+         * This call will set up the default zones and give ownership of the asset to the calling user.
+         */
+        String databaseSchemaGUID = databaseSchemaHandler.createAssetInRepository(userId,
+                                                                                  databaseManagerGUID,
+                                                                                  databaseManagerName,
+                                                                                  qualifiedName,
+                                                                                  displayName,
+                                                                                  description,
+                                                                                  zoneMembership,
+                                                                                  owner,
+                                                                                  ownerTypeOrdinal,
+                                                                                  originOrganizationGUID,
+                                                                                  originBusinessCapabilityGUID,
+                                                                                  otherOriginValues,
+                                                                                  additionalProperties,
+                                                                                  assetTypeId,
+                                                                                  assetTypeName,
+                                                                                  extendedProperties,
+                                                                                  methodName);
+
+        /*
+         * This relationship links the database to the database schema.
+         */
+        databaseSchemaHandler.linkElementToElement(userId,
+                                                   databaseManagerGUID,
+                                                   databaseManagerName,
+                                                   databaseGUID,
+                                                   parentElementGUIDParameterName,
+                                                   OpenMetadataAPIMapper.DATABASE_TYPE_NAME,
+                                                   databaseSchemaGUID,
+                                                   createdElementGUIDParameterName,
+                                                   OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
+                                                   OpenMetadataAPIMapper.DATA_CONTENT_FOR_DATA_SET_TYPE_GUID,
+                                                   OpenMetadataAPIMapper.DATA_CONTENT_FOR_DATA_SET_TYPE_NAME,
+                                                   null,
+                                                   methodName);
+
+        if (vendorProperties != null)
+        {
+            databaseHandler.setVendorProperties(userId,
+                                                databaseGUID,
+                                                vendorProperties,
+                                                methodName);
+        }
+
+        return databaseSchemaGUID;
+    }
+
+
+    /**
+     * Create a new metadata element to represent a database schema using an existing metadata element as a template.
+     *
+     * @param userId calling user
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
+     * @param templateGUID unique identifier of the metadata element to copy
+     * @param databaseGUID unique identifier of the database where the schema is located
+     * @param qualifiedName unique name for the database schema
+     * @param displayName the stored display name property for the database schema
+     * @param description the stored description property associated with the database schema
+     * @param methodName calling method
+     *
+     * @return unique identifier of the new database schema
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createDatabaseSchemaFromTemplate(String userId,
+                                                   String databaseManagerGUID,
+                                                   String databaseManagerName,
+                                                   String templateGUID,
+                                                   String databaseGUID,
+                                                   String qualifiedName,
+                                                   String displayName,
+                                                   String description,
+                                                   String methodName) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
+    {
+        final String templateGUIDParameterName      = "templateGUID";
+        final String parentElementGUIDParameterName = "databaseGUID";
+        final String createdElementGUIDParameterName = "databaseSchemaGUID";
+        final String qualifiedNameParameterName  = "qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(databaseGUID, parentElementGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
+
+        String databaseSchemaGUID = databaseSchemaHandler.addAssetFromTemplate(userId,
+                                                                               databaseManagerGUID,
+                                                                               databaseManagerName,
+                                                                               templateGUID,
+                                                                               templateGUIDParameterName,
+                                                                               OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_GUID,
+                                                                               OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
+                                                                               qualifiedName,
+                                                                               qualifiedNameParameterName,
+                                                                               displayName,
+                                                                               description,
+                                                                               methodName);
+
+        /*
+         * This relationship links the database to the database schema.
+         */
+        databaseSchemaHandler.linkElementToElement(userId,
+                                                   databaseManagerGUID,
+                                                   databaseManagerName,
+                                                   databaseGUID,
+                                                   parentElementGUIDParameterName,
+                                                   OpenMetadataAPIMapper.DATABASE_TYPE_NAME,
+                                                   databaseSchemaGUID,
+                                                   createdElementGUIDParameterName,
+                                                   OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
+                                                   OpenMetadataAPIMapper.DATA_CONTENT_FOR_DATA_SET_TYPE_GUID,
+                                                   OpenMetadataAPIMapper.DATA_CONTENT_FOR_DATA_SET_TYPE_NAME,
+                                                   null,
+                                                   methodName);
+
+        return databaseSchemaGUID;
+    }
+
+
+    /**
+     * Update the metadata element representing a database schema.
+     *
+     * @param userId calling user
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
+     * @param databaseSchemaGUID unique identifier of the metadata element to update
+     * @param qualifiedName unique name for the database schema
+     * @param displayName the stored display name property for the database schema
+     * @param description the stored description property associated with the database schema
+     * @param owner identifier of the owner
+     * @param ownerTypeOrdinal is the owner identifier a user id, personal profile or team profile
+     * @param zoneMembership governance zones for the database schema - null means use the default zones set for this service
+     * @param originOrganizationGUID the properties that characterize where this database schema is from
+     * @param originBusinessCapabilityGUID the properties that characterize where this database schema is from
+     * @param otherOriginValues the properties that characterize where this database schema is from
+     * @param additionalProperties any arbitrary properties not part of the type system
+     * @param typeName name of the type that is a subtype of DeployedDatabaseSchema - or null to create standard type
+     * @param extendedProperties properties from any subtype
+     * @param vendorProperties additional properties relating to the source of the database technology
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void updateDatabaseSchema(String              userId,
+                                     String              databaseManagerGUID,
+                                     String              databaseManagerName,
+                                     String              databaseSchemaGUID,
+                                     String              qualifiedName,
+                                     String              displayName,
+                                     String              description,
+                                     String              owner,
+                                     int                 ownerTypeOrdinal,
+                                     List<String>        zoneMembership,
+                                     String              originOrganizationGUID,
+                                     String              originBusinessCapabilityGUID,
+                                     Map<String, String> otherOriginValues,
+                                     Map<String, String> additionalProperties,
+                                     String              typeName,
+                                     Map<String, Object> extendedProperties,
+                                     Map<String, String> vendorProperties,
+                                     String              methodName) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
+    {
+        final String elementGUIDParameterName = "databaseSchemaGUID";
+        final String qualifiedNameParameterName  = "qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(databaseSchemaGUID, elementGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
+
+        String assetTypeName = OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME;
+
+        if (typeName != null)
+        {
+            assetTypeName = typeName;
+        }
+
+        String assetTypeId = invalidParameterHandler.validateTypeName(assetTypeName,
+                                                                      OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
+                                                                      serviceName,
+                                                                      methodName,
+                                                                      repositoryHelper);
+
+        databaseSchemaHandler.updateAsset(userId,
+                                          databaseManagerGUID,
+                                          databaseManagerName,
+                                          databaseSchemaGUID,
+                                          elementGUIDParameterName,
+                                          qualifiedName,
+                                          displayName,
+                                          description,
+                                          additionalProperties,
+                                          assetTypeId,
+                                          assetTypeName,
+                                          extendedProperties,
+                                          methodName);
+
+        databaseHandler.updateAssetOwner(userId, databaseSchemaGUID, elementGUIDParameterName, owner, ownerTypeOrdinal, methodName);
+
+        databaseHandler.updateAssetZones(userId, databaseSchemaGUID, elementGUIDParameterName, zoneMembership, methodName);
+
+        if ((originOrganizationGUID != null) || (originBusinessCapabilityGUID != null) || (otherOriginValues != null))
+        {
+            final String organizationGUIDParameterName = "originOrganizationGUID";
+            final String businessCapabilityGUIDParameterName = "originBusinessCapabilityGUID";
+
+            databaseHandler.addAssetOrigin(userId,
+                                           databaseSchemaGUID,
+                                           elementGUIDParameterName,
+                                           originOrganizationGUID,
+                                           organizationGUIDParameterName,
+                                           originBusinessCapabilityGUID,
+                                           businessCapabilityGUIDParameterName,
+                                           otherOriginValues,
+                                           methodName);
+        }
+        else
+        {
+            databaseHandler.removeAssetOrigin(userId, databaseSchemaGUID, elementGUIDParameterName, methodName);
+        }
+
+        if (vendorProperties != null)
+        {
+            databaseHandler.setVendorProperties(userId,
+                                                databaseSchemaGUID,
+                                                vendorProperties,
+                                                methodName);
+        }
+    }
+
+
+    /**
+     * Update the zones for the database asset so that it becomes visible to consumers.
+     * (The zones are set to the list of zones in the publishedZones option configured for each
+     * instance of the Data Platform OMAS).
+     *
+     * @param userId calling user
+     * @param databaseSchemaGUID unique identifier of the metadata element to publish
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void publishDatabaseSchema(String userId,
+                                      String databaseSchemaGUID,
+                                      String methodName) throws InvalidParameterException,
+                                                                UserNotAuthorizedException,
+                                                                PropertyServerException
+    {
+        final String elementGUIDParameterName    = "databaseSchemaGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(databaseSchemaGUID, elementGUIDParameterName, methodName);
+
+        databaseSchemaHandler.publishAsset(userId, databaseSchemaGUID, elementGUIDParameterName, methodName);
+    }
+
+
+    /**
+     * Update the zones for the database asset so that it is no longer visible to consumers.
+     * (The zones are set to the list of zones in the defaultZones option configured for each
+     * instance of the Data Platform OMAS.  This is the setting when the database is first created).
+     *
+     * @param userId calling user
+     * @param databaseSchemaGUID unique identifier of the metadata element to withdraw
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void withdrawDatabaseSchema(String userId,
+                                       String databaseSchemaGUID,
+                                       String methodName) throws InvalidParameterException,
+                                                                 UserNotAuthorizedException,
+                                                                 PropertyServerException
+    {
+        final String elementGUIDParameterName = "databaseSchemaGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(databaseSchemaGUID, elementGUIDParameterName, methodName);
+
+        databaseSchemaHandler.withdrawAsset(userId, databaseSchemaGUID, elementGUIDParameterName, methodName);
+    }
+
+
+    /**
+     * Remove the metadata element representing a database schema.
+     *
+     * @param userId calling user
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
+     * @param databaseSchemaGUID unique identifier of the metadata element to remove
+     * @param qualifiedName unique name of the metadata element to remove
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void removeDatabaseSchema(String userId,
+                                     String databaseManagerGUID,
+                                     String databaseManagerName,
+                                     String databaseSchemaGUID,
+                                     String qualifiedName,
+                                     String methodName) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException
+    {
+        final String elementGUIDParameterName    = "databaseSchemaGUID";
+        final String qualifiedNameParameterName  = "qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(databaseSchemaGUID, elementGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
+
+        databaseSchemaHandler.deleteBeanInRepository(userId,
+                                               databaseManagerGUID,
+                                               databaseManagerName,
+                                               databaseSchemaGUID,
+                                               elementGUIDParameterName,
+                                               OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_GUID,
+                                               OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
+                                               qualifiedNameParameterName,
+                                               qualifiedName,
+                                               methodName);
+    }
+
+
+    /**
+     * Retrieve the list of database schema metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param userId calling user
+     * @param searchString string to find in the properties
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param methodName calling method
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<DATABASE_SCHEMA>   findDatabaseSchemas(String userId,
+                                                       String searchString,
+                                                       int    startFrom,
+                                                       int    pageSize,
+                                                       String methodName) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
+    {
+        final String searchStringParameterName = "searchString";
+
+        return databaseSchemaHandler.findAssets(userId,
+                                                OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_GUID,
+                                                OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
+                                                searchString,
+                                                searchStringParameterName,
+                                                startFrom,
+                                                pageSize,
+                                                methodName);
+    }
+
+
+    /**
+     * Return the list of (deployed database) schemas associated with a database.
+     *
+     * @param userId calling user
+     * @param databaseGUID unique identifier of the database to query
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param methodName calling method
+     *
+     * @return list of metadata elements describing the schemas associated with the requested database
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<DATABASE_SCHEMA>   getSchemasForDatabase(String userId,
+                                                         String databaseGUID,
+                                                         int    startFrom,
+                                                         int    pageSize,
+                                                         String methodName) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
+    {
+        final String parentElementGUIDParameterName = "databaseGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(databaseGUID, parentElementGUIDParameterName, methodName);
+
+        return databaseSchemaHandler.getAttachedElements(userId,
+                                                         databaseGUID,
+                                                         parentElementGUIDParameterName,
+                                                         OpenMetadataAPIMapper.DATABASE_TYPE_NAME,
+                                                         OpenMetadataAPIMapper.DATA_CONTENT_FOR_DATA_SET_TYPE_GUID,
+                                                         OpenMetadataAPIMapper.DATA_CONTENT_FOR_DATA_SET_TYPE_NAME,
+                                                         OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
+                                                         startFrom,
+                                                         pageSize,
+                                                         methodName);
+    }
+
+
+    /**
+     * Retrieve the list of database schema metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param userId calling user
+     * @param name name to search for
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param methodName calling method
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<DATABASE_SCHEMA>   getDatabaseSchemasByName(String userId,
+                                                            String name,
+                                                            int    startFrom,
+                                                            int    pageSize,
+                                                            String methodName) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
+    {
+        final String nameParameterName = "name";
+
+        return databaseSchemaHandler.getAssetsByName(userId,
+                                                     OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_GUID,
+                                                     OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
+                                                     name,
+                                                     nameParameterName,
+                                                     startFrom,
+                                                     pageSize,
+                                                     methodName);
+    }
+
+
+    /**
+     * Retrieve the database schema metadata element with the supplied unique identifier.
+     *
+     * @param userId calling user
+     * @param guid unique identifier of the requested metadata element
+     * @param methodName calling method
+     *
+     * @return requested metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public DATABASE_SCHEMA getDatabaseSchemaByGUID(String userId,
+                                                   String guid,
+                                                   String methodName) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
+    {
+        final String guidParameterName = "guid";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(guid, guidParameterName, methodName);
+
+        /*
+         * This call checks type of entity, zones and security.
+         */
+        return databaseSchemaHandler.getBeanFromRepository(userId,
+                                                           guid,
+                                                           guidParameterName,
+                                                           OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
+                                                           methodName);
+    }
+
+
+    /* ==========================================================================
+     * A database schema may contain multiple database tables and database views.
+     */
+
+
+    /**
+     * Create a new metadata element to represent a database table.
+     *
+     * @param userId calling user
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
+     * @param databaseSchemaGUID unique identifier of the database schema where the database table is located
+     * @param qualifiedName unique name for the database table
+     * @param displayName the stored display name property for the database table
+     * @param description the stored description property associated with the database table
+     * @param isDeprecated is this table deprecated?
+     * @param aliases a list of alternative names for the attribute
+     * @param additionalProperties any arbitrary properties not part of the type system
+     * @param typeName name of the type that is a subtype of RelationalTable - or null to create standard type
+     * @param extendedProperties properties from any subtype
+     * @param vendorProperties additional properties relating to the source of the database technology
+     * @param methodName calling method
+     *
+     * @return unique identifier of the new metadata element for the database table
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createDatabaseTable(String               userId,
+                                      String               databaseManagerGUID,
+                                      String               databaseManagerName,
+                                      String               databaseSchemaGUID,
+                                      String               qualifiedName,
+                                      String               displayName,
+                                      String               description,
+                                      boolean              isDeprecated,
+                                      List<String>         aliases,
+                                      Map<String, String>  additionalProperties,
+                                      String               typeName,
+                                      Map<String, Object>  extendedProperties,
+                                      Map<String, String>  vendorProperties,
+                                      String               methodName) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
+    {
+        final String parentElementGUIDParameterName = "databaseSchemaGUID";
+        final String qualifiedNameParameterName     = "qualifiedName";
+
+        String databaseSchemaTypeGUID = databaseTableHandler.getAssetSchemaTypeGUID(userId,
+                                                                                    databaseManagerGUID,
+                                                                                    databaseManagerName,
+                                                                                    databaseSchemaGUID,
+                                                                                    parentElementGUIDParameterName,
+                                                                                    OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
+                                                                                    OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_GUID,
+                                                                                    OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_NAME,
+                                                                                    methodName);
+
+        if (databaseSchemaTypeGUID != null)
+        {
+            /*
+             * A database table is represented as a schemaAttribute of type RelationalTable (or a subtype).
+             * Check that the type name requested is valid.
+             */
+            String attributeTypeName = OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_NAME;
+            String attributeTypeId   = OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_GUID;
+
+            if (typeName != null)
+            {
+                attributeTypeName = typeName;
+                attributeTypeId   = invalidParameterHandler.validateTypeName(typeName,
+                                                                             OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_NAME,
+                                                                             serviceName,
+                                                                             methodName,
+                                                                             repositoryHelper);
+            }
+
+            /*
+             * The schema type that connects the database schema asset to the tables has been created/retrieved.
+             * Now work out the position of the new table in the database schema type.  This is used to set the element position.
+             * Since this value begins with 0 as the first element, the table count is this table's position.
+             */
+            int tableCount = databaseTableHandler.countSchemaAttributes(userId,
+                                                                        databaseSchemaTypeGUID,
+                                                                        parentElementGUIDParameterName,
+                                                                        methodName);
+
+            /*
+             * Load up the builder objects for processing by the databaseTableHandler.  The builders manage the properties
+             * of the metadata elements that make up the database table, and the schemaTypeHandler manages the elements themselves.
+             */
+            SchemaAttributeBuilder schemaAttributeBuilder = new SchemaAttributeBuilder(qualifiedName,
+                                                                                       displayName,
+                                                                                       description,
+                                                                                       tableCount,
+                                                                                       1,
+                                                                                       1,
+                                                                                       isDeprecated,
+                                                                                       null,
+                                                                                       true,
+                                                                                       false,
+                                                                                       0,
+                                                                                       0,
+                                                                                       0,
+                                                                                       0,
+                                                                                       false,
+                                                                                       null,
+                                                                                       aliases,
+                                                                                       additionalProperties,
+                                                                                       attributeTypeId,
+                                                                                       attributeTypeName,
+                                                                                       extendedProperties,
+                                                                                       repositoryHelper,
+                                                                                       serviceName,
+                                                                                       serverName);
+
+            schemaAttributeBuilder.setAnchors(userId, databaseSchemaGUID, methodName);
+
+            SchemaTypeBuilder schemaTypeBuilder = new SchemaTypeBuilder(qualifiedName + ":tableType",
+                                                                        OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_TYPE_GUID,
+                                                                        OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_TYPE_NAME,
+                                                                        repositoryHelper,
+                                                                        serviceName,
+                                                                        serverName);
+
+            schemaAttributeBuilder.setSchemaType(userId, schemaTypeBuilder, methodName);
+
+            String databaseTableGUID = databaseTableHandler.createNestedSchemaAttribute(userId,
+                                                                                        databaseManagerGUID,
+                                                                                        databaseManagerName,
+                                                                                        databaseSchemaGUID,
+                                                                                        parentElementGUIDParameterName,
+                                                                                        OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_NAME,
+                                                                                        OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
+                                                                                        OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
+                                                                                        qualifiedName,
+                                                                                        qualifiedNameParameterName,
+                                                                                        schemaAttributeBuilder,
+                                                                                        methodName);
+
+            if (databaseTableGUID != null)
+            {
+                databaseHandler.setVendorProperties(userId, databaseTableGUID, vendorProperties, methodName);
+            }
+
+            return databaseTableGUID;
+        }
+
+        /*
+         * Not reachable because any failures result in exceptions.
+         */
+        return null;
+    }
+
+
+    /**
+     * Create a new metadata element to represent a database table using an existing metadata element as a template.
+     *
+     * @param userId calling user
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS - if null a local element is created
+     * @param databaseManagerName unique name of software server capability representing the DBMS
+     * @param templateGUID unique identifier of the metadata element to copy
+     * @param databaseSchemaGUID unique identifier of the database schema where the database table is located.
+     * @param qualifiedName unique name for the database schema
+     * @param displayName the stored display name property for the database table
+     * @param description the stored description property associated with the database table
+     * @param methodName calling method
+     *
+     * @return unique identifier of the new database schema
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createDatabaseTableFromTemplate(String               userId,
+                                                  String               databaseManagerGUID,
+                                                  String               databaseManagerName,
+                                                  String               templateGUID,
+                                                  String               databaseSchemaGUID,
+                                                  String               qualifiedName,
+                                                  String               displayName,
+                                                  String               description,
+                                                  String               methodName) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException
+    {
+        final String guidParameterName = "databaseSchemaGUID";
+        final String parentElementGUIDParameterName = "databaseSchemaGUID";
+        final String templateParameterName = "templateGUID";
+        final String qualifiedNameParameterName = "qualifiedName";
+
+        invalidParameterHandler.validateGUID(databaseSchemaGUID, guidParameterName, methodName);
+        invalidParameterHandler.validateGUID(templateGUID, templateParameterName, methodName);
+        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
+
+        /*
+         * If the deployed database schema (which is an asset) is new, it will not have a schema type attached.
+         * However, if there are other tables already attached, the schema type will be there too.
+         */
+        String databaseSchemaTypeGUID = databaseTableHandler.getAssetSchemaTypeGUID(userId,
+                                                                                    databaseManagerGUID,
+                                                                                    databaseManagerName,
+                                                                                    databaseSchemaGUID,
+                                                                                    parentElementGUIDParameterName,
+                                                                                    OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
+                                                                                    OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_GUID,
+                                                                                    OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_NAME,
+                                                                                    methodName);
+
+        if (databaseSchemaTypeGUID != null)
+        {
+            SchemaAttributeBuilder builder = new SchemaAttributeBuilder(qualifiedName,
+                                                                        displayName,
+                                                                        description,
+                                                                        repositoryHelper,
+                                                                        serviceName,
+                                                                        serverName);
+
+            builder.setAnchors(userId, databaseSchemaGUID, methodName);
+
+            String databaseTableGUID = databaseTableHandler.createBeanFromTemplate(userId,
+                                                                                   databaseManagerGUID,
+                                                                                   databaseManagerName,
+                                                                                   templateGUID,
+                                                                                   templateParameterName,
+                                                                                   OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_GUID,
+                                                                                   OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_NAME,
+                                                                                   qualifiedName,
+                                                                                   qualifiedNameParameterName,
+                                                                                   builder,
+                                                                                   methodName);
+
+            if (databaseTableGUID != null)
+            {
+                final String databaseSchemaTypeGUIDParameterName = "databaseSchemaTypeGUID";
+                final String databaseTableGUIDParameterName = "databaseTableGUID";
+
+                databaseTableHandler.linkElementToElement(userId,
+                                                          databaseManagerGUID,
+                                                          databaseManagerName,
+                                                          databaseSchemaTypeGUID,
+                                                          databaseSchemaTypeGUIDParameterName,
+                                                          OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_NAME,
+                                                          databaseTableGUID,
+                                                          databaseTableGUIDParameterName,
+                                                          OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_NAME,
+                                                          OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
+                                                          OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
+                                                          null,
+                                                          methodName);
+                return databaseTableGUID;
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Update the metadata element representing a database table.
+     *
+     * @param userId calling user
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
+     * @param databaseTableGUID unique identifier of the database table to update
+     * @param qualifiedName unique name for the database schema
+     * @param displayName the stored display name property for the database table
+     * @param description the stored description property associated with the database table
+     * @param isDeprecated is this table deprecated?
+     * @param aliases a list of alternative names for the attribute
+     * @param additionalProperties any arbitrary properties not part of the type system
+     * @param typeName name of the type that is a subtype of DeployedDatabaseSchema - or null to create standard type
+     * @param extendedProperties properties from any subtype
+     * @param vendorProperties additional properties relating to the source of the database technology
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void updateDatabaseTable(String               userId,
+                                    String               databaseManagerGUID,
+                                    String               databaseManagerName,
+                                    String               databaseTableGUID,
+                                    String               qualifiedName,
+                                    String               displayName,
+                                    String               description,
+                                    boolean              isDeprecated,
+                                    List<String>         aliases,
+                                    Map<String, String>  additionalProperties,
+                                    String               typeName,
+                                    Map<String, Object>  extendedProperties,
+                                    Map<String, String>  vendorProperties,
+                                    String               methodName) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
+    {
+        final String elementGUIDParameterName   = "databaseTableGUID";
+        final String qualifiedNameParameterName = "qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(databaseTableGUID, elementGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
+
+        /*
+         * A database table is represented as a schemaAttribute of type RelationalTable (or a subtype).
+         * Check that the type name requested is valid.
+         */
+        String attributeTypeName = OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_NAME;
+        String attributeTypeId   = OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_GUID;
+
+        if (typeName != null)
+        {
+            attributeTypeName = typeName;
+            attributeTypeId   = invalidParameterHandler.validateTypeName(typeName,
+                                                                         OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_NAME,
+                                                                         serviceName,
+                                                                         methodName,
+                                                                         repositoryHelper);
+        }
+
+        InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                     null,
+                                                                                     OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                                     qualifiedName,
+                                                                                     methodName);
+
+        if (displayName != null)
+        {
+            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                      properties,
+                                                                      OpenMetadataAPIMapper.DISPLAY_NAME_PROPERTY_NAME,
+                                                                      displayName,
+                                                                      methodName);
+        }
+
+        if (description != null)
+        {
+            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                      properties,
+                                                                      OpenMetadataAPIMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                      description,
+                                                                      methodName);
+        }
+
+        properties = repositoryHelper.addBooleanPropertyToInstance(serviceName,
+                                                                   properties,
+                                                                   OpenMetadataAPIMapper.IS_DEPRECATED_PROPERTY_NAME,
+                                                                   isDeprecated,
+                                                                   methodName);
+
+        if ((aliases != null) && (!aliases.isEmpty()))
+        {
+            properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
+                                                                           properties,
+                                                                           OpenMetadataAPIMapper.ALIASES_PROPERTY_NAME,
+                                                                           aliases,
+                                                                           methodName);
+        }
+
+        if (additionalProperties != null)
+        {
+            properties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
+                                                                         properties,
+                                                                         OpenMetadataAPIMapper.ADDITIONAL_PROPERTIES_PROPERTY_NAME,
+                                                                         additionalProperties,
+                                                                         methodName);
+        }
+
+        if (extendedProperties != null)
+        {
+            try
+            {
+                properties = repositoryHelper.addPropertyMapToInstance(serviceName,
+                                                                       null,
+                                                                       extendedProperties,
+                                                                       methodName);
+            }
+            catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException error)
+            {
+                final String  propertyName = "extendedProperties";
+
+                errorHandler.handleUnsupportedProperty(error, methodName, propertyName);
+            }
+        }
+
+        databaseTableHandler.updateBeanInRepository(userId,
+                                                    databaseManagerGUID,
+                                                    databaseManagerName,
+                                                    databaseTableGUID,
+                                                    elementGUIDParameterName,
+                                                    attributeTypeId,
+                                                    attributeTypeName,
+                                                    properties,
+                                                    true,
+                                                    methodName);
+
+        databaseHandler.setVendorProperties(userId, databaseTableGUID, vendorProperties, methodName);
+    }
+
+
+    /**
+     * Remove the metadata element representing a database table.
+     *
+     * @param userId calling user
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
+     * @param databaseTableGUID unique identifier of the metadata element to remove
+     * @param databaseTableGUIDParameterName name of parameter supplying databaseTableGUID
+     * @param qualifiedName unique name of the metadata element to remove
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void removeDatabaseTable(String userId,
+                                    String databaseManagerGUID,
+                                    String databaseManagerName,
+                                    String databaseTableGUID,
+                                    String databaseTableGUIDParameterName,
+                                    String qualifiedName,
+                                    String methodName) throws InvalidParameterException,
+                                                              UserNotAuthorizedException,
+                                                              PropertyServerException
+    {
+        final String qualifiedNameParameterName  = "qualifiedName";
+
+        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
+
+        databaseTableHandler.deleteBeanInRepository(userId,
+                                                    databaseManagerGUID,
+                                                    databaseManagerName,
+                                                    databaseTableGUID,
+                                                    databaseTableGUIDParameterName,
+                                                    OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_GUID,
+                                                    OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_NAME,
+                                                    qualifiedName,
+                                                    qualifiedNameParameterName,
+                                                    methodName);
+    }
+
+
+    /**
+     * Retrieve the list of database table metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param userId calling user
+     * @param searchString string to find in the properties
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param methodName calling method
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<DATABASE_TABLE>   findDatabaseTables(String userId,
+                                                     String searchString,
+                                                     int    startFrom,
+                                                     int    pageSize,
+                                                     String methodName) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
+    {
+        final String searchStringParameterName = "searchString";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
+
+        return databaseTableHandler.findSchemaAttributes(userId,
+                                                         searchString,
+                                                         searchStringParameterName,
+                                                         OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_GUID,
+                                                         OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_NAME,
+                                                         null,
+                                                         OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME,
+                                                         startFrom,
+                                                         pageSize,
+                                                         methodName);
+    }
+
+
+    /**
+     * Retrieve the list of database tables associated with a database schema.
+     *
+     * @param userId calling user
+     * @param databaseSchemaGUID unique identifier of the database schema of interest
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param methodName calling method
+     *
+     * @return list of associated metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<DATABASE_TABLE> getTablesForDatabaseSchema(String userId,
+                                                           String databaseSchemaGUID,
+                                                           int    startFrom,
+                                                           int    pageSize,
+                                                           String methodName) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
+    {
+        final String parentElementGUIDParameterName = "databaseSchemaGUID";
+
+        /*
+         * If the deployed database schema (which is an asset) is new, it will not have a schema type attached.
+         * However, if there are other tables already attached, the schema type will be there too.
+         */
+        String databaseSchemaTypeGUID = databaseTableHandler.getAssetSchemaTypeGUID(userId,
+                                                                                    null,
+                                                                                    null,
+                                                                                    databaseSchemaGUID,
+                                                                                    parentElementGUIDParameterName,
+                                                                                    OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
+                                                                                    OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_GUID,
+                                                                                    OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_NAME,
+                                                                                    methodName);
+
+        if (databaseSchemaTypeGUID != null)
+        {
+            final String databaseSchemaTypeGUIDParameterName = "databaseSchemaTypeGUID";
+
+            return databaseTableHandler.getSchemaAttributesForComplexSchemaType(userId,
+                                                                                databaseSchemaTypeGUID,
+                                                                                databaseSchemaTypeGUIDParameterName,
+                                                                                null,
+                                                                                OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME,
+                                                                                startFrom,
+                                                                                pageSize,
+                                                                                methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve the list of database table metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param userId calling user
+     * @param name name to search for
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param methodName calling method
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<DATABASE_TABLE> getDatabaseTablesByName(String userId,
+                                                        String name,
+                                                        int    startFrom,
+                                                        int    pageSize,
+                                                        String methodName) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException
+    {
+        return databaseTableHandler.getSchemaAttributesByName(userId,
+                                                              OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_GUID,
+                                                              OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_NAME,
+                                                              name,
+                                                              null,
+                                                              OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME,
+                                                              startFrom,
+                                                              pageSize,
+                                                              methodName);
+    }
+
+
+    /**
+     * Retrieve the database table metadata element with the supplied unique identifier.
+     *
+     * @param userId calling user
+     * @param guid unique identifier of the requested metadata element
+     * @param methodName calling method
+     *
+     * @return matching metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public DATABASE_TABLE getDatabaseTableByGUID(String userId,
+                                                 String guid,
+                                                 String methodName) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
+    {
+        final String guidParameterName = "guid";
+
+        return databaseTableHandler.getSchemaAttribute(userId,
+                                                       guid,
+                                                       guidParameterName,
+                                                       OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_NAME,
+                                                       null,
+                                                       null,
+                                                       methodName);
+    }
+
+
+    /**
+     * Create a new metadata element to represent a database view.
+     *
+     * @param userId calling user
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
+     * @param databaseSchemaGUID unique identifier of the database schema where the database view is located.
+     * @param qualifiedName unique name for the database schema
+     * @param displayName the stored display name property for the database table
+     * @param description the stored description property associated with the database table
+     * @param isDeprecated is this table deprecated?
+     * @param aliases a list of alternative names for the attribute
+     * @param expression the code that generates the value for this view.
+     * @param additionalProperties any arbitrary properties not part of the type system
+     * @param typeName name of the type that is a subtype of DeployedDatabaseSchema - or null to create standard type
+     * @param extendedProperties properties from any subtype
+     * @param vendorProperties additional properties relating to the source of the database technology
+     * @param methodName calling method
+     *
+     * @return unique identifier of the new metadata element for the database view
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createDatabaseView(String               userId,
+                                     String               databaseManagerGUID,
+                                     String               databaseManagerName,
+                                     String               databaseSchemaGUID,
+                                     String               qualifiedName,
+                                     String               displayName,
+                                     String               description,
+                                     boolean              isDeprecated,
+                                     List<String>         aliases,
+                                     String               expression,
+                                     Map<String, String>  additionalProperties,
+                                     String               typeName,
+                                     Map<String, Object>  extendedProperties,
+                                     Map<String, String>  vendorProperties,
+                                     String               methodName) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
+    {
+        final String parentElementGUIDParameterName = "databaseSchemaGUID";
+        final String qualifiedNameParameterName     = "qualifiedName";
+
+        String databaseSchemaTypeGUID = databaseTableHandler.getAssetSchemaTypeGUID(userId,
+                                                                                    databaseManagerGUID,
+                                                                                    databaseManagerName,
+                                                                                    databaseSchemaGUID,
+                                                                                    parentElementGUIDParameterName,
+                                                                                    OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
+                                                                                    OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_GUID,
+                                                                                    OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_NAME,
+                                                                                    methodName);
+
+        /*
+         * A database view is represented as a schemaAttribute of type RelationalTable (or a subtype).
+         * Check that the type name requested is valid.
+         */
+        String attributeTypeName = OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_NAME;
+        String attributeTypeId   = OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_GUID;
+
+        if (typeName != null)
+        {
+            attributeTypeName = typeName;
+            attributeTypeId   = invalidParameterHandler.validateTypeName(typeName,
+                                                                         OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_NAME,
+                                                                         serviceName,
+                                                                         methodName,
+                                                                         repositoryHelper);
+        }
+
+        if (databaseSchemaTypeGUID != null)
+        {
+            /*
+             * The schema type that connects the database schema asset to the tables has been created/retrieved.
+             * Now work out the position of the new table in the database schema type.  This is used to set the element position.
+             * Since this value begins with 0 as the first element, the table count is this table's position.
+             */
+            int tableCount = databaseViewHandler.countSchemaAttributes(userId,
+                                                                       databaseSchemaTypeGUID,
+                                                                       parentElementGUIDParameterName,
+                                                                       methodName);
+
+            /*
+             * Load up the builder objects for processing by the databaseTableHandler.  The builders manage the properties
+             * of the metadata elements that make up the database table, and the schemaTypeHandler manages the elements themselves.
+             */
+            SchemaAttributeBuilder schemaAttributeBuilder = new SchemaAttributeBuilder(qualifiedName,
+                                                                                       displayName,
+                                                                                       description,
+                                                                                       tableCount,
+                                                                                       1,
+                                                                                       1,
+                                                                                       isDeprecated,
+                                                                                       null,
+                                                                                       true,
+                                                                                       false,
+                                                                                       0,
+                                                                                       0,
+                                                                                       0,
+                                                                                       0,
+                                                                                       false,
+                                                                                       null,
+                                                                                       aliases,
+                                                                                       additionalProperties,
+                                                                                       attributeTypeId,
+                                                                                       attributeTypeName,
+                                                                                       extendedProperties,
+                                                                                       repositoryHelper,
+                                                                                       serviceName,
+                                                                                       serverName);
+
+            schemaAttributeBuilder.setAnchors(userId, databaseSchemaGUID, methodName);
+
+            SchemaTypeBuilder schemaTypeBuilder = new SchemaTypeBuilder(qualifiedName + ":viewType",
+                                                                        OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_TYPE_GUID,
+                                                                        OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_TYPE_NAME,
+                                                                        repositoryHelper,
+                                                                        serviceName,
+                                                                        serverName);
+
+            schemaAttributeBuilder.setSchemaType(userId, schemaTypeBuilder, methodName);
+
+            schemaAttributeBuilder.setCalculatedValue(userId, databaseManagerGUID, databaseManagerName, expression, methodName);
+
+            /*
+             * Now create the table itself along with its schema type.  It also links the resulting table to the database schema type.
+             * The returned value is the guid of the table.
+             */
+            String databaseViewGUID = databaseViewHandler.createNestedSchemaAttribute(userId,
+                                                                                       databaseManagerGUID,
+                                                                                       databaseManagerName,
+                                                                                       databaseSchemaGUID,
+                                                                                       parentElementGUIDParameterName,
+                                                                                       OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_NAME,
+                                                                                       OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
+                                                                                       OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
+                                                                                       qualifiedName,
+                                                                                       qualifiedNameParameterName,
+                                                                                       schemaAttributeBuilder,
+                                                                                       methodName);
+
+            if (databaseViewGUID != null)
+            {
+                databaseViewHandler.setVendorProperties(userId, databaseViewGUID, vendorProperties, methodName);
+
+                return databaseViewGUID;
+            }
+        }
+
+        /*
+         * Not reachable because any failures result in exceptions.
+         */
+        return null;
+    }
+
+
+    /**
+     * Create a new metadata element to represent a database view using an existing metadata element as a template.
+     *
+     * @param userId calling user
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
+     * @param templateGUID unique identifier of the metadata element to copy
+     * @param databaseSchemaGUID unique identifier of the database schema where the database view is located.
+     * @param qualifiedName unique name for the database schema
+     * @param displayName the stored display name property for the database table
+     * @param description the stored description property associated with the database table
+     * @param methodName calling method
+     *
+     * @return unique identifier of the new metadata element for the database view
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createDatabaseViewFromTemplate(String               userId,
+                                                 String               databaseManagerGUID,
+                                                 String               databaseManagerName,
+                                                 String               templateGUID,
+                                                 String               databaseSchemaGUID,
+                                                 String               qualifiedName,
+                                                 String               displayName,
+                                                 String               description,
+                                                 String               methodName) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException
+    {
+        return this.createDatabaseTableFromTemplate(userId,
+                                                    databaseManagerGUID,
+                                                    databaseManagerName,
+                                                    templateGUID,
+                                                    databaseSchemaGUID,
+                                                    qualifiedName,
+                                                    displayName,
+                                                    description,
+                                                    methodName);
+    }
+
+
+    /**
+     * Update the metadata element representing a database table.
+     *
+     * @param userId calling user
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
+     * @param databaseViewGUID unique identifier of the database view to update
+     * @param qualifiedName unique name for the database schema
+     * @param displayName the stored display name property for the database table
+     * @param description the stored description property associated with the database table
+     * @param isDeprecated is this table deprecated?
+     * @param aliases a list of alternative names for the attribute
+     * @param expression the code that generates the value for this view.
+     * @param additionalProperties any arbitrary properties not part of the type system
+     * @param typeName name of the type that is a subtype of DeployedDatabaseSchema - or null to create standard type
+     * @param extendedProperties properties from any subtype
+     * @param vendorProperties additional properties relating to the source of the database technology
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void updateDatabaseView(String               userId,
+                                   String               databaseManagerGUID,
+                                   String               databaseManagerName,
+                                   String               databaseViewGUID,
+                                   String               qualifiedName,
+                                   String               displayName,
+                                   String               description,
+                                   boolean              isDeprecated,
+                                   List<String>         aliases,
+                                   String               expression,
+                                   Map<String, String>  additionalProperties,
+                                   String               typeName,
+                                   Map<String, Object>  extendedProperties,
+                                   Map<String, String>  vendorProperties,
+                                   String               methodName) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
+    {
+        final String elementGUIDParameterName   = "databaseViewGUID";
+        final String qualifiedNameParameterName = "qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(databaseViewGUID, elementGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
+
+        String  expectedTypeName = OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_NAME;
+        if (typeName != null)
+        {
+            expectedTypeName = typeName;
+        }
+
+        this.updateDatabaseTable(userId,
+                                 databaseManagerGUID,
+                                 databaseManagerName,
+                                 databaseViewGUID,
+                                 qualifiedName,
+                                 displayName,
+                                 description,
+                                 isDeprecated,
+                                 aliases,
+                                 additionalProperties,
+                                 typeName,
+                                 extendedProperties,
+                                 vendorProperties,
+                                 methodName);
+
+        InstanceProperties properties = null;
+        if (expression != null)
+        {
+            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                      null,
+                                                                      OpenMetadataAPIMapper.FORMULA_PROPERTY_NAME,
+                                                                      expression,
+                                                                      methodName);
+        }
+
+        databaseViewHandler.setClassificationInRepository(userId,
+                                                          databaseViewGUID,
+                                                          elementGUIDParameterName,
+                                                          expectedTypeName,
+                                                          OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_GUID,
+                                                          OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME,
+                                                          properties,
+                                                          methodName);
+    }
+
+
+    /**
+     * Retrieve the list of database view metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param userId calling user
+     * @param searchString string to find in the properties
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param methodName calling method
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<DATABASE_VIEW>   findDatabaseViews(String userId,
+                                                     String searchString,
+                                                     int    startFrom,
+                                                     int    pageSize,
+                                                     String methodName) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
+    {
+        final String searchStringParameterName = "searchString";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
+
+        return databaseViewHandler.findSchemaAttributes(userId,
+                                                        searchString,
+                                                        searchStringParameterName,
+                                                        OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_GUID,
+                                                        OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_NAME,
+                                                        OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME,
+                                                        null,
+                                                        startFrom,
+                                                        pageSize,
+                                                        methodName);
+    }
+
+
+    /**
+     * Retrieve the list of database views associated with a database schema.
+     *
+     * @param userId calling user
+     * @param databaseSchemaGUID unique identifier of the database schema of interest
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param methodName calling method
+     *
+     * @return list of associated metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<DATABASE_VIEW>    getViewsForDatabaseSchema(String userId,
+                                                              String databaseSchemaGUID,
+                                                              int    startFrom,
+                                                              int    pageSize,
+                                                              String methodName) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
+    {
+        final String parentElementGUIDParameterName = "databaseSchemaGUID";
+
+        /*
+         * If the deployed database schema (which is an asset) is new, it will not have a schema type attached.
+         * However, if there are other tables already attached, the schema type will be there too.
+         */
+        String databaseSchemaTypeGUID = databaseViewHandler.getAssetSchemaTypeGUID(userId,
+                                                                                    null,
+                                                                                    null,
+                                                                                    databaseSchemaGUID,
+                                                                                    parentElementGUIDParameterName,
+                                                                                    OpenMetadataAPIMapper.DEPLOYED_DATABASE_SCHEMA_TYPE_NAME,
+                                                                                    OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_GUID,
+                                                                                    OpenMetadataAPIMapper.RELATIONAL_DB_SCHEMA_TYPE_TYPE_NAME,
+                                                                                    methodName);
+
+        if (databaseSchemaTypeGUID != null)
+        {
+            final String databaseSchemaTypeGUIDParameterName = "databaseSchemaTypeGUID";
+
+            return databaseViewHandler.getSchemaAttributesForComplexSchemaType(userId,
+                                                                               databaseSchemaTypeGUID,
+                                                                               databaseSchemaTypeGUIDParameterName,
+                                                                               OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME,
+                                                                               null,
+                                                                               startFrom,
+                                                                               pageSize,
+                                                                               methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve the list of database view metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param userId calling user
+     * @param name name to search for
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param methodName calling method
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<DATABASE_VIEW>   getDatabaseViewsByName(String userId,
+                                                        String name,
+                                                        int    startFrom,
+                                                        int    pageSize,
+                                                        String methodName) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException
+    {
+        final String nameParameterName = "name";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(name, nameParameterName, methodName);
+
+        return databaseViewHandler.getSchemaAttributesByName(userId,
+                                                             OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_GUID,
+                                                             OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_NAME,
+                                                             name,
+                                                             OpenMetadataAPIMapper.CALCULATED_VALUE_CLASSIFICATION_TYPE_NAME,
+                                                             null,
+                                                             startFrom,
+                                                             pageSize,
+                                                             methodName);
+    }
+
+
+    /**
+     * Retrieve the database view metadata element with the supplied unique identifier.
+     *
+     * @param userId calling user
+     * @param guid unique identifier of the requested metadata element
+     * @param methodName calling method
+     *
+     * @return matching metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public DATABASE_VIEW getDatabaseViewByGUID(String userId,
+                                               String guid,
+                                               String methodName) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
+    {
+        final String guidParameterName = "guid";
+
+        return databaseViewHandler.getSchemaAttribute(userId,
+                                                      guid,
+                                                      guidParameterName,
+                                                      OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_NAME,
+                                                      null,
+                                                      null,
+                                                      methodName);
+    }
+
+
+    /* ==============================================================================================
+     * Database tables and views have columns.  They are either directly stored or derived from other
+     * values.
+     */
+
+    /**
+     * Create a new metadata element to represent a database column.
+     *
+     * @param userId calling user
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
+     * @param databaseTableGUID unique identifier of the database table where this column is located
+     * @param qualifiedName unique name for the database schema
+     * @param displayName the stored display name property for the database table
+     * @param description the stored description property associated with the database table
+     * @param externalSchemaTypeGUID unique identifier of a schema Type that provides the type. If null, a private schema type is used
+     * @param dataType data type name - for stored values
+     * @param defaultValue string containing default value - for stored values
+     * @param fixedValue string containing a fixed value - for a literal
+     * @param validValuesSetGUID unique identifier of a valid value set that lists the valid values for this schema
+     * @param formula String formula - for derived values
+     * @param isDeprecated is this table deprecated?
+     * @param elementPosition the position of this column in its parent table.
+     * @param minCardinality minimum number of repeating instances allowed for this column - typically 1
+     * @param maxCardinality the maximum number of repeating instances allowed for this column - typically 1
+     * @param allowsDuplicateValues  whether the same value can be used by more than one instance of this attribute
+     * @param orderedValues whether the attribute instances are arranged in an order
+     * @param sortOrder the order that the attribute instances are arranged in - if any
+     * @param minimumLength the minimum length of the data
+     * @param length the length of the data field
+     * @param significantDigits number of significant digits to the right of decimal point
+     * @param isNullable whether the field is nullable or not
+     * @param nativeJavaClass equivalent Java class implementation
+     * @param defaultValueOverride default value for this column
+     * @param aliases a list of alternative names for the attribute
+     * @param additionalProperties any arbitrary properties not part of the type system
+     * @param typeName name of the type that is a subtype of DeployedDatabaseSchema - or null to create standard type
+     * @param extendedProperties properties from any subtype
+     * @param vendorProperties additional properties relating to the source of the database technology
+     * @param methodName calling method
+     *
+     * @return unique identifier of the new metadata element for the database column
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createDatabaseColumn(String               userId,
+                                       String               databaseManagerGUID,
+                                       String               databaseManagerName,
+                                       String               databaseTableGUID,
+                                       String               qualifiedName,
+                                       String               displayName,
+                                       String               description,
+                                       String               externalSchemaTypeGUID,
+                                       String               dataType,
+                                       String               defaultValue,
+                                       String               fixedValue,
+                                       String               validValuesSetGUID,
+                                       String               formula,
+                                       boolean              isDeprecated,
+                                       int                  elementPosition,
+                                       int                  minCardinality,
+                                       int                  maxCardinality,
+                                       boolean              allowsDuplicateValues,
+                                       boolean              orderedValues,
+                                       String               defaultValueOverride,
+                                       int                  sortOrder,
+                                       int                  minimumLength,
+                                       int                  length,
+                                       int                  significantDigits,
+                                       boolean              isNullable,
+                                       String               nativeJavaClass,
+                                       List<String>         aliases,
+                                       Map<String, String>  additionalProperties,
+                                       String               typeName,
+                                       Map<String, Object>  extendedProperties,
+                                       Map<String, String>  vendorProperties,
+                                       String               methodName) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
+    {
+        final String databaseTableGUIDParameterName = "databaseTableGUID";
+        final String qualifiedNameParameterName     = "qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(databaseTableGUID, databaseTableGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
+
+        /*
+         * Retrieve and validate the table that this column is for
+         */
+        EntityDetail databaseTableEntity = databaseColumnHandler.getEntityFromRepository(userId,
+                                                                                         databaseTableGUID,
+                                                                                         databaseTableGUIDParameterName,
+                                                                                         OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_NAME,
+                                                                                         methodName);
+
+        if (databaseTableEntity != null)
+        {
+            /*
+             * A database column is represented as a schemaAttribute of type RelationalColumn (or a subtype).
+             * Check that the type name requested is valid.
+             */
+            String attributeTypeName = OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_NAME;
+            String attributeTypeId   = OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_GUID;
+
+            if (typeName != null)
+            {
+                attributeTypeName = typeName;
+                attributeTypeId   = invalidParameterHandler.validateTypeName(typeName,
+                                                                             OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_NAME,
+                                                                             serviceName,
+                                                                             methodName,
+                                                                             repositoryHelper);
+            }
+
+            /*
+             * Load up the builder objects for processing by the generic handler.  The builders manage the properties
+             * of the metadata elements that make up the database table, and the schemaTypeHandler manages the elements themselves.
+             */
+            SchemaAttributeBuilder schemaAttributeBuilder = new SchemaAttributeBuilder(qualifiedName,
+                                                                                       displayName,
+                                                                                       description,
+                                                                                       elementPosition,
+                                                                                       minCardinality,
+                                                                                       maxCardinality,
+                                                                                       isDeprecated,
+                                                                                       defaultValueOverride,
+                                                                                       allowsDuplicateValues,
+                                                                                       orderedValues,
+                                                                                       sortOrder,
+                                                                                       minimumLength,
+                                                                                       length,
+                                                                                       significantDigits,
+                                                                                       isNullable,
+                                                                                       nativeJavaClass,
+                                                                                       aliases,
+                                                                                       additionalProperties,
+                                                                                       attributeTypeName,
+                                                                                       attributeTypeId,
+                                                                                       extendedProperties,
+                                                                                       repositoryHelper,
+                                                                                       serviceName,
+                                                                                       serverName);
+
+
+            /*
+             * If the database table is set up with an anchor then this is propagated to the column
+             */
+            String anchorGUID = databaseColumnHandler.getAnchorGUIDFromAnchorsClassification(databaseTableEntity, methodName);
+            if (anchorGUID != null)
+            {
+                schemaAttributeBuilder.setAnchors(userId, anchorGUID, methodName);
+            }
+
+            /*
+             * Begin by looking to see if the type information for the attribute located in an attached schema type
+             */
+            String parentTypeName           = OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_TYPE_NAME;
+            String parentAttachmentTypeGUID = OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID;
+            String parentAttachmentTypeName = OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME;
+
+            String parentGUID = databaseColumnHandler.getAttachedElementGUID(userId,
+                                                                             databaseTableGUID,
+                                                                             databaseTableGUIDParameterName,
+                                                                             OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_NAME,
+                                                                             OpenMetadataAPIMapper.ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_GUID,
+                                                                             OpenMetadataAPIMapper.ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_NAME,
+                                                                             OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                                                             2,
+                                                                             methodName);
+
+            if (parentGUID == null)
+            {
+                /*
+                 * The table may have its type stored as a classification, or as a linked schema type.  The column is linked to
+                 * the attribute in the first case, and the schema type in the second case.
+                 */
+                try
+                {
+                    Classification typeClassification = repositoryHelper.getClassificationFromEntity(serviceName,
+                                                                                                     databaseTableEntity,
+                                                                                                     OpenMetadataAPIMapper.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION_TYPE_NAME,
+                                                                                                     methodName);
+
+                    if (typeClassification != null)
+                    {
+                        parentGUID               = databaseTableGUID;
+                        parentTypeName           = OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_NAME;
+                        parentAttachmentTypeGUID = OpenMetadataAPIMapper.NESTED_ATTRIBUTE_RELATIONSHIP_TYPE_GUID;
+                        parentAttachmentTypeName = OpenMetadataAPIMapper.NESTED_ATTRIBUTE_RELATIONSHIP_TYPE_NAME;
+                    }
+                }
+                catch (ClassificationErrorException classificationNotKnown)
+                {
+                    /*
+                     * Type classification not supported.
+                     */
+                }
+            }
+
+            if (parentGUID == null)
+            {
+                invalidParameterHandler.throwUnknownElement(userId,
+                                                            databaseTableGUID,
+                                                            OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_TYPE_NAME,
+                                                            serviceName,
+                                                            serverName,
+                                                            methodName);
+                return null;
+            }
+
+            SchemaTypeBuilder schemaTypeBuilder = new SchemaTypeBuilder(qualifiedName + ":ColumnType",
+                                                                        OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_TYPE_NAME,
+                                                                        OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_TYPE_GUID,
+                                                                        repositoryHelper,
+                                                                        serviceName,
+                                                                        serverName);
+            schemaTypeBuilder.setDataType(dataType);
+            schemaTypeBuilder.setDefaultValue(defaultValue);
+            schemaTypeBuilder.setFixedValue(fixedValue);
+            schemaTypeBuilder.setExternalSchemaTypeGUID(externalSchemaTypeGUID);
+            schemaTypeBuilder.setValidValuesSetGUID(validValuesSetGUID);
+
+            schemaAttributeBuilder.setSchemaType(userId, schemaTypeBuilder, methodName);
+
+            /*
+             * The formula is set if the column is derived
+             */
+            if (formula != null)
+            {
+                schemaAttributeBuilder.setCalculatedValue(userId, databaseManagerGUID, databaseManagerName, formula, methodName);
+            }
+
+            /*
+             * Now create the table itself along with its schema type.  It also links the resulting table to the database schema type.
+             * The returned value is the guid of the table.
+             */
+            String databaseColumnGUID = databaseColumnHandler.createBeanInRepository(userId,
+                                                                                     databaseManagerGUID,
+                                                                                     databaseManagerName,
+                                                                                     OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_GUID,
+                                                                                     OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_NAME,
+                                                                                     qualifiedName,
+                                                                                     OpenMetadataAPIMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                                     schemaAttributeBuilder,
+                                                                                     methodName);
+
+            if (databaseColumnGUID != null)
+            {
+                /*
+                 * link the new database column to its table
+                 */
+                final String databaseColumnGUIDParameterName = "databaseColumnGUID";
+
+                databaseColumnHandler.linkElementToElement(userId,
+                                                           databaseManagerGUID,
+                                                           databaseManagerName,
+                                                           parentGUID,
+                                                           databaseTableGUIDParameterName,
+                                                           parentTypeName,
+                                                           databaseColumnGUID,
+                                                           databaseColumnGUIDParameterName,
+                                                           OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_NAME,
+                                                           parentAttachmentTypeGUID,
+                                                           parentAttachmentTypeName,
+                                                           null,
+                                                           methodName);
+
+                databaseColumnHandler.setVendorProperties(userId, databaseColumnGUID, vendorProperties, methodName);
+                return databaseColumnGUID;
+            }
+
+            return null;
+        }
+        else
+        {
+            invalidParameterHandler.throwUnknownElement(userId,
+                                                        databaseTableGUID,
+                                                        OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_NAME,
+                                                        serviceName,
+                                                        serverName,
+                                                        methodName);
+            return null;
+        }
+    }
+
+
+    /**
+     * Create a new query relationship for a derived database column.
+     *
+     * @param userId calling user
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
+     * @param databaseColumnGUID unique identifier of the database column that this query supports
+     * @param queryId identifier for the query - used as a placeholder in the formula (stored in the column's CalculatedValue classification)
+     * @param query the query that is made on the targetGUID
+     * @param queryTargetGUID the unique identifier of the target (this is a schema element - typically a column)
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void createDatabaseColumnQuery(String               userId,
+                                          String               databaseManagerGUID,
+                                          String               databaseManagerName,
+                                          String               databaseColumnGUID,
+                                          String               queryId,
+                                          String               query,
+                                          String               queryTargetGUID,
+                                          String               methodName) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException
+    {
+        final String parentElementGUIDParameterName = "databaseColumnGUID";
+        final String targetElementGUIDParameterName = "queryTargetGUID";
+        final String queryParameterName = "query";
+
+        invalidParameterHandler.validateObject(query, queryParameterName, methodName);
+
+        InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                     null,
+                                                                                     OpenMetadataAPIMapper.QUERY_PROPERTY_NAME,
+                                                                                     query,
+                                                                                     methodName);
+
+        if (queryId != null)
+        {
+            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                      properties,
+                                                                      OpenMetadataAPIMapper.QUERY_ID_PROPERTY_NAME,
+                                                                      queryId,
+                                                                      methodName);
+        }
+
+        databaseColumnHandler.linkElementToElement(userId,
+                                                   databaseManagerGUID,
+                                                   databaseManagerName,
+                                                   databaseColumnGUID,
+                                                   parentElementGUIDParameterName,
+                                                   OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_NAME,
+                                                   queryTargetGUID,
+                                                   targetElementGUIDParameterName,
+                                                   OpenMetadataAPIMapper.SCHEMA_ELEMENT_TYPE_NAME,
+                                                   OpenMetadataAPIMapper.SCHEMA_QUERY_TARGET_RELATIONSHIP_TYPE_GUID,
+                                                   OpenMetadataAPIMapper.SCHEMA_QUERY_TARGET_RELATIONSHIP_TYPE_NAME,
+                                                   properties,
+                                                   methodName);
+    }
+
+
+    /**
+     * Create a new metadata element to represent a database column using an existing metadata element as a template.
+     *
+     * @param userId calling user
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
+     * @param templateGUID unique identifier of the metadata element to copy
+     * @param databaseTableGUID unique identifier of the database table where this column is located
+     * @param qualifiedName unique name for the database schema
+     * @param displayName the stored display name property for the database table
+     * @param description the stored description property associated with the database table
+
+     * @param methodName calling method
+     *
+     * @return unique identifier of the new metadata element for the database column
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createDatabaseColumnFromTemplate(String               userId,
+                                                   String               databaseManagerGUID,
+                                                   String               databaseManagerName,
+                                                   String               templateGUID,
+                                                   String               databaseTableGUID,
+                                                   String               qualifiedName,
+                                                   String               displayName,
+                                                   String               description,
+                                                   String               methodName) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
+    {
+        final String templateGUIDParameterName      = "templateGUID";
+        final String databaseTableGUIDParameterName = "databaseTableGUID";
+        final String qualifiedNameParameterName     = "qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(databaseTableGUID, databaseTableGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
+
+
+        String anchorGUID = null;
+        String parentTypeName = null;
+        String parentAttachmentTypeGUID = null;
+        String parentAttachmentTypeName = null;
+        String parentGUID = null;
+
+        /*
+         * Retrieve and validate the table that this column is for
+         */
+        EntityDetail databaseTableEntity = databaseColumnHandler.getEntityFromRepository(userId,
+                                                                                         databaseTableGUID,
+                                                                                         databaseTableGUIDParameterName,
+                                                                                         OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_NAME,
+                                                                                         methodName);
+
+
+        if (databaseTableEntity != null)
+        {
+            /*
+             * If the database table is set up with an anchor then this is propagated to the column
+             */
+            anchorGUID = databaseColumnHandler.getAnchorGUIDFromAnchorsClassification(databaseTableEntity, methodName);
+
+            /*
+             * The table may have its type stored as a classification, or as a linked schema type.  The column is linked to
+             * the attribute in the first case, and the schema type in the second case.
+             */
+            try
+            {
+                Classification typeClassification = repositoryHelper.getClassificationFromEntity(serviceName,
+                                                                                                 databaseTableEntity,
+                                                                                                 OpenMetadataAPIMapper.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION_TYPE_NAME,
+                                                                                                 methodName);
+
+                if (typeClassification != null)
+                {
+                    parentGUID = databaseTableGUID;
+                    parentTypeName = OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_NAME;
+                    parentAttachmentTypeGUID = OpenMetadataAPIMapper.NESTED_ATTRIBUTE_RELATIONSHIP_TYPE_GUID;
+                    parentAttachmentTypeName = OpenMetadataAPIMapper.NESTED_ATTRIBUTE_RELATIONSHIP_TYPE_NAME;
+                }
+            }
+            catch (ClassificationErrorException classificationNotKnown)
+            {
+                /*
+                 * Type classification not supported.
+                 */
+            }
+
+            if (parentGUID == null)
+            {
+                parentTypeName = OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_TYPE_NAME;
+                parentAttachmentTypeGUID = OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID;
+                parentAttachmentTypeName = OpenMetadataAPIMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME;
+
+                parentGUID = databaseColumnHandler.getAttachedElementGUID(userId,
+                                                                          databaseTableGUID,
+                                                                          databaseTableGUIDParameterName,
+                                                                          OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_NAME,
+                                                                          OpenMetadataAPIMapper.ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_GUID,
+                                                                          OpenMetadataAPIMapper.ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_NAME,
+                                                                          OpenMetadataAPIMapper.SCHEMA_TYPE_TYPE_NAME,
+                                                                          2,
+                                                                          methodName);
+            }
+        }
+
+        if (parentGUID == null)
+        {
+            invalidParameterHandler.throwUnknownElement(userId,
+                                                        databaseTableGUID,
+                                                        OpenMetadataAPIMapper.RELATIONAL_TABLE_TYPE_NAME,
+                                                        serviceName,
+                                                        serverName,
+                                                        methodName);
+            return null;
+        }
+
+        SchemaAttributeBuilder builder = new SchemaAttributeBuilder(qualifiedName,
+                                                                    displayName,
+                                                                    description,
+                                                                    repositoryHelper,
+                                                                    serviceName,
+                                                                    serverName);
+
+        if (anchorGUID != null)
+        {
+            builder.setAnchors(userId, anchorGUID, methodName);
+        }
+
+        /*
+         * Now create the table itself along with its schema type.  It also links the resulting table to the database schema type.
+         * The returned value is the guid of the table.
+         */
+        String databaseColumnGUID = databaseColumnHandler.createBeanFromTemplate(userId,
+                                                                                 databaseManagerGUID,
+                                                                                 databaseManagerName,
+                                                                                 templateGUID,
+                                                                                 templateGUIDParameterName,
+                                                                                 OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_GUID,
+                                                                                 OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_NAME,
+                                                                                 qualifiedName,
+                                                                                 qualifiedNameParameterName,
+                                                                                 builder,
+                                                                                 methodName);
+
+        if (databaseColumnGUID != null)
+        {
+            /*
+             * link the new database column to its table
+             */
+            final String databaseColumnGUIDParameterName = "databaseColumnGUID";
+
+            databaseColumnHandler.linkElementToElement(userId,
+                                                       databaseManagerGUID,
+                                                       databaseManagerName,
+                                                       parentGUID,
+                                                       databaseTableGUIDParameterName,
+                                                       parentTypeName,
+                                                       databaseColumnGUID,
+                                                       databaseColumnGUIDParameterName,
+                                                       OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_NAME,
+                                                       parentAttachmentTypeGUID,
+                                                       parentAttachmentTypeName,
+                                                       null,
+                                                       methodName);
+        }
+
+        return databaseColumnGUID;
+    }
+
+
+    /**
+     * Update the metadata element representing a database column.
+     *
+     * @param userId calling user
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
+     * @param databaseColumnGUID unique identifier of the metadata element to update
+     * @param qualifiedName unique name for the database schema
+     * @param displayName the stored display name property for the database table
+     * @param description the stored description property associated with the database table
+     * @param dataType data type name - for stored values
+     * @param defaultValue string containing default value - for stored values
+     * @param fixedValue string containing fixed value - for literals
+     * @param formula String formula - for derived values
+     * @param isDeprecated is this table deprecated?
+     * @param elementPosition the position of this column in its parent table.
+     * @param minCardinality minimum number of repeating instances allowed for this column - typically 1
+     * @param maxCardinality the maximum number of repeating instances allowed for this column - typically 1
+     * @param allowsDuplicateValues  whether the same value can be used by more than one instance of this attribute
+     * @param orderedValues whether the attribute instances are arranged in an order
+     * @param sortOrder the order that the attribute instances are arranged in - if any
+     * @param minimumLength the minimum length of the data
+     * @param length the length of the data field
+     * @param significantDigits number of significant digits to the right of decimal point
+     * @param isNullable whether the field is nullable or not
+     * @param nativeJavaClass equivalent Java class implementation
+     * @param defaultValueOverride default value for this column
+     * @param aliases a list of alternative names for the attribute
+     * @param additionalProperties any arbitrary properties not part of the type system
+     * @param typeName name of the type that is a subtype of DeployedDatabaseSchema - or null to create standard type
+     * @param extendedProperties properties from any subtype
+     * @param vendorProperties additional properties relating to the source of the database technology
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void updateDatabaseColumn(String               userId,
+                                     String               databaseManagerGUID,
+                                     String               databaseManagerName,
+                                     String               databaseColumnGUID,
+                                     String               qualifiedName,
+                                     String               displayName,
+                                     String               description,
+                                     String               dataType,
+                                     String               defaultValue,
+                                     String               fixedValue,
+                                     String               formula,
+                                     boolean              isDeprecated,
+                                     int                  elementPosition,
+                                     int                  minCardinality,
+                                     int                  maxCardinality,
+                                     boolean              allowsDuplicateValues,
+                                     boolean              orderedValues,
+                                     String               defaultValueOverride,
+                                     int                  sortOrder,
+                                     int                  minimumLength,
+                                     int                  length,
+                                     int                  significantDigits,
+                                     boolean              isNullable,
+                                     String               nativeJavaClass,
+                                     List<String>         aliases,
+                                     Map<String, String>  additionalProperties,
+                                     String               typeName,
+                                     Map<String, Object>  extendedProperties,
+                                     Map<String, String>  vendorProperties,
+                                     String               methodName) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
+    {
+        final String elementGUIDParameterName   = "databaseColumnGUID";
+        final String qualifiedNameParameterName = "qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(databaseColumnGUID, elementGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
+
+        /*
+         * A database column is represented as a schemaAttribute of type RelationalColumn (or a subtype).
+         * Check that the type name requested is valid.
+         */
+        String attributeTypeName = OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_NAME;
+        String attributeTypeId   = OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_GUID;
+
+        if (typeName != null)
+        {
+            attributeTypeName = typeName;
+            attributeTypeId   = invalidParameterHandler.validateTypeName(typeName,
+                                                                         OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_NAME,
+                                                                         serviceName,
+                                                                         methodName,
+                                                                         repositoryHelper);
+        }
+
+        /*
+         * Retrieve the current schema attribute for the database column. An exception is thrown if the guid is invalid, points to
+         * an entity of the wrong type, or one with the CalculatedValue classification on its schema type.
+         */
+        EntityDetail columnSchemaAttribute = databaseColumnHandler.getEntityFromRepository(userId,
+                                                                                           databaseColumnGUID,
+                                                                                           elementGUIDParameterName,
+                                                                                           OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_NAME,
+                                                                                           methodName);
+
+        if (columnSchemaAttribute != null)
+        {
+            /*
+             * Load up the builder objects for processing by the generic handler.  The builders manage the properties
+             * of the metadata elements that make up the database table, and the schemaTypeHandler manages the elements themselves.
+             */
+            SchemaAttributeBuilder schemaAttributeBuilder = new SchemaAttributeBuilder(qualifiedName,
+                                                                                       displayName,
+                                                                                       description,
+                                                                                       elementPosition,
+                                                                                       minCardinality,
+                                                                                       maxCardinality,
+                                                                                       isDeprecated,
+                                                                                       defaultValueOverride,
+                                                                                       allowsDuplicateValues,
+                                                                                       orderedValues,
+                                                                                       sortOrder,
+                                                                                       minimumLength,
+                                                                                       length,
+                                                                                       significantDigits,
+                                                                                       isNullable,
+                                                                                       nativeJavaClass,
+                                                                                       aliases,
+                                                                                       additionalProperties,
+                                                                                       attributeTypeName,
+                                                                                       attributeTypeId,
+                                                                                       extendedProperties,
+                                                                                       repositoryHelper,
+                                                                                       serviceName,
+                                                                                       serverName);
+
+            SchemaTypeBuilder schemaTypeBuilder = new SchemaTypeBuilder(qualifiedName + ":ColumnType",
+                                                                        OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_TYPE_NAME,
+                                                                        OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_TYPE_GUID,
+                                                                        repositoryHelper,
+                                                                        serviceName,
+                                                                        serverName);
+            schemaTypeBuilder.setDerivedProperties(formula);
+            schemaTypeBuilder.setDataType(dataType);
+            schemaTypeBuilder.setDefaultValue(defaultValue);
+            schemaTypeBuilder.setFixedValue(fixedValue);
+
+            schemaAttributeBuilder.setSchemaType(userId, schemaTypeBuilder, methodName);
+            databaseColumnHandler.updateBeanInRepository(userId,
+                                                         databaseManagerGUID,
+                                                         databaseManagerName,
+                                                         databaseColumnGUID,
+                                                         elementGUIDParameterName,
+                                                         attributeTypeId,
+                                                         attributeTypeName,
+                                                         schemaAttributeBuilder.getInstanceProperties(methodName),
+                                                         false,
+                                                         methodName);
+
+            databaseColumnHandler.setVendorProperties(userId,
+                                                      databaseColumnGUID,
+                                                      vendorProperties,
+                                                      methodName);
+        }
+        else
+        {
+            invalidParameterHandler.throwUnknownElement(userId,
+                                                        databaseColumnGUID,
+                                                        attributeTypeName,
+                                                        serviceName,
+                                                        serverName,
+                                                        methodName);
+        }
+    }
+
+
+    /**
+     * Remove the metadata element representing a database column.
+     *
+     * @param userId calling user
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
+     * @param databaseColumnGUID unique identifier of the metadata element to remove
+     * @param qualifiedName unique name of the metadata element to remove
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void removeDatabaseColumn(String userId,
+                                     String databaseManagerGUID,
+                                     String databaseManagerName,
+                                     String databaseColumnGUID,
+                                     String qualifiedName,
+                                     String methodName) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException
+    {
+        final String elementGUIDParameterName    = "databaseColumnGUID";
+        final String qualifiedNameParameterName  = "qualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(databaseColumnGUID, elementGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
+
+        databaseColumnHandler.deleteBeanInRepository(userId,
+                                                     databaseManagerGUID,
+                                                     databaseManagerName,
+                                                     databaseColumnGUID,
+                                                     elementGUIDParameterName,
+                                                     OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_GUID,
+                                                     OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_NAME,
+                                                     qualifiedName,
+                                                     qualifiedNameParameterName,
+                                                     methodName);
+    }
+
+
+    /**
+     * Retrieve the list of database column metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param userId calling user
+     * @param searchString string to find in the properties
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param methodName calling method
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<DATABASE_COLUMN>   findDatabaseColumns(String userId,
+                                                       String searchString,
+                                                       int    startFrom,
+                                                       int    pageSize,
+                                                       String methodName) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
+    {
+        final String searchStringParameterName = "searchString";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
+
+        return databaseColumnHandler.findSchemaAttributes(userId,
+                                                          searchString,
+                                                          searchStringParameterName,
+                                                          OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_GUID,
+                                                          OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_NAME,
+                                                          null,
+                                                          null,
+                                                          startFrom,
+                                                          pageSize,
+                                                          methodName);
+    }
+
+
+    /**
+     * Retrieve the list of column for a database table (or view)
+     *
+     * @param userId calling user
+     * @param databaseTableGUID unique identifier of the database table of interest
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param methodName calling method
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<DATABASE_COLUMN>    getColumnsForDatabaseTable(String userId,
+                                                               String databaseTableGUID,
+                                                               int    startFrom,
+                                                               int    pageSize,
+                                                               String methodName) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException
+    {
+        final String parentElementGUIDParameterName = "databaseTableGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(databaseTableGUID, parentElementGUIDParameterName, methodName);
+
+        return databaseColumnHandler.getSchemaAttributesForComplexSchemaType(userId,
+                                                                             databaseTableGUID,
+                                                                             parentElementGUIDParameterName,
+                                                                             null,
+                                                                             null,
+                                                                             startFrom,
+                                                                             pageSize,
+                                                                             methodName);
+    }
+
+
+    /**
+     * Retrieve the list of database column metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param userId calling user
+     * @param name name to search for
+     * @param startFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param methodName calling method
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<DATABASE_COLUMN>   getDatabaseColumnsByName(String userId,
+                                                            String name,
+                                                            int    startFrom,
+                                                            int    pageSize,
+                                                            String methodName) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
+    {
+        final String nameParameterName = "name";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(name, nameParameterName, methodName);
+
+        return databaseColumnHandler.getSchemaAttributesByName(userId,
+                                                               OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_GUID,
+                                                               OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_NAME,
+                                                               name,
+                                                               null,
+                                                               null,
+                                                               startFrom,
+                                                               pageSize,
+                                                               methodName);
+    }
+
+
+    /**
+     * Retrieve the database column metadata element with the supplied unique identifier.
+     *
+     * @param userId calling user
+     * @param guid unique identifier of the requested metadata element
+     * @param methodName calling method
+     *
+     * @return matching metadata element
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public DATABASE_COLUMN getDatabaseColumnByGUID(String userId,
+                                                   String guid,
+                                                   String methodName) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
+    {
+        final String guidParameterName = "guid";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(guid, guidParameterName, methodName);
+
+        return databaseColumnHandler.getSchemaAttribute(userId,
+                                                        guid,
+                                                        guidParameterName,
+                                                        OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_NAME,
+                                                        null,
+                                                        null,
+                                                        methodName);
+    }
+
+
+    /* ==================================================================================
+     * Database columns can be decorated with additional information about their content.
+     */
+
+    /**
+     * Classify a column in a database table as the primary key.  This means each row has a different value
+     * in this column and it can be used to uniquely identify the column.
+     *
+     * @param userId calling user
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
+     * @param databaseColumnGUID unique identifier if the primary key column
+     * @param name name of primary key
+     * @param keyPatternOrdinal type of lifecycle and scope
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void setPrimaryKeyOnColumn(String     userId,
+                                      String     databaseManagerGUID,
+                                      String     databaseManagerName,
+                                      String     databaseColumnGUID,
+                                      String     name,
+                                      int        keyPatternOrdinal,
+                                      String     methodName) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
+                                                                    PropertyServerException
+    {
+        final String parentElementGUIDParameterName = "databaseColumnGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(databaseColumnGUID, parentElementGUIDParameterName, methodName);
+
+        InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                     null,
+                                                                                     OpenMetadataAPIMapper.PRIMARY_KEY_NAME_PROPERTY_NAME,
+                                                                                     name,
+                                                                                     methodName);
+
+        try
+        {
+            properties = repositoryHelper.addEnumPropertyToInstance(serviceName,
+                                                                    properties,
+                                                                    OpenMetadataAPIMapper.PRIMARY_KEY_PATTERN_PROPERTY_NAME,
+                                                                    OpenMetadataAPIMapper.KEY_PATTERN_ENUM_TYPE_GUID,
+                                                                    OpenMetadataAPIMapper.KEY_PATTERN_ENUM_TYPE_NAME,
+                                                                    keyPatternOrdinal,
+                                                                    methodName);
+        }
+        catch (TypeErrorException classificationNotSupported)
+        {
+            throw new InvalidParameterException(classificationNotSupported, OpenMetadataAPIMapper.PRIMARY_KEY_PATTERN_PROPERTY_NAME);
+        }
+
+        databaseColumnHandler.setClassificationInRepository(userId,
+                                                               databaseManagerGUID,
+                                                               databaseManagerName,
+                                                               OpenMetadataAPIMapper.PRIMARY_KEY_CLASSIFICATION_TYPE_GUID,
+                                                               OpenMetadataAPIMapper.PRIMARY_KEY_CLASSIFICATION_TYPE_NAME,
+                                                               databaseColumnGUID,
+                                                               parentElementGUIDParameterName,
+                                                               OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_NAME,
+                                                               properties,
+                                                               methodName);
+    }
+
+
+    /**
+     * Remove the classification that this column is a primary key.
+     *
+     * @param userId calling user
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
+     * @param databaseColumnGUID unique identifier if the primary key column
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void removePrimaryKeyFromColumn(String userId,
+                                           String databaseManagerGUID,
+                                           String databaseManagerName,
+                                           String databaseColumnGUID,
+                                           String methodName) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException
+    {
+        final String parentElementGUIDParameterName = "databaseColumnGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(databaseColumnGUID, parentElementGUIDParameterName, methodName);
+
+        databaseColumnHandler.removeClassificationFromRepository(userId,
+                                                                 databaseManagerGUID,
+                                                                 databaseManagerName,
+                                                                 databaseColumnGUID,
+                                                                 parentElementGUIDParameterName,
+                                                                 OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_NAME,
+                                                                 OpenMetadataAPIMapper.PRIMARY_KEY_CLASSIFICATION_TYPE_GUID,
+                                                                 OpenMetadataAPIMapper.PRIMARY_KEY_CLASSIFICATION_TYPE_NAME,
+                                                                 methodName);
+    }
+
+
+    /**
+     * Create a foreign relationship between two columns.  One of the columns holds the primary key of the other
+     * to form a link.
+     *
+     * @param userId calling user
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
+     * @param primaryKeyColumnGUID unique identifier of the column containing the primary key
+     * @param foreignKeyColumnGUID unique identifier of the column containing the primary key from the other table
+     * @param name the display name for UIs and reports
+     * @param description description of the foreign key
+     * @param confidence the level of confidence that the foreign key is correct.  This is a value between 0 and 100
+     * @param steward the name of the steward who assigned the foreign key (or approved the discovered value)
+     * @param source the id of the source of the knowledge of the foreign key
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void addForeignKeyRelationship(String userId,
+                                          String databaseManagerGUID,
+                                          String databaseManagerName,
+                                          String primaryKeyColumnGUID,
+                                          String foreignKeyColumnGUID,
+                                          String name,
+                                          String description,
+                                          int    confidence,
+                                          String steward,
+                                          String source,
+                                          String methodName) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
+                                                                    PropertyServerException
+    {
+        final String primaryElementGUIDParameterName = "primaryKeyColumnGUID";
+        final String foreignElementGUIDParameterName = "foreignKeyColumnGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(primaryKeyColumnGUID, primaryElementGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(foreignKeyColumnGUID, foreignElementGUIDParameterName, methodName);
+
+        InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                                     null,
+                                                                                     OpenMetadataAPIMapper.FOREIGN_KEY_NAME_PROPERTY_NAME,
+                                                                                     name,
+                                                                                     methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.FOREIGN_KEY_DESCRIPTION_PROPERTY_NAME,
+                                                                  description,
+                                                                  methodName);
+        properties = repositoryHelper.addIntPropertyToInstance(serviceName,
+                                                               properties,
+                                                               OpenMetadataAPIMapper.FOREIGN_KEY_CONFIDENCE_PROPERTY_NAME,
+                                                               confidence,
+                                                               methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.FOREIGN_KEY_STEWARD_PROPERTY_NAME,
+                                                                  steward,
+                                                                  methodName);
+        properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                  properties,
+                                                                  OpenMetadataAPIMapper.FOREIGN_KEY_SOURCE_PROPERTY_NAME,
+                                                                  source,
+                                                                  methodName);
+
+        databaseColumnHandler.linkElementToElement(userId,
+                                                   databaseManagerGUID,
+                                                   databaseManagerName,
+                                                   primaryKeyColumnGUID,
+                                                   primaryElementGUIDParameterName,
+                                                   OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_NAME,
+                                                   foreignKeyColumnGUID,
+                                                   foreignElementGUIDParameterName,
+                                                   OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_NAME,
+                                                   OpenMetadataAPIMapper.FOREIGN_KEY_RELATIONSHIP_TYPE_GUID,
+                                                   OpenMetadataAPIMapper.FOREIGN_KEY_RELATIONSHIP_TYPE_NAME,
+                                                   properties,
+                                                   methodName);
+    }
+
+
+    /**
+     * Remove the foreign key relationship for the requested columns.
+     *
+     * @param userId calling user
+     * @param databaseManagerGUID unique identifier of software server capability representing the DBMS
+     * @param databaseManagerName unique name of software server capability representing the DBMS
+     * @param primaryKeyColumnGUID unique identifier of the column that is the linked primary key
+     * @param foreignKeyColumnGUID unique identifier of the column the contains the primary key from another table
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void removeForeignKeyRelationship(String userId,
+                                             String databaseManagerGUID,
+                                             String databaseManagerName,
+                                             String primaryKeyColumnGUID,
+                                             String foreignKeyColumnGUID,
+                                             String methodName) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException
+    {
+        final String primaryElementGUIDParameterName = "primaryKeyColumnGUID";
+        final String foreignElementGUIDParameterName = "foreignKeyColumnGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(primaryKeyColumnGUID, primaryElementGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(foreignKeyColumnGUID, foreignElementGUIDParameterName, methodName);
+
+        databaseColumnHandler.unlinkElementFromElement(userId,
+                                                       false,
+                                                       databaseManagerGUID,
+                                                       databaseManagerName,
+                                                       primaryKeyColumnGUID,
+                                                       primaryElementGUIDParameterName,
+                                                       OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_NAME,
+                                                       foreignKeyColumnGUID,
+                                                       foreignElementGUIDParameterName,
+                                                       OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_GUID,
+                                                       OpenMetadataAPIMapper.RELATIONAL_COLUMN_TYPE_NAME,
+                                                       OpenMetadataAPIMapper.FOREIGN_KEY_RELATIONSHIP_TYPE_GUID,
+                                                       OpenMetadataAPIMapper.FOREIGN_KEY_RELATIONSHIP_TYPE_NAME,
+                                                       methodName);
+    }
+}

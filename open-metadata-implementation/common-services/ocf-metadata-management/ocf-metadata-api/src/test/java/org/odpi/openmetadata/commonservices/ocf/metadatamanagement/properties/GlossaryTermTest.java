@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.commonservices.ocf.metadatamanagement.properties;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Classification;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementClassification;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
@@ -19,22 +19,22 @@ import static org.testng.Assert.assertTrue;
  */
 public class GlossaryTermTest
 {
-    private String               guid                     = "TestGUID";
-    private String               typeId                   = "TestTypeId";
+    private String                      guid                     = "TestGUID";
+    private String                      typeId                   = "TestTypeId";
     private String                            typeName                 = "TestTypeName";
     private long                              typeVersion              = 7;
     private String                            typeDescription          = "TestTypeDescription";
     private String                            summary                  = "TestSummary";
-    private String                            examples                 = "TestExamples";
-    private String               abbreviation             = "TestAbbreviation";
-    private String               usage                    = "TestUsage";
-    private String               qualifiedName            = "TestQualifiedName";
-    private String               displayName              = "TestDisplayName";
-    private String               description              = "TestDescription";
-    private Map<String, String>  additionalProperties     = new HashMap<>();
-    private List<Classification> classifications          = new ArrayList<>();
-    private Classification       classification           = new Classification();
-    private Map<String, Object>  classificationProperties = new HashMap<>();
+    private String                      examples                 = "TestExamples";
+    private String                      abbreviation             = "TestAbbreviation";
+    private String                      usage                    = "TestUsage";
+    private String                      qualifiedName            = "TestQualifiedName";
+    private String                      displayName              = "TestDisplayName";
+    private String                      description              = "TestDescription";
+    private Map<String, String>         additionalProperties     = new HashMap<>();
+    private List<ElementClassification> classifications          = new ArrayList<>();
+    private ElementClassification       classification           = new ElementClassification();
+    private Map<String, Object>         classificationProperties = new HashMap<>();
 
 
 
@@ -177,7 +177,7 @@ public class GlossaryTermTest
 
         assertTrue(testObject.getClassifications() == null);
 
-        List<Classification> emptyClassifications = new ArrayList<>();
+        List<ElementClassification> emptyClassifications = new ArrayList<>();
         testObject = new GlossaryTerm();
         testObject.setClassifications(emptyClassifications);
 
@@ -186,7 +186,7 @@ public class GlossaryTermTest
         testObject = new GlossaryTerm();
         testObject.setClassifications(classifications);
 
-        List<Classification> retrievedClassifications = testObject.getClassifications();
+        List<ElementClassification> retrievedClassifications = testObject.getClassifications();
 
         assertTrue(retrievedClassifications != null);
         assertFalse(retrievedClassifications.isEmpty());

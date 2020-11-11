@@ -15,7 +15,7 @@ Figure 1 shows the different types of OMAG Servers.  The hierarchy
 in the diagram groups these servers according to their role in
 the ecosystem.
 
-![Figure 1](../concepts/types-of-omag-servers.png#pagesize)
+![Figure 1](../concepts/types-of-omag-servers.png#pagewidth)
 > **Figure 1:** The different types of OMAG Servers organized into a hierarchy
 > that shows the types of roles they perform and how they integrate together
 
@@ -80,9 +80,9 @@ Below are the commands to
   * [Configuring the open metadata archives loaded at server start](configuring-the-startup-archives.md) - Metadata Access Point, Metadata Server and Repository Proxy only
   * [Configuring the repository proxy connectors](configuring-the-repository-proxy-connector.md) - Repository Proxy only
   * [Configuring the Open Metadata Access Services (OMASs)](configuring-the-access-services.md) - Metadata Access Point and Metadata Server only
+  * [Configuring the Open Metadata Integration Services (OMIS)](configuring-the-integration-services.md) - Integration Daemon only
   * [Configuring the Open Metadata View Services (OMVSs)](configuring-the-view-services.md) - View Server only
   * [Configuring the Discovery Engine Services](configuring-the-discovery-engine-services.md) - Discovery Server only
-  * [Configuring the Security Sync Services](configuring-the-security-sync-services.md) - Security Sync Server only
   * [Configuring the Stewardship Engine Services](configuring-the-stewardship-engine-services.md) - Stewardship server only
 
 ### Advanced Configuration Topics
@@ -99,7 +99,7 @@ GET {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{se
 ```
 
 It is also possible to query the origin of the server supporting the open metadata services.
-For the Egeria OMAG Server Platform, the response is "ODPi Egeria OMAG Server Platform (version 2.4-SNAPSHOT)".
+For the Egeria OMAG Server Platform, the response is "ODPi Egeria OMAG Server Platform (version 2.5-SNAPSHOT)".
 
 ```
 GET {serverURLRoot}/open-metadata/platform-services/users/{adminUserId}/servers/{serverName}/server-platform-origin

@@ -4,7 +4,7 @@ package org.odpi.openmetadata.accessservices.governanceengine.server.admin;
 
 import org.odpi.openmetadata.accessservices.governanceengine.server.handlers.GovernedAssetHandler;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.commonservices.multitenant.OCFOMASServiceInstanceHandler;
+import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstanceHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -14,7 +14,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
  * access service instances.  The instance map is thread-safe.  Instances are added
  * and removed by the GovernanceEngineAdmin class.
  */
-public class GovernanceEngineInstanceHandler extends OCFOMASServiceInstanceHandler {
+public class GovernanceEngineInstanceHandler extends OMASServiceInstanceHandler {
 
     /**
      * Default constructor registers the access service

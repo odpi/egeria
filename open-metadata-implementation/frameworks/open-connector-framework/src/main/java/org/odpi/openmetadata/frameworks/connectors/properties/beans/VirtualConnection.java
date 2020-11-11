@@ -53,7 +53,7 @@ public class VirtualConnection extends Connection
         elementType.setElementTypeDescription(elementTypeDescription);
         elementType.setElementSourceServer(elementAccessServiceURL);
         elementType.setElementOrigin(elementOrigin);
-        elementType.setElementHomeMetadataCollectionId(elementHomeMetadataCollectionId);
+        elementType.setElementMetadataCollectionId(elementHomeMetadataCollectionId);
 
         return elementType;
     }
