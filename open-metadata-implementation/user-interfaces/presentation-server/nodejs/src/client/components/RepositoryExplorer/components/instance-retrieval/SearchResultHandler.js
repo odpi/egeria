@@ -21,6 +21,7 @@ export default function SearchResultHandler(props) {
   const searchText            = props.searchText;
   const searchClassifications = props.searchClassifications; 
   const serverName            = props.serverName;  
+  const enterpriseOption      = props.enterpriseOption;
   const results               = props.results; 
   const selectCallback        = props.selectCallback;
   const setAllCallback        = props.setAllCallback;
@@ -65,7 +66,8 @@ export default function SearchResultHandler(props) {
       dialogDisplay = (
         <div  className="dialog-text">       
           <p  className="dialog-text">
-          {searchCategory} search on server {serverName} using expression &quot;{searchText}&quot;
+            {enterpriseOption ? "Enterprise " : "Local "}
+            {searchCategory} search on server {serverName} using expression &quot;{searchText}&quot;
           </p>
           <p  className="dialog-text">
           Type filter : 
@@ -94,6 +96,7 @@ export default function SearchResultHandler(props) {
        *  Operation complete...
        */
 
+
       if (results === undefined || results === null || results.length === 0) {
         
         /* 
@@ -103,6 +106,7 @@ export default function SearchResultHandler(props) {
         dialogDisplay = (
         <div  className="dialog-text">
           <p  className="dialog-text">
+          {enterpriseOption ? "Enterprise " : "Local "}
           {searchCategory} search on server {serverName} using expression &quot;{searchText}&quot;
           </p>
           <p className="dialog-text">
@@ -145,9 +149,10 @@ export default function SearchResultHandler(props) {
               <div className="search-results-list">
                 {results.map(res => ( 
                  <div key={res.entityGUID}>
-                   <label className="search-result-label" key={res.entityGUID}> 
+                   <label className="search-result-label" key={res.entityGUID}>
                    <input type="checkbox" id={res.entityGUID} value={res.checked} onChange={resultToggled} checked={res.checked}/>
-                     {res.label} ({res.entityGUID}) homed in repository {res.metadataCollectionName}          
+                     {res.label} ({res.entityGUID}) homed in metadataCollection {res.metadataCollectionName}
+                     { !enterpriseOption ? " ["+res.provenance+"]" : "" }
                    </label> 
                    <br/> 
                  </div>
@@ -166,11 +171,12 @@ export default function SearchResultHandler(props) {
               <b>Relationships</b>
               </p>
               <div className="search-results-list">
-                {results.map(res => ( 
-                  <div key={res.relationshipGUID}>
-                    <label  className="search-result-label" key={res.relationshipGUID}> 
-                    <input type="checkbox" id={res.relationshipGUID} value={res.checked} onChange={resultToggled} checked={res.checked}/>
-                      {res.label} ({res.relationshipGUID}) homed in repository {res.metadataCollectionName}          
+                {results.map(res => (
+                  <div key={res.relationshipDigest.relationshipGUID}>
+                    <label  className="search-result-label" key={res.relationshipDigest.relationshipGUID}>
+                    <input type="checkbox" id={res.relationshipDigest.relationshipGUID} value={res.checked} onChange={resultToggled} checked={res.checked}/>
+                      {res.relationshipDigest.label} ({res.relationshipDigest.relationshipGUID}) homed in metadataCollection {res.relationshipDigest.metadataCollectionName}
+                      { !enterpriseOption ? " ["+res.relationshipDigest.provenance+"]" : "" }
                     </label> 
                     <br/> 
                  </div>
@@ -184,6 +190,7 @@ export default function SearchResultHandler(props) {
         dialogDisplay = (
          <div  className="dialog-text">
            <p  className="dialog-text">
+           {enterpriseOption ? "Enterprise " : "Local "}
            {searchCategory} search on server {serverName} using expression &quot;{searchText}&quot;
            </p>
            <p  className="dialog-text">
@@ -264,6 +271,7 @@ SearchResultHandler.propTypes = {
   searchText            : PropTypes.string,
   searchClassifications : PropTypes.array,
   searchType            : PropTypes.string,
-  serverName            : PropTypes.string
+  serverName            : PropTypes.string,
+  enterpriseOption      : PropTypes.bool
 
 };
