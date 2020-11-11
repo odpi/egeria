@@ -466,7 +466,6 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                                      Relationship relationship)
     {
         final String methodName    = "validRelationship";
-        final String parameterName = "relationship";
         // 1. Validate the instance
         boolean valid = validInstance(sourceName, relationship, methodName, false);
         // 2. Validate the ends of the relationship

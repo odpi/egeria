@@ -5369,17 +5369,9 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         }
 
         /*
-         * Check relationship is valid
-         */
-        Relationship relationship = realMetadataCollection.getRelationship(userId, deletedRelationshipGUID);
-        repositoryValidator.validateRelationshipFromStore(repositoryName, deletedRelationshipGUID, relationship, methodName);
-
-        /*
          * Restore relationship
          */
         Relationship   newRelationship = realMetadataCollection.restoreRelationship(userId, deletedRelationshipGUID);
-
-        repositoryValidator.validateRelationshipFromStore(repositoryName, deletedRelationshipGUID, newRelationship, methodName);
 
         if (newRelationship != null)
         {
