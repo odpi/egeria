@@ -1,17 +1,17 @@
-import React, { useContext, useState, useRef } from "react";
-
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
-import PropTypes                       from "prop-types";
+import React, { useContext, useState, useRef } from "react";
 
-import { InstancesContext }            from "../../contexts/InstancesContext";
+import PropTypes                               from "prop-types";
 
-import { RepositoryServerContext }     from "../../contexts/RepositoryServerContext";
+import { InstancesContext }                    from "../../contexts/InstancesContext";
 
-import FilterManager                   from "./FilterManager";
+import { RepositoryServerContext }             from "../../contexts/RepositoryServerContext";
 
-import SearchResultHandler             from "./SearchResultHandler";
+import FilterManager                           from "./FilterManager";
+
+import SearchResultHandler                     from "./SearchResultHandler";
 
 import "./instance-retriever.scss"
 
@@ -269,7 +269,7 @@ export default function InstanceSearch(props) {
            */
           searchUniqueCategory   = "Relationship";
           searchUniqueInstance   = selectedInstances[0];
-          searchUniqueGUID       = searchUniqueInstance.relationshipGUID;
+          searchUniqueGUID       = searchUniqueInstance.relationshipDigest.relationshipGUID;
         }
       }
 
@@ -291,7 +291,9 @@ export default function InstanceSearch(props) {
       else {
         rexTraversal.operation = "relationshipSearch";
       }
-      rexTraversal.serverName = repositoryServerContext.repositoryServerName;      
+      rexTraversal.serverName = repositoryServerContext.repositoryServer.serverName;
+      rexTraversal.platformName = repositoryServerContext.repositoryServer.platformName;
+      rexTraversal.enterpriseOption = repositoryServerContext.enterpriseOption;
       rexTraversal.searchText = searchText;
       
 
@@ -313,8 +315,15 @@ export default function InstanceSearch(props) {
           rexTraversal.entities[entityGUID] = instance;                  
         }
         else {
-          var relationshipGUID = instance.relationshipGUID;
-          rexTraversal.relationships[relationshipGUID] = instance;        
+          const relationshipGUID = instance.relationshipDigest.relationshipGUID;
+          rexTraversal.relationships[relationshipGUID] = instance.relationshipDigest;
+
+          // Add the entity digests for this relationship to the traversal - they are also in the searchResults
+          let end1GUID = instance.relationshipDigest.end1GUID;
+          let end2GUID = instance.relationshipDigest.end2GUID;
+
+          rexTraversal.entities[end1GUID] = instance.end1Digest;
+          rexTraversal.entities[end2GUID] = instance.end2Digest;
         }
     
       });
@@ -393,7 +402,7 @@ export default function InstanceSearch(props) {
        * Search was for relationships
        */
       list = searchResults.map((item) => {
-        if (item.relationshipGUID === guid) {
+        if (item.relationshipDigest.relationshipGUID === guid) {
           const prevChecked = item.checked;
           return Object.assign(item, { checked : !prevChecked });            
         }
@@ -425,9 +434,11 @@ export default function InstanceSearch(props) {
     <div className={props.className}>
 
       <div className="retrieval-controls">
-        <p>
-        Search for instances
-        </p>
+
+        <div className="retrieval-fields">
+
+        <p className="descriptive-text">Search for instances</p>
+
         <label htmlFor="category">Category: </label>
         <input type="radio"
                id="searchCatEntity"
@@ -453,26 +464,29 @@ export default function InstanceSearch(props) {
                onChange = { updatedSearchText } >
         </input>
 
+        <br/>
         <FilterManager searchCategory={searchCategory} typeSelected={filterTypeSelected} clsChanged={filterClassificationChanged} />
 
-        <br />
 
-        <button className="top-control-button" onClick = { searchForInstances } >
+        </div>
+
+        <button className="retrieval-button" onClick = { searchForInstances } >
           Search for instances
         </button>
       </div>
 
-        <SearchResultHandler status                = { status }
-                             searchCategory        = { searchCategory }
-                             searchType            = { searchType }
-                             searchText            = { searchText }
-                             searchClassifications = { Object.keys(searchClassifications) }
-                             serverName            = { repositoryServerContext.repositoryServerName }
-                             results               = { searchResults }
-                             selectCallback        = { selectCallback }
-                             setAllCallback        = { setAllCallback }
-                             onCancel              = { cancelSearchModal }
-                             onSubmit              = { submitSearchModal } />
+      <SearchResultHandler status                = { status }
+                           searchCategory        = { searchCategory }
+                           searchType            = { searchType }
+                           searchText            = { searchText }
+                           searchClassifications = { Object.keys(searchClassifications) }
+                           serverName            = { repositoryServerContext.repositoryServer.serverName }
+                           enterpriseOption      = { repositoryServerContext.enterpriseOption }
+                           results               = { searchResults }
+                           selectCallback        = { selectCallback }
+                           setAllCallback        = { setAllCallback }
+                           onCancel              = { cancelSearchModal }
+                           onSubmit              = { submitSearchModal } />
 
     </div>      
 
@@ -483,4 +497,3 @@ export default function InstanceSearch(props) {
 InstanceSearch.propTypes = { 
   className  : PropTypes.string
 }
-
