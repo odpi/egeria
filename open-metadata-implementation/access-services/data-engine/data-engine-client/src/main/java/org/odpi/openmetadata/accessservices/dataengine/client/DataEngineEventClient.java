@@ -139,6 +139,27 @@ public class DataEngineEventClient implements DataEngineClient {
      * @throws ConnectorCheckedException problem with the underlying connector (if used)
      */
     @Override
+    public String addProcessHierarchy(String userId, ProcessHierarchy processHierarchy) throws InvalidParameterException, ConnectorCheckedException {
+
+        ProcessHierarchyEvent event = new ProcessHierarchyEvent();
+        event.setUserId(userId);
+        event.setExternalSourceName(externalSource);
+        event.setEventType(DataEngineEventType.PROCESS_HIERARCHY_EVENT);
+        event.setProcessHierarchy(processHierarchy);
+
+        topicConnector.sendEvent(event);
+
+        //async interaction
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @throws InvalidParameterException the bean properties are invalid
+     * @throws ConnectorCheckedException problem with the underlying connector (if used)
+     */
+    @Override
     public void addLineageMappings(String userId, List<LineageMapping> lineageMappings) throws InvalidParameterException, ConnectorCheckedException {
 
         LineageMappingsEvent event = new LineageMappingsEvent();
