@@ -43,6 +43,8 @@ allprojects {
     group = 'org.odpi.egeria'
     version = '2.5-SNAPSHOT'
 
+    apply plugin: 'java'
+
 
     // This enforces version checking but is slow to process
     //apply plugin: 'nebula.lint'
@@ -50,13 +52,7 @@ allprojects {
     //    rules = ['all-dependency'] // TODO: Change to criticalRules when ready to enforce
     //
     //}
-}
 
-/*
- * Configuration for sub projects only
- */
-
-subprojects {
 
     //apply plugin: "io.spring.dependency-management"
 
@@ -205,6 +201,7 @@ subprojects {
 
     java {
         withSourcesJar()
+        withJavadocJar()
     }
 
     publishing {
@@ -221,4 +218,11 @@ subprojects {
         targetCompatibility = "1.8"
     }
 
+}
+
+/*
+ * Configuration for sub projects only
+ */
+
+subprojects {
 }
