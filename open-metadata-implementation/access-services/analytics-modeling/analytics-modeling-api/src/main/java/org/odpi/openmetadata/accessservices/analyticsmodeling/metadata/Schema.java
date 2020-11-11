@@ -1,16 +1,17 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
+
 package org.odpi.openmetadata.accessservices.analyticsmodeling.metadata;
 
 /**
- * Database contains the properties and guid for a database entity retrieved from the metadata repository.
+ * Schema metadata bean contains the properties and guid for a schema entity
+ * retrieved from the metadata repository.
  */
-public class Database extends MetadataBase {
+public class Schema extends MetadataBase {
 
 	String name;
-	String type;
-	String version;
+	String type;	// user or system expected
 
 	/**
 	 * Get name of the database.
@@ -44,19 +45,4 @@ public class Database extends MetadataBase {
 		this.type = type;
 	}
 	
-	/**
-	 * Get version of the database.
-	 * @return version of the database.
-	 */
-	public String getVersion() {
-		return version;
-	}
-	/**
-	 * Set version of the data base bean usually from entity.
-	 * @param version to set.
-	 */
-
-	public void setVersion(String version) {
-		this.version = version;
-	}
 }
