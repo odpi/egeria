@@ -5,13 +5,7 @@ package org.odpi.openmetadata.accessservices.dataengine.server.processors;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.collections4.CollectionUtils;
-import org.odpi.openmetadata.accessservices.dataengine.event.DataEngineRegistrationEvent;
-import org.odpi.openmetadata.accessservices.dataengine.event.LineageMappingsEvent;
-import org.odpi.openmetadata.accessservices.dataengine.event.PortAliasEvent;
-import org.odpi.openmetadata.accessservices.dataengine.event.PortImplementationEvent;
-import org.odpi.openmetadata.accessservices.dataengine.event.ProcessToPortListEvent;
-import org.odpi.openmetadata.accessservices.dataengine.event.ProcessesEvent;
-import org.odpi.openmetadata.accessservices.dataengine.event.SchemaTypeEvent;
+import org.odpi.openmetadata.accessservices.dataengine.event.*;
 import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineAuditCode;
 import org.odpi.openmetadata.accessservices.dataengine.server.admin.DataEngineServicesInstance;
 import org.odpi.openmetadata.accessservices.dataengine.server.service.DataEngineRESTServices;
@@ -86,6 +80,26 @@ public class DataEngineEventProcessor {
 
             dataEngineRESTServices.createOrUpdatePortAliasWithDelegation(portAliasEvent.getUserId(), serverName, portAliasEvent.getPort(),
                     portAliasEvent.getExternalSourceName());
+
+        } catch (JsonProcessingException | PropertyServerException | UserNotAuthorizedException | InvalidParameterException e) {
+            logException(dataEngineEvent, methodName, e);
+        }
+    }
+
+    /**
+     * Process a {@link ProcessHierarchyEvent}
+     *
+     * @param dataEngineEvent the event to be processed
+     */
+    public void processProcessHierarchyEvent(String dataEngineEvent) {
+        final String methodName = "processProcessHierarchyEvent";
+
+        log.debug(DEBUG_MESSAGE_METHOD, methodName);
+        try {
+            ProcessHierarchyEvent processHierarchyEvent = OBJECT_MAPPER.readValue(dataEngineEvent, ProcessHierarchyEvent.class);
+
+            dataEngineRESTServices.addProcessHierarchyToProcess(processHierarchyEvent.getUserId(), serverName, processHierarchyEvent.getProcessHierarchy(),
+                    processHierarchyEvent.getExternalSourceName());
 
         } catch (JsonProcessingException | PropertyServerException | UserNotAuthorizedException | InvalidParameterException e) {
             logException(dataEngineEvent, methodName, e);

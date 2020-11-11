@@ -465,9 +465,16 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
     public boolean validRelationship(String       sourceName,
                                      Relationship relationship)
     {
-        final String methodName = "validRelationship";
-
-        return validInstance(sourceName, relationship, methodName, false);
+        final String methodName    = "validRelationship";
+        // 1. Validate the instance
+        boolean valid = validInstance(sourceName, relationship, methodName, false);
+        // 2. Validate the ends of the relationship
+        if (relationship.getEntityOneProxy() == null || relationship.getEntityTwoProxy() == null)
+        {
+            valid = false;
+            repositoryContentManager.logNullInstance(sourceName, methodName);
+        }
+        return valid;
     }
 
 

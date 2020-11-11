@@ -4,23 +4,10 @@ package org.odpi.openmetadata.accessservices.dataengine.server.service;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.odpi.openmetadata.accessservices.dataengine.model.Attribute;
-import org.odpi.openmetadata.accessservices.dataengine.model.LineageMapping;
-import org.odpi.openmetadata.accessservices.dataengine.model.ParentProcess;
-import org.odpi.openmetadata.accessservices.dataengine.model.PortAlias;
-import org.odpi.openmetadata.accessservices.dataengine.model.PortImplementation;
+import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
+import org.odpi.openmetadata.accessservices.dataengine.model.*;
 import org.odpi.openmetadata.accessservices.dataengine.model.Process;
-import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
-import org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability;
-import org.odpi.openmetadata.accessservices.dataengine.model.UpdateSemantic;
-import org.odpi.openmetadata.accessservices.dataengine.rest.DataEngineRegistrationRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.LineageMappingsRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.PortAliasRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.PortImplementationRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.PortListRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessListResponse;
-import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessesRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.SchemaTypeRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.*;
 import org.odpi.openmetadata.accessservices.dataengine.server.admin.DataEngineInstanceHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineRegistrationHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineSchemaTypeHandler;
@@ -250,6 +237,40 @@ public class DataEngineRESTServices {
     }
 
     /**
+     * Add the provided ProcessHierarchy relationship
+     *
+     * @param serverName                  name of server instance to call
+     * @param userId                      the name of the calling user
+     * @param processHierarchyRequestBody properties of the process hierarchy
+     *
+     * @return the unique identifier (guid) of the child of the process hierarchy that was updated
+     */
+    public GUIDResponse addProcessHierarchy(String userId, String serverName, ProcessHierarchyRequestBody processHierarchyRequestBody) {
+        final String methodName = "addProcessHierarchy";
+
+        GUIDResponse response = new GUIDResponse();
+
+        try {
+            if (processHierarchyRequestBody == null) {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+                return response;
+            }
+
+            response.setGUID(addProcessHierarchyToProcess(userId, serverName, processHierarchyRequestBody.getProcessHierarchy(),
+                    processHierarchyRequestBody.getExternalSourceName()));
+
+        } catch (InvalidParameterException error) {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        } catch (PropertyServerException error) {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        } catch (UserNotAuthorizedException error) {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+
+        return response;
+    }
+
+    /**
      * Create or update the processes with ports, schema types and lineage mappings
      *
      * @param userId               the name of the calling user
@@ -318,6 +339,48 @@ public class DataEngineRESTServices {
         log.debug(DEBUG_MESSAGE_METHOD_RETURN, methodName, portAliasGUID);
 
         return portAliasGUID;
+    }
+
+    /**
+     * Add a a ProcessHierarchy relationship to the process
+     *
+     * @param userId             the name of the calling user
+     * @param serverName         name of server instance to call
+     * @param processHierarchy   the process hierarchy values
+     * @param externalSourceName the unique name of the external source
+     *
+     * @return the unique identifier (guid) of the child of the process hierarchy that was updated
+     *
+     * @throws InvalidParameterException  the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
+    public String addProcessHierarchyToProcess(String userId, String serverName, ProcessHierarchy processHierarchy, String externalSourceName) throws
+                                                                                                                                               InvalidParameterException,
+                                                                                                                                               PropertyServerException,
+                                                                                                                                               UserNotAuthorizedException {
+        final String methodName = "addProcessHierarchyToProcess";
+
+        log.debug(DEBUG_MESSAGE_METHOD_DETAILS, methodName, processHierarchy);
+
+        ProcessHandler processHandler = instanceHandler.getProcessHandler(userId, serverName, methodName);
+
+        Optional<EntityDetail> childProcessEntity = processHandler.findProcessEntity(userId, processHierarchy.getChildProcess());
+
+        String childProcessGUID;
+        if (childProcessEntity.isPresent()) {
+            childProcessGUID = childProcessEntity.get().getGUID();
+            ParentProcess parentProcess = new ParentProcess();
+            parentProcess.setQualifiedName(processHierarchy.getParentProcess());
+            parentProcess.setProcessContainmentType(processHierarchy.getProcessContainmentType());
+            processHandler.createOrUpdateProcessHierarchyRelationship(userId, parentProcess, childProcessGUID, externalSourceName);
+        } else {
+            throw new InvalidParameterException(DataEngineErrorCode.PROCESS_NOT_FOUND.getMessageDefinition(processHierarchy.getChildProcess()), this.getClass().getName(), methodName, "childProcess");
+        }
+
+        log.debug(DEBUG_MESSAGE_METHOD_RETURN, methodName, childProcessGUID);
+
+        return childProcessGUID;
     }
 
     /**

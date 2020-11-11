@@ -3,6 +3,6 @@
 import React from "react";
 import CreateNodeWizard from "./CreateNodeWizard";
 
-export default function CreateTermWizard(props) {
-  return <CreateNodeWizard nodeTypeName="term" />;
+export default function CreateCategoryWizard(props) {
+  return <CreateNodeWizard nodeTypeName="category" />;
 }
