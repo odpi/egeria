@@ -25,6 +25,7 @@ import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlinea
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -62,6 +63,8 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.op
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_INCLUDED_IN;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.EDGE_LABEL_TABLE_DATA_FLOW;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.NODE_LABEL_SUB_PROCESS;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_COLUMN_IN_GUID;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_COLUMN_OUT_GUID;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_DISPLAY_NAME;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_ENTITY_CREATED_BY;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_ENTITY_CREATE_TIME;
@@ -173,6 +176,9 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
                                 .has(PROPERTY_KEY_LABEL, DATA_FILE),
                         __.in(NESTED_SCHEMA_ATTRIBUTE).has(PROPERTY_KEY_LABEL, RELATIONAL_TABLE)).toList();
 
+        if (graphFactory.isSupportingTransactions()) {
+            g.tx().commit();
+        }
 
         Vertex process = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).next();
         inputPathsForColumns.forEach(columnIn -> findOutputColumns(g, columnIn, process));
@@ -191,15 +197,21 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
                 .out(LINEAGE_MAPPING)
                 .toList();
 
+        if (graphFactory.isSupportingTransactions()) {
+            g.tx().commit();
+        }
+
         Vertex vertexToStart;
         if (schemaElementVertices != null) {
-            Vertex columnOut = null;
+            List<Vertex> columnOutList = new ArrayList<>();
             for (Vertex schemaElementVertex : schemaElementVertices) {
                 vertexToStart = isSchemaElementLinkedToProcess(g, schemaElementVertex, process);
                 if (vertexToStart != null) {
-                    columnOut = findPathForOutputAsset(vertexToStart, g, columnIn);
+                    columnOutList.addAll(findPathForOutputAsset(vertexToStart, g, columnIn));
                 }
-                moveColumnProcessColumn(columnIn, columnOut, process);
+                for (Vertex columnOut : columnOutList) {
+                    addNodesAndEdgesForQuerying(columnIn, columnOut, process);
+                }
             }
         }
     }
@@ -222,6 +234,10 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
                 .has(PROPERTY_KEY_ENTITY_GUID,
                         g.V(process.id()).elementMap(PROPERTY_KEY_ENTITY_GUID).toList().get(0).get(PROPERTY_KEY_ENTITY_GUID)).toList();
 
+        if (graphFactory.isSupportingTransactions()) {
+            g.tx().commit();
+        }
+
         if (!initialProcess.isEmpty()) {
             return schemaElementVertex;
         }
@@ -229,20 +245,12 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
     }
 
     /**
-     * Initiates the process of copying the input and output vertices to the MainGraph.
+     * Returns true if the vertex is null or doesn't have a valid guid
      *
-     * @param columnIn  - The vertex of the input schema element
-     * @param columnOut - THe vertex of the output schema element
-     * @param process   - The vertex of the process.
+     * @param column - The vertex to of the schema element
      */
-    private void moveColumnProcessColumn(Vertex columnIn, Vertex columnOut, Vertex process) {
-        if (columnOut != null) {
-            String columnOutGuid = getGuid(columnOut);
-            String columnInGuid = getGuid(columnIn);
-            if (!columnOutGuid.isEmpty() && !columnInGuid.isEmpty()) {
-                addNodesAndEdgesForQuerying(columnIn, columnOut, process);
-            }
-        }
+    private boolean isColumnEmpty(Vertex column) {
+        return (column == null || !StringUtils.isNotEmpty(getGuid(column)));
     }
 
     /**
@@ -253,29 +261,38 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
      * @param process   - The vertex of the process.
      */
     private void addNodesAndEdgesForQuerying(Vertex columnIn, Vertex columnOut, Vertex process) {
+        if (isColumnEmpty(columnIn) || isColumnEmpty(columnOut)) {
+            return;
+        }
 
         final String processGuid = getGuid(process);
+        final String columnInGuid = getGuid(columnIn);
+        final String columnOutGuid = getGuid(columnOut);
         final String processName =
                 g.V(process.id()).elementMap(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).toList().get(0).get(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).toString();
 
-        Iterator<Vertex> t = g.V(columnIn.id()).outE(EDGE_LABEL_COLUMN_DATA_FLOW).inV().has("processGuid", processGuid);
+        Iterator<Vertex> t = g.V(columnIn.id()).outE(EDGE_LABEL_COLUMN_DATA_FLOW).inV()
+                .has(PROPERTY_KEY_COLUMN_OUT_GUID, columnOutGuid)
+                .has(PROPERTY_KEY_PROCESS_GUID, processGuid);
 
         if (!t.hasNext()) {
             Vertex subProcess = g.addV(NODE_LABEL_SUB_PROCESS)
                     .property(PROPERTY_KEY_ENTITY_NODE_ID, UUID.randomUUID().toString())
-                    .property(PROPERTY_KEY_PROCESS_GUID, processGuid)
                     .property(PROPERTY_KEY_DISPLAY_NAME, processName)
+                    .property(PROPERTY_KEY_PROCESS_GUID, processGuid)
+                    .property(PROPERTY_KEY_COLUMN_IN_GUID, columnInGuid)
+                    .property(PROPERTY_KEY_COLUMN_OUT_GUID, columnOutGuid)
                     .next();
 
             g.V(columnIn.id()).addE(EDGE_LABEL_COLUMN_DATA_FLOW).to(g.V(subProcess.id())).next();
             g.V(subProcess.id()).addE(EDGE_LABEL_COLUMN_DATA_FLOW).to(g.V(columnOut.id())).next();
             g.V(subProcess.id()).addE(EDGE_LABEL_INCLUDED_IN).to(g.V(process.id())).next();
 
-            addAssetToProcessEdges(columnIn, columnOut, process);
-
             if (graphFactory.isSupportingTransactions()) {
                 g.tx().commit();
             }
+
+            addAssetToProcessEdges(columnIn, columnOut, process);
         }
     }
 
@@ -301,6 +318,10 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
             if (!tableVertex.hasNext()) {
                 g.V(process.id()).addE(EDGE_LABEL_TABLE_DATA_FLOW).to(g.V(assetOut.get().id())).next();
             }
+        }
+
+        if (graphFactory.isSupportingTransactions()) {
+            g.tx().commit();
         }
     }
 
@@ -346,7 +367,14 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
 
         graphContext.forEach(entry -> {
             try {
-                addVerticesAndRelationship(entry);
+                LineageEntity fromEntity = entry.getFromVertex();
+                LineageEntity toEntity = entry.getToVertex();
+
+                upsertToGraph(fromEntity, toEntity, entry.getRelationshipType(), entry.getRelationshipGuid());
+
+                if (graphFactory.isSupportingTransactions()) {
+                    g.tx().commit();
+                }
             } catch (Exception e) {
                 log.error("An exception happened when trying to create vertices and relationships in LineageGraph. The error is", e);
                 if (graphFactory.isSupportingTransactions()) {
@@ -355,15 +383,6 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
             }
         });
     }
-
-    private void addVerticesAndRelationship(GraphContext graphContext) {
-        LineageEntity fromEntity = graphContext.getFromVertex();
-        LineageEntity toEntity = graphContext.getToVertex();
-
-        upsertToGraph(fromEntity, toEntity, graphContext.getRelationshipType(), graphContext.getRelationshipGuid());
-
-    }
-
 
     private void upsertToGraph(LineageEntity fromEntity, LineageEntity toEntity, String relationshipLabel, String relationshipGuid) {
 
@@ -390,9 +409,6 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
         addOrUpdatePropertiesVertex(from, fromEntity);
         addOrUpdatePropertiesVertex(to, toEntity);
         //TODO add relationship properties -> meaning add relationship properties on AssetLineage omas event
-        if (graphFactory.isSupportingTransactions()) {
-            g.tx().commit();
-        }
     }
 
     /**
@@ -470,9 +486,18 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
         LineageEntity firstEnd = lineageRelationship.getSourceEntity();
         LineageEntity secondEnd = lineageRelationship.getTargetEntity();
 
-        upsertToGraph(firstEnd, secondEnd, lineageRelationship.getTypeDefName(), lineageRelationship.getGuid());
-
-        addOrUpdatePropertiesEdge(lineageRelationship);
+        try{
+            upsertToGraph(firstEnd, secondEnd, lineageRelationship.getTypeDefName(), lineageRelationship.getGuid());
+            addOrUpdatePropertiesEdge(lineageRelationship);
+            if (graphFactory.isSupportingTransactions()) {
+                g.tx().commit();
+            }
+        } catch (Exception e) {
+            log.debug("An exception happened during update of the properties with error:", e);
+            if (graphFactory.isSupportingTransactions()) {
+                g.tx().rollback();
+            }
+        }
     }
 
     /**
@@ -490,7 +515,18 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
             }
             return;
         }
-        addOrUpdatePropertiesEdge(lineageRelationship);
+
+        try{
+            addOrUpdatePropertiesEdge(lineageRelationship);
+            if (graphFactory.isSupportingTransactions()) {
+                g.tx().commit();
+            }
+        } catch (Exception e) {
+            log.debug("An exception happened during update of the properties with error:", e);
+            if (graphFactory.isSupportingTransactions()) {
+                g.tx().rollback();
+            }
+        }
     }
 
     /**
@@ -522,6 +558,9 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
                     .toList().get(0).get(PROPERTY_KEY_ENTITY_VERSION);
             if (storedClassificationVersion < graphContext.getToVertex().getVersion()) {
                 addOrUpdatePropertiesVertex(storedClassification, graphContext.getToVertex());
+                if (graphFactory.isSupportingTransactions()) {
+                    g.tx().commit();
+                }
                 break;
             }
         }
@@ -555,19 +594,27 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
             boolean classificationExists = remainingClassifications.stream()
                     .anyMatch(gc -> gc.getToVertex().getGuid().equals(storedClassificationGuid));
             if (!classificationExists) {
-                g.V().has(PROPERTY_KEY_ENTITY_GUID, storedClassificationGuid).drop();
-                g.E(edge.id()).drop();
-                if (graphFactory.isSupportingTransactions()) {
-                    g.tx().commit();
+                try{
+                    g.V().has(PROPERTY_KEY_ENTITY_GUID, storedClassificationGuid).drop();
+                    g.E(edge.id()).drop();
+                    if (graphFactory.isSupportingTransactions()) {
+                        g.tx().commit();
+                    }
+                    break;
+                }catch (Exception e){
+                    log.debug("An exception happened during delete of classifications with error:", e);
+                    if (graphFactory.isSupportingTransactions()) {
+                        g.tx().rollback();
+                    }
                 }
-                break;
+
             }
         }
     }
 
     @Override
     public void deleteEntity(String guid, Object version) {
-        Iterator<Vertex> vertex = checkIfVertexExist(guid, version);
+        Iterator<Vertex> vertex = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).has(PROPERTY_KEY_ENTITY_VERSION, version);
 
         //TODO add check when we will have classifications to delete classifications first
         if (!vertex.hasNext()) {
@@ -624,78 +671,82 @@ public class LineageGraphConnector extends LineageGraphConnectorBase {
         properties.computeIfAbsent(PROPERTY_KEY_ENTITY_VERSION, val -> lineageRelationship.getVersion());
         properties.computeIfAbsent(PROPERTY_KEY_METADATA_ID, val -> lineageRelationship.getMetadataCollectionId());
 
-        try {
+        g.inject(properties)
+                .as("properties")
+                .V(lineageRelationship.getSourceEntity().getGuid())
+                .outE()
+                .where(inV().hasId(lineageRelationship.getTargetEntity().getGuid()))
+                .as("edge")
+                .sideEffect(__.select("properties")
+                        .unfold()
+                        .as("kv")
+                        .select("edge")
+                        .property(__.select("kv").by(Column.keys), __.select("kv").by(Column.values))).iterate();
 
-            g.inject(properties)
-                    .as("properties")
-                    .V(lineageRelationship.getSourceEntity().getGuid())
-                    .outE()
-                    .where(inV().hasId(lineageRelationship.getTargetEntity().getGuid()))
-                    .as("edge")
-                    .sideEffect(__.select("properties")
-                            .unfold()
-                            .as("kv")
-                            .select("edge")
-                            .property(__.select("kv").by(Column.keys), __.select("kv").by(Column.values))).iterate();
-            if (graphFactory.isSupportingTransactions()) {
-                g.tx().commit();
-            }
-        } catch (Exception e) {
-            log.debug("An exception happened during update of the properties with error:", e);
-            if (graphFactory.isSupportingTransactions()) {
-                g.tx().rollback();
-            }
-        }
 
     }
 
     /**
-     * Returns the vertex of the schema element in the output of a process.
+     * Returns a list of vertices of output schema elements
      *
      * @param endingVertex   - The vertex that is being checked if it is the output schema element
      * @param g              - Graph traversal object
      * @param startingVertex - The vertex of the input schema element
      *
-     * @return Return a vertex of the output schema element
+     * @return Return a list of vertices of output schema elements
      */
-    private Vertex findPathForOutputAsset(Vertex endingVertex, GraphTraversalSource g, Vertex startingVertex) {
-        final String VERTEX = "vertex";
+    private List<Vertex> findPathForOutputAsset(Vertex endingVertex, GraphTraversalSource g, Vertex startingVertex) {
         //add null check for endingVertex
         if (endingVertex == null) {
             return null;
         }
 
+        List<Vertex> endVertices = new ArrayList<>();
         try {
-            Iterator<Vertex> end = g.V(endingVertex.id())
-                    .or(__.in(ATTRIBUTE_FOR_SCHEMA).in(ASSET_SCHEMA_TYPE)
-                                    .has(PROPERTY_KEY_LABEL, DATA_FILE).store(VERTEX),
-                            __.in(NESTED_SCHEMA_ATTRIBUTE).has(PROPERTY_KEY_LABEL, RELATIONAL_TABLE)
-                                    .store(VERTEX)).select(VERTEX).unfold();
+            if (isEndColumn(g, endingVertex)) {
+                endVertices.add(endingVertex);
+            } else {
+                List<Vertex> nextVertices = g.V(endingVertex.id()).out(LINEAGE_MAPPING).toList();
 
-            if (!end.hasNext()) {
-                List<Vertex> next = g.V(endingVertex.id()).out(LINEAGE_MAPPING).toList();
-                Vertex nextVertex = null;
-                for (Vertex vert : next) {
-                    if (vert.equals(startingVertex)) {
+                for (Vertex vertex : nextVertices) {
+                    if (vertex.equals(startingVertex)) {
                         continue;
                     }
-                    nextVertex = vert;
+                    Optional.ofNullable(findPathForOutputAsset(vertex, g, endingVertex)).ifPresent(endVertices::addAll);
                 }
-                return findPathForOutputAsset(nextVertex, g, endingVertex);
+
             }
-            return endingVertex;
+            if (graphFactory.isSupportingTransactions()) {
+                g.tx().commit();
+            }
+            return endVertices;
         } catch (Exception e) {
             if (log.isDebugEnabled()) {
                 log.debug("Vertex does not exist with guid {} and display name {}", startingVertex.id(),
                         startingVertex.property(PROPERTY_KEY_DISPLAY_NAME).value());
             }
+            if (graphFactory.isSupportingTransactions()) {
+                g.tx().rollback();
+            }
             return null;
         }
     }
 
-    private Iterator<Vertex> checkIfVertexExist(String guid, Object version) {
+    /**
+     * Returns true if the vertex is part of an asset
+     *
+     * @param g      - Graph traversal object
+     * @param vertex - The vertex of the schema element
+     */
+    private boolean isEndColumn(GraphTraversalSource g, Vertex vertex) {
+        final String VERTEX = "vertex";
 
-        return g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).has(PROPERTY_KEY_ENTITY_VERSION, version);
+        Iterator<Vertex> end = g.V(vertex.id())
+                .or(__.in(ATTRIBUTE_FOR_SCHEMA).in(ASSET_SCHEMA_TYPE)
+                                .has(PROPERTY_KEY_LABEL, DATA_FILE).store(VERTEX),
+                        __.in(NESTED_SCHEMA_ATTRIBUTE).has(PROPERTY_KEY_LABEL, RELATIONAL_TABLE)
+                                .store(VERTEX)).select(VERTEX).unfold();
+        return end.hasNext();
     }
 
     /**

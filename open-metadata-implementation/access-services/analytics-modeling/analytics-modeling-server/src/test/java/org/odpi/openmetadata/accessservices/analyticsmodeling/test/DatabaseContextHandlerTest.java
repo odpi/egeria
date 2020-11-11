@@ -9,11 +9,15 @@ import static org.testng.Assert.expectThrows;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.odpi.openmetadata.accessservices.analyticsmodeling.assets.DatabaseContextHandler;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.contentmanager.OMEntityDao;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.converter.DatabaseConverter;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.converter.EmptyConverter;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.AnalyticsModelingErrorCode;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.ffdc.exceptions.AnalyticsModelingCheckedException;
+import org.odpi.openmetadata.accessservices.analyticsmodeling.metadata.Database;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.model.ResponseContainerDatabase;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.model.ResponseContainerDatabaseSchema;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.model.ResponseContainerModule;
@@ -23,13 +27,16 @@ import org.odpi.openmetadata.accessservices.analyticsmodeling.test.utils.TestUti
 import org.odpi.openmetadata.accessservices.analyticsmodeling.utils.Constants;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
+import org.odpi.openmetadata.commonservices.generichandlers.RelationalDataHandler;
+import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryErrorHandler;
+import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 
-	private static final String DATABASE_ADWENTURE_WORKS = "AdwentureWorks";
+	private static final String DATABASE_ADVENTURE_WORKS = "AdventureWorks";
 	private static final String DATABASE_GOSALES = "GOSALES";
 	private static final String DATA_TYPE_DECIMAL = "DECIMAL";
 	private static final String DATA_TYPE_INTEGER = "INTEGER";
@@ -49,46 +56,92 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 	public void setup() throws Exception {
 		super.setup();
 		OMEntityDao omEntityDaoReal = new OMEntityDao(enterpriseConnector, Collections.emptyList(), auditLog);
-		databaseContextHandler = new DatabaseContextHandler(omEntityDaoReal, invalidParameterHandler);
+		String serviceName = "serviceName";
+		String serverName = "serverName";
+		
+		RepositoryHandler repositoryHandler = new RepositoryHandler(auditLog, 
+				new RepositoryErrorHandler(omrsRepositoryHelper, serviceName, serverName, auditLog),
+				metadataCollection,
+	            PAGE_SIZE);
+
+		RelationalDataHandler<Database, Object, Object, Object, Object, Object> relationalDataHandler =
+		new RelationalDataHandler<>(
+        		new DatabaseConverter(omrsRepositoryHelper, serviceName,serverName),
+                Database.class,
+        		new EmptyConverter(omrsRepositoryHelper, serviceName,serverName),
+                Object.class,
+        		new EmptyConverter(omrsRepositoryHelper, serviceName,serverName),
+                Object.class,
+        		new EmptyConverter(omrsRepositoryHelper, serviceName,serverName),
+                Object.class,
+        		new EmptyConverter(omrsRepositoryHelper, serviceName,serverName),
+                Object.class,
+        		new EmptyConverter(omrsRepositoryHelper, serviceName,serverName),
+                Object.class,
+                serviceName,
+                serverName,
+                invalidParameterHandler,
+                repositoryHandler,
+                omrsRepositoryHelper,
+                "localServerUserId",
+                null, // securityVerifier,
+                null, // supportedZones,
+                null, // defaultZones,
+                null, // publishZones,
+                auditLog);
+		
+		databaseContextHandler = new DatabaseContextHandler(relationalDataHandler, omEntityDaoReal, invalidParameterHandler);
 	}
 
 	@Test
 	public void getDatabases() throws AnalyticsModelingCheckedException {
 		// setup repository
 		createDatabaseEntity(DATABASE_GOSALES, SERVER_TYPE_MS_SQL, "1.0");
-		createDatabaseEntity(DATABASE_ADWENTURE_WORKS, SERVER_TYPE_MS_SQL, "2.0");
+		createDatabaseEntity(DATABASE_ADVENTURE_WORKS, SERVER_TYPE_MS_SQL, "2.0");
 
 		// test
-		List<ResponseContainerDatabase> databases = databaseContextHandler.getDatabases(FROM_INDEX, PAGE_SIZE);
+		List<ResponseContainerDatabase> databases = databaseContextHandler.getDatabases(USER_ID, FROM_INDEX, PAGE_SIZE);
 		assertNotNull(databases);
 		assertTrue(databases.size() == 2, "Failed retrieve databases.");
 
 		ResponseContainerDatabase gs = databases.stream().filter(ds -> DATABASE_GOSALES.equals(ds.getDbName()))
 				.findFirst().orElse(null);
 		assertNotNull(gs);
+		assertNotNull(gs.getGUID());
 		assertEquals(SERVER_TYPE_MS_SQL, gs.getDbType());
 		assertEquals("1.0", gs.getDbVersion());
 	}
 
 	@Test
 	public void getDatabasesPage() throws AnalyticsModelingCheckedException {
-		// setup repository with four databases sorted: AdwentureWorks, DB_3, DB_4, GOSALES
+		// setup repository with four databases sorted: AdventureWorks, DB_3, DB_4, DB_5, GOSALES
 		createDatabaseEntity(DATABASE_GOSALES, SERVER_TYPE_MS_SQL, "1.0");
-		createDatabaseEntity(DATABASE_ADWENTURE_WORKS, SERVER_TYPE_MS_SQL, "2.0");
+		createDatabaseEntity(DATABASE_ADVENTURE_WORKS, SERVER_TYPE_MS_SQL, "2.0");
 		createDatabaseEntity("DB_3", SERVER_TYPE_MS_SQL, "1.0");
 		createDatabaseEntity("DB_4", SERVER_TYPE_MS_SQL, "2.0");
+		createDatabaseEntity("DB_5", SERVER_TYPE_MS_SQL, "2.0");
 
-		List<ResponseContainerDatabase> databases = databaseContextHandler.getDatabases(1, 2);
-		assertNotNull(databases);
-		assertTrue(databases.size() == 2, "Failed retrieve databases.");
-		assertEquals(databases.get(0).getDbName(), "DB_3");
-		assertEquals(databases.get(1).getDbName(), "DB_4");
+		List<ResponseContainerDatabase> page1 = databaseContextHandler.getDatabases(USER_ID, 0, 2);
+		assertNotNull(page1);
+		assertTrue(page1.size() == 2, "Failed retrieve databases first page 1.");
+		List<ResponseContainerDatabase> page2 = databaseContextHandler.getDatabases(USER_ID, 2, 2);
+		assertNotNull(page2);
+		assertTrue(page2.size() == 2, "Failed retrieve databases internal page 2.");
+		List<ResponseContainerDatabase> page3 = databaseContextHandler.getDatabases(USER_ID, 4, 2);
+		assertNotNull(page3);
+		assertTrue(page3.size() == 1, "Failed retrieve databases last not full page 3.");
+		
+		page1.addAll(page2);
+		page1.addAll(page3);
 
+		assertEquals(String.join(";", page1.stream().map(ResponseContainerDatabase::getDbName).sorted().collect(Collectors.toList())),
+				"AdventureWorks;DB_3;DB_4;DB_5;GOSALES",
+				"All five databases should be fetched");
 	}
 
 	@Test
 	public void getDatabasesEmptyRepository() throws AnalyticsModelingCheckedException {
-		List<ResponseContainerDatabase> databases = databaseContextHandler.getDatabases(FROM_INDEX, PAGE_SIZE);
+		List<ResponseContainerDatabase> databases = databaseContextHandler.getDatabases(USER_ID, FROM_INDEX, PAGE_SIZE);
 		assertTrue(databases.size() == 0, "Database list expected to be empty.");
 	}
 
@@ -156,14 +209,14 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest {
 		// setup repository
 		EntityDetail entityDB = createDatabaseEntity(DATABASE_GOSALES, SERVER_TYPE_MS_SQL, "1.0");
 		createDatabaseSchemaEntity(entityDB.getGUID(), SCHEMA_DBO);
-		entityDB = createDatabaseEntity("AdventureWorks", SERVER_TYPE_MS_SQL, "1.0");
+		entityDB = createDatabaseEntity(DATABASE_ADVENTURE_WORKS, SERVER_TYPE_MS_SQL, "1.0");
 		createDatabaseSchemaEntity(entityDB.getGUID(), SCHEMA_DBO);
 
 		List<ResponseContainerDatabaseSchema> schemas = databaseContextHandler
 				.getDatabaseSchemas(entityDB.getGUID(),FROM_INDEX, PAGE_SIZE);
 		assertNotNull(schemas);
 		assertTrue(schemas.size() == 1, "Failed to retrieve database schema.");
-		assertEquals("AdventureWorks", schemas.get(0).getCatalog());
+		assertEquals(DATABASE_ADVENTURE_WORKS, schemas.get(0).getCatalog());
 	}
 
 	@Test

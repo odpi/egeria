@@ -49,8 +49,8 @@
   font-size        : 12px;
 }
 
-.collapsible {
-  background-color : #CCCCCC;
+.collapsible-non-bold {
+  background-color : rgb(240,240,240);
   color            : black;
   cursor           : pointer;
   padding          : 5px;
@@ -59,6 +59,15 @@
   text-align       : left;
   outline          : none;
   font-size        : 12px;
+}
+
+.collapsible-non-bold:before {
+  content: '\025BA';
+  font-size: 10px;
+  color: black;
+  float: left;
+  margin-left: 0px;
+  margin-right: 10px;
 }
 
 .content {

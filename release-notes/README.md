@@ -23,11 +23,23 @@ and bad.  We would love to hear from you.
 
 Below are the release notes for the latest ODPi Egeria release:
 
- * [Release 2.2](release-notes-2-2.md) - August 2020
+ * [Release 2.4](release-notes-2-2.md) - October 2020
+    * Integration Server
+    * User Interface improvements
+    * Additional tests
     * Bug fixes
     * Dependency updates
 
 ## Older Releases
+
+* [Release 2.3](release-notes-2-2.md) - September 2020
+    * Presentation Server User Interface
+    * Bug fixes
+    * Dependency updates
+
+* [Release 2.2](release-notes-2-2.md) - August 2020
+    * Bug fixes
+    * Dependency updates
 
  * [Release 2.1](release-notes-2-1.md) - July 2020
     * Bug fixes
@@ -89,21 +101,6 @@ Many of the features are large and the teams integrate code for
 partial function as soon as it is stable and has no impact on released function.
 So you will see support for much more function than is officially released.
 This way you can monitor and feedback on future items as they are developed.
-
-The draft release notes for our future planned releases are below:
-    
-* [Release 2.3](release-notes-2-3.md) - Planned September 2020
-    * Metadata Controlled Security
-    * Data Virtualization Configuration
-    
-* [Release 2.4](release-notes-2-4.md) - Planned October 2020
-    * Digital Architecture
-    * Digital service lifecycle management
-    
-* [Release 2.5](release-notes-2-5.md) - Planned November 2020
-    * Project management of IT change
-    * IoT and large scale cohorts
-
 
 ## Reporting issues
 

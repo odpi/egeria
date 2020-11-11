@@ -17,6 +17,7 @@ import org.odpi.openmetadata.accessservices.analyticsmodeling.responses.ModuleRe
 import org.odpi.openmetadata.accessservices.analyticsmodeling.responses.SchemaTablesResponse;
 import org.odpi.openmetadata.accessservices.analyticsmodeling.responses.SchemasResponse;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
+import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
@@ -28,8 +29,10 @@ import org.slf4j.LoggerFactory;
  */
 public class AnalyticsModelingRestServices {
 
+	private static final String DATABASE_GUID = "databaseGUID";
 	private AnalyticsModelingInstanceHandler instanceHandler = new AnalyticsModelingInstanceHandler();
-
+	private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
+	
 	private static RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(AnalyticsModelingRestServices.class),
 			AccessServiceDescription.ANALYTICS_MODELING_OMAS.getAccessServiceFullName());
 	private RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
@@ -40,6 +43,10 @@ public class AnalyticsModelingRestServices {
 
 	public AnalyticsModelingInstanceHandler getHandler() {
 		return instanceHandler;
+	}
+	
+	public InvalidParameterHandler getInvalidParameterHandler() {
+		return invalidParameterHandler;
 	}
 
 	/**
@@ -58,13 +65,17 @@ public class AnalyticsModelingRestServices {
 		RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
 		try {
+			validateUrlParameters(serverName, userId, null, null, startFrom, pageSize, methodName);
+			
 			DatabasesResponse response = new DatabasesResponse();
 			List<ResponseContainerDatabase> databases = getHandler()
-					.getDatabaseContextHandler(serverName, userId, methodName).getDatabases(startFrom, pageSize);
+					.getDatabaseContextHandler(serverName, userId, methodName).getDatabases(userId, startFrom, pageSize);
 			response.setDatabasesList(databases);
 			ret = response;
 		} catch (AnalyticsModelingCheckedException e) {
 			ret = handleErrorResponse(e, methodName);
+		} catch (InvalidParameterException e) {
+			ret = handleInvalidParameterResponse(e, methodName);
 		}
 
 		restCallLogger.logRESTCallReturn(token, ret.toString());
@@ -72,16 +83,16 @@ public class AnalyticsModelingRestServices {
 	}
 
 	/**
-	 * Get schema defined by data source GUID.
+	 * Get schema defined by database GUID.
 	 * 
 	 * @param serverName     of the request.
 	 * @param userId         of the request.
-	 * @param dataSourceGuid of the requested database.
+	 * @param databaseGuid	 of the requested database.
      * @param startFrom		 starting element (used in paging through large result sets)
      * @param pageSize		 maximum number of results to return
 	 * @return list of schemas for the requested database.
 	 */
-	public AnalyticsModelingOMASAPIResponse getSchemas(String serverName, String userId, String dataSourceGuid,
+	public AnalyticsModelingOMASAPIResponse getSchemas(String serverName, String userId, String databaseGuid,
 			Integer startFrom, Integer pageSize) {
 
 		String methodName = "getSchemas";
@@ -89,10 +100,13 @@ public class AnalyticsModelingRestServices {
 		RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
 		try {
+			
+			validateUrlParameters(serverName, userId, databaseGuid, DATABASE_GUID, startFrom, pageSize, methodName);
+
 			SchemasResponse response = new SchemasResponse();
 			List<ResponseContainerDatabaseSchema> databasesSchemas = getHandler()
 					.getDatabaseContextHandler(serverName, userId, methodName)
-					.getDatabaseSchemas(dataSourceGuid, startFrom, pageSize);
+					.getDatabaseSchemas(databaseGuid, startFrom, pageSize);
 			
 			response.setSchemaList(databasesSchemas);
 			ret = response;
@@ -122,6 +136,8 @@ public class AnalyticsModelingRestServices {
 		RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
 		try {
+			validateUrlParameters(serverName, userId, databaseGuid, DATABASE_GUID, null, null, methodName);
+
 			SchemaTablesResponse response = new SchemaTablesResponse();
 			ResponseContainerSchemaTables tables = getHandler()
 					.getDatabaseContextHandler(serverName, userId, methodName).getSchemaTables(databaseGuid, schema);
@@ -155,19 +171,49 @@ public class AnalyticsModelingRestServices {
 
 		try {
 
+			validateUrlParameters(serverName, userId, databaseGuid, DATABASE_GUID, null, null, methodName);
+
 			ModuleResponse response = new ModuleResponse();
-			ResponseContainerModule module = getHandler().getDatabaseContextHandler(serverName, userId, "getModule")
+			ResponseContainerModule module = getHandler().getDatabaseContextHandler(serverName, userId, methodName)
 					.getModule(databaseGuid, catalog, schema);
 			response.setModule(module);
 			ret = response;
 		} catch (AnalyticsModelingCheckedException e) {
-			ret = handleErrorResponse(e, "getModule");
+			ret = handleErrorResponse(e, methodName);
 		} catch (InvalidParameterException e) {
 			ret = handleInvalidParameterResponse(e, methodName);
 		}
 		
 		restCallLogger.logRESTCallReturn(token, ret.toString());
 		return ret;
+	}
+
+	/**
+	 * Validate path and query parameters from URL.
+	 * @param serverName mandatory path parameter of the base URL.
+	 * @param userId mandatory path parameter of the base URL.
+	 * @param guid optional path parameter.
+	 * @param guidParamName name of GUID parameter in URL.
+	 * @param startFrom optional query parameter.
+	 * @param pageSize optional query parameter.
+	 * @param methodName for message.
+	 * @throws InvalidParameterException if validation failed.
+	 * 
+	 * To validate guid the guidParamName must not be null. 
+	 */
+	public void validateUrlParameters(String serverName, String userId, String guid, String guidParamName, 
+			Integer startFrom, Integer pageSize, String methodName) throws InvalidParameterException {
+		
+		getInvalidParameterHandler().validateUserId(userId, methodName);
+		getInvalidParameterHandler().validateName(serverName, "serverName", methodName);
+		
+		if (guidParamName != null) {
+			getInvalidParameterHandler().validateGUID(guid, guidParamName, methodName);
+		}
+		
+		if (startFrom != null && pageSize != null) {
+			getInvalidParameterHandler().validatePaging(startFrom, pageSize, methodName);
+		}
 	}
 
 	/**

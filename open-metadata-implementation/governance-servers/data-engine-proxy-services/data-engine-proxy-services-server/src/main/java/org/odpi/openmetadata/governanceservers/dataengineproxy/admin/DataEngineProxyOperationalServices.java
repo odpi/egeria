@@ -123,7 +123,7 @@ public class DataEngineProxyOperationalServices {
         }
 
         // Check if events interface should be enabled, otherwise we do not start the connector and configure the events client
-        if(dataEngineProxyConfig.isEventsClientEnabled()) {
+        if (dataEngineProxyConfig.isEventsClientEnabled()) {
 
             try {
 
@@ -138,7 +138,7 @@ public class DataEngineProxyOperationalServices {
                 List<EmbeddedConnection> embeddedConnections = new ArrayList<>();
                 virtualConnection.getEmbeddedConnections().forEach(embeddedConnection -> {
                     Connection connection = embeddedConnection.getEmbeddedConnection();
-                    Map cp = connection.getConfigurationProperties();
+                    Map<String, Object> cp = connection.getConfigurationProperties();
                     cp.put("local.server.id", localServerId); // -> maps to `group.id` in OCF
                     connection.setConfigurationProperties(cp);
                     embeddedConnection.setEmbeddedConnection(connection);

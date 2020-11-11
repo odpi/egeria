@@ -7,6 +7,7 @@ import org.odpi.openmetadata.adminservices.configuration.properties.ResourceEndp
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceAuditHeader;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceGraph;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
@@ -42,6 +43,7 @@ import org.odpi.openmetadata.viewservices.rex.api.properties.RexEntityDigest;
 import org.odpi.openmetadata.viewservices.rex.api.properties.RexExpandedEntityDetail;
 import org.odpi.openmetadata.viewservices.rex.api.properties.RexExpandedRelationship;
 import org.odpi.openmetadata.viewservices.rex.api.properties.RexPreTraversal;
+import org.odpi.openmetadata.viewservices.rex.api.properties.RexRelationshipAndEntitiesDigest;
 import org.odpi.openmetadata.viewservices.rex.api.properties.RexRelationshipDigest;
 import org.odpi.openmetadata.viewservices.rex.api.properties.RexTraversal;
 import org.odpi.openmetadata.viewservices.rex.api.properties.RexTypeStats;
@@ -135,9 +137,10 @@ public class RexViewHandler
 
         // TODO - It would be desirable to add validation rules to ensure uniqueness etc.
 
+        configuredPlatforms         = new HashMap<>();
+        configuredServerInstances   = new HashMap<>();
+
         if (resourceEndpoints != null && !resourceEndpoints.isEmpty()) {
-            configuredPlatforms         = new HashMap<>();
-            configuredServerInstances   = new HashMap<>();
 
             resourceEndpoints.forEach(res -> {
 
@@ -181,15 +184,26 @@ public class RexViewHandler
 
     {
 
-        List<ResourceEndpoint> platformList = new ArrayList<>();
-        List<ResourceEndpoint> serverList   = new ArrayList<>();
-
-        platformList.addAll(configuredPlatforms.values());
-        serverList.addAll(configuredServerInstances.values());
-
         Map<String, List<ResourceEndpoint>> returnMap = new HashMap<>();
+
+        List<ResourceEndpoint> platformList = null;
+        List<ResourceEndpoint> serverList   = null;
+
+        if (!configuredPlatforms.isEmpty())
+        {
+            platformList = new ArrayList<>();
+            platformList.addAll(configuredPlatforms.values());
+        }
+
+        if (!configuredServerInstances.isEmpty())
+        {
+            serverList = new ArrayList<>();
+            serverList.addAll(configuredServerInstances.values());
+        }
+
         returnMap.put("platformList",platformList);
         returnMap.put("serverList",serverList);
+
         return returnMap;
     }
 
@@ -372,6 +386,13 @@ public class RexViewHandler
                 repositoryServicesClient = this.getEnterpriseRepositoryServicesClient(repositoryServerName, platformRootURL);
             }
 
+            /*
+             * Find the metadataCollectionId of the repository - this is used later to determine whether
+             * each returned entity is homed in the metadataCollection owned by this repository, or not.
+             */
+            String metadataCollectionId = repositoryServicesClient.getMetadataCollectionId(userId);
+
+
 
             EntityDetail entityDetail = repositoryServicesClient.getEntityDetail(userId, entityGUID);
 
@@ -383,7 +404,13 @@ public class RexViewHandler
 
             String label = this.chooseLabelForEntity(entityDetail, typeExplorer);
 
-            RexExpandedEntityDetail rexExpEntityDetail = new RexExpandedEntityDetail(entityDetail, label, repositoryServerName);
+            String provenance = determineInstanceProvenance(entityDetail, metadataCollectionId, enterpriseOption);
+
+            RexExpandedEntityDetail rexExpEntityDetail = new RexExpandedEntityDetail(entityDetail,
+                                                                                     label,
+                                                                                     repositoryServerName,
+                                                                                     platformName,
+                                                                                     provenance);
 
             return rexExpEntityDetail;
 
@@ -448,6 +475,14 @@ public class RexViewHandler
                 repositoryServicesClient = this.getEnterpriseRepositoryServicesClient(repositoryServerName, platformRootURL);
             }
 
+            /*
+             * Find the metadataCollectionId of the repository - this is used later to determine whether
+             * each returned entity is homed in the metadataCollection owned by this repository, or not.
+             */
+            String metadataCollectionId = repositoryServicesClient.getMetadataCollectionId(userId);
+
+
+
 
             Relationship relationship = repositoryServicesClient.getRelationship(userId, relationshipGUID);
 
@@ -464,12 +499,32 @@ public class RexViewHandler
             String label1 = this.chooseLabelForEntityProxy(entity1, typeExplorer);
             String label2 = this.chooseLabelForEntityProxy(entity2, typeExplorer);
 
-            RexEntityDigest digest1 = new RexEntityDigest(entity1.getGUID(),label1,0, entity1.getMetadataCollectionName());
-            RexEntityDigest digest2 = new RexEntityDigest(entity2.getGUID(),label2,0, entity2.getMetadataCollectionName());
+            RexEntityDigest digest1 = new RexEntityDigest(entity1.getGUID(),
+                                                          label1,
+                                                          0,
+                                                          entity1.getMetadataCollectionName(),
+                                                          entity1.getMetadataCollectionId(),
+                                                          "proxy");
+            RexEntityDigest digest2 = new RexEntityDigest(entity2.getGUID(),
+                                                          label2,
+                                                          0,
+                                                          entity2.getMetadataCollectionName(),
+                                                          entity2.getMetadataCollectionId(),
+                                                          "proxy");
 
             String label = this.chooseLabelForRelationship(relationship);
 
-            RexExpandedRelationship rexExpRelationship = new RexExpandedRelationship(relationship, label, digest1, digest2, repositoryServerName);
+            String provenance = determineInstanceProvenance(relationship, metadataCollectionId, enterpriseOption);
+
+
+
+            RexExpandedRelationship rexExpRelationship = new RexExpandedRelationship(relationship,
+                                                                                     label,
+                                                                                     digest1,
+                                                                                     digest2,
+                                                                                     repositoryServerName,
+                                                                                     platformName,
+                                                                                     provenance);
 
             return rexExpRelationship;
 
@@ -542,6 +597,14 @@ public class RexViewHandler
                 repositoryServicesClient = this.getEnterpriseRepositoryServicesClient(repositoryServerName, platformRootURL);
             }
 
+            /*
+             * Find the metadataCollectionId of the repository - this is used later to determine whether
+             * each returned entity is homed in the metadataCollection owned by this repository, or not.
+             */
+            String metadataCollectionId = repositoryServicesClient.getMetadataCollectionId(userId);
+
+
+
             TypeExplorer typeExplorer = getTypeExplorer(userId,
                                                         repositoryServerName,
                                                         platformName,
@@ -574,7 +637,14 @@ public class RexViewHandler
                     EntityDetail entityDetail = entities.get(e);
                     String label = this.chooseLabelForEntity(entityDetail, typeExplorer);
 
-                    RexEntityDigest entityDigest = new RexEntityDigest(entityDetail.getGUID(), label, 0, entityDetail.getMetadataCollectionName());
+                    String provenance = determineInstanceProvenance(entityDetail, metadataCollectionId, enterpriseOption);
+
+                    RexEntityDigest entityDigest = new RexEntityDigest(entityDetail.getGUID(),
+                                                                       label,
+                                                                       0,
+                                                                       entityDetail.getMetadataCollectionName(),
+                                                                       entityDetail.getMetadataCollectionId(),
+                                                                       provenance);
 
                     digestMap.put(entityDetail.getGUID(), entityDigest);
 
@@ -623,13 +693,13 @@ public class RexViewHandler
      * @throws FunctionNotSupportedException the repository does not support the operation with the provided parameters.
      * @throws UserNotAuthorizedException    the userId is not permitted to perform this operation.
      */
-    public Map<String, RexRelationshipDigest> findRelationships(String    userId,
-                                                                String    repositoryServerName,
-                                                                String    platformName,
-                                                                boolean   enterpriseOption,
-                                                                String    searchText,
-                                                                String    relationshipTypeName,
-                                                                String    methodName)
+    public Map<String, RexRelationshipAndEntitiesDigest> findRelationships(String    userId,
+                                                                           String    repositoryServerName,
+                                                                           String    platformName,
+                                                                           boolean   enterpriseOption,
+                                                                           String    searchText,
+                                                                           String    relationshipTypeName,
+                                                                           String    methodName)
     throws
     RepositoryErrorException,
     InvalidParameterException,
@@ -657,6 +727,14 @@ public class RexViewHandler
                 repositoryServicesClient = this.getEnterpriseRepositoryServicesClient(repositoryServerName, platformRootURL);
             }
 
+            /*
+             * Find the metadataCollectionId of the repository - this is used later to determine whether
+             * each returned entity is homed in the metadataCollection owned by this repository, or not.
+             */
+            String metadataCollectionId = repositoryServicesClient.getMetadataCollectionId(userId);
+
+
+
             TypeExplorer typeExplorer = getTypeExplorer(userId,
                                                         repositoryServerName,
                                                         platformName,
@@ -664,7 +742,7 @@ public class RexViewHandler
                                                         methodName);
 
 
-            String relationshipTypeGUID = typeExplorer.getEntityTypeGUID(relationshipTypeName);
+            String relationshipTypeGUID = typeExplorer.getRelationshipTypeGUID(relationshipTypeName);
 
             List<Relationship> relationships = repositoryServicesClient.findRelationshipsByPropertyValue(
                     userId,
@@ -680,13 +758,24 @@ public class RexViewHandler
 
             if (relationships != null) {
 
-                // Process the list of EntityDetail objects and produce a map of EntityDigest objects
+                // Process the list of Relationship objects and produce a list of super digests...
 
-                Map<String, RexRelationshipDigest> digestMap = new HashMap<>();
+                Map<String, RexRelationshipAndEntitiesDigest> superDigests = new HashMap<>();
+
+
 
                 for (int r = 0; r < relationships.size(); r++) {
+
                     Relationship relationship = relationships.get(r);
                     String label = this.chooseLabelForRelationship(relationship);
+
+                    String provenance = determineInstanceProvenance(relationship, metadataCollectionId, enterpriseOption);
+
+                    // Create the super digest
+
+                    RexRelationshipAndEntitiesDigest superDigest = new RexRelationshipAndEntitiesDigest();
+
+                    // Create the relationship digest
 
                     RexRelationshipDigest relationshipDigest = new RexRelationshipDigest(relationship.getGUID(),
                                                                                          label,
@@ -694,13 +783,43 @@ public class RexViewHandler
                                                                                          relationship.getEntityTwoProxy().getGUID(),
                                                                                          0,
                                                                                          0,
-                                                                                         relationship.getMetadataCollectionName());
+                                                                                         relationship.getMetadataCollectionName(),
+                                                                                         relationship.getMetadataCollectionId(),
+                                                                                         provenance);
 
-                    digestMap.put(relationship.getGUID(), relationshipDigest);
+
+                    superDigest.setRelationshipDigest(relationshipDigest);
+
+                    // Create digests for both ends
+
+                    EntityProxy entity1 = relationship.getEntityOneProxy();
+                    EntityProxy entity2 = relationship.getEntityTwoProxy();
+                    String label1 = this.chooseLabelForEntityProxy(entity1, typeExplorer);
+                    String label2 = this.chooseLabelForEntityProxy(entity2, typeExplorer);
+
+                    RexEntityDigest digest1 = new RexEntityDigest(entity1.getGUID(),
+                                                                  label1,
+                                                                  0,
+                                                                  entity1.getMetadataCollectionName(),
+                                                                  entity1.getMetadataCollectionId(),
+                                                                  "proxy");
+                    RexEntityDigest digest2 = new RexEntityDigest(entity2.getGUID(),
+                                                                  label2,
+                                                                  0,
+                                                                  entity2.getMetadataCollectionName(),
+                                                                  entity2.getMetadataCollectionId(),
+                                                                  "proxy");
+
+
+                    superDigest.setEnd1Digest(digest1);
+                    superDigest.setEnd2Digest(digest2);
+
+                    superDigests.put(relationship.getGUID(), superDigest);
+
 
                 }
 
-                return digestMap;
+                return superDigests;
             }
             else {
                 return null;
@@ -985,6 +1104,15 @@ public class RexViewHandler
                 repositoryServicesClient = this.getEnterpriseRepositoryServicesClient(repositoryServerName, platformRootURL);
             }
 
+
+            /*
+             * Find the metadataCollectionId of the repository - this is used later to determine whether
+             * each returned entity is homed in the metadataCollection owned by this repository, or not.
+             */
+            String metadataCollectionId = repositoryServicesClient.getMetadataCollectionId(userId);
+
+
+
             /*
              * Because we will want to extract labels based on type we'll need to know the types supported by the repository...
              */
@@ -1067,7 +1195,14 @@ public class RexViewHandler
                         // Pass the typeExplorer to the labeller so that it can traverse...
                         String entLabel = this.chooseLabelForEntity(entityDetail, typeExplorer);
 
-                        RexEntityDigest red = new RexEntityDigest(entGUID, entLabel, 0, entityDetail.getMetadataCollectionName());
+                        String provenance = determineInstanceProvenance(entityDetail, metadataCollectionId, enterpriseOption);
+
+                        RexEntityDigest red = new RexEntityDigest(entGUID,
+                                                                  entLabel,
+                                                                  0,
+                                                                  entityDetail.getMetadataCollectionName(),
+                                                                  entityDetail.getMetadataCollectionId(),
+                                                                  provenance);
                         entityDigestMap.put(entGUID, red);
                     }
 
@@ -1092,22 +1227,42 @@ public class RexViewHandler
                             /* add a digest for this proxy... */
                             EntityProxy end1Proxy = relationship.getEntityOneProxy();
                             String end1Label = this.chooseLabelForEntityProxy(end1Proxy, typeExplorer);
-                            RexEntityDigest red = new RexEntityDigest(end1GUID, end1Label, 0, end1Proxy.getMetadataCollectionName());
+                            RexEntityDigest red = new RexEntityDigest(end1GUID,
+                                                                      end1Label,
+                                                                      0,
+                                                                      end1Proxy.getMetadataCollectionName(),
+                                                                      end1Proxy.getMetadataCollectionId(),
+                                                                      "proxy"
+                                                                      );
                             entityDigestMap.put(end1GUID, red);
                         }
                         if (entityDigestMap.get(end2GUID) == null) {
                             /* add a digest for this proxy... */
                             EntityProxy end2Proxy = relationship.getEntityTwoProxy();
                             String end2Label = this.chooseLabelForEntityProxy(end2Proxy, typeExplorer);
-                            RexEntityDigest red = new RexEntityDigest(end2GUID, end2Label, 0, end2Proxy.getMetadataCollectionName());
+                            RexEntityDigest red = new RexEntityDigest(end2GUID,
+                                                                      end2Label,
+                                                                      0,
+                                                                      end2Proxy.getMetadataCollectionName(),
+                                                                      end2Proxy.getMetadataCollectionId(),
+                                                                      "proxy");
                             entityDigestMap.put(end2GUID, red);
                         }
 
 
                         int idx = 0;
 
-                        RexRelationshipDigest rrd = new RexRelationshipDigest(relGUID, relLabel, end1GUID, end2GUID, idx,
-                                                                              0, relationship.getMetadataCollectionName());
+                        String provenance = determineInstanceProvenance(relationship, metadataCollectionId, enterpriseOption);
+
+                        RexRelationshipDigest rrd = new RexRelationshipDigest(relGUID,
+                                                                              relLabel,
+                                                                              end1GUID,
+                                                                              end2GUID,
+                                                                              idx,
+                                                                              0,
+                                                                              relationship.getMetadataCollectionName(),
+                                                                              relationship.getMetadataCollectionId(),
+                                                                              provenance);
                         relationshipDigestMap.put(relGUID, rrd);
                     }
                 }
@@ -1499,6 +1654,44 @@ public class RexViewHandler
 
     }
 
+
+    /*
+     * Record the provenance of the instance, in so far as this is discernible.
+     * Depending on whether enterprise option is enabled or not, retrieve and compare the
+     * metadataCollectionId from the entity with the one retrieved by the caller for the
+     * repository's metadataCollection.
+     */
+    private String determineInstanceProvenance(InstanceAuditHeader   instance,
+                                               String                metadataCollectionId,
+                                               boolean               enterpriseOption)
+    {
+
+        String provenance;
+        if (enterpriseOption)
+        {
+            /*
+             * If enterprise option is set there is no way to differentiate home and reference copies.
+             */
+            provenance = "ent";
+        }
+        else if (instance.getMetadataCollectionId().equals(metadataCollectionId))
+        {
+            /*
+             * This entity looks very at home here...
+             */
+            provenance = "home";
+        }
+        else
+        {
+            /*
+             * This instance looks like it is not at home...
+             */
+            provenance = "refCopy";
+        }
+
+        return provenance;
+
+    }
 
 
 }
