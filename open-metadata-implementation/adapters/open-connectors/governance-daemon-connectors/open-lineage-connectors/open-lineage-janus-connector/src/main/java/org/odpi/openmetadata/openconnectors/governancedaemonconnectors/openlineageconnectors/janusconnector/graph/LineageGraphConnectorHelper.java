@@ -39,20 +39,25 @@ import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.until;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.ASSET_SCHEMA_TYPE;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.ATTRIBUTE_FOR_SCHEMA;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.CONNECTION;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.CONNECTION_KEY;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.DATABASE;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.DATABASE_KEY;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.DATA_FILE;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.DEPLOYED_DB_SCHEMA_TYPE;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.ENDPOINT;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.DATA_FILE_KEY;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.FILE_FOLDER;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.FILE_FOLDER_KEY;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.FOLDER_HIERARCHY;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.GLOSSARY;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.GLOSSARY_CATEGORY;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.GLOSSARY_KEY;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.GLOSSARY_TERM;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.NESTED_SCHEMA_ATTRIBUTE;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.PROCESS;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.RELATIONAL_COLUMN;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.RELATIONAL_DB_SCHEMA_TYPE;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.RELATIONAL_TABLE;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.RELATIONAL_TABLE_KEY;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.SCHEMA_TYPE_KEY;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.TABULAR_COLUMN;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.TABULAR_SCHEMA_TYPE;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.CONDENSED_NODE_DISPLAY_NAME;
@@ -599,7 +604,7 @@ public class LineageGraphConnectorHelper {
                     properties = getGlossaryTermProperties(g, vertexId);
                     break;
             }
-            lineageVertex.getProperties().putAll(properties);
+            lineageVertex.setProperties(properties);
         });
     }
 
@@ -614,35 +619,24 @@ public class LineageGraphConnectorHelper {
 
         Iterator<Vertex> tableAsset = g.V(vertexId).emit().repeat(bothE().otherV().simplePath()).times(1).or(hasLabel(RELATIONAL_TABLE));
         if (tableAsset.hasNext()) {
-            properties.put(RELATIONAL_TABLE, tableAsset.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString());
+            properties.put(RELATIONAL_TABLE_KEY, tableAsset.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString());
         }
 
         Iterator<Vertex> relationalDBSchemaType =
                 g.V(vertexId).emit().repeat(bothE().outV().simplePath()).times(2).or(hasLabel(RELATIONAL_DB_SCHEMA_TYPE));
         if (relationalDBSchemaType.hasNext()) {
-            properties.put(RELATIONAL_DB_SCHEMA_TYPE, relationalDBSchemaType.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString());
-        }
-
-        Iterator<Vertex> deployedDatabaseSchema =
-                g.V(vertexId).emit().repeat(bothE().outV().simplePath()).times(3).or(hasLabel(DEPLOYED_DB_SCHEMA_TYPE));
-        if (deployedDatabaseSchema.hasNext()) {
-            properties.put(DEPLOYED_DB_SCHEMA_TYPE, deployedDatabaseSchema.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString());
+            properties.put(SCHEMA_TYPE_KEY, relationalDBSchemaType.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString());
         }
 
         Iterator<Vertex> database = g.V(vertexId).emit().repeat(bothE().outV().simplePath()).times(4).or(hasLabel(DATABASE));
         if (database.hasNext()) {
-            properties.put(DATABASE,
+            properties.put(DATABASE_KEY,
                     database.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString());
         }
 
         Iterator<Vertex> connection = g.V(vertexId).emit().repeat(bothE().outV().simplePath()).times(5).hasLabel(CONNECTION);
         if (connection.hasNext()) {
-            properties.put(CONNECTION, connection.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString());
-        }
-
-        Iterator<Vertex> host = g.V(vertexId).emit().repeat(bothE().otherV().simplePath()).times(6).or(hasLabel(ENDPOINT));
-        if (host.hasNext()) {
-            properties.put(ENDPOINT, host.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString());
+            properties.put(CONNECTION_KEY, connection.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString());
         }
 
         return properties;
@@ -653,29 +647,24 @@ public class LineageGraphConnectorHelper {
 
         Iterator<Vertex> tabularSchemaType = g.V(vertexId).emit().repeat(bothE().outV().simplePath()).times(1).or(hasLabel(TABULAR_SCHEMA_TYPE));
         if (tabularSchemaType.hasNext()) {
-            properties.put(TABULAR_SCHEMA_TYPE,
+            properties.put(SCHEMA_TYPE_KEY,
                     tabularSchemaType.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString());
         }
 
         Iterator<Vertex> dataFileAsset = g.V(vertexId).emit().repeat(bothE().otherV().simplePath()).times(2).or(hasLabel(DATA_FILE));
         if (dataFileAsset.hasNext()) {
             Vertex dataFileVertex = dataFileAsset.next();
-            properties.put(DATA_FILE, dataFileVertex.property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString());
+            properties.put(DATA_FILE_KEY, dataFileVertex.property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString());
             List<Vertex> folderVertices = getFolderVertices(g, dataFileVertex.id());
             if (CollectionUtils.isEmpty(folderVertices)) {
                 return properties;
             }
             Object lastFolderVertexId = folderVertices.get(folderVertices.size() - 1).id();
-            properties.put(FILE_FOLDER, String.join("/", getFoldersPath(folderVertices)));
+            properties.put(FILE_FOLDER_KEY, String.join("/", getFoldersPath(folderVertices)));
 
             Iterator<Vertex> connection = g.V(lastFolderVertexId).emit().repeat(bothE().otherV().simplePath()).times(1).or(hasLabel(CONNECTION));
             if (connection.hasNext()) {
-                properties.put(CONNECTION, connection.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString());
-            }
-
-            Iterator<Vertex> host = g.V(vertexId).emit().repeat(bothE().otherV().simplePath()).times(2).or(hasLabel(ENDPOINT));
-            if (host.hasNext()) {
-                properties.put(ENDPOINT, host.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString());
+                properties.put(CONNECTION_KEY, connection.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString());
             }
 
         }
@@ -705,32 +694,19 @@ public class LineageGraphConnectorHelper {
         Iterator<Vertex> relationalDBSchemaType =
                 g.V(vertexId).emit().repeat(bothE().outV().simplePath()).times(1).or(hasLabel(RELATIONAL_DB_SCHEMA_TYPE));
         if (relationalDBSchemaType.hasNext()) {
-            properties.put(RELATIONAL_DB_SCHEMA_TYPE,
+            properties.put(SCHEMA_TYPE_KEY,
                     relationalDBSchemaType.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString());
-        }
-
-        Iterator<Vertex> deployedDatabaseSchema =
-                g.V(vertexId).emit().repeat(bothE().outV().simplePath()).times(2).or(hasLabel(DEPLOYED_DB_SCHEMA_TYPE));
-        if (deployedDatabaseSchema.hasNext()) {
-            properties.put(DEPLOYED_DB_SCHEMA_TYPE,
-                    deployedDatabaseSchema.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString());
         }
 
         Iterator<Vertex> database = g.V(vertexId).emit().repeat(bothE().outV().simplePath()).times(3).or(hasLabel(DATABASE));
         if (database.hasNext()) {
-            properties.put(DATABASE,
+            properties.put(DATABASE_KEY,
                     database.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString());
         }
 
         Iterator<Vertex> connection = g.V(vertexId).emit().repeat(bothE().outV().simplePath()).times(4).hasLabel(CONNECTION);
         if (connection.hasNext()) {
-            properties.put(CONNECTION, connection.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString());
-        }
-
-        Iterator<Vertex> host = g.V(vertexId).emit().repeat(bothE().otherV().simplePath()).times(5).or(hasLabel(ENDPOINT));
-
-        if (host.hasNext()) {
-            properties.put(ENDPOINT, host.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString());
+            properties.put(CONNECTION_KEY, connection.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString());
         }
 
         return properties;
@@ -745,17 +721,13 @@ public class LineageGraphConnectorHelper {
             return properties;
         }
         Object lastFolderVertexId = folderVertices.get(folderVertices.size() - 1).id();
-        properties.put(FILE_FOLDER, String.join("/", getFoldersPath(folderVertices)));
+        properties.put(FILE_FOLDER_KEY, String.join("/", getFoldersPath(folderVertices)));
 
         Iterator<Vertex> connection = g.V(lastFolderVertexId).emit().repeat(bothE().otherV().simplePath()).times(1).or(hasLabel(CONNECTION));
         if (connection.hasNext()) {
-            properties.put(CONNECTION, connection.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString());
+            properties.put(CONNECTION_KEY, connection.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString());
         }
 
-        Iterator<Vertex> host = g.V(vertexId).emit().repeat(bothE().otherV().simplePath()).times(2).or(hasLabel(ENDPOINT));
-        if (host.hasNext()) {
-            properties.put(ENDPOINT, host.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString());
-        }
         return properties;
 
     }
@@ -771,12 +743,7 @@ public class LineageGraphConnectorHelper {
 
         Iterator<Vertex> connection = g.V(vertexId).emit().repeat(bothE().otherV().simplePath()).times(8).or(hasLabel(CONNECTION));
         if (connection.hasNext()) {
-            properties.put(CONNECTION, connection.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString());
-        }
-
-        Iterator<Vertex> host = g.V(vertexId).emit().repeat(bothE().otherV().simplePath()).times(9).or(hasLabel(ENDPOINT));
-        if (host.hasNext()) {
-            properties.put(ENDPOINT, host.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString());
+            properties.put(CONNECTION_KEY, connection.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString());
         }
         return properties;
     }
@@ -785,7 +752,7 @@ public class LineageGraphConnectorHelper {
         Map<String, String> properties = new HashMap<>();
         Iterator<Vertex> tableAsset = g.V(vertexId).emit().repeat(bothE().otherV().simplePath()).times(1).or(hasLabel(GLOSSARY));
         if (tableAsset.hasNext()) {
-            properties.put(GLOSSARY, tableAsset.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString());
+            properties.put(GLOSSARY_KEY, tableAsset.next().property(PROPERTY_KEY_INSTANCEPROP_DISPLAY_NAME).value().toString());
         }
         return properties;
     }

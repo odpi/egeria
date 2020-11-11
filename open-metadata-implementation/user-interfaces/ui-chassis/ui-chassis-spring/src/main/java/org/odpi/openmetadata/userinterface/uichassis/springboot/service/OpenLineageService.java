@@ -42,7 +42,7 @@ public class OpenLineageService {
     private static final String TABULAR_SCHEMA_TYPE = "TabularSchemaType";
     private static final String SUB_PROCESS = "subProcess";
     private static final String VERTEX_INSTANCE_PROPQUALIFIED_NAME = "vertex--InstancePropqualifiedName";
-    private static final String TRANSFORMATION_PROJECT = "TransformationProject";
+    private static final String TRANSFORMATION_PROJECT = "transformationProject";
     private static final String TRANSFORMATION_PROJECT_NAME_PATTERN = "transformation_project\\)=(.*?)::";
     private final OpenLineageClient openLineageClient;
     private static final Logger LOG = LoggerFactory.getLogger(OpenLineageService.class);
