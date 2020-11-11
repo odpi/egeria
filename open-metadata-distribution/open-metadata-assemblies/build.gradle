@@ -186,33 +186,18 @@ distributions {
             }
         }
     }
-    deploy {
-        distributionBaseName = "${rootProject.name}-deploy"
+    presentationserver {
+        distributionBaseName = "${rootProject.name}-presentation-server"
         contents {
-            into('notebooks') {
-                from("${project(':open-metadata-resources:open-metadata-labs').projectDir}")
-                exclude 'pom.xml'
-                exclude '*.iml'
-                exclude '.classpath'
-                exclude '.project'
-                exclude '.settings/**'
-                exclude '.ipynb_checkpoints/**'
-                exclude '**/target/**'
-                exclude '**/build/**'
+            into('') {
+                from("${project(':open-metadata-implementation:user-interfaces:presentation-server').projectDir}")
+                include 'package.json'
+                include 'dist/**'
+                include 'src/**'
+                include 'ssl/**'
+                include 'public/**'
+                exclude 'node_modules/**'
                 exclude 'build.gradle'
-                fileMode = 0755
-            }
-            into('charts') {
-                from("${project(':open-metadata-resources:open-metadata-deployment:charts').projectDir}")
-                exclude '**/charts**'
-                exclude '**/*.lock'
-                exclude '**/*.swp'
-
-                fileMode = 0755
-            }
-            into('docker-compose') {
-                from("${project(':open-metadata-resources:open-metadata-deployment:compose').projectDir}")
-
                 fileMode = 0755
             }
         }
@@ -230,6 +215,11 @@ deployDistTar.extension = 'tar.gz'
 deployDistTar.setArchiveName(rootProject.name + '-' + rootProject.version + '-deploy.tar.gz')
 deployDistZip.enabled=false // TODO: does not seem to work
 
+// Ditto for the deploy distribution
+presentationserverDistTar.compression = Compression.GZIP
+presentationserverDistTar.extension = 'tar.gz'
+presentationserverDistTar.setArchiveName(rootProject.name + '-' + rootProject.version + '-presentation-server.tar.gz')
+presentationserverDistZip.enabled=false // TODO: does not seem to work
 
 
 
