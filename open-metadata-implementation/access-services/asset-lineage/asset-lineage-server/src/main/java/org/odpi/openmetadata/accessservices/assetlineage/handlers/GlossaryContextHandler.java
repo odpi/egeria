@@ -11,9 +11,11 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -21,9 +23,12 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.CATEGORY_ANCHOR;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.GLOSSARY_CATEGORY;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.GLOSSARY_TERM;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.GUID_PARAMETER;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.SEMANTIC_ASSIGNMENT;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.TERM_ANCHOR;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants.TERM_CATEGORIZATION;
 
 /**
@@ -85,16 +90,37 @@ public class GlossaryContextHandler {
 
         List<Relationship> semanticAssignments = getSemanticAssignments(userId, glossaryTermGUID, GLOSSARY_TERM);
         List<Relationship> termCategorization = getTermCategorizations(userId, glossaryTermGUID, GLOSSARY_TERM);
-        if (CollectionUtils.isEmpty(semanticAssignments) && CollectionUtils.isEmpty(termCategorization)) {
+        List<Relationship> glossary = getTermAnchor(userId, glossaryTermGUID, GLOSSARY_TERM);
+        getGlossaryForCategory(userId, glossaryTermGUID, glossaryContext, termCategorization);
+        addRelationships(userId, glossaryTerm, glossaryContext, glossary);
+
+        if (CollectionUtils.isEmpty(semanticAssignments) && CollectionUtils.isEmpty(termCategorization)
+                && CollectionUtils.isEmpty(glossary)) {
             return null;
         }
 
         handlerHelper.addLineageClassificationToContext(glossaryTerm, glossaryContext);
         addSchemaElementsContext(userId, glossaryTerm, glossaryContext, semanticAssignments);
-        addGlossaryCategories(userId, glossaryTerm, glossaryContext, termCategorization);
+        addRelationships(userId, glossaryTerm, glossaryContext, termCategorization);
 
         return glossaryContext.getNeighbors();
     }
+
+    private void getGlossaryForCategory(String userId, String glossaryTermGUID, AssetContext glossaryContext, List<Relationship> termCategorization) throws OCFCheckedExceptionBase {
+        List<Relationship> category = new ArrayList<>();
+
+        for (Relationship relationship : termCategorization) {
+            if (glossaryTermGUID.equals(relationship.getEntityOneProxy().getGUID())) {
+                category.addAll(getCategoryAnchor(userId, relationship.getEntityTwoProxy().getGUID()));
+                addRelationships(userId, relationship.getEntityTwoProxy(), glossaryContext, category);
+            } else {
+                category.addAll(getCategoryAnchor(userId, relationship.getEntityOneProxy().getGUID()));
+                addRelationships(userId, relationship.getEntityOneProxy(), glossaryContext, category);
+            }
+        }
+    }
+
+
 
     /**
      * Add Schema Elements entities to the Glossary Term context
@@ -113,7 +139,7 @@ public class GlossaryContextHandler {
             return;
         }
 
-        Set<EntityDetail> schemaElements = addGlossaryTermRelationshipsToContext(userId, glossaryTerm, glossaryContext, semanticAssignments);
+        Set<EntityDetail> schemaElements = addRelationshipsToContext(userId, glossaryTerm, glossaryContext, semanticAssignments);
         for (EntityDetail schemaElement : schemaElements) {
             AssetContext schemaElementContext = assetContextHandler.getAssetContext(userId, schemaElement);
             glossaryContext.getGraphContexts().addAll(schemaElementContext.getGraphContexts());
@@ -124,7 +150,7 @@ public class GlossaryContextHandler {
 
 
     /**
-     * Add Term Categorization relationships to the Glossary Term context
+     * Add relationships to the Glossary Term context
      *
      * @param userId             the user Id of user making request.
      * @param glossaryTerm       the glossary term entity for which the context is built
@@ -132,15 +158,38 @@ public class GlossaryContextHandler {
      * @param termCategorization the Term Categorization relationship list
      * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
      */
-    private void addGlossaryCategories(String userId,
-                                       EntityDetail glossaryTerm,
-                                       AssetContext glossaryContext,
-                                       List<Relationship> termCategorization) throws OCFCheckedExceptionBase {
+    private void addRelationships(String userId,
+                                  EntityDetail glossaryTerm,
+                                  AssetContext glossaryContext,
+                                  List<Relationship> termCategorization) throws OCFCheckedExceptionBase {
         if (CollectionUtils.isEmpty(termCategorization)) {
             return;
         }
 
-        addGlossaryTermRelationshipsToContext(userId, glossaryTerm, glossaryContext, termCategorization);
+        addRelationshipsToContext(userId, glossaryTerm, glossaryContext, termCategorization);
+    }
+
+    /**
+     * Add relationships to the Glossary Term context
+     *
+     * @param userId             the user Id of user making request.
+     * @param glossaryTermProxy       proxy of the glossary term entity for which the context is built
+     * @param glossaryContext    the glossary term context
+     * @param termCategorization the Term Categorization relationship list
+     * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
+     */
+    private void addRelationships(String userId,
+                                  EntityProxy glossaryTermProxy,
+                                  AssetContext glossaryContext,
+                                  List<Relationship> termCategorization) throws OCFCheckedExceptionBase {
+        if (CollectionUtils.isEmpty(termCategorization)) {
+            return;
+        }
+
+        for (Relationship relationship : termCategorization) {
+            handlerHelper.buildGraphEdgeByRelationship(userId, glossaryTermProxy, relationship, glossaryContext);
+        }
+
     }
 
     private void mergeGraphNeighbors(AssetContext glossaryContext, String k, Set<GraphContext> v) {
@@ -159,10 +208,10 @@ public class GlossaryContextHandler {
      * @param relationships array of the semantic assignments
      * @return a set of schema elements assigned to the Glossary Term
      */
-    private Set<EntityDetail> addGlossaryTermRelationshipsToContext(String userId,
-                                                                    EntityDetail glossaryTerm,
-                                                                    AssetContext assetContext,
-                                                                    List<Relationship> relationships) throws OCFCheckedExceptionBase {
+    private Set<EntityDetail> addRelationshipsToContext(String userId,
+                                                        EntityDetail glossaryTerm,
+                                                        AssetContext assetContext,
+                                                        List<Relationship> relationships) throws OCFCheckedExceptionBase {
         Set<EntityDetail> endEntityDetails = new HashSet<>();
 
         for (Relationship relationship : relationships) {
@@ -203,6 +252,36 @@ public class GlossaryContextHandler {
                                                       String entityGUID,
                                                       String entityTypeName) throws UserNotAuthorizedException, PropertyServerException {
         return getRelationshipsByTypeGUID(userId, entityGUID, entityTypeName, TERM_CATEGORIZATION);
+    }
+
+    /**
+     * Fetch the Term Anchor Relationships for an entity
+     *
+     * @param userId         the user Id of user making request.
+     * @param entityGUID     the entity identifier
+     * @param entityTypeName the entity type name
+     * @return the list of term categorization relationships available for the
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    the property server exception
+     */
+    private List<Relationship> getTermAnchor(String userId,
+                                                      String entityGUID,
+                                                      String entityTypeName) throws UserNotAuthorizedException, PropertyServerException {
+        return getRelationshipsByTypeGUID(userId, entityGUID, entityTypeName, TERM_ANCHOR);
+    }
+
+    /**
+     * Fetch the Category Anchor Relationships for a classification
+     *
+     * @param userId         the user Id of user making request.
+     * @param categoryGUID     the actegory identifier
+     * @return the list of term categorization relationships available for the
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    the property server exception
+     */
+    private List<Relationship> getCategoryAnchor(String userId, String categoryGUID)
+            throws UserNotAuthorizedException, PropertyServerException {
+        return getRelationshipsByTypeGUID(userId, categoryGUID, GLOSSARY_CATEGORY, CATEGORY_ANCHOR);
     }
 
     /**

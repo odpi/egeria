@@ -25,6 +25,8 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -38,6 +40,10 @@ public class OpenLineageService {
     public static final String NODES_LABEL = "nodes";
     private static final String TABULAR_COLUMN = "TabularColumn";
     private static final String TABULAR_SCHEMA_TYPE = "TabularSchemaType";
+    private static final String SUB_PROCESS = "subProcess";
+    private static final String VERTEX_INSTANCE_PROPQUALIFIED_NAME = "vertex--InstancePropqualifiedName";
+    private static final String TRANSFORMATION_PROJECT = "TransformationProject";
+    private static final String TRANSFORMATION_PROJECT_NAME_PATTERN = "transformation_project\\)=(.*?)::";
     private final OpenLineageClient openLineageClient;
     private static final Logger LOG = LoggerFactory.getLogger(OpenLineageService.class);
 
@@ -184,10 +190,26 @@ public class OpenLineageService {
         if (isQueriedNodeTabularColumn(guid, nodes)) {
             adjustGraphForTabularColumn(edges, nodes);
         }
+
+        nodes.stream().filter(node -> SUB_PROCESS.equals(node.getGroup())).forEach(this::extractTransformationProjectFromQualifiedName);
+
         graphData.put(EDGES_LABEL, edges);
         graphData.put(NODES_LABEL, nodes);
 
         return graphData;
+    }
+
+    private void extractTransformationProjectFromQualifiedName(Node node) {
+        String qualifiedName = node.getProperties().get(VERTEX_INSTANCE_PROPQUALIFIED_NAME);
+        if (qualifiedName == null) {
+            return;
+        }
+        Pattern pattern = Pattern.compile(TRANSFORMATION_PROJECT_NAME_PATTERN, Pattern.DOTALL);
+        Matcher matcher = pattern.matcher(qualifiedName);
+        if (matcher.find()) {
+            node.getProperties().put(TRANSFORMATION_PROJECT, matcher.group(1));
+        }
+        node.getProperties().remove(VERTEX_INSTANCE_PROPQUALIFIED_NAME);
     }
 
     /**

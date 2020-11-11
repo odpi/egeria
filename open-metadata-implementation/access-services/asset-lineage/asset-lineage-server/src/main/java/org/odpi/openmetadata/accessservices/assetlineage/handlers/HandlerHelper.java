@@ -16,6 +16,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -195,6 +196,50 @@ public class HandlerHelper {
         }
 
 
+        enhanceGraphContext(relationship, graph, startVertex, endVertex);
+        return endEntity;
+
+    }
+
+    /**
+     * Adds entities and relationships for the process Context structure
+     *
+     * @param userId       the user Id of user making request.
+     * @param startEntityProxy  proxy of parent entity of the relationship
+     * @param relationship the relationship of the parent node
+     * @param graph        the graph
+     * @return Entity which is the child of the relationship, null if there is no Entity
+     * @throws InvalidParameterException  the invalid parameter exception
+     * @throws PropertyServerException    the property server exception
+     * @throws UserNotAuthorizedException the user not authorized exception
+     */
+    EntityDetail buildGraphEdgeByRelationship(String userId,
+                                              EntityProxy startEntityProxy,
+                                              Relationship relationship,
+                                              AssetContext graph) throws OCFCheckedExceptionBase {
+
+        Converter converter = new Converter(repositoryHelper);
+        EntityDetail endEntity = getEntityAtTheEnd(userId, startEntityProxy.getGUID(), relationship);
+
+        if (endEntity == null) return null;
+
+        LineageEntity startVertex;
+        LineageEntity endVertex;
+
+        if (startEntityProxy.getGUID().equals(relationship.getEntityTwoProxy().getGUID())) {
+            startVertex = converter.createLineageEntity(endEntity);
+            endVertex = converter.createLineageEntityFromProxy(startEntityProxy);
+        } else {
+            startVertex = converter.createLineageEntityFromProxy(startEntityProxy);
+            endVertex = converter.createLineageEntity(endEntity);
+        }
+
+        enhanceGraphContext(relationship, graph, startVertex, endVertex);
+
+        return endEntity;
+    }
+
+    private void enhanceGraphContext(Relationship relationship, AssetContext graph, LineageEntity startVertex, LineageEntity endVertex) {
         GraphContext graphContext = new GraphContext(relationship.getType().getTypeDefName(), relationship.getGUID(), startVertex, endVertex);
 
         if (graph.getGraphContexts().stream().noneMatch(e -> e.getRelationshipGuid().equals(graphContext.getRelationshipGuid()))
@@ -203,8 +248,6 @@ public class HandlerHelper {
             graph.addVertex(endVertex);
             graph.addGraphContext(graphContext);
         }
-
-        return endEntity;
     }
 
     /**
