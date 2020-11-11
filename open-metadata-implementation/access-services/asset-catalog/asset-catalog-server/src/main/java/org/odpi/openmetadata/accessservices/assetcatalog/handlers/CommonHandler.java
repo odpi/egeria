@@ -20,12 +20,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownExc
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityProxyOnlyException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.ASSET_ZONE_MEMBERSHIP;
@@ -65,11 +60,11 @@ public class CommonHandler {
     }
 
     /**
-     * Returns a list of the sub-types of the provided type
+     * Returns a list containing the type and all of the sub-types of the provided type
      *
      * @param userId      user identifier that issues the call
      * @param typeDefName the type definition name
-     * @return a list of sub-types
+     * @return a list of sub-types recursive
      */
     List<Type> getTypeContext(String userId, String typeDefName) {
         List<Type> response = new ArrayList<>();
@@ -89,9 +84,27 @@ public class CommonHandler {
             response.addAll(subTypes);
 
             collectSubTypes(subTypes, typeDefs, response);
+            response.sort(Comparator.comparing(Type::getName));
         }
 
         return response;
+    }
+
+    /**
+     *
+     * @param userId      user identifier that issues the call
+     * @param typeDefName the type definition name
+     * @return the Type if exists, otherwise null
+     */
+    Type getTypeByTypeDefName(String userId, String typeDefName) {
+
+        TypeDef typeDefByName = repositoryHelper.getTypeDefByName(userId, typeDefName);
+        AssetConverter converter = new AssetConverter(sourceName, repositoryHelper);
+
+        if (typeDefByName != null) {
+            return converter.convertType(typeDefByName);
+        }
+        return null;
     }
 
     /**

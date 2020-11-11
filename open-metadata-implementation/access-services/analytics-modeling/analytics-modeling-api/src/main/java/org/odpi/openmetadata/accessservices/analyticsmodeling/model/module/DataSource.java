@@ -8,6 +8,9 @@ import java.util.List;
  * Data source model.
  * <br>Sample:<br>
  *	{<br>
+ *	&emsp;	"property": [&nbsp;
+ *	&emsp;		{@link org.odpi.openmetadata.accessservices.analyticsmodeling.model.module.PropertyType}<br>
+ *	&emsp;	],<br>
  *	&emsp;	"schema": "Person",<br>
  *	&emsp;	"catalog": "AdventureWorks2014",<br>
  *	&emsp;	"name": "AdventureWorks2014.Person",<br>
@@ -18,7 +21,7 @@ import java.util.List;
  *
  *
  */
-public class DataSource implements IModuleObject {
+public class DataSource extends BaseObjectType {
 
 	private String schema;
 	private String catalog;

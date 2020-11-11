@@ -59,6 +59,32 @@ public class ConnectedAssetClientBase
      *
      * @param serverName name of the server to connect to
      * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param maxPageSize maximum page size for this process
+     * @param auditLog destination for log messages
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * REST API calls.
+     */
+    public ConnectedAssetClientBase(String   serverName,
+                                    String   serverPlatformRootURL,
+                                    int      maxPageSize,
+                                    AuditLog auditLog) throws InvalidParameterException
+    {
+        final String methodName = "Client Constructor";
+
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformRootURL, serverName, methodName);
+        invalidParameterHandler.setMaxPagingSize(maxPageSize);
+
+        this.serverName = serverName;
+        this.serverPlatformRootURL = serverPlatformRootURL;
+        this.auditLog = auditLog;
+    }
+
+
+    /**
+     * Create a new client with no authentication embedded in the HTTP request.
+     *
+     * @param serverName name of the server to connect to
+     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
@@ -277,6 +303,39 @@ public class ConnectedAssetClientBase
     }
 
 
+    /**
+     * Returns the connection object corresponding to the supplied connection name.
+     *
+     * @param restClient client that calls REST APIs
+     * @param serviceName name of the calling service
+     * @param userId  String - userId of user making request.
+     * @param name  this is the qualifiedName of the connection.
+     *
+     * @return Connection retrieved from property server.
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving information from the property (metadata) server.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    protected Connection getConnectionByName(OCFRESTClient  restClient,
+                                             String         serviceName,
+                                             String         userId,
+                                             String         name) throws InvalidParameterException,
+                                                                         PropertyServerException,
+                                                                         UserNotAuthorizedException
+    {
+        final String   methodName = "getConnectionByName";
+        final String   urlTemplate = "/servers/{0}/open-metadata/common-services/{1}/connected-asset/users/{2}/connections/by-name/{3}";
+
+        ConnectionResponse restResult = restClient.callConnectionGetRESTCall(methodName,
+                                                                             serverPlatformRootURL + urlTemplate,
+                                                                             serverName,
+                                                                             serviceName,
+                                                                             userId,
+                                                                             name);
+
+        return restResult.getConnection();
+    }
 
     /**
      * Returns the connection corresponding to the supplied asset GUID.

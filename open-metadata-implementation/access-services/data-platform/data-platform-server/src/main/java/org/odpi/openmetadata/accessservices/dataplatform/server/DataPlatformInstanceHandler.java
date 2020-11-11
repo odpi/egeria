@@ -3,13 +3,10 @@
 package org.odpi.openmetadata.accessservices.dataplatform.server;
 
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.commonservices.multitenant.OCFOMASServiceInstanceHandler;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstanceHandler;
 
-public class DataPlatformInstanceHandler extends OCFOMASServiceInstanceHandler
+
+public class DataPlatformInstanceHandler extends OMASServiceInstanceHandler
 {
     /**
      * Default constructor registers the access service

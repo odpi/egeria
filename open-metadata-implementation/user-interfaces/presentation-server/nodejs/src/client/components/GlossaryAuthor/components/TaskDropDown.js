@@ -1,7 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 import React from "react";
-import { withRouter } from "react-router-dom";
 
 export default function TaskDropDown({ onChange }) {
   return (
@@ -12,8 +11,8 @@ export default function TaskDropDown({ onChange }) {
       onChange={onChange}
     >
       <option value="search">Search</option>
-      <option selected value="crud">CRUD</option>
-      <option value="glossaries">
+      <option value="crud">CRUD</option>
+      <option selected value="glossaries">
         Glossary Authoring
       </option>
     </select>

@@ -60,10 +60,7 @@ public interface AssetConsumerAssetInterface
 
 
     /**
-     * Returns a list of assets that match the token. The following calls are issued in
-     * in order for find the asset.
-     * - getAssetProperties passing the token as the GUID
-     * - getAssetByName passing the token as the name
+     * Returns a list of assets that match the token which may be the GUID or the qualified name.
      *
      * @param userId         userId of user making request.
      * @param assetToken     token used to find the Asset - may be a name or GUID

@@ -24,15 +24,21 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonSubTypes
         ({
                 @JsonSubTypes.Type(value = AccessServiceConfigResponse.class, name = "AccessServiceConfigResponse"),
+                @JsonSubTypes.Type(value = AccessServicesResponse.class, name = "AccessServicesResponse"),
                 @JsonSubTypes.Type(value = CohortConfigResponse.class, name = "CohortConfigResponse"),
+                @JsonSubTypes.Type(value = ConnectionListResponse.class, name = "ConnectionListResponse"),
                 @JsonSubTypes.Type(value = ConnectionResponse.class, name = "ConnectionResponse"),
                 @JsonSubTypes.Type(value = DiscoveryEngineServicesConfigResponse.class, name = "DiscoveryEngineServicesConfigResponse"),
                 @JsonSubTypes.Type(value = EventBusConfigResponse.class, name = "EventBusConfigResponse"),
+                @JsonSubTypes.Type(value = IntegrationServiceConfigResponse.class, name = "IntegrationServiceConfigResponse"),
+                @JsonSubTypes.Type(value = IntegrationServicesResponse.class, name = "IntegrationServicesResponse"),
                 @JsonSubTypes.Type(value = OMAGServerConfigResponse.class, name = "OMAGServerConfigResponse"),
                 @JsonSubTypes.Type(value = ServerTypeClassificationResponse.class, name = "ServerClassificationResponse"),
+                @JsonSubTypes.Type(value = ServerTypeClassificationSummary.class, name = "ServerTypeClassificationSummary"),
                 @JsonSubTypes.Type(value = StewardshipEngineServicesConfigResponse.class, name = "StewardshipEngineServicesConfigResponse"),
                 @JsonSubTypes.Type(value = SuccessMessageResponse.class, name = "SuccessMessageResponse"),
                 @JsonSubTypes.Type(value = ViewServiceConfigResponse.class, name = "ViewServiceConfigResponse"),
+                @JsonSubTypes.Type(value = ViewServicesResponse.class, name = "ViewServicesResponse"),
         })
 public abstract class AdminServicesAPIResponse extends FFDCResponseBase
 {

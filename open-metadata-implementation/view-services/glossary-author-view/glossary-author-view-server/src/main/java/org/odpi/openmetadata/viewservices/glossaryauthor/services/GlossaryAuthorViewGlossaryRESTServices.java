@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.viewservices.glossaryauthor.services;
 
 import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.SubjectAreaNodeClients;
+import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.glossaries.SubjectAreaGlossaryClient;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
@@ -118,10 +120,9 @@ public class GlossaryAuthorViewGlossaryRESTServices extends BaseGlossaryAuthorVi
      * @param userId             user identifier
      * @param searchCriteria     String expression matching Glossary property values .
      * @param asOfTime           the glossaries returned as they were at this time. null indicates at the current time.
-     * @param offset             the starting element number for this set of results.  This is used when retrieving elements
+     * @param startingFrom             the starting element number for this set of results.  This is used when retrieving elements
      *                           beyond the first page of results. Zero means the results start from the first element.
      * @param pageSize           the maximum number of elements that can be returned on this request.
-     *                           0 means there is no limit to the page size
      * @param sequencingOrder    the sequencing order for the results.
      * @param sequencingProperty the name of the property that should be used to sequence the results.
      * @return A list of glossaries meeting the search Criteria
@@ -136,7 +137,7 @@ public class GlossaryAuthorViewGlossaryRESTServices extends BaseGlossaryAuthorVi
             String userId,
             Date asOfTime,
             String searchCriteria,
-            Integer offset,
+            Integer startingFrom,
             Integer pageSize,
             SequencingOrder sequencingOrder,
             String sequencingProperty
@@ -147,12 +148,19 @@ public class GlossaryAuthorViewGlossaryRESTServices extends BaseGlossaryAuthorVi
         SubjectAreaOMASAPIResponse<Glossary> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
         try {
+            if (startingFrom == null) {
+                startingFrom = 0;
+            }
+            if (pageSize == null) {
+                pageSize = invalidParameterHandler.getMaxPagingSize();
+            }
+            invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
             FindRequest findRequest = new FindRequest();
             findRequest.setSearchCriteria(searchCriteria);
             findRequest.setAsOfTime(asOfTime);
-            findRequest.setOffset(offset);
+            findRequest.setStartingFrom(startingFrom);
             findRequest.setPageSize(pageSize);
             findRequest.setSequencingOrder(sequencingOrder);
             findRequest.setSequencingProperty(sequencingProperty);
@@ -173,10 +181,9 @@ public class GlossaryAuthorViewGlossaryRESTServices extends BaseGlossaryAuthorVi
      * @param userId             user identifier
      * @param guid               guid of the glossary to get
      * @param asOfTime           the relationships returned as they were at this time. null indicates at the current time. If specified, the date is in milliseconds since 1970-01-01 00:00:00.
-     * @param offset             the starting element number for this set of results.  This is used when retrieving elements
+     * @param startingFrom          the starting element number for this set of results.  This is used when retrieving elements
      *                           beyond the first page of results. Zero means the results start from the first element.
      * @param pageSize           the maximum number of elements that can be returned on this request.
-     *                           0 means there is not limit to the page size
      * @param sequencingOrder    the sequencing order for the results.
      * @param sequencingProperty the name of the property that should be used to sequence the results.
      * @return a response which when successful contains the glossary relationships
@@ -192,8 +199,8 @@ public class GlossaryAuthorViewGlossaryRESTServices extends BaseGlossaryAuthorVi
             String userId,
             String guid,
             Date asOfTime,
-            int offset,
-            int pageSize,
+            Integer startingFrom,
+            Integer pageSize,
             SequencingOrder sequencingOrder,
             String sequencingProperty
 
@@ -205,11 +212,15 @@ public class GlossaryAuthorViewGlossaryRESTServices extends BaseGlossaryAuthorVi
         SubjectAreaOMASAPIResponse<Line> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
         try {
+            if (pageSize == null) {
+                pageSize = invalidParameterHandler.getMaxPagingSize();
+            }
+            invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
             FindRequest findRequest = new FindRequest();
             findRequest.setAsOfTime(asOfTime);
-            findRequest.setOffset(offset);
+            findRequest.setStartingFrom(startingFrom);
             findRequest.setPageSize(pageSize);
             findRequest.setSequencingOrder(sequencingOrder);
             findRequest.setSequencingProperty(sequencingProperty);
@@ -474,4 +485,72 @@ public class GlossaryAuthorViewGlossaryRESTServices extends BaseGlossaryAuthorVi
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
+
+    public SubjectAreaOMASAPIResponse<Category> getCategories(String serverName,
+                                                              String userId,
+                                                              String guid,
+                                                              Integer startingFrom,
+                                                              Integer pageSize,
+                                                              Boolean onlyTop) {
+
+        final String methodName = "getCategories";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
+        AuditLog auditLog = null;
+        FindRequest findRequest = new FindRequest();
+        if (startingFrom == null) {
+            startingFrom = 0;
+        }
+        if (pageSize == null) {
+            pageSize = invalidParameterHandler.getMaxPagingSize();
+        }
+        try {
+            invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
+            findRequest.setPageSize(pageSize);
+            findRequest.setStartingFrom(startingFrom);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
+            List<Category> categories = ((SubjectAreaGlossaryClient)clients.glossaries()).getCategories(userId, guid, findRequest, onlyTop);
+            response.addAllResults(categories);
+        } catch (Throwable error) {
+            response = getResponseForError(error, auditLog, className, methodName);
+        }
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+    public SubjectAreaOMASAPIResponse<Term> getTerms(String serverName,
+                                                     String userId,
+                                                     String guid,
+                                                     Integer startingFrom,
+                                                     Integer pageSize
+                                                    ) {
+
+        final String methodName = "getTerms";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
+        AuditLog auditLog = null;
+        FindRequest findRequest = new FindRequest();
+        if (startingFrom == null) {
+            startingFrom = 0;
+        }
+        if (pageSize == null) {
+            pageSize = invalidParameterHandler.getMaxPagingSize();
+        }
+        try {
+            invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
+            findRequest.setPageSize(pageSize);
+            findRequest.setStartingFrom(startingFrom);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
+            List<Term> terms = ((SubjectAreaGlossaryClient)clients.glossaries()).getTerms(userId, guid, findRequest);
+            response.addAllResults(terms);
+        } catch (Throwable error) {
+            response = getResponseForError(error, auditLog, className, methodName);
+        }
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
 }

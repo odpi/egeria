@@ -19,8 +19,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         include = JsonTypeInfo.As.PROPERTY,
         property = "class")
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = NewDataFileRequestBody.class, name = "NewDataFileRequestBody"),
-        @JsonSubTypes.Type(value = NewFileSystemRequestBody.class, name = "NewFileSystemRequestBody"),
+        @JsonSubTypes.Type(value = DataFileRequestBody.class, name = "DataFileRequestBody"),
+        @JsonSubTypes.Type(value = FileSystemRequestBody.class, name = "FileSystemRequestBody"),
         @JsonSubTypes.Type(value = PathNameRequestBody.class, name = "PathNameRequestBody")
 
               })

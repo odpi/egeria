@@ -2,14 +2,15 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.viewservices.rex.api.rest;
 
+
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.util.List;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
+
+import java.util.List;
 
 
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
@@ -23,7 +24,7 @@ public class RexTraversalRequestBody {
      */
 
     private String                    serverName;                    // must be non-null
-    private String                    serverRootURL;                 // must be non-null
+    private String                    platformName;                  // must be non-null
     private String                    entityGUID;                    // must be non-null, GUID of root of traversal
     private Boolean                   enterpriseOption;
     private List<String>              entityTypeGUIDs;               // a list of type guids or null
@@ -43,7 +44,7 @@ public class RexTraversalRequestBody {
 
     public String getServerName() { return serverName; }
 
-    public String getServerRootURL() { return serverRootURL; }
+    public String getPlatformName() { return platformName; }
 
     public String getEntityGUID() { return entityGUID; }
 
@@ -66,7 +67,7 @@ public class RexTraversalRequestBody {
 
     public void setServerName(String serverName) { this.serverName = serverName; }
 
-    public void setServerRootURL(String serverRootURL) { this.serverRootURL = serverRootURL; }
+    public void setPlatformName(String platformName) { this.platformName = platformName; }
 
     public void setEntityGUID(String entityGUID) { this.entityGUID = entityGUID; }
 
@@ -95,7 +96,7 @@ public class RexTraversalRequestBody {
     {
         return "RexTraversalRequestBody{" +
                 ", serverName=" + serverName +
-                ", serverRootURL=" + serverRootURL +
+                ", platformName=" + platformName +
                 ", entityGUID=" + entityGUID +
                 ", depth=" + depth +
                 ", enterpriseOption=" + enterpriseOption +

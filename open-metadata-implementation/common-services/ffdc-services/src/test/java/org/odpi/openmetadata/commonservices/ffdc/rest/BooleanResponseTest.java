@@ -66,7 +66,7 @@ public class BooleanResponseTest
         assertTrue(resultObject.getRelatedHTTPCode() == 400);
         assertTrue(resultObject.getExceptionProperties() == null);
 
-        assertTrue(resultObject.isFlag() == false);
+        assertTrue(resultObject.getFlag() == false);
 
     }
 
@@ -84,7 +84,7 @@ public class BooleanResponseTest
         assertTrue(nullObject.getExceptionSystemAction() == null);
         assertTrue(nullObject.getExceptionUserAction() == null);
         assertTrue(nullObject.getExceptionProperties() == null);
-        assertTrue(nullObject.isFlag() == true);
+        assertTrue(nullObject.getFlag() == true);
 
         nullObject = new BooleanResponse(null);
 
@@ -94,7 +94,7 @@ public class BooleanResponseTest
         assertTrue(nullObject.getExceptionSystemAction() == null);
         assertTrue(nullObject.getExceptionUserAction() == null);
         assertTrue(nullObject.getExceptionProperties() == null);
-        assertTrue(nullObject.isFlag() == true);
+        assertTrue(nullObject.getFlag() == true);
 
     }
 

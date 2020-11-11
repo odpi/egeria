@@ -8,6 +8,11 @@ for data tools, engines and platforms to integrate with open metadata.
 
 The access services are as follows:
 
+* **[analytics-modeling](analytics-modeling)** - model analytics and reports.
+
+  The Analytics Modeling OMAS configures and manages metadata for modeling
+analytics and reporting services.
+
 * **[asset-catalog](asset-catalog)** - search for assets.
 
   The Asset Catalog OMAS provides search and query capabilities for tools and applications
@@ -26,8 +31,18 @@ and the ability to add feedback on the asset.
 * **[asset-lineage](asset-lineage)** - Track and publish lineage data.
 
   The Asset Lineage OMAS listens to relevant lineage related events on the Enterprise topic level and publishes these on
-  the Asset Lineage out topic, combined with relevant context information on the described entities. These events are 
-  listened to by the Open Lineage Services governance server.  
+the Asset Lineage OutTopic, combined with relevant context information on the described entities. These events are 
+listened to by the Open Lineage Services governance server.  
+
+* **[asset-manager](asset-manager)** - manage exchange of metadata with third party metadata catalogs and
+asset managers.
+
+  The Asset Manager OMAS is typically called by the
+[Catalog Integrator OMIS](../integration-services/catalog-integrator) to send and receive
+asset information, including schemas, profiles, policies and lineage
+information with a third party asset manager.  Typical examples of asset managers include
+data catalogs that are managing metadata for a collection of data assets for a
+data-serving solution.
 
 * **[asset-owner](asset-owner)** - manage metadata and feedback for owned assets.
 
@@ -51,6 +66,11 @@ This information forms a key part of asset lineage.
 such as database servers,
 file systems, file managers and content managers to publish metadata to the metadata
 repositories about the changing structures and content stored in the data platform.
+It is typically called from the
+[Database Integrator OMIS](../integration-services/database-integrator) and
+[Files Integrator OMIS](../integration-services/files-integrator)
+integration services.
+
 
 * **[data-privacy](data-privacy)** - support a data privacy officer.
 
@@ -161,50 +181,36 @@ and used by Asset Owner's to improve the findability and understandability
 of their assets by linking their asset's structure to relevant parts of
 the subject area definition.
 
-## Inside an OMAS
+## Using the OMASs
 
-Figure 1 shows the typical structure of an OMAS.
-Tools, applications and engines can connect to an OMAS through its API or
-use its topics to either post metadata to the open metadata repositories or
-receive notifications about metadata changes.
-
-![Figure 1](omas-anatomy.png)
-> Figure 1: Anatomy of an Open Metadata Access Service (OMAS)
-
-Every OMAS supports a Java client interface that runs locally in the metadata tool,
-engine, or application.  These client interfaces support calls to the REST API and
-provide message helpers for the OMAS In and Out Topics.
-They can be downloaded and used independently with the 
-**[Egeria Client Package](../../open-metadata-distribution/README.md)**.  
-
-For callers that do not use Java, there is an OMAS REST API and an
-event notification interface (typically supported
-by [Apache Kafka](https://kafka.apache.org/)) behind
-the Java client interfaces that can be called directly. 
-The event notification interface for each OMAS has a topic to
-allow an external caller to post metadata updates to the open metadata
-repositories (OMAS In Topic) and another topic (OMAS Out Topic) to receive
-relevant updates that have come from other parts of the
-open metadata and governance ecosystem.
-These topics are handled by the OMAS Event Listener and OMAS Event Publisher
-respectively.
-
-Both the REST API and the topics interact with the OMRS to receive
-and send metadata to the open metadata repositories, either by receiving
-messages on the OMRS Topic or by calling an OMRS Connector. 
-The type and configuration of the OMRS Connector (and hence which metadata
-repositories it connects to) is set up when the OMAS APIs are deployed. 
-
-The OMAS APIs are deployed together in a single web application.
-This application can be co-located with a metadata repository, or can
-be deployed independently 
-([see Open Metadata Integration Patterns](../../open-metadata-publication/website/open-metadata-integration-patterns/README.md) to understand the
-options).   The implementation of the OMRS Connector handles the
-communication between the OMAS application and the metadata repositories,
-whether this is through local or remote calls.
-
+The OMASs run in either a [Metadata Access Point](../admin-services/docs/concepts/metadata-access-point.md)
+or a [Metadata Server](../admin-services/docs/concepts/metadata-server.md).
+They can be configured and activated individually or as a complete set.
 The [administration services](../admin-services/README.md) provide
 the ability to configure, start and stop the access services.
+
+Each OMAS typically supports a REST API, a topic where it publishes notifications
+of interest to its users, and a topic where new metadata requests can be posted to the
+OMAS.
+
+It also has a Java client that provides access to its API and topics.
+This java client is embedded in the
+[Governance Servers](../admin-services/docs/concepts/governance-server-types.md) and
+[View Servers](../admin-services/docs/concepts/view-server.md).
+They can also be downloaded and used independently with the 
+**[Egeria Client Package](../../open-metadata-distribution/README.md)**.  
+
+This is illustrated in Figure 1:
+
+![Figure 1](docs/design/access-services-overview.png)
+> Figure 1: Structure of an Open Metadata Access Service (OMAS)
+
+
+## Digging deeper
+
+* [OMAS Concepts](docs/concepts)
+* [User Guides for each OMAS](docs/user)
+* [OMAS Design Documentation](docs/design)
 
 ----
 Return to [open-metadata-implementation](..).

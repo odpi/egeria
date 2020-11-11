@@ -156,21 +156,26 @@ public enum OMRSAuditingComponent implements ComponentDescription
 
     GRAPH_REPOSITORY_CONNECTOR(28,
              "Local Graph OMRS Repository Connector",
-             "Native open metadata connector that maps open metadata calls to a JanusGraph based metadata repository.",
+             "Native open metadata repository connector that maps open metadata calls to a JanusGraph based metadata repository.",
              "https://egeria.odpi.org/open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-collection" +
                                        "-store-connectors/graph-repository-connector/"),
 
     INMEM_REPOSITORY_CONNECTOR(29,
              "In Memory OMRS Repository Connector",
-             "Native open metadata connector that maps open metadata calls to a set of in memory hash maps - demo use only.",
+             "Native open metadata repository connector that maps open metadata calls to a set of in memory hash maps - demo use only.",
              "https://egeria.odpi.org/open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-collection" +
                                        "-store-connectors/inmemory-repository-connector/"),
 
     READ_ONLY_REPOSITORY_CONNECTOR(30,
              "Read Only OMRS Repository Connector",
-             "Native open metadata connector that maps open metadata calls to an in memory cache.",
+             "Native open metadata repository connector that maps open metadata calls to an in memory cache.",
              "https://egeria.odpi.org/open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-collection" +
                                            "-store-connectors/readonly-repository-connector/"),
+
+    INTEGRATION_CONNECTOR(31,
+             "Integration Connector",
+             "Connector that manages metadata exchange with a third party technology.",
+             "https://egeria.odpi.org/open-metadata-implementation/governance-servers/integration-daemon-services/"),
     ;
 
 

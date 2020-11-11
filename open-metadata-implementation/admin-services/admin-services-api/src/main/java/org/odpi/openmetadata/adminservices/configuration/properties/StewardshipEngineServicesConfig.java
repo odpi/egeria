@@ -15,7 +15,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * StewardshipServicesConfig provides the configuration properties for
- * the stewardship services
+ * the stewardship services.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -82,8 +82,10 @@ public class StewardshipEngineServicesConfig extends OMAGServerClientConfig
     @Override
     public String toString()
     {
-        return super.toString() + "StewardshipServicesConfig{" +
+        return "StewardshipEngineServicesConfig{" +
                 "stewardshipEngineNames=" + stewardshipEngineNames +
+                ", OMAGServerPlatformRootURL='" + getOMAGServerPlatformRootURL() + '\'' +
+                ", OMAGServerName='" + getOMAGServerPlatformRootURL() + '\'' +
                 '}';
     }
 

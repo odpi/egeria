@@ -133,7 +133,7 @@ public class SchemaAnalysisAnnotation extends Annotation
         return "SchemaAnalysisAnnotation{" +
                 "schemaName='" + schemaName + '\'' +
                 ", schemaTypeName='" + schemaTypeName + '\'' +
-                ", discoveredDataFields='" + discoveredDataFields + '\'' +
+                ", discoveredDataFields=" + discoveredDataFields +
                 ", annotationType='" + getAnnotationType() + '\'' +
                 ", summary='" + getSummary() + '\'' +
                 ", confidenceLevel=" + getConfidenceLevel() +
@@ -143,14 +143,13 @@ public class SchemaAnalysisAnnotation extends Annotation
                 ", jsonProperties='" + getJsonProperties() + '\'' +
                 ", annotationStatus=" + getAnnotationStatus() +
                 ", numAttachedAnnotations=" + getNumAttachedAnnotations() +
+                ", reviewDate=" + getReviewDate() +
                 ", steward='" + getSteward() + '\'' +
                 ", reviewComment='" + getReviewComment() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +
-                ", extendedProperties=" + getExtendedProperties() +
-                ", type=" + getType() +
-                ", GUID='" + getGUID() + '\'' +
-                ", URL='" + getURL() + '\'' +
-                ", classifications=" + getClassifications() +
+                ", headerVersion=" + getHeaderVersion() +
+                ", elementHeader=" + getElementHeader() +
+                ", typeName='" + getTypeName() + '\'' +
                 ", extendedProperties=" + getExtendedProperties() +
                 '}';
     }

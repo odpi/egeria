@@ -25,11 +25,10 @@ public class SchemaAttributeRelationship extends PropertyBase
 {
     private static final long     serialVersionUID = 1L;
 
-    protected String              linkGUID            = null;
-    protected String              linkType            = null;
-    protected String              linkedAttributeName = null;
-    protected Map<String, Object> linkProperties      = null;
-    protected String              linkedAttributeGUID = null;
+    private String              linkType            = null;
+    private String              linkedAttributeGUID = null;
+    private String              linkedAttributeName = null;
+    private Map<String, Object> linkProperties      = null;
 
 
     /**
@@ -52,34 +51,11 @@ public class SchemaAttributeRelationship extends PropertyBase
 
         if (template != null)
         {
-            linkGUID = template.getLinkGUID();
-            linkedAttributeName = template.getLinkedAttributeName();
             linkType = template.getLinkType();
-            linkProperties = template.getLinkProperties();
             linkedAttributeGUID = template.getLinkedAttributeGUID();
+            linkedAttributeName = template.getLinkedAttributeName();
+            linkProperties = template.getLinkProperties();
         }
-    }
-
-
-    /**
-     * Return the identifier for the schema link.
-     *
-     * @return String guid
-     */
-    public String getLinkGUID()
-    {
-        return linkGUID;
-    }
-
-
-    /**
-     * Set up the identifier for the schema link.
-     *
-     * @param linkGUID String guid
-     */
-    public void setLinkGUID(String linkGUID)
-    {
-        this.linkGUID = linkGUID;
     }
 
 
@@ -106,7 +82,29 @@ public class SchemaAttributeRelationship extends PropertyBase
 
 
     /**
-     * Return the name of this link
+     * Return the GUID of the schema attribute that this link connects together.
+     *
+     * @return  GUID for the attribute at the other end of the link.
+     */
+    public String getLinkedAttributeGUID()
+    {
+        return linkedAttributeGUID;
+    }
+
+
+    /**
+     * Set up the GUIDs of the schema attributes that this link connects together.
+     *
+     * @param linkedAttributeGUID GUIDs for either end of the link - returned as a list.
+     */
+    public void setLinkedAttributeGUID(String linkedAttributeGUID)
+    {
+        this.linkedAttributeGUID = linkedAttributeGUID;
+    }
+
+
+    /**
+     * Return the name of the far end of the relationship.
      *
      * @return String name
      */
@@ -117,7 +115,7 @@ public class SchemaAttributeRelationship extends PropertyBase
 
 
     /**
-     * Set up the name of this link.
+     * Set up the name of the far end of the relationship.
      *
      * @param linkedAttributeName String name
      */
@@ -161,28 +159,6 @@ public class SchemaAttributeRelationship extends PropertyBase
 
 
     /**
-     * Return the GUID of the schema attribute that this link connects together.
-     *
-     * @return  GUID for the attribute at the other end of the link.
-     */
-    public String getLinkedAttributeGUID()
-    {
-        return linkedAttributeGUID;
-    }
-
-
-    /**
-     * Set up the GUIDs of the schema attributes that this link connects together.
-     *
-     * @param linkedAttributeGUID GUIDs for either end of the link - returned as a list.
-     */
-    public void setLinkedAttributeGUID(String linkedAttributeGUID)
-    {
-        this.linkedAttributeGUID = linkedAttributeGUID;
-    }
-
-
-    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -191,11 +167,10 @@ public class SchemaAttributeRelationship extends PropertyBase
     public String toString()
     {
         return "SchemaAttributeRelationship{" +
-                "linkGUID='" + linkGUID + '\'' +
-                ", linkType='" + linkType + '\'' +
+                "linkType='" + linkType + '\'' +
+                ", linkedAttributeGUID='" + linkedAttributeGUID + '\'' +
                 ", linkedAttributeName='" + linkedAttributeName + '\'' +
                 ", linkProperties=" + linkProperties +
-                ", linkedAttributeGUID='" + linkedAttributeGUID + '\'' +
                 '}';
     }
 
@@ -218,8 +193,7 @@ public class SchemaAttributeRelationship extends PropertyBase
             return false;
         }
         SchemaAttributeRelationship that = (SchemaAttributeRelationship) objectToCompare;
-        return Objects.equals(getLinkGUID(), that.getLinkGUID()) &&
-                Objects.equals(getLinkType(), that.getLinkType()) &&
+        return Objects.equals(getLinkType(), that.getLinkType()) &&
                 Objects.equals(getLinkedAttributeName(), that.getLinkedAttributeName()) &&
                 Objects.equals(getLinkProperties(), that.getLinkProperties()) &&
                 Objects.equals(getLinkedAttributeGUID(), that.getLinkedAttributeGUID());
@@ -234,8 +208,7 @@ public class SchemaAttributeRelationship extends PropertyBase
     @Override
     public int hashCode()
     {
-        return Objects.hash(getLinkGUID(),
-                            getLinkType(),
+        return Objects.hash(getLinkType(),
                             getLinkedAttributeName(),
                             getLinkProperties(),
                             getLinkedAttributeGUID());

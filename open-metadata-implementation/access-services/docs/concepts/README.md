@@ -35,7 +35,7 @@ appear in specific access services.
 * [Referenceable Objects](referenceable.md)
 * [Reviews](feedback/reviews-and-star-ratings.md)
 * [Servers](client-server)
-* [Server Capabilities](server-capabilities)
+* [Software Server Capabilities](server-capabilities)
 * [Star Ratings](feedback/reviews-and-star-ratings.md)
 * [Tags and Tagging](attachments/tagging.md)
 * [User Roles](user-roles)

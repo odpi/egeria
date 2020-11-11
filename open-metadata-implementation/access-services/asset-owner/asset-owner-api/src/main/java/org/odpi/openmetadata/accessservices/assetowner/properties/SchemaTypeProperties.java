@@ -3,9 +3,9 @@
 package org.odpi.openmetadata.accessservices.assetowner.properties;
 
 import com.fasterxml.jackson.annotation.*;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaType;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -25,6 +25,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         @JsonSubTypes.Type(value = LiteralSchemaTypeProperties.class, name = "LiteralSchemaTypeProperties"),
         @JsonSubTypes.Type(value = SimpleSchemaTypeProperties.class, name = "SimpleSchemaTypeProperties"),
         @JsonSubTypes.Type(value = SchemaTypeChoiceProperties.class, name = "SchemaTypeChoiceProperties"),
+        @JsonSubTypes.Type(value = MapSchemaTypeProperties.class, name = "MapSchemaTypeProperties"),
               })
 public class SchemaTypeProperties extends SchemaElementProperties
 {
@@ -35,6 +36,12 @@ public class SchemaTypeProperties extends SchemaElementProperties
     private String usage            = null;
     private String encodingStandard = null;
     private String namespace        = null;
+
+    /*
+     * Values for when the schemaType is derived from other values rather than stored
+     */
+    private String                                       formula = null;
+    private List<DerivedSchemaTypeQueryTargetProperties> queries = null;
 
     /**
      * Default constructor
@@ -61,45 +68,9 @@ public class SchemaTypeProperties extends SchemaElementProperties
             usage = template.getUsage();
             encodingStandard = template.getEncodingStandard();
             namespace = template.getNamespace();
+            formula = template.getFormula();
+            queries = template.getQueries();
         }
-    }
-
-
-    /**
-     * Copy/clone operator.
-     *
-     * @param objectToFill schema type object
-     * @return filled object
-     */
-    public SchemaType cloneProperties(SchemaType objectToFill)
-    {
-        SchemaType clone = objectToFill;
-
-        if (clone == null)
-        {
-            clone = new SchemaType();
-        }
-
-        ElementType   type = new ElementType();
-
-        type.setElementTypeName(this.typeName);
-
-        clone.setType(type);
-        clone.setClassifications(this.getClassifications());
-        clone.setQualifiedName(this.getQualifiedName());
-        clone.setMeanings(this.getMeanings());
-        clone.setAdditionalProperties(this.getAdditionalProperties());
-        clone.setExtendedProperties(this.getExtendedProperties());
-        clone.setDisplayName(this.getDisplayName());
-        clone.setDescription(getDescription());
-        clone.setDeprecated(this.isDeprecated());
-        clone.setVersionNumber(this.getVersionNumber());
-        clone.setAuthor(this.getAuthor());
-        clone.setUsage(this.getUsage());
-        clone.setEncodingStandard(this.getEncodingStandard());
-        clone.setNamespace(this.getNamespace());
-
-        return clone;
     }
 
 
@@ -204,6 +175,88 @@ public class SchemaTypeProperties extends SchemaElementProperties
 
 
     /**
+     * Return the formula used to combine the values of the queries.  Each query is numbers 0, 1, ... and the
+     * formula has placeholders in it to show how the query results are combined.
+     *
+     * @return String formula
+     */
+    public String getFormula() { return formula; }
+
+
+    /**
+     * Set up the formula used to combine the values of the queries.  Each query is numbers 0, 1, ... and the
+     * formula has placeholders in it to show how the query results are combined.
+     *
+     * @param formula String formula
+     */
+    public void setFormula(String formula)
+    {
+        this.formula = formula;
+    }
+
+
+    /**
+     * Return the list of queries that are used to create the derived schema element.
+     *
+     * @return list of queries
+     */
+    public List<DerivedSchemaTypeQueryTargetProperties> getQueries()
+    {
+        if (queries == null)
+        {
+            return null;
+        }
+        else if (queries.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return new ArrayList<>(queries);
+        }
+    }
+
+
+    /**
+     * Set up the list of queries that are used to create the derived schema element.
+     *
+     * @param queries list of queries
+     */
+    public void setQueries(List<DerivedSchemaTypeQueryTargetProperties> queries)
+    {
+        this.queries = queries;
+    }
+
+
+
+    /**
+     * Standard toString method.
+     *
+     * @return print out of variables in a JSON-style
+     */
+    @Override
+    public String toString()
+    {
+        return "SchemaTypeProperties{" +
+                "versionNumber='" + versionNumber + '\'' +
+                ", author='" + author + '\'' +
+                ", usage='" + usage + '\'' +
+                ", encodingStandard='" + encodingStandard + '\'' +
+                ", namespace='" + namespace + '\'' +
+                ", formula='" + formula + '\'' +
+                ", queries=" + queries +
+                ", displayName='" + getDisplayName() + '\'' +
+                ", description='" + getDescription() + '\'' +
+                ", deprecated=" + getIsDeprecated() +
+                ", typeName='" + getTypeName() + '\'' +
+                ", qualifiedName='" + getQualifiedName() + '\'' +
+                ", additionalProperties=" + getAdditionalProperties() +
+                ", extendedProperties=" + getExtendedProperties() +
+                '}';
+    }
+
+
+    /**
      * Compare the values of the supplied object with those stored in the current object.
      *
      * @param objectToCompare supplied object
@@ -229,32 +282,20 @@ public class SchemaTypeProperties extends SchemaElementProperties
                 Objects.equals(author, that.author) &&
                 Objects.equals(usage, that.usage) &&
                 Objects.equals(encodingStandard, that.encodingStandard) &&
-                Objects.equals(namespace, that.namespace);
+                Objects.equals(namespace, that.namespace) &&
+                Objects.equals(formula, that.formula) &&
+                Objects.equals(queries, that.queries);
     }
 
 
     /**
-     * Standard toString method.
+     * Return has code based on properties.
      *
-     * @return print out of variables in a JSON-style
+     * @return int
      */
     @Override
-    public String toString()
+    public int hashCode()
     {
-        return "SchemaTypeProperties{" +
-                "versionNumber='" + versionNumber + '\'' +
-                ", author='" + author + '\'' +
-                ", usage='" + usage + '\'' +
-                ", encodingStandard='" + encodingStandard + '\'' +
-                ", namespace='" + namespace + '\'' +
-                ", displayName='" + getDisplayName() + '\'' +
-                ", description='" + getDescription() + '\'' +
-                ", typeName='" + getTypeName() + '\'' +
-                ", classifications=" + getClassifications() +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", meanings=" + getMeanings() +
-                ", extendedProperties=" + getExtendedProperties() +
-                '}';
+        return Objects.hash(super.hashCode(), versionNumber, author, usage, encodingStandard, namespace, formula, queries);
     }
 }

@@ -6,7 +6,7 @@ package org.odpi.openmetadata.accessservices.assetowner.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.assetowner.properties.Folder;
+import org.odpi.openmetadata.accessservices.assetowner.metadataelements.FolderElement;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -26,7 +26,7 @@ public class FolderResponse extends AssetOwnerOMASAPIResponse
 {
     private static final long    serialVersionUID = 1L;
 
-    private Folder folder = null;
+    private FolderElement folder = null;
 
 
     /**
@@ -59,7 +59,7 @@ public class FolderResponse extends AssetOwnerOMASAPIResponse
      *
      * @return bean
      */
-    public Folder getFolder()
+    public FolderElement getFolder()
     {
         return folder;
     }
@@ -70,7 +70,7 @@ public class FolderResponse extends AssetOwnerOMASAPIResponse
      *
      * @param folder - bean
      */
-    public void setFolder(Folder folder)
+    public void setFolder(FolderElement folder)
     {
         this.folder = folder;
     }

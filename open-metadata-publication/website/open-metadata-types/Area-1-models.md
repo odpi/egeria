@@ -22,6 +22,7 @@ into the governance program.
 * **[0155 Crowd Sourcing](0155-Crowd-Sourcing.md)**
 * **[0160 Notes](0160-Notes.md)**
 
+![UML Packages](area-1-collaboration-overview.png#pagewidth)
 
 Return to [Overview](README.md).
 

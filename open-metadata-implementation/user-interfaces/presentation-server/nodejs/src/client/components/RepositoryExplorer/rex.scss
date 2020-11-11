@@ -4,102 +4,100 @@
 
 
 .rex-container {
-  position        : absolute;
-  top             : 0px;
-  left            : 260px;
-  height          : 1450px;
-  width           : 1600px;
-  /*border-style    : solid;
-  border-width    : 3px;
-  border-color    : rgb(72, 205, 209) ;*/
-}
-
-.top {
   position         : absolute;
   top              : 0px;
-  left             : 0px;
-  height           : 250px;
+  left             : 260px;
+  height           : 100%;
+  display          : flex;
+  flex-flow        : column;
+  /*border-style   : solid;
+  border-width     : 3px;
+  border-color     : rgb(72, 205, 209) ;*/
+}
+
+.rex-top {
+  display          : flex;
+  flex-flow        : row;
   width            : 100%; 
   overflow         : none;
   padding          : 10px;
   font-size        : 10px;
   background-color : rgb(240,240,240);  
   color            : 'black';
-  /*border-style     : solid;
+  /*border-style   : solid;
   border-width     : 3px;
   border-color     : purple ;*/
 }
 
-.top-left {
-  position   : absolute;  
-  left       : 0px;  
-  width      : 300px;   
-  height     : 230px;  
+.rex-top-left {
+  flex             : 0 0 auto;
+  /*border-style   : solid;
+  border-width     : 3px;
+  border-color     : rgb(55, 0, 255) ;*/
 }
 
-.top-middle {
-  position   : absolute;  
-  left       : 310px;  
-  width      : 300px;   
-  height     : 230px;  
+.rex-top-middle {
+  flex             : 0 0 auto;
+  /*border-style   : solid;
+  border-width     : 3px;
+  border-color     : rgb(255, 0, 170) ;*/
 }
 
-.top-right {
-  position   : absolute;  
-  left       : 620px;  
-  width      : 450px;   
-  height     : 230px;  
+.rex-top-right {
+  flex             : 0 0 auto;
+  /*border-style   : solid;
+  border-width     : 3px;
+  border-color     : rgb(255, 0, 0) ;*/
 }
 
-.lhs {
-  position         : absolute;
-  top              : 250px;
-  left             : 0px;
-  height           : 1200px;
-  width            : 450px; 
-  overflow         : none;
+
+.rex-content {
+  flex             : 2;
+  display          : flex;
+  flex-flow        : row;
+  width            : 100%;
   padding          : 10px;
+  font-size        : 10px;
+  background-color : rgb(240,240,240);
+  color            : 'black';
+}
+
+.rex-lhs {
+  flex             : 0 0 auto;
+  width            : 450px;
+  overflow         : auto;
+  padding          : 0px 10px 10px 10px;
   font-size        : 10px;
   background-color : rgb(240,240,240);    
   color            : 'black';
-  /*border-style     : solid;
+  /*border-style   : solid;
   border-width     : 3px;
   border-color     : green ;*/
 }
 
-.rhs {
-  position     : absolute;
-  top          : 250px;
-  right        : 0px;
-  height       : 1200px;
-  width        : 1100px; 
-  overflow     : none;
-  padding      : 10px;
-  font-size    : 10px;
-  background   : 'white';
-  color        : 'black';
-  /*border-style : solid;
-  border-width : 3px;
-  border-color : orangered ;*/
+.rex-rhs {
+  flex             : 1 1 auto;
+  padding          : 10px;
+  font-size        : 10px;
+  background-color : white;
+  background       : 'white';
+  color            : 'black';
+  /*border-style   : solid;
+  border-width     : 3px;
+  border-color     : orangered ;*/
 }
 
 .descriptive-text {
   font-size        : 12px;
 }
 
-.top-control-button {
-  position         : absolute;
-  right            : 0px;
-  bottom           : 40px;
-  height           : 40px;
-  width            : 100px;
-  background-color : rgb(180,180,180);  
-
-}
-
 .graph-control-button {  
   height           : 40px;
   width            : 100px;
   background-color : rgb(180,180,180);  
+}
 
+.title {
+  padding          : 20px;
+  font-size        : 20px;
 }

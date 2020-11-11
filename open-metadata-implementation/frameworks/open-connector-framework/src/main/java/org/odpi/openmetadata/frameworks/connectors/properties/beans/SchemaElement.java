@@ -4,6 +4,8 @@ package org.odpi.openmetadata.frameworks.connectors.properties.beans;
 
 import com.fasterxml.jackson.annotation.*;
 
+import java.util.Objects;
+
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -41,6 +43,15 @@ public abstract class SchemaElement extends Referenceable
     protected String  description = null;
     protected String  anchorGUID = null;
 
+    /*
+     * Some schema elements are calculated values rather than stored values.  These values are stored in the CalculatedValue
+     * classification.  They logically belong to the SchemaType but they appear on the Schema Attribute if the type information
+     * us stored in TypeEmbeddedAttribute classification
+     */
+    protected boolean isCalculatedValue = false;
+    protected String  expression        = null;
+
+
     /**
      * Default constructor
      */
@@ -61,9 +72,10 @@ public abstract class SchemaElement extends Referenceable
 
         if (template != null)
         {
-            isDeprecated = template.isDeprecated();
+            isDeprecated = template.getIsDeprecated();
             displayName = template.getDisplayName();
             description = template.getDescription();
+            anchorGUID = template.getAnchorGUID();
         }
     }
 
@@ -73,7 +85,7 @@ public abstract class SchemaElement extends Referenceable
      *
      * @return boolean flag
      */
-    public boolean isDeprecated()
+    public boolean getIsDeprecated()
     {
         return isDeprecated;
     }
@@ -84,7 +96,7 @@ public abstract class SchemaElement extends Referenceable
      *
      * @param deprecated boolean flag
      */
-    public void setDeprecated(boolean deprecated)
+    public void setIsDeprecated(boolean deprecated)
     {
         isDeprecated = deprecated;
     }
@@ -154,6 +166,52 @@ public abstract class SchemaElement extends Referenceable
 
 
     /**
+     * Return a boolean to indicate if the value for this attribute is stored or calculated.
+     * The expression for calculating the value is set if this value is true.
+     *
+     * @return boolean true for calculated value; false for stored value
+     */
+    public boolean isCalculatedValue()
+    {
+        return isCalculatedValue;
+    }
+
+
+    /**
+     * Set up a boolean to indicate if the value for this attribute is stored or calculated.
+     * The expression for calculating the value is set if this value is true.
+     *
+     * @param calculatedValue boolean true for calculated value; false for stored value
+     */
+    public void setCalculatedValue(boolean calculatedValue)
+    {
+        isCalculatedValue = calculatedValue;
+    }
+
+
+    /**
+     * Return the expression used to calculate the value for the schema attribute.
+     *
+     * @return string expression (any language)
+     */
+    public String getExpression()
+    {
+        return expression;
+    }
+
+
+    /**
+     * Set up the expression used to calculate the value for the schema attribute.
+     *
+     * @param expression string expression (any language)
+     */
+    public void setExpression(String expression)
+    {
+        this.expression = expression;
+    }
+
+
+    /**
      * Return a clone of this schema element.  This method is needed because schema element
      * is abstract.
      *
@@ -175,14 +233,66 @@ public abstract class SchemaElement extends Referenceable
                 ", displayName='" + displayName + '\'' +
                 ", description='" + description + '\'' +
                 ", anchorGUID='" + anchorGUID + '\'' +
+                ", isCalculatedValue=" + isCalculatedValue +
+                ", expression='" + expression + '\'' +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +
                 ", meanings=" + getMeanings() +
+                ", securityTags=" + getSecurityTags() +
+                ", searchKeywords=" + getSearchKeywords() +
+                ", latestChange='" + getLatestChange() + '\'' +
+                ", latestChangeDetails=" + getLatestChangeDetails() +
+                ", confidentialityGovernanceClassification=" + getConfidentialityGovernanceClassification() +
+                ", confidenceGovernanceClassification=" + getConfidenceGovernanceClassification() +
+                ", criticalityGovernanceClassification=" + getCriticalityGovernanceClassification() +
+                ", retentionGovernanceClassification=" + getRetentionGovernanceClassification() +
                 ", type=" + getType() +
                 ", GUID='" + getGUID() + '\'' +
                 ", URL='" + getURL() + '\'' +
                 ", classifications=" + getClassifications() +
                 ", extendedProperties=" + getExtendedProperties() +
+                ", headerVersion=" + getHeaderVersion() +
                 '}';
+    }
+
+
+    /**
+     * Compare the values of the supplied object with those stored in the current object.
+     *
+     * @param objectToCompare supplied object
+     * @return boolean result of comparison
+     */
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
+        {
+            return true;
+        }
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        {
+            return false;
+        }
+        if (!super.equals(objectToCompare))
+        {
+            return false;
+        }
+        SchemaElement that = (SchemaElement) objectToCompare;
+        return isDeprecated == that.isDeprecated &&
+                Objects.equals(displayName, that.displayName) &&
+                Objects.equals(description, that.description) &&
+                Objects.equals(anchorGUID, that.anchorGUID);
+    }
+
+
+    /**
+     * Return a number that represents the contents of this object.
+     *
+     * @return int
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), isDeprecated, displayName, description, anchorGUID);
     }
 }

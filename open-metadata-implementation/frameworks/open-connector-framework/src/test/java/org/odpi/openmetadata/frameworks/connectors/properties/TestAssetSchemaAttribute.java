@@ -18,10 +18,10 @@ import static org.testng.Assert.assertTrue;
  */
 public class TestAssetSchemaAttribute
 {
-    private ElementType          type                 = new ElementType();
-    private List<Classification> classifications      = new ArrayList<>();
-    private Map<String, String>  additionalProperties = new HashMap<>();
-    private PrimitiveSchemaType  schemaType           = new PrimitiveSchemaType();
+    private ElementType                 type                 = new ElementType();
+    private List<ElementClassification> classifications      = new ArrayList<>();
+    private Map<String, String>         additionalProperties = new HashMap<>();
+    private PrimitiveSchemaType         schemaType           = new PrimitiveSchemaType();
 
 
     /**
@@ -50,11 +50,10 @@ public class TestAssetSchemaAttribute
         testBean.setQualifiedName("TestQualifiedName");
         testBean.setAdditionalProperties(additionalProperties);
 
-        testBean.setAttributeName("TestAttributeName");
+        testBean.setDisplayName("TestAttributeName");
         testBean.setDefaultValueOverride("TestDefaultValueOverride");
         testBean.setMinCardinality(0);
         testBean.setMaxCardinality(-1);
-        testBean.setCardinality("TestCardinality");
         testBean.setDefaultValueOverride("TestDefaultValueOverride");
         testBean.setElementPosition(7);
         testBean.setAttributeType(schemaType);
@@ -80,11 +79,10 @@ public class TestAssetSchemaAttribute
         testBean.setQualifiedName("TestQualifiedName");
         testBean.setAdditionalProperties(additionalProperties);
 
-        testBean.setAttributeName("TestAttributeName");
+        testBean.setDisplayName("TestAttributeName");
         testBean.setDefaultValueOverride("TestDefaultValueOverride");
         testBean.setMinCardinality(0);
         testBean.setMaxCardinality(9);
-        testBean.setCardinality("TestCardinality");
         testBean.setDefaultValueOverride("TestDefaultValueOverride");
         testBean.setElementPosition(7);
         testBean.setAttributeType(schemaType);
@@ -110,11 +108,10 @@ public class TestAssetSchemaAttribute
         testBean.setQualifiedName("TestQualifiedName");
         testBean.setAdditionalProperties(additionalProperties);
 
-        testBean.setAttributeName("TestAttributeDifferentName");
+        testBean.setDisplayName("TestAttributeDifferentName");
         testBean.setDefaultValueOverride("TestDefaultValueOverride");
         testBean.setMinCardinality(1);
         testBean.setMaxCardinality(-1);
-        testBean.setCardinality("TestCardinality");
         testBean.setDefaultValueOverride("TestDefaultValueOverride");
         testBean.setElementPosition(7);
         testBean.setAttributeType(schemaType);
@@ -159,7 +156,7 @@ public class TestAssetSchemaAttribute
         assertTrue(nullObject.getElementPosition() == 0);
         assertTrue(nullObject.getDefaultValueOverride() == null);
         assertTrue(nullObject.getMinCardinality() == 0);
-        assertTrue(nullObject.getMaxCardinality() == -1);
+        assertTrue(nullObject.getMaxCardinality() == 0);
         assertTrue(nullObject.getAttributeName() == null);
 
         assertTrue(nullObject.getAttributeType() == null);
@@ -170,7 +167,7 @@ public class TestAssetSchemaAttribute
     /**
      * Validate that the object is initialized properly
      */
-    @Test(enabled = false) public void testNullObject()
+    @Test public void testNullObject()
     {
         SchemaAttribute      nullBean;
         AssetSchemaAttribute nullObject;
@@ -266,7 +263,7 @@ public class TestAssetSchemaAttribute
      *  Validate that an object cloned from another object has the same content as the original
      */
 
-    @Test(enabled = false)
+    @Test
     public void testClone()
     {
         validateResultObject(new AssetSchemaAttribute(null, getTestObject()));

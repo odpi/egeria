@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetconsumer.api;
 
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.properties.GlossaryTerm;
+import org.odpi.openmetadata.accessservices.assetconsumer.elements.MeaningElement;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -27,10 +27,10 @@ public interface AssetConsumerGlossaryInterface
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    GlossaryTerm getMeaning(String userId,
-                            String guid) throws InvalidParameterException,
-                                                PropertyServerException,
-                                                UserNotAuthorizedException;
+    MeaningElement getMeaning(String userId,
+                              String guid) throws InvalidParameterException,
+                                                  PropertyServerException,
+                                                  UserNotAuthorizedException;
 
 
     /**
@@ -46,12 +46,12 @@ public interface AssetConsumerGlossaryInterface
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    List<GlossaryTerm> getMeaningByName(String userId,
-                                        String term,
-                                        int    startFrom,
-                                        int    pageSize) throws InvalidParameterException,
-                                                                PropertyServerException,
-                                                                UserNotAuthorizedException;
+    List<MeaningElement> getMeaningByName(String userId,
+                                          String term,
+                                          int    startFrom,
+                                          int    pageSize) throws InvalidParameterException,
+                                                                  PropertyServerException,
+                                                                  UserNotAuthorizedException;
 
     /**
      * Return the full definition (meaning) of the terms matching the supplied name.
@@ -66,12 +66,12 @@ public interface AssetConsumerGlossaryInterface
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    List<GlossaryTerm> findMeanings(String userId,
-                                    String term,
-                                    int    startFrom,
-                                    int    pageSize) throws InvalidParameterException,
-                                                            PropertyServerException,
-                                                            UserNotAuthorizedException;
+    List<MeaningElement> findMeanings(String userId,
+                                      String term,
+                                      int    startFrom,
+                                      int    pageSize) throws InvalidParameterException,
+                                                              PropertyServerException,
+                                                              UserNotAuthorizedException;
 
     /**
      * Return the list of unique identifiers for assets that are linked to a specific (meaning) either directly or via
