@@ -71,7 +71,7 @@ public class EnumPropertyValue extends InstancePropertyValue
      */
     public  String valueAsString()
     {
-        return symbolicName;
+        return symbolicName == null ? "<null>" : symbolicName;
     }
 
 
