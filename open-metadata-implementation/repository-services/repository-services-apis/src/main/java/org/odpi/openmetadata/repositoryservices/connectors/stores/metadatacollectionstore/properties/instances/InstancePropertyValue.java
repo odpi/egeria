@@ -113,7 +113,7 @@ public abstract class InstancePropertyValue extends InstanceElementHeader
      */
     protected <K, V extends InstancePropertyValue> Map<K, Object> mapValuesAsObject(Map<K, V> valMap)
     {
-        return convertValues(valMap, entry -> entry.getValue().valueAsObject());
+        return convertValues(valMap, entry -> (entry.getValue() == null ? null : entry.getValue().valueAsObject()));
     }
 
 
@@ -128,12 +128,12 @@ public abstract class InstancePropertyValue extends InstanceElementHeader
      */
     protected <K, V extends InstancePropertyValue> Map<K, String> mapValuesAsString(Map<K, V> valMap)
     {
-        return convertValues(valMap, entry -> entry.getValue().valueAsString());
+        return convertValues(valMap, entry -> (entry.getValue() == null ? "<null>" : entry.getValue().valueAsString()));
     }
 
 
     /**
-     * Converts an InstancePropertyValue to the values ​​we need.
+     * Converts an InstancePropertyValue to the values we need.
      * Object, String or whatever.
      *
      * @param valMap values
@@ -150,7 +150,7 @@ public abstract class InstancePropertyValue extends InstanceElementHeader
                 .map(Map::entrySet)
                 .map(Collection::stream)
                 .orElseGet(Stream::empty)
-                .collect(Collectors.toMap(Map.Entry::getKey, mapper));
+                .collect(HashMap::new, (m, e) -> m.put(e.getKey(), mapper.apply(e)), HashMap::putAll);
     }
 
 

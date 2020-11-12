@@ -267,13 +267,23 @@ export default function Diagram(props) {
   const dragstarted = (d) => {
     if (!d3.event.active)
       loc_force.alphaTarget(0.3).restart();
-    //d.fx = d3.event.x;
-    //d.fy = d3.event.y;
+    d.xinit = d3.event.x;
+    d.yinit = d3.event.y;
   }
 
   const dragged = (d) => {
-    d.fx = d3.event.x;
-    d.fy = d3.event.y;
+    if ( d.xinit && d.yinit) {
+      if ( (Math.abs(d3.event.x - d.xinit) > 5) || (Math.abs(d3.event.y - d.yinit) > 5)) {
+        d.xinit = undefined;
+        d.yinit = undefined;
+        d.fx = d3.event.x;
+        d.fy = d3.event.y;
+      }
+    }
+    else {
+      d.fx = d3.event.x;
+      d.fy = d3.event.y;
+    }
   }
 
   const dragended = (d) => {
@@ -497,8 +507,13 @@ export default function Diagram(props) {
         startSim();
       }
       if ( props.nodes || props.links) {   
-        updateData();
-        startSim();
+        try {
+          updateData();
+          startSim();
+        }
+        catch(err) {
+          alert("Exception from diagram data, sim update  : " + err);
+        }
       }
       if ( instancesContext.focus ) {   
         setDiagramFocus();     

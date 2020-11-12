@@ -2,12 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataengine.client;
 
-import org.odpi.openmetadata.accessservices.dataengine.model.LineageMapping;
-import org.odpi.openmetadata.accessservices.dataengine.model.PortAlias;
-import org.odpi.openmetadata.accessservices.dataengine.model.PortImplementation;
+import org.odpi.openmetadata.accessservices.dataengine.model.*;
 import org.odpi.openmetadata.accessservices.dataengine.model.Process;
-import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
-import org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -110,6 +106,24 @@ public interface DataEngineClient {
                                                                               UserNotAuthorizedException,
                                                                               PropertyServerException,
                                                                               ConnectorCheckedException;
+
+    /**
+     * Add a ProcessHierarchy relationship to a process
+     *
+     * @param userId           the name of the calling user
+     * @param processHierarchy the process hierarchy bean
+     *
+     * @return the unique identifier (guid) of the child of the process hierarchy that was updated
+     *
+     * @throws InvalidParameterException the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException problem accessing the property server
+     * @throws ConnectorCheckedException internal problem with the connector
+     */
+    String addProcessHierarchy(String userId, ProcessHierarchy processHierarchy) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException,
+                                                                                        ConnectorCheckedException;
 
     /**
      * Add lineage mapping relationships between schema types

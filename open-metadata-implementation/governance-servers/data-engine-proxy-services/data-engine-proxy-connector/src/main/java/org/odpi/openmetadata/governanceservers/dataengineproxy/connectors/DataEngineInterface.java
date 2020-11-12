@@ -73,6 +73,15 @@ public interface DataEngineInterface {
     List<PortImplementation> getChangedPortImplementations(Date from, Date to);
 
     /**
+     * Retrieve a list of the changed processes between the dates and times provided.
+     *
+     * @param from the date and time from which to look for changes (exclusive)
+     * @param to the date and time up to which to look for changes (inclusive)
+     * @return {@code List<Process>}
+     */
+    List<Process> getChangedProcesses(Date from, Date to);
+
+    /**
      * Retrieve a list of the changed port aliases between the dates and times provided.
      *
      * @param from the date and time from which to look for changes (exclusive)
@@ -82,13 +91,13 @@ public interface DataEngineInterface {
     List<PortAlias> getChangedPortAliases(Date from, Date to);
 
     /**
-     * Retrieve a list of the changed processes between the dates and times provided.
+     * Retrieve a list of the changed process hierarchies between the dates and times provided.
      *
      * @param from the date and time from which to look for changes (exclusive)
      * @param to the date and time up to which to look for changes (inclusive)
-     * @return {@code List<Process>}
+     * @return {@code List<ProcessHierarchy>}
      */
-    List<Process> getChangedProcesses(Date from, Date to);
+    List<ProcessHierarchy> getChangedProcessHierarchies(Date from, Date to);
 
     /**
      * Retrieve a list of the changed lineage mappings between the dates and times provided.

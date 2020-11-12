@@ -15,13 +15,13 @@
 
 .history-results-area {
   height         : 350px;
-  width          : 850px; 
+  width          : 100%;
   overflow       : auto;
 }
 
-.table {
+.history-table {
   height         : 350px;
-  width          : 850px; 
+  width          : 100%;
   overflow       : auto;
 }
 
@@ -34,24 +34,24 @@
   content    : "";
   display    : table;
   clear      : both;
-  width      : 850px;
+  width      : 100%;
 }
 
 .gencolumn {
   float      : left;
-  width      : 5%;
+  width      : 3%;
   text-align : left;
 }
 
 .qrycolumn {
   float      : left;
-  width      : 35%;
+  width      : 32%;
   text-align : left;
 }
 
 .inscolumn {
   float      : left;
-  width      : 60%;
+  width      : 65%;
   text-align : left;
 }
 

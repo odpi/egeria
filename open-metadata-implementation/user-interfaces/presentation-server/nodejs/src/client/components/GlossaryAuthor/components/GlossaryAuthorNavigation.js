@@ -26,7 +26,7 @@ function GlossaryAuthorNavigation(props) {
     }
     console.log(
       "glossaryAuthorNavigation useEffect url=" +
-      location.pathname +
+        location.pathname +
         " ,lastSegment=" +
         lastSegment +
         " ,index=" +
@@ -58,7 +58,8 @@ function GlossaryAuthorNavigation(props) {
     const url = workingUrl + "/" + chosenContent;
     console.log("pushing url " + url);
 
-    history.push(url);
+    // Use replace rather than push so the content switcher changes are not navigated through the back button, which would be uninituitive.
+    history.replace(url);
 
     let index = 0;
     if (chosenContent == "categories") {
