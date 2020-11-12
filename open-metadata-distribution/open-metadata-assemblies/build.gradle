@@ -205,20 +205,20 @@ distributions {
 }
 // Override the distribution filenames to match what we use with maven (replaces baseName above)
 egeriaomagDistTar.compression = Compression.GZIP
-egeriaomagDistTar.extension = 'tar.gz'
-egeriaomagDistTar.setArchiveName(rootProject.name + '-' + rootProject.version + '-distribution.tar.gz')
+egeriaomagDistTar.archiveExtension = 'tar.gz'
+egeriaomagDistTar.archiveFileName = (rootProject.name + '-' + rootProject.version + '-distribution.tar.gz')
 egeriaomagDistZip.enabled=false // TODO: does not seem to work
 
 // Ditto for the deploy distribution
 deployDistTar.compression = Compression.GZIP
-deployDistTar.extension = 'tar.gz'
-deployDistTar.setArchiveName(rootProject.name + '-' + rootProject.version + '-deploy.tar.gz')
+deployDistTar.archiveExtension = 'tar.gz'
+deployDistTar.archiveFileName = (rootProject.name + '-' + rootProject.version + '-deploy.tar.gz')
 deployDistZip.enabled=false // TODO: does not seem to work
 
 // Ditto for the deploy distribution
 presentationserverDistTar.compression = Compression.GZIP
-presentationserverDistTar.extension = 'tar.gz'
-presentationserverDistTar.setArchiveName(rootProject.name + '-' + rootProject.version + '-presentation-server.tar.gz')
+presentationserverDistTar.archiveExtension = 'tar.gz'
+presentationserverDistTar.archiveFileName = (rootProject.name + '-' + rootProject.version + '-presentation-server.tar.gz')
 presentationserverDistZip.enabled=false // TODO: does not seem to work
 
 
