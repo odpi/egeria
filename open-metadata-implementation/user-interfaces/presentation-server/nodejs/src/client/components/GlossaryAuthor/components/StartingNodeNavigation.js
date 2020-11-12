@@ -217,8 +217,11 @@ export default function StartingNodeNavigation({
   function getAddNodeUrl() {
     return match.path + "/add-" + nodeTypeName;
   }
-  function getQuickTermsUrl() {
+  function getGlossaryQuickTermsUrl() {
     return match.path + "/" + selectedNodeGuid + "/quick-terms";
+  }
+  function getCategoryQuickTermsUrl() {
+    return match.path + "/" + selectedNodeGuid + "/quick-category-terms";
   }
   function getEditNodeUrl() {
     return match.path + "/edit-" + nodeTypeName + "/" + selectedNodeGuid;
@@ -268,12 +271,21 @@ export default function StartingNodeNavigation({
                   <Add32 kind="primary" />
                 </Link>
               )}
-              {selectedNodeGuid && !onSelectCallback && (
-                <Link to={getQuickTermsUrl}>
-                  <Term32 kind="primary" />
-                </Link>
-              )}
-              {selectedNodeGuid && !onSelectCallback && (
+              {selectedNodeGuid &&
+                !onSelectCallback &&
+                nodeTypeName == "glossary" && (
+                  <Link to={getGlossaryQuickTermsUrl}>
+                    <Term32 kind="primary" />
+                  </Link>
+                )}
+              {selectedNodeGuid &&
+                !onSelectCallback &&
+                nodeTypeName == "category" && (
+                  <Link to={getCategoryQuickTermsUrl}>
+                    <Term32 kind="primary" />
+                  </Link>
+                )}
+              {selectedNodeGuid && !onSelectCallback && nodeTypeName != "term" && (
                 <Link to={getNodeChildrenUrl}>
                   <ParentChild32 kind="primary" />
                 </Link>

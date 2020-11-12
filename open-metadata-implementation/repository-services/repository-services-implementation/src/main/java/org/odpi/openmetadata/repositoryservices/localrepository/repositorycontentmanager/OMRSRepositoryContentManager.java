@@ -1917,7 +1917,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
     {
         final String  actionDescription = "validate request parameters";
 
-        auditLog.logMessage(actionDescription, OMRSAuditCode.NULL_INSTANCE_ID.getMessageDefinition(methodName, sourceName));
+        auditLog.logMessage(actionDescription, OMRSAuditCode.NULL_INSTANCE.getMessageDefinition(methodName, sourceName));
     }
 
 
