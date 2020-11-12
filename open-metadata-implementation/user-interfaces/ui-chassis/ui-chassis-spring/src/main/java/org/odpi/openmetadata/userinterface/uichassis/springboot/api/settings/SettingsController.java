@@ -29,17 +29,17 @@ public class SettingsController {
      *
      * @return a redirectView to the theme URI css file
      */
-    @GetMapping( path = "/css/theme")
+    @GetMapping( path = "/api/css/theme")
     public RedirectView getThemeCss(){
-        return new RedirectView("/themes/" + theme + "/css/style.css", true);
+        return new RedirectView("/api/themes/" + theme + "/css/style.css", true);
     }
 
-    @GetMapping( path = "/js/global")
+    @GetMapping( path = "/api/js/global")
     public String getRootPath(HttpServletRequest request){
-        return "window.MyAppGlobals = { rootPath: '"+request.getContextPath()+"/' };";
+        return "window.MyAppGlobals = { rootPath: '" + request.getContextPath() + "/' };";
     }
 
-    @GetMapping( path = "/src/app/info")
+    @GetMapping( path = "/api/src/app/info")
     public AppBean getAppTitle(HttpServletRequest request){
         return app;
     }

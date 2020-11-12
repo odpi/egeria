@@ -4,7 +4,10 @@
   animation: shake 0.5s;
   animation-iteration-count: 1;
 }
-
+.left-20 {
+   position: relative;
+   left: -20px;
+}
 .my-container {
   display: flex;
   justify-content: space-evenly;
@@ -126,6 +129,11 @@
 .close-title {
   display: flex;
   justify-content: flex-end;
+}
+
+.create-wizard-page-title {
+  background-color: #f0fff1;
+  margin: 40px;
 }
 
 @keyframes shake {

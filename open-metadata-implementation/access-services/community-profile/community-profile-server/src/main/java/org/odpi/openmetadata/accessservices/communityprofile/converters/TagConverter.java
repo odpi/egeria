@@ -5,7 +5,6 @@ package org.odpi.openmetadata.accessservices.communityprofile.converters;
 
 import org.odpi.openmetadata.accessservices.communityprofile.mappers.TagMapper;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.Tag;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.StarRating;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.slf4j.Logger;
@@ -56,7 +55,7 @@ public class TagConverter extends CommonHeaderConverter
             {
                 bean.setName(repositoryHelper.removeStringProperty(serviceName, TagMapper.NAME_PROPERTY_NAME, instanceProperties, methodName));
                 bean.setDescription(repositoryHelper.removeStringProperty(serviceName, TagMapper.DESCRIPTION_PROPERTY_NAME, instanceProperties, methodName));
-                bean.setPrivate(TagMapper.IS_PRIVATE_TYPE_NAME.equals(bean.getOriginType()));
+                bean.setIsPrivate(TagMapper.IS_PRIVATE_TYPE_NAME.equals(bean.getOriginType()));
             }
         }
 

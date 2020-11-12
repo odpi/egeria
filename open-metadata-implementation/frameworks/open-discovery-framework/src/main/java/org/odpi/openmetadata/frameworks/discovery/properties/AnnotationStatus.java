@@ -19,35 +19,41 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum AnnotationStatus implements Serializable
 {
-    NEW_ANNOTATION      (0,  "New",      "Annotation has been created but not reviewed"),
-    REVIEWED_ANNOTATION (1,  "Reviewed", "Annotation has been reviewed by no decision has been made"),
-    APPROVED_ANNOTATION (2,  "Approved", "Annotation has been approved"),
-    ACTIONED_ANNOTATION (3,  "Actioned", "Annotation has been approved and insight has been added to Asset's metadata"),
-    INVALID_ANNOTATION  (4,  "Invalid",  "Annotation has been reviewed and declared invalid"),
-    IGNORE_ANNOTATION   (5,  "Ignore",   "Annotation is invalid and should be ignored"),
-    OTHER_STATUS        (98, "Other",    "Annotation's status stored in additional properties"),
-    UNKNOWN_STATUS      (99, "Unknown",  "Annotation has not had a status assigned");
+    NEW_ANNOTATION      (0,  0,  "New",      "Annotation has been created but not reviewed"),
+    REVIEWED_ANNOTATION (1,  1,  "Reviewed", "Annotation has been reviewed by no decision has been made"),
+    APPROVED_ANNOTATION (2,  2,  "Approved", "Annotation has been approved"),
+    ACTIONED_ANNOTATION (3,  3,  "Actioned", "Annotation has been approved and insight has been added to Asset's metadata"),
+    INVALID_ANNOTATION  (4,  4,  "Invalid",  "Annotation has been reviewed and declared invalid"),
+    IGNORE_ANNOTATION   (5,  5,  "Ignore",   "Annotation is invalid and should be ignored"),
+    OTHER_STATUS        (98, 99, "Other",    "Annotation's status stored in additional properties"),
+    UNKNOWN_STATUS      (99, 0,  "Unknown",  "Annotation has not had a status assigned");
 
     private static final long     serialVersionUID = 1L;
 
-    private int            statusCode;
-    private String         statusName;
-    private String         statusDescription;
+    public static final String ENUM_TYPE_GUID  = "71187df6-ef66-4f88-bc03-cd3c7f925165";
+    public static final String ENUM_TYPE_NAME  = "AnnotationStatus";
+
+    private int    statusCode;
+    private int    openTypeOrdinal;
+    private String statusName;
+    private String statusDescription;
 
 
     /**
      * Typical Constructor
      *
      * @param statusCode ordinal
+     * @param openTypeOrdinal code number from the equivalent Enum Type
      * @param statusName short name
      * @param statusDescription longer explanation
      */
-    AnnotationStatus(int     statusCode, String   statusName,  String   statusDescription)
+    AnnotationStatus(int    statusCode,
+                     int    openTypeOrdinal,
+                     String statusName,
+                     String statusDescription)
     {
-        /*
-         * Save the values supplied
-         */
         this.statusCode = statusCode;
+        this.openTypeOrdinal = openTypeOrdinal;
         this.statusName = statusName;
         this.statusDescription = statusDescription;
     }
@@ -86,6 +92,34 @@ public enum AnnotationStatus implements Serializable
     }
 
 
+
+    /**
+     * Return the code for this enum that comes from the Open Metadata Type that this enum represents.
+     *
+     * @return int code number
+     */
+    public int getOpenTypeOrdinal()
+    {
+        return openTypeOrdinal;
+    }
+
+
+    /**
+     * Return the unique identifier for the open metadata enum type that this enum class represents.
+     *
+     * @return string guid
+     */
+    public String getOpenTypeGUID() { return ENUM_TYPE_GUID; }
+
+
+    /**
+     * Return the unique name for the open metadata enum type that this enum class represents.
+     *
+     * @return string name
+     */
+    public String getOpenTypeName() { return ENUM_TYPE_NAME; }
+
+
     /**
      * Standard toString method.
      *
@@ -96,6 +130,7 @@ public enum AnnotationStatus implements Serializable
     {
         return "AnnotationStatus{" +
                 "statusCode=" + statusCode +
+                ", openTypeOrdinal=" + openTypeOrdinal +
                 ", statusName='" + statusName + '\'' +
                 ", statusDescription='" + statusDescription + '\'' +
                 '}';

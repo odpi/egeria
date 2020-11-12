@@ -16,9 +16,9 @@ import static org.testng.Assert.assertTrue;
  */
 public class TestAssetComment
 {
-    private ElementType          type            = new ElementType();
-    private List<Classification> classifications = new ArrayList<>();
-    private AssetCommentReplies  commentReplies  = null;
+    private ElementType                 type            = new ElementType();
+    private List<ElementClassification> classifications = new ArrayList<>();
+    private AssetCommentReplies         commentReplies  = null;
 
 
     /**

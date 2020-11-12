@@ -83,19 +83,30 @@ public class AssetLineageRestServices {
             restExceptionHandler.captureUserNotAuthorizedException(response, e);
         } catch (PropertyServerException e) {
             restExceptionHandler.capturePropertyServerException(response, e);
-        } catch (OCFCheckedExceptionBase | JsonProcessingException e) {
-            restExceptionHandler.captureThrowable(response, e, methodName);
         }
 
         return response;
     }
 
-    private List<String> publishEntitiesContext(List<EntityDetail> entitiesByType, AssetLineagePublisher publisher) throws JsonProcessingException, OCFCheckedExceptionBase {
+    /**
+     * Returns the list of entity GUIDs that were published on the Out Topic
+     *
+     * @param entitiesByType list of found entities for the requested type
+     * @param publisher      Asset Lineage publisher
+     * @return the list of entity GUIDs published on the Asset Lineage Out Topic
+     */
+    private List<String> publishEntitiesContext(List<EntityDetail> entitiesByType,
+                                                AssetLineagePublisher publisher) {
         List<String> publishedGUIDs = new ArrayList<>();
         log.debug("Asset Lineage OMAS is publishing entities context");
 
         for (EntityDetail entityDetail : entitiesByType) {
-            publishedGUIDs.add(publishEntityContext(publisher, entityDetail));
+            try {
+                publishedGUIDs.add(publishEntityContext(entityDetail, publisher));
+            }catch (JsonProcessingException | OCFCheckedExceptionBase e){
+                log.error("Failed to publish context for entity of type " + entityDetail.getType() + " and guid "
+                + entityDetail.getGUID());
+            }
         }
 
         log.debug("Asset Lineage OMAS published entities context");
@@ -103,8 +114,17 @@ public class AssetLineageRestServices {
         return publishedGUIDs;
     }
 
-    private String publishEntityContext(AssetLineagePublisher publisher,
-                                        EntityDetail entityDetail) throws OCFCheckedExceptionBase, JsonProcessingException {
+    /**
+     * Build entity's context and publish it on Out Topic
+     *
+     * @param entityDetail - the entity based on which we want to build the context
+     * @param publisher    Asset Lineage publisher
+     * @return the entity GUID if the context is not empty
+     * @throws OCFCheckedExceptionBase checked exception for reporting errors found when using OCF connectors
+     * @throws JsonProcessingException exception parsing the event json
+     */
+    private String publishEntityContext(EntityDetail entityDetail,
+                                        AssetLineagePublisher publisher) throws OCFCheckedExceptionBase, JsonProcessingException {
         String typeName = entityDetail.getType().getTypeDefName();
         Map<String, Set<GraphContext>> context = new HashMap<>();
 
@@ -114,7 +134,7 @@ public class AssetLineageRestServices {
                 break;
             }
             case PROCESS: {
-                publisher.publishProcessContext(entityDetail);
+                context = publisher.publishProcessContext(entityDetail);
                 break;
             }
             default:

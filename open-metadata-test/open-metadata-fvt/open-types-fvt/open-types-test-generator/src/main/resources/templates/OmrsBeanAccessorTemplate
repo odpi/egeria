@@ -27,7 +27,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 // omrs bean entity specific imports
 <$$$
 import org.odpi.openmetadata.fvt.opentypes.entities.<$$uEntityName$$>.<$$uEntityName$$>;
-import org.odpi.openmetadata.fvt.opentypes.entities.<$$uEntityName$$>.<$$uEntityName$$>References;
 import org.odpi.openmetadata.fvt.opentypes.entities.<$$uEntityName$$>.<$$uEntityName$$>Mapper;
 $$$>
 // omrs bean relationships specific imports
@@ -60,7 +59,7 @@ public class BeansToAccessOMRS  {
 <$$$
     /**
      * Fetch complete definition of an <$$EntityName$$> given its GUID.
-     * The limit and offset paging parameters limit the number elements returned in each of the <$$lowerCasePluralEntityName$$> relationships.
+     * The limit and startingFrom paging parameters limit the number elements returned in each of the <$$lowerCasePluralEntityName$$> relationships.
      * @param userId user identity
      * @param entityGuid GUID for the entity
      * @return <$$uEntityName$$> the <$$uEntityName$$> entity with the requested GUID

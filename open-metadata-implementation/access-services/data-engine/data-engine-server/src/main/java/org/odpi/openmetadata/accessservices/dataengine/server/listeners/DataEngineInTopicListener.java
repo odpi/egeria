@@ -6,7 +6,7 @@ package org.odpi.openmetadata.accessservices.dataengine.server.listeners;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.accessservices.dataengine.event.DataEngineEventHeader;
-import org.odpi.openmetadata.accessservices.dataengine.server.auditlog.DataEngineAuditCode;
+import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineAuditCode;
 import org.odpi.openmetadata.accessservices.dataengine.server.processors.DataEngineEventProcessor;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicListener;
@@ -71,6 +71,12 @@ public class DataEngineInTopicListener implements OpenMetadataTopicListener {
                             break;
                         case PROCESSES_EVENT:
                             dataEngineEventProcessor.processProcessesEvent(dataEngineEvent);
+                            break;
+                        case SCHEMA_TYPE_EVENT:
+                            dataEngineEventProcessor.processSchemaTypeEvent(dataEngineEvent);
+                            break;
+                        case PROCESS_HIERARCHY_EVENT:
+                            dataEngineEventProcessor.processProcessHierarchyEvent(dataEngineEvent);
                             break;
                         default:
                             log.debug("Ignored instance event - unknown event type");

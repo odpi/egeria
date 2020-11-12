@@ -5,8 +5,11 @@ package org.odpi.openmetadata.accessservices.subjectarea.client.relationships;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaClient;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaRelationshipClient;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaRestClient;
+import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
+import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectAreaCheckedException;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.*;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.reflections.Reflections;
 
 import java.lang.reflect.Constructor;
@@ -16,10 +19,9 @@ import java.util.*;
 /**
  * The OMAS client library implementation of the Subject Area OMAS.
  * This interface provides relationship {@link Line} authoring interface for subject area experts.
- * A standard set of customers is described in {@link SubjectAreaRelationship}
  */
-public class SubjectAreaLine implements SubjectAreaRelationship {
-    private static final String HASA = "has-as";
+public class SubjectAreaLine implements SubjectAreaRelationshipClients {
+    private static final String HAS_A = "has-as";
     private static final String RELATED_TERM = "related-terms";
     private static final String SYNONYM = "synonyms";
     private static final String ANTONYM = "antonyms";
@@ -38,7 +40,7 @@ public class SubjectAreaLine implements SubjectAreaRelationship {
     private static final String PROJECT_SCOPE = "project-scopes";
     private static final String CATEGORY_HIERARCHY_LINK = "category-hierarchy-link";
 
-    private Map<Class<?>, SubjectAreaRelationshipClient<?>> cache = new HashMap<>();
+    private final Map<Class<?>, SubjectAreaRelationshipClient<?>> cache = new HashMap<>();
     private static final String DEFAULT_SCAN_PACKAGE = SubjectAreaLine.class.getPackage().getName();
 
     /**
@@ -59,14 +61,14 @@ public class SubjectAreaLine implements SubjectAreaRelationship {
                     ctor.setAccessible(true);
                     final AbstractSubjectAreaRelationship newInstance =
                             (AbstractSubjectAreaRelationship) ctor.newInstance(subjectAreaRestClient);
-                    cache.put(newInstance.type(), newInstance);
+                    cache.put(newInstance.resultType(), newInstance);
                 }
             } catch (NoSuchMethodException
                     | IllegalAccessException
                     | InstantiationException
                     | InvocationTargetException e) {
                 throw new ExceptionInInitializerError(
-                        "During initialization SubjectAreaLine an error has occurred - "
+                        "During initialization `SubjectAreaLine` an error has occurred - "
                                 + e.getMessage()
                 );
             }
@@ -178,11 +180,6 @@ public class SubjectAreaLine implements SubjectAreaRelationship {
         protected SubjectAreaCategoryHierarchyLinkClient(SubjectAreaRestClient subjectAreaRestClient) {
             super(subjectAreaRestClient, CATEGORY_HIERARCHY_LINK);
         }
-
-        @Override
-        public Class<CategoryHierarchyLink> type() {
-            return CategoryHierarchyLink.class;
-        }
     }
 
     @SubjectAreaLineClient
@@ -190,32 +187,17 @@ public class SubjectAreaLine implements SubjectAreaRelationship {
         protected SubjectAreaTermAnchorClient(SubjectAreaRestClient subjectAreaRestClient) {
             super(subjectAreaRestClient, TERM_ANCHOR);
         }
-
-        @Override
-        public Class<TermAnchor> type() {
-            return TermAnchor.class;
-        }
     }
     @SubjectAreaLineClient
     static class SubjectAreaRelatedTermClient extends AbstractSubjectAreaRelationship<RelatedTerm> {
         protected SubjectAreaRelatedTermClient(SubjectAreaRestClient subjectAreaRestClient) {
             super(subjectAreaRestClient, RELATED_TERM);
         }
-
-        @Override
-        public Class<RelatedTerm> type() {
-            return RelatedTerm.class;
-        }
     }
     @SubjectAreaLineClient
     static class SubjectAreaHasaClient extends AbstractSubjectAreaRelationship<HasA> {
         protected SubjectAreaHasaClient(SubjectAreaRestClient subjectAreaRestClient) {
-            super(subjectAreaRestClient, HASA);
-        }
-
-        @Override
-        public Class<HasA> type() {
-            return HasA.class;
+            super(subjectAreaRestClient, HAS_A);
         }
     }
     @SubjectAreaLineClient
@@ -223,21 +205,11 @@ public class SubjectAreaLine implements SubjectAreaRelationship {
         protected SubjectAreaSynonymClient(SubjectAreaRestClient subjectAreaRestClient) {
             super(subjectAreaRestClient, SYNONYM);
         }
-
-        @Override
-        public Class<Synonym> type() {
-            return Synonym.class;
-        }
     }
     @SubjectAreaLineClient
     static class SubjectAreaAntonymClient extends AbstractSubjectAreaRelationship<Antonym> {
         protected SubjectAreaAntonymClient(SubjectAreaRestClient subjectAreaRestClient) {
             super(subjectAreaRestClient, ANTONYM);
-        }
-
-        @Override
-        public Class<Antonym> type() {
-            return Antonym.class;
         }
     }
     @SubjectAreaLineClient
@@ -245,21 +217,11 @@ public class SubjectAreaLine implements SubjectAreaRelationship {
         protected SubjectAreaCategoryAnchorClient(SubjectAreaRestClient subjectAreaRestClient) {
             super(subjectAreaRestClient, CATEGORY_ANCHOR);
         }
-
-        @Override
-        public Class<CategoryAnchor> type() {
-            return CategoryAnchor.class;
-        }
     }
     @SubjectAreaLineClient
     static class SubjectAreaCategorizationClient extends AbstractSubjectAreaRelationship<Categorization> {
         protected SubjectAreaCategorizationClient(SubjectAreaRestClient subjectAreaRestClient) {
             super(subjectAreaRestClient, TERM_CATEGORIZATION);
-        }
-
-        @Override
-        public Class<Categorization> type() {
-            return Categorization.class;
         }
     }
     @SubjectAreaLineClient
@@ -267,21 +229,11 @@ public class SubjectAreaLine implements SubjectAreaRelationship {
         protected SubjectAreaTranslationClient(SubjectAreaRestClient subjectAreaRestClient) {
             super(subjectAreaRestClient, TRANSLATION);
         }
-
-        @Override
-        public Class<Translation> type() {
-            return Translation.class;
-        }
     }
     @SubjectAreaLineClient
     static class SubjectAreaUsedInContextClient extends AbstractSubjectAreaRelationship<UsedInContext> {
         protected SubjectAreaUsedInContextClient(SubjectAreaRestClient subjectAreaRestClient) {
             super(subjectAreaRestClient, USED_IN_CONTEXT);
-        }
-
-        @Override
-        public Class<UsedInContext> type() {
-            return UsedInContext.class;
         }
     }
     @SubjectAreaLineClient
@@ -289,21 +241,11 @@ public class SubjectAreaLine implements SubjectAreaRelationship {
         protected SubjectAreaPreferredTermClient(SubjectAreaRestClient subjectAreaRestClient) {
             super(subjectAreaRestClient, PREFERRED_TERM);
         }
-
-        @Override
-        public Class<PreferredTerm> type() {
-            return PreferredTerm.class;
-        }
     }
     @SubjectAreaLineClient
     static class SubjectAreaValidValueClient extends AbstractSubjectAreaRelationship<ValidValue> {
         protected SubjectAreaValidValueClient(SubjectAreaRestClient subjectAreaRestClient) {
             super(subjectAreaRestClient, VALID_VALUE);
-        }
-
-        @Override
-        public Class<ValidValue> type() {
-            return ValidValue.class;
         }
     }
     @SubjectAreaLineClient
@@ -311,21 +253,11 @@ public class SubjectAreaLine implements SubjectAreaRelationship {
         protected SubjectAreaReplacementTermClient(SubjectAreaRestClient subjectAreaRestClient) {
             super(subjectAreaRestClient, REPLACEMENT_TERM);
         }
-
-        @Override
-        public Class<ReplacementTerm> type() {
-            return ReplacementTerm.class;
-        }
     }
     @SubjectAreaLineClient
     static class SubjectAreaSemanticAssignmentClient extends AbstractSubjectAreaRelationship<SemanticAssignment> {
         protected SubjectAreaSemanticAssignmentClient(SubjectAreaRestClient subjectAreaRestClient) {
             super(subjectAreaRestClient, SEMANTIC_ASSIGNMENT);
-        }
-
-        @Override
-        public Class<SemanticAssignment> type() {
-            return SemanticAssignment.class;
         }
     }
     @SubjectAreaLineClient
@@ -333,21 +265,11 @@ public class SubjectAreaLine implements SubjectAreaRelationship {
         protected SubjectAreaTypedByClient(SubjectAreaRestClient subjectAreaRestClient) {
             super(subjectAreaRestClient, TYPED_BY);
         }
-
-        @Override
-        public Class<TypedBy> type() {
-            return TypedBy.class;
-        }
     }
     @SubjectAreaLineClient
     static class SubjectAreaIsaClient extends AbstractSubjectAreaRelationship<IsA> {
         protected SubjectAreaIsaClient(SubjectAreaRestClient subjectAreaRestClient) {
             super(subjectAreaRestClient, IS_A);
-        }
-
-        @Override
-        public Class<IsA> type() {
-            return IsA.class;
         }
     }
     @SubjectAreaLineClient
@@ -355,21 +277,11 @@ public class SubjectAreaLine implements SubjectAreaRelationship {
         protected SubjectAreaIsaTypeOfClient(SubjectAreaRestClient subjectAreaRestClient) {
             super(subjectAreaRestClient, IS_A_TYPE_OF);
         }
-
-        @Override
-        public Class<IsATypeOf> type() {
-            return IsATypeOf.class;
-        }
     }
     @SubjectAreaLineClient
     static class SubjectAreaProjectScopeClient extends AbstractSubjectAreaRelationship<ProjectScope> {
         protected SubjectAreaProjectScopeClient(SubjectAreaRestClient subjectAreaRestClient) {
             super(subjectAreaRestClient, PROJECT_SCOPE);
-        }
-
-        @Override
-        public Class<ProjectScope> type() {
-            return ProjectScope.class;
         }
     }
 
@@ -384,6 +296,10 @@ public class SubjectAreaLine implements SubjectAreaRelationship {
         if (cache.containsKey(clazz)) {
             return (SubjectAreaRelationshipClient<T>) cache.get(clazz);
         }
-        return null;
+        final ExceptionMessageDefinition messageDefinition =
+                SubjectAreaErrorCode.NOT_FOUND_CLIENT.getMessageDefinition(clazz.getName());
+        final SubjectAreaCheckedException exc =
+                new SubjectAreaCheckedException(messageDefinition, getClass().getName(), messageDefinition.getSystemAction());
+        throw new IllegalArgumentException(exc);
     }
 }

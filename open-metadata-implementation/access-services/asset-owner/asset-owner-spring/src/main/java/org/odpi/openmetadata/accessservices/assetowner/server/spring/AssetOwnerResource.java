@@ -5,15 +5,12 @@ package org.odpi.openmetadata.accessservices.assetowner.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.odpi.openmetadata.accessservices.assetowner.properties.AssetProperties;
+import org.odpi.openmetadata.accessservices.assetowner.properties.SchemaAttributeProperties;
+import org.odpi.openmetadata.accessservices.assetowner.properties.SchemaTypeProperties;
 import org.odpi.openmetadata.accessservices.assetowner.rest.*;
 import org.odpi.openmetadata.accessservices.assetowner.server.AssetOwnerRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
-import org.odpi.openmetadata.commonservices.gaf.metadatamanagement.rest.SecurityTagsRequestBody;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.*;
-import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.AnnotationListResponse;
-import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.DiscoveryAnalysisReportListResponse;
-import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.StatusRequestBody;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaAttribute;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -110,10 +107,10 @@ public class AssetOwnerResource
      */
     @PostMapping(path = "/assets/{typeName}")
 
-    public GUIDResponse addAssetToCatalog(@PathVariable String           serverName,
-                                          @PathVariable String           userId,
-                                          @PathVariable String           typeName,
-                                          @RequestBody  AssetRequestBody requestBody)
+    public GUIDResponse addAssetToCatalog(@PathVariable String          serverName,
+                                          @PathVariable String          userId,
+                                          @PathVariable String          typeName,
+                                          @RequestBody  AssetProperties requestBody)
     {
         return restAPI.addAssetToCatalog(serverName, userId, typeName, requestBody);
     }
@@ -135,11 +132,37 @@ public class AssetOwnerResource
      * UserNotAuthorizedException security access problem
      */
     @PostMapping(path = "/assets/{assetGUID}/schemas/top-level-schema-type-with-attributes")
-
+    @Deprecated
     public GUIDResponse   addCombinedSchemaToAsset(@PathVariable String                    serverName,
                                                    @PathVariable String                    userId,
                                                    @PathVariable String                    assetGUID,
                                                    @RequestBody  CombinedSchemaRequestBody schemaInformation)
+    {
+        return restAPI.addCombinedSchemaToAsset(serverName, userId, assetGUID, schemaInformation);
+    }
+
+
+    /**
+     * Stores the supplied schema details in the catalog and attaches it to the asset.  If another schema is currently
+     * attached to the asset, it is unlinked and deleted.  If more attributes need to be added in addition to the
+     * ones supplied then this can be done with addSchemaAttributesToSchemaType().
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @param assetGUID unique identifier of the asset that the schema is to be attached to
+     * @param schemaInformation schema type to create and attach directly to the asset.
+     *
+     * @return guid of the schema type or
+     * InvalidParameterException full path or userId is null, or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/assets/{assetGUID}/schemas/with-attributes")
+
+    public GUIDResponse   addComplexSchemaToAsset(@PathVariable String                    serverName,
+                                                  @PathVariable String                    userId,
+                                                  @PathVariable String                    assetGUID,
+                                                  @RequestBody  CombinedSchemaRequestBody schemaInformation)
     {
         return restAPI.addCombinedSchemaToAsset(serverName, userId, assetGUID, schemaInformation);
     }
@@ -160,8 +183,33 @@ public class AssetOwnerResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    @PostMapping(path = "/assets/{assetGUID}/schemas/top-level-schema-type")
+    @PostMapping(path = "/assets/{assetGUID}/schemas")
 
+    public GUIDResponse   addSchemaTypeToAsset(@PathVariable String                serverName,
+                                               @PathVariable String                userId,
+                                               @PathVariable String                assetGUID,
+                                               @RequestBody  SchemaTypeProperties schemaType)
+    {
+        return restAPI.addSchemaTypeToAsset(serverName, userId, assetGUID, schemaType);
+    }
+
+
+    /**
+     * Stores the supplied schema type in the catalog and attaches it to the asset.  If another schema is currently
+     * attached to the asset, it is unlinked and deleted.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @param assetGUID unique identifier of the asset that the schema is to be attached to
+     * @param schemaType schema type to create and attach directly to the asset.
+     *
+     * @return guid of the new schema type or
+     * InvalidParameterException full path or userId is null, or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/assets/{assetGUID}/schemas/top-level-schema-type")
+    @Deprecated
     public GUIDResponse   addSchemaTypeToAsset(@PathVariable String                serverName,
                                                @PathVariable String                userId,
                                                @PathVariable String                assetGUID,
@@ -187,7 +235,7 @@ public class AssetOwnerResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    @PostMapping(path = "/assets/{assetGUID}/schemas/top-level-schema-type/{schemaTypeGUID}/attach")
+    @PostMapping(path = "/assets/{assetGUID}/schemas/{schemaTypeGUID}/attach")
 
     public VoidResponse   attachSchemaTypeToAsset(@PathVariable                   String            serverName,
                                                   @PathVariable                   String            userId,
@@ -212,7 +260,7 @@ public class AssetOwnerResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    @PostMapping(path = "/assets/{assetGUID}/schemas/top-level-schema-type/detach")
+    @PostMapping(path = "/assets/{assetGUID}/schemas/detach")
 
     public GUIDResponse   detachSchemaTypeFromAsset(@PathVariable                  String          serverName,
                                                     @PathVariable                  String          userId,
@@ -262,13 +310,41 @@ public class AssetOwnerResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    @PostMapping(path = "/assets/{assetGUID}/schemas/{parentGUID}/schema-attributes/list")
+    @PostMapping(path = "/assets/{assetGUID}/schemas/{parentGUID}/schema-attributes/list/deprecated")
 
     public VoidResponse addSchemaAttributes(@PathVariable String                      serverName,
                                             @PathVariable String                      userId,
                                             @PathVariable String                      assetGUID,
                                             @PathVariable String                      parentGUID,
                                             @RequestBody  SchemaAttributesRequestBody schemaAttributes)
+    {
+        return restAPI.addSchemaAttributes(serverName, userId, assetGUID, parentGUID, schemaAttributes);
+    }
+
+
+
+    /**
+     * Adds attributes to a complex schema type like a relational table, avro schema or a structured document.
+     * This method can be called repeatedly to add many attributes to a schema.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @param assetGUID unique identifier of the asset that the schema is to be attached to
+     * @param parentGUID unique identifier of the schema element to anchor these attributes to.
+     * @param schemaAttributes list of schema attribute objects.
+     *
+     * @return list of unique identifiers for the new schema attributes returned in the same order as the supplied attribute or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/assets/{assetGUID}/schemas/{parentGUID}/schema-attributes/list")
+
+    public VoidResponse addSchemaAttributes(@PathVariable String                          serverName,
+                                            @PathVariable String                          userId,
+                                            @PathVariable String                          assetGUID,
+                                            @PathVariable String                          parentGUID,
+                                            @RequestBody  List<SchemaAttributeProperties> schemaAttributes)
     {
         return restAPI.addSchemaAttributes(serverName, userId, assetGUID, parentGUID, schemaAttributes);
     }
@@ -290,12 +366,12 @@ public class AssetOwnerResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    @PostMapping(path = "/assets/{assetGUID}/schemas/{parentGUID}/schema-attributes")
-
-    public GUIDResponse addSchemaAttribute(@PathVariable String                      serverName,
-                                           @PathVariable String                      userId,
-                                           @PathVariable String                      assetGUID,
-                                           @PathVariable String                      parentGUID,
+    @PostMapping(path = "/assets/{assetGUID}/schemas/{parentGUID}/schema-attributes/deprecated")
+    @Deprecated
+    public GUIDResponse addSchemaAttribute(@PathVariable String                     serverName,
+                                           @PathVariable String                     userId,
+                                           @PathVariable String                     assetGUID,
+                                           @PathVariable String                     parentGUID,
                                            @RequestBody  SchemaAttributeRequestBody schemaAttribute)
     {
         return restAPI.addSchemaAttribute(serverName, userId, assetGUID, parentGUID, schemaAttribute);
@@ -303,60 +379,30 @@ public class AssetOwnerResource
 
 
     /**
-     * Links the supplied schema to the asset.  If the schema has the GUID set, it is assumed to refer to
-     * an existing schema defined in the metadata repository.  If this schema is either not found, or
-     * already attached to an asset, then an error occurs.  If the GUID is null then a new schemaType
-     * is added to the metadata repository and attached to the asset.  If another schema is currently
-     * attached to the asset, it is unlinked and deleted.  This method is deprecated in favour of the use of
-     * Asset Owner specific request body objects that do not have the element header.
+     * Adds the attribute to a complex schema type like a relational table, avro schema or a structured document.
+     * This method can be called repeatedly to add many attributes to a schema.  The GUID returned can be used to add
+     * nested attributes.
      *
      * @param serverName name of the server instance to connect to
      * @param userId calling user
      * @param assetGUID unique identifier of the asset that the schema is to be attached to
-     * @param requestBody schema to attach
+     * @param parentGUID unique identifier of the schema element to anchor these attributes to.
+     * @param schemaAttribute schema attribute object.
      *
-     * @return guid of the schema type or
+     * @return list of unique identifiers for the new schema attributes returned in the same order as the supplied attribute or
      * InvalidParameterException full path or userId is null or
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    @PostMapping(path = "/assets/{assetGUID}/schema-type")
-    @Deprecated
-    public GUIDResponse addSchemaToAsset(@PathVariable String            serverName,
-                                         @PathVariable String            userId,
-                                         @PathVariable String            assetGUID,
-                                         @RequestBody  SchemaRequestBody requestBody)
-    {
-        return restAPI.addSchemaToAsset(serverName, userId, assetGUID, requestBody);
-    }
+    @PostMapping(path = "/assets/{assetGUID}/schemas/{parentGUID}/schema-attributes")
 
-
-    /**
-     * Adds attributes to a complex schema type like a relational table or a structured document.
-     * This method can be called repeatedly to add many attributes to a schema.
-     * It is deprecated because it does not supply the assetGUID which is needed to ensure that
-     * the caller has a right to update the attachments of the asset.  With this original version of the
-     * API, the asset has to be located to validate the authorization of the user.  This extra processing
-     * is unnecessary in the Asset Owner's case because the assetGUID is known.
-     *
-     * @param serverName name of the server instance to connect to
-     * @param userId calling user
-     * @param schemaTypeGUID unique identifier if the schema to anchor these attributes to.
-     * @param schemaAttributes list of schema attribute objects.
-     *
-     * @return void or
-     * InvalidParameterException full path or userId is null or
-     * PropertyServerException problem accessing property server or
-     * UserNotAuthorizedException security access problem
-     */
-    @PostMapping(path = "/schemas/{schemaTypeGUID}/schema-attributes")
-    @Deprecated
-    public VoidResponse addSchemaAttributesToSchema(@PathVariable String                 serverName,
-                                                    @PathVariable String                 userId,
-                                                    @PathVariable String                 schemaTypeGUID,
-                                                    @RequestBody  List<SchemaAttribute>  schemaAttributes)
+    public GUIDResponse addSchemaAttribute(@PathVariable String                   serverName,
+                                           @PathVariable String                   userId,
+                                           @PathVariable String                   assetGUID,
+                                           @PathVariable String                   parentGUID,
+                                           @RequestBody SchemaAttributeProperties schemaAttribute)
     {
-        return restAPI.addSchemaAttributesToSchema(serverName, userId, schemaTypeGUID, schemaAttributes);
+        return restAPI.addSchemaAttribute(serverName, userId, assetGUID, parentGUID, schemaAttribute);
     }
 
 
@@ -563,6 +609,54 @@ public class AssetOwnerResource
 
 
     /**
+     * Update the zones for a specific asset to the zone list specified in the publishZones.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @param assetGUID unique identifier for the asset to update
+     * @param requestBody null request body
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/assets/{assetGUID}/publish")
+
+    public VoidResponse publishAsset(@PathVariable                   String                serverName,
+                                     @PathVariable                   String                userId,
+                                     @PathVariable                   String                assetGUID,
+                                     @RequestBody(required = false)  NullRequestBody       requestBody)
+    {
+        return restAPI.publishAsset(serverName, userId, assetGUID, requestBody);
+    }
+
+
+    /**
+     * Update the zones for a specific asset to the zone list specified in the defaultZones.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @param assetGUID unique identifier for the asset to update
+     * @param requestBody null request body
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/assets/{assetGUID}/withdraw")
+
+    public VoidResponse withdrawAsset(@PathVariable                   String                serverName,
+                                      @PathVariable                   String                userId,
+                                      @PathVariable                   String                assetGUID,
+                                      @RequestBody(required = false)  NullRequestBody       requestBody)
+    {
+        return restAPI.withdrawAsset(serverName, userId, assetGUID, requestBody);
+    }
+
+
+    /**
      * Update the zones for a specific asset.
      *
      * @param serverName name of the server instance to connect to
@@ -735,11 +829,11 @@ public class AssetOwnerResource
      */
     @PostMapping(path = "/assets/by-name")
 
-    public AssetsResponse getAssetsByName(@PathVariable String   serverName,
-                                          @PathVariable String   userId,
-                                          @RequestParam int      startFrom,
-                                          @RequestParam int      pageSize,
-                                          @RequestBody  String   name)
+    public AssetElementsResponse getAssetsByName(@PathVariable String   serverName,
+                                                 @PathVariable String   userId,
+                                                 @RequestParam int      startFrom,
+                                                 @RequestParam int      pageSize,
+                                                 @RequestBody  String   name)
     {
         return restAPI.getAssetsByName(serverName, userId, name, startFrom, pageSize);
     }
@@ -762,13 +856,33 @@ public class AssetOwnerResource
      */
     @PostMapping(path = "/assets/by-search-string")
 
-    public AssetsResponse  findAssets(@PathVariable String   serverName,
-                                      @PathVariable String   userId,
-                                      @RequestParam int      startFrom,
-                                      @RequestParam int      pageSize,
-                                      @RequestBody  String   searchString)
+    public AssetElementsResponse findAssets(@PathVariable String   serverName,
+                                            @PathVariable String   userId,
+                                            @RequestParam int      startFrom,
+                                            @RequestParam int      pageSize,
+                                            @RequestBody  String   searchString)
     {
         return restAPI.findAssets(serverName, userId, searchString, startFrom, pageSize);
+    }
+
+
+    /**
+     * Return the basic attributes of an asset.
+     *
+     * @param userId calling user
+     * @param assetGUID unique identifier of the asset
+     * @return basic asset properties
+     * InvalidParameterException one of the parameters is null or invalid.
+     * UserNotAuthorizedException user not authorized to issue this request.
+     * PropertyServerException there was a problem that occurred within the property server.
+     */
+    @GetMapping(path = "/assets/{assetGUID}")
+
+    public AssetElementResponse getAssetSummary(@PathVariable String  serverName,
+                                                @PathVariable String  userId,
+                                                @PathVariable String  assetGUID)
+    {
+        return restAPI.getAssetSummary(serverName, userId, assetGUID);
     }
 
 

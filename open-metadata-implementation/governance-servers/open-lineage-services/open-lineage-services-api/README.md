@@ -3,12 +3,23 @@
 
 # Open Lineage API
 
-The open lineage API provides the property structures and
+The Open Lineage Services API  module provides the property structures and
 REST structures used to drive the open lineage.
 
+- [Beans](docs/beans/README.md)
+- [Exceptions](docs/exceptions/REAMDE.md)
 
+This module also defines the interfaces that need to be implemented in order for a graph connector to integrate through OLS.
 
+In essence these are the following:
 
+- a graph connector provider, implemented by extending `LineageGraphProviderBase`.
+- a graph connector, implemented by extending `LineageGraphConnectorBase`.
+
+The methods in LineageGraphProviderBase need to be overridden to implement those set / retrieval operations according to the specifics of 
+the graph database used. 
+Currently, the only implementation available for the connector is the
+[open-lineage-janus-connector](../../../adapters/open-connectors/governance-daemon-connectors/open-lineage-connectors/open-lineage-janus-connector/README.md)
 
 
 ----

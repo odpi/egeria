@@ -69,6 +69,8 @@ public class CreateGovernanceZoneSample
                                     displayName,
                                     description,
                                     criteria,
+                                    null,
+                                    0,
                                     null);
     }
 

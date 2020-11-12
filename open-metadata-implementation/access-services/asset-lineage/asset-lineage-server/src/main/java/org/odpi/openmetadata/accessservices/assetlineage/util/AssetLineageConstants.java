@@ -8,6 +8,9 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Constants for Open Metadata Types names used to build lineage functionality
+ */
 public final class AssetLineageConstants {
 
     public static final String LINEAGE_CLASSIFICATION_TYPES_KEY = "LineageClassificationTypes";
@@ -40,6 +43,8 @@ public final class AssetLineageConstants {
     public static final String DATA_CONTENT_FOR_DATA_SET = "DataContentForDataSet";
     public static final String SEMANTIC_ASSIGNMENT = "SemanticAssignment";
     public static final String TERM_CATEGORIZATION = "TermCategorization";
+    public static final String TERM_ANCHOR = "TermAnchor";
+    public static final String CATEGORY_ANCHOR = "CategoryAnchor";
     public static final String PORT_DELEGATION = "PortDelegation";
     public static final String PROCESS_PORT = "ProcessPort";
     public static final String LINEAGE_MAPPING = "LineageMapping";

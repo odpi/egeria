@@ -22,7 +22,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonSubTypes(
         {
                 @JsonSubTypes.Type(value = SchemaAttributeProperties.class, name = "SchemaAttributeProperties"),
-                @JsonSubTypes.Type(value = SchemaTypeProperties.class,       name = "SchemaTypeProperties"),
+                @JsonSubTypes.Type(value = SchemaTypeProperties.class,      name = "SchemaTypeProperties"),
         })
 public class SchemaElementProperties extends ReferenceableProperties
 {
@@ -52,7 +52,7 @@ public class SchemaElementProperties extends ReferenceableProperties
 
         if (template != null)
         {
-            isDeprecated = template.isDeprecated();
+            isDeprecated = template.getIsDeprecated();
             displayName = template.getDisplayName();
             description = template.getDescription();
         }
@@ -64,7 +64,7 @@ public class SchemaElementProperties extends ReferenceableProperties
      *
      * @return boolean flag
      */
-    public boolean isDeprecated()
+    public boolean getIsDeprecated()
     {
         return isDeprecated;
     }
@@ -75,7 +75,7 @@ public class SchemaElementProperties extends ReferenceableProperties
      *
      * @param deprecated boolean flag
      */
-    public void setDeprecated(boolean deprecated)
+    public void setIsDeprecated(boolean deprecated)
     {
         isDeprecated = deprecated;
     }
@@ -134,7 +134,7 @@ public class SchemaElementProperties extends ReferenceableProperties
                 "isDeprecated=" + isDeprecated +
                 ", displayName='" + displayName + '\'' +
                 ", description='" + description + '\'' +
-                ", deprecated=" + isDeprecated() +
+                ", deprecated=" + getIsDeprecated() +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +
                 ", vendorProperties=" + getVendorProperties() +

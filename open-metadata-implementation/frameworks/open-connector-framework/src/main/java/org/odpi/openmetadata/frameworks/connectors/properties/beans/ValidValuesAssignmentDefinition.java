@@ -85,7 +85,7 @@ public class ValidValuesAssignmentDefinition extends ValidValuesAssignment
     {
         return "ValidValuesAssignmentDefinition{" +
                 "validValue=" + validValue +
-                ", strictRequirement=" + isStrictRequirement() +
+                ", strictRequirement=" + getStrictRequirement() +
                 '}';
     }
 

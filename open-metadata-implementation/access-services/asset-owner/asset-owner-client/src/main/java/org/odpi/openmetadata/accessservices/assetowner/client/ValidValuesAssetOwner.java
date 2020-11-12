@@ -3,14 +3,14 @@
 package org.odpi.openmetadata.accessservices.assetowner.client;
 
 import org.odpi.openmetadata.accessservices.assetowner.api.AssetOnboardingValidValues;
-import org.odpi.openmetadata.accessservices.assetowner.rest.ValidValuesRequestBody;
+import org.odpi.openmetadata.accessservices.assetowner.client.rest.AssetOwnerRESTClient;
+import org.odpi.openmetadata.accessservices.assetowner.metadataelements.ValidValueElement;
+import org.odpi.openmetadata.accessservices.assetowner.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ValidValue;
 
 import java.util.List;
 import java.util.Map;
@@ -98,6 +98,31 @@ public class ValidValuesAssetOwner extends AssetOwner implements AssetOnboarding
                                  String password) throws InvalidParameterException
     {
         super(serverName, serverPlatformRootURL, userId, password);
+    }
+
+
+    /**
+     * Create a new client that is going to be used in an OMAG Server (view service or integration service typically).
+     *
+     * @param serverName name of the server to connect to
+     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param restClient client that issues the REST API calls
+     * @param maxPageSize maximum number of results supported by this server
+     * @param auditLog logging destination
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * REST API calls.
+     */
+    public ValidValuesAssetOwner(String               serverName,
+                                 String               serverPlatformRootURL,
+                                 AssetOwnerRESTClient restClient,
+                                 int                  maxPageSize,
+                                 AuditLog             auditLog) throws InvalidParameterException
+    {
+        super(serverName, serverPlatformRootURL, auditLog);
+
+        invalidParameterHandler.setMaxPagingSize(maxPageSize);
+
+        this.restClient = restClient;
     }
 
 
@@ -274,6 +299,7 @@ public class ValidValuesAssetOwner extends AssetOwner implements AssetOnboarding
         requestBody.setUsage(usage);
         requestBody.setScope(scope);
         requestBody.setPreferredValue(preferredValue);
+        requestBody.setIsDeprecated(isDeprecated);
         requestBody.setAdditionalProperties(additionalProperties);
         requestBody.setExtendedProperties(extendedProperties);
 
@@ -407,10 +433,10 @@ public class ValidValuesAssetOwner extends AssetOwner implements AssetOnboarding
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    public ValidValue getValidValueByGUID(String   userId,
-                                          String   validValueGUID) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException
+    public ValidValueElement getValidValueByGUID(String   userId,
+                                                 String   validValueGUID) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
     {
         final String   methodName = "getValidValueByGUID";
         final String   validValueGUIDParameter = "validValueGUID";
@@ -420,11 +446,11 @@ public class ValidValuesAssetOwner extends AssetOwner implements AssetOnboarding
         invalidParameterHandler.validateGUID(validValueGUID, validValueGUIDParameter, methodName);
 
         ValidValueResponse restResult = restClient.callValidValueGetRESTCall(methodName,
-                                                                             serverPlatformRootURL + urlTemplate,
-                                                                             serverName,
-                                                                             userId,
-                                                                             validValueGUID);
-        return restResult.getValidValue();
+                                                                                                                                  serverPlatformRootURL + urlTemplate,
+                                                                                                                                  serverName,
+                                                                                                                                  userId,
+                                                                                                                                  validValueGUID);
+        return restResult.getElement();
     }
 
 
@@ -434,6 +460,8 @@ public class ValidValuesAssetOwner extends AssetOwner implements AssetOnboarding
      *
      * @param userId calling user
      * @param validValueName qualified name of the valid value.
+     * @param startFrom         starting element (used in paging through large result sets)
+     * @param pageSize          maximum number of results to return
      *
      * @return Valid value beans
      *
@@ -441,14 +469,16 @@ public class ValidValuesAssetOwner extends AssetOwner implements AssetOnboarding
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    public List<ValidValue>   getValidValueByName(String   userId,
-                                                  String   validValueName) throws InvalidParameterException,
-                                                                                  UserNotAuthorizedException,
-                                                                                  PropertyServerException
+    public List<ValidValueElement>   getValidValueByName(String   userId,
+                                                         String   validValueName,
+                                                         int      startFrom,
+                                                         int      pageSize) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
     {
         final String   methodName = "getValidValueByName";
         final String   validValueNameParameter = "validValueName";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/valid-values/by-name";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/valid-values/by-name?startFrom={3}&pageSize={4}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(validValueName, validValueNameParameter, methodName);
@@ -457,9 +487,11 @@ public class ValidValuesAssetOwner extends AssetOwner implements AssetOnboarding
                                                                                serverPlatformRootURL + urlTemplate,
                                                                                 validValueName,
                                                                                 serverName,
-                                                                                userId);
+                                                                                userId,
+                                                                                startFrom,
+                                                                                pageSize);
 
-        return restResult.getValidValues();
+        return restResult.getElementList();
     }
 
 
@@ -478,16 +510,16 @@ public class ValidValuesAssetOwner extends AssetOwner implements AssetOnboarding
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    public List<ValidValue> findValidValues(String   userId,
-                                            String   searchString,
-                                            int      startFrom,
-                                            int      pageSize) throws InvalidParameterException,
-                                                                      UserNotAuthorizedException,
-                                                                      PropertyServerException
+    public List<ValidValueElement> findValidValues(String   userId,
+                                                   String   searchString,
+                                                   int      startFrom,
+                                                   int      pageSize) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
     {
         final String   methodName = "getValidValueByName";
         final String   parameterName = "searchString";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/valid-values/by-search-string";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/valid-values/by-search-string?startFrom={3}&pageSize={4}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateSearchString(searchString, parameterName, methodName);
@@ -497,9 +529,11 @@ public class ValidValuesAssetOwner extends AssetOwner implements AssetOnboarding
                                                                                 serverPlatformRootURL + urlTemplate,
                                                                                 searchString,
                                                                                 serverName,
-                                                                                userId);
+                                                                                userId,
+                                                                                startFrom,
+                                                                                pageSize);
 
-        return restResult.getValidValues();
+        return restResult.getElementList();
     }
 
 
@@ -517,12 +551,12 @@ public class ValidValuesAssetOwner extends AssetOwner implements AssetOnboarding
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    public List<ValidValue> getValidValueSetMembers(String   userId,
-                                                    String   validValueSetGUID,
-                                                    int      startFrom,
-                                                    int      pageSize) throws InvalidParameterException,
-                                                                              UserNotAuthorizedException,
-                                                                              PropertyServerException
+    public List<ValidValueElement> getValidValueSetMembers(String   userId,
+                                                           String   validValueSetGUID,
+                                                           int      startFrom,
+                                                           int      pageSize) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
     {
         final String   methodName = "getValidValueSetMembers";
         final String   validValueGUIDParameter = "validValueSetGUID";
@@ -539,7 +573,7 @@ public class ValidValuesAssetOwner extends AssetOwner implements AssetOnboarding
                                                                                validValueSetGUID,
                                                                                Integer.toString(startFrom),
                                                                                Integer.toString(pageSize));
-        return restResult.getValidValues();
+        return restResult.getElementList();
     }
 
 
@@ -557,12 +591,12 @@ public class ValidValuesAssetOwner extends AssetOwner implements AssetOnboarding
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    public List<ValidValue> getSetsForValidValue(String   userId,
-                                                 String   validValueGUID,
-                                                 int      startFrom,
-                                                 int      pageSize) throws InvalidParameterException,
-                                                                           UserNotAuthorizedException,
-                                                                           PropertyServerException
+    public List<ValidValueElement> getSetsForValidValue(String   userId,
+                                                        String   validValueGUID,
+                                                        int      startFrom,
+                                                        int      pageSize) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException
     {
         final String   methodName = "getSetsForValidValue";
         final String   validValueGUIDParameter = "validValueSetGUID";
@@ -579,6 +613,6 @@ public class ValidValuesAssetOwner extends AssetOwner implements AssetOnboarding
                                                                                validValueGUID,
                                                                                Integer.toString(startFrom),
                                                                                Integer.toString(pageSize));
-        return restResult.getValidValues();
+        return restResult.getElementList();
     }
 }

@@ -3,17 +3,22 @@
 package org.odpi.openmetadata.viewservices.rex.admin;
 
 
+import org.odpi.openmetadata.adminservices.configuration.properties.IntegrationViewServiceConfig;
+import org.odpi.openmetadata.adminservices.configuration.properties.ResourceEndpointConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.ViewServiceConfig;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceAdmin;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
+import org.odpi.openmetadata.adminservices.ffdc.OMAGAdminAuditCode;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
-import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.viewservices.rex.api.ffdc.RexViewAuditCode;
+import org.odpi.openmetadata.viewservices.rex.api.ffdc.RexViewErrorCode;
 import org.odpi.openmetadata.viewservices.rex.server.RexViewServicesInstance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 
 /**
@@ -23,6 +28,9 @@ import org.slf4j.LoggerFactory;
 public class RexViewAdmin extends ViewServiceAdmin {
 
     private static final Logger log = LoggerFactory.getLogger(RexViewAdmin.class);
+
+
+    protected String   resourceEndpointsPropertyName       = "resourceEndpoints";      /* Common */
 
     //private ViewServiceConfig       viewServiceConfig = null;
     private AuditLog                auditLog          = null;
@@ -65,20 +73,45 @@ public class RexViewAdmin extends ViewServiceAdmin {
             log.debug("==> Method: " + actionDescription + ", userid=" + serverUserName);
         }
 
+        /*
+         * This method will be called (by Operational Services) with the view service config passed as a ViewServiceConfig.
+         * This is the super type of IntegrationViewServiceConfig which is what this service actually requires.
+         */
+
+        IntegrationViewServiceConfig integrationViewServiceConfig = null;
+        if (viewServiceConfig instanceof IntegrationViewServiceConfig) {
+            integrationViewServiceConfig = (IntegrationViewServiceConfig) viewServiceConfig;
+        }
+        else {
+            logBadConfiguration(viewServiceConfig.getViewServiceName(),
+                                "viewServiceConfig",
+                                viewServiceConfig.toString(),
+                                auditLog,
+                                actionDescription);
+
+            // unreachable
+            return;
+        }
+
+        final String viewServiceFullName = viewServiceConfig.getViewServiceName();
+
         try {
 
-            // TODO check you do not need to save the config.... this.viewServiceConfig = viewServiceConfig;
+            List<ResourceEndpointConfig> resourceEndpoints = this.extractResourceEndpoints(integrationViewServiceConfig.getResourceEndpoints(),
+                                                                                           viewServiceFullName,
+                                                                                           auditLog);
 
-            // TODO validate the configuration and when invalid, throw OMAGConfigurationErrorException
+
 
             /*
-             * The name and URLRoot of the repository server are not passed at this stage - they are not known at this stage as in Rex
-             * they are runtime variables set by the user and potentially changed between operations.
+             * The name and rootURL of a repository server are not passed at this stage - they are not known at this stage
+             * because they are set at runtime by the user and potentially changed between operations.
              */
-            this.instance = new RexViewServicesInstance(serverName,     // this is the name of the server running the view-service
+            this.instance = new RexViewServicesInstance(serverName,
                                                         auditLog,
-                                                        serverUserName,      // this is the name of the server running the view-service
-                                                        maxPageSize);
+                                                        serverUserName,
+                                                        maxPageSize,
+                                                        resourceEndpoints);
 
             this.serverUserName    = serverUserName;
             this.serverName        = serverName;
@@ -92,11 +125,10 @@ public class RexViewAdmin extends ViewServiceAdmin {
             }
 
         }
-        // TODO - if you parse config be ready to catch this...
-        //catch (OMAGConfigurationErrorException error)
-        // {
-        //     throw error;
-        //}
+        catch (OMAGConfigurationErrorException error)
+        {
+            throw error;
+        }
         catch (Throwable error)
         {
             auditLog.logException(actionDescription,
@@ -131,5 +163,58 @@ public class RexViewAdmin extends ViewServiceAdmin {
 
         log.debug("<== Method: " + actionDescription + ", userid=" + serverUserName);
 
+    }
+
+
+    /**
+     * Extract the resource endpoints property from the view services option.
+     *
+     * @param resourceEndpoints options passed to the access service.
+     * @param viewServiceFullName name of calling service
+     * @param auditLog audit log for error messages
+     * @return null or list of resource endpoints
+     * @throws OMAGConfigurationErrorException the supported zones property is not a list of zone names.
+     */
+    protected List<ResourceEndpointConfig> extractResourceEndpoints(List<ResourceEndpointConfig> resourceEndpoints,
+                                                                    String                       viewServiceFullName,
+                                                                    AuditLog                     auditLog)             throws OMAGConfigurationErrorException
+    {
+        final String methodName = "extractResourceEndpoints";
+
+        final String parameterName = "resourceEndpoints";
+
+        try {
+
+            /*
+             * Rex cannot operate without any endpoints.
+             * Check if resourceEndpoints is null and if so throw am exception, which will be caught and logged by logBadConfigProperties, which will throw OMAGConfigurationErrorException...
+             */
+            if (resourceEndpoints == null) {
+
+                throw new InvalidParameterException(RexViewErrorCode.INVALID_CONFIG_PROPERTY.getMessageDefinition(parameterName),
+                                                    this.getClass().getName(),
+                                                    methodName,
+                                                    parameterName);
+
+            } else {
+
+                @SuppressWarnings("unchecked")
+                List<ResourceEndpointConfig> endpointList = (List<ResourceEndpointConfig>) resourceEndpoints;
+                auditLog.logMessage(methodName, OMAGAdminAuditCode.RESOURCE_ENDPOINTS.getMessageDefinition(viewServiceFullName, endpointList.toString()));
+                return endpointList;
+            }
+
+        } catch (Throwable error) {
+
+            logBadConfigProperties(viewServiceFullName,
+                                   resourceEndpointsPropertyName,
+                                   resourceEndpoints.toString(),
+                                   auditLog,
+                                   methodName,
+                                   error);
+
+            // unreachable
+            return null;
+        }
     }
 }

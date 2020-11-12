@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.digitalarchitecture.properties;
 
 import com.fasterxml.jackson.annotation.*;
+import org.odpi.openmetadata.accessservices.digitalarchitecture.metadataelements.ElementClassification;
 
 import java.io.Serializable;
 import java.util.*;
@@ -34,7 +35,7 @@ public class ReferenceableProperties implements Serializable
     private Map<String, String>  additionalProperties = null;
     private List<String>         meanings             = null;
 
-    private List<Classification> classifications      = null;
+    private List<ElementClassification> classifications = null;
 
     private String               typeName             = null;
     private Map<String, Object>  extendedProperties   = null;
@@ -162,7 +163,7 @@ public class ReferenceableProperties implements Serializable
      *
      * @return Classifications  list of classifications
      */
-    public List<Classification> getClassifications()
+    public List<ElementClassification> getClassifications()
     {
         if (classifications == null)
         {
@@ -184,7 +185,7 @@ public class ReferenceableProperties implements Serializable
      *
      * @param classifications list of classifications
      */
-    public void setClassifications(List<Classification> classifications)
+    public void setClassifications(List<ElementClassification> classifications)
     {
         this.classifications = classifications;
     }

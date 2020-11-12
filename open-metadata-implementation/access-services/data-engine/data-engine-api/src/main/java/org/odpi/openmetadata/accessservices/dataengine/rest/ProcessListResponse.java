@@ -5,7 +5,6 @@ package org.odpi.openmetadata.accessservices.dataengine.rest;
 import org.apache.commons.collections4.CollectionUtils;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;

@@ -2,14 +2,17 @@
 /* Copyright Contributors to the ODPi Egeria term. */
 package org.odpi.openmetadata.viewservices.glossaryauthor.services;
 
+import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.SubjectAreaNodeClients;
+import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.categories.SubjectAreaCategoryClient;
+import org.odpi.openmetadata.accessservices.subjectarea.client.nodes.terms.SubjectAreaTermClient;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
-import org.odpi.openmetadata.accessservices.subjectarea.responses.*;
+import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
-import org.odpi.openmetadata.viewservices.glossaryauthor.handlers.TermHandler;
 
 import java.util.Date;
 import java.util.List;
@@ -54,8 +57,8 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
         // should not be called without a supplied term - the calling layer should not allow this.
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            TermHandler handler = instanceHandler.getTermHandler(serverName, userId, methodName);
-            Term createdTerm = handler.createTerm(userId, suppliedTerm);
+            SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
+            Term createdTerm = clients.terms().create(userId, suppliedTerm);
             response.addResult(createdTerm);
         }  catch (Throwable error) {
             response =  getResponseForError(error, auditLog, className, methodName);
@@ -67,7 +70,7 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
 
 
     /**
-     * Get a term.
+     * Get a term. The server has a maximum page size defined, the number of categories (a field of Term) returned is limited by that maximum page size.
      *
      * @param serverName name of the local view server.
      * @param userId     user identifier
@@ -89,8 +92,8 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
         AuditLog auditLog = null;
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            TermHandler handler = instanceHandler.getTermHandler(serverName, userId, methodName);
-            Term obtainedTerm = handler.getTermByGuid(userId, guid);
+            SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
+            Term obtainedTerm = clients.terms().getByGUID(userId, guid);
             response.addResult(obtainedTerm);
         }  catch (Throwable error) {
             response =  getResponseForError(error, auditLog, className, methodName);
@@ -106,10 +109,9 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
      * @param userId             user identifier
      * @param searchCriteria     String expression matching Term property values .
      * @param asOfTime           the glossaries returned as they were at this time. null indicates at the current time.
-     * @param offset             the starting element number for this set of results.  This is used when retrieving elements
+     * @param startingFrom             the starting element number for this set of results.  This is used when retrieving elements
      *                           beyond the first page of results. Zero means the results start from the first element.
      * @param pageSize           the maximum number of elements that can be returned on this request.
-     *                           0 means there is no limit to the page size
      * @param sequencingOrder    the sequencing order for the results.
      * @param sequencingProperty the name of the property that should be used to sequence the results.
      * @return A list of glossaries meeting the search Criteria
@@ -125,8 +127,8 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
             String userId,
             Date asOfTime,
             String searchCriteria,
-            int offset,
-            int pageSize,
+            Integer startingFrom,
+            Integer pageSize,
             SequencingOrder sequencingOrder,
             String sequencingProperty
     ) {
@@ -136,17 +138,24 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
         SubjectAreaOMASAPIResponse<Term> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
         try {
+            if (pageSize == null) {
+                pageSize = invalidParameterHandler.getMaxPagingSize();
+            }
+            if (startingFrom == null) {
+                startingFrom = 0;
+            }
+            invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            TermHandler handler = instanceHandler.getTermHandler(serverName, userId, methodName);
+            SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
             FindRequest findRequest = new FindRequest();
             findRequest.setSearchCriteria(searchCriteria);
             findRequest.setAsOfTime(asOfTime);
-            findRequest.setOffset(offset);
+            findRequest.setStartingFrom(startingFrom);
             findRequest.setPageSize(pageSize);
             findRequest.setSequencingOrder(sequencingOrder);
             findRequest.setSequencingProperty(sequencingProperty);
 
-            List<Term> terms = handler.findTerm(userId, findRequest);
+            List<Term> terms = clients.terms().find(userId, findRequest);
             response.addAllResults(terms);
         }  catch (Throwable error) {
             response =  getResponseForError(error, auditLog, className, methodName);
@@ -162,10 +171,9 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
      * @param userId             user identifier
      * @param guid               guid of the term to get
      * @param asOfTime           the relationships returned as they were at this time. null indicates at the current time. If specified, the date is in milliseconds since 1970-01-01 00:00:00.
-     * @param offset             the starting element number for this set of results.  This is used when retrieving elements
+     * @param startingFrom          the starting element number for this set of results.  This is used when retrieving elements
      *                           beyond the first page of results. Zero means the results start from the first element.
      * @param pageSize           the maximum number of elements that can be returned on this request.
-     *                           0 means there is not limit to the page size
      * @param sequencingOrder    the sequencing order for the results.
      * @param sequencingProperty the name of the property that should be used to sequence the results.
      * @return a response which when successful contains the term relationships
@@ -181,8 +189,8 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
             String userId,
             String guid,
             Date asOfTime,
-            int offset,
-            int pageSize,
+            Integer startingFrom,
+            Integer pageSize,
             SequencingOrder sequencingOrder,
             String sequencingProperty
 
@@ -194,16 +202,23 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
         SubjectAreaOMASAPIResponse<Line> response = new SubjectAreaOMASAPIResponse<>();
         AuditLog auditLog = null;
         try {
+            if (pageSize == null) {
+                pageSize = invalidParameterHandler.getMaxPagingSize();
+            }
+            if (startingFrom == null) {
+                startingFrom = 0;
+            }
+            invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            TermHandler handler = instanceHandler.getTermHandler(serverName, userId, methodName);
+            SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
             FindRequest findRequest = new FindRequest();
             findRequest.setAsOfTime(asOfTime);
-            findRequest.setOffset(offset);
+            findRequest.setStartingFrom(startingFrom);
             findRequest.setPageSize(pageSize);
             findRequest.setSequencingOrder(sequencingOrder);
             findRequest.setSequencingProperty(sequencingProperty);
 
-            List<Line> lines =  handler.getTermRelationships(userId, guid, findRequest);
+            List<Line> lines =  clients.terms().getRelationships(userId, guid, findRequest);
             response.addAllResults(lines);
         }  catch (Throwable error) {
             response =  getResponseForError(error, auditLog, className, methodName);
@@ -247,13 +262,13 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
         // should not be called without a supplied term - the calling layer should not allow this.
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            TermHandler handler = instanceHandler.getTermHandler(serverName, userId, methodName);
+            SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
             Term updatedTerm;
 
             if (isReplace) {
-                updatedTerm = handler.replaceTerm(userId, guid, term);
+                updatedTerm = clients.terms().replace(userId, guid, term);
             } else {
-                updatedTerm = handler.updateTerm(userId, guid, term);
+                updatedTerm = clients.terms().update(userId, guid, term);
             }
             response.addResult(updatedTerm);
         }  catch (Throwable error) {
@@ -304,11 +319,11 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
         // should not be called without a supplied term - the calling layer should not allow this.
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            TermHandler handler = instanceHandler.getTermHandler(serverName, userId, methodName);
+            SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
             if (isPurge) {
-                handler.purgeTerm(userId, guid);
+                clients.terms().purge(userId, guid);
             } else {
-                handler.deleteTerm(userId, guid);
+                clients.terms().delete(userId, guid);
             }
         }  catch (Throwable error) {
             response =  getResponseForError(error, auditLog, className, methodName);
@@ -346,11 +361,39 @@ public class GlossaryAuthorViewTermRESTServices extends BaseGlossaryAuthorView {
         // should not be called without a supplied term - the calling layer should not allow this.
         try {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            TermHandler handler = instanceHandler.getTermHandler(serverName, userId, methodName);
-            Term term = handler.restoreTerm(userId, guid);
+            SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
+            Term term = clients.terms().restore(userId, guid);
             response.addResult(term);
         }  catch (Throwable error) {
             response =  getResponseForError(error, auditLog, className, methodName);
+        }
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+    public SubjectAreaOMASAPIResponse<Category> getCategories(String serverName, String userId, String guid, Integer startingFrom, Integer pageSize) {
+        final String methodName = "getCategories";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+        SubjectAreaOMASAPIResponse<Category> response = new SubjectAreaOMASAPIResponse<>();
+        AuditLog auditLog = null;
+        FindRequest findRequest = new FindRequest();
+        if (pageSize == null) {
+            pageSize = invalidParameterHandler.getMaxPagingSize();
+        }
+        if (startingFrom == null) {
+            startingFrom = 0;
+        }
+        try {
+            invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
+            findRequest.setPageSize(pageSize);
+            findRequest.setStartingFrom(startingFrom);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            SubjectAreaNodeClients clients = instanceHandler.getSubjectAreaNodeClients(serverName, userId, methodName);
+            List<Category> categories = ((SubjectAreaTermClient) clients.categories()).getCategories(userId, guid, findRequest);
+            response.addAllResults(categories);
+        } catch (Throwable error) {
+            response = getResponseForError(error, auditLog, className, methodName);
         }
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
