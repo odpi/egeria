@@ -3,6 +3,10 @@
  * Copyright Contributors to the ODPi Egeria project.
  */
 
+plugins {
+    id 'application'
+    id "com.github.johnrengelman.shadow"
+}
 
 dependencies {
     implementation project(':open-metadata-conformance-suite:open-metadata-conformance-suite-api')
@@ -18,4 +22,9 @@ description = 'Open Metadata Conformance Suite Client'
 
 java {
     withJavadocJar()
+}
+
+shadowJar {
+    mainClassName = 'org.odpi.openmetadata.conformance.client.OpenMetadataConformanceTestReport'
+    archiveClassifier = 'jar-with-dependencies'
 }
