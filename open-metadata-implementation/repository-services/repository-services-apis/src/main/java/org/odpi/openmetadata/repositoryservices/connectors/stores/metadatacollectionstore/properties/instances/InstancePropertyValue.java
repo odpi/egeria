@@ -128,7 +128,7 @@ public abstract class InstancePropertyValue extends InstanceElementHeader
      */
     protected <K, V extends InstancePropertyValue> Map<K, String> mapValuesAsString(Map<K, V> valMap)
     {
-        return convertValues(valMap, entry -> (entry.getValue() == null ? null : entry.getValue().valueAsString()));
+        return convertValues(valMap, entry -> (entry.getValue() == null ? "<null>" : entry.getValue().valueAsString()));
     }
 
 
