@@ -119,22 +119,21 @@ distributions {
                 from { project(':open-metadata-resources:open-metadata-samples:discovery-service-sample').jar }
                 fileMode = 0755
             }
-            //TODO Actually need the versions with dependencies
             into('utilities') {
-                from { project(':open-metadata-resources:open-metadata-archives:design-model-archives:cloud-information-model').jar }
-                from { project(':open-metadata-resources:open-metadata-archives:design-model-archives:glossary-canonical-model').jar }
-                from { project(':open-metadata-resources:open-metadata-archives:open-metadata-types').jar }
-                from { project(':open-metadata-resources:open-metadata-archives:open-connector-archives').jar }
+                from { project(':open-metadata-resources:open-metadata-archives:design-model-archives:cloud-information-model').shadowJar }
+                from { project(':open-metadata-resources:open-metadata-archives:design-model-archives:glossary-canonical-model').shadowJar }
+                from { project(':open-metadata-resources:open-metadata-archives:open-metadata-types').shadowJar }
+                from { project(':open-metadata-resources:open-metadata-archives:open-connector-archives').shadowJar }
                 fileMode = 0755
             }
             into('samples') {
-                from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-create-avro-sample').jar }
-                from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-create-csv-sample').jar }
-                from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-reader-avro-sample').jar }
-                from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-reader-csv-sample').jar }
-                from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:governance-program-client-samples:governance-leadership-sample').jar }
-                from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:governance-program-client-samples:governance-zone-create-sample').jar }
-                from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:subject-area-client-samples:subject-area-definition-sample').jar }
+                from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-create-avro-sample').shadowJar }
+                from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-create-csv-sample').shadowJar }
+                from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-reader-avro-sample').shadowJar }
+                from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:asset-management-samples:asset-reader-csv-sample').shadowJar }
+                from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:governance-program-client-samples:governance-leadership-sample').shadowJar }
+                from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:governance-program-client-samples:governance-zone-create-sample').shadowJar }
+                from { project(':open-metadata-resources:open-metadata-samples:access-services-samples:subject-area-client-samples:subject-area-definition-sample').shadowJar }
                 fileMode = 0755
             }
             into('user-interface') {
@@ -142,7 +141,7 @@ distributions {
                 fileMode = 0755
             }
             into('conformance-suite') {
-                from { project(':open-metadata-conformance-suite:open-metadata-conformance-suite-client').jar }
+                from { project(':open-metadata-conformance-suite:open-metadata-conformance-suite-client').shadowJar }
                 fileMode = 0755
             }
             into('') {
