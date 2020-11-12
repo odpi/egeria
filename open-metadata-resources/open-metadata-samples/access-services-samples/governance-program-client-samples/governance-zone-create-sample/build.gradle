@@ -3,6 +3,10 @@
  * Copyright Contributors to the ODPi Egeria project.
  */
 
+plugins {
+    id 'application'
+    id "com.github.johnrengelman.shadow"
+}
 
 dependencies {
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
@@ -16,4 +20,9 @@ description = 'Governance zone create sample'
 
 java {
     withJavadocJar()
+}
+
+shadowJar {
+    mainClassName = 'org.odpi.openmetadata.accessservices.governanceprogram.samples.zonecreate.CreateGovernanceZoneSample'
+    archiveClassifier = 'jar-with-dependencies'
 }

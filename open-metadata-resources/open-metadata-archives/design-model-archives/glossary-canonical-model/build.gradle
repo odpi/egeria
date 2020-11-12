@@ -3,6 +3,10 @@
  * Copyright Contributors to the ODPi Egeria project.
  */
 
+plugins {
+    id 'application'
+    id "com.github.johnrengelman.shadow"
+}
 
 dependencies {
     implementation project(':open-metadata-resources:open-metadata-archives:design-model-archives:design-model-archive-base')
@@ -25,4 +29,9 @@ java {
 
 test {
     useTestNG()
+}
+
+shadowJar {
+    mainClassName = 'org.odpi.openmetadata.archiveutilities.designmodels.owlcanonicalglossarymodel.CanonicalGlossaryOwlArchiveWriter'
+    archiveClassifier = 'jar-with-dependencies'
 }
