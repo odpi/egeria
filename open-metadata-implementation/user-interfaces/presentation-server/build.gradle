@@ -16,7 +16,7 @@ apply plugin: 'distribution'
 frontend {
     nodeVersion = '12.19.0'
     // See 'scripts' section in your 'package.json file'
-    cleanScript = 'run clean'
+    //cleanScript = 'run clean'
     assembleScript = 'run build'
     // This can run a test if configured in package.json
     //checkScript = 'run check'
