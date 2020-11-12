@@ -72,6 +72,7 @@ dependencies {
     implementation project(':open-metadata-implementation:access-services:subject-area:subject-area-client')
     implementation project(':open-metadata-implementation:admin-services:admin-services-client')
     implementation project(':open-metadata-implementation:user-interfaces:ui-chassis:ui-chassis-spring')
+    implementation project(':open-metadata-implementation:user-interfaces:presentation-server')
     implementation project(':open-metadata-conformance-suite:open-metadata-conformance-suite-client')
     implementation project(':open-metadata-resources:open-metadata-samples:admin-services-samples:admin-services-config-metadata-server-sample')
     implementation project(':open-metadata-resources:open-metadata-archives:design-model-archives:cloud-information-model')
@@ -185,22 +186,7 @@ distributions {
             }
         }
     }
-    presentationserver {
-        distributionBaseName = "${rootProject.name}-presentation-server"
-        contents {
-            into('') {
-                from("${project(':open-metadata-implementation:user-interfaces:presentation-server').projectDir}")
-                include 'package.json'
-                include 'dist/**'
-                include 'src/**'
-                include 'ssl/**'
-                include 'public/**'
-                exclude 'node_modules/**'
-                exclude 'build.gradle'
-                fileMode = 0755
-            }
-        }
-    }
+    // presentation-server distribution is single component, so has moved to open-metadata-implementation/user-interfaces/presentation-server
 }
 // Override the distribution filenames to match what we use with maven (replaces baseName above)
 egeriaomagDistTar.compression = Compression.GZIP
@@ -214,11 +200,7 @@ deployDistTar.archiveExtension = 'tar.gz'
 deployDistTar.archiveFileName = (rootProject.name + '-' + rootProject.version + '-deploy.tar.gz')
 deployDistZip.enabled=false // TODO: does not seem to work
 
-// Ditto for the deploy distribution
-presentationserverDistTar.compression = Compression.GZIP
-presentationserverDistTar.archiveExtension = 'tar.gz'
-presentationserverDistTar.archiveFileName = (rootProject.name + '-' + rootProject.version + '-presentation-server.tar.gz')
-presentationserverDistZip.enabled=false // TODO: does not seem to work
+
 
 
 
