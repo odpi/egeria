@@ -14,6 +14,7 @@ import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.janusgraph.core.JanusGraph;
 import org.janusgraph.core.attribute.Text;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -144,6 +145,85 @@ class GraphOMRSMetadataStore {
         this.classificationMapper = new GraphOMRSClassificationMapper(metadataCollectionId, repositoryName, repositoryHelper);
 
     }
+
+
+    /**
+     * Return a list of entities from the store that are at the latest level.
+     *
+     * @return list of EntityDetail objects
+     */
+    synchronized List<EntityDetail>   getEntities()
+            throws
+            RepositoryErrorException,
+            InvalidParameterException, EntityProxyOnlyException {
+        final String methodName = "getEntities";
+
+        //returning list
+        List<EntityDetail> entities = new ArrayList<>();
+
+        GraphTraversalSource g = instanceGraph.traversal();
+
+        //get all vertex with label "Entity"
+        GraphTraversal<Vertex, Vertex> gt = g.V().hasLabel("Entity");
+
+        //look for all vertex and cast it to EntityDetail
+        while (gt.hasNext()) {
+
+            Vertex vertex = gt.next();
+            log.debug("{} found vertex {}", methodName, vertex);
+
+            try {
+                if (vertex != null) {
+                    log.debug("{} found entity vertex {}", methodName, vertex);
+
+                    // Check if we have stumbled on a proxy somehow, and if so avoid processing it.
+                    Boolean isProxy = entityMapper.isProxy(vertex);
+
+                    if (!isProxy) {
+                        EntityDetail entity = new EntityDetail();
+                        entityMapper.mapVertexToEntityDetail(vertex, entity);
+                    } else {
+                        // We know this is a proxy - throw the appropraite exception
+                        log.error("{} found entity but it is only a proxy", methodName);
+                        g.tx().rollback();
+
+                        ExceptionMessageDefinition messageDefinition = GraphOMRSErrorCode.ENTITY_PROXY_ONLY.getMessageDefinition(
+                                methodName,
+                                this.getClass().getName(),
+                                repositoryName);
+
+                        throw new EntityProxyOnlyException(
+                                messageDefinition,
+                                this.getClass().getName(),
+                                methodName);
+                    }
+
+                }
+
+            } catch (RepositoryErrorException | EntityProxyOnlyException e) {
+
+                log.error("{} Caught exception {}", methodName, e.getMessage());
+                g.tx().rollback();
+
+                ExceptionMessageDefinition messageDefinition = GraphOMRSErrorCode.ENTITY_NOT_FOUND.getMessageDefinition(
+                        methodName,
+                        this.getClass().getName(),
+                        repositoryName);
+
+                throw new EntityProxyOnlyException(
+                        messageDefinition,
+                        this.getClass().getName(),
+                        methodName);
+
+            }
+        }
+
+
+        g.tx().commit();
+
+        return entities;
+    }
+
 
 
     // A note on existence checking:
