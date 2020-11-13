@@ -43,15 +43,9 @@ public class DiscoveryEngineOutTopicClientConnector extends OpenMetadataTopicLis
 
         if (listener == null)
         {
-            DiscoveryEngineErrorCode errorCode = DiscoveryEngineErrorCode.NULL_LISTENER;
-            String                   errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(userId, methodName);
-
-            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+            throw new InvalidParameterException(DiscoveryEngineErrorCode.NULL_LISTENER.getMessageDefinition(userId, methodName),
                                                 this.getClass().getName(),
                                                 methodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction(),
                                                 parameterName);
         }
 

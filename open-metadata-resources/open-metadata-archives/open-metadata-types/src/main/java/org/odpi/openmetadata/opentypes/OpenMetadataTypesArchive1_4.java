@@ -78,7 +78,7 @@ public class OpenMetadataTypesArchive1_4
 
 
     /**
-     * Default constructor sets up the archive builder.  This in turn sets up the header for the archive.
+     * Chained constructor sets up the archive builder.  This in turn sets up the header for the archive.
      *
      * @param archiveBuilder accumulator for types
      */
@@ -133,15 +133,9 @@ public class OpenMetadataTypesArchive1_4
              * This is a logic error since it means the creation of the archive builder threw an exception
              * in the constructor and so this object should not be used.
              */
-            OMRSErrorCode errorCode    = OMRSErrorCode.ARCHIVE_UNAVAILABLE;
-            String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage();
-
-            throw new OMRSLogicErrorException(errorCode.getHTTPErrorCode(),
+            throw new OMRSLogicErrorException(OMRSErrorCode.ARCHIVE_UNAVAILABLE.getMessageDefinition(),
                                               this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction());
+                                              methodName);
         }
     }
 

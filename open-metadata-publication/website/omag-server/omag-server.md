@@ -10,10 +10,8 @@ subsystems.  The subsystems that are activated in an OMAG server are defined in 
 The OMAG Server runs in one or more [OMAG Server Platforms](.).  When it is started, the operational services
 of the OMAG Server Platform reads the configuration document and activates the OMAG Server with the requested services.
 
-Although an OMAG Server can be be configured with any combination of OMAG services, there are
-commonly used combinations called
-[OMAG Server Personalities](../../../open-metadata-implementation/admin-services/docs/concepts/omag-server-personalities.md).
-These personalities help to structure your open metadata ecosystem.
+There is more information about OMAG Servers and how to configure them in the
+[Administration Guide](../../../open-metadata-implementation/admin-services/docs/concepts/omag-server.md)
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

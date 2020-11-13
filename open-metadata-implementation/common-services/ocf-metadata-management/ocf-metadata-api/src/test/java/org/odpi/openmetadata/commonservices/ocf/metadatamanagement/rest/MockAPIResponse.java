@@ -7,6 +7,8 @@ package org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest;
  */
 public class MockAPIResponse extends OCFOMASAPIResponse
 {
+    private static final long    serialVersionUID = 1L;
+
     /**
      * Default constructor
      */

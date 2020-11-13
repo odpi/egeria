@@ -2,8 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataplatform.client;
 
-import org.odpi.openmetadata.accessservices.dataplatform.DataPlatformInterface;
-import org.odpi.openmetadata.accessservices.dataplatform.properties.SoftwareServerCapability;
+import org.odpi.openmetadata.accessservices.dataplatform.properties.DataPlatform;
 import org.odpi.openmetadata.accessservices.dataplatform.properties.DeployedDatabaseSchema;
 import org.odpi.openmetadata.accessservices.dataplatform.responses.DataPlatformRegistrationRequestBody;
 import org.odpi.openmetadata.accessservices.dataplatform.responses.DeployedDatabaseSchemaRequestBody;
@@ -18,13 +17,15 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
  * DataPlatformClient provides the client implementation for the Data Platform OMAS.
  */
 
-public class DataPlatformClient extends OCFRESTClient implements DataPlatformInterface {
+@Deprecated
+public class DataPlatformClient extends OCFRESTClient {
 
     private static final String QUALIFIED_NAME_PARAMETER = "qualifiedName";
     private static final String DATA_PLATFORM_REGISTRATION_URL_TEMPLATE = "/servers/{0}/open-metadata/access-services" +
             "/data-platform/users/{1}/registration";
     private static final String DEPLOYED_DATABASE_SCHEMA_URL_TEMPLATE = "/servers/{0}/open-metadata/access-services" +
             "/data-platform/users/{1}/deployed-database-schema";
+    private String externalSourceName;
 
     private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
 
@@ -63,24 +64,29 @@ public class DataPlatformClient extends OCFRESTClient implements DataPlatformInt
      * Create the software server capability entity for registering external data platforms.
      *
      * @param userId                   the name of the calling user
-     * @param softwareServerCapability the software server capability bean
+     * @param dataPlatformProperties the software server capability bean
      * @return unique identifier of the server in the repository
      * @throws InvalidParameterException  the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    @Override
-    public GUIDResponse createExternalDataPlatform(String userId, SoftwareServerCapability softwareServerCapability) throws
+    public GUIDResponse createExternalDataPlatform(String userId, DataPlatform dataPlatformProperties) throws
             InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
 
-            final String methodName = "createExternalDataPlatform";
+        final String methodName = "createExternalDataPlatform";
 
-            invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateUserId(userId, methodName);
 
-            DataPlatformRegistrationRequestBody requestBody = new DataPlatformRegistrationRequestBody();
-            requestBody.setSoftwareServerCapability(softwareServerCapability);
+        DataPlatformRegistrationRequestBody requestBody = new DataPlatformRegistrationRequestBody();
+        requestBody.setDataPlatformProperties(dataPlatformProperties);
+        requestBody.setExternalSourceName(dataPlatformProperties.getQualifiedName());
+        setExternalSourceName(dataPlatformProperties.getQualifiedName());
 
-            return callGUIDPostRESTCall(userId, methodName, DATA_PLATFORM_REGISTRATION_URL_TEMPLATE, requestBody);
+        return callGUIDPostRESTCall(methodName,
+                serverPlatformURLRoot + DATA_PLATFORM_REGISTRATION_URL_TEMPLATE,
+                requestBody,
+                serverName,
+                userId);
     }
 
     /**
@@ -93,7 +99,6 @@ public class DataPlatformClient extends OCFRESTClient implements DataPlatformInt
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    the property server exception
      */
-    @Override
     public GUIDResponse createDeployedDatabaseSchema(String userId, DeployedDatabaseSchema deployedDatabaseSchema) throws
             InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
 
@@ -103,7 +108,20 @@ public class DataPlatformClient extends OCFRESTClient implements DataPlatformInt
 
         DeployedDatabaseSchemaRequestBody requestBody = new DeployedDatabaseSchemaRequestBody();
         requestBody.setDeployedDatabaseSchema(deployedDatabaseSchema);
+        requestBody.setExternalSourceName(externalSourceName);
 
-        return callGUIDPostRESTCall(userId, methodName, DEPLOYED_DATABASE_SCHEMA_URL_TEMPLATE, requestBody);
+        return callGUIDPostRESTCall(methodName,
+                serverPlatformURLRoot + DEPLOYED_DATABASE_SCHEMA_URL_TEMPLATE,
+                requestBody,
+                serverName,
+                userId);
+    }
+
+    public String getExternalSourceName() {
+        return externalSourceName;
+    }
+
+    public void setExternalSourceName(String externalSourceName) {
+        this.externalSourceName = externalSourceName;
     }
 }

@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataplatform.properties;
 
-import org.odpi.openmetadata.accessservices.dataplatform.properties.Source;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
 
@@ -11,6 +10,7 @@ import java.util.List;
 /**
  * DataPlatform defines an endpoint and connectors for the runtime environment for a collection of data assets.
  */
+@Deprecated
 public class DataPlatform extends Source
 {
     /*

@@ -2,17 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.discovery.ffdc;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.text.MessageFormat;
-import java.util.Arrays;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet;
 
-import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
-import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
  * The ODF error code is used to define first failure data capture (FFDC) for errors that occur when working with
@@ -33,10 +26,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  *     <li>UserAction - describes how a user should correct the error</li>
  * </ul>
  */
-@JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonIgnoreProperties(ignoreUnknown=true)
-public enum ODFErrorCode
+public enum ODFErrorCode implements ExceptionMessageSet
 {
     NULL_DISCOVERY_CONTEXT(400, "ODF-DISCOVERY-SERVICE-400-001 ",
             "No discovery context supplied to the discovery service {0}",
@@ -73,14 +63,7 @@ public enum ODFErrorCode
             "This may be a configuration or a code error.  Look for other error messages and review the code of the discovery service.  Once the cause is resolved, retry the discovery request.");
     ;
 
-
-    private int    httpErrorCode;
-    private String errorMessageId;
-    private String errorMessage;
-    private String systemAction;
-    private String userAction;
-
-    private static final Logger log = LoggerFactory.getLogger(ODFErrorCode.class);
+    private ExceptionMessageDefinition messageDefinition;
 
 
     /**
@@ -99,67 +82,35 @@ public enum ODFErrorCode
      */
     ODFErrorCode(int  httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
     {
-        this.httpErrorCode = httpErrorCode;
-        this.errorMessageId = errorMessageId;
-        this.errorMessage = errorMessage;
-        this.systemAction = systemAction;
-        this.userAction = userAction;
-    }
-
-
-    public int getHTTPErrorCode()
-    {
-        return httpErrorCode;
+        this.messageDefinition = new ExceptionMessageDefinition(httpErrorCode,
+                                                                errorMessageId,
+                                                                errorMessage,
+                                                                systemAction,
+                                                                userAction);
     }
 
 
     /**
-     * Returns the unique identifier for the error message.
+     * Retrieve a message definition object for an exception.  This method is used when there are no message inserts.
      *
-     * @return errorMessageId
+     * @return message definition object.
      */
-    public String getErrorMessageId()
+    public ExceptionMessageDefinition getMessageDefinition()
     {
-        return errorMessageId;
+        return messageDefinition;
     }
 
 
     /**
-     * Returns the error message with the placeholders filled out with the supplied parameters.
+     * Retrieve a message definition object for an exception.  This method is used when there are values to be inserted into the message.
      *
-     * @param params   strings that plug into the placeholders in the errorMessage
-     * @return errorMessage (formatted with supplied parameters)
+     * @param params array of parameters (all strings).  They are inserted into the message according to the numbering in the message text.
+     * @return message definition object.
      */
-    public String getFormattedErrorMessage(String... params)
+    public ExceptionMessageDefinition getMessageDefinition(String... params)
     {
-        MessageFormat mf = new MessageFormat(errorMessage);
-        String result = mf.format(params);
+        messageDefinition.setMessageParameters(params);
 
-        log.debug(String.format("ODFErrorCode.getMessage(%s): %s", Arrays.toString(params), result));
-
-        return result;
-    }
-
-
-    /**
-     * Returns a description of the action taken by the system when the condition that caused this exception was
-     * detected.
-     *
-     * @return systemAction
-     */
-    public String getSystemAction()
-    {
-        return systemAction;
-    }
-
-
-    /**
-     * Returns instructions of how to resolve the issue reported in this exception.
-     *
-     * @return userAction
-     */
-    public String getUserAction()
-    {
-        return userAction;
+        return messageDefinition;
     }
 }

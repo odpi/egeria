@@ -5,13 +5,12 @@ package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacolle
 
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchClassifications;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.utilities.OMRSRepositoryPropertiesHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
  * OMRSRepositoryHelper provides methods to repository connectors and repository event mappers to help
@@ -182,6 +181,29 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
 
 
     /**
+     * Add the supplied property to an instance properties object.  If the instance property object
+     * supplied is null, a new instance properties object is created.
+     *
+     * @param sourceName name of caller
+     * @param properties properties object to add property to, may be null.
+     * @param propertyName name of property
+     * @param enumTypeGUID unique Id of Enum requested
+     * @param enumTypeName unique name of enum requested
+     * @param ordinal numeric value of property
+     * @param methodName calling method name
+     * @return instance properties object.
+     * @throws TypeErrorException the enum type is not recognized
+     */
+    InstanceProperties addEnumPropertyToInstance(String             sourceName,
+                                                 InstanceProperties properties,
+                                                 String             propertyName,
+                                                 String             enumTypeGUID,
+                                                 String             enumTypeName,
+                                                 int                ordinal,
+                                                 String             methodName) throws TypeErrorException;
+
+
+    /**
      * Validate that the type of an instance is of the expected/desired type.  The actual instance may be a subtype
      * of the expected type of course.
      *
@@ -193,6 +215,17 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
     boolean  isTypeOf(String sourceName,
                       String actualTypeName,
                       String expectedTypeName);
+
+
+    /**
+     * Return the list of type names for all of the subtypes of an entity type.
+     *
+     * @param sourceName source of the request (used for logging)
+     * @param superTypeName name of the super type - this value is not included in the result.
+     * @return list of type names (a null means the type is not know or it has no sub types)
+     */
+    List<String>  getSubTypesOf(String sourceName,
+                                String superTypeName);
 
 
     /**
@@ -257,8 +290,30 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
      * @return partially filled out entity needs classifications and properties
      * @throws TypeErrorException  the type name is not recognized.
      */
+    @Deprecated
     EntityDetail getSkeletonEntity(String                 sourceName,
                                    String                 metadataCollectionId,
+                                   InstanceProvenanceType provenanceType,
+                                   String                 userName,
+                                   String                 typeName) throws TypeErrorException;
+
+
+    /**
+     * Return an entity with the header and type information filled out.  The caller only needs to add properties
+     * and classifications to complete the set up of the entity.
+     *
+     * @param sourceName             source of the request (used for logging)
+     * @param metadataCollectionId   unique identifier for the home metadata collection
+     * @param metadataCollectionName unique name for the home metadata collection
+     * @param provenanceType         origin of the entity
+     * @param userName               name of the creator
+     * @param typeName               name of the type
+     * @return partially filled out entity needs classifications and properties
+     * @throws TypeErrorException  the type name is not recognized.
+     */
+    EntityDetail getSkeletonEntity(String                 sourceName,
+                                   String                 metadataCollectionId,
+                                   String                 metadataCollectionName,
                                    InstanceProvenanceType provenanceType,
                                    String                 userName,
                                    String                 typeName) throws TypeErrorException;
@@ -276,8 +331,30 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
      * @return partially filled out entity needs classifications
      * @throws TypeErrorException  the type name is not recognized.
      */
+    @Deprecated
     EntitySummary getSkeletonEntitySummary(String                 sourceName,
                                            String                 metadataCollectionId,
+                                           InstanceProvenanceType provenanceType,
+                                           String                 userName,
+                                           String                 typeName) throws TypeErrorException;
+
+
+    /**
+     * Return an entity with the header and type information filled out.  The caller only needs to classifications
+     * to complete the set up of the entity.
+     *
+     * @param sourceName             source of the request (used for logging)
+     * @param metadataCollectionId   unique identifier for the home metadata collection
+     * @param metadataCollectionName unique name for the home metadata collection
+     * @param provenanceType         origin of the entity
+     * @param userName               name of the creator
+     * @param typeName               name of the type
+     * @return partially filled out entity needs classifications
+     * @throws TypeErrorException  the type name is not recognized.
+     */
+    EntitySummary getSkeletonEntitySummary(String                 sourceName,
+                                           String                 metadataCollectionId,
+                                           String                 metadataCollectionName,
                                            InstanceProvenanceType provenanceType,
                                            String                 userName,
                                            String                 typeName) throws TypeErrorException;
@@ -301,6 +378,50 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
 
 
     /**
+     * Return a classification with the header and type information filled out.  The caller only needs to add properties
+     * and possibility origin information if it is propagated to complete the set up of the classification.
+     *
+     * @param sourceName              source of the request (used for logging)
+     * @param metadataCollectionId    unique identifier for the home metadata collection
+     * @param provenanceType          type of home for the new classification
+     * @param userName                name of the creator
+     * @param classificationTypeName  name of the classification type
+     * @param entityTypeName          name of the type for the entity that this classification is to be attached to.
+     * @return partially filled out classification needs properties and possibly origin information
+     * @throws TypeErrorException  the type name is not recognized as a classification type.
+     */
+    Classification getSkeletonClassification(String                 sourceName,
+                                             String                 metadataCollectionId,
+                                             InstanceProvenanceType provenanceType,
+                                             String                 userName,
+                                             String                 classificationTypeName,
+                                             String                 entityTypeName) throws TypeErrorException;
+
+
+    /**
+     * Return a classification with the header and type information filled out.  The caller only needs to add properties
+     * and possibility origin information if it is propagated to complete the set up of the classification.
+     *
+     * @param sourceName              source of the request (used for logging)
+     * @param metadataCollectionId    unique identifier for the home metadata collection
+     * @param metadataCollectionName  unique name for the home metadata collection
+     * @param provenanceType          type of home for the new classification
+     * @param userName                name of the creator
+     * @param classificationTypeName  name of the classification type
+     * @param entityTypeName          name of the type for the entity that this classification is to be attached to.
+     * @return partially filled out classification needs properties and possibly origin information
+     * @throws TypeErrorException  the type name is not recognized as a classification type.
+     */
+    Classification getSkeletonClassification(String                 sourceName,
+                                             String                 metadataCollectionId,
+                                             String                 metadataCollectionName,
+                                             InstanceProvenanceType provenanceType,
+                                             String                 userName,
+                                             String                 classificationTypeName,
+                                             String                 entityTypeName) throws TypeErrorException;
+
+
+    /**
      * Return a relationship with the header and type information filled out.  The caller only needs to add properties
      * to complete the set up of the relationship.
      *
@@ -314,6 +435,27 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
      */
     Relationship getSkeletonRelationship(String                 sourceName,
                                          String                 metadataCollectionId,
+                                         InstanceProvenanceType provenanceType,
+                                         String                 userName,
+                                         String                 typeName) throws TypeErrorException;
+
+
+    /**
+     * Return a relationship with the header and type information filled out.  The caller only needs to add properties
+     * to complete the set up of the relationship.
+     *
+     * @param sourceName             source of the request (used for logging)
+     * @param metadataCollectionId   unique identifier for the home metadata collection
+     * @param metadataCollectionName unique name for the home metadata collection
+     * @param provenanceType         origin type of the relationship
+     * @param userName               name of the creator
+     * @param typeName               name of the relationship's type
+     * @return partially filled out relationship needs properties
+     * @throws TypeErrorException  the type name is not recognized as a relationship type.
+     */
+    Relationship getSkeletonRelationship(String                 sourceName,
+                                         String                 metadataCollectionId,
+                                         String                 metadataCollectionName,
                                          InstanceProvenanceType provenanceType,
                                          String                 userName,
                                          String                 typeName) throws TypeErrorException;
@@ -355,6 +497,30 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
 
 
     /**
+     * Return a filled out entity.  It just needs to add the classifications.
+     *
+     * @param sourceName             source of the request (used for logging)
+     * @param metadataCollectionName unique name for the home metadata collection
+     * @param metadataCollectionId   unique identifier for the home metadata collection
+     * @param provenanceType         origin of the entity
+     * @param userName               name of the creator
+     * @param typeName               name of the type
+     * @param properties             properties for the entity
+     * @param classifications        list of classifications for the entity
+     * @return an entity that is filled out
+     * @throws TypeErrorException  the type name is not recognized as an entity type
+     */
+    EntityDetail getNewEntity(String                 sourceName,
+                              String                 metadataCollectionId,
+                              String                 metadataCollectionName,
+                              InstanceProvenanceType provenanceType,
+                              String                 userName,
+                              String                 typeName,
+                              InstanceProperties     properties,
+                              List<Classification>   classifications) throws TypeErrorException;
+
+
+    /**
      * Return a filled out relationship which just needs the entity proxies added.
      *
      * @param sourceName            source of the request (used for logging)
@@ -375,10 +541,34 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
 
 
     /**
+     * Return a filled out relationship which just needs the entity proxies added.
+     *
+     * @param sourceName             source of the request (used for logging)
+     * @param metadataCollectionId   unique identifier for the home metadata collection
+     * @param metadataCollectionName unique name for the home metadata collection
+     * @param provenanceType         origin of the relationship
+     * @param userName               name of the creator
+     * @param typeName               name of the type
+     * @param properties             properties for the relationship
+     * @return a relationship that is filled out
+     * @throws TypeErrorException  the type name is not recognized as a relationship type
+     */
+    Relationship getNewRelationship(String                 sourceName,
+                                    String                 metadataCollectionId,
+                                    String                 metadataCollectionName,
+                                    InstanceProvenanceType provenanceType,
+                                    String                 userName,
+                                    String                 typeName,
+                                    InstanceProperties     properties) throws TypeErrorException;
+
+
+    /**
      * Return a classification with the header and type information filled out.  The caller only needs to add properties
      * to complete the set up of the classification.
      *
      * @param sourceName      source of the request (used for logging)
+     * @param metadataCollectionId  unique identifier for the home metadata collection
+     * @param provenanceType        origin of the classification
      * @param userName        name of the creator
      * @param typeName        name of the type
      * @param entityTypeName  name of the type for the entity that this classification is to be attached to.
@@ -388,6 +578,62 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
      * @return partially filled out classification needs properties and possibly origin information
      * @throws TypeErrorException  the type name is not recognized as a classification type.
      */
+    Classification getNewClassification(String                 sourceName,
+                                        String                 metadataCollectionId,
+                                        InstanceProvenanceType provenanceType,
+                                        String                 userName,
+                                        String                 typeName,
+                                        String                 entityTypeName,
+                                        ClassificationOrigin   classificationOrigin,
+                                        String                 classificationOriginGUID,
+                                        InstanceProperties     properties) throws TypeErrorException;
+
+
+    /**
+     * Return a classification with the header and type information filled out.  The caller only needs to add properties
+     * to complete the set up of the classification.
+     *
+     * @param sourceName      source of the request (used for logging)
+     * @param metadataCollectionId    unique identifier for the home metadata collection
+     * @param metadataCollectionName  unique name for the home metadata collection
+     * @param provenanceType        origin of the classification
+     * @param userName        name of the creator
+     * @param typeName        name of the type
+     * @param entityTypeName  name of the type for the entity that this classification is to be attached to.
+     * @param classificationOrigin     is this explicitly assigned or propagated
+     * @param classificationOriginGUID  if propagated this the GUID of the origin
+     * @param properties      properties for the classification
+     * @return partially filled out classification needs properties and possibly origin information
+     * @throws TypeErrorException  the type name is not recognized as a classification type.
+     */
+    Classification getNewClassification(String                 sourceName,
+                                        String                 metadataCollectionId,
+                                        String                 metadataCollectionName,
+                                        InstanceProvenanceType provenanceType,
+                                        String                 userName,
+                                        String                 typeName,
+                                        String                 entityTypeName,
+                                        ClassificationOrigin   classificationOrigin,
+                                        String                 classificationOriginGUID,
+                                        InstanceProperties     properties) throws TypeErrorException;
+
+
+    /**
+     * Return a classification with the header and type information filled out.  The caller only needs to add properties
+     * to complete the set up of the classification.  This method is deprecated because it does not take the provenance information.
+     * The implementation of this method sets the provenance information to "LOCAL_COHORT".
+     *
+     * @param sourceName     source of the request (used for logging)
+     * @param userName       name of the creator
+     * @param typeName       name of the type
+     * @param entityTypeName name of the type for the entity that this classification is to be attached to
+     * @param classificationOrigin source of the classification (assigned or propagated)
+     * @param classificationOriginGUID unique identifier of element that originated the classification if propagated
+     * @param properties     properties for the classification
+     * @return partially filled out classification needs properties and possibly origin information
+     * @throws TypeErrorException the type name is not recognized as a classification type.
+     */
+    @Deprecated
     Classification getNewClassification(String               sourceName,
                                         String               userName,
                                         String               typeName,
@@ -395,6 +641,21 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
                                         ClassificationOrigin classificationOrigin,
                                         String               classificationOriginGUID,
                                         InstanceProperties   properties) throws TypeErrorException;
+
+
+    /**
+     * Add a classification to an existing entity.
+     *
+     * @param sourceName          source of the request (used for logging)
+     * @param classificationList  entity classifications to update
+     * @param newClassification   classification to add
+     * @param methodName          calling method
+     * @return updated entity
+     */
+    List<Classification> addClassificationToList(String                 sourceName,
+                                                 List<Classification>   classificationList,
+                                                 Classification         newClassification,
+                                                 String                 methodName);
 
 
     /**
@@ -422,10 +683,25 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
      * @return located classification
      * @throws ClassificationErrorException  the classification is not attached to the entity
      */
-    Classification getClassificationFromEntity(String       sourceName,
-                                               EntityDetail entity,
-                                               String       classificationName,
-                                               String       methodName) throws ClassificationErrorException;
+    Classification getClassificationFromEntity(String        sourceName,
+                                               EntitySummary entity,
+                                               String        classificationName,
+                                               String        methodName) throws ClassificationErrorException;
+
+
+    /**
+     * Return the classifications from the requested metadata collection.  Not, this method does not cope with metadata collection ids of null.
+     *
+     * @param sourceName         source of the request (used for logging)
+     * @param entity             entity to update
+     * @param metadataCollectionId metadata collection to retrieve
+     * @param methodName         calling method
+     * @return located classification
+     */
+    List<Classification> getHomeClassificationsFromEntity(String       sourceName,
+                                                          EntityDetail entity,
+                                                          String       metadataCollectionId,
+                                                          String       methodName);
 
 
     /**
@@ -646,12 +922,33 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
      * Note that usage of the string by methods that cannot handle regular expressions should first un-escape the string
      * using the getUnqualifiedLiteralString helper method.
      *
-     * @param searchString - the string to escape to avoid being interpreted as a regular expression
+     * Finally, note that this enforces a case-sensitive search.
+     *
+     * @param searchString the string to escape to avoid being interpreted as a regular expression
+     * @return string that is interpreted literally rather than as a regular expression
+     * @see #isExactMatchRegex(String)
+     * @see #getUnqualifiedLiteralString(String)
+     * @see #getExactMatchRegex(String, boolean)
+     */
+    String getExactMatchRegex(String searchString);
+
+
+    /**
+     * Retrieve an escaped version of the provided string that can be passed to methods that expect regular expressions,
+     * without being interpreted as a regular expression (i.e. the returned string will be interpreted as a literal --
+     * used to find an exact match of the string, irrespective of whether it contains characters that may have special
+     * meanings to regular expressions).
+     *
+     * Note that usage of the string by methods that cannot handle regular expressions should first un-escape the string
+     * using the getUnqualifiedLiteralString helper method.
+     *
+     * @param searchString the string to escape to avoid being interpreted as a regular expression
+     * @param insensitive set to true to have a case-insensitive exact match regular expression
      * @return string that is interpreted literally rather than as a regular expression
      * @see #isExactMatchRegex(String)
      * @see #getUnqualifiedLiteralString(String)
      */
-    String getExactMatchRegex(String searchString);
+    String getExactMatchRegex(String searchString, boolean insensitive);
 
 
     /**
@@ -666,12 +963,35 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
      * Primarily a helper method for methods that do not directly handle regular expressions (for those it
      * should be possible to just directly use the string as-is and it will be correctly interpreted).
      *
-     * @param searchString - the string to check whether it should be interpreted literally or as as a regular expression
+     * @param searchString the string to check whether it should be interpreted literally or as as a regular expression
      * @return true if the provided string should be interpreted literally, false if it should be interpreted as a regex
      * @see #getExactMatchRegex(String)
      * @see #getUnqualifiedLiteralString(String)
      */
     boolean isExactMatchRegex(String searchString);
+
+
+    /**
+     * Indicates whether the provided string should be treated as an exact match (true) or any other regular expression
+     * (false).
+     *
+     * Note that this method relies on the use of the getExactMatchRegex helper method having been used to
+     * qualify a string when it should be treated as a literal. That is, this method relies on the presence of the
+     * escape sequences used by Java's Pattern.quote() method. The method is not intended to work on all strings in
+     * general to arbitrarily detect whether they might be a regular expression or not.
+     *
+     * Primarily a helper method for methods that do not directly handle regular expressions (for those it
+     * should be possible to just directly use the string as-is and it will be correctly interpreted).
+     *
+     * @param searchString the string to check whether it should be interpreted literally or as as a regular expression
+     * @param insensitive when true, only return true if the string is a case-insensitive exact match regex; when
+     *                    false, only return true if the string is a case-sensitive exact match regex
+     * @return true if the provided string should be interpreted literally, false if it should be interpreted as a
+     *          regex
+     * @see #getExactMatchRegex(String, boolean)
+     * @see #getUnqualifiedLiteralString(String)
+     */
+    boolean isExactMatchRegex(String searchString, boolean insensitive);
 
 
     /**
@@ -683,12 +1003,33 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
      * Note that usage of the returned string by methods that cannot handle regular expressions should first un-escape
      * the returned string using the getUnqualifiedLiteralString helper method.
      *
-     * @param searchString - the string to escape to avoid being interpreted as a regular expression, but also wrap to obtain a "contains" semantic
+     * Finally, note that this enforces a case-sensitive search.
+     *
+     * @param searchString the string to escape to avoid being interpreted as a regular expression, but also wrap to obtain a "contains" semantic
+     * @return string that is interpreted literally, wrapped for a "contains" semantic
+     * @see #isContainsRegex(String)
+     * @see #getUnqualifiedLiteralString(String)
+     * @see #getContainsRegex(String, boolean)
+     */
+    String getContainsRegex(String searchString);
+
+
+    /**
+     * Retrieve an escaped version of the provided string that can be passed to methods that expect regular expressions,
+     * to search for the string with a "contains" semantic. The passed string will NOT be treated as a regular expression;
+     * if you intend to use both a "contains" semantic and a regular expression within the string, simply construct your
+     * own regular expression directly (not with this helper method).
+     *
+     * Note that usage of the returned string by methods that cannot handle regular expressions should first un-escape
+     * the returned string using the getUnqualifiedLiteralString helper method.
+     *
+     * @param searchString the string to escape to avoid being interpreted as a regular expression, but also wrap to obtain a "contains" semantic
+     * @param insensitive set to true to have a case-insensitive contains regular expression
      * @return string that is interpreted literally, wrapped for a "contains" semantic
      * @see #isContainsRegex(String)
      * @see #getUnqualifiedLiteralString(String)
      */
-    String getContainsRegex(String searchString);
+    String getContainsRegex(String searchString, boolean insensitive);
 
 
     /**
@@ -710,6 +1051,26 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
 
 
     /**
+     * Indicates whether the provided string should be treated as a simple "contains" regular expression (true) or any
+     * other regular expression (false).
+     *
+     * Note that this method relies on the use of the getContainsRegex helper method having been used to
+     * qualify a string when it should be treated primarily as a literal with only very basic "contains" wrapping.
+     *
+     * Primarily a helper method for methods that do not directly handle regular expressions (for those it
+     * should be possible to just directly use the string as-is and it will be correctly interpreted).
+     *
+     * @param searchString the string to check whether it should be interpreted as a simple "contains"
+     * @param insensitive when true, only return true if the string is a case-insensitive "contains" regex; when
+     *                    false, only return true if the string is a case-sensitive "contains" regex
+     * @return true if the provided string should be interpreted as a simple "contains", false if it should be interpreted as a full regex
+     * @see #getContainsRegex(String, boolean)
+     * @see #getUnqualifiedLiteralString(String)
+     */
+    boolean isContainsRegex(String searchString, boolean insensitive);
+
+
+    /**
      * Retrieve an escaped version of the provided string that can be passed to methods that expect regular expressions,
      * to search for the string with a "startswith" semantic. The passed string will NOT be treated as a regular expression;
      * if you intend to use both a "startswith" semantic and a regular expression within the string, simply construct your
@@ -718,12 +1079,33 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
      * Note that usage of the returned string by methods that cannot handle regular expressions should first un-escape
      * the returned string using the getUnqualifiedLiteralString helper method.
      *
-     * @param searchString - the string to escape to avoid being interpreted as a regular expression, but also wrap to obtain a "startswith" semantic
+     * Finally, note that this enforces a case-sensitive search.
+     *
+     * @param searchString the string to escape to avoid being interpreted as a regular expression, but also wrap to obtain a "startswith" semantic
+     * @return string that is interpreted literally, wrapped for a "startswith" semantic
+     * @see #isStartsWithRegex(String)
+     * @see #getUnqualifiedLiteralString(String)
+     * @see #getStartsWithRegex(String, boolean)
+     */
+    String getStartsWithRegex(String searchString);
+
+
+    /**
+     * Retrieve an escaped version of the provided string that can be passed to methods that expect regular expressions,
+     * to search for the string with a "startswith" semantic. The passed string will NOT be treated as a regular expression;
+     * if you intend to use both a "startswith" semantic and a regular expression within the string, simply construct your
+     * own regular expression directly (not with this helper method).
+     *
+     * Note that usage of the returned string by methods that cannot handle regular expressions should first un-escape
+     * the returned string using the getUnqualifiedLiteralString helper method.
+     *
+     * @param searchString the string to escape to avoid being interpreted as a regular expression, but also wrap to obtain a "startswith" semantic
+     * @param insensitive set to true to have a case-insensitive "startswith" regular expression
      * @return string that is interpreted literally, wrapped for a "startswith" semantic
      * @see #isStartsWithRegex(String)
      * @see #getUnqualifiedLiteralString(String)
      */
-    String getStartsWithRegex(String searchString);
+    String getStartsWithRegex(String searchString, boolean insensitive);
 
 
     /**
@@ -736,12 +1118,32 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
      * Primarily a helper method for methods that do not directly handle regular expressions (for those it
      * should be possible to just directly use the string as-is and it will be correctly interpreted).
      *
-     * @param searchString - the string to check whether it should be interpreted as a simple "startswith"
+     * @param searchString the string to check whether it should be interpreted as a simple "startswith"
      * @return true if the provided string should be interpreted as a simple "startswith", false if it should be interpreted as a full regex
      * @see #getStartsWithRegex(String)
      * @see #getUnqualifiedLiteralString(String)
      */
     boolean isStartsWithRegex(String searchString);
+
+
+    /**
+     * Indicates whether the provided string should be treated as a simple "startswith" regular expression (true) or any
+     * other regular expression (false).
+     *
+     * Note that this method relies on the use of the getStartsWithRegex helper method having been used to
+     * qualify a string when it should be treated primarily as a literal with only very basic "startswith" wrapping.
+     *
+     * Primarily a helper method for methods that do not directly handle regular expressions (for those it
+     * should be possible to just directly use the string as-is and it will be correctly interpreted).
+     *
+     * @param searchString the string to check whether it should be interpreted as a simple "startswith"
+     * @param insensitive when true, only return true if the string is a case-insensitive "startswith" regex; when
+     *                    false, only return true if the string is a case-sensitive "startswith" regex
+     * @return true if the provided string should be interpreted as a simple "startswith", false if it should be interpreted as a full regex
+     * @see #getStartsWithRegex(String, boolean)
+     * @see #getUnqualifiedLiteralString(String)
+     */
+    boolean isStartsWithRegex(String searchString, boolean insensitive);
 
 
     /**
@@ -753,12 +1155,33 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
      * Note that usage of the returned string by methods that cannot handle regular expressions should first un-escape
      * the returned string using the getUnqualifiedLiteralString helper method.
      *
-     * @param searchString - the string to escape to avoid being interpreted as a regular expression, but also wrap to obtain an "endswith" semantic
+     * Finally, note that this enforces a case-sensitive search.
+     *
+     * @param searchString the string to escape to avoid being interpreted as a regular expression, but also wrap to obtain an "endswith" semantic
+     * @return string that is interpreted literally, wrapped for an "endswith" semantic
+     * @see #isEndsWithRegex(String)
+     * @see #getUnqualifiedLiteralString(String)
+     * @see #getEndsWithRegex(String, boolean)
+     */
+    String getEndsWithRegex(String searchString);
+
+
+    /**
+     * Retrieve an escaped version of the provided string that can be passed to methods that expect regular expressions,
+     * to search for the string with an "endswith" semantic. The passed string will NOT be treated as a regular expression;
+     * if you intend to use both a "endswith" semantic and a regular expression within the string, simply construct your
+     * own regular expression directly (not with this helper method).
+     *
+     * Note that usage of the returned string by methods that cannot handle regular expressions should first un-escape
+     * the returned string using the getUnqualifiedLiteralString helper method.
+     *
+     * @param searchString the string to escape to avoid being interpreted as a regular expression, but also wrap to obtain an "endswith" semantic
+     * @param insensitive set to true to have a case-insensitive "endswith" regular expression
      * @return string that is interpreted literally, wrapped for an "endswith" semantic
      * @see #isEndsWithRegex(String)
      * @see #getUnqualifiedLiteralString(String)
      */
-    String getEndsWithRegex(String searchString);
+    String getEndsWithRegex(String searchString, boolean insensitive);
 
 
     /**
@@ -771,12 +1194,32 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
      * Primarily a helper method for methods that do not directly handle regular expressions (for those it
      * should be possible to just directly use the string as-is and it will be correctly interpreted).
      *
-     * @param searchString - the string to check whether it should be interpreted as a simple "endswith"
+     * @param searchString the string to check whether it should be interpreted as a simple "endswith"
      * @return true if the provided string should be interpreted as a simple "endswith", false if it should be interpreted as a full regex
      * @see #getEndsWithRegex(String)
      * @see #getUnqualifiedLiteralString(String)
      */
     boolean isEndsWithRegex(String searchString);
+
+
+    /**
+     * Indicates whether the provided string should be treated as a simple "endswith" regular expression (true) or any
+     * other regular expression (false).
+     *
+     * Note that this method relies on the use of the getEndsWithRegex helper method having been used to
+     * qualify a string when it should be treated primarily as a literal with only very basic "endswith" wrapping.
+     *
+     * Primarily a helper method for methods that do not directly handle regular expressions (for those it
+     * should be possible to just directly use the string as-is and it will be correctly interpreted).
+     *
+     * @param searchString the string to check whether it should be interpreted as a simple "endswith"
+     * @param insensitive when true, only return true if the string is a case-insensitive "endswith" regex; when
+     *                    false, only return true if the string is a case-sensitive "endswith" regex
+     * @return true if the provided string should be interpreted as a simple "endswith", false if it should be interpreted as a full regex
+     * @see #getEndsWithRegex(String, boolean)
+     * @see #getUnqualifiedLiteralString(String)
+     */
+    boolean isEndsWithRegex(String searchString, boolean insensitive);
 
 
     /**
@@ -795,6 +1238,26 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
      * @see #getEndsWithRegex(String)
      */
     String getUnqualifiedLiteralString(String searchString);
+
+
+    /**
+     * Indicates whether the provided string should be treated as a case-insensitive regular expression (true) or as a
+     * case-sensitive regular expression (false).
+     *
+     * Note that this method relies on the use of the getXYZRegex helper methods having been used to qualify a string
+     * with case-insensitivity.
+     *
+     * Primarily this is a helper method for methods that do not directly handle regular expressions (for those it
+     * should be possible to just directly use the string as-is and it will be correctly interpreted).
+     *
+     * @param searchString the string to check whether it should be interpreted as case-insensitive
+     * @return true if provided string should be interpreted as case-insensitive, false if it should be case-sensitive
+     * @see #getExactMatchRegex(String, boolean)
+     * @see #getStartsWithRegex(String, boolean)
+     * @see #getEndsWithRegex(String, boolean)
+     * @see #getContainsRegex(String, boolean)
+     */
+    boolean isCaseInsensitiveRegex(String searchString);
 
 
     /**
@@ -843,6 +1306,15 @@ public interface OMRSRepositoryHelper extends OMRSRepositoryPropertiesHelper
      * @return EntitySummaryDifferences
      */
     EntitySummaryDifferences getEntitySummaryDifferences(EntitySummary left, EntitySummary right, boolean ignoreModificationStamps);
+
+
+    /**
+     * Convert the provided list of classification names into an equivalent SearchClassifications object.
+     *
+     * @param classificationNames list of classification names
+     * @return SearchClassifications
+     */
+    SearchClassifications getSearchClassificationsFromList(List<String> classificationNames);
 
 
 }

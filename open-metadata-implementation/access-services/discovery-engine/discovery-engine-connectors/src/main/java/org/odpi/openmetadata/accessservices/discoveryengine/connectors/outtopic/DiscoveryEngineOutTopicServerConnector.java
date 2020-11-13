@@ -4,7 +4,7 @@
 package org.odpi.openmetadata.accessservices.discoveryengine.connectors.outtopic;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.odpi.openmetadata.accessservices.discoveryengine.auditlog.DiscoveryEngineAuditCode;
+import org.odpi.openmetadata.accessservices.discoveryengine.ffdc.DiscoveryEngineAuditCode;
 import org.odpi.openmetadata.accessservices.discoveryengine.events.DiscoveryEngineEvent;
 import org.odpi.openmetadata.accessservices.discoveryengine.ffdc.DiscoveryEngineErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
@@ -37,15 +37,7 @@ public class DiscoveryEngineOutTopicServerConnector extends OpenMetadataTopicSen
 
             if (super.auditLog != null)
             {
-                DiscoveryEngineAuditCode auditCode = DiscoveryEngineAuditCode.OUT_TOPIC_EVENT;
-
-                super.auditLog.logRecord(methodName,
-                                         auditCode.getLogMessageId(),
-                                         auditCode.getSeverity(),
-                                         auditCode.getFormattedLogMessage(eventString),
-                                         null,
-                                         auditCode.getSystemAction(),
-                                         auditCode.getUserAction());
+                super.auditLog.logMessage(methodName, DiscoveryEngineAuditCode.OUT_TOPIC_EVENT.getMessageDefinition(eventString));
             }
         }
         catch (InvalidParameterException | ConnectorCheckedException error)
@@ -54,18 +46,12 @@ public class DiscoveryEngineOutTopicServerConnector extends OpenMetadataTopicSen
         }
         catch (Throwable  error)
         {
-            DiscoveryEngineErrorCode errorCode    = DiscoveryEngineErrorCode.UNABLE_TO_SEND_EVENT;
-            String                   errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(connectionName,
-                                                                                                                       event.toString(),
-                                                                                                                       error.getClass().getName(),
-                                                                                                                       error.getMessage());
-
-            throw new ConnectorCheckedException(errorCode.getHTTPErrorCode(),
+            throw new ConnectorCheckedException(DiscoveryEngineErrorCode.UNABLE_TO_SEND_EVENT.getMessageDefinition(connectionName,
+                                                                                                                   event.toString(),
+                                                                                                                   error.getClass().getName(),
+                                                                                                                   error.getMessage()),
                                                 this.getClass().getName(),
                                                 methodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction(),
                                                 error);
         }
     }

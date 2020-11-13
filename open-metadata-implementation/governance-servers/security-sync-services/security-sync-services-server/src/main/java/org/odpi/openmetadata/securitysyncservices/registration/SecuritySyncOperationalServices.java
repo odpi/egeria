@@ -11,9 +11,9 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicListener;
-import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSConfigErrorException;
 import org.odpi.openmetadata.securitysyncservices.auditlog.SecuritySyncAuditCode;
+import org.odpi.openmetadata.securitysyncservices.ffdc.SecuritySyncErrorCode;
 import org.odpi.openmetadata.securitysyncservices.listener.SecuritySyncEventListener;
 import org.odpi.openmetadata.securitysyncservices.processor.SecuritySyncEventProcessor;
 import org.slf4j.Logger;
@@ -94,18 +94,11 @@ public class SecuritySyncOperationalServices {
 
             return topicConnector;
         } catch (Exception error) {
-            String methodName = "getTopicConnector";
+            final String methodName = "getTopicConnector";
 
-            OMRSErrorCode errorCode = OMRSErrorCode.NULL_TOPIC_CONNECTOR;
-            String errorMessage = errorCode.getErrorMessageId()
-                    + errorCode.getFormattedErrorMessage("getTopicConnector");
-
-            throw new OMRSConfigErrorException(errorCode.getHTTPErrorCode(),
+            throw new OMRSConfigErrorException(SecuritySyncErrorCode.NULL_TOPIC_CONNECTOR.getMessageDefinition(methodName),
                     this.getClass().getName(),
                     methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction(),
                     error);
 
         }

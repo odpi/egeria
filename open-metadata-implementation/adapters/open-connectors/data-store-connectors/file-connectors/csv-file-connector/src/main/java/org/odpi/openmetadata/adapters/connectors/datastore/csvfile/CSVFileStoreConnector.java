@@ -159,17 +159,10 @@ public class CSVFileStoreConnector extends BasicFileStoreConnector implements CS
         }
         catch (IOException  error)
         {
-            CSVFileConnectorErrorCode errorCode = CSVFileConnectorErrorCode.UNEXPECTED_IO_EXCEPTION;
-            String                    errorMessage = errorCode.getErrorMessageId()
-                                                   + errorCode.getFormattedErrorMessage(fileStoreName,
-                                                                                        error.getMessage());
-
-            throw new FileReadException(errorCode.getHTTPErrorCode(),
+            throw new FileReadException(CSVFileConnectorErrorCode.UNEXPECTED_IO_EXCEPTION.getMessageDefinition(fileStoreName,
+                                                                                                               error.getMessage()),
                                         this.getClass().getName(),
                                         methodName,
-                                        errorMessage,
-                                        errorCode.getSystemAction(),
-                                        errorCode.getUserAction(),
                                         error,
                                         fileStoreName);
         }
@@ -263,33 +256,19 @@ public class CSVFileStoreConnector extends BasicFileStoreConnector implements CS
             }
             scanner.close();
 
-            CSVFileConnectorErrorCode errorCode = CSVFileConnectorErrorCode.FILE_TOO_SHORT;
-            String                    errorMessage = errorCode.getErrorMessageId()
-                                                   + errorCode.getFormattedErrorMessage(fileStoreName,
-                                                                                        Integer.toString(recordLocation));
-
-            throw new FileReadException(errorCode.getHTTPErrorCode(),
+            throw new FileReadException(CSVFileConnectorErrorCode.FILE_TOO_SHORT.getMessageDefinition(fileStoreName,
+                                                                                                      Integer.toString(recordLocation)),
                                         this.getClass().getName(),
                                         methodName,
-                                        errorMessage,
-                                        errorCode.getSystemAction(),
-                                        errorCode.getUserAction(),
                                         fileStoreName);
 
         }
         catch (IOException  error)
         {
-            CSVFileConnectorErrorCode errorCode = CSVFileConnectorErrorCode.UNEXPECTED_IO_EXCEPTION;
-            String                    errorMessage = errorCode.getErrorMessageId()
-                                                   + errorCode.getFormattedErrorMessage(fileStoreName,
-                                                                                        error.getMessage());
-
-            throw new FileReadException(errorCode.getHTTPErrorCode(),
+            throw new FileReadException(CSVFileConnectorErrorCode.UNEXPECTED_IO_EXCEPTION.getMessageDefinition(fileStoreName,
+                                                                                                               error.getMessage()),
                                         this.getClass().getName(),
                                         methodName,
-                                        errorMessage,
-                                        errorCode.getSystemAction(),
-                                        errorCode.getUserAction(),
                                         error,
                                         fileStoreName);
         }

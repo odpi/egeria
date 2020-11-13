@@ -39,17 +39,16 @@ services:
             - cocopharma
 
     notebook:
-        image: 'jupyter/base-notebook:latest'
+        image: '${egeria_repo}/jupyter:${egeria_version}'
         environment:
-            - GRANT_SUDO=yes
-            - CHOWN_HOME=yes
             - JUPYTER_ENABLE_LAB=yes
-            - corePlatformURL=http://core:8080
-            - dataLakePlatformURL=http://datalake:8080
-            - devPlatformURL=http://dev:8080
-            - ctsPlatformURL=http://dev:8080
-            - factoryPlatformURL=http://factory:8080
+            - corePlatformURL=https://core:9443
+            - dataLakePlatformURL=https://datalake:9443
+            - devPlatformURL=https://dev:9443
+            - ctsPlatformURL=https://dev:9443
+            - factoryPlatformURL=https://factory:9443
             - eventBusURLroot=kafka:9092
+            - uiExternalURL=https://localhost:18443
         command: start.sh jupyter lab --LabApp.token='' --NotebookApp.iopub_data_rate_limit=1.0e10
         ports:
             - '18888:8888'
@@ -61,57 +60,94 @@ services:
             - factory
         networks:
             - cocopharma
-        volumes:
-            - ./notebook-start.d:/usr/local/bin/start-notebook.d
         user: root
+        env_file:
+            - '.env'
 
     core:
         depends_on:
             - kafka
-        image: 'odpi/egeria:latest'
+        image: '${egeria_repo}/egeria:${egeria_version}'
         ports:
-            - '18080:8080'
+            - '19443:9443'
         networks:
             - cocopharma
+        env_file:
+            - '.env'
 
     datalake:
         depends_on:
             - kafka
-        image: 'odpi/egeria:latest'
+        image: '${egeria_repo}/egeria:${egeria_version}'
         ports:
-            - '18081:8080'
+            - '19444:9443'
         networks:
             - cocopharma
+        env_file:
+            - '.env'
 
     dev:
         depends_on:
             - kafka
-        image: 'odpi/egeria:latest'
+        image: '${egeria_repo}/egeria:${egeria_version}'
         ports:
-            - '18082:8080'
+            - '19445:9443'
         networks:
             - cocopharma
+        env_file:
+            - '.env'
 
     factory:
         depends_on:
             - kafka
-        image: 'odpi/egeria:latest'
+        image: '${egeria_repo}/egeria:${egeria_version}'
         ports:
-            - '18083:8080'
+            - '19446:9443'
         networks:
             - cocopharma
+        env_file:
+            - '.env'
 
     ui:
         depends_on:
             - datalake
-        image: 'odpi/egeria:latest'
-        command: /bin/bash -c "java -jar /opt/egeria/ui-chassis-spring.jar"
+            - uistatic
+        image: '${egeria_repo}/egeria:${egeria_version}'
         environment:
-            - OMAS_SERVER_URL=http://datalake:8080
+            - OMAS_SERVER_URL=https://datalake:9443
             - OMAS_SERVER_NAME=cocoMDS4
+            - OPEN_LINEAGE_SERVER_URL=https://datalake:9443
+            - OPEN_LINEAGE_SERVER_NAME=open-lineage
+            - OPEN_LINEAGE_GRAPH_SOURCE=MAIN
+            - JAVA_APP_JAR=user-interface/ui-chassis-spring-${egeria_version}.jar
+            - ZUUL_ROUTES_UI_URL=http://uistatic:80
         ports:
             - '18443:8443'
         networks:
             cocopharma:
+        env_file:
+            - '.env'
+
+    uistatic:
+        image: '${egeria_repo}/egeria-uistatic:${egeria_version}'
+        ports:
+            - '10080:80'
+        networks:
+            cocopharma:
+        env_file:
+            - '.env'
+
+    presentation:
+        depends_on:
+            - datalake
+        image: '${egeria_repo}/egeria-presentation-server:${egeria_version}'
+        environment:
+          - EGERIA_PRESENTATIONSERVER_SERVER_coco={"remoteServerName":"cocoView1","remoteURL":"https://datalake:9443"}
+        ports:
+            - '18091:8091'
+        networks:
+            cocopharma:
+        env_file:
+            - '.env'
 networks:
     cocopharma:

@@ -4,6 +4,8 @@ package org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.run
 
 public class SourceNotFoundException extends InformationViewExceptionBase {
 
+    private static final long    serialVersionUID = 1L;
+
     public SourceNotFoundException(int httpErrorCode, String reportingClassName, String reportedErrorMessage,
                                    String reportedSystemAction, String reportedUserAction,
                                    Throwable reportedCaughtException) {

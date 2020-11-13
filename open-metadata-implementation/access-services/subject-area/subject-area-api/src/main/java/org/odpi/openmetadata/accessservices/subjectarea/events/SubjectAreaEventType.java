@@ -35,7 +35,7 @@ public enum SubjectAreaEventType implements Serializable
     NOTE_CHANGED_RELATING_TO_TERM                   (12, "NoteChangedRelatingToGlossaryTerm",    "A note has been changed relating to a glossary term."),
     MEETING_CHANGED_RELATING_TO_TERM                (13, "MeetingChangedRelatingToGlossaryTerm", "A meeting has been changed relating to a glossary term."),
     COLLECTION_CHANGED_RELATING_TO_TERM             (14, "CollectionChangedRelatingToGlossaryTerm", "A collection has been changed relating to aglossary term."),
-    ASSET_CHANGED_RELATING_TO_TERM                  (15, "CollectionChangedRelatingToGlossaryTerm", "An asset has been changed relating to a glossary term."),
+    ASSET_CHANGED_RELATING_TO_TERM                  (15, "AssetChangedRelatingToGlossaryTerm", "An asset has been changed relating to a glossary term."),
 
     // Glossary Categories
     NEW_GLOSSARYCATEGORY_EVENT                      (16,  "NewGlossaryCategory",                "A new Glossary Category has been defined."),

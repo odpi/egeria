@@ -3,41 +3,40 @@
 package org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions;
 
 
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
+
 /**
  * The ClassificationException is thrown by the Subject Area OMAS when an error occurs during a classification
  * value.
  */
-public class ClassificationException extends SubjectAreaCheckedExceptionBase
-{
+public class ClassificationException extends SubjectAreaCheckedException {
     /**
-     * This is the typical constructor used for creating a ClassificationException.
+     * This is the typical constructor used for creating a ClassificationException
      *
-     * @param httpCode http response code to use if this exception flows over a rest call
-     * @param className name of class reporting error
+     * @param messageDefinition content of the message
+     * @param className         name of class reporting error
      * @param actionDescription description of function it was performing when error detected
-     * @param errorMessage description of error
-     * @param systemAction actions of the system as a result of the error
-     * @param userAction instructions for correcting the error
      */
-    public ClassificationException(int  httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction)
-    {
-        super(httpCode, className, actionDescription, errorMessage, systemAction, userAction);
+    public ClassificationException(ExceptionMessageDefinition messageDefinition,
+                                   String className,
+                                   String actionDescription) {
+        super(messageDefinition, className, actionDescription);
     }
 
 
     /**
-     * This is the constructor used for creating a ClassificationException that resulted from a previous error.
+     * This is the constructor used for creating an ClassificationException when an unexpected error has been caught.
+     * The properties allow additional information to be associated with the exception.
      *
-     * @param httpCode http response code to use if this exception flows over a rest call
-     * @param className name of class reporting error
+     * @param messageDefinition content of the message
+     * @param className         name of class reporting error
      * @param actionDescription description of function it was performing when error detected
-     * @param errorMessage description of error
-     * @param systemAction actions of the system as a result of the error
-     * @param userAction instructions for correcting the error
-     * @param caughtError the error that resulted in this exception.
+     * @param caughtError       previous error causing this exception
      */
-    public ClassificationException(int  httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction, Throwable caughtError)
-    {
-        super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError);
+    public ClassificationException(ExceptionMessageDefinition messageDefinition,
+                                   String className,
+                                   String actionDescription,
+                                   Throwable caughtError) {
+        super(messageDefinition, className, actionDescription, caughtError);
     }
 }

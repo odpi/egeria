@@ -1,0 +1,27 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright Contributors to the ODPi Egeria project.
+ */
+
+
+dependencies {
+    implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
+    implementation project(':open-metadata-implementation:common-services:ffdc-services')
+    implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
+    implementation 'org.slf4j:slf4j-api'
+    implementation project(':open-metadata-implementation:repository-services:repository-services-apis')
+    implementation 'com.datastax.oss:java-driver-core'
+    implementation project(':open-metadata-implementation:governance-servers:data-platform-services:data-platform-services-connector')
+    implementation project(':open-metadata-implementation:access-services:data-platform:data-platform-client')
+    implementation project(':open-metadata-implementation:access-services:data-platform:data-platform-api')
+    implementation project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:cassandra-data-store-connector')
+    implementation 'com.github.spotbugs:spotbugs-annotations'
+    implementation project(':open-metadata-implementation:common-services:ocf-metadata-management:ocf-metadata-client')
+
+}
+
+description = 'Cassandra Metadata Extractor Connector'
+
+java {
+    withJavadocJar()
+}

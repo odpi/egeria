@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.run
 
 public class NoRegistrationDetailsProvided extends InformationViewExceptionBase{
 
+    private static final long    serialVersionUID = 1L;
 
     public NoRegistrationDetailsProvided(int httpErrorCode, String reportingClassName, String reportedErrorMessage,
                                          String reportedSystemAction, String reportedUserAction,

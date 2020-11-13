@@ -7,7 +7,6 @@ import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.discovery.ffdc.DiscoveryServiceException;
 import org.odpi.openmetadata.frameworks.discovery.ffdc.ODFErrorCode;
-import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryRequestStatus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -93,15 +92,9 @@ public abstract class DiscoveryService extends ConnectorBase
                     }
                     else
                     {
-                        ODFErrorCode errorCode    = ODFErrorCode.INVALID_EMBEDDED_DISCOVERY_SERVICE;
-                        String       errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(discoveryServiceName);
-
-                        throw new DiscoveryServiceException(errorCode.getHTTPErrorCode(),
+                        throw new DiscoveryServiceException(ODFErrorCode.INVALID_EMBEDDED_DISCOVERY_SERVICE.getMessageDefinition(discoveryServiceName),
                                                             this.getClass().getName(),
-                                                            methodName,
-                                                            errorMessage,
-                                                            errorCode.getSystemAction(),
-                                                            errorCode.getUserAction());
+                                                            methodName);
                     }
                 }
             }
@@ -129,15 +122,9 @@ public abstract class DiscoveryService extends ConnectorBase
 
         if (discoveryContext == null)
         {
-            ODFErrorCode errorCode    = ODFErrorCode.NULL_DISCOVERY_CONTEXT;
-            String       errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(discoveryServiceName);
-
-            throw new DiscoveryServiceException(errorCode.getHTTPErrorCode(),
+            throw new DiscoveryServiceException(ODFErrorCode.NULL_DISCOVERY_CONTEXT.getMessageDefinition(discoveryServiceName),
                                                 this.getClass().getName(),
-                                                methodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction());
+                                                methodName);
         }
     }
 
@@ -152,18 +139,12 @@ public abstract class DiscoveryService extends ConnectorBase
     protected void handleUnexpectedException(String      methodName,
                                              Throwable   error) throws ConnectorCheckedException
     {
-        ODFErrorCode errorCode    = ODFErrorCode.UNEXPECTED_EXCEPTION;
-        String       errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(discoveryServiceName,
-                                                                                                       error.getClass().getName(),
-                                                                                                       methodName,
-                                                                                                       error.getMessage());
-
-        throw new DiscoveryServiceException(errorCode.getHTTPErrorCode(),
+        throw new DiscoveryServiceException(ODFErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(discoveryServiceName,
+                                                                                                   error.getClass().getName(),
+                                                                                                   methodName,
+                                                                                                   error.getMessage()),
                                             this.getClass().getName(),
-                                            methodName,
-                                            errorMessage,
-                                            errorCode.getSystemAction(),
-                                            errorCode.getUserAction());
+                                            methodName);
     }
 
 

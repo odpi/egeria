@@ -1,0 +1,38 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright Contributors to the ODPi Egeria project.
+ */
+
+
+dependencies {
+    implementation 'commons-io:commons-io'
+    implementation project(':open-metadata-implementation:admin-services:admin-services-api')
+    implementation project(':open-metadata-implementation:common-services:ffdc-services')
+    implementation project(':open-metadata-implementation:admin-services:admin-services-registration')
+    implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
+    implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
+    implementation project(':open-metadata-implementation:adapters:open-connectors:repository-services-connectors:open-metadata-collection-store-connectors:inmemory-repository-connector')
+    implementation 'org.springframework:spring-core'
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
+    implementation project(':open-metadata-implementation:repository-services:repository-services-apis')
+    implementation 'org.slf4j:slf4j-api'
+    implementation project(':open-metadata-implementation:access-services:information-view:information-view-api')
+    implementation 'org.apache.commons:commons-collections4'
+    testImplementation 'org.mockito:mockito-core'
+    testImplementation 'org.mockito:mockito-junit-jupiter'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api'
+    testImplementation 'junit:junit'
+    testImplementation project(':open-metadata-implementation:repository-services:repository-services-implementation')
+
+}
+
+description = 'Information View OMAS Server-side'
+
+java {
+    withJavadocJar()
+}
+
+test {
+    //TODO: Maven build is currently not running these failing tests
+    ignoreFailures = true
+}

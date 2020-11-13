@@ -1,4 +1,4 @@
-<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
 # Coco Pharmaceuticals
@@ -112,7 +112,7 @@ The playbook will automatically create (or update) all of the needed assets, ide
 as well as kicking off the harvesting of metadata through IBM Metadata Asset Manager and
 (in v11.7+) the automated analysis of the database samples through Information Analyzer.
 
-If you have configured the [IGC Repository Connector](../../../../open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-collection-store-connectors/ibm-igc-repository-connector/README.md)
+If you have configured the [IGC Repository Connector](https://github.com/odpi/egeria-connector-ibm-information-server)
 in advance of running the playbook, including the event mapper configuration, you will also
 see events published into the cohort for all of these samples as well as part of the load 
 process.
@@ -134,7 +134,7 @@ Note that to fully remove artifacts from an IGC environment you must also allow 
 be deleted from IBM Metadata Asset Manager. This requires a manual configuration change as follows
 (which must be completed before running the removal playbook):
 
-!["Administration"](docs/ibm-mam-enable-delete.png)
+!["Administration"](../docs/ibm-mam-enable-delete.png)
 
 1. Navigate to the "Administration" tab.
 1. Open the "Import Settings" under Navigation.

@@ -2,72 +2,83 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.auditlog;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.OMRSAuditLogRecord;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.OMRSAuditLogRecordOriginator;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.OMRSAuditLogReportingComponent;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.OMRSAuditLogStore;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
+
 
 /**
- * OMRSAuditLog is a class for managing the audit logging of activity for the OMRS components.  Each auditing component
+ * OMRSAuditLog is a class for managing the audit logging of activity for the OMAG components.  Each auditing component
  * will have their own instance of an OMRSAuditLog. OMRSAuditLog will ensure audit log records are written to
  * disk in the common OMRSAuditLog for this local server.
  *
- * There are different levels of log record to cover all of the activity of the OMRS.
+ * There are different severities of log record to cover all of the activity of the OMRS.
  *
- * This audit log is critical to validate the behavior of the OMRS, particularly in the initial interaction of
- * a new metadata repository to the OMRS Cohort.
+ * This audit log is critical to validate the behavior of the OMAG Service, particularly in the initial interaction of
+ * a new member in the OMRS Cohort.
+ *
+ * Note:
+ * There are two implementations in play.  The original version was where all the function was provided by OMRS.
+ * When the Audit Log Framework (ALF) was added, the OMRS Audit Log was changed to inherit from it.  This means that
+ * connectors and OMAG services can use the ALF.  The original OMRS versions are maintained for backward compatibility.
+ * The interface used by the originator will have no difference to the output of the audit log connectors.
  */
-public class OMRSAuditLog
+public class OMRSAuditLog extends AuditLog
 {
-    private static final Logger log = LoggerFactory.getLogger(OMRSAuditLog.class);
-
-    private OMRSAuditLogDestination        destination;          /* Initialized in the constructor */
-    private OMRSAuditLogReportingComponent reportingComponent;   /* Initialized in the constructor */
+    private OMRSAuditLogDestination        omrsDestination;          /* Initialized in the constructor */
+    private OMRSAuditLogReportingComponent omrsReportingComponent;   /* Initialized in the constructor */
 
 
     /**
      * Typical constructor: each component using the Audit log will create their own OMRSAuditLog instance and
      * will push log records to it.
      *
-     * @param destination destination for the log records
+     * @param omrsDestination destination for the log records
      * @param componentId numerical identifier for the component.
      * @param componentName display name for the component.
      * @param componentDescription description of the component.
      * @param componentWikiURL link to more information.
      */
-    public OMRSAuditLog(OMRSAuditLogDestination destination,
+    public OMRSAuditLog(OMRSAuditLogDestination omrsDestination,
                         int                     componentId,
                         String                  componentName,
                         String                  componentDescription,
                         String                  componentWikiURL)
     {
-        this.destination = destination;
-        this.reportingComponent = new OMRSAuditLogReportingComponent(componentId,
-                                                                     componentName,
-                                                                     componentDescription,
-                                                                     componentWikiURL);
+        super(omrsDestination, componentId, componentName, componentDescription, componentWikiURL);
+
+        this.omrsDestination        = omrsDestination;
+        this.omrsReportingComponent = new OMRSAuditLogReportingComponent(componentId,
+                                                                         componentName,
+                                                                         componentDescription,
+                                                                         componentWikiURL);
     }
 
 
     /**
      * Constructor used to create the root audit log for OMRS
      *
-     * @param destination  new logging destination
-     * @param reportingComponent information about the component that will use this instance of the audit log.
+     * @param omrsDestination  new logging destination
+     * @param omrsReportingComponent information about the component that will use this instance of the audit log.
      */
-    public OMRSAuditLog(OMRSAuditLogDestination destination,
-                        OMRSAuditingComponent   reportingComponent)
+    public OMRSAuditLog(OMRSAuditLogDestination omrsDestination,
+                        OMRSAuditingComponent   omrsReportingComponent)
     {
-        this.destination = destination;
-        this.reportingComponent = new OMRSAuditLogReportingComponent(reportingComponent.getComponentId(),
-                                                                     reportingComponent.getComponentName(),
-                                                                     reportingComponent.getComponentDescription(),
-                                                                     reportingComponent.getComponentWikiURL());
+        super(omrsDestination, omrsReportingComponent);
+
+        this.omrsDestination        = omrsDestination;
+        this.omrsReportingComponent = new OMRSAuditLogReportingComponent(omrsReportingComponent.getComponentId(),
+                                                                         omrsReportingComponent.getComponentName(),
+                                                                         omrsReportingComponent.getComponentType(),
+                                                                         omrsReportingComponent.getComponentWikiURL());
     }
 
 
@@ -85,11 +96,15 @@ public class OMRSAuditLog
                                            String componentDescription,
                                            String componentWikiURL)
     {
-        return new OMRSAuditLog(destination,
-                                componentId,
-                                componentName,
-                                componentDescription,
-                                componentWikiURL);
+        OMRSAuditLog childAuditLog = new OMRSAuditLog(omrsDestination,
+                                                      componentId,
+                                                      componentName,
+                                                      componentDescription,
+                                                      componentWikiURL);
+
+        super.childAuditLogs.add(childAuditLog);
+
+        return childAuditLog;
     }
 
 
@@ -101,12 +116,12 @@ public class OMRSAuditLog
      */
     public OMRSAuditLog  createNewAuditLog(OMRSAuditingComponent reportingComponent)
     {
-        return new OMRSAuditLog(destination,
-                                reportingComponent.getComponentId(),
-                                reportingComponent.getComponentName(),
-                                reportingComponent.getComponentDescription(),
-                                reportingComponent.getComponentWikiURL());
+        return createNewAuditLog(reportingComponent.getComponentId(),
+                                 reportingComponent.getComponentName(),
+                                 reportingComponent.getComponentType(),
+                                 reportingComponent.getComponentWikiURL());
     }
+
 
 
     /**
@@ -129,14 +144,14 @@ public class OMRSAuditLog
                           String                      systemAction,
                           String                      userAction)
     {
-        destination.logRecord(reportingComponent,
-                              actionDescription,
-                              logMessageId,
-                              severity,
-                              logMessage,
-                              additionalInformation,
-                              systemAction,
-                              userAction);
+        this.storeLogRecord(actionDescription,
+                            logMessageId,
+                            severity,
+                            logMessage,
+                            additionalInformation,
+                            systemAction,
+                            userAction,
+                            null);
     }
 
 
@@ -164,14 +179,104 @@ public class OMRSAuditLog
                              String                      userAction,
                              Throwable                   caughtException)
     {
-        destination.logException(reportingComponent,
-                                 actionDescription,
-                                 logMessageId,
-                                 severity,
-                                 logMessage,
-                                 additionalInformation,
-                                 systemAction,
-                                 userAction,
-                                 caughtException);
+        this.storeLogRecord(actionDescription,
+                            logMessageId,
+                            severity,
+                            logMessage,
+                            additionalInformation,
+                            systemAction,
+                            userAction,
+                            caughtException);
+    }
+
+
+    /**
+     * Log requested details.
+     *
+     * @param actionDescription description of the activity in progress when the error occurred
+     * @param logMessageId id for the type of exception caught
+     * @param severity severity of the error
+     * @param logMessage description of the exception including specific resources involved
+     * @param additionalInformation additional data to help resolve issues of verify behavior
+     * @param systemAction the action taken by the OMRS in response to the error.
+     * @param userAction details of any action that an administrator needs to take.
+     * @param caughtException an exception that is associated with the log record.
+     */
+    private void storeLogRecord(String                         actionDescription,
+                                String                         logMessageId,
+                                OMRSAuditLogRecordSeverity     severity,
+                                String                         logMessage,
+                                String                         additionalInformation,
+                                String                         systemAction,
+                                String                         userAction,
+                                Throwable                      caughtException)
+    {
+        OMRSAuditLogRecord logRecord = new OMRSAuditLogRecord();
+
+        logRecord.setGUID(UUID.randomUUID().toString());
+        logRecord.setTimeStamp(new Date());
+
+        if (omrsDestination != null)
+        {
+            logRecord.setOriginatorProperties(omrsDestination.getOriginatorProperties());
+            logRecord.setOriginator(omrsDestination.getOriginator());
+        }
+
+        logRecord.setOriginatorComponent(new AuditLogReportingComponent(omrsReportingComponent));
+        logRecord.setReportingComponent(omrsReportingComponent);
+
+        logRecord.setActionDescription(actionDescription);
+        logRecord.setThreadId(Thread.currentThread().getId());
+        logRecord.setThreadName(Thread.currentThread().getName());
+
+        logRecord.setSeverityCode(severity.getOrdinal());
+        logRecord.setSeverity(severity.getName());
+        super.auditLogActivity.countRecord(severity.getOrdinal(), severity.getName());
+
+        logRecord.setMessageId(logMessageId);
+        logRecord.setMessageText(logMessage);
+        logRecord.setSystemAction(systemAction);
+        logRecord.setUserAction(userAction);
+
+        List<String> additionalInformationArray = null;
+
+        if (additionalInformation != null)
+        {
+            additionalInformationArray = new ArrayList<>();
+            additionalInformationArray.add(additionalInformation);
+        }
+
+        logRecord.setAdditionalInformation(additionalInformationArray);
+
+        if (caughtException != null)
+        {
+            logRecord.setExceptionClassName(caughtException.getClass().getName());
+            logRecord.setExceptionMessage(caughtException.getMessage());
+
+            StringWriter stackTrace = new StringWriter();
+            caughtException.printStackTrace(new PrintWriter(stackTrace));
+
+            logRecord.setExceptionStackTrace(stackTrace.toString());
+        }
+
+        omrsDestination.addLogRecord(logRecord);
+    }
+
+    /**
+     * Return a full report for the OMRS Audit log.
+     *
+     * @return details of the originator, children and destinations
+     */
+    public OMRSAuditLogReport getFullReport()
+    {
+        OMRSAuditLogReport report = new OMRSAuditLogReport(super.getReport());
+
+        if (omrsDestination != null)
+        {
+            report.setOriginatorProperties(omrsDestination.getOriginatorProperties());
+            report.setDestinationsReport(omrsDestination.getDestinationsReport());
+        }
+
+        return report;
     }
 }

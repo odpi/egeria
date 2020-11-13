@@ -26,7 +26,7 @@ public enum GlossaryArtifactsRelatedEntityType implements Serializable
     INFORMAL_TAG    (4,  "InformalTag",        "Informal Tag changed."),
     COMMENT         (5,  "Comment",            "Comment changed."),
     NOTE            (6,  "Note",               "Note changed."),
-    // only applicable to Glossary Node
+    // only applicable to Term Node
     ASSET           (7,  "Asset",              "Asset changed.");
 
 

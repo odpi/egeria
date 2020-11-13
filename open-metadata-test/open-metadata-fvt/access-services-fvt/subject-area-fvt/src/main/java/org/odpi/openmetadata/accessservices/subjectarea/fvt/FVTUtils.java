@@ -13,62 +13,45 @@ public class FVTUtils {
     public static void validateNode(Node node) throws SubjectAreaFVTCheckedException {
         if (node==null) {
             // error
-            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Expected node to exist,  ", "", "");
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected node to exist,  ");
         }
         if (node.getName()==null) {
             // error
-            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Expected node to have a name,  ", "", "");
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected node to have a name,  ");
         }
         if (node.getSystemAttributes()==null) {
             // error
-            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Expected " + node.getName() + "'s system attributes to exist,  ", "", "");
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected " + node.getName() + "'s system attributes to exist,  ");
         }
         if (node.getSystemAttributes().getGUID()==null) {
             // error
-            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Expected " + node.getName() + "'s guid  to exist,  ", "", "");
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected " + node.getName() + "'s userId  to exist,  ");
         }
     }
     public static void validateLine(Line line) throws SubjectAreaFVTCheckedException {
         if (line==null) {
             // error
-            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Expected line to exist,  ", "", "");
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected line to exist,  ");
         }
         if (line.getName()==null) {
             // error
-            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Expected line to have a name,  ", "", "");
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected line to have a name,  ");
         }
         if (line.getSystemAttributes()==null) {
             // error
-            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Expected " + line.getName() + "'s system attributes to exist,  ", "", "");
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected " + line.getName() + "'s system attributes to exist,  ");
         }
         if (line.getSystemAttributes().getGUID()==null) {
             // error
-            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Expected " + line.getName() + "'s guid  to exist,  ", "", "");
+            throw new SubjectAreaFVTCheckedException("ERROR: Expected " + line.getName() + "'s userId  to exist,  ");
         }
     }
-
-    /**
-     * Check that the guids for a relationship end 1 match
-     * @param lineType string Type of Line
-     * @param entityGuid entityGuid to compare
-     * @param relationshipEnd1Guid relationshipEnd1Guid to compare
-     * @throws SubjectAreaFVTCheckedException
-     */
-    static void checkGuidEnd1s(String lineType,String  entityGuid, String relationshipEnd1Guid) throws SubjectAreaFVTCheckedException {
-        if (!entityGuid.equals(relationshipEnd1Guid)) {
-            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: "+ lineType + " Relationship end 1 guid not as expected entityGuid=" + entityGuid+",relationshipEnd1Guid="+relationshipEnd1Guid, "", "");
+    public static void checkEnds(Line line1, Line line2, String lineName, String operation) throws SubjectAreaFVTCheckedException {
+        if (!line1.getEnd1().getNodeGuid().equals(line2.getEnd1().getNodeGuid())) {
+            throw new SubjectAreaFVTCheckedException("ERROR: update end 1 not as expected for relationship " + lineName + " operation " + operation);
         }
-    }
-    /**
-     * Check that the guids for a relationship end 2 match
-     * @param lineType string Type of Line
-     * @param entityGuid entityGuid to compare
-     * @param relationshipEnd2Guid relationshipEnd2Guid to compare
-     * @throws SubjectAreaFVTCheckedException
-     */
-    static void checkGuidEnd2s(String lineType,String  entityGuid, String relationshipEnd2Guid) throws SubjectAreaFVTCheckedException {
-        if (!entityGuid.equals(relationshipEnd2Guid)) {
-            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: "+ lineType + " Relationship end 2 guid not as expected entityGuid=" + entityGuid+",relationshipEnd2Guid="+relationshipEnd2Guid, "", "");
+        if (!line1.getEnd2().getNodeGuid().equals(line2.getEnd2().getNodeGuid())) {
+            throw new SubjectAreaFVTCheckedException("ERROR: update end 2 not as expected for relationship " + lineName + " operation " + operation);
         }
     }
 }

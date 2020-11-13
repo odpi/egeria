@@ -11,7 +11,7 @@ metadata content.
 
 Figure 1 captures the IT profile.
 
-![UML](0117-IT-Profiles.png)
+![UML](0117-IT-Profiles.png#pagewidth)
 > Figure 1: Describing an engine's user identities
 
 Return to [Area 1](Area-1-models.md).

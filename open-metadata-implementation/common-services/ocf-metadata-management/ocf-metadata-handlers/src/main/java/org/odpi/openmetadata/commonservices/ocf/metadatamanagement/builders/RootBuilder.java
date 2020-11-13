@@ -5,7 +5,7 @@ package org.odpi.openmetadata.commonservices.ocf.metadatamanagement.builders;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.ffdc.OMAGOCFErrorCode;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryErrorHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Classification;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementClassification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
@@ -20,11 +20,11 @@ import java.util.List;
  */
 public class RootBuilder
 {
-    protected RepositoryErrorHandler errorHandler;
-    protected OMRSRepositoryHelper   repositoryHelper;
-    protected String                 serviceName;
-    protected String                 serverName;
-    protected List<Classification>   classifications = null;
+    protected RepositoryErrorHandler      errorHandler;
+    protected OMRSRepositoryHelper        repositoryHelper;
+    protected String                      serviceName;
+    protected String                      serverName;
+    protected List<ElementClassification> classifications = null;
 
 
     /**
@@ -51,7 +51,7 @@ public class RootBuilder
      *
      * @param classifications list of classification objects
      */
-    public void setClassifications(List<Classification> classifications)
+    public void setClassifications(List<ElementClassification> classifications)
     {
         this.classifications = classifications;
     }
@@ -78,7 +78,7 @@ public class RootBuilder
 
         List<org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification> entityClassifications = new ArrayList<>();
 
-        for (Classification  classification : classifications)
+        for (ElementClassification  classification : classifications)
         {
             if (classification != null)
             {
@@ -86,16 +86,9 @@ public class RootBuilder
 
                 if (classification.getClassificationName() == null)
                 {
-                    OMAGOCFErrorCode errorCode = OMAGOCFErrorCode.NULL_CLASSIFICATION_NAME;
-                    String           errorMessage = errorCode.getErrorMessageId()
-                                                  + errorCode.getFormattedErrorMessage(serviceName, methodName);
-
-                    throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                    throw new InvalidParameterException(OMAGOCFErrorCode.NULL_CLASSIFICATION_NAME.getMessageDefinition(serviceName, methodName),
                                                         this.getClass().getName(),
                                                         methodName,
-                                                        errorMessage,
-                                                        errorCode.getSystemAction(),
-                                                        errorCode.getUserAction(),
                                                         "Classification name");
                 }
 
@@ -110,18 +103,11 @@ public class RootBuilder
                 }
                 catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException error)
                 {
-                    OMAGOCFErrorCode errorCode = OMAGOCFErrorCode.BAD_CLASSIFICATION_PROPERTIES;
-                    String           errorMessage = errorCode.getErrorMessageId()
-                                                  + errorCode.getFormattedErrorMessage(serviceName,
-                                                                                       classification.getClassificationName(),
-                                                                                       error.getMessage());
-
-                    throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                    throw new InvalidParameterException(OMAGOCFErrorCode.BAD_CLASSIFICATION_PROPERTIES.getMessageDefinition(serviceName,
+                                                                                                                            classification.getClassificationName(),
+                                                                                                                            error.getMessage()),
                                                         this.getClass().getName(),
                                                         methodName,
-                                                        errorMessage,
-                                                        errorCode.getSystemAction(),
-                                                        errorCode.getUserAction(),
                                                         error,
                                                         "Properties for classification " + classification.getClassificationName());
                 }

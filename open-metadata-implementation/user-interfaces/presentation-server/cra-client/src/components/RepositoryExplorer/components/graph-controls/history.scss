@@ -1,0 +1,76 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
+
+
+.dialog-text {
+  text-align    : left;
+  font-size     : 12px;
+  padding       : 5px;
+}
+
+.status-update {
+  margin-top     : 30px;
+  margin-bottom  : 30px;  
+}
+
+.history-results-area {
+  height         : 350px;
+  width          : 850px; 
+  overflow       : auto;
+}
+
+.table {
+  height         : 350px;
+  width          : 850px; 
+  overflow       : auto;
+}
+
+.row {
+  margin-top     : 5px;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content    : "";
+  display    : table;
+  clear      : both;
+  width      : 850px;
+}
+
+.gencolumn {
+  float      : left;
+  width      : 5%;
+  text-align : left;
+}
+
+.qrycolumn {
+  float      : left;
+  width      : 35%;
+  text-align : left;
+}
+
+.inscolumn {
+  float      : left;
+  width      : 60%;
+  text-align : left;
+}
+
+.query-text {
+  width      : 90%;
+}
+
+.dismiss-button-container {
+  height   : 50px;
+  width    : 210px;
+  position : absolute;
+  right    : 0px;
+  bottom   : 0px;
+}
+
+.dismiss-1-button-container {
+  height   : 50px;
+  width    : 105px;
+  position : absolute;
+  right    : 0px;
+  bottom   : 0px;
+}

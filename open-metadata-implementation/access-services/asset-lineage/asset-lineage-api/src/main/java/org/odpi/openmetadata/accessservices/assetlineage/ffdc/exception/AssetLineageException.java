@@ -2,150 +2,122 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetlineage.ffdc.exception;
 
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
+
+import java.util.Map;
+
 /**
  * AssetLineageException provides a checked exception for reporting errors found when using
  * the Asset Lineage OMAS services.
- * Typically these errors are either configuration or operational errors that can be fixed by an administrator
- * or power AssetConsumerInterface.  However, there may be the odd bug that surfaces here.
- * The AssetLineageErrorCode can be used with this exception to populate it with standard messages.
- * The aim is to be able to uniquely identify the cause and remedy for the error.
  */
-public class AssetLineageException extends RuntimeException {
-
-    /*
-     * These default values are only seen if this exception is initialized using one of its superclass constructors.
-     */
-    private int reportedHTTPCode;
-    private String reportingClassName;
-    private String reportingActionDescription;
-    private String reportedErrorMessage;
-    private String reportedSystemAction;
-    private String reportedUserAction;
-    private Throwable reportedCaughtException = null;
+public class AssetLineageException extends OCFCheckedExceptionBase {
+    private static final long serialVersionUID = 1L;
 
 
     /**
-     * This is the typical constructor used for creating a ConnectionCheckedException.
+     * This is the typical constructor used for creating an exception.
      *
-     * @param httpCode          - http response code to use if this exception flows over a rest call
-     * @param className         - name of class reporting error
-     * @param actionDescription - description of function it was performing when error detected
-     * @param errorMessage      - description of error
-     * @param systemAction      - actions of the system as a result of the error
-     * @param userAction        - instructions for correcting the error
+     * @param messageDefinition content of the message
+     * @param className         name of class reporting error
+     * @param actionDescription description of function it was performing when error detected
      */
-    public AssetLineageException(int httpCode,
+    public AssetLineageException(ExceptionMessageDefinition messageDefinition,
                                  String className,
-                                 String actionDescription,
-                                 String errorMessage,
-                                 String systemAction,
-                                 String userAction) {
-        super(errorMessage);
-        this.reportedHTTPCode = httpCode;
-        this.reportingClassName = className;
-        this.reportingActionDescription = actionDescription;
-        this.reportedErrorMessage = errorMessage;
-        this.reportedSystemAction = systemAction;
-        this.reportedUserAction = userAction;
+                                 String actionDescription) {
+        super(messageDefinition, className, actionDescription);
     }
 
 
     /**
-     * This is the  constructor used for creating a ConnectionCheckedException that resulted from a previous error.
+     * This is the typical constructor used for creating an exception.
+     * The properties allow additional information to be associated with the exception.
      *
-     * @param httpCode          - http response code to use if this exception flows over a rest call
-     * @param className         - name of class reporting error
-     * @param actionDescription - description of function it was performing when error detected
-     * @param errorMessage      - description of error
-     * @param systemAction      - actions of the system as a result of the error
-     * @param userAction        - instructions for correcting the error
-     * @param caughtError       - the error that resulted in this exception.
+     * @param messageDefinition content of the message
+     * @param className         name of class reporting error
+     * @param actionDescription description of function it was performing when error detected
+     * @param relatedProperties arbitrary properties that may help with diagnosing the problem.
+     */
+    public AssetLineageException(ExceptionMessageDefinition messageDefinition,
+                                 String className,
+                                 String actionDescription,
+                                 Map<String, Object> relatedProperties) {
+        super(messageDefinition, className, actionDescription, relatedProperties);
+    }
+
+
+    /**
+     * This is the constructor used for creating an exception when an unexpected error has been caught.
+     * The properties allow additional information to be associated with the exception.
+     *
+     * @param messageDefinition content of the message
+     * @param className         name of class reporting error
+     * @param actionDescription description of function it was performing when error detected
+     * @param caughtError       previous error causing this exception
+     */
+    public AssetLineageException(ExceptionMessageDefinition messageDefinition,
+                                 String className,
+                                 String actionDescription,
+                                 Throwable caughtError) {
+        super(messageDefinition, className, actionDescription, caughtError);
+    }
+
+
+    /**
+     * This is the constructor used for creating an exception when an unexpected error has been caught.
+     * The properties allow additional information to be associated with the exception.
+     *
+     * @param messageDefinition content of the message
+     * @param className         name of class reporting error
+     * @param actionDescription description of function it was performing when error detected
+     * @param caughtError       previous error causing this exception
+     * @param relatedProperties arbitrary properties that may help with diagnosing the problem.
+     */
+    public AssetLineageException(ExceptionMessageDefinition messageDefinition,
+                                 String className,
+                                 String actionDescription,
+                                 Throwable caughtError,
+                                 Map<String, Object> relatedProperties) {
+        super(messageDefinition, className, actionDescription, caughtError, relatedProperties);
+    }
+
+
+    /**
+     * This is the constructor used when receiving an exception from a remote server.  The values are
+     * stored directly in the response object and are passed explicitly to the new exception.
+     * Notice that the technical aspects of the exception - such as class name creating the exception
+     * are local values so that the implementation of the server is not exposed.
+     *
+     * @param httpCode               http response code to use if this exception flows over a REST call
+     * @param className              name of class reporting error
+     * @param actionDescription      description of function it was performing when error detected
+     * @param errorMessage           description of error
+     * @param errorMessageId         unique identifier for the message
+     * @param errorMessageParameters parameters that were inserted in the message
+     * @param systemAction           actions of the system as a result of the error
+     * @param userAction             instructions for correcting the error
+     * @param caughtErrorClassName   previous error causing this exception
+     * @param relatedProperties      arbitrary properties that may help with diagnosing the problem.
      */
     public AssetLineageException(int httpCode,
                                  String className,
                                  String actionDescription,
                                  String errorMessage,
+                                 String errorMessageId,
+                                 String[] errorMessageParameters,
                                  String systemAction,
                                  String userAction,
-                                 Throwable caughtError) {
-        super(errorMessage, caughtError);
-        this.reportedHTTPCode = httpCode;
-        this.reportingClassName = className;
-        this.reportingActionDescription = actionDescription;
-        this.reportedErrorMessage = errorMessage;
-        this.reportedSystemAction = systemAction;
-        this.reportedUserAction = userAction;
-        this.reportedCaughtException = caughtError;
-    }
-
-
-    /**
-     * Return the HTTP response code to use with this exception.
-     *
-     * @return reportedHTTPCode
-     */
-    public int getReportedHTTPCode() {
-        return reportedHTTPCode;
-    }
-
-    /**
-     * The class that created this exception.
-     *
-     * @return reportingClassName
-     */
-    public String getReportingClassName() {
-        return reportingClassName;
-    }
-
-
-    /**
-     * The type of request that the class was performing when the condition occurred that resulted in this
-     * exception.
-     *
-     * @return reportingActionDescription
-     */
-    public String getReportingActionDescription() {
-        return reportingActionDescription;
-    }
-
-
-    /**
-     * A formatted short description of the cause of the condition that resulted in this exception.
-     *
-     * @return reportedErrorMessage
-     */
-    public String getErrorMessage() {
-        return reportedErrorMessage;
-    }
-
-
-    /**
-     * A description of the action that the system took as a result of the error condition.
-     *
-     * @return reportedSystemAction
-     */
-    public String getReportedSystemAction() {
-        return reportedSystemAction;
-    }
-
-
-    /**
-     * A description of the action necessary to correct the error.
-     *
-     * @return reportedUserAction
-     */
-    public String getReportedUserAction() {
-        return reportedUserAction;
-    }
-
-
-    /**
-     * An exception that was caught and wrapped by this exception.  If a null is returned, then this exception is
-     * newly created and not the result of a previous exception.
-     *
-     * @return reportedCaughtException
-     */
-    public Throwable getReportedCaughtException() {
-        return reportedCaughtException;
+                                 String caughtErrorClassName,
+                                 Map<String, Object> relatedProperties) {
+        super(httpCode,
+                className,
+                actionDescription,
+                errorMessage,
+                errorMessageId,
+                errorMessageParameters,
+                systemAction,
+                userAction,
+                caughtErrorClassName,
+                relatedProperties);
     }
 }

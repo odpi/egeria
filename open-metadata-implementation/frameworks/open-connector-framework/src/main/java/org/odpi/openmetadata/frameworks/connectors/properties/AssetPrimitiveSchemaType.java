@@ -11,8 +11,10 @@ import java.util.Objects;
  * PrimitiveSchemaType describes a schema element that has a primitive type.  This class stores which
  * type of primitive type it is an a default value if supplied.
  */
-public class AssetPrimitiveSchemaType extends AssetSchemaType
+public class AssetPrimitiveSchemaType extends AssetSimpleSchemaType
 {
+    private static final long     serialVersionUID = 1L;
+
     protected PrimitiveSchemaType primitiveSchemaTypeBean;
 
     /**
@@ -52,7 +54,7 @@ public class AssetPrimitiveSchemaType extends AssetSchemaType
      * @param parentAsset descriptor for parent asset
      * @param primitiveSchemaTypeBean bean containing the schema element properties
      */
-    public AssetPrimitiveSchemaType(AssetDescriptor parentAsset,
+    public AssetPrimitiveSchemaType(AssetDescriptor     parentAsset,
                                     PrimitiveSchemaType primitiveSchemaTypeBean)
     {
         super(parentAsset, primitiveSchemaTypeBean);
@@ -104,22 +106,6 @@ public class AssetPrimitiveSchemaType extends AssetSchemaType
 
 
     /**
-     * Return the data type for this element.  Null means unknown data type.
-     *
-     * @return String DataType
-     */
-    public String getDataType() { return primitiveSchemaTypeBean.getDataType(); }
-
-
-    /**
-     * Return the default value for the element.  Null means no default value set up.
-     *
-     * @return String containing default value
-     */
-    public String getDefaultValue() { return primitiveSchemaTypeBean.getDefaultValue(); }
-
-
-    /**
      * Return a clone of this schema element.  This method is needed because AssetSchemaType
      * is abstract.
      *
@@ -167,19 +153,27 @@ public class AssetPrimitiveSchemaType extends AssetSchemaType
     public String toString()
     {
         return "AssetPrimitiveSchemaType{" +
-                "dataType='" + getDataType() + '\'' +
+                "parentAsset=" + parentAsset +
+                ", dataType='" + getDataType() + '\'' +
                 ", defaultValue='" + getDefaultValue() + '\'' +
-                ", displayName='" + getDisplayName() + '\'' +
                 ", versionNumber='" + getVersionNumber() + '\'' +
                 ", author='" + getAuthor() + '\'' +
                 ", usage='" + getUsage() + '\'' +
                 ", encodingStandard='" + getEncodingStandard() + '\'' +
-                ", extendedProperties=" + getExtendedProperties() +
+                ", formula='" + getFormula() + '\'' +
+                ", queries=" + getQueries() +
+                ", deprecated=" + isDeprecated() +
+                ", displayName='" + getDisplayName() + '\'' +
+                ", description='" + getDescription() + '\'' +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
+                ", meanings=" + getMeanings() +
+                ", securityTags=" + getSecurityTags() +
                 ", additionalProperties=" + getAdditionalProperties() +
                 ", type=" + getType() +
                 ", GUID='" + getGUID() + '\'' +
                 ", URL='" + getURL() + '\'' +
+                ", assetClassifications=" + getAssetClassifications() +
+                ", extendedProperties=" + getExtendedProperties() +
                 '}';
     }
 

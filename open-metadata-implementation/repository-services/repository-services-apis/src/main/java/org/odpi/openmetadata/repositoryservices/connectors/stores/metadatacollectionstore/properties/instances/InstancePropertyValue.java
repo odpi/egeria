@@ -113,7 +113,7 @@ public abstract class InstancePropertyValue extends InstanceElementHeader
      */
     protected <K, V extends InstancePropertyValue> Map<K, Object> mapValuesAsObject(Map<K, V> valMap)
     {
-        return convertValues(valMap, entry -> entry.getValue().valueAsObject());
+        return convertValues(valMap, entry -> (entry.getValue() == null ? null : entry.getValue().valueAsObject()));
     }
 
 
@@ -128,19 +128,20 @@ public abstract class InstancePropertyValue extends InstanceElementHeader
      */
     protected <K, V extends InstancePropertyValue> Map<K, String> mapValuesAsString(Map<K, V> valMap)
     {
-        return convertValues(valMap, entry -> entry.getValue().valueAsString());
+        return convertValues(valMap, entry -> (entry.getValue() == null ? "<null>" : entry.getValue().valueAsString()));
     }
 
 
     /**
-     * Converts an InstancePropertyValue to the values ​​we need.
+     * Converts an InstancePropertyValue to the values we need.
      * Object, String or whatever.
      *
      * @param valMap values
      * @param mapper converter
      * @param <K> key
      * @param <V> value
-     * @param <K> no idea
+     * @param <R> type for return Map values.
+     *           For example, types Object {@link #mapValuesAsObject} or String {@link #mapValuesAsString}.
      * @return Map with new values
      */
     private <K, V extends InstancePropertyValue, R> Map<K, R> convertValues(Map<K, V> valMap, Function<Map.Entry<K, V>, R> mapper)
@@ -149,7 +150,7 @@ public abstract class InstancePropertyValue extends InstanceElementHeader
                 .map(Map::entrySet)
                 .map(Collection::stream)
                 .orElseGet(Stream::empty)
-                .collect(Collectors.toMap(Map.Entry::getKey, mapper));
+                .collect(HashMap::new, (m, e) -> m.put(e.getKey(), mapper.apply(e)), HashMap::putAll);
     }
 
 

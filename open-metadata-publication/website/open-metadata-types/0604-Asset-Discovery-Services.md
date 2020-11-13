@@ -7,7 +7,7 @@ The AssetDiscoveryService relationship defines which
 [open discovery services](../../../open-metadata-implementation/frameworks/open-discovery-framework/docs/discovery-service.md)
 should be run against the Asset.
 
-![UML](0604-Asset-Discovery-Services.png)
+![UML](0604-Asset-Discovery-Services.png#pagewidth)
 
 
 Return to [Area 6](Area-6-models.md).

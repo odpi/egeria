@@ -1,41 +1,44 @@
-<!-- SPDX-License-Identifier: Apache-2.0 -->
+# ui-chassis-spring
 
-The ui chassis provides the base server framework to host the open metadata
-services in the [UI Server Platform](https://egeria.odpi.org/open-metadata-publication/website/ui-server).  
+⚠️ The UI included in this spring-boot app under `/src/main/static` has been extracted and moved in a separate repository here [0]. ⚠️
 
-The **ui-chassis-spring** module provides the implementation of the ui chassis.
-Its **main()** method is located in a Java class called
-**UIServerPlatform** that uses [Spring Boot](https://spring.io/projects/spring-boot)
-for the server framework.
+In order to have working UI for this module you need to pass new arguments upon starting the application.
 
-When the **UIServerPlatform** is started, Spring Boot does a component scan for all Spring
-services that are in Java packages stemming from `org.odpi.openmetadata.*`
-and that are visible to this module.
+Arguments: `--zuul.routes.ui.url=https://ui.production`.
 
-To make a new Java package visible to **UIServerPlatform**, add its **spring** package
-to the **pom.xml** file for **ui-chassis-spring**.
+Also you need to make sure you have deployed statically the egeria-ui [0] project at a given URL (e.g. https://ui.production) so
+that it can be linked to.
 
-When the UI server platform is first started, the REST APIs
-are defined for its endpoint.
-However, only the [Administration Services](https://egeria.odpi.org/open-metadata-implementation/user-interfaces/ui-admin-services) are activated at this point.
-The other services will each give an error response if called.
+[0] - [https://github.com/odpi/egeria-ui](https://github.com/odpi/egeria-ui)
 
-To activate these services, it is necessary to use the
-admin services
-to set up a configuration document for the server that defines
-how the services should be configured.
+# Start
 
-Setting up the configuration document is a one-time activity.
-Once it is in place it is possible to activate and deactivate the
-services in the UIServerPlatform many times over multiple server restarts. Also, it can be activate at startup 
-by setting spring-boot property  `startup.server.list`. This startup option is made by 
-default by user id `system`, and it can be override by setting spring-boot property `startup.user`
+Start the base server for the `ui-chassis-spring`.
 
-Details of how to set up the configuration document, and activate/deactivate
-the open metadata services can be found in [admin-services](https://egeria.odpi.org/open-metadata-implementation/admin-services/Using-the-Admin-Services.md).
+```bash
+$ git clone https://github.com/odpi/egeria-ui
+$ cd egeria-ui
+$ npm install
+$ npm run build
+$ ls ./build/prod/
+$ # deploy the build/prod folder in a static server under a given URL (e.g. https://ui.production)
+```
 
-Swagger API documentation is generated with the chassis and is documented in [Swagger Generation](SwaggerGeneration.md).
+```bash
+$ mvn spring-boot:run -Dspring-boot.run.folders=/path/to/libs/ -Dspring-boot.run.arguments="--theme=default --zuul.routes.ui.url=https://ui.production --omas.server.name= --omas.server.url= --open.lineage.server.url= --open.lineage.server.name= --server.ssl.trust-store=/path/to/truststore.p12"
+```
 
+# Start in development mode
+
+```bash
+$ git clone https://github.com/odpi/egeria-ui
+$ cd egeria-ui
+$ npm install
+$ npm run start:dev # will start a static server on http://localhost:8081
+
+$ cd egeria/open-metadata-implementation/user-interfaces/ui-chassis/ui-chassis-spring/
+$ mvn spring-boot:run -Dspring-boot.run.folders=/path/to/libs/ -Dspring-boot.run.arguments="--theme=default --zuul.routes.ui.url=http://localhost:8081 --omas.server.name= --omas.server.url= --open.lineage.server.url= --open.lineage.server.name= --server.ssl.trust-store=/path/to/truststore.p12"
+```
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

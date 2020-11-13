@@ -8,7 +8,7 @@ within a software server that supports one or more related services.
 Subsystems can be organized in a hierarchy where course-grained subsystems can be
 decomposed into more fine grained subsystems.
 
-The  [OMAG Server](omag-server.md) is a flexible software server whose subsystems
+The [OMAG Server](omag-server.md) is a flexible software server whose subsystems
 can be activated (or not) through the presence (or absence) of the subsystem's configuration
 properties in the OMAG server's [configuration document](configuration-document.md).
 
@@ -45,7 +45,7 @@ The potential subsystems within an [OMAG Server](omag-server.md) are as follows:
 * **[Discovery Engine Services](../../../governance-servers/discovery-engine-services)** for running automated metadata discovery services in a discovery engine.
   These services are the principle services of the discovery server.
 
-* **[Stewardship Services](../../../governance-servers/stewardship-services)** for managing and resolving issues that are detected in the assets being governed by Egeria.
+* **[Stewardship Engine Services](../../../governance-servers/stewardship-engine-services)** for managing and resolving issues that are detected in the assets being governed by Egeria.
   These services are the principle services of the stewardship server.
   
 * **[Security Sync Services](../../../governance-servers/security-sync-services)** for maintaining metadata and configuration in an security enforcement engine.

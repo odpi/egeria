@@ -11,10 +11,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * A SummaryCategory is a summary of a category. It is used to identify a related category.
+ * Note that this summary could represent a SubjectAreaDefinition even though the NodeType is Category.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class CategorySummary extends NodeSummary {
-    protected final NodeType nodeType = NodeType.Category;
+    public CategorySummary() {  type = NodeType.Category; }
 }

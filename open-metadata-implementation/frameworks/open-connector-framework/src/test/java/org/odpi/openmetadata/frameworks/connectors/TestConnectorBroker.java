@@ -317,7 +317,7 @@ public class TestConnectorBroker
         }
         catch (Throwable   exc)
         {
-            assertTrue(exc.getMessage().contains("Mock error message"));
+            assertTrue(exc.getMessage().contains("OCF-PROPERTIES-400-014"));
         }
     }
 
@@ -347,7 +347,7 @@ public class TestConnectorBroker
         }
         catch (Throwable   exc)
         {
-            assertTrue(exc.getMessage().contains("Mock error message"));
+            assertTrue(exc.getMessage().contains("OCF-PROPERTIES-400-014"));
         }
     }
 

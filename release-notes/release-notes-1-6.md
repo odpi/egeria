@@ -1,31 +1,27 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Release 1.6 (Planned March 2020)
+# Release 1.6 (March 2020)
 
 Release 1.6 adds support for:
-  * Glossaries, reference data and model support
-  * Data quality management
-  * API development support
-
+   * Audit Log Framework (ALF) technical preview
+   * Repository Explorer (TEX) 
+    
 Below are the highlights:
 
-* There are new access services:
-   * The [Subject Area OMAS](../open-metadata-implementation/access-services/subject-area) provides support for defining, reviewing and refining glossary content, reference data and rules for a subject area.
-   * The [Glossary View OMAS](../open-metadata-implementation/access-services/glossary-view) supports the browsing of glossary content.
-   * The [Design Model OMAS](../open-metadata-implementation/access-services/design-model) supports the management of data models.
-   * The [Software Developer OMAS](../open-metadata-implementation/access-services/software-developer) supports the generation of new software artifacts for developers.
+* There is a new framework:
+   * The [Audit Log Framework](../open-metadata-implementation/frameworks/audit-log-framework) (ALF) provides interface definitions and classes to enable connectors to support natural language enabled diagnostics such as exception messages and audit log messages.
 
-* The Egeria User Interface supports the definitions of subject areas.
+* There is a new user interface module:
+    * The [Repository Explorer](../open-metadata-implementation/user-interfaces/ui-chassis/ui-chassis-spring/docs/RepositoryExplorer/RepositoryExplorerGuide.md) (Rex) can help you explore and visualize the metadata in a repository. It retrieves entities and relationships from the repository and displays them. A details panel also shows the properties and other information about an object. Each entity or relationship is added to a network diagram, which shows how they are connected.
 
-* There is an extension to the Swagger tooling that integrates
-  the Egeria code API generation.
+* The Swagger-based API documentation for the Egeria server chassis has been reorganized to align with our modules structure & to provide links into our other documentation which also will clarify if the module is released, in Tech Preview, or still in development. The docs can be found at `https://<server>:<port>/swagger-ui.htm`. Further enhancements will follow in future releases.
 
-* There are new [tutorials](../open-metadata-resources/open-metadata-tutorials),
-  [hands-on labs](../open-metadata-resources/open-metadata-labs),
-  [samples](../open-metadata-resources/open-metadata-samples) and
-  [open metadata archives](../open-metadata-resources/open-metadata-archives) demonstrating
-  these new capabilities of Egeria.
+* Many dependencies have been updated including:
+    * Kafka client upgraded to 2.4.1
+    * Spring updated to 5.2.4, spring boot to 2.2.5 & other spring components accordingly.
+  
+  For a full list refer to the git commit logs.
    
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

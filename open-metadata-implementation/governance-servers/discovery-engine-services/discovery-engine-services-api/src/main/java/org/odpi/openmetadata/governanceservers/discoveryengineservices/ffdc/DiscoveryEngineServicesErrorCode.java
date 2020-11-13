@@ -2,21 +2,13 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.discoveryengineservices.ffdc;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.text.MessageFormat;
-import java.util.Arrays;
-
-import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
-import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet;
 
 /**
- * The ODF error code is used to define first failure data capture (FFDC) for errors that occur when working with
- * ODF Discovery Services.  It is used in conjunction with all ODF Exceptions, both Checked and Runtime (unchecked).
+ * The DiscoveryEngineServicesErrorCode error code is used to define first failure data capture (FFDC) for errors that
+ * occur when working with the Discovery Engine Services.  It is used in conjunction with all exceptions,
+ * both Checked and Runtime (unchecked).
  *
  * The 5 fields in the enum are:
  * <ul>
@@ -33,10 +25,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  *     <li>UserAction - describes how a user should correct the error</li>
  * </ul>
  */
-@JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonIgnoreProperties(ignoreUnknown=true)
-public enum DiscoveryEngineServicesErrorCode
+public enum DiscoveryEngineServicesErrorCode implements ExceptionMessageSet
 {
     /*
      * Invalid configuration document - these errors need the server to be restarted to resolve.
@@ -189,17 +178,12 @@ public enum DiscoveryEngineServicesErrorCode
              "Discovery server {0} is unable to pass a discovery request to discovery engine {1} because this discovery engine has not " +
                                              "retrieved its configuration from the metadata server",
                                      "The discovery engine is not able to run any discovery requests until it is able to retrieve its configuration.",
-                                     "."),
+                                     "Use the configuration interface of the Discovery Engine OMAS to create a definition of at least one discovery" +
+                                             " engine."),
     ;
 
 
-    private int    httpErrorCode;
-    private String errorMessageId;
-    private String errorMessage;
-    private String systemAction;
-    private String userAction;
-
-    private static final Logger log = LoggerFactory.getLogger(DiscoveryEngineServicesErrorCode.class);
+    private ExceptionMessageDefinition messageDefinition;
 
 
     /**
@@ -218,67 +202,35 @@ public enum DiscoveryEngineServicesErrorCode
      */
     DiscoveryEngineServicesErrorCode(int  httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
     {
-        this.httpErrorCode = httpErrorCode;
-        this.errorMessageId = errorMessageId;
-        this.errorMessage = errorMessage;
-        this.systemAction = systemAction;
-        this.userAction = userAction;
-    }
-
-
-    public int getHTTPErrorCode()
-    {
-        return httpErrorCode;
+        this.messageDefinition = new ExceptionMessageDefinition(httpErrorCode,
+                                                                errorMessageId,
+                                                                errorMessage,
+                                                                systemAction,
+                                                                userAction);
     }
 
 
     /**
-     * Returns the unique identifier for the error message.
+     * Retrieve a message definition object for an exception.  This method is used when there are no message inserts.
      *
-     * @return errorMessageId
+     * @return message definition object.
      */
-    public String getErrorMessageId()
+    public ExceptionMessageDefinition getMessageDefinition()
     {
-        return errorMessageId;
+        return messageDefinition;
     }
 
 
     /**
-     * Returns the error message with the placeholders filled out with the supplied parameters.
+     * Retrieve a message definition object for an exception.  This method is used when there are values to be inserted into the message.
      *
-     * @param params   strings that plug into the placeholders in the errorMessage
-     * @return errorMessage (formatted with supplied parameters)
+     * @param params array of parameters (all strings).  They are inserted into the message according to the numbering in the message text.
+     * @return message definition object.
      */
-    public String getFormattedErrorMessage(String... params)
+    public ExceptionMessageDefinition getMessageDefinition(String... params)
     {
-        MessageFormat mf = new MessageFormat(errorMessage);
-        String result = mf.format(params);
+        messageDefinition.setMessageParameters(params);
 
-        log.debug(String.format("DiscoveryEngineServicesErrorCode.getMessage(%s): %s", Arrays.toString(params), result));
-
-        return result;
-    }
-
-
-    /**
-     * Returns a description of the action taken by the system when the condition that caused this exception was
-     * detected.
-     *
-     * @return systemAction
-     */
-    public String getSystemAction()
-    {
-        return systemAction;
-    }
-
-
-    /**
-     * Returns instructions of how to resolve the issue reported in this exception.
-     *
-     * @return userAction
-     */
-    public String getUserAction()
-    {
-        return userAction;
+        return messageDefinition;
     }
 }

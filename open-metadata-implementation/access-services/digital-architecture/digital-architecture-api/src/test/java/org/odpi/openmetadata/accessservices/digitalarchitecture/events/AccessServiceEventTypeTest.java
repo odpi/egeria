@@ -59,9 +59,6 @@ public class AccessServiceEventTypeTest
     @Test public void testAllErrorCodeValues()
     {
         testSingleErrorCodeValues(DigitalArchitectureEventType.UNKNOWN_DIGITAL_ARCHITECTURE_EVENT);
-        testSingleErrorCodeValues(DigitalArchitectureEventType.NEW_DIGITAL_SERVICE_EVENT);
-        testSingleErrorCodeValues(DigitalArchitectureEventType.UPDATED_DIGITAL_SERVICE_EVENT);
-        testSingleErrorCodeValues(DigitalArchitectureEventType.DELETED_DIGITAL_SERVICE_EVENT);
     }
 
 
@@ -77,7 +74,7 @@ public class AccessServiceEventTypeTest
 
         try
         {
-            jsonString = objectMapper.writeValueAsString(DigitalArchitectureEventType.NEW_DIGITAL_SERVICE_EVENT);
+            jsonString = objectMapper.writeValueAsString(DigitalArchitectureEventType.UNKNOWN_DIGITAL_ARCHITECTURE_EVENT);
         }
         catch (Throwable  exc)
         {
@@ -86,7 +83,7 @@ public class AccessServiceEventTypeTest
 
         try
         {
-            assertTrue(objectMapper.readValue(jsonString, DigitalArchitectureEventType.class) == DigitalArchitectureEventType.NEW_DIGITAL_SERVICE_EVENT);
+            assertTrue(objectMapper.readValue(jsonString, DigitalArchitectureEventType.class) == DigitalArchitectureEventType.UNKNOWN_DIGITAL_ARCHITECTURE_EVENT);
         }
         catch (Throwable  exc)
         {
@@ -100,7 +97,7 @@ public class AccessServiceEventTypeTest
      */
     @Test public void testToString()
     {
-        assertTrue(DigitalArchitectureEventType.DELETED_DIGITAL_SERVICE_EVENT.toString().contains("DigitalArchitectureEventType"));
+        assertTrue(DigitalArchitectureEventType.UNKNOWN_DIGITAL_ARCHITECTURE_EVENT.toString().contains("DigitalArchitectureEventType"));
     }
 
 
@@ -109,8 +106,8 @@ public class AccessServiceEventTypeTest
      */
     @Test public void testEquals()
     {
-        assertTrue(DigitalArchitectureEventType.NEW_DIGITAL_SERVICE_EVENT.equals(DigitalArchitectureEventType.NEW_DIGITAL_SERVICE_EVENT));
-        assertFalse(DigitalArchitectureEventType.NEW_DIGITAL_SERVICE_EVENT.equals(DigitalArchitectureEventType.DELETED_DIGITAL_SERVICE_EVENT));
+        assertTrue(DigitalArchitectureEventType.UNKNOWN_DIGITAL_ARCHITECTURE_EVENT.equals(DigitalArchitectureEventType.UNKNOWN_DIGITAL_ARCHITECTURE_EVENT));
+        assertFalse(DigitalArchitectureEventType.UNKNOWN_DIGITAL_ARCHITECTURE_EVENT.equals(null));
     }
 
 
@@ -119,7 +116,8 @@ public class AccessServiceEventTypeTest
      */
     @Test public void testHashcode()
     {
-        assertTrue(DigitalArchitectureEventType.UPDATED_DIGITAL_SERVICE_EVENT.hashCode() == DigitalArchitectureEventType.UPDATED_DIGITAL_SERVICE_EVENT.hashCode());
-        assertFalse(DigitalArchitectureEventType.UPDATED_DIGITAL_SERVICE_EVENT.hashCode() == DigitalArchitectureEventType.UNKNOWN_DIGITAL_ARCHITECTURE_EVENT.hashCode());
+        assertTrue(DigitalArchitectureEventType.UNKNOWN_DIGITAL_ARCHITECTURE_EVENT.hashCode() == DigitalArchitectureEventType.UNKNOWN_DIGITAL_ARCHITECTURE_EVENT.hashCode());
+        // assertFalse(DigitalArchitectureEventType.UNKNOWN_DIGITAL_ARCHITECTURE_EVENT.hashCode() == DigitalArchitectureEventType
+        // .UNKNOWN_DIGITAL_ARCHITECTURE_EVENT.hashCode());
     }
 }

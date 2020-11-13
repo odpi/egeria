@@ -3,7 +3,7 @@
 
 # 0230 Code Tables
 
-![UML](0230-Code-Tables.png)
+![UML](0230-Code-Tables.png#pagewidth)
 
 
 Return to [Area 2](Area-2-models.md).

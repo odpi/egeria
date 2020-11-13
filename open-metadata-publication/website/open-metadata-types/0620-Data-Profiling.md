@@ -6,7 +6,7 @@
 Profiling analysis looks at the data values
 in the asset and summarizes their characteristics.
 
-![UML](0620-Data-Profiling.png)
+![UML](0620-Data-Profiling.png#pagewidth)
 
 
 Return to [Area 6](Area-6-models.md).

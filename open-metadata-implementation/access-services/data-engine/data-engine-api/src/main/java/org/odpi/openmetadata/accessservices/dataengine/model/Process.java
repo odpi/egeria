@@ -27,6 +27,7 @@ public class Process extends Asset {
     private List<PortAlias> portAliases;
     private List<LineageMapping> lineageMappings;
     private UpdateSemantic updateSemantic;
+    private List<ParentProcess> parentProcesses;
 
     public Process() {
     }
@@ -87,22 +88,31 @@ public class Process extends Asset {
         this.updateSemantic = updateSemantic;
     }
 
+    public List<ParentProcess> getParentProcesses() {
+        return parentProcesses;
+    }
+
+    public void setParentProcesses(List<ParentProcess> parentProcesses) {
+        this.parentProcesses = parentProcesses;
+    }
+
     @Override
     public String toString() {
         return "Process{" +
-                "qualifiedName='" + qualifiedName + '\'' +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", latestChange='" + latestChange + '\'' +
-                ", zoneMembership=" + zoneMembership +
-                ", displayName='" + displayName + '\'' +
-                ", owner='" + owner + '\'' +
-                ", ownerType=" + ownerType +
+                "name='" + name + '\'' +
                 ", formula='" + formula + '\'' +
                 ", portImplementations=" + portImplementations +
                 ", portAliases=" + portAliases +
                 ", lineageMappings=" + lineageMappings +
                 ", updateSemantic=" + updateSemantic +
+                ", parentProcesses=" + parentProcesses +
+                ", displayName='" + displayName + '\'' +
+                ", shortDescription='" + shortDescription + '\'' +
+                ", description='" + description + '\'' +
+                ", owner='" + owner + '\'' +
+                ", ownerType=" + ownerType +
+                ", zoneMembership=" + zoneMembership +
+                ", latestChange='" + latestChange + '\'' +
                 '}';
     }
 
@@ -110,26 +120,19 @@ public class Process extends Asset {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
         Process process = (Process) o;
-        return Objects.equals(qualifiedName, process.qualifiedName) &&
-                Objects.equals(name, process.name) &&
-                Objects.equals(description, process.description) &&
-                Objects.equals(latestChange, process.latestChange) &&
-                Objects.equals(zoneMembership, process.zoneMembership) &&
-                Objects.equals(displayName, process.displayName) &&
-                Objects.equals(owner, process.owner) &&
-                ownerType == process.ownerType &&
+        return Objects.equals(name, process.name) &&
                 Objects.equals(formula, process.formula) &&
                 Objects.equals(portImplementations, process.portImplementations) &&
                 Objects.equals(portAliases, process.portAliases) &&
                 Objects.equals(lineageMappings, process.lineageMappings) &&
-                updateSemantic == process.updateSemantic;
+                updateSemantic == process.updateSemantic &&
+                Objects.equals(parentProcesses, process.parentProcesses);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(qualifiedName, name, description, latestChange, zoneMembership, displayName, owner,
-                ownerType, formula, portImplementations, portAliases, lineageMappings, updateSemantic);
+        return Objects.hash(super.hashCode(), name, formula, portImplementations, portAliases, lineageMappings, updateSemantic, parentProcesses);
     }
 }
-

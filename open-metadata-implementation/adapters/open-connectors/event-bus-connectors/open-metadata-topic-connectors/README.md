@@ -1,4 +1,5 @@
-<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- SPDX-License-Identifier: CC-BY-4.0 -->
+<!-- Copyright Contributors to the ODPi Egeria project 2020. -->
   
 # Open Metadata Topic Connectors
 
@@ -22,3 +23,13 @@ supports in-memory event passing between the OMRS and OMAS modules within a sing
 
 * **[kafka-open-metadata-topic-connector](kafka-open-metadata-topic-connector)** that
 supports event passing over [Apache Kafka](https://kafka.apache.org).
+
+
+
+----
+Return to [event-bus-connectors](..) module.
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

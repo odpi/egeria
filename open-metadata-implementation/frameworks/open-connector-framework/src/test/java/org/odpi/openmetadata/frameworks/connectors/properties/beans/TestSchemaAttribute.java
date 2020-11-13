@@ -19,10 +19,9 @@ import static org.testng.Assert.assertTrue;
 public class TestSchemaAttribute
 {
     private ElementType                       type                 = new ElementType();
-    private List<Classification>              classifications      = new ArrayList<>();
+    private List<ElementClassification>       classifications      = new ArrayList<>();
     private Map<String, String>               additionalProperties = new HashMap<>();
     private SchemaType                        schemaElement        = new PrimitiveSchemaType();
-    private SchemaLink                        schemaLink           = new SchemaLink();
     private List<SchemaAttributeRelationship> relationships        = new ArrayList<>();
 
 
@@ -32,7 +31,7 @@ public class TestSchemaAttribute
      */
     public TestSchemaAttribute()
     {
-        classifications.add(new Classification());
+        classifications.add(new ElementClassification());
         relationships.add(new SchemaAttributeRelationship());
         additionalProperties.put("TestKey", "TestValue");
     }
@@ -55,13 +54,14 @@ public class TestSchemaAttribute
         testObject.setQualifiedName("TestQualifiedName");
         testObject.setAdditionalProperties(additionalProperties);
 
-        testObject.setAttributeName("TestAttributeName");
+        testObject.setDisplayName("TestAttributeName");
+        testObject.setDescription("TestDescription");
         testObject.setElementPosition(23);
-        testObject.setCardinality("TestCardinality");
+        testObject.setMinCardinality(-1);
+        testObject.setMaxCardinality(-1);
         testObject.setDefaultValueOverride("TestDefault");
 
         testObject.setAttributeType(schemaElement);
-        testObject.setExternalAttributeType(schemaLink);
         testObject.setAttributeRelationships(relationships);
 
         return testObject;
@@ -83,14 +83,16 @@ public class TestSchemaAttribute
         assertTrue(resultObject.getQualifiedName().equals("TestQualifiedName"));
         assertTrue(resultObject.getAdditionalProperties().equals(additionalProperties));
 
-        assertTrue(resultObject.getAttributeName().equals("TestAttributeName"));
+        assertTrue(resultObject.getDisplayName().equals("TestAttributeName"));
+        assertTrue(resultObject.getDescription().equals("TestDescription"));
+
         assertTrue(resultObject.getElementPosition() == 23);
-        assertTrue(resultObject.getCardinality().equals("TestCardinality"));
+        assertTrue(resultObject.getMaxCardinality() == -1);
+        assertTrue(resultObject.getMinCardinality() == -1);
+        assertTrue(resultObject.getCardinality().equals("*"));
         assertTrue(resultObject.getDefaultValueOverride().equals("TestDefault"));
 
         assertTrue(resultObject.getAttributeType().equals(schemaElement));
-        assertTrue(resultObject.getExternalAttributeType().equals(schemaLink));
-        assertTrue(resultObject.getAttributeRelationships().equals(relationships));
     }
 
 
@@ -109,13 +111,12 @@ public class TestSchemaAttribute
         assertTrue(nullObject.getQualifiedName() == null);
         assertTrue(nullObject.getAdditionalProperties() == null);
 
-        assertTrue(nullObject.getAttributeName() == null);
+        assertTrue(nullObject.getDisplayName() == null);
         assertTrue(nullObject.getElementPosition() == 0);
-        assertTrue(nullObject.getCardinality() == null);
+        assertTrue(nullObject.getMaxCardinality() == 0);
+        assertTrue(nullObject.getMinCardinality() == 0);
         assertTrue(nullObject.getDefaultValueOverride() == null);
         assertTrue(nullObject.getAttributeType() == null);
-        assertTrue(nullObject.getExternalAttributeType() == null);
-        assertTrue(nullObject.getAttributeRelationships() == null);
 
         nullObject = new SchemaAttribute(null);
 
@@ -127,14 +128,13 @@ public class TestSchemaAttribute
         assertTrue(nullObject.getQualifiedName() == null);
         assertTrue(nullObject.getAdditionalProperties() == null);
 
-        assertTrue(nullObject.getAttributeName() == null);
+        assertTrue(nullObject.getDisplayName() == null);
         assertTrue(nullObject.getElementPosition() == 0);
-        assertTrue(nullObject.getCardinality() == null);
+        assertTrue(nullObject.getMaxCardinality() == 0);
+        assertTrue(nullObject.getMinCardinality() == 0);
         assertTrue(nullObject.getDefaultValueOverride() == null);
 
         assertTrue(nullObject.getAttributeType() == null);
-        assertTrue(nullObject.getExternalAttributeType() == null);
-        assertTrue(nullObject.getAttributeRelationships() == null);
 
         nullObject.setClassifications(new ArrayList<>());
         nullObject.setAdditionalProperties(new HashMap<>());
@@ -142,7 +142,6 @@ public class TestSchemaAttribute
 
         assertTrue(nullObject.getClassifications() == null);
         assertTrue(nullObject.getAdditionalProperties() == null);
-        assertTrue(nullObject.getAttributeRelationships() == null);
 
     }
 
@@ -165,7 +164,7 @@ public class TestSchemaAttribute
         assertFalse(getTestObject().equals(differentObject));
 
         differentObject = getTestObject();
-        differentObject.setAttributeName("Different");
+        differentObject.setDisplayName("Different");
         assertFalse(getTestObject().equals(differentObject));
     }
 

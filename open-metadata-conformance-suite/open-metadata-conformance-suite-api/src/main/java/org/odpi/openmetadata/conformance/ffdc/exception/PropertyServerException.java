@@ -8,6 +8,8 @@ package org.odpi.openmetadata.conformance.ffdc.exception;
  */
 public class PropertyServerException extends ConformanceSuiteCheckedExceptionBase
 {
+    private static final long    serialVersionUID = 1L;
+
     /**
      * This is the typical constructor used for creating an exception.
      *

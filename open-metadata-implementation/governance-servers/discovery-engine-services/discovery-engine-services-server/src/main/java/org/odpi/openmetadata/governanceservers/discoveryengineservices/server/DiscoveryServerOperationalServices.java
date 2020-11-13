@@ -4,16 +4,16 @@ package org.odpi.openmetadata.governanceservers.discoveryengineservices.server;
 
 import org.odpi.openmetadata.accessservices.discoveryengine.client.DiscoveryConfigurationClient;
 import org.odpi.openmetadata.accessservices.discoveryengine.client.DiscoveryEngineClient;
+import org.odpi.openmetadata.accessservices.discoveryengine.client.ODFRESTClient;
 import org.odpi.openmetadata.adminservices.configuration.properties.DiscoveryEngineServicesConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.GovernanceServicesDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
-import org.odpi.openmetadata.commonservices.odf.metadatamanagement.client.ODFRESTClient;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
-import org.odpi.openmetadata.governanceservers.discoveryengineservices.handlers.DiscoveryConfigurationHandler;
-import org.odpi.openmetadata.governanceservers.discoveryengineservices.auditlog.DiscoveryEngineServicesAuditCode;
+import org.odpi.openmetadata.governanceservers.discoveryengineservices.handlers.DiscoveryConfigurationRefreshHandler;
+import org.odpi.openmetadata.governanceservers.discoveryengineservices.ffdc.DiscoveryEngineServicesAuditCode;
 import org.odpi.openmetadata.governanceservers.discoveryengineservices.ffdc.DiscoveryEngineServicesErrorCode;
 import org.odpi.openmetadata.governanceservers.discoveryengineservices.handlers.DiscoveryEngineHandler;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 
 import java.util.HashMap;
 import java.util.List;
@@ -34,7 +34,7 @@ public class DiscoveryServerOperationalServices
     private int                     maxPageSize;                   /* Initialized in constructor */
 
     private DiscoveryServerInstance discoveryServerInstance = null;
-    private OMRSAuditLog            auditLog                = null;
+    private AuditLog                auditLog                = null;
 
 
     /**
@@ -69,25 +69,16 @@ public class DiscoveryServerOperationalServices
      * or the requested discovery engines are not recognized or are not configured properly.
      */
     public void initialize(DiscoveryEngineServicesConfig discoveryEngineServicesConfig,
-                           OMRSAuditLog                  auditLog) throws OMAGConfigurationErrorException
+                           AuditLog                      auditLog) throws OMAGConfigurationErrorException
     {
         final String             actionDescription = "initialize";
         final String             methodName = "initialize";
 
-        DiscoveryEngineServicesAuditCode auditCode;
-        ODFRESTClient                    restClient;
+        ODFRESTClient            restClient;
 
         this.auditLog = auditLog;
 
-        auditCode = DiscoveryEngineServicesAuditCode.SERVER_INITIALIZING;
-        auditLog.logRecord(actionDescription,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(localServerName),
-                           null,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
-
+        auditLog.logMessage(actionDescription, DiscoveryEngineServicesAuditCode.SERVER_INITIALIZING.getMessageDefinition(localServerName));
 
         try
         {
@@ -96,15 +87,9 @@ public class DiscoveryServerOperationalServices
              */
             if (discoveryEngineServicesConfig == null)
             {
-                DiscoveryEngineServicesErrorCode errorCode    = DiscoveryEngineServicesErrorCode.NO_CONFIG_DOC;
-                String                           errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(localServerName);
-
-                throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
+                throw new OMAGConfigurationErrorException(DiscoveryEngineServicesErrorCode.NO_CONFIG_DOC.getMessageDefinition(localServerName),
                                                           this.getClass().getName(),
-                                                          methodName,
-                                                          errorMessage,
-                                                          errorCode.getSystemAction(),
-                                                          errorCode.getUserAction());
+                                                          methodName);
             }
 
             /*
@@ -145,13 +130,7 @@ public class DiscoveryServerOperationalServices
             }
             catch (InvalidParameterException error)
             {
-                throw new OMAGConfigurationErrorException(error.getReportedHTTPCode(),
-                                                          this.getClass().getName(),
-                                                          methodName,
-                                                          error.getErrorMessage(),
-                                                          error.getReportedSystemAction(),
-                                                          error.getReportedUserAction(),
-                                                          error);
+                throw new OMAGConfigurationErrorException(error.getReportedErrorMessage(), error);
             }
 
             /*
@@ -165,24 +144,11 @@ public class DiscoveryServerOperationalServices
 
             if (discoveryEngineHandlers == null)
             {
-                auditCode = DiscoveryEngineServicesAuditCode.NO_DISCOVERY_ENGINES_STARTED;
-                auditLog.logRecord(actionDescription,
-                                   auditCode.getLogMessageId(),
-                                   auditCode.getSeverity(),
-                                   auditCode.getFormattedLogMessage(localServerName),
-                                   null,
-                                   auditCode.getSystemAction(),
-                                   auditCode.getUserAction());
+                auditLog.logMessage(actionDescription, DiscoveryEngineServicesAuditCode.NO_DISCOVERY_ENGINES_STARTED.getMessageDefinition(localServerName));
 
-                DiscoveryEngineServicesErrorCode errorCode    = DiscoveryEngineServicesErrorCode.NO_DISCOVERY_ENGINES_STARTED;
-                String                           errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(localServerName);
-
-                throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
+                throw new OMAGConfigurationErrorException(DiscoveryEngineServicesErrorCode.NO_DISCOVERY_ENGINES_STARTED.getMessageDefinition(localServerName),
                                                           this.getClass().getName(),
-                                                          methodName,
-                                                          errorMessage,
-                                                          errorCode.getSystemAction(),
-                                                          errorCode.getUserAction());
+                                                          methodName);
             }
 
             /*
@@ -191,13 +157,13 @@ public class DiscoveryServerOperationalServices
              * intervals to wait for the metadata server to restart.  It will also try to retrieve the configuration
              * for the discovery engines.
              */
-            DiscoveryConfigurationHandler configurationHandler = new DiscoveryConfigurationHandler(discoveryEngineHandlers,
-                                                                                                   configurationClient,
-                                                                                                   auditLog,
-                                                                                                   localServerUserId,
-                                                                                                   localServerName,
-                                                                                                   accessServiceServerName,
-                                                                                                   accessServiceRootURL);
+            DiscoveryConfigurationRefreshHandler configurationHandler = new DiscoveryConfigurationRefreshHandler(discoveryEngineHandlers,
+                                                                                                                 configurationClient,
+                                                                                                                 auditLog,
+                                                                                                                 localServerUserId,
+                                                                                                                 localServerName,
+                                                                                                                 accessServiceServerName,
+                                                                                                                 accessServiceRootURL);
             Thread thread = new Thread(configurationHandler, configurationHandler.getClass().getName());
             thread.start();
 
@@ -215,26 +181,14 @@ public class DiscoveryServerOperationalServices
         }
         catch (Throwable error)
         {
-            auditCode = DiscoveryEngineServicesAuditCode.SERVICE_INSTANCE_FAILURE;
-
             auditLog.logException(actionDescription,
-                                  auditCode.getLogMessageId(),
-                                  auditCode.getSeverity(),
-                                  auditCode.getFormattedLogMessage(localServerName, error.getMessage()),
+                                  DiscoveryEngineServicesAuditCode.SERVICE_INSTANCE_FAILURE.getMessageDefinition(localServerName, error.getMessage()),
                                   error.toString(),
-                                  auditCode.getSystemAction(),
-                                  auditCode.getUserAction(),
                                   error);
 
-            DiscoveryEngineServicesErrorCode errorCode    = DiscoveryEngineServicesErrorCode.SERVICE_INSTANCE_FAILURE;
-            String                           errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(localServerName, error.getMessage());
-
-            throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
+            throw new OMAGConfigurationErrorException(DiscoveryEngineServicesErrorCode.SERVICE_INSTANCE_FAILURE.getMessageDefinition(localServerName, error.getMessage()),
                                                       this.getClass().getName(),
                                                       methodName,
-                                                      errorMessage,
-                                                      errorCode.getSystemAction(),
-                                                      errorCode.getUserAction(),
                                                       error);
         }
     }
@@ -256,24 +210,12 @@ public class DiscoveryServerOperationalServices
             final String actionDescription = "Validate discovery engine services configuration.";
             final String methodName        = "getAccessServiceRootURL";
 
-            DiscoveryEngineServicesAuditCode auditCode = DiscoveryEngineServicesAuditCode.NO_OMAS_SERVER_URL;
-            auditLog.logRecord(actionDescription,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(localServerName),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logMessage(actionDescription,
+                                DiscoveryEngineServicesAuditCode.NO_OMAS_SERVER_URL.getMessageDefinition(localServerName));
 
-            DiscoveryEngineServicesErrorCode errorCode    = DiscoveryEngineServicesErrorCode.NO_OMAS_SERVER_URL;
-            String                           errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(localServerName);
-
-            throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
+            throw new OMAGConfigurationErrorException(DiscoveryEngineServicesErrorCode.NO_OMAS_SERVER_URL.getMessageDefinition(localServerName),
                                                       this.getClass().getName(),
-                                                      methodName,
-                                                      errorMessage,
-                                                      errorCode.getSystemAction(),
-                                                      errorCode.getUserAction());
+                                                      methodName);
         }
 
         return accessServiceRootURL;
@@ -296,24 +238,12 @@ public class DiscoveryServerOperationalServices
             final String actionDescription = "Validate discovery engine services configuration.";
             final String methodName        = "getAccessServiceServerName";
 
-            DiscoveryEngineServicesAuditCode auditCode = DiscoveryEngineServicesAuditCode.NO_OMAS_SERVER_NAME;
-            auditLog.logRecord(actionDescription,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(localServerName),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logMessage(actionDescription,
+                                DiscoveryEngineServicesAuditCode.NO_OMAS_SERVER_NAME.getMessageDefinition(localServerName));
 
-            DiscoveryEngineServicesErrorCode errorCode    = DiscoveryEngineServicesErrorCode.NO_OMAS_SERVER_NAME;
-            String                           errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(localServerName);
-
-            throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
+            throw new OMAGConfigurationErrorException(DiscoveryEngineServicesErrorCode.NO_OMAS_SERVER_NAME.getMessageDefinition(localServerName),
                                                       this.getClass().getName(),
-                                                      methodName,
-                                                      errorMessage,
-                                                      errorCode.getSystemAction(),
-                                                      errorCode.getUserAction());
+                                                      methodName);
         }
 
         return accessServiceServerName;
@@ -333,26 +263,13 @@ public class DiscoveryServerOperationalServices
         if (discoveryEngineNames.isEmpty())
         {
             final String actionDescription = "Validate discovery engine services configuration.";
-            final String methodName        = "getAccessServiceRootURL";
+            final String methodName        = "getDiscoveryEngineNames";
 
-            DiscoveryEngineServicesAuditCode auditCode = DiscoveryEngineServicesAuditCode.NO_DISCOVERY_ENGINES;
-            auditLog.logRecord(actionDescription,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logMessage(actionDescription, DiscoveryEngineServicesAuditCode.NO_DISCOVERY_ENGINES.getMessageDefinition());
 
-            DiscoveryEngineServicesErrorCode errorCode    = DiscoveryEngineServicesErrorCode.NO_DISCOVERY_ENGINES;
-            String                           errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(localServerName);
-
-            throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
+           throw new OMAGConfigurationErrorException(DiscoveryEngineServicesErrorCode.NO_DISCOVERY_ENGINES.getMessageDefinition(localServerName),
                                                       this.getClass().getName(),
-                                                      methodName,
-                                                      errorMessage,
-                                                      errorCode.getSystemAction(),
-                                                      errorCode.getUserAction());
+                                                      methodName);
         }
         else
         {
@@ -386,12 +303,13 @@ public class DiscoveryServerOperationalServices
         {
             if (discoveryEngineName != null)
             {
-                DiscoveryEngineClient discoveryEngineClient = null;
+                DiscoveryEngineClient discoveryEngineClient;
                 try
                 {
                     discoveryEngineClient = new DiscoveryEngineClient(accessServiceServerName,
                                                                       accessServiceRootURL,
-                                                                      odfRESTClient);
+                                                                      odfRESTClient,
+                                                                      auditLog);
                 }
                 catch (Throwable  error)
                 {
@@ -399,19 +317,12 @@ public class DiscoveryServerOperationalServices
                      * Unable to create a client to the Discovery Engine.  This is a config problem that is not possible to
                      * work around so shut down the server.
                      */
-                    DiscoveryEngineServicesErrorCode errorCode    = DiscoveryEngineServicesErrorCode.NO_DISCOVERY_ENGINE_CLIENT;
-                    String                           errorMessage = errorCode.getErrorMessageId()
-                                                                  + errorCode.getFormattedErrorMessage(localServerName,
-                                                                                                       discoveryEngineName,
-                                                                                                       error.getClass().getName(),
-                                                                                                       error.getMessage());
-
-                    throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
+                    throw new OMAGConfigurationErrorException(DiscoveryEngineServicesErrorCode.NO_DISCOVERY_ENGINE_CLIENT.getMessageDefinition(localServerName,
+                                                                                                                                               discoveryEngineName,
+                                                                                                                                               error.getClass().getName(),
+                                                                                                                                               error.getMessage()),
                                                               this.getClass().getName(),
-                                                              methodName,
-                                                              errorMessage,
-                                                              errorCode.getSystemAction(),
-                                                              errorCode.getUserAction());
+                                                              methodName);
                 }
 
                 /*
@@ -445,28 +356,12 @@ public class DiscoveryServerOperationalServices
      */
     public void terminate()
     {
-
         final String                     actionDescription = "terminate";
-        DiscoveryEngineServicesAuditCode auditCode;
 
-        auditCode = DiscoveryEngineServicesAuditCode.SERVER_SHUTTING_DOWN;
-        auditLog.logRecord(actionDescription,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(localServerName),
-                           null,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        auditLog.logMessage(actionDescription, DiscoveryEngineServicesAuditCode.SERVER_SHUTTING_DOWN.getMessageDefinition(localServerName));
 
         discoveryServerInstance.shutdown();
 
-        auditCode = DiscoveryEngineServicesAuditCode.SERVER_SHUTDOWN;
-        auditLog.logRecord(actionDescription,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(localServerName),
-                           null,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        auditLog.logMessage(actionDescription, DiscoveryEngineServicesAuditCode.SERVER_SHUTDOWN.getMessageDefinition(localServerName));
     }
 }

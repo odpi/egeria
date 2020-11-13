@@ -4,7 +4,7 @@
 # Stewardship Engine
 
 The stewardship engine manages the execution of
-stewardship actions.  It is hosted in one or more
+[stewardship actions](stewardship-action.md).  It is hosted in one or more
 stewardship servers.
 
 ----

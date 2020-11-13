@@ -22,6 +22,16 @@ public class AssetCatalogRelationshipRESTService {
     private final AssetCatalogInstanceHandler instanceHandler = new AssetCatalogInstanceHandler();
     private final RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
 
+    /**
+     * Fetch relationship between entities details based on its unique identifier of the ends
+     *
+     * @param serverName       unique identifier for requested server
+     * @param userId           String unique identifier for the user
+     * @param entity1GUID      Entity guid of the first end of the relationship
+     * @param entity2GUID      Entity guid of the second end of the relationship
+     * @param relationshipType Type of the relationship
+     * @return the relationship between entities
+     */
     public RelationshipResponse getRelationshipBetweenEntities(String serverName, String userId,
                                                                String entity1GUID,
                                                                String entity2GUID,

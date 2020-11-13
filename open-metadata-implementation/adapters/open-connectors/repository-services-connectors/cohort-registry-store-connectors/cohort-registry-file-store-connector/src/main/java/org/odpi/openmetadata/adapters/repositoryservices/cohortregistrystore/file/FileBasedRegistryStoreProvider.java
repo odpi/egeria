@@ -20,7 +20,7 @@ public class FileBasedRegistryStoreProvider extends OMRSCohortRegistryStoreProvi
      */
     public FileBasedRegistryStoreProvider()
     {
-        Class    connectorClass = FileBasedRegistryStoreConnector.class;
+        Class<?>    connectorClass = FileBasedRegistryStoreConnector.class;
 
         super.setConnectorClassName(connectorClass.getName());
 

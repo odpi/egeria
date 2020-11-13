@@ -8,6 +8,8 @@ package org.odpi.openmetadata.accessservices.communityprofile.properties;
  */
 public class MockAccessServiceElementHeader extends CommunityProfileElementHeader
 {
+    private static final long    serialVersionUID = 1L;
+
     /**
      * Default constructor
      */

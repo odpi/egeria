@@ -56,7 +56,6 @@ public class OMAGServerSecuritySyncService {
             if (securitySyncConfig != null && securitySyncConfig.getSecuritySyncInTopicName() != null) {
                 securitySyncConfig.setSecuritySyncInTopic(
                         connectorConfigurationFactory.getDefaultEventBusConnection(
-                                defaultInTopicName,
                                 eventBusConfig.getConnectorProvider(),
                                 eventBusConfig.getTopicURLRoot() + ".server." + serverName,
                                 securitySyncConfig.getSecuritySyncInTopicName(),
@@ -66,7 +65,7 @@ public class OMAGServerSecuritySyncService {
 
             if (securitySyncConfig != null && securitySyncConfig.getSecuritySyncServerType() != null) {
                 securitySyncConfig.setSecuritySyncOutTopic(
-                        connectorConfigurationFactory.getDefaultEventBusConnection(defaultOutTopicName,
+                        connectorConfigurationFactory.getDefaultEventBusConnection(
                                 eventBusConfig.getConnectorProvider(),
                                 eventBusConfig.getTopicURLRoot() + ".server." + serverName,
                                 getOutputTopicName(securitySyncConfig.getSecuritySyncOutTopicName()),
@@ -81,7 +80,7 @@ public class OMAGServerSecuritySyncService {
                 additionalProperties.put("securitySyncServerType", securitySyncConfig.getSecuritySyncServerType());
 
                 securitySyncConfig.setSecuritySyncServerConnection(
-                        connectorConfigurationFactory.getSecuritySyncServerConnection(serverName,
+                        connectorConfigurationFactory.getSecuritySyncServerConnection(
                                 securitySyncConfig.getSecurityServerURL(),
                                 additionalProperties));
             }

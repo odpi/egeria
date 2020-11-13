@@ -2,15 +2,14 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetconsumer.server.spring;
 
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.GlossaryTermListResponse;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.GlossaryTermResponse;
-import org.odpi.openmetadata.accessservices.assetconsumer.rest.LogRecordRequestBody;
+import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.odpi.openmetadata.accessservices.assetconsumer.properties.CommentProperties;
+import org.odpi.openmetadata.accessservices.assetconsumer.properties.InformalTagProperties;
+import org.odpi.openmetadata.accessservices.assetconsumer.properties.RatingProperties;
+import org.odpi.openmetadata.accessservices.assetconsumer.rest.*;
 import org.odpi.openmetadata.accessservices.assetconsumer.server.AssetConsumerRESTServices;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.*;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -21,6 +20,9 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/asset-consumer/users/{userId}")
+
+@Tag(name="Asset Consumer OMAS", description="The Asset Consumer OMAS provides services to an individual who wants to work with assets such as: data stores, data sets and data feeds, reports, APIs, functions such as analytical services", externalDocs=@ExternalDocumentation(description="Asset Consumer Open Metadata Access Service (OMAS)",url="https://egeria.odpi.org/open-metadata-implementation/access-services/asset-consumer/"))
+
 public class AssetConsumerResource
 {
     private AssetConsumerRESTServices  restAPI = new AssetConsumerRESTServices();
@@ -50,11 +52,11 @@ public class AssetConsumerResource
      */
     @PostMapping(path = "/assets/{assetGUID}/comments/{commentGUID}/replies")
 
-    public GUIDResponse addCommentReply(@PathVariable String             serverName,
-                                        @PathVariable String             userId,
-                                        @PathVariable String             assetGUID,
-                                        @PathVariable String             commentGUID,
-                                        @RequestBody  CommentRequestBody requestBody)
+    public GUIDResponse addCommentReply(@PathVariable String            serverName,
+                                        @PathVariable String            userId,
+                                        @PathVariable String            assetGUID,
+                                        @PathVariable String            commentGUID,
+                                        @RequestBody  CommentProperties requestBody)
     {
         return restAPI.addCommentReply(serverName, userId, assetGUID, commentGUID, requestBody);
     }
@@ -76,10 +78,10 @@ public class AssetConsumerResource
      */
     @PostMapping(path = "/assets/{assetGUID}/comments")
 
-    public GUIDResponse addCommentToAsset(@PathVariable String              serverName,
-                                          @PathVariable String              userId,
-                                          @PathVariable String              assetGUID,
-                                          @RequestBody  CommentRequestBody  requestBody)
+    public GUIDResponse addCommentToAsset(@PathVariable String            serverName,
+                                          @PathVariable String            userId,
+                                          @PathVariable String            assetGUID,
+                                          @RequestBody  CommentProperties requestBody)
     {
         return restAPI.addCommentToAsset(serverName, userId, assetGUID, requestBody);
     }
@@ -154,10 +156,10 @@ public class AssetConsumerResource
      */
     @PostMapping(path = "/assets/{assetGUID}/ratings")
 
-    public VoidResponse addRatingToAsset(@PathVariable String             serverName,
-                                         @PathVariable String             userId,
-                                         @PathVariable String             assetGUID,
-                                         @RequestBody  RatingRequestBody requestBody)
+    public VoidResponse addRatingToAsset(@PathVariable String           serverName,
+                                         @PathVariable String           userId,
+                                         @PathVariable String           assetGUID,
+                                         @RequestBody  RatingProperties requestBody)
     {
         return restAPI.addRatingToAsset(serverName, userId, assetGUID, requestBody);
     }
@@ -190,6 +192,32 @@ public class AssetConsumerResource
 
 
     /**
+     * Adds a tag (either private of public) to an element attached to an asset - such as schema element, glossary term, ...
+     *
+     * @param serverName       name of the server instances for this request.
+     * @param userId           userId of user making request.
+     * @param elementGUID        unique id for the element.
+     * @param tagGUID          unique id of the tag.
+     * @param requestBody      null request body needed for correct protocol exchange.
+     *
+     * @return void or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * PropertyServerException There is a problem adding the asset properties to the metadata repository or
+     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/assets/elements/{elementGUID}/tags/{tagGUID}")
+
+    public VoidResponse addTagToElement(@PathVariable String              serverName,
+                                        @PathVariable String              userId,
+                                        @PathVariable String              elementGUID,
+                                        @PathVariable String              tagGUID,
+                                        @RequestBody  FeedbackRequestBody requestBody)
+    {
+        return restAPI.addTagToElement(serverName, userId, elementGUID, tagGUID, requestBody);
+    }
+
+
+    /**
      * Creates a new informal tag and returns the unique identifier for it.
      *
      * @param serverName   name of the server instances for this request.
@@ -203,9 +231,9 @@ public class AssetConsumerResource
      */
     @PostMapping(path = "/tags")
 
-    public GUIDResponse createTag(@PathVariable String         serverName,
-                                  @PathVariable String         userId,
-                                  @RequestBody  TagRequestBody requestBody)
+    public GUIDResponse createTag(@PathVariable String                serverName,
+                                  @PathVariable String                userId,
+                                  @RequestBody  InformalTagProperties requestBody)
     {
         return restAPI.createTag(serverName, userId, requestBody);
     }
@@ -343,6 +371,7 @@ public class AssetConsumerResource
      * Return the list of unique identifiers for assets that are linked to a specific tag either directly, or via one
      * of its schema elements.
      *
+     * @param serverName name of the server instances for this request
      * @param userId the name of the calling user.
      * @param tagGUID unique identifier of tag.
      * @param startFrom  index of the list to start from (0 for start)
@@ -355,37 +384,14 @@ public class AssetConsumerResource
      */
     @GetMapping(path = "/assets/by-tag/{tagGUID}")
 
-    GUIDListResponse getAssetsByTag(@PathVariable String serverName,
-                                    @PathVariable String userId,
-                                    @PathVariable String tagGUID,
-                                    @RequestParam int    startFrom,
-                                    @RequestParam int    pageSize)
+    public GUIDListResponse getAssetsByTag(@PathVariable String serverName,
+                                           @PathVariable String userId,
+                                           @PathVariable String tagGUID,
+                                           @RequestParam int    startFrom,
+                                           @RequestParam int    pageSize)
+
     {
         return restAPI.getAssetsByTag(serverName, userId, tagGUID, startFrom, pageSize);
-    }
-
-
-    /**
-     * Returns the connection object corresponding to the supplied connection name.
-     *
-     * @param serverName name of the server instances for this request
-     * @param userId userId of user making request.
-     * @param name   this may be the qualifiedName or displayName of the connection.
-     *
-     * @return connection object or
-     * InvalidParameterException one of the parameters is null or invalid or
-     * UnrecognizedConnectionNameException there is no connection defined for this name or
-     * AmbiguousConnectionNameException there is more than one connection defined for this name or
-     * PropertyServerException there is a problem retrieving information from the property (metadata) server or
-     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    @GetMapping(path = "/connections/by-name/{name}")
-
-    public ConnectionResponse getConnectionByName(@PathVariable String   serverName,
-                                                  @PathVariable String   userId,
-                                                  @RequestBody  String   name)
-    {
-        return restAPI.getConnectionByName(serverName, userId, name);
     }
 
 
@@ -599,18 +605,18 @@ public class AssetConsumerResource
      */
     @PostMapping(path = "/assets/{assetGUID}/comments/{commentGUID}/delete")
 
-    public VoidResponse removeCommentFromAsset(@PathVariable String          serverName,
-                                               @PathVariable String          userId,
-                                               @PathVariable String          assetGUID,
-                                               @PathVariable String          commentGUID,
-                                               @RequestBody  NullRequestBody requestBody)
+    public VoidResponse removeCommentFromAsset(@PathVariable                  String          serverName,
+                                               @PathVariable                  String          userId,
+                                               @PathVariable                  String          assetGUID,
+                                               @PathVariable                  String          commentGUID,
+                                               @RequestBody(required = false) NullRequestBody requestBody)
     {
         return restAPI.removeCommentFromAsset(serverName, userId, assetGUID, commentGUID, requestBody);
     }
 
 
     /**
-     * Removes a "Like" added to the asset by this user.
+     * Removes a "LikeProperties" added to the asset by this user.
      *
      * @param serverName   name of the server instances for this request.
      * @param userId       String - userId of user making request.
@@ -624,10 +630,10 @@ public class AssetConsumerResource
      */
     @PostMapping(path = "/assets/{assetGUID}/likes/delete")
 
-    public VoidResponse   removeLikeFromAsset(@PathVariable String          serverName,
-                                              @PathVariable String          userId,
-                                              @PathVariable String          assetGUID,
-                                              @RequestBody  NullRequestBody requestBody)
+    public VoidResponse   removeLikeFromAsset(@PathVariable                  String          serverName,
+                                              @PathVariable                  String          userId,
+                                              @PathVariable                  String          assetGUID,
+                                              @RequestBody(required = false) NullRequestBody requestBody)
     {
         return restAPI.removeLikeFromAsset(serverName, userId, assetGUID, requestBody);
     }
@@ -648,10 +654,10 @@ public class AssetConsumerResource
      */
     @PostMapping(path = "/assets/{assetGUID}/ratings/delete")
 
-    public VoidResponse   removeRatingFromAsset(@PathVariable String          serverName,
-                                                @PathVariable String          userId,
-                                                @PathVariable String          assetGUID,
-                                                @RequestBody  NullRequestBody requestBody)
+    public VoidResponse   removeRatingFromAsset(@PathVariable                  String          serverName,
+                                                @PathVariable                  String          userId,
+                                                @PathVariable                  String          assetGUID,
+                                                @RequestBody(required = false) NullRequestBody requestBody)
     {
         return restAPI.removeRatingFromAsset(serverName, userId, assetGUID, requestBody);
     }
@@ -673,13 +679,39 @@ public class AssetConsumerResource
      */
     @PostMapping(path = "/assets/{assetGUID}/tags/{tagGUID}/delete")
 
-    public VoidResponse   removeTagFromAsset(@PathVariable String          serverName,
-                                             @PathVariable String          userId,
-                                             @PathVariable String          assetGUID,
-                                             @PathVariable String          tagGUID,
-                                             @RequestBody  NullRequestBody requestBody)
+    public VoidResponse   removeTagFromAsset(@PathVariable                  String          serverName,
+                                             @PathVariable                  String          userId,
+                                             @PathVariable                  String          assetGUID,
+                                             @PathVariable                  String          tagGUID,
+                                             @RequestBody(required = false) NullRequestBody requestBody)
     {
         return restAPI.removeTagFromAsset(serverName, userId, assetGUID, tagGUID, requestBody);
+    }
+
+
+    /**
+     * Removes a tag from an element attached to an asset - such as schema element, glossary term, ... that was added by this user.
+     *
+     * @param serverName   name of the server instances for this request.
+     * @param userId       String - userId of user making request.
+     * @param elementGUID    unique id for the element.
+     * @param tagGUID      unique id of the tag.
+     * @param requestBody  null request body needed for correct protocol exchange.
+     *
+     * @return void or
+     * InvalidParameterException one of the parameters is null or invalid.
+     * PropertyServerException There is a problem updating the asset properties in the metadata repository.
+     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/assets/elements/{elementGUID}/tags/{tagGUID}/delete")
+
+    public VoidResponse   removeTagFromElement(@PathVariable                  String          serverName,
+                                               @PathVariable                  String          userId,
+                                               @PathVariable                  String          elementGUID,
+                                               @PathVariable                  String          tagGUID,
+                                               @RequestBody(required = false) NullRequestBody requestBody)
+    {
+        return restAPI.removeTagFromElement(serverName, userId, elementGUID, tagGUID, requestBody);
     }
 
 
@@ -699,11 +731,11 @@ public class AssetConsumerResource
      */
     @PostMapping(path = "assets/{assetGUID}/comments/{commentGUID}/update")
 
-    public VoidResponse   updateComment(@PathVariable String              serverName,
-                                        @PathVariable String              userId,
-                                        @PathVariable String              assetGUID,
-                                        @PathVariable String              commentGUID,
-                                        @RequestBody  CommentRequestBody  requestBody)
+    public VoidResponse   updateComment(@PathVariable String            serverName,
+                                        @PathVariable String            userId,
+                                        @PathVariable String            assetGUID,
+                                        @PathVariable String            commentGUID,
+                                        @RequestBody  CommentProperties requestBody)
     {
         return restAPI.updateComment(serverName, userId, assetGUID, commentGUID, requestBody);
     }
@@ -724,10 +756,10 @@ public class AssetConsumerResource
      */
     @PostMapping(path = "/tags/{tagGUID}/update")
 
-    public VoidResponse   updateTagDescription(@PathVariable String         serverName,
-                                               @PathVariable String         userId,
-                                               @PathVariable String         tagGUID,
-                                               @RequestBody  TagRequestBody requestBody)
+    public VoidResponse   updateTagDescription(@PathVariable String                serverName,
+                                               @PathVariable String                userId,
+                                               @PathVariable String                tagGUID,
+                                               @RequestBody  InformalTagProperties requestBody)
     {
         return restAPI.updateTagDescription(serverName, userId, tagGUID, requestBody);
     }

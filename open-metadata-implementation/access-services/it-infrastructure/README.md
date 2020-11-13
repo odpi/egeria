@@ -1,6 +1,8 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
+![InDev](../../../open-metadata-publication/website/images/egeria-content-status-in-development.png#pagewidth)
+
 # IT Infrastructure Open Metadata Access Service (OMAS)
 
 The IT Infrastructure OMAS provides APIs for tools and applications managing the
@@ -12,3 +14,12 @@ The module structure for the IT Infrastructure OMAS is as follows:
 * [it-infrastructure-api](it-infrastructure-api) supports the common Java classes that are used both by the client and the server.
 * [it-infrastructure-server](it-infrastructure-server) supports in implementation of the access service and its related event management.
 * [it-infrastructure-spring](it-infrastructure-spring) supports the REST API using the [Spring](../../../developer-resources/Spring.md) libraries.
+
+
+----
+Return to the [access-services](..) module.
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.
+

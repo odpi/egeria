@@ -1,4 +1,4 @@
-<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
   
@@ -38,12 +38,13 @@ asynchronously between different tools.
 each type of connector supported by the Open Metadata Repository Services (OMRS).
 These connectors enable the OMRS to be adapted to many different platforms.
 
-
-
+* **[rest-client-connectors](rest-client-connectors)** provides a connector to call a REST API from
+Java.
 
 In addition there is the **[connector-configuration-factory](connector-configuration-factory)**
 that creates **Connection** objects to configure these connectors.
 
+Return to [Adapters](..)
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

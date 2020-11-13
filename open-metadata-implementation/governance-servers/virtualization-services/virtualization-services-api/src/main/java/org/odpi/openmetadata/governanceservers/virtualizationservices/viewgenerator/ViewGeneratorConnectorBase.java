@@ -6,26 +6,16 @@
 package org.odpi.openmetadata.governanceservers.virtualizationservices.viewgenerator;
 
 import org.odpi.openmetadata.accessservices.informationview.events.TableContextEvent;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
-import org.odpi.openmetadata.repositoryservices.connectors.auditable.AuditableConnector;
 
 import java.util.Map;
 
-public class ViewGeneratorConnectorBase extends ConnectorBase implements ViewGenerationInterface, AuditableConnector {
+public class ViewGeneratorConnectorBase extends ConnectorBase implements ViewGenerationInterface, AuditLoggingComponent
+{
+    protected AuditLog auditLog;
 
-    protected OMRSAuditLog omrsAuditLog;
-    /**
-     * Initialize the connector.
-     *
-     * @param connectorInstanceId - unique id for the connector instance - useful for messages etc
-     * @param connectionProperties - POJO for the configuration used to create the connector.
-     */
-    @Override
-    public void initialize(String connectorInstanceId, ConnectionProperties connectionProperties) {
-        super.initialize(connectorInstanceId, connectionProperties);
-    }
 
     /**
      * Process the serialized  information view event
@@ -41,13 +31,11 @@ public class ViewGeneratorConnectorBase extends ConnectorBase implements ViewGen
 
 
     /**
-     * Pass the instance of OMRS Audit Log
+     * Save the instance of the Audit Log for this connector
      * @param auditLog audit log object
      */
     @Override
-    public void setAuditLog(OMRSAuditLog auditLog) {
-        this.omrsAuditLog = auditLog;
+    public void setAuditLog(AuditLog auditLog) {
+        this.auditLog = auditLog;
     }
-
-
 }

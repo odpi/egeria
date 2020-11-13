@@ -26,19 +26,14 @@ public class ProcessConverter extends AssetConverter {
      * @return output bean
      */
     public Process getProcessBean() {
-        Process bean = null;
-
-        if (entity != null) {
-            bean = new Process();
-
-            updateBean(bean);
-        }
+        Process bean = new Process();
+        updateBean(bean);
 
         return bean;
     }
 
     private void updateBean(Process bean) {
-        final String methodName = "getBean";
+        final String methodName = "updateBean";
 
         super.updateBean(bean);
 

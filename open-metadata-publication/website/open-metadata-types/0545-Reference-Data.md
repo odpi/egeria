@@ -16,7 +16,7 @@ or a [SchemaElement](0501-Schema-Elements.md).
 A valid values set can also be implemented in an asset that can be used as a look up
 table while data is being processed.
 
-![UML](0545-Reference-Data.png)
+![UML](0545-Reference-Data.png#pagewidth)
 
 
 Return to [Area 5](Area-5-models.md).

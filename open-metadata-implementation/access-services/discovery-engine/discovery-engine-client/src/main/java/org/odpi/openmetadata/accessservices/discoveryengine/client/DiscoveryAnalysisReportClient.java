@@ -7,7 +7,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.discovery.DiscoveryAnalysisReportStore;
-import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryAnalysisReport;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryRequestStatus;
 
 import java.util.Map;
@@ -41,22 +40,17 @@ public class DiscoveryAnalysisReportClient extends DiscoveryAnalysisReportStore
 
         this.discoveryEngineClient    = discoveryEngineClient;
 
-        DiscoveryAnalysisReport discoveryReport = discoveryEngineClient.createDiscoveryAnalysisReport(userId,
-                                                                                                      reportQualifiedName,
-                                                                                                      reportDisplayName,
-                                                                                                      reportDescription,
-                                                                                                      super.creationDate,
-                                                                                                      analysisParameters,
-                                                                                                      DiscoveryRequestStatus.WAITING,
-                                                                                                      assetGUID,
-                                                                                                      discoveryEngineGUID,
-                                                                                                      discoveryServiceGUID,
-                                                                                                      null,
-                                                                                                      null);
-        if (discoveryReport != null)
-        {
-            super.discoveryReportGUID = discoveryReport.getDiscoveryEngineGUID();
-        }
+        super.discoveryReportGUID = discoveryEngineClient.createDiscoveryAnalysisReport(userId,
+                                                                                        reportQualifiedName,
+                                                                                        reportDisplayName,
+                                                                                        reportDescription,
+                                                                                        super.creationDate,
+                                                                                        analysisParameters,
+                                                                                        DiscoveryRequestStatus.WAITING,
+                                                                                        assetGUID,
+                                                                                        discoveryEngineGUID,
+                                                                                        discoveryServiceGUID,
+                                                                                        null);
     }
 
 

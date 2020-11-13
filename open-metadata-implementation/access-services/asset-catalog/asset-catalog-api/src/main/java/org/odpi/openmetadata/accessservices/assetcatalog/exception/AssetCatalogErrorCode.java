@@ -1,7 +1,8 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.accessservices.assetcatalog.exception;
 
-import java.text.MessageFormat;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet;
 
 /**
  * The AssetCatalogErrorCode is used to define first failure data capture (FFDC) for errors that occur when working with
@@ -22,7 +23,7 @@ import java.text.MessageFormat;
  * <li>UserAction - describes how a AssetConsumerInterface should correct the error</li>
  * </ul>
  */
-public enum AssetCatalogErrorCode {
+public enum AssetCatalogErrorCode implements ExceptionMessageSet {
 
     OMRS_NOT_INITIALIZED(404, "OMAS-ASSET-CATALOG-404-001 ",
             "The open metadata repository services are not initialized for server {0}",
@@ -60,43 +61,53 @@ public enum AssetCatalogErrorCode {
             "The server has received a call to one of its open metadata access services but is unable to process it because the access service is not active for the requested server.",
             "If the server is supposed to have this access service activated, correct the server configuration and restart the server.");
 
-    private int httpErrorCode;
-    private String errorMessageId;
-    private String errorMessage;
-    private String systemAction;
-    private String userAction;
+    private static final long serialVersionUID = 1L;
 
-    AssetCatalogErrorCode(int newHTTPErrorCode, String newErrorMessageId, String newErrorMessage, String newSystemAction, String newUserAction) {
-        this.httpErrorCode = newHTTPErrorCode;
-        this.errorMessageId = newErrorMessageId;
-        this.errorMessage = newErrorMessage;
-        this.systemAction = newSystemAction;
-        this.userAction = newUserAction;
+    private ExceptionMessageDefinition messageDefinition;
+
+
+    /**
+     * The constructor for AssetCatalogErrorCode expects to be passed one of the enumeration rows defined in
+     * AssetCatalogErrorCode above.   For example:
+     * <p>
+     * AssetCatalogErrorCode   errorCode = AssetCatalogErrorCode.SERVER_NOT_AVAILABLE;
+     * <p>
+     * This will expand out to the 5 parameters shown below.
+     *
+     * @param httpErrorCode  error code to use over REST calls
+     * @param errorMessageId unique Id for the message
+     * @param errorMessage   text for the message
+     * @param systemAction   description of the action taken by the system when the error condition happened
+     * @param userAction     instructions for resolving the error
+     */
+    AssetCatalogErrorCode(int httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction) {
+        this.messageDefinition = new ExceptionMessageDefinition(httpErrorCode,
+                errorMessageId,
+                errorMessage,
+                systemAction,
+                userAction);
     }
 
-    public String getFormattedErrorMessage(String... params) {
-        MessageFormat mf = new MessageFormat(errorMessage);
-        return mf.format(params);
+    /**
+     * Retrieve a message definition object for an exception.  This method is used when there are no message inserts.
+     *
+     * @return message definition object.
+     */
+    public ExceptionMessageDefinition getMessageDefinition() {
+        return messageDefinition;
     }
 
-    public int getHttpErrorCode() {
-        return httpErrorCode;
-    }
 
-    public String getErrorMessageId() {
-        return errorMessageId;
-    }
+    /**
+     * Retrieve a message definition object for an exception.  This method is used when there are values to be inserted into the message.
+     *
+     * @param params array of parameters (all strings).  They are inserted into the message according to the numbering in the message text.
+     * @return message definition object.
+     */
+    public ExceptionMessageDefinition getMessageDefinition(String... params) {
+        messageDefinition.setMessageParameters(params);
 
-    public String getErrorMessage() {
-        return errorMessage;
-    }
-
-    public String getSystemAction() {
-        return systemAction;
-    }
-
-    public String getUserAction() {
-        return userAction;
+        return messageDefinition;
     }
 
 }

@@ -13,7 +13,7 @@ of repositories.  Each glossary may come from a specific
 team or external organization.
 Or it may be focused on a particular topic or set of use cases.
 
-![UML](0310-Glossary-Model.png)
+![UML](0310-Glossary-Model.png#pagewidth)
 
 The anchor for each glossary is the **Glossary** object. 
 

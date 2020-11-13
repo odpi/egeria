@@ -11,7 +11,7 @@ The **ImplementationSnippet** is a Referenceable which means
 it can have a link to an external reference
 (say a physical schema implementation in a source code repository).
 
-![UML](0504-Implementation-Snippets.png)
+![UML](0504-Implementation-Snippets.png#pagewidth)
 
 
 Return to [Area 5](Area-5-models.md).

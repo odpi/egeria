@@ -26,7 +26,7 @@ Full documentation is provided on the GitHub site. Use these notes to understand
 * Regularly review outstanding issues you own & update, reassign, close as needed
 
 ## Closing issues
-* Issues with PRs makred as 'fixes #1234' will close automatically when the PR is merged
+* Issues with PRs marked as `fixes #1234` will close automatically when the PR is merged
 * Other issues fixed in other ways should be closed manually
 * Any issues open after 60 days with no activity (including assignments) will have a comment added saying they will be closed
 * 20 days later the issue will be closed

@@ -6,6 +6,13 @@
 The open archive store connector provides a common interface
 to [Open Metadata Archives](../../open-metadata-archive.md).
 
+A implementations of this type of connector is
+located in the
+[adapters/open-connectors/repository-services-connectors/open-metadata-archive-connectors](../../../../adapters/open-connectors/repository-services-connectors/open-metadata-archive-connectors)
+module.
+
+----
+Return to [repository services connectors](.).
 
 
 ----

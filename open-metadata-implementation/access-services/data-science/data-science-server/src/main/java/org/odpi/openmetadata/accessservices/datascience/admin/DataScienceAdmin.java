@@ -2,14 +2,14 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.datascience.admin;
 
-import org.odpi.openmetadata.accessservices.datascience.auditlog.DataScienceAuditCode;
+import org.odpi.openmetadata.accessservices.datascience.ffdc.DataScienceAuditCode;
 import org.odpi.openmetadata.accessservices.datascience.listener.DataScienceOMRSTopicListener;
 import org.odpi.openmetadata.accessservices.datascience.server.DataScienceServicesInstance;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
@@ -21,7 +21,7 @@ import java.util.List;
  */
 public class DataScienceAdmin extends AccessServiceAdmin
 {
-    private OMRSAuditLog                auditLog   = null;
+    private AuditLog                    auditLog   = null;
     private DataScienceServicesInstance instance   = null;
     private String                      serverName = null;
 
@@ -46,20 +46,12 @@ public class DataScienceAdmin extends AccessServiceAdmin
     public void initialize(AccessServiceConfig     accessServiceConfig,
                            OMRSTopicConnector      omrsTopicConnector,
                            OMRSRepositoryConnector repositoryConnector,
-                           OMRSAuditLog            auditLog,
+                           AuditLog                auditLog,
                            String                  serverUserName) throws OMAGConfigurationErrorException
     {
         final String         actionDescription = "initialize";
-        DataScienceAuditCode auditCode;
 
-        auditCode = DataScienceAuditCode.SERVICE_INITIALIZING;
-        auditLog.logRecord(actionDescription,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(),
-                           null,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        auditLog.logMessage(actionDescription, DataScienceAuditCode.SERVICE_INITIALIZING.getMessageDefinition());
 
         this.auditLog = auditLog;
 
@@ -96,14 +88,9 @@ public class DataScienceAdmin extends AccessServiceAdmin
                                                   auditLog);
             }
 
-            auditCode = DataScienceAuditCode.SERVICE_INITIALIZED;
-            auditLog.logRecord(actionDescription,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(serverName),
-                               accessServiceConfig.toString(),
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logMessage(actionDescription,
+                                DataScienceAuditCode.SERVICE_INITIALIZED.getMessageDefinition(serverName),
+                                accessServiceConfig.toString());
         }
         catch (OMAGConfigurationErrorException error)
         {
@@ -111,14 +98,9 @@ public class DataScienceAdmin extends AccessServiceAdmin
         }
         catch (Throwable error)
         {
-            auditCode = DataScienceAuditCode.SERVICE_INSTANCE_FAILURE;
             auditLog.logException(actionDescription,
-                                  auditCode.getLogMessageId(),
-                                  auditCode.getSeverity(),
-                                  auditCode.getFormattedLogMessage(error.getMessage()),
+                                  DataScienceAuditCode.SERVICE_INSTANCE_FAILURE.getMessageDefinition(error.getMessage()),
                                   accessServiceConfig.toString(),
-                                  auditCode.getSystemAction(),
-                                  auditCode.getUserAction(),
                                   error);
 
             super.throwUnexpectedInitializationException(actionDescription,
@@ -134,20 +116,12 @@ public class DataScienceAdmin extends AccessServiceAdmin
     public void shutdown()
     {
         final String         actionDescription = "shutdown";
-        DataScienceAuditCode auditCode;
 
         if (instance != null)
         {
             this.instance.shutdown();
         }
 
-        auditCode = DataScienceAuditCode.SERVICE_SHUTDOWN;
-        auditLog.logRecord(actionDescription,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(serverName),
-                           null,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        auditLog.logMessage(actionDescription, DataScienceAuditCode.SERVICE_SHUTDOWN.getMessageDefinition(serverName));
     }
 }

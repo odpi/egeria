@@ -68,6 +68,10 @@ public class LineageVertex {
         this.properties = properties;
     }
 
+    public void setNodeID(String nodeID) {
+        this.nodeID = nodeID;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

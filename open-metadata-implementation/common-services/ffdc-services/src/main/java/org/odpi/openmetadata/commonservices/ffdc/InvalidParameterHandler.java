@@ -4,6 +4,10 @@ package org.odpi.openmetadata.commonservices.ffdc;
 
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementOrigin;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
@@ -34,6 +38,7 @@ public class InvalidParameterHandler
         this.maxPagingSize = maxPagingSize;
     }
 
+
     /**
      * Get the maximum paging size.
      *
@@ -42,6 +47,30 @@ public class InvalidParameterHandler
     public int getMaxPagingSize()
     {
         return maxPagingSize;
+    }
+
+
+    /**
+     * Throw an exception if a server URL or  has not been supplied.  It is typically
+     * used in OMAG Clients or OMAG Servers that call other OMAG Servers.
+     *
+     * @param omagServerPlatformURL url of the server
+     * @param methodName  name of the method making the call.
+     *
+     * @throws InvalidParameterException the server URL or server name are not set
+     */
+    public void validateOMAGServerPlatformURL(String omagServerPlatformURL,
+                                              String methodName) throws InvalidParameterException
+    {
+        if (omagServerPlatformURL == null)
+        {
+            final String parameterName = "omagServerPlatformURL";
+
+            throw new InvalidParameterException(OMAGCommonErrorCode.SERVER_URL_NOT_SPECIFIED.getMessageDefinition(),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                parameterName);
+        }
     }
 
 
@@ -59,35 +88,15 @@ public class InvalidParameterHandler
                                               String serverName,
                                               String methodName) throws InvalidParameterException
     {
-        if (omagServerPlatformURL == null)
-        {
-            final String parameterName = "omagServerPlatformURL";
-
-            OMAGCommonErrorCode errorCode    = OMAGCommonErrorCode.SERVER_URL_NOT_SPECIFIED;
-            String              errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage();
-
-            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
-                                                this.getClass().getName(),
-                                                methodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction(),
-                                                parameterName);
-        }
+        this.validateOMAGServerPlatformURL(omagServerPlatformURL, methodName);
 
         if (serverName == null)
         {
             final String parameterName = "serverName";
 
-            OMAGCommonErrorCode errorCode    = OMAGCommonErrorCode.SERVER_NAME_NOT_SPECIFIED;
-            String              errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage();
-
-            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+            throw new InvalidParameterException(OMAGCommonErrorCode.SERVER_NAME_NOT_SPECIFIED.getMessageDefinition(),
                                                 this.getClass().getName(),
                                                 methodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction(),
                                                 parameterName);
         }
     }
@@ -108,15 +117,9 @@ public class InvalidParameterHandler
         {
             final String parameterName = "userId";
 
-            OMAGCommonErrorCode errorCode    = OMAGCommonErrorCode.NULL_USER_ID;
-            String              errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
-
-            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+            throw new InvalidParameterException(OMAGCommonErrorCode.NULL_USER_ID.getMessageDefinition(methodName),
                                                 this.getClass().getName(),
                                                 methodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction(),
                                                 parameterName);
         }
     }
@@ -137,17 +140,9 @@ public class InvalidParameterHandler
     {
         if (guid == null)
         {
-            OMAGCommonErrorCode errorCode    = OMAGCommonErrorCode.NULL_GUID;
-            String              errorMessage = errorCode.getErrorMessageId()
-                                             + errorCode.getFormattedErrorMessage(guidParameter,
-                                                                                  methodName);
-
-            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+            throw new InvalidParameterException(OMAGCommonErrorCode.NULL_GUID.getMessageDefinition(guidParameter, methodName),
                                                 this.getClass().getName(),
                                                 methodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction(),
                                                 guidParameter);
         }
     }
@@ -168,17 +163,9 @@ public class InvalidParameterHandler
     {
         if (name == null)
         {
-            OMAGCommonErrorCode errorCode    = OMAGCommonErrorCode.NULL_NAME;
-            String              errorMessage = errorCode.getErrorMessageId()
-                                             + errorCode.getFormattedErrorMessage(nameParameter,
-                                                                                  methodName);
-
-            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+            throw new InvalidParameterException(OMAGCommonErrorCode.NULL_NAME.getMessageDefinition(nameParameter, methodName),
                                                 this.getClass().getName(),
                                                 methodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction(),
                                                 nameParameter);
         }
     }
@@ -199,17 +186,10 @@ public class InvalidParameterHandler
     {
         if ((searchString == null) || (searchString.isEmpty()))
         {
-            OMAGCommonErrorCode errorCode    = OMAGCommonErrorCode.NULL_SEARCH_STRING;
-            String              errorMessage = errorCode.getErrorMessageId()
-                                             + errorCode.getFormattedErrorMessage(searchParameter,
-                                                                                  methodName);
-
-            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+            throw new InvalidParameterException(OMAGCommonErrorCode.NULL_SEARCH_STRING.getMessageDefinition(searchParameter,
+                                                                                                            methodName),
                                                 this.getClass().getName(),
                                                 methodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction(),
                                                 searchParameter);
         }
     }
@@ -230,17 +210,9 @@ public class InvalidParameterHandler
     {
         if (object == null)
         {
-            OMAGCommonErrorCode errorCode    = OMAGCommonErrorCode.NULL_OBJECT;
-            String              errorMessage = errorCode.getErrorMessageId()
-                                             + errorCode.getFormattedErrorMessage(nameParameter,
-                                                                                  methodName);
-
-            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+            throw new InvalidParameterException(OMAGCommonErrorCode.NULL_OBJECT.getMessageDefinition(nameParameter, methodName),
                                                 this.getClass().getName(),
                                                 methodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction(),
                                                 nameParameter);
         }
     }
@@ -261,16 +233,9 @@ public class InvalidParameterHandler
     {
         if (enumValue == null)
         {
-            OMAGCommonErrorCode errorCode    = OMAGCommonErrorCode.NULL_ENUM;
-            String              errorMessage = errorCode.getErrorMessageId()
-                                             + errorCode.getFormattedErrorMessage(parameterName, methodName);
-
-            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+            throw new InvalidParameterException(OMAGCommonErrorCode.NULL_ENUM.getMessageDefinition(parameterName, methodName),
                                                 this.getClass().getName(),
                                                 methodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction(),
                                                 parameterName);
         }
     }
@@ -291,17 +256,10 @@ public class InvalidParameterHandler
     {
         if (text == null)
         {
-            OMAGCommonErrorCode errorCode    = OMAGCommonErrorCode.NULL_TEXT;
-            String              errorMessage = errorCode.getErrorMessageId()
-                                             + errorCode.getFormattedErrorMessage(parameterName, methodName);
-
-            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+            throw new InvalidParameterException(OMAGCommonErrorCode.NULL_TEXT.getMessageDefinition(parameterName, methodName),
                                                 this.getClass().getName(),
                                                 methodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction(),
-                                                "text");
+                                                parameterName);
         }
     }
 
@@ -326,46 +284,34 @@ public class InvalidParameterHandler
 
         if (startFrom < 0)
         {
-            OMAGCommonErrorCode errorCode    = OMAGCommonErrorCode.NEGATIVE_START_FROM;
-            String              errorMessage = errorCode.getErrorMessageId()
-                                             + errorCode.getFormattedErrorMessage(Integer.toString(startFrom), startFromParameterName, methodName);
-
-            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+            throw new InvalidParameterException(OMAGCommonErrorCode.NEGATIVE_START_FROM.getMessageDefinition(Integer.toString(startFrom),
+                                                                                                             startFromParameterName,
+                                                                                                             methodName),
                                                 this.getClass().getName(),
                                                 methodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction(),
                                                 startFromParameterName);
         }
 
 
         if (pageSize < 0)
         {
-            OMAGCommonErrorCode errorCode    = OMAGCommonErrorCode.NEGATIVE_PAGE_SIZE;
-            String              errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(Integer.toString(pageSize), pageSizeParameterName, methodName);
-
-            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+            throw new InvalidParameterException(OMAGCommonErrorCode.NEGATIVE_PAGE_SIZE.getMessageDefinition(Integer.toString(pageSize),
+                                                                                                            pageSizeParameterName,
+                                                                                                            methodName),
                                                 this.getClass().getName(),
                                                 methodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction(),
                                                 pageSizeParameterName);
         }
 
 
         if (pageSize > maxPagingSize)
         {
-            OMAGCommonErrorCode errorCode    = OMAGCommonErrorCode.MAX_PAGE_SIZE;
-            String              errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(Integer.toString(pageSize), Integer.toString(maxPagingSize), methodName, Integer.toString(maxPagingSize));
-
-            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+            throw new InvalidParameterException(OMAGCommonErrorCode.MAX_PAGE_SIZE.getMessageDefinition(Integer.toString(pageSize),
+                                                                                                       Integer.toString(maxPagingSize),
+                                                                                                       methodName,
+                                                                                                       Integer.toString(maxPagingSize)),
                                                 this.getClass().getName(),
                                                 methodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction(),
                                                 pageSizeParameterName);
         }
 
@@ -395,17 +341,46 @@ public class InvalidParameterHandler
     {
         if ((stringArray == null) || (stringArray.isEmpty()))
         {
-            OMAGCommonErrorCode errorCode    = OMAGCommonErrorCode.NULL_ARRAY_PARAMETER;
-            String              errorMessage = errorCode.getErrorMessageId()
-                                             + errorCode.getFormattedErrorMessage(parameterName, methodName);
-
-            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+            throw new InvalidParameterException(OMAGCommonErrorCode.NULL_ARRAY_PARAMETER.getMessageDefinition(parameterName,
+                                                                                                              methodName),
                                                 this.getClass().getName(),
                                                 methodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction(),
                                                 parameterName);
+        }
+    }
+
+
+    /**
+     * When attached elements are being retrieved for an anchor, this method checks that the anchor is set up correctly
+     * in the element's anchors classification.
+     *
+     * @param anchorGUID unique identifier of the expected anchor
+     * @param anchorGUIDParameterName parameter name used to supply anchorGUID
+     * @param anchorEntity current setting for the anchor
+     * @param elementGUID unique identifier of the element being retrieved
+     * @param elementTypeName type of element being retrieved
+     * @param methodName calling method
+     * @throws InvalidParameterException exception raise when the anchors do not match
+     */
+    public void validateAnchorGUID(String       anchorGUID,
+                                   String       anchorGUIDParameterName,
+                                   EntityDetail anchorEntity,
+                                   String       elementGUID,
+                                   String       elementTypeName,
+                                   String       methodName) throws InvalidParameterException
+    {
+        if ((anchorGUID != null) && (anchorEntity != null))
+        {
+            if (! anchorGUID.equals(anchorEntity.getGUID()))
+            {
+                throw new InvalidParameterException(OMAGCommonErrorCode.BAD_ANCHOR_GUID.getMessageDefinition(elementTypeName,
+                                                                                                             elementGUID,
+                                                                                                             anchorGUID,
+                                                                                                             anchorEntity.getGUID()),
+                                                    this.getClass().getName(),
+                                                    methodName,
+                                                    anchorGUIDParameterName);
+            }
         }
     }
 
@@ -425,22 +400,24 @@ public class InvalidParameterHandler
     {
         if (connection == null)
         {
-            OMAGCommonErrorCode errorCode    = OMAGCommonErrorCode.NULL_CONNECTION_PARAMETER;
-            String              errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(parameterName, methodName);
-
-            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+            throw new InvalidParameterException(OMAGCommonErrorCode.NULL_CONNECTION_PARAMETER.getMessageDefinition(parameterName, methodName),
                                                 this.getClass().getName(),
                                                 methodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction(),
+                                                parameterName);
+        }
+
+        if (connection.getConnectorType() == null)
+        {
+            throw new InvalidParameterException(OMAGCommonErrorCode.NULL_CONNECTOR_TYPE_PARAMETER.getMessageDefinition(parameterName, methodName),
+                                                this.getClass().getName(),
+                                                methodName,
                                                 parameterName);
         }
     }
 
 
     /**
-     * Throw an exception if the supplied type name is not recognized not of the correct subclass
+     * Throw an exception if the supplied type name is not of the correct subclass
      *
      * @param typeName name of type
      * @param superTypeName name of expected supertype
@@ -460,40 +437,152 @@ public class InvalidParameterHandler
     {
         final String parameterName = "typeName";
 
-        TypeDef typeDef = repositoryHelper.getTypeDefByName(serviceName, typeName);
+        TypeDef typeDef;
+        if (typeName == null)
+        {
+            typeDef = repositoryHelper.getTypeDefByName(serviceName, superTypeName);
+        }
+        else
+        {
+            typeDef = repositoryHelper.getTypeDefByName(serviceName, typeName);
+        }
 
         if (typeDef == null)
         {
-            OMAGCommonErrorCode errorCode    = OMAGCommonErrorCode.UNRECOGNIZED_TYPE_NAME;
-            String              errorMessage = errorCode.getErrorMessageId()
-                                             + errorCode.getFormattedErrorMessage(typeName, methodName, serviceName);
-
-            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+            throw new InvalidParameterException(OMAGCommonErrorCode.UNRECOGNIZED_TYPE_NAME.getMessageDefinition(typeName,
+                                                                                                                methodName,
+                                                                                                                serviceName),
                                                 this.getClass().getName(),
                                                 methodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction(),
                                                 parameterName);
         }
 
-
         if (! repositoryHelper.isTypeOf(serviceName, typeName, superTypeName))
         {
-            OMAGCommonErrorCode errorCode    = OMAGCommonErrorCode.BAD_SUB_TYPE_NAME;
-            String              errorMessage = errorCode.getErrorMessageId()
-                                             + errorCode.getFormattedErrorMessage(typeName, methodName, serviceName, superTypeName);
-
-            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+            throw new InvalidParameterException(OMAGCommonErrorCode.BAD_SUB_TYPE_NAME.getMessageDefinition(typeName,
+                                                                                                           methodName,
+                                                                                                           serviceName,
+                                                                                                           superTypeName),
                                                 this.getClass().getName(),
                                                 methodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction(),
                                                 parameterName);
         }
 
         return typeDef.getGUID();
+    }
+
+
+    /**
+     * Throw an exception if the supplied guid returned an instance of the wrong type
+     *
+     * @param guid  unique identifier of instance
+     * @param methodName  name of the method making the call.
+     * @param actualType  type of retrieved instance
+     * @param expectedType  type the instance should be
+     * @throws InvalidParameterException the guid is for the wrong type of object
+     */
+    public void handleWrongTypeForGUIDException(String guid,
+                                                String methodName,
+                                                String actualType,
+                                                String expectedType) throws InvalidParameterException
+    {
+        throw new InvalidParameterException(OMAGCommonErrorCode.INSTANCE_WRONG_TYPE_FOR_GUID.getMessageDefinition(methodName,
+                                                                                                                  guid,
+                                                                                                                  actualType,
+                                                                                                                  expectedType),
+                                            this.getClass().getName(),
+                                            methodName,
+                                            expectedType);
+
+    }
+
+
+    /**
+     * Validate that an instance is from the expected metadata collection.
+     *
+     * @param instanceGUID unique identifier of the instance
+     * @param parameterName name of the parameter tha supplied the instance
+     * @param instanceHeader header of the instance
+     * @param expectedOrigin expected origin (defined by the type of API) - null means any
+     * @param expectedMetadataCollectionGUID unique identifier of expected metadata collection id - null means any
+     * @param expectedMetadataCollectionName unique name of expected metadata collection id - used for error logging
+     * @param serviceName name of calling service
+     * @param methodName name of calling method
+     *
+     * @throws InvalidParameterException the metadata collection id or origin is not correct
+     */
+    public void  validateInstanceProvenanceForUpdate(String        instanceGUID,
+                                                     String        parameterName,
+                                                     ElementHeader instanceHeader,
+                                                     ElementOrigin expectedOrigin,
+                                                     String        expectedMetadataCollectionGUID,
+                                                     String        expectedMetadataCollectionName,
+                                                     String        serviceName,
+                                                     String        methodName) throws InvalidParameterException
+    {
+        if (instanceHeader != null)
+        {
+            if (instanceHeader.getType() != null)
+            {
+                ElementType instanceType = instanceHeader.getType();
+
+                if ((expectedOrigin == null) || (instanceType.getElementOrigin() == expectedOrigin))
+                {
+                    if (expectedMetadataCollectionGUID == null)
+                    {
+                        return;
+                    }
+
+                    if (expectedMetadataCollectionGUID.equals(instanceType.getElementMetadataCollectionId()))
+                    {
+                        return;
+                    }
+                }
+
+                String expectedOriginName = "null";
+                String instanceOriginName = "null";
+
+                if (expectedOrigin != null)
+                {
+                    expectedOriginName = expectedOrigin.getName();
+                }
+
+                if (instanceType.getElementOrigin() != null)
+                {
+                    instanceOriginName = instanceType.getElementOrigin().getName();
+                }
+
+                throw new InvalidParameterException(OMAGCommonErrorCode.WRONG_METADATA_COLLECTION_FOR_UPDATE.getMessageDefinition(methodName,
+                                                                                                                                  serviceName,
+                                                                                                                                  instanceGUID,
+                                                                                                                                  instanceType.getElementTypeName(),
+                                                                                                                                  expectedOriginName,
+                                                                                                                                  expectedMetadataCollectionName,
+                                                                                                                                  expectedMetadataCollectionGUID,
+                                                                                                                                  instanceOriginName,
+                                                                                                                                  instanceType.getElementMetadataCollectionName(),
+                                                                                                                                  instanceType.getElementMetadataCollectionId()),
+                                                    this.getClass().getName(),
+                                                    methodName,
+                                                    parameterName);
+            }
+            else
+            {
+                throw new InvalidParameterException(OMAGCommonErrorCode.NULL_OBJECT.getMessageDefinition("instanceHeader.getType()",
+                                                                                                         methodName),
+                                                    this.getClass().getName(),
+                                                    methodName,
+                                                    parameterName);
+            }
+        }
+        else
+        {
+            throw new InvalidParameterException(OMAGCommonErrorCode.NULL_OBJECT.getMessageDefinition("instanceHeader",
+                                                                                                     methodName),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                parameterName);
+        }
     }
 
 
@@ -545,16 +634,9 @@ public class InvalidParameterHandler
             }
         }
 
-        OMAGCommonErrorCode errorCode    = OMAGCommonErrorCode.NOT_IN_THE_ZONE;
-        String              errorMessage = errorCode.getErrorMessageId()
-                                         + errorCode.getFormattedErrorMessage(assetGUID, serviceName);
-
-        throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+        throw new InvalidParameterException(OMAGCommonErrorCode.NOT_IN_THE_ZONE.getMessageDefinition(assetGUID, serviceName),
                                             this.getClass().getName(),
                                             methodName,
-                                            errorMessage,
-                                            errorCode.getSystemAction(),
-                                            errorCode.getUserAction(),
                                             parameterName);
     }
 
@@ -577,19 +659,13 @@ public class InvalidParameterHandler
     {
         final String parameterName = "methodName";
 
-        OMAGCommonErrorCode errorCode    = OMAGCommonErrorCode.METHOD_NOT_IMPLEMENTED;
-        String              errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                                                                                                              userId,
-                                                                                                              serverName,
-                                                                                                              serviceName);
-
-        throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
-                                                this.getClass().getName(),
-                                                methodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction(),
-                                                parameterName);
+        throw new InvalidParameterException(OMAGCommonErrorCode.METHOD_NOT_IMPLEMENTED.getMessageDefinition(methodName,
+                                                                                                            userId,
+                                                                                                            serverName,
+                                                                                                            serviceName),
+                                            this.getClass().getName(),
+                                            methodName,
+                                            parameterName);
     }
 
 
@@ -615,21 +691,42 @@ public class InvalidParameterHandler
     {
         final String parameterName = "guid";
 
-        OMAGCommonErrorCode errorCode    = OMAGCommonErrorCode.UNKNOWN_ELEMENT;
-        String              errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(guid,
-                                                                                                              type,
-                                                                                                              userId,
-                                                                                                              methodName,
-                                                                                                              serviceName,
-                                                                                                              serverName);
-
-        throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+        throw new InvalidParameterException(OMAGCommonErrorCode.UNKNOWN_ELEMENT.getMessageDefinition(guid,
+                                                                                                     type,
+                                                                                                     userId,
+                                                                                                     methodName,
+                                                                                                     serviceName,
+                                                                                                     serverName),
                                             this.getClass().getName(),
                                             methodName,
-                                            errorMessage,
-                                            errorCode.getSystemAction(),
-                                            errorCode.getUserAction(),
                                             parameterName);
+    }
+
+
+    /**
+     * Report the fact that a unique name that was requested for a new entity is already in use or not a permitted value.
+     *
+     * @param uniqueName value of unique parameter that is in error
+     * @param uniqueNameParameterName parameter that passed the qualified name
+     * @param typeName requested type name
+     * @param serviceName calling service
+     * @param methodName calling method
+     * @throws InvalidParameterException the unique name is in use
+     */
+    public void throwUniqueNameInUse(String uniqueName,
+                                     String uniqueNameParameterName,
+                                     String typeName,
+                                     String serviceName,
+                                     String methodName) throws InvalidParameterException
+    {
+        throw new InvalidParameterException(OMAGCommonErrorCode.UNIQUE_NAME_ALREADY_IN_USE.getMessageDefinition(methodName,
+                                                                                                                serviceName,
+                                                                                                                typeName,
+                                                                                                                uniqueNameParameterName,
+                                                                                                                uniqueName),
+                                            this.getClass().getName(),
+                                            methodName,
+                                            uniqueNameParameterName);
     }
 
 
@@ -651,18 +748,12 @@ public class InvalidParameterHandler
     {
         final String parameterName = "guid";
 
-        OMAGCommonErrorCode errorCode    = OMAGCommonErrorCode.CANNOT_DELETE_ELEMENT_IN_USE;
-        String              errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                                                                                                              serviceName,
-                                                                                                              type,
-                                                                                                              guid);
-
-        throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+        throw new InvalidParameterException(OMAGCommonErrorCode.CANNOT_DELETE_ELEMENT_IN_USE.getMessageDefinition(methodName,
+                                                                                                                  serviceName,
+                                                                                                                  type,
+                                                                                                                  guid),
                                             this.getClass().getName(),
                                             methodName,
-                                            errorMessage,
-                                            errorCode.getSystemAction(),
-                                            errorCode.getUserAction(),
                                             parameterName);
     }
 }

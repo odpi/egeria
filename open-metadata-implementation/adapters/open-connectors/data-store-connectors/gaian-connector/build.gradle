@@ -1,0 +1,23 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright Contributors to the ODPi Egeria project.
+ */
+
+
+dependencies {
+    implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
+    implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
+    implementation 'org.slf4j:slf4j-api'
+    testImplementation 'org.testng:testng'
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
+}
+
+description = 'Gaian Connector'
+
+java {
+    withJavadocJar()
+}
+
+test {
+    useTestNG()
+}

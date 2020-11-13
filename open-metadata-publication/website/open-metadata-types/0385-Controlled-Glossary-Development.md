@@ -6,7 +6,7 @@
 The **ControlledGlossaryTerm** extends the standard [GlossaryTerm](0330-Terms.md)
 with states for supporting a complex development lifecycle.
 
-![UML](0385-Controlled-Glossary-Development.png)
+![UML](0385-Controlled-Glossary-Development.png#pagewidth)
 
 Return to [Area 3](Area-3-models.md).
 

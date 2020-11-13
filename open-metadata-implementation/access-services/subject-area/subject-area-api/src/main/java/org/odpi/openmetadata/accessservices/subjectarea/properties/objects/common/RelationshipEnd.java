@@ -122,7 +122,7 @@ public class RelationshipEnd implements Serializable {
                 setTypeName(t.toString());
             }
 
-            if (u != null && u instanceof Map) {
+            if (u instanceof Map) {
                 setUniqueAttributes((Map) u);
             }
         }
@@ -186,5 +186,4 @@ public class RelationshipEnd implements Serializable {
     public String toString() {
         return toString(new StringBuilder()).toString();
     }
-
 }

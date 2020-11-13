@@ -6,7 +6,7 @@ package org.odpi.openmetadata.accessservices.assetlineage.ffdc;
  * This package provides the first failure data capture support for the Asset Lineage OMAS module.
  * This includes an error code enum, a base class for runtime exceptions, a base class for checked exceptions plus
  * implementation of each specific exception.
- *
+ * <p>
  * The error code enum (AssetLineageErrorCode) has an entry for each unique situation
  * where an exception is returned.  Each entry defines:
  *
@@ -18,12 +18,12 @@ package org.odpi.openmetadata.accessservices.assetlineage.ffdc;
  *     <li>A description of the cause of the error and system action as a result.</li>
  *     <li>A description of how to correct the error (if known)</li>
  * </ul>
- *
+ * <p>
  * Each exception (whether a checked or runtime exception) has two constructors.
  * The first constructor is used when a new error has been detected.
  * The second constructor is used when another exception has been caught.
  * This caught exception is passed on the constructor so it is effectively
  * embedded in the OMAS exception.
- *
+ * <p>
  * Both constructors take the values from the error code enum to define the cause and resolution.
  */

@@ -18,14 +18,9 @@ import static org.testng.Assert.assertTrue;
  */
 public class TestAssetComplexSchemaType
 {
-    private ElementType          type                 = new ElementType();
-    private List<Classification> classifications      = new ArrayList<>();
-    private Map<String, String>  additionalProperties = new HashMap<>();
-
-    private AssetSchemaAttributes schemaAttributes = new MockAssetSchemaAttributes(null,
-                                                                                   12,
-                                                                                   56);
-
+    private ElementType                 type                 = new ElementType();
+    private List<ElementClassification> classifications      = new ArrayList<>();
+    private Map<String, String>         additionalProperties = new HashMap<>();
 
 
     /**
@@ -59,7 +54,7 @@ public class TestAssetComplexSchemaType
         testBean.setUsage("TestUsage");
         testBean.setVersionNumber("TestVersionNumber");
 
-        return new AssetComplexSchemaType(testBean, schemaAttributes);
+        return new AssetComplexSchemaType(testBean);
     }
 
 
@@ -85,7 +80,7 @@ public class TestAssetComplexSchemaType
         testBean.setUsage("TestUsage");
         testBean.setVersionNumber("TestVersionNumber");
 
-        return new AssetComplexSchemaType(testBean, schemaAttributes);
+        return new AssetComplexSchemaType(testBean);
     }
 
 
@@ -112,7 +107,7 @@ public class TestAssetComplexSchemaType
         testBean.setUsage("TestUsage");
         testBean.setVersionNumber("TestVersionNumber");
 
-        return new AssetComplexSchemaType(testBean, schemaAttributes);
+        return new AssetComplexSchemaType(testBean);
     }
 
 
@@ -138,34 +133,7 @@ public class TestAssetComplexSchemaType
         testBean.setUsage("TestUsage");
         testBean.setVersionNumber("TestVersionNumber");
 
-        return new AssetComplexSchemaType(new AssetSummary(new Asset()), testBean, schemaAttributes);
-    }
-
-
-    /**
-     * Set up an example object to test.  This has a different field in the subclass.
-     *
-     * @return filled in object
-     */
-    private AssetComplexSchemaType getAndYetAnotherDifferentObject()
-    {
-        SchemaType testBean = new SchemaType();
-
-        testBean.setType(type);
-        testBean.setGUID("TestGUID");
-        testBean.setURL("TestURL");
-        testBean.setClassifications(classifications);
-
-        testBean.setQualifiedName("TestQualifiedName");
-        testBean.setAdditionalProperties(additionalProperties);
-
-        testBean.setAuthor("TestAuthor");
-        testBean.setEncodingStandard("TestEncodingStandard");
-        testBean.setUsage("TestUsage");
-        testBean.setVersionNumber("TestVersionNumber");
-
-
-        return new AssetComplexSchemaType(testBean, schemaAttributes);
+        return new AssetComplexSchemaType(new AssetSummary(new Asset()), testBean);
     }
 
 
@@ -188,8 +156,6 @@ public class TestAssetComplexSchemaType
         assertTrue(resultObject.getUsage().equals("TestUsage"));
         assertTrue(resultObject.getEncodingStandard().equals("TestEncodingStandard"));
         assertTrue(resultObject.getAuthor().equals("TestAuthor"));
-
-        assertTrue(resultObject.getSchemaAttributes() != null);
     }
 
 
@@ -229,35 +195,35 @@ public class TestAssetComplexSchemaType
         AssetDescriptor        parentAsset;
 
         nullBean = null;
-        nullObject = new AssetComplexSchemaType(nullBean, null);
+        nullObject = new AssetComplexSchemaType(nullBean);
         validateNullObject(nullObject);
 
         nullBean = new ComplexSchemaType();
-        nullObject = new AssetComplexSchemaType(nullBean, null);
+        nullObject = new AssetComplexSchemaType(nullBean);
         validateNullObject(nullObject);
 
         nullBean = new ComplexSchemaType(null);
-        nullObject = new AssetComplexSchemaType(nullBean, null);
+        nullObject = new AssetComplexSchemaType(nullBean);
         validateNullObject(nullObject);
 
         parentAsset = null;
         nullBean = null;
-        nullObject = new AssetComplexSchemaType(parentAsset, nullBean, null);
+        nullObject = new AssetComplexSchemaType(parentAsset, nullBean);
         validateNullObject(nullObject);
 
         nullBean = new ComplexSchemaType();
-        nullObject = new AssetComplexSchemaType(parentAsset, nullBean, null);
+        nullObject = new AssetComplexSchemaType(parentAsset, nullBean);
         validateNullObject(nullObject);
 
         nullBean = new ComplexSchemaType(null);
-        nullObject = new AssetComplexSchemaType(parentAsset, nullBean, null);
+        nullObject = new AssetComplexSchemaType(parentAsset, nullBean);
         validateNullObject(nullObject);
 
         nullTemplate = null;
         nullObject = new AssetComplexSchemaType(parentAsset, nullTemplate);
         validateNullObject(nullObject);
 
-        nullTemplate = new AssetComplexSchemaType(parentAsset, nullBean, null);;
+        nullTemplate = new AssetComplexSchemaType(parentAsset, nullBean);
         nullObject = new AssetComplexSchemaType(parentAsset, nullTemplate);
         validateNullObject(nullObject);
     }
@@ -269,7 +235,9 @@ public class TestAssetComplexSchemaType
     @Test public void testSubclassInitialization()
     {
         ComplexSchemaType      bean        = new ComplexSchemaType();
-        AssetComplexSchemaType object = new AssetComplexSchemaType(null);
+        ComplexSchemaType      nullBean    = null;
+
+        AssetComplexSchemaType object = new AssetComplexSchemaType(nullBean);
 
         object.setBean(bean);
     }
@@ -283,7 +251,6 @@ public class TestAssetComplexSchemaType
     {
         assertFalse(getTestObject().equals(null));
         assertFalse(getTestObject().equals("DummyString"));
-        assertTrue(getTestObject().equals(getTestObject()));
 
         AssetComplexSchemaType sameObject = getTestObject();
         assertTrue(sameObject.equals(sameObject));
@@ -291,7 +258,6 @@ public class TestAssetComplexSchemaType
         assertFalse(getTestObject().equals(getDifferentObject()));
         assertFalse(getTestObject().equals(getAnotherDifferentObject()));
         assertFalse(getTestObject().equals(getYetAnotherDifferentObject()));
-        assertFalse(getTestObject().equals(getAndYetAnotherDifferentObject()));
     }
 
 

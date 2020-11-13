@@ -5,9 +5,10 @@ package org.odpi.openmetadata.accessservices.governanceprogram.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceOfficer;
+import org.odpi.openmetadata.accessservices.governanceprogram.properties.GovernanceOfficerProperties;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -26,7 +27,7 @@ public class GovernanceOfficerListResponse extends GovernanceProgramOMASAPIRespo
 {
     private static final long    serialVersionUID = 1L;
 
-    private List<GovernanceOfficer>  governanceOfficers = null;
+    private List<GovernanceOfficerProperties> governanceOfficers = null;
 
 
     /**
@@ -59,7 +60,7 @@ public class GovernanceOfficerListResponse extends GovernanceProgramOMASAPIRespo
      *
      * @return list of objects or null
      */
-    public List<GovernanceOfficer> getGovernanceOfficers()
+    public List<GovernanceOfficerProperties> getGovernanceOfficers()
     {
         if (governanceOfficers == null)
         {
@@ -81,7 +82,7 @@ public class GovernanceOfficerListResponse extends GovernanceProgramOMASAPIRespo
      *
      * @param governanceOfficers - list of objects or null
      */
-    public void setGovernanceOfficers(List<GovernanceOfficer> governanceOfficers)
+    public void setGovernanceOfficers(List<GovernanceOfficerProperties> governanceOfficers)
     {
         this.governanceOfficers = governanceOfficers;
     }
@@ -96,10 +97,14 @@ public class GovernanceOfficerListResponse extends GovernanceProgramOMASAPIRespo
     public String toString()
     {
         return "GovernanceOfficerListResponse{" +
-                "governanceOfficers='" + getGovernanceOfficers() + '\'' +
-                ", relatedHTTPCode=" + getRelatedHTTPCode() +
+                "governanceOfficers=" + governanceOfficers +
                 ", exceptionClassName='" + getExceptionClassName() + '\'' +
+                ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
+                ", actionDescription='" + getActionDescription() + '\'' +
+                ", relatedHTTPCode=" + getRelatedHTTPCode() +
                 ", exceptionErrorMessage='" + getExceptionErrorMessage() + '\'' +
+                ", exceptionErrorMessageId='" + getExceptionErrorMessageId() + '\'' +
+                ", exceptionErrorMessageParameters=" + Arrays.toString(getExceptionErrorMessageParameters()) +
                 ", exceptionSystemAction='" + getExceptionSystemAction() + '\'' +
                 ", exceptionUserAction='" + getExceptionUserAction() + '\'' +
                 ", exceptionProperties=" + getExceptionProperties() +

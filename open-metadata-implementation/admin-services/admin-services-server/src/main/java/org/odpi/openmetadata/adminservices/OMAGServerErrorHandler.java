@@ -3,13 +3,19 @@
 package org.odpi.openmetadata.adminservices;
 
 import org.odpi.openmetadata.adminservices.configuration.properties.*;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceOperationalStatus;
+import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
+import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceRegistration;
 import org.odpi.openmetadata.adminservices.ffdc.OMAGAdminErrorCode;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+
+import java.util.List;
 
 /**
  * OMAGServerErrorHandler provides common error handling routines for the admin services
@@ -36,17 +42,11 @@ public class OMAGServerErrorHandler
                         String serverName,
                         String methodName) throws OMAGNotAuthorizedException
     {
-        if (userId == null)
+        if (("".equals(userId)) || (userId == null))
         {
-            OMAGAdminErrorCode errorCode    = OMAGAdminErrorCode.NULL_USER_NAME;
-            String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName);
-
-            throw new OMAGNotAuthorizedException(errorCode.getHTTPErrorCode(),
+            throw new OMAGNotAuthorizedException(OMAGAdminErrorCode.NULL_USER_NAME.getMessageDefinition(serverName),
                                                  this.getClass().getName(),
-                                                 methodName,
-                                                 errorMessage,
-                                                 errorCode.getSystemAction(),
-                                                 errorCode.getUserAction());
+                                                 methodName);
         }
     }
 
@@ -64,19 +64,41 @@ public class OMAGServerErrorHandler
         /*
          * If the local server name is still null then save the server name in the configuration.
          */
-        if (serverName == null)
+        if ("".equals(serverName) || (serverName == null))
         {
-            OMAGAdminErrorCode errorCode    = OMAGAdminErrorCode.NULL_LOCAL_SERVER_NAME;
-            String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage();
-
-            throw new OMAGInvalidParameterException(errorCode.getHTTPErrorCode(),
+            throw new OMAGInvalidParameterException(OMAGAdminErrorCode.NULL_LOCAL_SERVER_NAME.getMessageDefinition(),
                                                     this.getClass().getName(),
-                                                    methodName,
-                                                    errorMessage,
-                                                    errorCode.getSystemAction(),
-                                                    errorCode.getUserAction());
+                                                    methodName);
         }
     }
+
+
+    /**
+     * Validate that the server name is not null and save it in the config.
+     *
+     * @param serverName  serverName passed on a request
+     * @param clientConfig  client config
+     * @param methodName  method receiving the call
+     * @throws OMAGInvalidParameterException null server name
+     */
+    void validateOMAGServerClientConfig(String                 serverName,
+                                        OMAGServerClientConfig clientConfig,
+                                        String                 methodName) throws OMAGInvalidParameterException
+    {
+        /*
+         * If the client config is null then this is an error.
+         */
+        if (clientConfig == null)
+        {
+            throw new OMAGInvalidParameterException(OMAGAdminErrorCode.NULL_CLIENT_CONFIG.getMessageDefinition(serverName, methodName),
+                                                    this.getClass().getName(),
+                                                    methodName);
+        }
+
+        validateServerName(serverName, methodName);
+        validateOMAGServerServiceRootURL(clientConfig.getOMAGServerPlatformRootURL(), serverName, methodName);
+    }
+
 
 
     /**
@@ -102,15 +124,9 @@ public class OMAGServerErrorHandler
 
         if (eventBusConfig == null)
         {
-            OMAGAdminErrorCode errorCode    = OMAGAdminErrorCode.NO_EVENT_BUS_SET;
-            String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName);
-
-            throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
+            throw new OMAGConfigurationErrorException(OMAGAdminErrorCode.NO_EVENT_BUS_SET.getMessageDefinition(serverName),
                                                       this.getClass().getName(),
-                                                      methodName,
-                                                      errorMessage,
-                                                      errorCode.getSystemAction(),
-                                                      errorCode.getUserAction());
+                                                      methodName);
         }
 
         return eventBusConfig;
@@ -134,27 +150,45 @@ public class OMAGServerErrorHandler
     {
         if (registration == null)
         {
-            OMAGAdminErrorCode errorCode    = OMAGAdminErrorCode.ACCESS_SERVICE_NOT_RECOGNIZED;
-            String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName, serviceURLMarker);
-
-            throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
+            throw new OMAGConfigurationErrorException(OMAGAdminErrorCode.ACCESS_SERVICE_NOT_RECOGNIZED.getMessageDefinition(serverName, serviceURLMarker),
                                                       this.getClass().getName(),
-                                                      methodName,
-                                                      errorMessage,
-                                                      errorCode.getSystemAction(),
-                                                      errorCode.getUserAction());
+                                                      methodName);
         }
-        else if (registration.getAccessServiceOperationalStatus() != AccessServiceOperationalStatus.ENABLED)
+        else if (registration.getAccessServiceOperationalStatus() != ServiceOperationalStatus.ENABLED)
         {
-            OMAGAdminErrorCode errorCode    = OMAGAdminErrorCode.ACCESS_SERVICE_NOT_ENABLED;
-            String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName, serviceURLMarker);
-
-            throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
+            throw new OMAGConfigurationErrorException(OMAGAdminErrorCode.ACCESS_SERVICE_NOT_ENABLED.getMessageDefinition(serverName, serviceURLMarker),
                                                       this.getClass().getName(),
-                                                      methodName,
-                                                      errorMessage,
-                                                      errorCode.getSystemAction(),
-                                                      errorCode.getUserAction());
+                                                      methodName);
+        }
+    }
+
+
+    /**
+     * Check that a requested view service is registered with this server before allowing the view service to be configured
+     * into the configuration document
+     *
+     * @param registration registration record for the view service.
+     * @param serviceURLMarker string used in URL for this view service
+     * @param serverName name of the server being configured
+     * @param methodName calling method
+     * @throws OMAGConfigurationErrorException resulting exception if the view service is not supported.
+     */
+    void validateViewServiceIsRegistered(ViewServiceRegistration registration,
+                                         String                  serviceURLMarker,
+                                         String                  serverName,
+                                         String                  methodName) throws OMAGConfigurationErrorException
+    {
+        if (registration == null)
+        {
+            throw new OMAGConfigurationErrorException(OMAGAdminErrorCode.VIEW_SERVICE_NOT_RECOGNIZED.getMessageDefinition(serverName, serviceURLMarker),
+                                                      this.getClass().getName(),
+                                                      methodName);
+        }
+        else if (registration.getViewServiceOperationalStatus() != ServiceOperationalStatus.ENABLED)
+        {
+            throw new OMAGConfigurationErrorException(OMAGAdminErrorCode.VIEW_SERVICE_NOT_ENABLED.getMessageDefinition(serverName, serviceURLMarker),
+                                                      this.getClass().getName(),
+                                                      methodName);
         }
     }
 
@@ -175,15 +209,9 @@ public class OMAGServerErrorHandler
     {
         if ((accessServiceRootURL == null) || ("".equals(accessServiceRootURL)))
         {
-            OMAGAdminErrorCode errorCode    = OMAGAdminErrorCode.NULL_ACCESS_SERVICE_ROOT_URL;
-            String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverService, serverName, accessServiceName);
-
-            throw new OMAGInvalidParameterException(errorCode.getHTTPErrorCode(),
+            throw new OMAGInvalidParameterException(OMAGAdminErrorCode.NULL_ACCESS_SERVICE_ROOT_URL.getMessageDefinition(serverService, serverName, accessServiceName),
                                                     this.getClass().getName(),
-                                                    serverService,
-                                                    errorMessage,
-                                                    errorCode.getSystemAction(),
-                                                    errorCode.getUserAction());
+                                                    serverService);
         }
     }
 
@@ -204,15 +232,9 @@ public class OMAGServerErrorHandler
     {
         if ((accessServiceServerName == null) || ("".equals(accessServiceServerName)))
         {
-            OMAGAdminErrorCode errorCode    = OMAGAdminErrorCode.NULL_ACCESS_SERVICE_SERVER_NAME;
-            String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverService, serverName, accessServiceName);
-
-            throw new OMAGInvalidParameterException(errorCode.getHTTPErrorCode(),
+            throw new OMAGInvalidParameterException(OMAGAdminErrorCode.NULL_ACCESS_SERVICE_SERVER_NAME.getMessageDefinition(serverService, serverName, accessServiceName),
                                                     this.getClass().getName(),
-                                                    serverService,
-                                                    errorMessage,
-                                                    errorCode.getSystemAction(),
-                                                    errorCode.getUserAction());
+                                                    serverService);
         }
     }
 
@@ -229,19 +251,80 @@ public class OMAGServerErrorHandler
                             String  serverName,
                             String  methodName) throws OMAGInvalidParameterException
     {
-        if (cohortName == null)
+        if (("".equals(cohortName)) || (cohortName == null))
         {
-            OMAGAdminErrorCode errorCode    = OMAGAdminErrorCode.NULL_COHORT_NAME;
-            String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName);
-
-            throw new OMAGInvalidParameterException(errorCode.getHTTPErrorCode(),
+            throw new OMAGInvalidParameterException(OMAGAdminErrorCode.NULL_COHORT_NAME.getMessageDefinition(serverName),
                                                     this.getClass().getName(),
-                                                    methodName,
-                                                    errorMessage,
-                                                    errorCode.getSystemAction(),
-                                                    errorCode.getUserAction());
+                                                    methodName);
         }
     }
+
+
+    /**
+     * Retrieve the cohort configuration for the named cohort or throw exception if it is not
+     * found.
+     *
+     * @param serverName requested server
+     * @param serverConfig corresponding configuration
+     * @param cohortName requested cohort
+     * @param methodName calling method
+     * @return configuration for requested cohort
+     * @throws OMAGInvalidParameterException cohort is not configured
+     */
+    CohortConfig validateCohortIsSet(String           serverName,
+                                     OMAGServerConfig serverConfig,
+                                     String           cohortName,
+                                     String           methodName) throws OMAGInvalidParameterException
+    {
+        RepositoryServicesConfig repositoryServicesConfig = serverConfig.getRepositoryServicesConfig();
+
+        if (repositoryServicesConfig != null)
+        {
+            List<CohortConfig> cohortConfigs = repositoryServicesConfig.getCohortConfigList();
+
+            if (cohortConfigs != null)
+            {
+                for (CohortConfig cohortConfig : cohortConfigs)
+                {
+                    if (cohortConfig != null)
+                    {
+                        if (cohortName.equals(cohortConfig.getCohortName()))
+                        {
+                            return cohortConfig;
+                        }
+                    }
+                }
+            }
+        }
+
+        /*
+         * If we get here then the cohort is not configured for this server
+         */
+        throw new OMAGInvalidParameterException(OMAGAdminErrorCode.COHORT_NOT_KNOWN.getMessageDefinition(serverName, cohortName),
+                                                this.getClass().getName(),
+                                                methodName);
+    }
+
+
+    /**
+     * Log that the cohort topic name can not be changed because the format of the topic connection
+     * is unexpected.
+     *
+     * @param cohortName name of the cohort
+     * @param serverName name of the server
+     * @param methodName calling method
+     *
+     * @throws OMAGConfigurationErrorException resulting error (always returned)
+     */
+    void logNoCohortTopicChange(String cohortName,
+                                String serverName,
+                                String methodName) throws OMAGConfigurationErrorException
+    {
+        throw new OMAGConfigurationErrorException(OMAGAdminErrorCode.COHORT_TOPIC_STRANGE.getMessageDefinition(serverName, cohortName),
+                                                  this.getClass().getName(),
+                                                  methodName);
+    }
+
 
 
     /**
@@ -256,17 +339,11 @@ public class OMAGServerErrorHandler
                           String  serverName,
                           String  methodName) throws OMAGInvalidParameterException
     {
-        if (fileName == null)
+        if (("".equals(fileName)) || (fileName == null))
         {
-            OMAGAdminErrorCode errorCode    = OMAGAdminErrorCode.NULL_FILE_NAME;
-            String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName);
-
-            throw new OMAGInvalidParameterException(errorCode.getHTTPErrorCode(),
+            throw new OMAGInvalidParameterException(OMAGAdminErrorCode.NULL_FILE_NAME.getMessageDefinition(serverName),
                                                     this.getClass().getName(),
-                                                    methodName,
-                                                    errorMessage,
-                                                    errorCode.getSystemAction(),
-                                                    errorCode.getUserAction());
+                                                    methodName);
         }
     }
 
@@ -283,23 +360,17 @@ public class OMAGServerErrorHandler
                                         String  serverName,
                                         String  methodName) throws OMAGInvalidParameterException
     {
-        if (name == null)
+        if (("".equals(name)) || (name == null))
         {
-            OMAGAdminErrorCode errorCode    = OMAGAdminErrorCode.NULL_METADATA_COLLECTION_NAME;
-            String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName);
-
-            throw new OMAGInvalidParameterException(errorCode.getHTTPErrorCode(),
+            throw new OMAGInvalidParameterException(OMAGAdminErrorCode.NULL_METADATA_COLLECTION_NAME.getMessageDefinition(serverName),
                                                     this.getClass().getName(),
-                                                    methodName,
-                                                    errorMessage,
-                                                    errorCode.getSystemAction(),
-                                                    errorCode.getUserAction());
+                                                    methodName);
         }
     }
 
 
     /**
-     * Validate that the connection is not null.
+     * Validate that the connection is not null.  This is used for server specific requests
      *
      * @param connection  connection passed on the request
      * @param serverName  server name for this server
@@ -312,21 +383,17 @@ public class OMAGServerErrorHandler
     {
         if (connection == null)
         {
-            OMAGAdminErrorCode errorCode    = OMAGAdminErrorCode.NULL_CONNECTION;
-            String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName, methodName);
-
-            throw new OMAGInvalidParameterException(errorCode.getHTTPErrorCode(),
+            throw new OMAGInvalidParameterException(OMAGAdminErrorCode.NULL_CONNECTION.getMessageDefinition(serverName, methodName),
                                                     this.getClass().getName(),
-                                                    methodName,
-                                                    errorMessage,
-                                                    errorCode.getSystemAction(),
-                                                    errorCode.getUserAction());
+                                                    methodName);
         }
+
+        tryConnection(connection, methodName);
     }
 
 
     /**
-     * Validate that the connection is not null.
+     * Validate that the connection is not null.  This is used for OMAG Platform Requests
      *
      * @param connection  connection passed on the request
      * @param methodName  method called
@@ -337,15 +404,43 @@ public class OMAGServerErrorHandler
     {
         if (connection == null)
         {
-            OMAGAdminErrorCode errorCode    = OMAGAdminErrorCode.NULL_PLATFORM_CONNECTION;
-            String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
+            throw new OMAGInvalidParameterException(OMAGAdminErrorCode.NULL_PLATFORM_CONNECTION.getMessageDefinition(methodName),
+                                                    this.getClass().getName(),
+                                                    methodName);
+        }
 
-            throw new OMAGInvalidParameterException(errorCode.getHTTPErrorCode(),
+        tryConnection(connection, methodName);
+    }
+
+
+    /**
+     * Check that the connection is valid
+     *
+     * @param connection  connection passed on the request
+     * @param methodName  method called
+     * @throws OMAGInvalidParameterException the connection is null
+     */
+    private void tryConnection(Connection connection,
+                               String     methodName) throws OMAGInvalidParameterException
+    {
+
+        try
+        {
+            ConnectorBroker connectorBroker = new ConnectorBroker();
+
+            connectorBroker.getConnector(connection);
+        }
+        catch (ConnectionCheckedException | ConnectorCheckedException  error)
+        {
+            throw new OMAGInvalidParameterException(OMAGAdminErrorCode.BAD_CONNECTION.getMessageDefinition(methodName,
+                                                                                                           connection.toString(),
+                                                                                                           error.getClass().getName(),
+                                                                                                           error.getMessage(),
+                                                                                                           error.getReportedSystemAction(),
+                                                                                                           error.getReportedUserAction()),
                                                     this.getClass().getName(),
                                                     methodName,
-                                                    errorMessage,
-                                                    errorCode.getSystemAction(),
-                                                    errorCode.getUserAction());
+                                                    error);
         }
     }
 
@@ -365,14 +460,49 @@ public class OMAGServerErrorHandler
     {
         if (property == null)
         {
-            OMAGAdminErrorCode errorCode = OMAGAdminErrorCode.MISSING_CONFIGURATION_PROPERTY;
-
-            throw new OMAGInvalidParameterException(errorCode.getHTTPErrorCode(),
+            throw new OMAGInvalidParameterException(OMAGAdminErrorCode.MISSING_CONFIGURATION_PROPERTY.getMessageDefinition(serverName, propertyName),
                                                     this.getClass().getName(),
-                                                    methodName,
-                                                    errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName, propertyName),
-                                                    errorCode.getSystemAction(),
-                                                    errorCode.getUserAction());
+                                                    methodName);
+        }
+    }
+
+
+    /**
+     * Validate that the root URL of the server where an access service resides is not null.
+     *
+     * @param omagServerServiceRootURL  remote server name passed on the request
+     * @param serverName  server name for this server
+     * @param serverService name of the service being configured
+     * @throws OMAGInvalidParameterException the root URL is null
+     */
+    void validateOMAGServerServiceRootURL(String  omagServerServiceRootURL,
+                                          String  serverName,
+                                          String  serverService) throws OMAGInvalidParameterException
+    {
+        if ((omagServerServiceRootURL == null) || ("".equals(omagServerServiceRootURL)))
+        {
+            throw new OMAGInvalidParameterException(OMAGAdminErrorCode.NULL_OMAG_SERVER_ROOT_URL.getMessageDefinition(serverService, serverName),
+                                                    this.getClass().getName(),
+                                                    serverService);
+        }
+    }
+
+
+    /**
+     * Validate that the server name of the server where an access service resides is not null.
+     *
+     * @param omagServerName  remote server name passed on the request
+     * @param serverName  server name for this server
+     * @param serverService name of the service being configured
+     * @throws OMAGInvalidParameterException the name is null
+     */
+    public void validateOMAGServerName(String omagServerName, String serverName, String serverService)  throws OMAGInvalidParameterException
+    {
+        if ((omagServerName == null) || ("".equals(omagServerName)))
+        {
+            throw new OMAGInvalidParameterException(OMAGAdminErrorCode.NULL_OMAG_SERVER_NAME.getMessageDefinition(serverService, serverName),
+                                                    this.getClass().getName(),
+                                                    serverService);
         }
     }
 }

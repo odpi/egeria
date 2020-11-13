@@ -60,7 +60,6 @@ public class OMAGServerSecurityOfficerService
             if(securityOfficerConfig != null && securityOfficerConfig.getSecurityOfficerServerInTopicName() != null) {
                 securityOfficerConfig.setSecurityOfficerServerInTopic(
                         connectorConfigurationFactory.getDefaultEventBusConnection(
-                                defaultInTopicName,
                                 eventBusConfig.getConnectorProvider(),
                                 eventBusConfig.getTopicURLRoot() + ".server." + serverName,
                                 securityOfficerConfig.getSecurityOfficerServerInTopicName(),
@@ -70,7 +69,7 @@ public class OMAGServerSecurityOfficerService
 
             if (securityOfficerConfig != null) {
                 securityOfficerConfig.setSecurityOfficerServerOutTopic(
-                        connectorConfigurationFactory.getDefaultEventBusConnection(defaultOutTopicName,
+                        connectorConfigurationFactory.getDefaultEventBusConnection(
                                 eventBusConfig.getConnectorProvider(),
                                 eventBusConfig.getTopicURLRoot() + ".server." + serverName,
                                 getOutputTopicName(securityOfficerConfig.getSecurityOfficerServerOutTopicName()),

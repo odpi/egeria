@@ -1,6 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.projectmanagement.ffdc;
 
 /**
  * This package provides the first failure data capture support for the Project Management OMAS module.
@@ -27,3 +26,4 @@ package org.odpi.openmetadata.accessservices.projectmanagement.ffdc;
  *
  * Both constructors take the values from the error code enum to define the cause and resolution.
  */
+package org.odpi.openmetadata.accessservices.projectmanagement.ffdc;

@@ -2,14 +2,14 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataprivacy.admin;
 
-import org.odpi.openmetadata.accessservices.dataprivacy.auditlog.DataPrivacyAuditCode;
+import org.odpi.openmetadata.accessservices.dataprivacy.ffdc.DataPrivacyAuditCode;
 import org.odpi.openmetadata.accessservices.dataprivacy.listener.DataPrivacyOMRSTopicListener;
 import org.odpi.openmetadata.accessservices.dataprivacy.server.DataPrivacyServicesInstance;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
@@ -21,7 +21,7 @@ import java.util.List;
  */
 public class DataPrivacyAdmin extends AccessServiceAdmin
 {
-    private OMRSAuditLog                 auditLog            = null;
+    private AuditLog                     auditLog            = null;
     private DataPrivacyServicesInstance  instance            = null;
     private String                       serverName          = null;
 
@@ -46,19 +46,12 @@ public class DataPrivacyAdmin extends AccessServiceAdmin
     public void initialize(AccessServiceConfig     accessServiceConfig,
                            OMRSTopicConnector      omrsTopicConnector,
                            OMRSRepositoryConnector repositoryConnector,
-                           OMRSAuditLog            auditLog,
+                           AuditLog                auditLog,
                            String                  serverUserName) throws OMAGConfigurationErrorException
     {
         final String         actionDescription = "initialize";
 
-        DataPrivacyAuditCode auditCode = DataPrivacyAuditCode.SERVICE_INITIALIZING;
-        auditLog.logRecord(actionDescription,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(),
-                           null,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        auditLog.logMessage(actionDescription, DataPrivacyAuditCode.SERVICE_INITIALIZING.getMessageDefinition());
 
         this.auditLog = auditLog;
 
@@ -69,10 +62,10 @@ public class DataPrivacyAdmin extends AccessServiceAdmin
                                                                       auditLog);
 
             this.instance = new DataPrivacyServicesInstance(repositoryConnector,
-                                                              supportedZones,
-                                                              auditLog,
-                                                              serverUserName,
-                                                              repositoryConnector.getMaxPageSize());
+                                                            supportedZones,
+                                                            auditLog,
+                                                            serverUserName,
+                                                            repositoryConnector.getMaxPageSize());
             this.serverName = instance.getServerName();
 
             /*
@@ -95,14 +88,8 @@ public class DataPrivacyAdmin extends AccessServiceAdmin
                                                   auditLog);
             }
 
-            auditCode = DataPrivacyAuditCode.SERVICE_INITIALIZED;
-            auditLog.logRecord(actionDescription,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(serverName),
-                               accessServiceConfig.toString(),
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+
+            auditLog.logMessage(actionDescription, DataPrivacyAuditCode.SERVICE_INITIALIZED.getMessageDefinition(serverName));
         }
         catch (OMAGConfigurationErrorException error)
         {
@@ -110,14 +97,8 @@ public class DataPrivacyAdmin extends AccessServiceAdmin
         }
         catch (Throwable error)
         {
-            auditCode = DataPrivacyAuditCode.SERVICE_INSTANCE_FAILURE;
             auditLog.logException(actionDescription,
-                                  auditCode.getLogMessageId(),
-                                  auditCode.getSeverity(),
-                                  auditCode.getFormattedLogMessage(error.getMessage()),
-                                  accessServiceConfig.toString(),
-                                  auditCode.getSystemAction(),
-                                  auditCode.getUserAction(),
+                                  DataPrivacyAuditCode.SERVICE_INSTANCE_FAILURE.getMessageDefinition(error.getMessage()),
                                   error);
 
             super.throwUnexpectedInitializationException(actionDescription,
@@ -133,20 +114,12 @@ public class DataPrivacyAdmin extends AccessServiceAdmin
     public void shutdown()
     {
         final String         actionDescription = "shutdown";
-        DataPrivacyAuditCode auditCode;
 
         if (instance != null)
         {
             this.instance.shutdown();
         }
 
-        auditCode = DataPrivacyAuditCode.SERVICE_SHUTDOWN;
-        auditLog.logRecord(actionDescription,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(serverName),
-                           null,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        auditLog.logMessage(actionDescription, DataPrivacyAuditCode.SERVICE_SHUTDOWN.getMessageDefinition(serverName));
     }
 }

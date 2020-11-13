@@ -7,6 +7,8 @@ package org.odpi.openmetadata.frameworks.connectors.properties;
  */
 public class MockAssetProperty extends AssetPropertyBase
 {
+    private static final long     serialVersionUID = 1L;
+
     /**
      * Typical constructor
      *

@@ -2,16 +2,19 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetowner.server;
 
+import org.odpi.openmetadata.accessservices.assetowner.metadataelements.ValidValueElement;
+import org.odpi.openmetadata.accessservices.assetowner.rest.ValidValueResponse;
+import org.odpi.openmetadata.accessservices.assetowner.rest.ValidValuesRequestBody;
+import org.odpi.openmetadata.accessservices.assetowner.rest.ValidValuesResponse;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.BooleanRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.handlers.ValidValuesHandler;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.*;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIDummyBean;
+import org.odpi.openmetadata.commonservices.generichandlers.ValidValuesHandler;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.slf4j.LoggerFactory;
 
 /**
@@ -24,10 +27,10 @@ import org.slf4j.LoggerFactory;
  */
 public class ValidValuesRESTServices
 {
-    private static AssetOwnerInstanceHandler   instanceHandler     = new AssetOwnerInstanceHandler();
-    private static RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
-    private static RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(ValidValuesRESTServices.class),
-                                                                      instanceHandler.getServiceName());
+    private static AssetOwnerInstanceHandler   instanceHandler      = new AssetOwnerInstanceHandler();
+    private static RESTExceptionHandler        restExceptionHandler = new RESTExceptionHandler();
+    private static RESTCallLogger              restCallLogger       = new RESTCallLogger(LoggerFactory.getLogger(ValidValuesRESTServices.class),
+                                                                                         instanceHandler.getServiceName());
 
 
     /**
@@ -65,8 +68,8 @@ public class ValidValuesRESTServices
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        GUIDResponse        response             = new GUIDResponse();
-        OMRSAuditLog        auditLog             = null;
+        GUIDResponse response = new GUIDResponse();
+        AuditLog     auditLog = null;
 
         try
         {
@@ -74,14 +77,24 @@ public class ValidValuesRESTServices
 
             if (requestBody != null)
             {
-                ValidValuesHandler handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+                ValidValuesHandler<ValidValueElement,
+                                        OpenMetadataAPIDummyBean,
+                                        OpenMetadataAPIDummyBean,
+                                        OpenMetadataAPIDummyBean,
+                                        OpenMetadataAPIDummyBean,
+                                        OpenMetadataAPIDummyBean,
+                                        OpenMetadataAPIDummyBean,
+                                        OpenMetadataAPIDummyBean> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
                 response.setGUID(handler.createValidValueSet(userId,
+                                                             null,
+                                                             null,
                                                              requestBody.getQualifiedName(),
                                                              requestBody.getDisplayName(),
                                                              requestBody.getDescription(),
                                                              requestBody.getUsage(),
                                                              requestBody.getScope(),
+                                                             false,
                                                              requestBody.getAdditionalProperties(),
                                                              requestBody.getExtendedProperties(),
                                                              methodName));
@@ -123,8 +136,8 @@ public class ValidValuesRESTServices
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        GUIDResponse        response             = new GUIDResponse();
-        OMRSAuditLog        auditLog             = null;
+        GUIDResponse response = new GUIDResponse();
+        AuditLog     auditLog = null;
 
         try
         {
@@ -132,9 +145,18 @@ public class ValidValuesRESTServices
 
             if (requestBody != null)
             {
-                ValidValuesHandler handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+                ValidValuesHandler<ValidValueElement,
+                                        OpenMetadataAPIDummyBean,
+                                        OpenMetadataAPIDummyBean,
+                                        OpenMetadataAPIDummyBean,
+                                        OpenMetadataAPIDummyBean,
+                                        OpenMetadataAPIDummyBean,
+                                        OpenMetadataAPIDummyBean,
+                                        OpenMetadataAPIDummyBean> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
                 response.setGUID(handler.createValidValueDefinition(userId,
+                                                                    null,
+                                                                    null,
                                                                     setGUID,
                                                                     requestBody.getQualifiedName(),
                                                                     requestBody.getDisplayName(),
@@ -142,6 +164,7 @@ public class ValidValuesRESTServices
                                                                     requestBody.getUsage(),
                                                                     requestBody.getScope(),
                                                                     requestBody.getPreferredValue(),
+                                                                    false,
                                                                     requestBody.getAdditionalProperties(),
                                                                     requestBody.getExtendedProperties(),
                                                                     methodName));
@@ -185,8 +208,8 @@ public class ValidValuesRESTServices
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        VoidResponse        response             = new VoidResponse();
-        OMRSAuditLog        auditLog             = null;
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
 
         try
         {
@@ -194,9 +217,18 @@ public class ValidValuesRESTServices
 
             if (requestBody != null)
             {
-                ValidValuesHandler handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+                ValidValuesHandler<ValidValueElement,
+                        OpenMetadataAPIDummyBean,
+                        OpenMetadataAPIDummyBean,
+                        OpenMetadataAPIDummyBean,
+                        OpenMetadataAPIDummyBean,
+                        OpenMetadataAPIDummyBean,
+                        OpenMetadataAPIDummyBean,
+                        OpenMetadataAPIDummyBean> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
                 handler.updateValidValue(userId,
+                                         null,
+                                         null,
                                          validValueGUID,
                                          requestBody.getQualifiedName(),
                                          requestBody.getDisplayName(),
@@ -204,6 +236,7 @@ public class ValidValuesRESTServices
                                          requestBody.getUsage(),
                                          requestBody.getScope(),
                                          requestBody.getPreferredValue(),
+                                         false,
                                          requestBody.getAdditionalProperties(),
                                          requestBody.getExtendedProperties(),
                                          methodName);
@@ -246,8 +279,8 @@ public class ValidValuesRESTServices
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        VoidResponse        response             = new VoidResponse();
-        OMRSAuditLog        auditLog             = null;
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
 
         try
         {
@@ -255,9 +288,18 @@ public class ValidValuesRESTServices
 
             if (qualifiedName != null)
             {
-                ValidValuesHandler handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+                ValidValuesHandler<ValidValueElement,
+                        OpenMetadataAPIDummyBean,
+                        OpenMetadataAPIDummyBean,
+                        OpenMetadataAPIDummyBean,
+                        OpenMetadataAPIDummyBean,
+                        OpenMetadataAPIDummyBean,
+                        OpenMetadataAPIDummyBean,
+                        OpenMetadataAPIDummyBean> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
                 handler.deleteValidValue(userId,
+                                         null,
+                                         null,
                                          validValueGUID,
                                          qualifiedName,
                                          methodName);
@@ -292,6 +334,7 @@ public class ValidValuesRESTServices
      * UserNotAuthorizedException the user is not authorized to make this request or
      * PropertyServerException the repository is not available or not working properly.
      */
+    @SuppressWarnings(value = "unused")
     public VoidResponse    attachValidValueToSet(String          serverName,
                                                  String          userId,
                                                  String          setGUID,
@@ -302,16 +345,23 @@ public class ValidValuesRESTServices
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        VoidResponse        response             = new VoidResponse();
-        OMRSAuditLog        auditLog             = null;
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
 
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ValidValuesHandler handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+            ValidValuesHandler<ValidValueElement,
+                    OpenMetadataAPIDummyBean,
+                    OpenMetadataAPIDummyBean,
+                    OpenMetadataAPIDummyBean,
+                    OpenMetadataAPIDummyBean,
+                    OpenMetadataAPIDummyBean,
+                    OpenMetadataAPIDummyBean,
+                    OpenMetadataAPIDummyBean> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
-            handler.attachValidValueToSet(userId, setGUID, validValueGUID, methodName);
+            handler.attachValidValueToSet(userId, null, null, setGUID, validValueGUID, methodName);
         }
         catch (Throwable error)
         {
@@ -337,6 +387,7 @@ public class ValidValuesRESTServices
      * UserNotAuthorizedException the user is not authorized to make this request or
      * PropertyServerException the repository is not available or not working properly.
      */
+    @SuppressWarnings(value = "unused")
     public VoidResponse    detachValidValueFromSet(String          serverName,
                                                    String          userId,
                                                    String          setGUID,
@@ -347,286 +398,23 @@ public class ValidValuesRESTServices
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        VoidResponse        response             = new VoidResponse();
-        OMRSAuditLog        auditLog             = null;
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
 
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ValidValuesHandler handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+            ValidValuesHandler<ValidValueElement,
+                    OpenMetadataAPIDummyBean,
+                    OpenMetadataAPIDummyBean,
+                    OpenMetadataAPIDummyBean,
+                    OpenMetadataAPIDummyBean,
+                    OpenMetadataAPIDummyBean,
+                    OpenMetadataAPIDummyBean,
+                    OpenMetadataAPIDummyBean> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
-            handler.detachValidValueFromSet(userId, setGUID, validValueGUID, methodName);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Link a valid value to an asset that provides the implementation.  Typically this method is
-     * used to link a valid value set to a code table.
-     *
-     * @param serverName name of calling server
-     * @param userId calling user.
-     * @param validValueGUID unique identifier of the valid value.
-     * @param assetGUID unique identifier of the asset that implements the valid value.
-     * @param requestBody null request body supplied to satisfy REST protocol
-     *
-     * @return void or
-     * InvalidParameterException one of the parameters is invalid or
-     * UserNotAuthorizedException the user is not authorized to make this request or
-     * PropertyServerException the repository is not available or not working properly.
-     */
-    public VoidResponse  linkValidValueToImplementation(String          serverName,
-                                                        String          userId,
-                                                        String          validValueGUID,
-                                                        String          assetGUID,
-                                                        NullRequestBody requestBody)
-    {
-        final String   methodName = "linkValidValueToImplementation";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-
-        VoidResponse        response             = new VoidResponse();
-        OMRSAuditLog        auditLog             = null;
-
-        try
-        {
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            ValidValuesHandler handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
-
-            handler.linkValidValueToImplementation(userId, validValueGUID, assetGUID, methodName);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Add the ReferenceData classification to an asset.  IF the asset is already classified
-     * in this way, the method is a no-op.
-     *
-     * @param serverName name of calling server
-     * @param userId calling user.
-     * @param assetGUID unique identifier of the asset that contains reference data.
-     * @param requestBody null request body supplied to satisfy REST protocol
-     *
-     * @return void or
-     * InvalidParameterException one of the parameters is invalid or
-     * UserNotAuthorizedException the user is not authorized to make this request or
-     * PropertyServerException the repository is not available or not working properly.
-     */
-    public VoidResponse  classifyAssetAsReferenceData(String          serverName,
-                                                      String          userId,
-                                                      String          assetGUID,
-                                                      NullRequestBody requestBody)
-    {
-        final String   methodName = "classifyAssetAsReferenceData";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-
-        VoidResponse        response             = new VoidResponse();
-        OMRSAuditLog        auditLog             = null;
-
-        try
-        {
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            ValidValuesHandler handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
-
-            handler.classifyAssetAsReferenceData(userId, assetGUID, methodName);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Remove the link between a valid value and an implementing asset.
-     *
-     * @param serverName name of calling server
-     * @param userId calling user.
-     * @param validValueGUID unique identifier of the valid value.
-     * @param assetGUID unique identifier of the asset that used to implement the valid value.
-     * @param requestBody null request body supplied to satisfy REST protocol
-     *
-     * @return void or
-     * InvalidParameterException one of the parameters is invalid or
-     * UserNotAuthorizedException the user is not authorized to make this request or
-     * PropertyServerException the repository is not available or not working properly.
-     */
-    public VoidResponse  unlinkValidValueFromImplementation(String          serverName,
-                                                            String          userId,
-                                                            String          validValueGUID,
-                                                            String          assetGUID,
-                                                            NullRequestBody requestBody)
-    {
-        final String   methodName = "unlinkValidValueFromImplementation";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-
-        VoidResponse        response             = new VoidResponse();
-        OMRSAuditLog        auditLog             = null;
-
-        try
-        {
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            ValidValuesHandler handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
-
-            handler.unlinkValidValueFromImplementation(userId, validValueGUID, assetGUID, methodName);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Remove the ReferenceData classification form an Asset.  If the asset was not classified in this way,
-     * this call is a no-op.
-     *
-     * @param serverName name of calling server
-     * @param userId calling user.
-     * @param assetGUID unique identifier of asset.
-     * @param requestBody null request body supplied to satisfy REST protocol
-     *
-     * @return void or
-     * InvalidParameterException one of the parameters is invalid or
-     * UserNotAuthorizedException the user is not authorized to make this request or
-     * PropertyServerException the repository is not available or not working properly.
-     */
-    public VoidResponse  declassifyAssetAsReferenceData(String          serverName,
-                                                        String          userId,
-                                                        String          assetGUID,
-                                                        NullRequestBody requestBody)
-    {
-        final String   methodName = "declassifyAssetAsReferenceData";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-
-        VoidResponse        response             = new VoidResponse();
-        OMRSAuditLog        auditLog             = null;
-
-        try
-        {
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            ValidValuesHandler handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
-
-            handler.declassifyAssetAsReferenceData(userId, assetGUID, methodName);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Link a valid value typically to a schema element or glossary term to show that it uses
-     * the valid values.
-     *
-     * @param serverName name of calling server
-     * @param userId calling user.
-     * @param validValueGUID unique identifier of the valid value.
-     * @param consumerGUID unique identifier of the element to link to.
-     * @param requestBody boolean request body supplied to pass the strictRequirement flag
-     *
-     * @return void or
-     * InvalidParameterException one of the parameters is invalid or
-     * UserNotAuthorizedException the user is not authorized to make this request or
-     * PropertyServerException the repository is not available or not working properly.
-     */
-    public VoidResponse    assignValidValueToConsumer(String             serverName,
-                                                      String             userId,
-                                                      String             validValueGUID,
-                                                      String             consumerGUID,
-                                                      BooleanRequestBody requestBody)
-    {
-        final String   methodName = "assignValidValueToConsumer";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-
-        VoidResponse        response             = new VoidResponse();
-        OMRSAuditLog        auditLog             = null;
-
-        try
-        {
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            ValidValuesHandler handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
-
-            handler.assignValidValueToConsumer(userId, validValueGUID, consumerGUID, methodName);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Remove the link between a valid value and a consumer.
-     *
-     * @param serverName name of calling server
-     * @param userId calling user.
-     * @param validValueGUID unique identifier of the valid value.
-     * @param consumerGUID unique identifier of the element to remove the link from.
-     * @param requestBody null request body supplied to satisfy REST protocol
-     *
-     * @return void or
-     * InvalidParameterException one of the parameters is invalid or
-     * UserNotAuthorizedException the user is not authorized to make this request or
-     * PropertyServerException the repository is not available or not working properly.
-     */
-    public VoidResponse unassignValidValueFromConsumer(String          serverName,
-                                                       String          userId,
-                                                       String          validValueGUID,
-                                                       String          consumerGUID,
-                                                       NullRequestBody requestBody)
-    {
-        final String   methodName = "unassignValidValueFromConsumer";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-
-        VoidResponse        response             = new VoidResponse();
-        OMRSAuditLog        auditLog             = null;
-
-        try
-        {
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            ValidValuesHandler handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
-
-            handler.unassignValidValueFromConsumer(userId, validValueGUID, consumerGUID, methodName);
+            handler.detachValidValueFromSet(userId, null, null, setGUID, validValueGUID, methodName);
         }
         catch (Throwable error)
         {
@@ -658,16 +446,23 @@ public class ValidValuesRESTServices
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        ValidValueResponse  response             = new ValidValueResponse();
-        OMRSAuditLog        auditLog             = null;
+        ValidValueResponse response = new ValidValueResponse();
+        AuditLog           auditLog = null;
 
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ValidValuesHandler handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+            ValidValuesHandler<ValidValueElement,
+                                        OpenMetadataAPIDummyBean,
+                                        OpenMetadataAPIDummyBean,
+                                        OpenMetadataAPIDummyBean,
+                                        OpenMetadataAPIDummyBean,
+                                        OpenMetadataAPIDummyBean,
+                                        OpenMetadataAPIDummyBean,
+                                        OpenMetadataAPIDummyBean> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
-            response.setValidValue(handler.getValidValueByGUID(userId, validValueGUID, methodName));
+            response.setElement(handler.getValidValueByGUID(userId, validValueGUID, methodName));
         }
         catch (Throwable error)
         {
@@ -686,6 +481,8 @@ public class ValidValuesRESTServices
      * @param serverName name of calling server
      * @param userId calling user
      * @param validValueName qualified name of the valid value.
+     * @param startFrom         starting element (used in paging through large result sets)
+     * @param pageSize          maximum number of results to return
      *
      * @return Valid value beans or
      * InvalidParameterException one of the parameters is invalid or
@@ -694,14 +491,17 @@ public class ValidValuesRESTServices
      */
     public ValidValuesResponse getValidValueByName(String   serverName,
                                                    String   userId,
-                                                   String   validValueName)
+                                                   String   validValueName,
+                                                   int      startFrom,
+                                                   int      pageSize)
     {
-        final String   methodName = "getValidValueByName";
+        final String nameParameterName = "validValueName";
+        final String methodName        = "getValidValueByName";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         ValidValuesResponse response = new ValidValuesResponse();
-        OMRSAuditLog        auditLog = null;
+        AuditLog            auditLog = null;
 
         try
         {
@@ -709,9 +509,16 @@ public class ValidValuesRESTServices
 
             if (validValueName != null)
             {
-                ValidValuesHandler handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+                ValidValuesHandler<ValidValueElement,
+                        OpenMetadataAPIDummyBean,
+                        OpenMetadataAPIDummyBean,
+                        OpenMetadataAPIDummyBean,
+                        OpenMetadataAPIDummyBean,
+                        OpenMetadataAPIDummyBean,
+                        OpenMetadataAPIDummyBean,
+                        OpenMetadataAPIDummyBean> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
-                response.setValidValues(handler.getValidValueByName(userId, validValueName, methodName));
+                response.setElementList(handler.getValidValueByName(userId, validValueName, nameParameterName, startFrom, pageSize, methodName));
             }
         }
         catch (Throwable error)
@@ -745,12 +552,13 @@ public class ValidValuesRESTServices
                                                int      startFrom,
                                                int      pageSize)
     {
-        final String   methodName = "findValidValues";
+        final String searchStringParameterName = "searchString";
+        final String methodName                = "findValidValues";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         ValidValuesResponse response = new ValidValuesResponse();
-        OMRSAuditLog        auditLog = null;
+        AuditLog            auditLog = null;
 
         try
         {
@@ -758,9 +566,16 @@ public class ValidValuesRESTServices
 
             if (searchString != null)
             {
-                ValidValuesHandler handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+                ValidValuesHandler<ValidValueElement,
+                        OpenMetadataAPIDummyBean,
+                        OpenMetadataAPIDummyBean,
+                        OpenMetadataAPIDummyBean,
+                        OpenMetadataAPIDummyBean,
+                        OpenMetadataAPIDummyBean,
+                        OpenMetadataAPIDummyBean,
+                        OpenMetadataAPIDummyBean> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
-                response.setValidValues(handler.findValidValues(userId, searchString, startFrom, pageSize, methodName));
+                response.setElementList(handler.findValidValues(userId, searchString, searchStringParameterName, startFrom, pageSize, methodName));
             }
         }
         catch (Throwable error)
@@ -793,21 +608,30 @@ public class ValidValuesRESTServices
                                                        int      startFrom,
                                                        int      pageSize)
     {
-        final String   methodName = "getValidValueSetMembers";
+        final String validValueGUIDParameter = "validValueSetGUID";
+        final String methodName              = "getValidValueSetMembers";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         ValidValuesResponse response = new ValidValuesResponse();
-        OMRSAuditLog        auditLog = null;
+        AuditLog            auditLog = null;
 
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ValidValuesHandler handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+            ValidValuesHandler<ValidValueElement,
+                    OpenMetadataAPIDummyBean,
+                    OpenMetadataAPIDummyBean,
+                    OpenMetadataAPIDummyBean,
+                    OpenMetadataAPIDummyBean,
+                    OpenMetadataAPIDummyBean,
+                    OpenMetadataAPIDummyBean,
+                    OpenMetadataAPIDummyBean> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
-            response.setValidValues(handler.getValidValueSetMembers(userId,
+            response.setElementList(handler.getValidValueSetMembers(userId,
                                                                     validValueSetGUID,
+                                                                    validValueGUIDParameter,
                                                                     startFrom,
                                                                     pageSize,
                                                                     methodName));
@@ -842,122 +666,33 @@ public class ValidValuesRESTServices
                                                     int      startFrom,
                                                     int      pageSize)
     {
-        final String   methodName = "getSetsForValidValue";
+        final String validValueGUIDParameter = "validValueGUID";
+        final String methodName              = "getSetsForValidValue";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
-        ValidValuesResponse response             = new ValidValuesResponse();
-        OMRSAuditLog        auditLog             = null;
+        ValidValuesResponse response = new ValidValuesResponse();
+        AuditLog            auditLog = null;
 
         try
         {
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ValidValuesHandler handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
+            ValidValuesHandler<ValidValueElement,
+                    OpenMetadataAPIDummyBean,
+                    OpenMetadataAPIDummyBean,
+                    OpenMetadataAPIDummyBean,
+                    OpenMetadataAPIDummyBean,
+                    OpenMetadataAPIDummyBean,
+                    OpenMetadataAPIDummyBean,
+                    OpenMetadataAPIDummyBean> handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
 
-            response.setValidValues(handler.getSetsForValidValue(userId,
+            response.setElementList(handler.getSetsForValidValue(userId,
                                                                  validValueGUID,
+                                                                 validValueGUIDParameter,
                                                                  startFrom,
                                                                  pageSize,
                                                                  methodName));
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Page through the list of consumers for a valid value.
-     *
-     * @param serverName name of calling server
-     * @param userId calling user.
-     * @param validValueGUID unique identifier of valid value to query
-     * @param startFrom paging starting point
-     * @param pageSize maximum number of return values.
-     *
-     * @return list of consumers beans or
-     * InvalidParameterException one of the parameters is invalid or
-     * UserNotAuthorizedException the user is not authorized to make this request or
-     * PropertyServerException the repository is not available or not working properly.
-     */
-    public ValidValueConsumersResponse getValidValuesConsumers(String   serverName,
-                                                               String   userId,
-                                                               String   validValueGUID,
-                                                               int      startFrom,
-                                                               int      pageSize)
-    {
-        final String   methodName = "getValidValuesConsumers";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-
-        ValidValueConsumersResponse response = new ValidValueConsumersResponse();
-        OMRSAuditLog                auditLog = null;
-
-        try
-        {
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            ValidValuesHandler handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
-
-            response.setValidValueConsumers(handler.getValidValuesConsumers(userId,
-                                                                            validValueGUID,
-                                                                            startFrom,
-                                                                            pageSize,
-                                                                            methodName));
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Pag through the list of implementations for a valid value.
-     *
-     * @param serverName name of calling server
-     * @param userId calling user.
-     * @param validValueGUID unique identifier of valid value to query
-     * @param startFrom paging starting point
-     * @param pageSize maximum number of return values.
-     *
-     * @return list of asset beans or
-     * InvalidParameterException one of the parameters is invalid or
-     * UserNotAuthorizedException the user is not authorized to make this request or
-     * PropertyServerException the repository is not available or not working properly.
-     */
-    public AssetsResponse getValidValuesImplementations(String   serverName,
-                                                        String   userId,
-                                                        String   validValueGUID,
-                                                        int      startFrom,
-                                                        int      pageSize)
-    {
-        final String   methodName = "getValidValuesImplementations";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
-
-        AssetsResponse response = new AssetsResponse();
-        OMRSAuditLog   auditLog = null;
-
-        try
-        {
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            ValidValuesHandler handler = instanceHandler.getValidValuesHandler(userId, serverName, methodName);
-
-            response.setAssets(handler.getValidValuesImplementations(userId,
-                                                                     validValueGUID,
-                                                                     startFrom,
-                                                                     pageSize,
-                                                                     methodName));
         }
         catch (Throwable error)
         {

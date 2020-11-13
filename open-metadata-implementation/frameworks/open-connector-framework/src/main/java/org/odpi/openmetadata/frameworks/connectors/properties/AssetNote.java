@@ -13,6 +13,8 @@ import java.util.Objects;
  */
 public class AssetNote extends AssetReferenceable
 {
+    private static final long     serialVersionUID = 1L;
+
     protected Note  noteBean;
 
 

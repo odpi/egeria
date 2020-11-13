@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector;
 
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 
 /**
  * The OMRSRepositoryConnectorProviderBase provides a base class for the connector provider supporting OMRS Connectors.
@@ -21,8 +22,6 @@ public abstract class OMRSRepositoryConnectorProviderBase extends ConnectorProvi
      */
     public OMRSRepositoryConnectorProviderBase()
     {
-        /*
-         * Nothing to do
-         */
+        super.setConnectorComponentDescription(OMRSAuditingComponent.REPOSITORY_CONNECTOR);
     }
 }

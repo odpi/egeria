@@ -1,0 +1,37 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright Contributors to the ODPi Egeria project.
+ */
+
+plugins {
+    id 'application'
+    id "com.github.johnrengelman.shadow"
+}
+
+dependencies {
+    implementation project(':open-metadata-resources:open-metadata-archives:design-model-archives:design-model-archive-base')
+    implementation project(':open-metadata-implementation:repository-services:repository-services-apis')
+    implementation project(':open-metadata-implementation:repository-services:repository-services-archive-utilities')
+    implementation 'ch.qos.logback:logback-classic'
+    implementation 'org.apache.jena:jena-core'
+    implementation 'org.slf4j:slf4j-api'
+    runtimeOnly 'org.apache.jena:jena-arq:3.16.0'
+    testImplementation 'org.testng:testng'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations'
+
+}
+
+description = 'Glossary Canonical Model'
+
+java {
+    withJavadocJar()
+}
+
+test {
+    useTestNG()
+}
+
+shadowJar {
+    mainClassName = 'org.odpi.openmetadata.archiveutilities.designmodels.owlcanonicalglossarymodel.CanonicalGlossaryOwlArchiveWriter'
+    archiveClassifier = 'jar-with-dependencies'
+}

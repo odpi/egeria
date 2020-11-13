@@ -19,6 +19,7 @@ public class CategoryService extends GlossaryViewOMAS {
 
     public CategoryService() {}
 
+
     /**
      * Extract the category definition for the given GUID
      *
@@ -83,4 +84,17 @@ public class CategoryService extends GlossaryViewOMAS {
                 LIBRARY_CATEGORY_REFERENCE_RELATIONSHIP_NAME, from, size,"getExternalGlossaryLinks");
     }
 
+    /**
+     * Extract all categories definitions
+     *
+     * @param userId calling user
+     * @param serverName instance to call
+     * @param from offset start for the return values
+     * @param size maximum number of results
+     *
+     * @return EntityDetailResponse all glossaries
+     */
+    public GlossaryViewEntityDetailResponse getAllCategories(String userId, String serverName, Integer from, Integer size) {
+        return getAllEntityDetailsResponse(userId, serverName, CATEGORY_TYPE_NAME, from, size, "getAllCategories");
+    }
 }

@@ -3,7 +3,11 @@
 
 package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.utilities;
 
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.PropertyComparisonOperator;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.PropertyCondition;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
@@ -20,6 +24,9 @@ import java.util.*;
  */
 public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryPropertiesHelper
 {
+    public static final String METADATA_COLLECTION_ID_PROPERTY_NAME     = "metadataCollectionId";
+    public static final String METADATA_COLLECTION_NAME_PROPERTY_NAME   = "metadataCollectionName";
+
     private static final Logger log = LoggerFactory.getLogger(OMRSRepositoryPropertiesUtilities.class);
 
     /**
@@ -131,6 +138,61 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
 
 
     /**
+     * Retrieve the ordinal value from an enum property.
+     *
+     * @param sourceName source of call
+     * @param propertyName name of requested property
+     * @param properties properties from the instance.
+     * @param methodName method of caller
+     * @return int ordinal or -1 if not found
+     */
+    public int getEnumPropertyOrdinal(String             sourceName,
+                                      String             propertyName,
+                                      InstanceProperties properties,
+                                      String             methodName)
+    {
+        InstancePropertyValue instancePropertyValue = properties.getPropertyValue(propertyName);
+
+        if (instancePropertyValue instanceof EnumPropertyValue)
+        {
+            EnumPropertyValue enumPropertyValue = (EnumPropertyValue) instancePropertyValue;
+
+            return enumPropertyValue.getOrdinal();
+        }
+
+        return -1;
+    }
+
+
+    /**
+     * Retrieve the ordinal value from an enum property.
+     *
+     * @param sourceName source of call
+     * @param propertyName name of requested property
+     * @param properties properties from the instance.
+     * @param methodName method of caller
+     * @return int ordinal or -1 if not found
+     */
+    public int removeEnumPropertyOrdinal(String             sourceName,
+                                         String             propertyName,
+                                         InstanceProperties properties,
+                                         String             methodName)
+    {
+        int  retrievedProperty = 0;
+
+        if (properties != null)
+        {
+            retrievedProperty = this.getEnumPropertyOrdinal(sourceName, propertyName, properties, methodName);
+            this.removeProperty(propertyName, properties);
+            log.debug("Properties left: " + properties.toString());
+        }
+
+        log.debug("Retrieved " + propertyName + " property ordinal : " + retrievedProperty);
+        return retrievedProperty;
+    }
+
+
+    /**
      * Return the requested property or null if property is not found.  If the property is not
      * a map property then a logic exception is thrown
      *
@@ -211,7 +273,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                     {
                         ArrayPropertyValue arrayPropertyValue = (ArrayPropertyValue) instancePropertyValue;
 
-                        if ((arrayPropertyValue != null) && (arrayPropertyValue.getArrayCount() > 0))
+                        if (arrayPropertyValue.getArrayCount() > 0)
                         {
                             /*
                              * There are values to extract
@@ -275,8 +337,8 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
      * @param callingMethodName method of caller
      * @return list of strings
      */
-    public List<String> getInstancePropertiesAsArray(InstanceProperties     instanceProperties,
-                                                     String                 callingMethodName)
+    private List<String> getInstancePropertiesAsArray(InstanceProperties     instanceProperties,
+                                                      String                 callingMethodName)
     {
         final String  thisMethodName = "getInstancePropertiesAsArray";
 
@@ -387,6 +449,230 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
         if (properties != null)
         {
             retrievedProperty = this.getStringMapFromProperty(sourceName, propertyName, properties, methodName);
+
+            if (retrievedProperty != null)
+            {
+                this.removeProperty(propertyName, properties);
+                log.debug("Properties left: " + properties.toString());
+            }
+        }
+
+        log.debug("Retrieved " + propertyName + " property: " + retrievedProperty);
+        return retrievedProperty;
+    }
+
+
+    /**
+     * Locates and extracts a property from an instance that is of type map and then converts its values into a Java map.
+     *
+     * @param sourceName source of call
+     * @param propertyName name of requested map property
+     * @param properties values of the property
+     * @param methodName method of caller
+     * @return map property value or null
+     */
+    public Map<String, Boolean> getBooleanMapFromProperty(String             sourceName,
+                                                          String             propertyName,
+                                                          InstanceProperties properties,
+                                                          String             methodName)
+    {
+        Map<String, Object>   mapFromProperty = this.getMapFromProperty(sourceName, propertyName, properties, methodName);
+
+        if (mapFromProperty != null)
+        {
+            Map<String, Boolean>  booleanMap = new HashMap<>();
+
+            for (String mapPropertyName : mapFromProperty.keySet())
+            {
+                Object actualPropertyValue = mapFromProperty.get(mapPropertyName);
+
+                if (actualPropertyValue != null)
+                {
+                    booleanMap.put(mapPropertyName, (Boolean)actualPropertyValue);
+                }
+            }
+
+            if (! booleanMap.isEmpty())
+            {
+                return booleanMap;
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Locates and extracts a property from an instance that is of type map and then converts its values into a Java map.
+     * If the property is found, it is removed from the InstanceProperties structure.
+     * If the property is not a map property then a logic exception is thrown.
+     *
+     * @param sourceName source of call
+     * @param propertyName name of requested map property
+     * @param properties values of the property
+     * @param methodName method of caller
+     * @return map property value or null
+     */
+    public Map<String, Boolean> removeBooleanMapFromProperty(String             sourceName,
+                                                             String             propertyName,
+                                                             InstanceProperties properties,
+                                                             String             methodName)
+    {
+        Map<String, Boolean>  retrievedProperty = null;
+
+        if (properties != null)
+        {
+            retrievedProperty = this.getBooleanMapFromProperty(sourceName, propertyName, properties, methodName);
+
+            if (retrievedProperty != null)
+            {
+                this.removeProperty(propertyName, properties);
+                log.debug("Properties left: " + properties.toString());
+            }
+        }
+
+        log.debug("Retrieved " + propertyName + " property: " + retrievedProperty);
+        return retrievedProperty;
+    }
+
+
+    /**
+     * Locates and extracts a property from an instance that is of type map and then converts its values into a Java map.
+     *
+     * @param sourceName source of call
+     * @param propertyName name of requested map property
+     * @param properties values of the property
+     * @param methodName method of caller
+     * @return map property value or null
+     */
+    public Map<String, Long> getLongMapFromProperty(String             sourceName,
+                                                    String             propertyName,
+                                                    InstanceProperties properties,
+                                                    String             methodName)
+    {
+        Map<String, Object>   mapFromProperty = this.getMapFromProperty(sourceName, propertyName, properties, methodName);
+
+        if (mapFromProperty != null)
+        {
+            Map<String, Long>  longMap = new HashMap<>();
+
+            for (String mapPropertyName : mapFromProperty.keySet())
+            {
+                Object actualPropertyValue = mapFromProperty.get(mapPropertyName);
+
+                if (actualPropertyValue != null)
+                {
+                    longMap.put(mapPropertyName, (Long)actualPropertyValue);
+                }
+            }
+
+            if (! longMap.isEmpty())
+            {
+                return longMap;
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Locates and extracts a property from an instance that is of type map and then converts its values into a Java map.
+     * If the property is found, it is removed from the InstanceProperties structure.
+     * If the property is not a map property then a logic exception is thrown.
+     *
+     * @param sourceName source of call
+     * @param propertyName name of requested map property
+     * @param properties values of the property
+     * @param methodName method of caller
+     * @return map property value or null
+     */
+    public Map<String, Long> removeLongMapFromProperty(String             sourceName,
+                                                       String             propertyName,
+                                                       InstanceProperties properties,
+                                                       String             methodName)
+    {
+        Map<String, Long>  retrievedProperty = null;
+
+        if (properties != null)
+        {
+            retrievedProperty = this.getLongMapFromProperty(sourceName, propertyName, properties, methodName);
+
+            if (retrievedProperty != null)
+            {
+                this.removeProperty(propertyName, properties);
+                log.debug("Properties left: " + properties.toString());
+            }
+        }
+
+        log.debug("Retrieved " + propertyName + " property: " + retrievedProperty);
+        return retrievedProperty;
+    }
+
+
+
+
+    /**
+     * Locates and extracts a property from an instance that is of type map and then converts its values into a Java map.
+     *
+     * @param sourceName source of call
+     * @param propertyName name of requested map property
+     * @param properties values of the property
+     * @param methodName method of caller
+     * @return map property value or null
+     */
+    public Map<String, Integer> getIntegerMapFromProperty(String             sourceName,
+                                                          String             propertyName,
+                                                          InstanceProperties properties,
+                                                          String             methodName)
+    {
+        Map<String, Object>   mapFromProperty = this.getMapFromProperty(sourceName, propertyName, properties, methodName);
+
+        if (mapFromProperty != null)
+        {
+            Map<String, Integer>  integerMap = new HashMap<>();
+
+            for (String mapPropertyName : mapFromProperty.keySet())
+            {
+                Object actualPropertyValue = mapFromProperty.get(mapPropertyName);
+
+                if (actualPropertyValue != null)
+                {
+                    integerMap.put(mapPropertyName, (Integer) actualPropertyValue);
+                }
+            }
+
+            if (! integerMap.isEmpty())
+            {
+                return integerMap;
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Locates and extracts a property from an instance that is of type map and then converts its values into a Java map.
+     * If the property is found, it is removed from the InstanceProperties structure.
+     * If the property is not a map property then a logic exception is thrown.
+     *
+     * @param sourceName source of call
+     * @param propertyName name of requested map property
+     * @param properties values of the property
+     * @param methodName method of caller
+     * @return map property value or null
+     */
+    public Map<String, Integer> removeIntegerMapFromProperty(String             sourceName,
+                                                             String             propertyName,
+                                                             InstanceProperties properties,
+                                                             String             methodName)
+    {
+        Map<String, Integer>  retrievedProperty = null;
+
+        if (properties != null)
+        {
+            retrievedProperty = this.getIntegerMapFromProperty(sourceName, propertyName, properties, methodName);
 
             if (retrievedProperty != null)
             {
@@ -564,7 +850,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
 
                             if (primitivePropertyValue.getPrimitiveValue() != null)
                             {
-                                return Integer.valueOf(primitivePropertyValue.getPrimitiveValue().toString());
+                                return Integer.parseInt(primitivePropertyValue.getPrimitiveValue().toString());
                             }
                         }
                     }
@@ -735,7 +1021,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
 
                             if (primitivePropertyValue.getPrimitiveValue() != null)
                             {
-                                return Boolean.valueOf(primitivePropertyValue.getPrimitiveValue().toString());
+                                return Boolean.parseBoolean(primitivePropertyValue.getPrimitiveValue().toString());
                             }
                         }
                     }
@@ -1198,7 +1484,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
         {
             log.debug("Adding property " + propertyName + " for " + methodName);
 
-            if ((mapValues != null) && (! mapValues.isEmpty()))
+            if (! mapValues.isEmpty())
             {
                 InstanceProperties  resultingProperties;
 
@@ -1264,7 +1550,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
         {
             log.debug("Adding property " + propertyName + " for " + methodName);
 
-            if ((mapValues != null) && (! mapValues.isEmpty()))
+            if (! mapValues.isEmpty())
             {
                 InstanceProperties  resultingProperties;
 
@@ -1574,39 +1860,28 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                                                                         PatchErrorException
     {
         final String  thisMethodName = "validateTypeDefPatch";
+        final String  parameterName = "typeDefPatch";
 
 
 
         if (typeDefPatch == null)
         {
-            OMRSErrorCode errorCode    = OMRSErrorCode.NULL_TYPEDEF_PATCH;
-            String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                                                                                                            sourceName);
-
-            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+           throw new InvalidParameterException(OMRSErrorCode.NULL_TYPEDEF_PATCH.getMessageDefinition(methodName, sourceName),
                                                 this.getClass().getName(),
                                                 thisMethodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction());
+                                                parameterName);
         }
 
 
         if (typeDefPatch.getUpdateToVersion() <= typeDefPatch.getApplyToVersion())
         {
-            OMRSErrorCode errorCode    = OMRSErrorCode.INVALID_PATCH_VERSION;
-            String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                                                                                                            sourceName,
-                                                                                                            Long.toString(typeDefPatch.getApplyToVersion()),
-                                                                                                            Long.toString(typeDefPatch.getUpdateToVersion()),
-                                                                                                            typeDefPatch.toString());
-
-            throw new PatchErrorException(errorCode.getHTTPErrorCode(),
+            throw new PatchErrorException(OMRSErrorCode.INVALID_PATCH_VERSION.getMessageDefinition(methodName,
+                                                                                                   sourceName,
+                                                                                                   Long.toString(typeDefPatch.getApplyToVersion()),
+                                                                                                   Long.toString(typeDefPatch.getUpdateToVersion()),
+                                                                                                   typeDefPatch.toString()),
                                           this.getClass().getName(),
-                                          methodName,
-                                          errorMessage,
-                                          errorCode.getSystemAction(),
-                                          errorCode.getUserAction());
+                                          methodName);
         }
 
         if (typeDefPatch.getNewVersionName() == null)
@@ -1640,18 +1915,12 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                                             String       fieldName,
                                             String       methodName) throws PatchErrorException
     {
-        OMRSErrorCode errorCode    = OMRSErrorCode.NULL_MANDATORY_PATCH_FIELD;
-        String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                                                                                                        sourceName,
-                                                                                                        fieldName,
-                                                                                                        typeDefPatch.toString());
-
-        throw new PatchErrorException(errorCode.getHTTPErrorCode(),
+       throw new PatchErrorException(OMRSErrorCode.NULL_MANDATORY_PATCH_FIELD.getMessageDefinition(methodName,
+                                                                                                    sourceName,
+                                                                                                    fieldName,
+                                                                                                    typeDefPatch.toString()),
                                       this.getClass().getName(),
-                                      methodName,
-                                      errorMessage,
-                                      errorCode.getSystemAction(),
-                                      errorCode.getUserAction());
+                                      methodName);
     }
 
 
@@ -1680,17 +1949,12 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
 
         if (originalTypeDef == null)
         {
-            OMRSErrorCode errorCode    = OMRSErrorCode.NULL_TYPEDEF;
-            String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(typeDefParameterName,
-                                                                                                            methodName,
-                                                                                                            sourceName);
-
-            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+            throw new InvalidParameterException(OMRSErrorCode.NULL_TYPEDEF.getMessageDefinition(typeDefParameterName,
+                                                                                                methodName,
+                                                                                                sourceName),
                                                 this.getClass().getName(),
                                                 thisMethodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction());
+                                                typeDefParameterName);
         }
 
         TypeDef updatedTypeDef  = originalTypeDef.cloneFromSubclass();
@@ -1701,6 +1965,11 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
             updatedTypeDef.setVersionName(typeDefPatch.getNewVersionName());
             updatedTypeDef.setUpdatedBy(typeDefPatch.getUpdatedBy());
             updatedTypeDef.setUpdateTime(typeDefPatch.getUpdateTime());
+
+            if (typeDefPatch.getTypeDefStatus() != null)
+            {
+                updatedTypeDef.setStatus(typeDefPatch.getTypeDefStatus());
+            }
 
             if (typeDefPatch.getDescription() != null)
             {
@@ -1735,7 +2004,7 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                     {
                         /*
                          * The existing properties are initially preserved.  The new properties from the
-                         * patch will be added over the top as lon as they are compatible.
+                         * patch will be added over the top as long as they are compatible.
                          */
                         if (propertyDefinition != null)
                         {
@@ -1767,20 +2036,14 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                                             newPropertyType = newPropertyDefinition.getAttributeType().toString();
                                         }
 
-                                        OMRSErrorCode errorCode    = OMRSErrorCode.INCOMPATIBLE_PROPERTY_PATCH;
-                                        String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                                                                                                                                        sourceName,
-                                                                                                                                        newPropertyName,
-                                                                                                                                        oldPropertyDefinition.getAttributeType().toString(),
-                                                                                                                                        newPropertyType,
-                                                                                                                                        typeDefPatch.toString());
-
-                                        throw new PatchErrorException(errorCode.getHTTPErrorCode(),
+                                        throw new PatchErrorException(OMRSErrorCode.INCOMPATIBLE_PROPERTY_PATCH.getMessageDefinition(methodName,
+                                                                                                                                     sourceName,
+                                                                                                                                     newPropertyName,
+                                                                                                                                     oldPropertyDefinition.getAttributeType().toString(),
+                                                                                                                                     newPropertyType,
+                                                                                                                                     typeDefPatch.toString()),
                                                                       this.getClass().getName(),
-                                                                      methodName,
-                                                                      errorMessage,
-                                                                      errorCode.getSystemAction(),
-                                                                      errorCode.getUserAction());
+                                                                      methodName);
                                     }
                                 }
                             }
@@ -1863,20 +2126,56 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
         }
         else
         {
-            OMRSErrorCode errorCode    = OMRSErrorCode.INCOMPATIBLE_PATCH_VERSION;
-            String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                                                                                                            sourceName,
-                                                                                                            Long.toString(typeDefPatch.getApplyToVersion()),
-                                                                                                            Long.toString(originalTypeDef.getVersion()),
-                                                                                                            typeDefPatch.toString());
-
-            throw new PatchErrorException(errorCode.getHTTPErrorCode(),
+            throw new PatchErrorException(OMRSErrorCode.INCOMPATIBLE_PATCH_VERSION.getMessageDefinition(methodName,
+                                                                                                        sourceName,
+                                                                                                        Long.toString(typeDefPatch.getApplyToVersion()),
+                                                                                                        Long.toString(originalTypeDef.getVersion()),
+                                                                                                        typeDefPatch.toString()),
                                           this.getClass().getName(),
-                                          methodName,
-                                          errorMessage,
-                                          errorCode.getSystemAction(),
-                                          errorCode.getUserAction());
+                                          methodName);
         }
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SearchProperties getSearchPropertiesFromInstanceProperties(String             sourceName,
+                                                                      InstanceProperties properties,
+                                                                      MatchCriteria      matchCriteria)
+    {
+        SearchProperties matchProperties = null;
+        if (properties != null)
+        {
+            matchProperties = new SearchProperties();
+            List<PropertyCondition> conditions = new ArrayList<>();
+            Iterator<String> propertyNames = properties.getPropertyNames();
+            while (propertyNames.hasNext())
+            {
+                String propertyName = propertyNames.next();
+                PropertyCondition pc = new PropertyCondition();
+                pc.setProperty(propertyName);
+                InstancePropertyValue ipv = properties.getPropertyValue(propertyName);
+                if (ipv.getInstancePropertyCategory().equals(InstancePropertyCategory.PRIMITIVE)
+                        && ((PrimitivePropertyValue)ipv).getPrimitiveDefCategory().equals(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING) )
+                {
+                    // Use the LIKE operator for any strings
+                    pc.setOperator(PropertyComparisonOperator.LIKE);
+                }
+                else
+                {
+                    // And the EQ(uals) operator for any other type
+                    pc.setOperator(PropertyComparisonOperator.EQ);
+                }
+                // TODO: we may want to default complex types (lists, etc) to other operators than EQ?
+                pc.setValue(ipv);
+                conditions.add(pc);
+            }
+            matchProperties.setConditions(conditions);
+            matchProperties.setMatchCriteria(matchCriteria);
+        }
+        return matchProperties;
     }
 
 
@@ -1892,17 +2191,11 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                                        String     originatingMethodName,
                                        String     localMethodName)
     {
-        OMRSErrorCode errorCode = OMRSErrorCode.HELPER_LOGIC_ERROR;
-        String errorMessage     = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(sourceName,
-                                                                                                     localMethodName,
-                                                                                                     originatingMethodName);
-
-        throw new OMRSLogicErrorException(errorCode.getHTTPErrorCode(),
+        throw new OMRSLogicErrorException(OMRSErrorCode.HELPER_LOGIC_ERROR.getMessageDefinition(sourceName,
+                                                                                                localMethodName,
+                                                                                                originatingMethodName),
                                           this.getClass().getName(),
-                                          localMethodName,
-                                          errorMessage,
-                                          errorCode.getSystemAction(),
-                                          errorCode.getUserAction());
+                                          localMethodName);
     }
 
 
@@ -1920,17 +2213,11 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
                                        String     localMethodName,
                                        Throwable  unexpectedException)
     {
-        OMRSErrorCode errorCode = OMRSErrorCode.HELPER_LOGIC_EXCEPTION;
-        String errorMessage     = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(sourceName,
-                                                                                                     localMethodName,
-                                                                                                     originatingMethodName);
-
-        throw new OMRSLogicErrorException(errorCode.getHTTPErrorCode(),
+        throw new OMRSLogicErrorException(OMRSErrorCode.HELPER_LOGIC_EXCEPTION.getMessageDefinition(sourceName,
+                                                                                                    localMethodName,
+                                                                                                    originatingMethodName),
                                           this.getClass().getName(),
                                           localMethodName,
-                                          errorMessage,
-                                          errorCode.getSystemAction(),
-                                          errorCode.getUserAction(),
                                           unexpectedException);
     }
 }

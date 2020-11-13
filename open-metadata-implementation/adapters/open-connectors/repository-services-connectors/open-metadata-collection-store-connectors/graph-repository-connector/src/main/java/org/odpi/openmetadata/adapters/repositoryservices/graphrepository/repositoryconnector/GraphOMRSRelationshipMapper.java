@@ -19,8 +19,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefAttribute;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
@@ -34,8 +32,7 @@ import java.util.Map;
 
 import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.*;
 
-
-public class GraphOMRSRelationshipMapper {
+class GraphOMRSRelationshipMapper {
 
     private static final Logger log = LoggerFactory.getLogger(GraphOMRSRelationshipMapper.class);
 
@@ -43,9 +40,9 @@ public class GraphOMRSRelationshipMapper {
     private String               metadataCollectionId;
     private OMRSRepositoryHelper repositoryHelper;
 
-    public GraphOMRSRelationshipMapper(String               metadataCollectionId,
-                                       String               repositoryName,
-                                       OMRSRepositoryHelper repositoryHelper) {
+    GraphOMRSRelationshipMapper(String               metadataCollectionId,
+                                String               repositoryName,
+                                OMRSRepositoryHelper repositoryHelper) {
 
         this.metadataCollectionId   = metadataCollectionId;
         this.repositoryName         = repositoryName;
@@ -76,7 +73,7 @@ public class GraphOMRSRelationshipMapper {
                 removeProperty(edge, qualifiedPropName);
             }
         } else {
-            log.debug("{} non-primitive instance property {}", propertyName);
+            log.debug("non-primitive instance property {}", propertyName);
         }
     }
 
@@ -97,7 +94,7 @@ public class GraphOMRSRelationshipMapper {
      * The guid and type information must be preserved.
      * If the metadataCollectionId is null then
      */
-    public void mapRelationshipToEdge(Relationship relationship, Edge edge)
+    void mapRelationshipToEdge(Relationship relationship, Edge edge)
             throws RepositoryErrorException
     {
         final String methodName = "mapRelationshipToEdge";
@@ -131,16 +128,11 @@ public class GraphOMRSRelationshipMapper {
 
         if (missingAttribute) {
             log.error("{} relationship is missing a core attribute {}", methodName, missingAttributeName);
-            GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.RELATIONSHIP_PROPERTIES_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(relationship.getGUID(), methodName,
+            throw new RepositoryErrorException(GraphOMRSErrorCode.RELATIONSHIP_PROPERTIES_ERROR.getMessageDefinition(relationship.getGUID(), methodName,
+                                                                                                                     this.getClass().getName(),
+                                                                                                                     repositoryName),
                     this.getClass().getName(),
-                    repositoryName);
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction());
+                    methodName);
         }
 
         edge.property(PROPERTY_KEY_RELATIONSHIP_VERSION, relationship.getVersion());
@@ -254,18 +246,12 @@ public class GraphOMRSRelationshipMapper {
                 edge.property(PROPERTY_KEY_RELATIONSHIP_MAINTAINED_BY, jsonString);
 
             } catch (Throwable exc) {
-                GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.RELATIONSHIP_PROPERTIES_ERROR;
 
-                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                throw new RepositoryErrorException(GraphOMRSErrorCode.RELATIONSHIP_PROPERTIES_ERROR.getMessageDefinition(methodName,
+                                                                                                                         this.getClass().getName(),
+                                                                                                                         repositoryName),
                         this.getClass().getName(),
-                        repositoryName);
-
-                throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                        this.getClass().getName(),
-                        methodName,
-                        errorMessage,
-                        errorCode.getSystemAction(),
-                        errorCode.getUserAction());
+                        methodName);
             }
 
         }
@@ -296,18 +282,12 @@ public class GraphOMRSRelationshipMapper {
                 edge.property(PROPERTY_KEY_RELATIONSHIP_MAPPING_PROPERTIES, jsonString);
 
             } catch (Throwable exc) {
-                GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.RELATIONSHIP_PROPERTIES_ERROR;
 
-                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                throw new RepositoryErrorException(GraphOMRSErrorCode.RELATIONSHIP_PROPERTIES_ERROR.getMessageDefinition(methodName,
+                                                                                                                         this.getClass().getName(),
+                                                                                                                         repositoryName),
                         this.getClass().getName(),
-                        repositoryName);
-
-                throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                        this.getClass().getName(),
-                        methodName,
-                        errorMessage,
-                        errorCode.getSystemAction(),
-                        errorCode.getUserAction());
+                        methodName, exc);
             }
 
         }
@@ -334,18 +314,11 @@ public class GraphOMRSRelationshipMapper {
                 edge.property("relationshipProperties", jsonString);
 
             } catch (Throwable exc) {
-                GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.RELATIONSHIP_PROPERTIES_ERROR;
-
-                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                throw new RepositoryErrorException(GraphOMRSErrorCode.RELATIONSHIP_PROPERTIES_ERROR.getMessageDefinition(methodName,
+                                                                                                                         this.getClass().getName(),
+                                                                                                                         repositoryName),
                         this.getClass().getName(),
-                        repositoryName);
-
-                throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                        this.getClass().getName(),
-                        methodName,
-                        errorMessage,
-                        errorCode.getSystemAction(),
-                        errorCode.getUserAction());
+                        methodName, exc);
             }
 
 
@@ -358,7 +331,8 @@ public class GraphOMRSRelationshipMapper {
             // There is no need to qualify property names for relationships, as they do not have inheritance but for consistency and future proofing
             // they are still qualified by type name.
             // For the type of the entity, walk its type hierarchy and construct a map of short prop name -> qualified prop name.
-            Map<String,String> qualifiedPropertyNames = GraphOMRSMapperUtils.getQualifiedPropertyNamesForTypeDef(typeDef, repositoryName, repositoryHelper);
+            GraphOMRSMapperUtils mapperUtils = new GraphOMRSMapperUtils();
+            Map<String,String> qualifiedPropertyNames = mapperUtils.getQualifiedPropertyNamesForTypeDef(typeDef, repositoryName, repositoryHelper);
 
             // This is a full property update - any defined properties that are not in the instanceProperties are cleared.
             List<TypeDefAttribute> propertiesDef = repositoryHelper.getAllPropertiesForTypeDef(repositoryName, typeDef, methodName);
@@ -391,7 +365,7 @@ public class GraphOMRSRelationshipMapper {
 
 
 
-    public void mapEdgeToRelationship(Edge edge, Relationship relationship)
+    void mapEdgeToRelationship(Edge edge, Relationship relationship)
             throws
             RepositoryErrorException
     {
@@ -419,31 +393,27 @@ public class GraphOMRSRelationshipMapper {
 
         } catch (TypeErrorException e) {
             log.error("{} caught TypeErrorException {}", methodName, e.getMessage());
-            GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.RELATIONSHIP_TYPE_NOT_KNOWN;
 
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(typeName, methodName,
+            throw new RepositoryErrorException(GraphOMRSErrorCode.RELATIONSHIP_TYPE_NOT_KNOWN.getMessageDefinition(typeName, methodName,
+                                                                                                                   this.getClass().getName(),
+                                                                                                                   repositoryName),
                     this.getClass().getName(),
-                    repositoryName);
-
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction());
+                    methodName, e);
 
         }
 
+        GraphOMRSMapperUtils mapperUtils = new GraphOMRSMapperUtils();
+
         Integer provenanceOrdinal = (Integer) getEdgeProperty(edge, PROPERTY_KEY_RELATIONSHIP_PROVENANCE_TYPE);
-        InstanceProvenanceType instanceProvenanceType = GraphOMRSMapperUtils.mapProvenanceOrdinalToEnum(provenanceOrdinal);
+        InstanceProvenanceType instanceProvenanceType = mapperUtils.mapProvenanceOrdinalToEnum(provenanceOrdinal);
         relationship.setInstanceProvenanceType(instanceProvenanceType);
 
         Integer statusOrdinal = (Integer) getEdgeProperty(edge, PROPERTY_KEY_RELATIONSHIP_STATUS);
-        InstanceStatus instanceStatus = GraphOMRSMapperUtils.mapStatusOrdinalToEnum(statusOrdinal);
+        InstanceStatus instanceStatus = mapperUtils.mapStatusOrdinalToEnum(statusOrdinal);
         relationship.setStatus(instanceStatus);
 
         Integer statusOnDeleteOrdinal = (Integer) getEdgeProperty(edge, PROPERTY_KEY_RELATIONSHIP_STATUS_ON_DELETE);
-        InstanceStatus statusOnDelete = GraphOMRSMapperUtils.mapStatusOrdinalToEnum(statusOnDeleteOrdinal);
+        InstanceStatus statusOnDelete = mapperUtils.mapStatusOrdinalToEnum(statusOnDeleteOrdinal);
         relationship.setStatusOnDelete(statusOnDelete);
 
         // maintainedBy
@@ -456,18 +426,13 @@ public class GraphOMRSRelationshipMapper {
                 relationship.setMaintainedBy(maintainedByList);
 
             } catch (Throwable exc) {
-                GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.RELATIONSHIP_PROPERTIES_ERROR;
 
-                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(relationship.getGUID(), methodName,
+                throw new RepositoryErrorException(GraphOMRSErrorCode.RELATIONSHIP_PROPERTIES_ERROR.getMessageDefinition(relationship.getGUID(),
+                                                                                                                         methodName,
+                                                                                                                         this.getClass().getName(),
+                                                                                                                         repositoryName),
                         this.getClass().getName(),
-                        repositoryName);
-
-                throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                        this.getClass().getName(),
-                        methodName,
-                        errorMessage,
-                        errorCode.getSystemAction(),
-                        errorCode.getUserAction());
+                        methodName, exc);
             }
         }
 
@@ -485,18 +450,13 @@ public class GraphOMRSRelationshipMapper {
                 relationship.setMappingProperties(mappingPropertiesMap);
 
             } catch (Throwable exc) {
-                GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.RELATIONSHIP_PROPERTIES_ERROR;
 
-                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(relationship.getGUID(), methodName,
+                throw new RepositoryErrorException(GraphOMRSErrorCode.RELATIONSHIP_PROPERTIES_ERROR.getMessageDefinition(relationship.getGUID(),
+                                                                                                                         methodName,
+                                                                                                                         this.getClass().getName(),
+                                                                                                                         repositoryName),
                         this.getClass().getName(),
-                        repositoryName);
-
-                throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                        this.getClass().getName(),
-                        methodName,
-                        errorMessage,
-                        errorCode.getSystemAction(),
-                        errorCode.getUserAction());
+                        methodName, exc);
             }
         }
 
@@ -511,18 +471,12 @@ public class GraphOMRSRelationshipMapper {
                 relationship.setProperties(instanceProperties);
 
             } catch (Throwable exc) {
-                GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.RELATIONSHIP_PROPERTIES_ERROR;
-
-                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(relationship.getGUID(), methodName,
+                throw new RepositoryErrorException(GraphOMRSErrorCode.RELATIONSHIP_PROPERTIES_ERROR.getMessageDefinition(relationship.getGUID(),
+                                                                                                                         methodName,
+                                                                                                                         this.getClass().getName(),
+                                                                                                                         repositoryName),
                         this.getClass().getName(),
-                        repositoryName);
-
-                throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                        this.getClass().getName(),
-                        methodName,
-                        errorMessage,
-                        errorCode.getSystemAction(),
-                        errorCode.getUserAction());
+                        methodName, exc);
             }
         }
         else {
@@ -531,10 +485,8 @@ public class GraphOMRSRelationshipMapper {
     }
 
 
-    public String getRelationshipMetadataCollectionId(Edge edge) {
-        String metadataCollectionId = null;
-        metadataCollectionId = (String) getEdgeProperty(edge, PROPERTY_KEY_RELATIONSHIP_METADATACOLLECTION_ID);
-        return metadataCollectionId;
+    String getRelationshipMetadataCollectionId(Edge edge) {
+        return (String) getEdgeProperty(edge, PROPERTY_KEY_RELATIONSHIP_METADATACOLLECTION_ID);
     }
 
 }

@@ -58,6 +58,8 @@ import java.util.Objects;
  */
 public class EndpointProperties extends AssetReferenceable
 {
+    private static final long     serialVersionUID = 1L;
+
     protected Endpoint  endpointBean;
 
 

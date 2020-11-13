@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances;
 
 import java.util.*;
-
+import org.apache.commons.collections4.CollectionUtils;
 /**
  * Capture the differences between classification instances.  These differences are calculated irrespective of the
  * ordering of the classification lists, and differences are based on the names of the classifications (assuming that
@@ -57,15 +57,15 @@ public class ClassificationDifferences extends Differences
         {
             List<Classification> leftList = left.getClassifications();
             List<Classification> rightList = right.getClassifications();
-            if (leftList.isEmpty() && rightList.isEmpty())
+            if (CollectionUtils.isEmpty(leftList) && CollectionUtils.isEmpty(rightList))
             {
                 // Do nothing...
             }
-            else if (leftList.isEmpty())
+            else if (CollectionUtils.isEmpty(leftList))
             {
                 setOnlyOnOne(onlyOnRight, rightList);
             }
-            else if (rightList.isEmpty())
+            else if (CollectionUtils.isEmpty(rightList))
             {
                 setOnlyOnOne(onlyOnLeft, leftList);
             }
@@ -86,7 +86,7 @@ public class ClassificationDifferences extends Differences
     {
         // Note that if the provided classifications are also empty, then there are no differences to capture
         // (so if one is null and the other is empty, they will still be considered the same)
-        if (!classifications.isEmpty())
+        if (CollectionUtils.isNotEmpty(classifications))
         {
             for (Classification classification : classifications)
             {

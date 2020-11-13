@@ -6,13 +6,11 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.AdditionalProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectedAssetProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -48,7 +46,7 @@ public abstract class ConnectorBase extends Connector
      * Secured properties are protected properties from the connection.  They are retrieved as a protected
      * variable to allow subclasses of ConnectorBase to access them.
      */
-    protected Map<String, Object> securedProperties = null;
+    protected Map<String, String> securedProperties = null;
 
     private static final Logger   log = LoggerFactory.getLogger(ConnectorBase.class);
 
@@ -249,9 +247,11 @@ public abstract class ConnectorBase extends Connector
      * ProtectedConnection provides a subclass to Connection in order to extract protected values from the
      * connection in order to supply them to the Connector implementation.
      */
-    protected class ProtectedConnection extends ConnectionProperties
+    protected static class ProtectedConnection extends ConnectionProperties
     {
-        protected ProtectedConnection(ConnectionProperties templateConnection)
+        private static final long    serialVersionUID = 1L;
+
+        ProtectedConnection(ConnectionProperties templateConnection)
         {
             super(templateConnection);
         }
@@ -263,7 +263,7 @@ public abstract class ConnectorBase extends Connector
          *
          * @return secured properties   typically user credentials for the connection
          */
-        protected Map<String, Object> getSecuredProperties()
+        protected Map<String, String> getSecuredProperties()
         {
             return super.getConnectionBean().getSecuredProperties();
         }

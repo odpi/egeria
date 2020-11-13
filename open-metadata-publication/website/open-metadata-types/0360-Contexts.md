@@ -7,7 +7,7 @@ The Context model defines a classification for a
 glossary term that indicates it defines a context,
 and a relationship called **UsedInContext** to link terms that are relevant in that context.
 
-![UML](0360-Contexts.png)
+![UML](0360-Contexts.png#pagewidth)
 
 The **ContextDefinition** classification indicates that the term describes a context.
     

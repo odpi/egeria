@@ -4,7 +4,12 @@ package org.odpi.openmetadata.repositoryservices.rest.server;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.adminservices.configuration.registration.CommonServicesDescription;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditCode;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.MessageFormatter;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchClassifications;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties;
+import org.odpi.openmetadata.repositoryservices.ffdc.OMRSAuditCode;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
@@ -23,8 +28,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -95,11 +98,13 @@ public class OMRSRepositoryRESTServices
     private static       OMRSRepositoryServicesInstanceHandler instanceHandler = new OMRSRepositoryServicesInstanceHandler(serviceName);
     private static final String                                anonymousUserId = "anon"; // TODO add to config
 
+    private static final MessageFormatter messageFormatter = new MessageFormatter();
 
     /**
      * Set up the local repository connector that will service the local repository REST Calls.
      *
      * @param localServerName               name of this local server
+     * @param masterAuditLog                top level audit Log destination
      * @param localRepositoryConnector      link to the local repository responsible for servicing the REST calls.
      *                                      If localRepositoryConnector is null when a REST calls is received, the request
      *                                      is rejected.
@@ -109,9 +114,24 @@ public class OMRSRepositoryRESTServices
      * @param auditLog                      auditLog destination
      * @param maxPageSize                   max number of results to return on single request.
      */
-    public static void setServerRepositories(String localServerName, LocalOMRSRepositoryConnector localRepositoryConnector, OMRSRepositoryConnector enterpriseRepositoryConnector, OMRSMetadataHighwayManager metadataHighwayManager, String localServerURL, OMRSAuditLog auditLog, int maxPageSize)
+    public static void setServerRepositories(String                       localServerName,
+                                             OMRSAuditLog                 masterAuditLog,
+                                             LocalOMRSRepositoryConnector localRepositoryConnector,
+                                             OMRSRepositoryConnector      enterpriseRepositoryConnector,
+                                             OMRSMetadataHighwayManager   metadataHighwayManager,
+                                             String                       localServerURL,
+                                             AuditLog                     auditLog,
+                                             int                          maxPageSize)
     {
-        new OMRSRepositoryServicesInstance(localServerName, localRepositoryConnector, enterpriseRepositoryConnector, metadataHighwayManager, localServerURL, serviceName, auditLog, maxPageSize);
+        new OMRSRepositoryServicesInstance(localServerName,
+                                           masterAuditLog,
+                                           localRepositoryConnector,
+                                           enterpriseRepositoryConnector,
+                                           metadataHighwayManager,
+                                           localServerURL,
+                                           serviceName,
+                                           auditLog,
+                                           maxPageSize);
     }
 
 
@@ -280,7 +300,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -341,7 +361,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -398,7 +418,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -447,7 +467,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -496,7 +516,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -545,7 +565,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -597,7 +617,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -646,7 +666,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -701,7 +721,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -756,7 +776,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -811,7 +831,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -866,7 +886,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -898,18 +918,12 @@ public class OMRSRepositoryRESTServices
     {
         OMRSRepositoryServicesInstance instance = instanceHandler.getInstance(userId, serverName, methodName);
 
-        if (instance !=null)
+        if (instance != null)
         {
-            OMRSAuditLog auditLog = instance.getAuditLog();
+            AuditLog auditLog = instance.getAuditLog();
 
-            OMRSAuditCode auditCode = OMRSAuditCode.AD_HOC_TYPE_DEFINITION;
-            auditLog.logRecord(methodName,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(typeName, typeGUID, serverName, userId, methodName),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logMessage(methodName,
+                                OMRSAuditCode.AD_HOC_TYPE_DEFINITION.getMessageDefinition(typeName, typeGUID, serverName, userId, methodName));
         }
 
     }
@@ -1007,7 +1021,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -1086,7 +1100,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -1165,7 +1179,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -1234,7 +1248,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -1302,7 +1316,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -1371,13 +1385,20 @@ public class OMRSRepositoryRESTServices
         {
             response.setRelatedHTTPCode(error.getReportedHTTPCode());
             response.setExceptionClassName(PatchErrorException.class.getName());
-            response.setExceptionErrorMessage(error.getErrorMessage());
+            response.setActionDescription(error.getReportingActionDescription());
+            response.setExceptionErrorMessage(error.getReportedErrorMessage());
+            response.setExceptionErrorMessageId(error.getReportedErrorMessageId());
+            response.setExceptionErrorMessageParameters(error.getReportedErrorMessageParameters());
             response.setExceptionSystemAction(error.getReportedSystemAction());
             response.setExceptionUserAction(error.getReportedUserAction());
+            if (error.getCause() != null)
+            {
+                response.setExceptionCausedBy(error.getCause().getClass().getName());
+            }
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -1451,7 +1472,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -1525,7 +1546,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -1610,7 +1631,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -1695,7 +1716,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -1752,7 +1773,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -1809,7 +1830,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -1893,7 +1914,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -1970,7 +1991,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -2096,7 +2117,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -2224,7 +2245,265 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Return a list of entities that match the supplied conditions.  The results can be returned over many pages.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param userId unique identifier for requesting user.
+     * @param findRequestParameters find parameters used to limit the returned results.
+     * @return EntityListResponse:
+     * a list of entities matching the supplied criteria where null means no matching entities in the metadata
+     * collection or
+     * InvalidParameterException a parameter is invalid or null or
+     * TypeErrorException the type guid passed on the request is not known by the metadata collection or
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored or
+     * PropertyErrorException the properties specified are not valid for any of the requested types of
+     *                                  entity or
+     * PagingErrorException the paging/sequencing parameters are set up incorrectly or
+     * FunctionNotSupportedException the repository does not support asOfTime parameter or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public  EntityListResponse findEntities(String            serverName,
+                                            String            userId,
+                                            EntityFindRequest findRequestParameters)
+    {
+        final  String   methodName = "findEntities";
+
+        log.debug("Calling method: " + methodName);
+
+        String                entityTypeGUID               = null;
+        List<String>          entitySubtypeGUIDs           = null;
+        SearchProperties      matchProperties              = null;
+        int                   fromEntityElement            = 0;
+        List<InstanceStatus>  limitResultsByStatus         = null;
+        SearchClassifications matchClassifications         = null;
+        String                sequencingProperty           = null;
+        SequencingOrder       sequencingOrder              = null;
+        int                   pageSize                     = 0;
+
+        EntityListResponse response = new EntityListResponse();
+
+        if (findRequestParameters != null)
+        {
+            entityTypeGUID                    = findRequestParameters.getTypeGUID();
+            entitySubtypeGUIDs                = findRequestParameters.getSubtypeGUIDs();
+            matchProperties                   = findRequestParameters.getMatchProperties();
+            fromEntityElement                 = findRequestParameters.getOffset();
+            limitResultsByStatus              = findRequestParameters.getLimitResultsByStatus();
+            matchClassifications              = findRequestParameters.getMatchClassifications();
+            sequencingProperty                = findRequestParameters.getSequencingProperty();
+            sequencingOrder                   = findRequestParameters.getSequencingOrder();
+            pageSize                          = findRequestParameters.getPageSize();
+        }
+
+        try
+        {
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
+
+            List<EntityDetail>  entities = metadataCollection.findEntities(userId,
+                                                                           entityTypeGUID,
+                                                                           entitySubtypeGUIDs,
+                                                                           matchProperties,
+                                                                           fromEntityElement,
+                                                                           limitResultsByStatus,
+                                                                           matchClassifications,
+                                                                           null,
+                                                                           sequencingProperty,
+                                                                           sequencingOrder,
+                                                                           pageSize);
+            response.setEntities(entities);
+            if (entities != null)
+            {
+                response.setOffset(fromEntityElement);
+                response.setPageSize(pageSize);
+                if (entities.size() == pageSize)
+                {
+                    final String urlTemplate = "{0}/instances/entities";
+
+                    EntityFindRequest nextFindRequestParameters = new EntityFindRequest(findRequestParameters);
+                    nextFindRequestParameters.setOffset(fromEntityElement + pageSize);
+
+                    response.setNextPageURL(formatNextPageURL(methodName,
+                            serverName,
+                            userId,
+                            urlTemplate,
+                            nextFindRequestParameters,
+                            userId));
+                }
+            }
+
+        }
+        catch (RepositoryErrorException  error)
+        {
+            captureRepositoryErrorException(response, error);
+        }
+        catch (FunctionNotSupportedException  error)
+        {
+            captureFunctionNotSupportedException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+        catch (InvalidParameterException error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (TypeErrorException error)
+        {
+            captureTypeErrorException(response, error);
+        }
+        catch (PropertyErrorException error)
+        {
+            capturePropertyErrorException(response, error);
+        }
+        catch (PagingErrorException error)
+        {
+            capturePagingErrorException(response, error);
+        }
+        catch (Throwable error)
+        {
+            captureThrowable(response, error, userId, serverName, methodName);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Return a list of entities that match the supplied conditions.  The results can be returned over many pages.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param userId unique identifier for requesting user.
+     * @param findRequestParameters find parameters used to limit the returned results.
+     * @return EntityListResponse:
+     * a list of entities matching the supplied criteria where null means no matching entities in the metadata
+     * collection or
+     * InvalidParameterException a parameter is invalid or null or
+     * TypeErrorException the type guid passed on the request is not known by the metadata collection or
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored or
+     * PropertyErrorException the properties specified are not valid for any of the requested types of
+     *                                  entity or
+     * PagingErrorException the paging/sequencing parameters are set up incorrectly or
+     * FunctionNotSupportedException the repository does not support asOfTime parameter or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public  EntityListResponse findEntitiesByHistory(String                      serverName,
+                                                     String                      userId,
+                                                     EntityHistoricalFindRequest findRequestParameters)
+    {
+        final  String   methodName = "findEntitiesByHistory";
+
+        log.debug("Calling method: " + methodName);
+
+        String                    entityTypeGUID                    = null;
+        List<String>              entitySubtypeGUIDs                = null;
+        SearchProperties          matchProperties                   = null;
+        int                       fromEntityElement                 = 0;
+        List<InstanceStatus>      limitResultsByStatus              = null;
+        SearchClassifications     matchClassifications              = null;
+        Date                      asOfTime                          = null;
+        String                    sequencingProperty                = null;
+        SequencingOrder           sequencingOrder                   = null;
+        int                       pageSize                          = 0;
+
+        EntityListResponse response = new EntityListResponse();
+
+        if (findRequestParameters != null)
+        {
+            entityTypeGUID                    = findRequestParameters.getTypeGUID();
+            entitySubtypeGUIDs                = findRequestParameters.getSubtypeGUIDs();
+            matchProperties                   = findRequestParameters.getMatchProperties();
+            fromEntityElement                 = findRequestParameters.getOffset();
+            limitResultsByStatus              = findRequestParameters.getLimitResultsByStatus();
+            matchClassifications              = findRequestParameters.getMatchClassifications();
+            asOfTime                          = findRequestParameters.getAsOfTime();
+            sequencingProperty                = findRequestParameters.getSequencingProperty();
+            sequencingOrder                   = findRequestParameters.getSequencingOrder();
+            pageSize                          = findRequestParameters.getPageSize();
+        }
+
+        try
+        {
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
+
+            List<EntityDetail>  entities = metadataCollection.findEntities(userId,
+                                                                           entityTypeGUID,
+                                                                           entitySubtypeGUIDs,
+                                                                           matchProperties,
+                                                                           fromEntityElement,
+                                                                           limitResultsByStatus,
+                                                                           matchClassifications,
+                                                                           asOfTime,
+                                                                           sequencingProperty,
+                                                                           sequencingOrder,
+                                                                           pageSize);
+            response.setEntities(entities);
+            if (entities != null)
+            {
+                response.setOffset(fromEntityElement);
+                response.setPageSize(pageSize);
+                if (entities.size() == pageSize)
+                {
+                    final String urlTemplate = "{0}/instances/entities/history";
+
+                    EntityHistoricalFindRequest nextFindRequestParameters = new EntityHistoricalFindRequest(findRequestParameters);
+                    nextFindRequestParameters.setOffset(fromEntityElement + pageSize);
+
+                    response.setNextPageURL(formatNextPageURL(methodName,
+                            serverName,
+                            userId,
+                            urlTemplate,
+                            nextFindRequestParameters,
+                            userId));
+                }
+            }
+
+        }
+        catch (RepositoryErrorException  error)
+        {
+            captureRepositoryErrorException(response, error);
+        }
+        catch (FunctionNotSupportedException  error)
+        {
+            captureFunctionNotSupportedException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+        catch (InvalidParameterException error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (TypeErrorException error)
+        {
+            captureTypeErrorException(response, error);
+        }
+        catch (PropertyErrorException error)
+        {
+            capturePropertyErrorException(response, error);
+        }
+        catch (PagingErrorException error)
+        {
+            capturePagingErrorException(response, error);
+        }
+        catch (Throwable error)
+        {
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -2353,7 +2632,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -2484,7 +2763,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -2616,7 +2895,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -2750,7 +3029,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -2876,7 +3155,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -3003,7 +3282,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -3055,7 +3334,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -3135,7 +3414,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -3207,7 +3486,257 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Return a list of relationships that match the requested conditions.  The results can be broken into pages.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param userId unique identifier for requesting user
+     * @param findRequestParameters find parameters used to limit the returned results.
+     * @return RelationshipListResponse:
+     * a list of relationships.  Null means no matching relationships or
+     * InvalidParameterException one of the parameters is invalid or null or
+     * TypeErrorException the type guid passed on the request is not known by the metadata collection or
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored or
+     * PropertyErrorException the properties specified are not valid for any of the requested types of
+     *                                  relationships or
+     * PagingErrorException the paging/sequencing parameters are set up incorrectly or
+     * FunctionNotSupportedException the repository does not support asOfTime parameter or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public  RelationshipListResponse findRelationships(String              serverName,
+                                                       String              userId,
+                                                       InstanceFindRequest findRequestParameters)
+    {
+        final  String   methodName = "findRelationships";
+
+        log.debug("Calling method: " + methodName);
+
+        String                    relationshipTypeGUID     = null;
+        List<String>              relationshipSubtypeGUIDs = null;
+        SearchProperties          matchProperties          = null;
+        int                       fromRelationshipElement  = 0;
+        List<InstanceStatus>      limitResultsByStatus     = null;
+        String                    sequencingProperty       = null;
+        SequencingOrder           sequencingOrder          = null;
+        int                       pageSize                 = 0;
+
+        RelationshipListResponse response = new RelationshipListResponse();
+
+        if (findRequestParameters != null)
+        {
+            relationshipTypeGUID              = findRequestParameters.getTypeGUID();
+            relationshipSubtypeGUIDs          = findRequestParameters.getSubtypeGUIDs();
+            matchProperties                   = findRequestParameters.getMatchProperties();
+            fromRelationshipElement           = findRequestParameters.getOffset();
+            limitResultsByStatus              = findRequestParameters.getLimitResultsByStatus();
+            sequencingProperty                = findRequestParameters.getSequencingProperty();
+            sequencingOrder                   = findRequestParameters.getSequencingOrder();
+            pageSize                          = findRequestParameters.getPageSize();
+        }
+
+        try
+        {
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
+
+            List<Relationship>  relationships = metadataCollection.findRelationships(userId,
+                                                                                     relationshipTypeGUID,
+                                                                                     relationshipSubtypeGUIDs,
+                                                                                     matchProperties,
+                                                                                     fromRelationshipElement,
+                                                                                     limitResultsByStatus,
+                                                                                     null,
+                                                                                     sequencingProperty,
+                                                                                     sequencingOrder,
+                                                                                     pageSize);
+            response.setRelationships(relationships);
+            if (relationships != null)
+            {
+                response.setOffset(fromRelationshipElement);
+                response.setPageSize(pageSize);
+                if (response.getRelationships().size() == pageSize)
+                {
+                    final String urlTemplate = "{0}/instances/relationships";
+
+                    InstanceFindRequest nextFindRequestParameters = new InstanceFindRequest(findRequestParameters);
+                    nextFindRequestParameters.setOffset(fromRelationshipElement + pageSize);
+
+                    response.setNextPageURL(formatNextPageURL(methodName,
+                                                              serverName,
+                                                              userId,
+                                                              urlTemplate,
+                                                              nextFindRequestParameters,
+                                                              userId));
+                }
+            }
+
+        }
+        catch (RepositoryErrorException  error)
+        {
+            captureRepositoryErrorException(response, error);
+        }
+        catch (FunctionNotSupportedException  error)
+        {
+            captureFunctionNotSupportedException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+        catch (InvalidParameterException error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (TypeErrorException error)
+        {
+            captureTypeErrorException(response, error);
+        }
+        catch (PropertyErrorException error)
+        {
+            capturePropertyErrorException(response, error);
+        }
+        catch (PagingErrorException error)
+        {
+            capturePagingErrorException(response, error);
+        }
+        catch (Throwable error)
+        {
+            captureThrowable(response, error, userId, serverName, methodName);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Return a list of relationships that match the requested conditions.  The results can be broken into pages.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param userId unique identifier for requesting user
+     * @param findRequestParameters find parameters used to limit the returned results.
+     * @return RelationshipListResponse:
+     * a list of relationships.  Null means no matching relationships or
+     * InvalidParameterException one of the parameters is invalid or null or
+     * TypeErrorException the type guid passed on the request is not known by the metadata collection or
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored or
+     * PropertyErrorException the properties specified are not valid for any of the requested types of
+     *                                  relationships or
+     * PagingErrorException the paging/sequencing parameters are set up incorrectly or
+     * FunctionNotSupportedException the repository does not support asOfTime parameter or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public  RelationshipListResponse findRelationshipsByHistory(String                         serverName,
+                                                                String                         userId,
+                                                                InstanceHistoricalFindRequest  findRequestParameters)
+    {
+        final  String   methodName = "findRelationshipsByHistory";
+
+        log.debug("Calling method: " + methodName);
+
+        String                    relationshipTypeGUID     = null;
+        List<String>              relationshipSubtypeGUIDs = null;
+        SearchProperties          matchProperties          = null;
+        int                       fromRelationshipElement  = 0;
+        List<InstanceStatus>      limitResultsByStatus     = null;
+        Date                      asOfTime                 = null;
+        String                    sequencingProperty       = null;
+        SequencingOrder           sequencingOrder          = null;
+        int                       pageSize                 = 0;
+
+        RelationshipListResponse response = new RelationshipListResponse();
+
+        if (findRequestParameters != null)
+        {
+            relationshipTypeGUID              = findRequestParameters.getTypeGUID();
+            relationshipSubtypeGUIDs          = findRequestParameters.getSubtypeGUIDs();
+            matchProperties                   = findRequestParameters.getMatchProperties();
+            fromRelationshipElement           = findRequestParameters.getOffset();
+            limitResultsByStatus              = findRequestParameters.getLimitResultsByStatus();
+            asOfTime                          = findRequestParameters.getAsOfTime();
+            sequencingProperty                = findRequestParameters.getSequencingProperty();
+            sequencingOrder                   = findRequestParameters.getSequencingOrder();
+            pageSize                          = findRequestParameters.getPageSize();
+        }
+
+        try
+        {
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
+
+            List<Relationship>  relationships = metadataCollection.findRelationships(userId,
+                                                                                     relationshipTypeGUID,
+                                                                                     relationshipSubtypeGUIDs,
+                                                                                     matchProperties,
+                                                                                     fromRelationshipElement,
+                                                                                     limitResultsByStatus,
+                                                                                     asOfTime,
+                                                                                     sequencingProperty,
+                                                                                     sequencingOrder,
+                                                                                     pageSize);
+            response.setRelationships(relationships);
+            if (relationships != null)
+            {
+                response.setOffset(fromRelationshipElement);
+                response.setPageSize(pageSize);
+                if (response.getRelationships().size() == pageSize)
+                {
+                    final String urlTemplate = "{0}/instances/relationships/history";
+
+                    InstanceHistoricalFindRequest nextFindRequestParameters = new InstanceHistoricalFindRequest(findRequestParameters);
+                    nextFindRequestParameters.setOffset(fromRelationshipElement + pageSize);
+
+                    response.setNextPageURL(formatNextPageURL(methodName,
+                                                              serverName,
+                                                              userId,
+                                                              urlTemplate,
+                                                              nextFindRequestParameters,
+                                                              userId));
+                }
+            }
+
+        }
+        catch (RepositoryErrorException  error)
+        {
+            captureRepositoryErrorException(response, error);
+        }
+        catch (FunctionNotSupportedException  error)
+        {
+            captureFunctionNotSupportedException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+        catch (InvalidParameterException error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (TypeErrorException error)
+        {
+            captureTypeErrorException(response, error);
+        }
+        catch (PropertyErrorException error)
+        {
+            capturePropertyErrorException(response, error);
+        }
+        catch (PagingErrorException error)
+        {
+            capturePagingErrorException(response, error);
+        }
+        catch (Throwable error)
+        {
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -3332,7 +3861,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -3459,7 +3988,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -3580,7 +4109,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -3703,7 +4232,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -3791,7 +4320,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -3881,7 +4410,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -3984,7 +4513,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -4089,7 +4618,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -4223,7 +4752,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -4359,7 +4888,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -4462,7 +4991,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -4570,7 +5099,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -4637,7 +5166,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -4707,7 +5236,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -4779,7 +5308,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -4841,7 +5370,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -4918,7 +5447,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -4996,7 +5525,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -5063,7 +5592,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -5144,7 +5673,92 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Add the requested classification to a specific entity.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param userId unique identifier for requesting user.
+     * @param entityGUID String unique identifier (guid) for the entity.
+     * @param classificationName String name for the classification.
+     * @param classificationRequestBody values for the classification.
+     * @return EntityDetailResponse:
+     * EntityDetail showing the resulting entity header, properties and classifications or
+     * InvalidParameterException one of the parameters is invalid or null or
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored or
+     * EntityNotKnownException the entity identified by the guid is not found in the metadata collection or
+     * ClassificationErrorException the requested classification is either not known or not valid
+     *                                         for the entity or
+     * PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                characteristics in the TypeDef for this classification type or
+     * FunctionNotSupportedException the repository does not support maintenance of metadata.
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public EntityDetailResponse  classifyEntity(String                serverName,
+                                                String                userId,
+                                                String                entityGUID,
+                                                String                classificationName,
+                                                ClassificationRequest classificationRequestBody)
+    {
+        final String methodName = "classifyEntity (detailed)";
+
+        log.debug("Calling method: " + methodName);
+
+        EntityDetailResponse response = new EntityDetailResponse();
+
+        try
+        {
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
+
+            response.setEntity(metadataCollection.classifyEntity(userId,
+                                                                 entityGUID,
+                                                                 classificationName,
+                                                                 classificationRequestBody.getMetadataCollectionId(),
+                                                                 classificationRequestBody.getMetadataCollectionName(),
+                                                                 classificationRequestBody.getClassificationOrigin(),
+                                                                 classificationRequestBody.getClassificationOriginGUID(),
+                                                                 classificationRequestBody.getClassificationProperties()));
+        }
+        catch (RepositoryErrorException  error)
+        {
+            captureRepositoryErrorException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+        catch (InvalidParameterException error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (EntityNotKnownException error)
+        {
+            captureEntityNotKnownException(response, error);
+        }
+        catch (ClassificationErrorException error)
+        {
+            captureClassificationErrorException(response, error);
+        }
+        catch (FunctionNotSupportedException  error)
+        {
+            captureFunctionNotSupportedException(response, error);
+        }
+        catch (PropertyErrorException error)
+        {
+            capturePropertyErrorException(response, error);
+        }
+        catch (Throwable error)
+        {
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -5215,7 +5829,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -5295,7 +5909,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -5395,7 +6009,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -5504,7 +6118,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -5576,7 +6190,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -5648,7 +6262,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -5710,7 +6324,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -5789,7 +6403,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -5867,7 +6481,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -5935,7 +6549,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -6021,7 +6635,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -6115,7 +6729,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -6202,7 +6816,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -6284,7 +6898,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -6374,7 +6988,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -6462,7 +7076,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -6554,7 +7168,139 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Retrieve any locally homed classifications assigned to the requested entity.  This method is implemented by repository connectors that are able
+     * to store classifications for entities that are homed in another repository.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param userId unique identifier for requesting user.
+     * @param entityGUID unique identifier of the entity with classifications to retrieve
+     * @return list of all of the classifications for this entity that are homed in this repository or
+     * InvalidParameterException the entity is null or
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored or
+     * EntityNotKnownException the entity is not recognized by this repository or
+     * UserNotAuthorizedException to calling user is not authorized to retrieve this metadata or
+     * FunctionNotSupportedException this method is not supported
+     */
+    public ClassificationListResponse getHomeClassifications(String serverName,
+                                                             String userId,
+                                                             String entityGUID)
+    {
+        final String methodName = "getHomeClassifications";
+
+        log.debug("Calling method: " + methodName);
+
+        ClassificationListResponse response = new ClassificationListResponse();
+
+        try
+        {
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
+
+            metadataCollection.getHomeClassifications(userId, entityGUID);
+        }
+        catch (EntityNotKnownException  error)
+        {
+            captureEntityNotKnownException(response, error);
+        }
+        catch (RepositoryErrorException  error)
+        {
+            captureRepositoryErrorException(response, error);
+        }
+        catch (FunctionNotSupportedException  error)
+        {
+            captureFunctionNotSupportedException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+        catch (InvalidParameterException error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (Throwable error)
+        {
+            captureThrowable(response, error, userId, serverName, methodName);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Retrieve any locally homed classifications assigned to the requested entity.  This method is implemented by repository connectors that are able
+     * to store classifications for entities that are homed in another repository.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param userId unique identifier for requesting user.
+     * @param entityGUID unique identifier of the entity with classifications to retrieve
+     * @param requestBody the time used to determine which version of the entity that is desired.
+     * @return list of all of the classifications for this entity that are homed in this repository or
+     * InvalidParameterException the entity is null or
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored or
+     * EntityNotKnownException the entity is not recognized by this repository or
+     * UserNotAuthorizedException to calling user is not authorized to retrieve this metadata or
+     * FunctionNotSupportedException this method is not supported
+     */
+    public ClassificationListResponse getHomeClassifications(String         serverName,
+                                                             String         userId,
+                                                             String         entityGUID,
+                                                             HistoryRequest requestBody)
+    {
+        final String  methodName = "getHomeClassifications (with history)";
+        log.debug("Calling method: " + methodName);
+
+        ClassificationListResponse response = new ClassificationListResponse();
+
+        try
+        {
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
+
+            if (requestBody == null)
+            {
+                metadataCollection.getHomeClassifications(userId, entityGUID);
+            }
+            else
+            {
+                metadataCollection.getHomeClassifications(userId, entityGUID, requestBody.getAsOfTime());
+            }
+        }
+        catch (EntityNotKnownException  error)
+        {
+            captureEntityNotKnownException(response, error);
+        }
+        catch (RepositoryErrorException  error)
+        {
+            captureRepositoryErrorException(response, error);
+        }
+        catch (FunctionNotSupportedException  error)
+        {
+            captureFunctionNotSupportedException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+        catch (InvalidParameterException error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (Throwable error)
+        {
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -6641,7 +7387,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -6728,7 +7474,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -6814,7 +7560,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -6900,7 +7646,176 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Save the classification as a reference copy.  The id of the home metadata collection is already set up in the
+     * classification.  The entity may be either a locally homed entity or a reference copy.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param userId unique identifier for requesting user.
+     * @param requestBody entity that the classification is attached to and classification to save.
+     *
+     * @return void response or
+     * InvalidParameterException one of the parameters is invalid or null.
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                          the metadata collection is stored.
+     * PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                        characteristics in the TypeDef for this classification type.
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * FunctionNotSupportedException the repository does not support maintenance of metadata.
+     * TypeErrorException the requested type is not known, or not supported in the metadata repository
+     *                    hosting the metadata collection.
+     * EntityConflictException the new entity conflicts with an existing entity.
+     * InvalidEntityException the new entity has invalid contents.
+     * FunctionNotSupportedException the repository does not support reference copies of instances.
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public VoidResponse saveClassificationReferenceCopy(String                          serverName,
+                                                        String                          userId,
+                                                        ClassificationWithEntityRequest requestBody)
+    {
+        final String methodName  = "saveClassificationReferenceCopy";
+
+        log.debug("Calling method: " + methodName);
+
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            if (requestBody != null)
+            {
+                OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
+
+                metadataCollection.saveClassificationReferenceCopy(userId, requestBody.getEntity(), requestBody.getClassification());
+            }
+        }
+        catch (RepositoryErrorException  error)
+        {
+            captureRepositoryErrorException(response, error);
+        }
+        catch (FunctionNotSupportedException  error)
+        {
+            captureFunctionNotSupportedException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+        catch (InvalidParameterException error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (TypeErrorException error)
+        {
+            captureTypeDefErrorException(response, error);
+        }
+        catch (PropertyErrorException error)
+        {
+            capturePropertyErrorException(response, error);
+        }
+        catch (EntityConflictException error)
+        {
+            captureEntityConflictException(response, error);
+        }
+        catch (InvalidEntityException error)
+        {
+            captureInvalidEntityException(response, error);
+        }
+        catch (Throwable error)
+        {
+            captureThrowable(response, error, userId, serverName, methodName);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Remove the reference copy of the classification from the local repository. This method can be used to
+     * remove reference copies from the local cohort, repositories that have left the cohort,
+     * or relationships that have come from open metadata archives.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param userId unique identifier for requesting user.
+     * @param requestBody entity that the classification is attached to and classification to purge.
+     *
+     * @return void response or
+     * InvalidParameterException one of the parameters is invalid or null.
+     * PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                        characteristics in the TypeDef for this classification type.
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                          the metadata collection is stored.
+     * TypeErrorException the requested type is not known, or not supported in the metadata repository
+     *                    hosting the metadata collection.
+     * EntityConflictException the new entity conflicts with an existing entity.
+     * InvalidEntityException the new entity has invalid contents.
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * FunctionNotSupportedException the repository does not support maintenance of metadata.
+     */
+    public  VoidResponse purgeClassificationReferenceCopy(String                         serverName,
+                                                          String                          userId,
+                                                          ClassificationWithEntityRequest requestBody)
+    {
+        final String methodName  = "purgeClassificationReferenceCopy";
+
+        log.debug("Calling method: " + methodName);
+
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            if (requestBody != null)
+            {
+                OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
+
+                metadataCollection.purgeClassificationReferenceCopy(userId, requestBody.getEntity(), requestBody.getClassification());
+            }
+        }
+        catch (RepositoryErrorException  error)
+        {
+            captureRepositoryErrorException(response, error);
+        }
+        catch (FunctionNotSupportedException  error)
+        {
+            captureFunctionNotSupportedException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+        catch (InvalidParameterException error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (TypeErrorException error)
+        {
+            captureTypeDefErrorException(response, error);
+        }
+        catch (PropertyErrorException error)
+        {
+            capturePropertyErrorException(response, error);
+        }
+        catch (EntityConflictException error)
+        {
+            captureEntityConflictException(response, error);
+        }
+        catch (InvalidEntityException error)
+        {
+            captureInvalidEntityException(response, error);
+        }
+        catch (Throwable error)
+        {
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -6992,7 +7907,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -7085,7 +8000,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -7178,7 +8093,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -7265,7 +8180,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -7352,7 +8267,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -7456,7 +8371,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+            captureThrowable(response, error, userId, serverName, methodName);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -7515,29 +8430,15 @@ public class OMRSRepositoryRESTServices
         {
             if (localRepository)
             {
-                OMRSErrorCode errorCode = OMRSErrorCode.NO_LOCAL_REPOSITORY;
-                String errorMessage = errorCode.getErrorMessageId()
-                                              + errorCode.getFormattedErrorMessage(methodName);
-
-                throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                throw new RepositoryErrorException(OMRSErrorCode.NO_LOCAL_REPOSITORY.getMessageDefinition(methodName),
                                                    this.getClass().getName(),
-                                                   methodName,
-                                                   errorMessage,
-                                                   errorCode.getSystemAction(),
-                                                   errorCode.getUserAction());
+                                                   methodName);
             }
             else
             {
-                OMRSErrorCode errorCode = OMRSErrorCode.NO_ENTERPRISE_REPOSITORY;
-                String errorMessage = errorCode.getErrorMessageId()
-                                              + errorCode.getFormattedErrorMessage(methodName);
-
-                throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+               throw new RepositoryErrorException(OMRSErrorCode.NO_ENTERPRISE_REPOSITORY.getMessageDefinition(methodName),
                                                    this.getClass().getName(),
-                                                   methodName,
-                                                   errorMessage,
-                                                   errorCode.getSystemAction(),
-                                                   errorCode.getUserAction());
+                                                   methodName);
             }
         }
 
@@ -7553,7 +8454,20 @@ public class OMRSRepositoryRESTServices
      */
     private void captureUserNotAuthorizedException(OMRSAPIResponse response, UserNotAuthorizedException error)
     {
-        captureCheckedException(response, error, error.getClass().getName());
+        final String propertyName = "userId";
+
+        if (error.getUserId() == null)
+        {
+            captureCheckedException(response, error, error.getClass().getName());
+        }
+        else
+        {
+            Map<String, Object> exceptionProperties = new HashMap<>();
+
+            exceptionProperties.put(propertyName, error.getUserId());
+
+            captureCheckedException(response, error, error.getClass().getName(), exceptionProperties);
+        }
     }
 
 
@@ -7899,50 +8813,49 @@ public class OMRSRepositoryRESTServices
      *
      * @param response  REST Response
      * @param error returned response
+     * @param userId calling user
+     * @param serverName targeted server instance
      * @param methodName calling method
-     * @param auditLog log location for recording an unexpected exception
      */
     private void captureThrowable(OMRSAPIResponse              response,
                                   Throwable                    error,
-                                  String                       methodName,
-                                  OMRSAuditLog                 auditLog)
+                                  String                       userId,
+                                  String                       serverName,
+                                  String                       methodName)
     {
-        OMRSErrorCode errorCode = OMRSErrorCode.UNEXPECTED_EXCEPTION;
-
         String  message = error.getMessage();
 
         if (message == null)
         {
             message = "null";
         }
-        response.setRelatedHTTPCode(errorCode.getHTTPErrorCode());
+
+        ExceptionMessageDefinition messageDefinition = OMRSErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(error.getClass().getName(),
+                                                                                                               methodName,
+                                                                                                               message);
+
+        response.setRelatedHTTPCode(messageDefinition.getHttpErrorCode());
         response.setExceptionClassName(error.getClass().getName());
-        response.setExceptionErrorMessage(errorCode.getFormattedErrorMessage(error.getClass().getName(),
-                                                                             methodName,
-                                                                             message));
-        response.setExceptionSystemAction(errorCode.getSystemAction());
-        response.setExceptionUserAction(errorCode.getUserAction());
+        response.setExceptionErrorMessage(messageFormatter.getFormattedMessage(messageDefinition));
+        response.setExceptionSystemAction(messageDefinition.getSystemAction());
+        response.setExceptionUserAction(messageDefinition.getUserAction());
         response.setExceptionProperties(null);
 
-        if (auditLog != null)
+        try
         {
-            OMRSAuditCode auditCode;
-
-            StringWriter stackTrace = new StringWriter();
-            error.printStackTrace(new PrintWriter(stackTrace));
-
-
-            auditCode = OMRSAuditCode.UNEXPECTED_EXCEPTION;
-            auditLog.logRecord(methodName,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(error.getClass().getName(),
-                                                                methodName,
-                                                                message,
-                                                                stackTrace.toString()),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            AuditLog auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            if (auditLog != null)
+            {
+                auditLog.logException(methodName,
+                                      OMRSAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(error.getClass().getName(),
+                                                                                              methodName,
+                                                                                              message),
+                                      error);
+            }
+        }
+        catch (Throwable  secondError)
+        {
+            log.error("Unexpected exception processing error {}", error.toString(), secondError);
         }
     }
 
@@ -7988,9 +8901,13 @@ public class OMRSRepositoryRESTServices
     {
         response.setRelatedHTTPCode(error.getReportedHTTPCode());
         response.setExceptionClassName(exceptionClassName);
-        response.setExceptionErrorMessage(error.getErrorMessage());
+        response.setActionDescription(error.getReportingActionDescription());
+        response.setExceptionErrorMessage(error.getReportedErrorMessage());
+        response.setExceptionErrorMessageId(error.getReportedErrorMessageId());
+        response.setExceptionErrorMessageParameters(error.getReportedErrorMessageParameters());
         response.setExceptionSystemAction(error.getReportedSystemAction());
         response.setExceptionUserAction(error.getReportedUserAction());
+        response.setExceptionCausedBy(error.getReportedCaughtExceptionClassName());
         response.setExceptionProperties(exceptionProperties);
     }
 

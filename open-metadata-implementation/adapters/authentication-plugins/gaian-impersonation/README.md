@@ -1,5 +1,7 @@
-<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
+
+![InDev](../../../../open-metadata-publication/website/images/egeria-content-status-in-development.png#pagewidth)
 
 # Gaian Impersonation
 
@@ -18,9 +20,16 @@ To use, add the JDBC connection properties
  For now password is required by the driver, but is ignored, only
  the proxy-pwd is used for authentication
  
- There are no privilige checks on
+ There are no privilege checks on
   - whether the proxy-user can be permitted to act on behalf of another user
   - whether the user allows other users to impersonate it
   
   Further review needed. this is a first pass
   proof of concept
+ 
+ ----
+ Return to [authentication-plugins](..) module.
+ 
+ ----
+ License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+ Copyright Contributors to the ODPi Egeria project.

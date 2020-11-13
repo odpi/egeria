@@ -20,15 +20,9 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownExc
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityProxyOnlyException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
-import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.ASSET_CATALOG_OMAS;
 import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.ASSET_ZONE_MEMBERSHIP;
 import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.GUID_PARAMETER;
 import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.REFERENCEABLE;
@@ -41,11 +35,21 @@ import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.R
 public class CommonHandler {
 
     public static final String ZONE_MEMBERSHIP = "zoneMembership";
+    private final String sourceName;
     private final RepositoryHandler repositoryHandler;
     private final OMRSRepositoryHelper repositoryHelper;
     private final RepositoryErrorHandler errorHandler;
 
-    CommonHandler(RepositoryHandler repositoryHandler, OMRSRepositoryHelper repositoryHelper, RepositoryErrorHandler errorHandler) {
+    /**
+     * Construct the handler information needed to interact with the repository services
+     *
+     * @param sourceName        the name of the component
+     * @param repositoryHandler manages calls to the repository services
+     * @param repositoryHelper  provides utilities for manipulating the repository services objects
+     * @param errorHandler      provides common validation routines for the other handler classes
+     */
+    CommonHandler(String sourceName, RepositoryHandler repositoryHandler, OMRSRepositoryHelper repositoryHelper, RepositoryErrorHandler errorHandler) {
+        this.sourceName = sourceName;
         this.repositoryHandler = repositoryHandler;
         this.repositoryHelper = repositoryHelper;
         this.errorHandler = errorHandler;
@@ -55,10 +59,17 @@ public class CommonHandler {
         return repositoryHandler.getMetadataCollection();
     }
 
+    /**
+     * Returns a list containing the type and all of the sub-types of the provided type
+     *
+     * @param userId      user identifier that issues the call
+     * @param typeDefName the type definition name
+     * @return a list of sub-types recursive
+     */
     List<Type> getTypeContext(String userId, String typeDefName) {
         List<Type> response = new ArrayList<>();
         TypeDef typeDefByName = repositoryHelper.getTypeDefByName(userId, typeDefName);
-        AssetConverter converter = new AssetConverter(repositoryHelper);
+        AssetConverter converter = new AssetConverter(sourceName, repositoryHelper);
 
         if (typeDefByName != null) {
             if (repositoryHelper.getKnownTypeDefGallery() == null
@@ -73,9 +84,27 @@ public class CommonHandler {
             response.addAll(subTypes);
 
             collectSubTypes(subTypes, typeDefs, response);
+            response.sort(Comparator.comparing(Type::getName));
         }
 
         return response;
+    }
+
+    /**
+     *
+     * @param userId      user identifier that issues the call
+     * @param typeDefName the type definition name
+     * @return the Type if exists, otherwise null
+     */
+    Type getTypeByTypeDefName(String userId, String typeDefName) {
+
+        TypeDef typeDefByName = repositoryHelper.getTypeDefByName(userId, typeDefName);
+        AssetConverter converter = new AssetConverter(sourceName, repositoryHelper);
+
+        if (typeDefByName != null) {
+            return converter.convertType(typeDefByName);
+        }
+        return null;
     }
 
     /**
@@ -109,7 +138,7 @@ public class CommonHandler {
         Optional<Classification> assetZoneMembership = getAssetZoneMembershipClassification(classifications);
 
         if (assetZoneMembership.isPresent()) {
-            List<String> zoneMembership = repositoryHelper.getStringArrayProperty(ASSET_CATALOG_OMAS,
+            List<String> zoneMembership = repositoryHelper.getStringArrayProperty(sourceName,
                     ZONE_MEMBERSHIP, assetZoneMembership.get().getProperties(), methodName);
 
             if (CollectionUtils.isNotEmpty(zoneMembership)) {
@@ -152,6 +181,13 @@ public class CommonHandler {
         return null;
     }
 
+    /**
+     * Return a list of the types def GUIDs
+     *
+     * @param userId calling user
+     * @param types  list of the type def names
+     * @return a list of type def GUIDs
+     */
     List<String> getTypesGUID(String userId, List<String> types) {
         if (CollectionUtils.isEmpty(types)) {
             return Collections.emptyList();
@@ -169,7 +205,7 @@ public class CommonHandler {
 
     private List<Type> getSubTypes(List<TypeDef> activeTypeDefs, Type type) {
         String typeName = type.getName();
-        AssetConverter converter = new AssetConverter(repositoryHelper);
+        AssetConverter converter = new AssetConverter(sourceName, repositoryHelper);
 
         List<Type> subTypes = new ArrayList<>();
         for (TypeDef typeDef : activeTypeDefs) {

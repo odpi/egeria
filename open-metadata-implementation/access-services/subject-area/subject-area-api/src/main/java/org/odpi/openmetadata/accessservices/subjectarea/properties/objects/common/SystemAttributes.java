@@ -115,13 +115,13 @@ public class SystemAttributes implements Serializable {
         if (sb == null) {
             sb = new StringBuilder();
         }
-        sb.append("GUID="+GUID+",");
-        sb.append("status="+this.status+",");
-        sb.append("createdBy="+createdBy+",");
-        sb.append("updatedBy="+updatedBy+",");
-        sb.append("createTime="+createTime+",");
-        sb.append("updateTime="+ updateTime  +",");
-        sb.append("version="+version   +",");
+        sb.append("GUID=").append(GUID).append(",");
+        sb.append("status=").append(this.status).append(",");
+        sb.append("createdBy=").append(createdBy).append(",");
+        sb.append("updatedBy=").append(updatedBy).append(",");
+        sb.append("createTime=").append(createTime).append(",");
+        sb.append("updateTime=").append(updateTime).append(",");
+        sb.append("version=").append(version).append(",");
         return sb;
     }
 }

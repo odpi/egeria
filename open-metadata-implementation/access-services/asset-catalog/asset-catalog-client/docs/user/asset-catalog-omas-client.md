@@ -10,8 +10,8 @@ There is a single client called `AssetCatalog`.  It has two constructors:
 * No authentication embedded in the HTTP request - for test systems.
 * Basic authentication using a userId and password embedded in the HTTP request.
 
-Both constructors take the [URL root for the server platform](../../../../../docs/concepts/client-server/omas-server-url-root.md)
-where the Data Engine OMAS is running and its [server name](../../../../../docs/concepts/client-server/omas-server-name.md).
+Both constructors take the [URL root for the server platform](../../../../docs/concepts/client-server/omas-server-url-root.md)
+where the Data Engine OMAS is running and its [server name](../../../../docs/concepts/client-server/omas-server-name.md).
 
 Here is a code example with the user id and password specified:
 
@@ -19,13 +19,13 @@ Here is a code example with the user id and password specified:
 
 AssetCatalogInterface client = new AssetCatalog(
                                         "cocoMDS1",
-                                        "http://localhost:8081",
+                                        "https://localhost:9444",
                                          "cocoUI",
                                          "cocoUIPassword");
 
 ```
 
-This client is set up to call the `cocoMDS1` server running on the `http://localhost:8081`
+This client is set up to call the `cocoMDS1` server running on the `https://localhost:9444`
 OMAG Server Platform.  The userId and password is for the application
 where the client is running.  The userId of the real end user is passed
 on each request.

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- Copyright Contributors to the ODPi Egeria project.  -->
+
+<assembly xmlns="http://maven.apache.org/ASSEMBLY/2.1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/ASSEMBLY/2.1.0 http://maven.apache.org/xsd/assembly-2.1.0.xsd">
+    <formats>
+        <format>tar.gz</format>
+        <format>dir</format>
+    </formats>
+    <id>deploy</id>
+    <baseDirectory>egeria-deploy-${open-metadata.version}</baseDirectory>
+    <fileSets>
+
+        <!-- Copy the tutorial notebooks -->
+        <fileSet>
+            <directory>../../open-metadata-resources/open-metadata-labs</directory>
+            <outputDirectory>./notebooks</outputDirectory>
+            <excludes>
+                <exclude>pom.xml</exclude>
+                <exclude>*.iml</exclude>
+                <exclude>.classpath</exclude>
+                <exclude>.project</exclude>
+                <exclude>.settings/**</exclude>
+                <exclude>.ipynb_checkpoints/**</exclude>
+                <exclude>**/target/**</exclude>
+            </excludes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <!-- Copy the helm charts -->
+        <fileSet>
+            <directory>../../open-metadata-resources/open-metadata-deployment/charts</directory>
+            <outputDirectory>./charts</outputDirectory>
+            <excludes>
+                <exclude>**/charts/**</exclude>
+                <exclude>**/*.lock</exclude>
+                <exclude>**/*.swp</exclude>
+            </excludes>
+
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <!-- Copy the docker compose definitions -->
+        <fileSet>
+            <directory>../../open-metadata-resources/open-metadata-deployment/compose</directory>
+            <outputDirectory>./docker-compose</outputDirectory>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+    </fileSets>
+</assembly>

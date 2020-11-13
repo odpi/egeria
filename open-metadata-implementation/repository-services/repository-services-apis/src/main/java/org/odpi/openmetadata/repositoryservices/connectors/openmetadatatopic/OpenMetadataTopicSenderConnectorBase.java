@@ -31,15 +31,9 @@ public class OpenMetadataTopicSenderConnectorBase extends OpenMetadataTopicConsu
         {
             final String parameterName = "event";
 
-            OMRSErrorCode errorCode    = OMRSErrorCode.NULL_OUTBOUND_EVENT;
-            String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(connectionName);
-
-            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+            throw new InvalidParameterException(OMRSErrorCode.NULL_OUTBOUND_EVENT.getMessageDefinition(connectionName),
                                                 this.getClass().getName(),
                                                 methodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction(),
                                                 parameterName);
         }
 

@@ -5,8 +5,7 @@ package org.odpi.openmetadata.commonservices.multitenant;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.OMAGServerInstanceErrorCode;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryErrorHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
-import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.PropertyServerException;
@@ -30,6 +29,7 @@ public class OMASServiceInstance extends AuditableServerServiceInstance
 
     protected List<String>            supportedZones;
     protected List<String>            defaultZones;
+    protected List<String>            publishZones;
 
 
     /**
@@ -47,9 +47,9 @@ public class OMASServiceInstance extends AuditableServerServiceInstance
                                OMRSRepositoryConnector repositoryConnector,
                                List<String>            supportedZones,
                                List<String>            defaultZones,
-                               OMRSAuditLog            auditLog) throws NewInstanceException
+                               AuditLog                auditLog) throws NewInstanceException
     {
-        this(serviceName, repositoryConnector, supportedZones, defaultZones, auditLog, null, 500);
+        this(serviceName, repositoryConnector, supportedZones, defaultZones, null, auditLog, null, 500);
     }
 
 
@@ -64,9 +64,9 @@ public class OMASServiceInstance extends AuditableServerServiceInstance
     @Deprecated
     public OMASServiceInstance(String                  serviceName,
                                OMRSRepositoryConnector repositoryConnector,
-                               OMRSAuditLog            auditLog) throws NewInstanceException
+                               AuditLog                auditLog) throws NewInstanceException
     {
-        this( serviceName, repositoryConnector, null, null, auditLog, null, 500);
+        this(serviceName, repositoryConnector, null, null, null, auditLog, null, 500);
     }
 
 
@@ -82,11 +82,11 @@ public class OMASServiceInstance extends AuditableServerServiceInstance
      */
     public OMASServiceInstance(String                  serviceName,
                                OMRSRepositoryConnector repositoryConnector,
-                               OMRSAuditLog            auditLog,
+                               AuditLog                auditLog,
                                String                  localServerUserId,
                                int                     maxPageSize) throws NewInstanceException
     {
-        this(serviceName, repositoryConnector, null, null, auditLog, localServerUserId, maxPageSize);
+        this(serviceName, repositoryConnector, null, null, null, auditLog, localServerUserId, maxPageSize);
     }
 
 
@@ -97,6 +97,7 @@ public class OMASServiceInstance extends AuditableServerServiceInstance
      * @param repositoryConnector link to the repository responsible for servicing the REST calls.
      * @param supportedZones list of zones that DiscoveryEngine is allowed to serve Assets from.
      * @param defaultZones list of zones that DiscoveryEngine should set in all new Assets.
+     * @param publishZones list of zones that the access service sets up in published Asset instances.
      * @param auditLog logging destination
      * @param localServerUserId userId used for server initiated actions
      * @param maxPageSize maximum page size
@@ -106,7 +107,8 @@ public class OMASServiceInstance extends AuditableServerServiceInstance
                                OMRSRepositoryConnector repositoryConnector,
                                List<String>            supportedZones,
                                List<String>            defaultZones,
-                               OMRSAuditLog            auditLog,
+                               List<String>            publishZones,
+                               AuditLog                auditLog,
                                String                  localServerUserId,
                                int                     maxPageSize) throws NewInstanceException
     {
@@ -123,36 +125,25 @@ public class OMASServiceInstance extends AuditableServerServiceInstance
                 this.metadataCollection = repositoryConnector.getMetadataCollection();
                 this.repositoryHelper = repositoryConnector.getRepositoryHelper();
 
-                this.errorHandler = new RepositoryErrorHandler(repositoryHelper, serviceName, serverName);
+                this.errorHandler = new RepositoryErrorHandler(repositoryHelper, serviceName, serverName, auditLog);
                 this.repositoryHandler = new RepositoryHandler(auditLog, errorHandler, metadataCollection, maxPageSize);
                 this.supportedZones = supportedZones;
                 this.defaultZones = defaultZones;
+                this.publishZones = publishZones;
             }
             catch (Throwable error)
             {
-                OMAGServerInstanceErrorCode errorCode    = OMAGServerInstanceErrorCode.OMRS_NOT_INITIALIZED;
-                String                      errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
-
-                throw new NewInstanceException(errorCode.getHTTPErrorCode(),
+                throw new NewInstanceException(OMAGServerInstanceErrorCode.OMRS_NOT_INITIALIZED.getMessageDefinition(methodName),
                                                this.getClass().getName(),
-                                               methodName,
-                                               errorMessage,
-                                               errorCode.getSystemAction(),
-                                               errorCode.getUserAction());
+                                               methodName);
 
             }
         }
         else
         {
-            OMAGServerInstanceErrorCode errorCode    = OMAGServerInstanceErrorCode.OMRS_NOT_INITIALIZED;
-            String                      errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
-
-            throw new NewInstanceException(errorCode.getHTTPErrorCode(),
+            throw new NewInstanceException(OMAGServerInstanceErrorCode.OMRS_NOT_INITIALIZED.getMessageDefinition(methodName),
                                            this.getClass().getName(),
-                                           methodName,
-                                           errorMessage,
-                                           errorCode.getSystemAction(),
-                                           errorCode.getUserAction());
+                                           methodName);
 
         }
     }
@@ -175,15 +166,9 @@ public class OMASServiceInstance extends AuditableServerServiceInstance
         }
         else
         {
-            OMAGServerInstanceErrorCode errorCode    = OMAGServerInstanceErrorCode.OMRS_NOT_AVAILABLE;
-            String                      errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
-
-            throw new NewInstanceException(errorCode.getHTTPErrorCode(),
+            throw new NewInstanceException(OMAGServerInstanceErrorCode.OMRS_NOT_AVAILABLE.getMessageDefinition(methodName),
                                            this.getClass().getName(),
-                                           methodName,
-                                           errorMessage,
-                                           errorCode.getSystemAction(),
-                                           errorCode.getUserAction());
+                                           methodName);
         }
     }
 
@@ -194,19 +179,13 @@ public class OMASServiceInstance extends AuditableServerServiceInstance
      * @param methodName calling method
      * @throws PropertyServerException problem with the repository services
      */
-    protected void validateActiveRepository(String  methodName) throws PropertyServerException
+    public void validateActiveRepository(String  methodName) throws PropertyServerException
     {
         if ((repositoryConnector == null) || (metadataCollection == null) || (! repositoryConnector.isActive()))
         {
-            OMAGServerInstanceErrorCode errorCode    = OMAGServerInstanceErrorCode.OMRS_NOT_AVAILABLE;
-            String                      errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
-
-            throw new PropertyServerException(errorCode.getHTTPErrorCode(),
+            throw new PropertyServerException(OMAGServerInstanceErrorCode.OMRS_NOT_AVAILABLE.getMessageDefinition(methodName),
                                               this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction());
+                                              methodName);
         }
     }
 
@@ -322,5 +301,21 @@ public class OMASServiceInstance extends AuditableServerServiceInstance
         validateActiveRepository(methodName);
 
         return defaultZones;
+    }
+
+
+    /**
+     * Return the list of zones that this instance of the OMAS should set in any published Asset.
+     *
+     * @return list of zone names.
+     * @throws PropertyServerException the instance has not been initialized successfully
+     */
+    List<String> getPublishZones() throws PropertyServerException
+    {
+        final String methodName = "getPublishZones";
+
+        validateActiveRepository(methodName);
+
+        return publishZones;
     }
 }

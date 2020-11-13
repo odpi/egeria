@@ -6,6 +6,8 @@
 A discovery engine is responsible for executing [discovery services](discovery-service.md)
 on demand.
 
+Egeria's implementation of the
+discovery engine is described [here](../../../admin-services/docs/concepts/discovery-server.md).
 
 
 

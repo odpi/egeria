@@ -21,6 +21,8 @@ import java.util.Objects;
  */
 public class AssetComment extends AssetElementHeader
 {
+    private static final long     serialVersionUID = 1L;
+
     protected Comment              commentBean;
     protected AssetCommentReplies  commentReplies = null;
 
@@ -142,7 +144,7 @@ public class AssetComment extends AssetElementHeader
      */
     public boolean isPublic()
     {
-        return commentBean.isPublic();
+        return commentBean.getIsPublic();
     }
 
 

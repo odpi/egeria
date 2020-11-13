@@ -8,4 +8,6 @@ package org.odpi.openmetadata.repositoryservices.rest.properties;
  */
 public class MockAPIResponse extends OMRSAPIResponse
 {
+    private static final long    serialVersionUID = 1L;
+
 }

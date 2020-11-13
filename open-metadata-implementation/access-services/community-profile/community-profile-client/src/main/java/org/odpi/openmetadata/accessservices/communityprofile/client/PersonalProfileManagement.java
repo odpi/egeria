@@ -495,9 +495,9 @@ public class PersonalProfileManagement implements PersonalProfileManagementInter
                                                                                                userId,
                                                                                                name);
 
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+        exceptionHandler.detectAndThrowInvalidParameterException(restResult);
+        exceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
+        exceptionHandler.detectAndThrowPropertyServerException(restResult);
 
         return restResult.getPersonalProfiles();
     }

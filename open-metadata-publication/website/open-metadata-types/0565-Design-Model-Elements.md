@@ -13,7 +13,7 @@ software components from their design to implementation.
 
 Model 0565 shows the definition of a generic model element.
 
-![UML](0565-Design-Model-Elements.png)
+![UML](0565-Design-Model-Elements.png#pagewidth)
 
 Return to [Area 5](Area-5-models.md).
 

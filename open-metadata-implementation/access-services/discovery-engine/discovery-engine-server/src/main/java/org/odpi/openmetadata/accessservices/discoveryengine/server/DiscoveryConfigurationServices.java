@@ -7,15 +7,12 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.ConnectionResponse;
-import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.*;
+import org.odpi.openmetadata.accessservices.discoveryengine.rest.*;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.OwnerType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
@@ -61,7 +58,7 @@ public class DiscoveryConfigurationServices
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         ConnectionResponse response = new ConnectionResponse();
-        OMRSAuditLog       auditLog = null;
+        AuditLog           auditLog = null;
 
         try
         {
@@ -119,7 +116,7 @@ public class DiscoveryConfigurationServices
         String       displayName   = null;
         String       description   = null;
         GUIDResponse response      = new GUIDResponse();
-        OMRSAuditLog auditLog      = null;
+        AuditLog     auditLog      = null;
 
 
         if (requestBody != null)
@@ -183,7 +180,7 @@ public class DiscoveryConfigurationServices
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         DiscoveryEnginePropertiesResponse response = new DiscoveryEnginePropertiesResponse();
-        OMRSAuditLog                      auditLog = null;
+        AuditLog                          auditLog = null;
 
         try
         {
@@ -236,7 +233,7 @@ public class DiscoveryConfigurationServices
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         DiscoveryEnginePropertiesResponse response = new DiscoveryEnginePropertiesResponse();
-        OMRSAuditLog                      auditLog      = null;
+        AuditLog                          auditLog      = null;
 
         try
         {
@@ -291,7 +288,7 @@ public class DiscoveryConfigurationServices
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         DiscoveryEngineListResponse response = new DiscoveryEngineListResponse();
-        OMRSAuditLog                auditLog = null;
+        AuditLog                    auditLog = null;
 
         try
         {
@@ -357,7 +354,7 @@ public class DiscoveryConfigurationServices
         Map<String, String> additionalProperties = null;
         Map<String, Object> extendedProperties   = null;
         VoidResponse        response             = new VoidResponse();
-        OMRSAuditLog        auditLog             = null;
+        AuditLog            auditLog             = null;
 
 
         if (requestBody != null)
@@ -438,7 +435,7 @@ public class DiscoveryConfigurationServices
 
         String       qualifiedName = null;
         VoidResponse response      = new VoidResponse();
-        OMRSAuditLog auditLog      = null;
+        AuditLog auditLog          = null;
 
 
         if (requestBody != null)
@@ -488,7 +485,7 @@ public class DiscoveryConfigurationServices
      *                    qualifiedName - unique name for the discovery service;
      *                    displayName -  display name for the discovery service;
      *                    description - description of the analysis provided by the discovery service;
-     *                    connection -  connection to instanciate the discovery service implementation.
+     *                    connection -  connection to instantiate the discovery service implementation.
      *
      * @return unique identifier of the discovery service or
      * InvalidParameterException one of the parameters is null or invalid or
@@ -508,7 +505,7 @@ public class DiscoveryConfigurationServices
         String       description   = null;
         Connection   connection    = null;
         GUIDResponse response      = new GUIDResponse();
-        OMRSAuditLog auditLog      = null;
+        AuditLog auditLog          = null;
 
 
         if (requestBody != null)
@@ -574,7 +571,7 @@ public class DiscoveryConfigurationServices
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         DiscoveryServicePropertiesResponse response = new DiscoveryServicePropertiesResponse();
-        OMRSAuditLog                       auditLog = null;
+        AuditLog                           auditLog = null;
 
         try
         {
@@ -627,7 +624,7 @@ public class DiscoveryConfigurationServices
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         DiscoveryServicePropertiesResponse response = new DiscoveryServicePropertiesResponse();
-        OMRSAuditLog                       auditLog = null;
+        AuditLog                           auditLog = null;
 
         try
         {
@@ -682,7 +679,7 @@ public class DiscoveryConfigurationServices
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         DiscoveryServiceListResponse response = new DiscoveryServiceListResponse();
-        OMRSAuditLog                 auditLog = null;
+        AuditLog                     auditLog = null;
 
         try
         {
@@ -735,7 +732,7 @@ public class DiscoveryConfigurationServices
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         GUIDListResponse response = new GUIDListResponse();
-        OMRSAuditLog     auditLog = null;
+        AuditLog         auditLog = null;
 
         try
         {
@@ -793,29 +790,20 @@ public class DiscoveryConfigurationServices
 
         String              qualifiedName        = null;
         String              displayName          = null;
-        String              shortDescription     = null;
         String              description          = null;
-        String              owner                = null;
-        OwnerType           ownerType            = null;
-        List<String>        zoneMembership       = null;
-        String              latestChange         = null;
         Connection          connection           = null;
         Map<String, String> additionalProperties = null;
         Map<String, Object> extendedProperties   = null;
+
         VoidResponse        response             = new VoidResponse();
-        OMRSAuditLog        auditLog             = null;
+        AuditLog            auditLog             = null;
 
 
         if (requestBody != null)
         {
             qualifiedName = requestBody.getQualifiedName();
             displayName = requestBody.getDisplayName();
-            shortDescription = requestBody.getShortDescription();
             description = requestBody.getDescription();
-            owner = requestBody.getOwner();
-            ownerType = requestBody.getOwnerType();
-            zoneMembership = requestBody.getZoneMembership();
-            latestChange = requestBody.getLatestChange();
             connection = requestBody.getConnection();
             additionalProperties = requestBody.getAdditionalProperties();
             extendedProperties = requestBody.getExtendedProperties();
@@ -830,12 +818,7 @@ public class DiscoveryConfigurationServices
                                            guid,
                                            qualifiedName,
                                            displayName,
-                                           shortDescription,
                                            description,
-                                           owner,
-                                           ownerType,
-                                           zoneMembership,
-                                           latestChange,
                                            connection,
                                            additionalProperties,
                                            extendedProperties);
@@ -889,7 +872,7 @@ public class DiscoveryConfigurationServices
 
         String       qualifiedName = null;
         VoidResponse response      = new VoidResponse();
-        OMRSAuditLog auditLog      = null;
+        AuditLog auditLog          = null;
 
 
         if (requestBody != null)
@@ -957,7 +940,7 @@ public class DiscoveryConfigurationServices
         List<String>        discoveryRequestType      = null;
         Map<String, String> defaultAnalysisParameters = null;
         VoidResponse        response                  = new VoidResponse();
-        OMRSAuditLog        auditLog                  = null;
+        AuditLog            auditLog                  = null;
 
 
         if (requestBody != null)
@@ -1020,7 +1003,7 @@ public class DiscoveryConfigurationServices
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         RegisteredDiscoveryServiceResponse response = new RegisteredDiscoveryServiceResponse();
-        OMRSAuditLog                       auditLog = null;
+        AuditLog                           auditLog = null;
 
         try
         {
@@ -1077,7 +1060,7 @@ public class DiscoveryConfigurationServices
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         GUIDListResponse response = new GUIDListResponse();
-        OMRSAuditLog     auditLog = null;
+        AuditLog         auditLog = null;
 
         try
         {
@@ -1123,6 +1106,7 @@ public class DiscoveryConfigurationServices
      * UserNotAuthorizedException user not authorized to issue this request or
      * PropertyServerException problem storing the discovery engine definition.
      */
+    @SuppressWarnings(value = "unused")
     public VoidResponse unregisterDiscoveryServiceFromEngine(String          serverName,
                                                              String          userId,
                                                              String          discoveryEngineGUID,
@@ -1134,7 +1118,7 @@ public class DiscoveryConfigurationServices
         RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
-        OMRSAuditLog auditLog = null;
+        AuditLog     auditLog = null;
 
         try
         {

@@ -2,23 +2,15 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataengine.server.spring;
 
-import org.odpi.openmetadata.accessservices.dataengine.rest.LineageMappingsRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.PortAliasRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.PortImplementationRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.PortListRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessesRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.SchemaTypeRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.DataEngineRegistrationRequestBody;
+import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.odpi.openmetadata.accessservices.dataengine.rest.*;
 import org.odpi.openmetadata.accessservices.dataengine.server.service.DataEngineRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.ConnectionResponse;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * The DataEngineResource provides the server-side implementation of the Data Engine Open Metadata Assess Service
@@ -27,6 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/data-engine/users/{userId}")
+
+@Tag(name="Data Engine OMAS", description="The Data Engine OMAS provides APIs and events for data movement/processing engines to record the changes made to the data landscape.", externalDocs=@ExternalDocumentation(description="Data Engine Open Metadata Access Service (OMAS)",url="https://egeria.odpi.org/open-metadata-implementation/access-services/data-engine/"))
+
 public class DataEngineResource {
     private DataEngineRESTServices restAPI;
 
@@ -120,6 +115,22 @@ public class DataEngineResource {
     }
 
     /**
+     * Add a ProcessHierarchy relationship between Process entities
+     *
+     * @param serverName                  name of server instance to call
+     * @param userId                      the name of the calling user
+     * @param processHierarchyRequestBody properties of the process hierarchy
+     *
+     * @return the unique identifier (guid) of the child of the process hierarchy that was updated
+     */
+    @PostMapping(path = "/process-hierarchies")
+    public GUIDResponse addProcessHierarchy(@PathVariable("userId") String userId,
+                                            @PathVariable("serverName") String serverName,
+                                            @RequestBody ProcessHierarchyRequestBody processHierarchyRequestBody) {
+        return restAPI.addProcessHierarchy(userId, serverName, processHierarchyRequestBody);
+    }
+
+    /**
      * Create or update  the Process entities with ports, schema types and all needed relationships
      *
      * @param serverName           name of server instance to call
@@ -167,5 +178,24 @@ public class DataEngineResource {
                                            @PathVariable("serverName") String serverName,
                                            @RequestBody LineageMappingsRequestBody lineageMappingsRequestBody) {
         return restAPI.addLineageMappings(userId, serverName, lineageMappingsRequestBody);
+    }
+
+    /***
+     * Get connection details used to access Data Engine OMAS input topic
+     *
+     * @param serverName    name of server instance to call
+     * @param userId        name of the calling user
+     * @return OCF API ConnectionResponse object describing the details for the in topic connection used
+     * or
+     *      * InvalidParameterException one of the parameters is null or invalid or
+     *      * UserNotAuthorizedException user not authorized to issue this request or
+     *      * PropertyServerException problem retrieving the discovery engine definition
+     *
+     */
+    @GetMapping(path = "/topics/in-topic-connection")
+
+    public ConnectionResponse getInTopicConnection(@PathVariable String                        serverName,
+                                                   @PathVariable String                        userId) {
+        return restAPI.getInTopicConnection(serverName, userId);
     }
 }

@@ -3,10 +3,7 @@
 package org.odpi.openmetadata.repositoryservices.events;
 
 
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceGraph;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary;
 
 /**
@@ -103,14 +100,16 @@ public interface OMRSInstanceEventProcessorInterface
      * @param originatorServerName  name of the server that the event came from.
      * @param originatorServerType  type of server that the event came from.
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
-     * @param entity  details of the entity with the new classification added.
+     * @param entity  details of the entity with the new classification added. No guarantee this is all of the classifications.
+     * @param classification new classification
      */
-    void processClassifiedEntityEvent(String       sourceName,
-                                      String       originatorMetadataCollectionId,
-                                      String       originatorServerName,
-                                      String       originatorServerType,
-                                      String       originatorOrganizationName,
-                                      EntityDetail entity);
+    void processClassifiedEntityEvent(String         sourceName,
+                                      String         originatorMetadataCollectionId,
+                                      String         originatorServerName,
+                                      String         originatorServerType,
+                                      String         originatorOrganizationName,
+                                      EntityDetail   entity,
+                                      Classification classification);
 
 
     /**
@@ -123,14 +122,16 @@ public interface OMRSInstanceEventProcessorInterface
      * @param originatorServerName  name of the server that the event came from.
      * @param originatorServerType  type of server that the event came from.
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
-     * @param entity  details of the entity after the classification has been removed.
+     * @param entity  details of the entity after the classification has been removed. No guarantee this is all of the classifications.
+     * @param originalClassification classification that was removed
      */
-    void processDeclassifiedEntityEvent(String       sourceName,
-                                        String       originatorMetadataCollectionId,
-                                        String       originatorServerName,
-                                        String       originatorServerType,
-                                        String       originatorOrganizationName,
-                                        EntityDetail entity);
+    void processDeclassifiedEntityEvent(String         sourceName,
+                                        String         originatorMetadataCollectionId,
+                                        String         originatorServerName,
+                                        String         originatorServerType,
+                                        String         originatorOrganizationName,
+                                        EntityDetail   entity,
+                                        Classification originalClassification);
 
 
     /**
@@ -143,14 +144,18 @@ public interface OMRSInstanceEventProcessorInterface
      * @param originatorServerName  name of the server that the event came from.
      * @param originatorServerType  type of server that the event came from.
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
-     * @param entity  details of the entity after the classification has been changed.
+     * @param entity  details of the entity after the classification has been changed. No guarantee this is all of the classifications.
+     * @param originalClassification classification that was removed
+     * @param classification new classification
      */
-    void processReclassifiedEntityEvent(String       sourceName,
-                                        String       originatorMetadataCollectionId,
-                                        String       originatorServerName,
-                                        String       originatorServerType,
-                                        String       originatorOrganizationName,
-                                        EntityDetail entity);
+    void processReclassifiedEntityEvent(String         sourceName,
+                                        String         originatorMetadataCollectionId,
+                                        String         originatorServerName,
+                                        String         originatorServerType,
+                                        String         originatorOrganizationName,
+                                        EntityDetail   entity,
+                                        Classification originalClassification,
+                                        Classification classification);
 
 
     /**

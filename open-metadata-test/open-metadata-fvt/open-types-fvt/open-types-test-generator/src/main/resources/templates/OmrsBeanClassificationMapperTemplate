@@ -202,8 +202,8 @@ public class <$$uClassificationName$$>Mapper {
             // set the type in the classification
             OpenMetadataTypesArchiveAccessor archiveAccessor = OpenMetadataTypesArchiveAccessor.getInstance();
             TypeDef typeDef = archiveAccessor.getEntityDefByName("<$$uClassificationName$$>");
-            InstanceType template =  archiveAccessor.createTemplateFromTypeDef(typeDef);
-            InstanceType instanceType = new InstanceType(template);
+            InstanceType _template =  archiveAccessor.createTemplateFromTypeDef(typeDef);
+            InstanceType instanceType = new InstanceType(_template);
             omrsClassification.setType(instanceType);
             return omrsClassification;
     }

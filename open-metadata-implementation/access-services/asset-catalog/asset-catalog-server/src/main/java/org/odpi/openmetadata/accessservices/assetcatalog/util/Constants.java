@@ -1,9 +1,11 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.accessservices.assetcatalog.util;
 
+/**
+ * Constants for Open Metadata Types (names and guid)
+ */
 public final class Constants {
 
-    public static final String ASSET_CATALOG_OMAS = "Asset Catalog OMAS";
     public static final String REFERENCEABLE = "Referenceable";
     public static final String ASSET_ZONE_MEMBERSHIP = "AssetZoneMembership";
     public static final String ASSET_GUID = "896d14c2-7522-4f6c-8519-757711943fe6";
@@ -90,6 +92,7 @@ public final class Constants {
 
     public static final String GUID_PARAMETER = "GUID";
     public static final String SEARCH_PARAMETER = "searchParameter";
+    public static final String ADDITIONAL_PROPERTIES_PROPERTY_NAME = "additionalProperties";
 
     private Constants() {
     }

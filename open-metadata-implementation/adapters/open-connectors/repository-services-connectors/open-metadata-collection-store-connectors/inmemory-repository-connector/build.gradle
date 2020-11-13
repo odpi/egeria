@@ -1,0 +1,26 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright Contributors to the ODPi Egeria project.
+ */
+
+
+dependencies {
+
+    implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
+    implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
+    implementation project(':open-metadata-implementation:repository-services:repository-services-apis')
+    testImplementation 'org.testng:testng'
+    testImplementation 'org.mockito:mockito-core'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations'
+
+}
+
+description = 'In-memory Repository Connector'
+
+java {
+    withJavadocJar()
+}
+
+test {
+    useTestNG()
+}

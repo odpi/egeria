@@ -13,6 +13,8 @@ import org.odpi.openmetadata.repositoryservices.enterprise.connectormanager.OMRS
  */
 public class EnterpriseOMRSConnectorProperties extends ConnectedAssetProperties
 {
+    private static final long    serialVersionUID = 1L;
+
     public EnterpriseOMRSConnectorProperties(EnterpriseOMRSRepositoryConnector parentConnector,
                                              OMRSConnectorManager              connectorManager,
                                              String                            enterpriseMetadataCollectionId,

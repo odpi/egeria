@@ -5,7 +5,7 @@
 
 APIs provide access to data and function (such as analytical functions).
 
-![UML](0212-Deployed-APIs.png)
+![UML](0212-Deployed-APIs.png#pagewidth)
 
 
 Return to [Area 2](Area-2-models.md).

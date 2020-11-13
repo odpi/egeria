@@ -4,12 +4,11 @@
 package org.odpi.openmetadata.accessservices.discoveryengine.server.spring;
 
 
+import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.odpi.openmetadata.accessservices.discoveryengine.rest.*;
 import org.odpi.openmetadata.accessservices.discoveryengine.server.DiscoveryEngineRESTServices;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
-import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.*;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.discovery.properties.Annotation;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryAnalysisReport;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +21,9 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/discovery-engine/users/{userId}")
+
+@Tag(name="Discovery Engine OMAS", description="The Discovery Engine OMAS provides APIs and events for metadata discovery tools that are surveying the data landscape and recording information in metadata repositories.", externalDocs=@ExternalDocumentation(description="Discovery Engine Open Metadata Access Service (OMAS)",url="https://egeria.odpi.org/open-metadata-implementation/access-services/discovery-engine/"))
+
 public class DiscoveryMetadataStoreResource
 {
     private DiscoveryEngineRESTServices restAPI = new DiscoveryEngineRESTServices();
@@ -202,7 +204,7 @@ public class DiscoveryMetadataStoreResource
      * @param assetGUID unique identifier of the asset being analysed
      * @param requestBody  all of the other parameters
      *
-     * @return the new discovery report or
+     * @return the unique identifier of the new discovery report or
      *
      *  InvalidParameterException one of the parameters is invalid or
      *  UserNotAuthorizedException the user is not authorized to access the asset and/or report or
@@ -210,10 +212,10 @@ public class DiscoveryMetadataStoreResource
      */
     @PostMapping(path = "/assets/{assetGUID}/discovery-analysis-reports")
 
-    public DiscoveryAnalysisReportResponse createDiscoveryAnalysisReport(@PathVariable String                             serverName,
-                                                                         @PathVariable String                             userId,
-                                                                         @PathVariable String                             assetGUID,
-                                                                         @RequestBody  DiscoveryAnalysisReportRequestBody requestBody)
+    public GUIDResponse createDiscoveryAnalysisReport(@PathVariable String                             serverName,
+                                                      @PathVariable String                             userId,
+                                                      @PathVariable String                             assetGUID,
+                                                      @RequestBody  DiscoveryAnalysisReportRequestBody requestBody)
     {
         return restAPI.createDiscoveryAnalysisReport(serverName, userId, assetGUID, requestBody);
     }
@@ -235,10 +237,10 @@ public class DiscoveryMetadataStoreResource
      */
     @PostMapping(path = "/discovery-analysis-reports/{discoveryReportGUID}")
 
-    public DiscoveryAnalysisReportResponse updateDiscoveryAnalysisReport(@PathVariable String                  serverName,
-                                                                         @PathVariable String                  userId,
-                                                                         @PathVariable String                  discoveryReportGUID,
-                                                                         @RequestBody  DiscoveryAnalysisReport requestBody)
+    public VoidResponse updateDiscoveryAnalysisReport(@PathVariable String                  serverName,
+                                                      @PathVariable String                  userId,
+                                                      @PathVariable String                  discoveryReportGUID,
+                                                      @RequestBody  DiscoveryAnalysisReport requestBody)
     {
         return restAPI.updateDiscoveryAnalysisReport(serverName, userId, discoveryReportGUID, requestBody);
     }
@@ -264,6 +266,45 @@ public class DiscoveryMetadataStoreResource
                                                               @PathVariable String   discoveryReportGUID)
     {
         return restAPI.getDiscoveryAnalysisReport(serverName, userId, discoveryReportGUID);
+    }
+
+
+    /**
+     * Return the annotation subtype names.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @return list of type names that are subtypes of annotation or
+     * throws InvalidParameterException full path or userId is null or
+     * throws PropertyServerException problem accessing property server or
+     * throws UserNotAuthorizedException security access problem.
+     */
+    @GetMapping(path = "/annotations/sub-types")
+
+    public NameListResponse getTypesOfAnnotation(@PathVariable String  serverName,
+                                                 @PathVariable String  userId)
+    {
+        return restAPI.getTypesOfAnnotation(serverName, userId);
+    }
+
+
+
+    /**
+     * Return the annotation subtype names mapped to their descriptions.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @return list of type names that are subtypes of annotation or
+     * throws InvalidParameterException full path or userId is null or
+     * throws PropertyServerException problem accessing property server or
+     * throws UserNotAuthorizedException security access problem.
+     */
+    @GetMapping(path = "/annotations/sub-types/descriptions")
+
+    public StringMapResponse getTypesOfAnnotationWithDescriptions(@PathVariable String  serverName,
+                                                                  @PathVariable String  userId)
+    {
+        return restAPI.getTypesOfAnnotationWithDescriptions(serverName, userId);
     }
 
 
@@ -425,7 +466,7 @@ public class DiscoveryMetadataStoreResource
      * @param anchorAnnotationGUID unique identifier of the annotation that this new one os to be attached to
      * @param requestBody annotation object
      *
-     * @return fully filled out annotation or
+     * @return unique identifier of new annotation or
      *
      *  InvalidParameterException one of the parameters is invalid
      *  UserNotAuthorizedException the user id not authorized to issue this request
@@ -433,77 +474,15 @@ public class DiscoveryMetadataStoreResource
      */
     @PostMapping(path = "/annotations/{anchorAnnotationGUID}/extended-annotations")
 
-    public  AnnotationResponse  addAnnotationToAnnotation(@PathVariable String     serverName,
-                                                          @PathVariable String     userId,
-                                                          @PathVariable String     anchorAnnotationGUID,
-                                                          @RequestBody  Annotation requestBody)
+    public  GUIDResponse  addAnnotationToAnnotation(@PathVariable String     serverName,
+                                                    @PathVariable String     userId,
+                                                    @PathVariable String     anchorAnnotationGUID,
+                                                    @RequestBody  Annotation requestBody)
     {
         return restAPI.addAnnotationToAnnotation(serverName,
                                                  userId,
                                                  anchorAnnotationGUID,
                                                  requestBody);
-    }
-
-
-    /**
-     * Link an existing annotation to another object.  The anchor object must be a Referenceable.
-     *
-     * @param serverName name of server instance to route request to
-     * @param userId identifier of calling user
-     * @param anchorGUID unique identifier that the annotation is to be linked to
-     * @param annotationGUID unique identifier of the annotation
-     * @param requestBody null request body to satisfy POST semantics
-     *
-     * @return void or
-     *
-     *  InvalidParameterException one of the parameters is invalid
-     *  UserNotAuthorizedException the user id not authorized to issue this request
-     *  PropertyServerException there was a problem updating annotations in the annotation store.
-     */
-    @PostMapping(path = "/annotations/{annotationGUID}/related-instances/{anchorGUID}")
-
-    public VoidResponse  linkAnnotation(@PathVariable String          serverName,
-                                        @PathVariable String          userId,
-                                        @PathVariable String          anchorGUID,
-                                        @PathVariable String          annotationGUID,
-                                        @RequestBody  NullRequestBody requestBody)
-    {
-        return restAPI.linkAnnotation(serverName,
-                                      userId,
-                                      anchorGUID,
-                                      annotationGUID,
-                                      requestBody);
-    }
-
-
-    /**
-     * Remove the relationship between an annotation and another object.
-     *
-     * @param serverName name of server instance to route request to
-     * @param userId identifier of calling user
-     * @param anchorGUID unique identifier that the annotation is to be unlinked from
-     * @param annotationGUID unique identifier of the annotation
-     * @param requestBody null request body to satisfy POST semantics
-     *
-     * @return void or
-     *
-     *  InvalidParameterException one of the parameters is invalid
-     *  UserNotAuthorizedException the user id not authorized to issue this request
-     *  PropertyServerException there was a problem updating annotations in the annotation store.
-     */
-    @PostMapping(path = "/annotations/{annotationGUID}/related-instances/{anchorGUID}/delete")
-
-    public VoidResponse  unlinkAnnotation(@PathVariable String          serverName,
-                                          @PathVariable String          userId,
-                                          @PathVariable String          anchorGUID,
-                                          @PathVariable String          annotationGUID,
-                                          @RequestBody  NullRequestBody requestBody)
-    {
-        return restAPI.unlinkAnnotation(serverName,
-                                        userId,
-                                        anchorGUID,
-                                        annotationGUID,
-                                        requestBody);
     }
 
 
@@ -523,10 +502,10 @@ public class DiscoveryMetadataStoreResource
      */
     @PostMapping(path = "/annotations/{annotationGUID}")
 
-    public AnnotationResponse updateAnnotation(@PathVariable String     serverName,
-                                               @PathVariable String     userId,
-                                               @PathVariable String     annotationGUID,
-                                               @RequestBody  Annotation requestBody)
+    public VoidResponse updateAnnotation(@PathVariable String     serverName,
+                                         @PathVariable String     userId,
+                                         @PathVariable String     annotationGUID,
+                                         @RequestBody  Annotation requestBody)
     {
         return restAPI.updateAnnotation(serverName,
                                         userId,

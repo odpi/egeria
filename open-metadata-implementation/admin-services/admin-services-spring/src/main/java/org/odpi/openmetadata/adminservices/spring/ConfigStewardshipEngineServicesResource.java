@@ -2,9 +2,12 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adminservices.spring;
 
+import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.adminservices.OMAGServerConfigStewardshipEngineServices;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerClientConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.StewardshipEngineServicesConfig;
+import org.odpi.openmetadata.adminservices.rest.StewardshipEngineServicesConfigResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +26,13 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/open-metadata/admin-services/users/{userId}/servers/{serverName}/stewardship-engine-services")
+
+@Tag(name="Administration Services - Server Configuration", description="The server configuration administration services support the configuration" +
+        " of the open metadata and governance services within an OMAG Server. This configuration determines which of the Open Metadata and " +
+        "Governance (OMAG) services are active.",
+        externalDocs=@ExternalDocumentation(description="Further information",
+                url="https://egeria.odpi.org/open-metadata-implementation/admin-services/docs/user/configuring-an-omag-server.html"))
+
 public class ConfigStewardshipEngineServicesResource
 {
     private OMAGServerConfigStewardshipEngineServices adminAPI = new OMAGServerConfigStewardshipEngineServices();
@@ -35,15 +45,15 @@ public class ConfigStewardshipEngineServicesResource
      * @param clientConfig  URL root and server name for the metadata server.
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName or serverType parameter.
+     * OMAGConfigurationErrorException unexpected exception or
+     * OMAGInvalidParameterException invalid serverName parameter.
      */
-    @PostMapping(path = "/access-service")
-
-    public VoidResponse setAccessServiceLocation(@PathVariable String                    userId,
-                                                 @PathVariable String                    serverName,
-                                                 @RequestBody OMAGServerClientConfig clientConfig)
+    @PostMapping(path = "/client-config")
+    public VoidResponse setClientConfig(@PathVariable String                 userId,
+                                        @PathVariable String                 serverName,
+                                        @RequestBody  OMAGServerClientConfig clientConfig)
     {
-        return adminAPI.setAccessServiceLocation(userId, serverName, clientConfig);
+        return adminAPI.setClientConfig(userId, serverName, clientConfig);
     }
 
 
@@ -53,16 +63,16 @@ public class ConfigStewardshipEngineServicesResource
      *
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
-     * @param stewardshipEngines  stewardship engines for server.
+     * @param stewardshipEngines  stewardshipEngines for server.
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or serverType parameter.
+     * OMAGConfigurationErrorException unexpected exception.
      */
     @PostMapping(path = "/stewardship-engines")
-
     public VoidResponse setStewardshipEngines(@PathVariable String       userId,
-                                              @PathVariable String       serverName,
-                                              @RequestBody  List<String> stewardshipEngines)
+                                            @PathVariable String       serverName,
+                                            @RequestBody  List<String> stewardshipEngines)
     {
         return adminAPI.setStewardshipEngines(userId, serverName, stewardshipEngines);
     }
@@ -74,15 +84,35 @@ public class ConfigStewardshipEngineServicesResource
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
      * @param servicesConfig full configuration for the service.
-     * @return void response
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGConfigurationErrorException unexpected exception or
+     * OMAGInvalidParameterException invalid serverName parameter.
      */
     @PostMapping(path = "")
-
-    VoidResponse addService(@PathVariable String                          userId,
-                            @PathVariable String                          serverName,
-                            @RequestBody  StewardshipEngineServicesConfig servicesConfig)
+    public VoidResponse setStewardshipEngineServicesConfig(@PathVariable String                         userId,
+                                                         @PathVariable String                         serverName,
+                                                         @RequestBody  StewardshipEngineServicesConfig  servicesConfig)
     {
-        return adminAPI.addService(userId, serverName, servicesConfig);
+        return adminAPI.setStewardshipEngineServicesConfig(userId, serverName, servicesConfig);
+    }
+
+
+    /**
+     * Get the configuration for the stewardship engine services for this server.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @return  full configuration for the service.
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGConfigurationErrorException unexpected exception or
+     * OMAGInvalidParameterException invalid serverName parameter.
+     */
+    @GetMapping(path = "")
+    public StewardshipEngineServicesConfigResponse getStewardshipEngineServicesConfig(@PathVariable String userId,
+                                                                                      @PathVariable String serverName)
+    {
+        return adminAPI.getStewardshipEngineServicesConfig(userId, serverName);
     }
 
 
@@ -92,12 +122,14 @@ public class ConfigStewardshipEngineServicesResource
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
      * @return void response
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGConfigurationErrorException unexpected exception or
+     * OMAGInvalidParameterException invalid serverName parameter.
      */
     @DeleteMapping(path = "")
-
-    VoidResponse deleteService(@PathVariable String userId,
-                               @PathVariable String serverName)
+    public VoidResponse clearStewardshipEngineServicesConfig(@PathVariable String userId,
+                                                           @PathVariable String serverName)
     {
-        return adminAPI.deleteService(userId, serverName);
+        return adminAPI.clearStewardshipEngineServicesConfig(userId, serverName);
     }
 }

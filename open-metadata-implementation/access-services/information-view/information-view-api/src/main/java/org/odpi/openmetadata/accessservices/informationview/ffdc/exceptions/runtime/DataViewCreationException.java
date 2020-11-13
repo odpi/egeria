@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.run
 
 public class DataViewCreationException extends InformationViewExceptionBase {
 
+    private static final long    serialVersionUID = 1L;
 
     private String dataViewId;
 

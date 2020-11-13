@@ -8,4 +8,6 @@ package org.odpi.openmetadata.frameworks.connectors.properties;
  */
 public class AssetAPIOperation
 {
+    private static final long     serialVersionUID = 1L;
+
 }

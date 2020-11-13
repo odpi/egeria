@@ -1,6 +1,8 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project 2019. -->
 
+![TechPreview](../../../../open-metadata-publication/website/images/egeria-content-status-tech-preview.png#pagewidth)
+
 # Discovery Service Connectors
 
 The discovery service connectors contain the implementation of the
@@ -27,6 +29,8 @@ to process the results.
 The interfaces used by a discovery service are defined in
 the [Open Discovery Framework (ODF)](../../../frameworks/open-discovery-framework)
 along with a guide on how to write a discovery service.
+
+Return to [open-connectors](..) module.
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

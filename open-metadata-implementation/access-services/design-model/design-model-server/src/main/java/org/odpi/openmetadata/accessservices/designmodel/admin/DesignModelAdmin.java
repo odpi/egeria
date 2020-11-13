@@ -2,14 +2,14 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.designmodel.admin;
 
-import org.odpi.openmetadata.accessservices.designmodel.auditlog.DesignModelAuditCode;
+import org.odpi.openmetadata.accessservices.designmodel.ffdc.DesignModelAuditCode;
 import org.odpi.openmetadata.accessservices.designmodel.listener.DesignModelOMRSTopicListener;
 import org.odpi.openmetadata.accessservices.designmodel.server.DesignModelServicesInstance;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
@@ -21,7 +21,7 @@ import java.util.List;
  */
 public class DesignModelAdmin extends AccessServiceAdmin
 {
-    private OMRSAuditLog                auditLog   = null;
+    private AuditLog                    auditLog   = null;
     private DesignModelServicesInstance instance   = null;
     private String                      serverName = null;
 
@@ -46,20 +46,12 @@ public class DesignModelAdmin extends AccessServiceAdmin
     public void initialize(AccessServiceConfig     accessServiceConfig,
                            OMRSTopicConnector      omrsTopicConnector,
                            OMRSRepositoryConnector repositoryConnector,
-                           OMRSAuditLog            auditLog,
+                           AuditLog                auditLog,
                            String                  serverUserName) throws OMAGConfigurationErrorException
     {
         final String         actionDescription = "initialize";
-        DesignModelAuditCode auditCode;
 
-        auditCode = DesignModelAuditCode.SERVICE_INITIALIZING;
-        auditLog.logRecord(actionDescription,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(),
-                           null,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        auditLog.logMessage(actionDescription, DesignModelAuditCode.SERVICE_INITIALIZING.getMessageDefinition());
 
         this.auditLog = auditLog;
 
@@ -96,14 +88,8 @@ public class DesignModelAdmin extends AccessServiceAdmin
                                                   auditLog);
             }
 
-            auditCode = DesignModelAuditCode.SERVICE_INITIALIZED;
-            auditLog.logRecord(actionDescription,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(serverName),
-                               accessServiceConfig.toString(),
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logMessage(actionDescription, DesignModelAuditCode.SERVICE_INITIALIZED.getMessageDefinition(serverName),
+                               accessServiceConfig.toString());
         }
         catch (OMAGConfigurationErrorException error)
         {
@@ -111,14 +97,9 @@ public class DesignModelAdmin extends AccessServiceAdmin
         }
         catch (Throwable error)
         {
-            auditCode = DesignModelAuditCode.SERVICE_INSTANCE_FAILURE;
             auditLog.logException(actionDescription,
-                                  auditCode.getLogMessageId(),
-                                  auditCode.getSeverity(),
-                                  auditCode.getFormattedLogMessage(error.getMessage()),
+                                  DesignModelAuditCode.SERVICE_INSTANCE_FAILURE.getMessageDefinition(error.getMessage()),
                                   accessServiceConfig.toString(),
-                                  auditCode.getSystemAction(),
-                                  auditCode.getUserAction(),
                                   error);
 
             super.throwUnexpectedInitializationException(actionDescription,
@@ -133,21 +114,13 @@ public class DesignModelAdmin extends AccessServiceAdmin
      */
     public void shutdown()
     {
-        final String         actionDescription = "shutdown";
-        DesignModelAuditCode auditCode;
+        final String actionDescription = "shutdown";
 
         if (instance != null)
         {
             this.instance.shutdown();
         }
 
-        auditCode = DesignModelAuditCode.SERVICE_SHUTDOWN;
-        auditLog.logRecord(actionDescription,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(serverName),
-                           null,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        auditLog.logMessage(actionDescription, DesignModelAuditCode.SERVICE_SHUTDOWN.getMessageDefinition(serverName));
     }
 }

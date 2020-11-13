@@ -12,6 +12,8 @@ import java.util.List;
  */
 public class MockAssetCertifications extends AssetCertifications
 {
+    private static final long     serialVersionUID = 1L;
+
     /**
      * Typical Constructor creates an iterator with the supplied list of elements.
      *

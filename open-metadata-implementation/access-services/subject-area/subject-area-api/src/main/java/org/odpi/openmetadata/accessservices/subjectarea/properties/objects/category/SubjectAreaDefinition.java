@@ -9,7 +9,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph
  * For a category to be in a subject area - it would be within the children category hierarchies under
  * a Subject Area Definition.
  */
-public class SubjectAreaDefinition extends Category{
+public class SubjectAreaDefinition extends Category {
     public SubjectAreaDefinition() {
         nodeType = NodeType.SubjectAreaDefinition;
     }

@@ -9,15 +9,18 @@ jobs:
   markdown-link-check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
-        with:
-          fetch-depth: 1
-      - name: Link Checker
-        uses: gaurav-nelson/github-action-markdown-link-check@0.4.0
-#      - name: Create Issue From File
+      - name: checkout action code
+        if: startsWith(github.repository,'odpi/')
+        uses: actions/checkout@master
+      - name: Check links
+        if: success()
+        id: check_links
+        uses: cmgrote/github-action-link-check@master
+#      - name: Create issue from file
+#        if: success()
 #        uses: peter-evans/create-issue-from-file@v2
 #        with:
-#          token: "${{ secrets.GITHUB_TOKEN }}"
-#          title: Link Checker Report
-#          content-filepath: ./link-checker/out.md
+#          token: ${{ secrets.GITHUB_TOKEN }}
+#          title: Broken links
+#          content-filepath: ./errors.txt
 #          labels: documentation, consumability, tidy up

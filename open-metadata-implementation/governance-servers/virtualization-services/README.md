@@ -1,6 +1,8 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
+![InDev](../../../open-metadata-publication/website/images/egeria-content-status-in-development.png#pagewidth)
+
 # Virtualizer Server
 
 The Virtualizer communicates with Information View OMAS and virtualization tool which is currently Gaian.
@@ -14,7 +16,7 @@ Virtualizer has three main functions:
 
 ## OMAG server configuration
 
-The Virtualizer is now running as a server on the [OMAG Server Platform](../../../open-metadata-publication/website/omag-server).
+The Virtualizer is a server that runs on the [OMAG Server Platform](../../../open-metadata-publication/website/omag-server).
 In this case, the service should be configured and initialized by the restful APIs provided by the platform.
 
 Here are the steps to run Virtualizer
@@ -28,11 +30,11 @@ Here are the steps to run Virtualizer
 {
   "consumer":
   {
-    "bootstrap.servers" :  "{{kafka-server-address}}"
+    "bootstrap.servers" :  "{kafkaServerAddress}"
   },
   "producer":
   {
-    "bootstrap.servers" :  "{{kafka-server-address}}",
+    "bootstrap.servers" :  "{kafkaServerAddress}",
     "key.serializer": "org.apache.kafka.common.serialization.StringSerializer",
     "value.serializer": "org.apache.kafka.common.serialization.StringSerializer"
   }
@@ -42,7 +44,7 @@ Here are the steps to run Virtualizer
 to the following address
 
 ```
-{{url-virtualizer}}/open-metadata/admin-services/users/{{user-name}}/servers/{{server-name}}/event-bus?topicURLRoot={{topic-root}}
+{serverURLRoot}/open-metadata/admin-services/users/{userId}/servers/{serverName}/event-bus?topicURLRoot={topicRoot}
 ```
 
 - Set up virtualizer configuration
@@ -52,9 +54,9 @@ to the following address
 ```json
 {
   "class": "VirtualizationConfig",
-  "virtualizationProvider": "{{connector-class-name}}",
-  "virtualizerOutboundTopicName": "{{iv-in-topic-name}}",
-  "virtualizerInboundTopicName": "{{iv-out-topic-name}}",
+  "virtualizationProvider": "{fullyQualifiedJavaClassName}",
+  "virtualizerOutboundTopicName": "{iv-in-topic-name}",
+  "virtualizerInboundTopicName": "{iv-out-topic-name}",
   "virtualizationSolutionConfig":
   {
     "frontendName": "",
@@ -77,7 +79,7 @@ to the following address
 to the following address
 
 ```
-{{url-virtualizer}}/open-metadata/admin-services/users/{{user-name}}/servers/{{server-name}}/virtualization-service/configuration
+{serverURLRoot}/open-metadata/admin-services/users/{userId}/servers/{serverName}/virtualization-service/configuration
 ```
 
 The object *virtualizationSolutionConfig* is the information required to implement the specific connector to the virtualization solutions. The keys should be modified based on the information needed by the connector.
@@ -87,7 +89,7 @@ The object *virtualizationSolutionConfig* is the information required to impleme
 **POST** to the following address
 
 ```
-{{url-virtualizer}}/open-metadata/admin-services/users/{{user-name}}/servers/{{server-name}}/instance
+{serverURLRoot}/open-metadata/admin-services/users/{userId}/servers/{serverName}/instance
 ```
 
 ----

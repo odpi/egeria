@@ -6,7 +6,7 @@
 Creates a "like" object and attaches it to an asset.
 
 ```
-POST {{serverURLRoot}}/servers/{{serverName}}/open-metadata/access-services/asset-consumer/users/{{userId}}/assets/{{assetGUID}}/likes
+POST {serverURLRoot}/servers/{serverName}/open-metadata/access-services/asset-consumer/users/{userId}/assets/{assetGUID}/likes
 ```
 
 ```java

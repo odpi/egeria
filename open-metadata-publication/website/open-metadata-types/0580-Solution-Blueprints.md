@@ -6,7 +6,7 @@
 Solution blueprints are models of an IT deployment.  They show the way different processes and assets are
 used in combinations to deliver a solution.
 
-![UML](0580-Solution-Blueprints.png)
+![UML](0580-Solution-Blueprints.png#pagewidth)
 
 
 Return to [Area 5](Area-5-models.md).

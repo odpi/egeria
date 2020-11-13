@@ -18,7 +18,7 @@ public class CocoPharmaPlatformSecurityProvider extends OpenMetadataPlatformSecu
     {
         super();
 
-        Class        connectorClass = CocoPharmaPlatformSecurityConnector.class;
+        Class<?>   connectorClass = CocoPharmaPlatformSecurityConnector.class;
 
         super.setConnectorClassName(connectorClass.getName());
     }

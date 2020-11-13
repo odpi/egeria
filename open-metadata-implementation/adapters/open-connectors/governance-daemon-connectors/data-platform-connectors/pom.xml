@@ -7,15 +7,22 @@
     <parent>
         <artifactId>governance-daemon-connectors</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>1.5-SNAPSHOT</version>
+        <version>2.5-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
+    <scm>
+        <connection>scm:git:git://github.com/odpi/egeria.git</connection>
+        <developerConnection>scm:git:ssh://github.com/odpi/egeria.git</developerConnection>
+        <url>http://github.com/odpi/egeria/tree/master</url>
+    </scm>
+
     <artifactId>data-platform-connectors</artifactId>
 
-    <name>Data Platform Connectors</name>
+    <name>Data Platform Integration Connector Implementations</name>
     <description>
-        The data platform connectors provide plugins to different data platforms to be able to synchronize
+        The data platform integration connector implementations provide plugins to
+        different data platforms to be able to synchronize
         data assets on them.
     </description>
 

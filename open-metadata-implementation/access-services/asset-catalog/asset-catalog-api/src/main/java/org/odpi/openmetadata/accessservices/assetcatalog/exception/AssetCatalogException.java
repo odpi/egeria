@@ -1,9 +1,10 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.accessservices.assetcatalog.exception;
 
-import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
+import org.odpi.openmetadata.commonservices.ffdc.exceptions.OMAGCheckedExceptionBase;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 
-import java.util.Objects;
+import java.util.Map;
 
 /**
  * AssetCatalogException provides a checked exception for reporting errors found when using
@@ -13,39 +14,78 @@ import java.util.Objects;
  * The AssetCatalogErrorCode can be used with this exception to populate it with standard messages.
  * The aim is to be able to uniquely identify the cause and remedy for the error.
  */
-public class AssetCatalogException extends OCFCheckedExceptionBase {
-    private final String[] assetGuid;
+public class AssetCatalogException extends OMAGCheckedExceptionBase {
+   
+    private static final long    serialVersionUID = 1L;
 
-
-    public AssetCatalogException(int httpCode, String className, String actionDescription, String errorMessage,
-                                 String systemAction, String userAction, String... assetGuid) {
-        super(httpCode, className, actionDescription, errorMessage, systemAction, userAction);
-
-        this.assetGuid = assetGuid;
+    /**
+     * This is the typical constructor used for creating an AssetCatalogException.
+     *
+     * @param messageDefinition  content of the message
+     * @param className   name of class reporting error
+     * @param actionDescription   description of function it was performing when error detected
+     */
+    public AssetCatalogException(ExceptionMessageDefinition messageDefinition,
+                                String                     className,
+                                String                     actionDescription)
+    {
+        super(messageDefinition, className, actionDescription);
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        AssetCatalogException that = (AssetCatalogException) o;
-        return Objects.equals(assetGuid, that.assetGuid);
+
+    /**
+     * This is the typical constructor used for creating an AssetCatalogException.
+     * The properties allow additional information to be associated with the exception.
+     *
+     * @param messageDefinition  content of the message
+     * @param className   name of class reporting error
+     * @param actionDescription   description of function it was performing when error detected
+     * @param relatedProperties  arbitrary properties that may help with diagnosing the problem.
+     */
+    public AssetCatalogException(ExceptionMessageDefinition messageDefinition,
+                                String                     className,
+                                String                     actionDescription,
+                                Map<String, Object> relatedProperties)
+    {
+        super(messageDefinition, className, actionDescription, relatedProperties);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), assetGuid);
+
+    /**
+     * This is the constructor used for creating an AssetCatalogException when an unexpected error has been caught.
+     * The properties allow additional information to be associated with the exception.
+     *
+     * @param messageDefinition  content of the message
+     * @param className   name of class reporting error
+     * @param actionDescription   description of function it was performing when error detected
+     * @param caughtError   previous error causing this exception
+     */
+    public AssetCatalogException(ExceptionMessageDefinition messageDefinition,
+                                String                     className,
+                                String                     actionDescription,
+                                Throwable                  caughtError)
+    {
+        super(messageDefinition, className, actionDescription, caughtError);
     }
 
-    @Override
-    public String toString() {
-        return "DataEngineException{" +
-                "assetGuid='" + assetGuid + '\'' +
-                '}';
+
+    /**
+     * This is the constructor used for creating an AssetCatalogException when an unexpected error has been caught.
+     * The properties allow additional information to be associated with the exception.
+     *
+     * @param messageDefinition  content of the message
+     * @param className   name of class reporting error
+     * @param actionDescription   description of function it was performing when error detected
+     * @param caughtError   previous error causing this exception
+     * @param relatedProperties  arbitrary properties that may help with diagnosing the problem.
+     */
+    public AssetCatalogException(ExceptionMessageDefinition messageDefinition,
+                                String                     className,
+                                String                     actionDescription,
+                                Throwable                  caughtError,
+                                Map<String, Object>        relatedProperties)
+    {
+        super(messageDefinition, className, actionDescription, caughtError, relatedProperties);
     }
 
-    public String[] getAssetGuid() {
-        return assetGuid;
-    }
 }

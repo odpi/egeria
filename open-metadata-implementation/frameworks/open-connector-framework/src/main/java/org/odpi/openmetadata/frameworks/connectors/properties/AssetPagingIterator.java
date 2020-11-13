@@ -45,6 +45,8 @@ import java.util.List;
  */
 public class AssetPagingIterator extends AssetPropertyBase implements Iterator<AssetPropertyBase>
 {
+    private static final long     serialVersionUID = 1L;
+
     protected int                       maxCacheSize         = 1;
 
     protected int                       totalElementCount    = 0;
@@ -97,18 +99,11 @@ public class AssetPagingIterator extends AssetPropertyBase implements Iterator<A
             /*
              * Throw runtime exception to show the caller they are not using the list correctly.
              */
-            OCFErrorCode errorCode = OCFErrorCode.NO_ITERATOR;
-            String        errorMessage = errorCode.getErrorMessageId()
-                                       + errorCode.getFormattedErrorMessage(this.getClass().getSimpleName(),
-                                                                            super.getParentAssetName(),
-                                                                            super.getParentAssetTypeName());
-
-            throw new OCFRuntimeException(errorCode.getHTTPErrorCode(),
+            throw new OCFRuntimeException(OCFErrorCode.NO_ITERATOR.getMessageDefinition(this.getClass().getSimpleName(),
+                                                                                        super.getParentAssetName(),
+                                                                                        super.getParentAssetTypeName()),
                                           this.getClass().getName(),
-                                          "next",
-                                          errorMessage,
-                                          errorCode.getSystemAction(),
-                                          errorCode.getUserAction());
+                                          "next");
         }
     }
 
@@ -151,18 +146,11 @@ public class AssetPagingIterator extends AssetPropertyBase implements Iterator<A
                /*
                 * Throw runtime exception to show the caller they are not using the list correctly.
                 */
-                OCFErrorCode errorCode = OCFErrorCode.NO_ITERATOR;
-                String        errorMessage = errorCode.getErrorMessageId()
-                                           + errorCode.getFormattedErrorMessage(this.getClass().getSimpleName(),
-                                                                                super.getParentAssetName(),
-                                                                                super.getParentAssetTypeName());
-
-                throw new OCFRuntimeException(errorCode.getHTTPErrorCode(),
+                throw new OCFRuntimeException(OCFErrorCode.NO_ITERATOR.getMessageDefinition(this.getClass().getSimpleName(),
+                                                                                            super.getParentAssetName(),
+                                                                                            super.getParentAssetTypeName()),
                                               this.getClass().getName(),
-                                              "next",
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction());
+                                              "next");
             }
 
             if (templateIterator.cachedElementStart <= templateIterator.maxCacheSize)
@@ -225,17 +213,10 @@ public class AssetPagingIterator extends AssetPropertyBase implements Iterator<A
                     /*
                      * Problem retrieving next cache.  The exception includes a detailed error message,
                      */
-                    OCFErrorCode  errorCode = OCFErrorCode.PROPERTIES_NOT_AVAILABLE;
-                    String        errorMessage = errorCode.getErrorMessageId()
-                                               + errorCode.getFormattedErrorMessage(error.getErrorMessage(),
-                                                                                    this.toString());
-
-                    throw new OCFRuntimeException(errorCode.getHTTPErrorCode(),
+                    throw new OCFRuntimeException(OCFErrorCode.PROPERTIES_NOT_AVAILABLE.getMessageDefinition(error.getReportedErrorMessage(),
+                                                                                                             this.toString()),
                                                   this.getClass().getName(),
                                                   "next",
-                                                  errorMessage,
-                                                  errorCode.getSystemAction(),
-                                                  errorCode.getUserAction(),
                                                   error);
                 }
             }
@@ -257,18 +238,11 @@ public class AssetPagingIterator extends AssetPropertyBase implements Iterator<A
             /*
              * Throw runtime exception to show the caller they are not using the list correctly.
              */
-            OCFErrorCode errorCode = OCFErrorCode.NO_MORE_ELEMENTS;
-            String        errorMessage = errorCode.getErrorMessageId()
-                                       + errorCode.getFormattedErrorMessage(this.getClass().getSimpleName(),
-                                                                            super.getParentAssetName(),
-                                                                            super.getParentAssetTypeName());
-
-            throw new OCFRuntimeException(errorCode.getHTTPErrorCode(),
+            throw new OCFRuntimeException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition(this.getClass().getSimpleName(),
+                                                                                             super.getParentAssetName(),
+                                                                                             super.getParentAssetTypeName()),
                                           this.getClass().getName(),
-                                          "next",
-                                          errorMessage,
-                                          errorCode.getSystemAction(),
-                                          errorCode.getUserAction());
+                                          "next");
         }
     }
 
@@ -291,18 +265,11 @@ public class AssetPagingIterator extends AssetPropertyBase implements Iterator<A
     @Override
     public void remove()
     {
-        OCFErrorCode  errorCode = OCFErrorCode.UNABLE_TO_REMOVE;
-        String        errorMessage = errorCode.getErrorMessageId()
-                                   + errorCode.getFormattedErrorMessage(this.getParentAssetTypeName(),
-                                                                        this.getParentAssetName(),
-                                                                        iterator.getClass().getName());
-
-        throw new OCFRuntimeException(errorCode.getHTTPErrorCode(),
+        throw new OCFRuntimeException(OCFErrorCode.UNABLE_TO_REMOVE.getMessageDefinition(this.getParentAssetTypeName(),
+                                                                                         this.getParentAssetName(),
+                                                                                         iterator.getClass().getName()),
                                       this.getClass().getName(),
-                                      "remove",
-                                      errorMessage,
-                                      errorCode.getSystemAction(),
-                                      errorCode.getUserAction());
+                                      "remove");
     }
 
 

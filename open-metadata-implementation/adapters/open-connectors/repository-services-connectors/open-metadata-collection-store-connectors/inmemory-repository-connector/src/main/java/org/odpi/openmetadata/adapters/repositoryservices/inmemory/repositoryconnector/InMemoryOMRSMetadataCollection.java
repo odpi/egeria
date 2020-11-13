@@ -6,6 +6,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchClassifications;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.SearchProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryValidator;
@@ -33,11 +35,11 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
      * @param repositoryValidator class used to validate type definitions and instances.
      * @param metadataCollectionId unique Identifier of the metadata collection Id.
      */
-    InMemoryOMRSMetadataCollection(InMemoryOMRSRepositoryConnector parentConnector,
-                                   String                          repositoryName,
-                                   OMRSRepositoryHelper            repositoryHelper,
-                                   OMRSRepositoryValidator         repositoryValidator,
-                                   String                          metadataCollectionId)
+    protected InMemoryOMRSMetadataCollection(InMemoryOMRSRepositoryConnector parentConnector,
+                                             String                          repositoryName,
+                                             OMRSRepositoryHelper            repositoryHelper,
+                                             OMRSRepositoryValidator         repositoryValidator,
+                                             String                          metadataCollectionId)
     {
         /*
          * The metadata collection Id is the unique identifier for the metadata collection.  It is managed by the super class.
@@ -438,6 +440,103 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
 
 
     /**
+     * Return a list of entities that match the supplied criteria.  The results can be returned over many pages.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityTypeGUID String unique identifier for the entity type of interest (null means any entity type).
+     * @param entitySubtypeGUIDs optional list of the unique identifiers (guids) for subtypes of the entityTypeGUID to
+     *                           include in the search results. Null means all subtypes.
+     * @param matchProperties Optional list of entity property conditions to match.
+     * @param fromEntityElement the starting element number of the entities to return.
+     *                                This is used when retrieving elements
+     *                                beyond the first page of results. Zero means start from the first element.
+     * @param limitResultsByStatus By default, entities in all statuses are returned.  However, it is possible
+     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
+     *                             status values.
+     * @param matchClassifications Optional list of entity classifications to match.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingProperty String name of the entity property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
+     * @param pageSize the maximum number of result entities that can be returned on this request.  Zero means
+     *                 unrestricted return results size.
+     * @return a list of entities matching the supplied criteria; null means no matching entities in the metadata
+     * collection.
+     * @throws InvalidParameterException a parameter is invalid or null.
+     * @throws TypeErrorException the type guid passed on the request is not known by the
+     *                              metadata collection.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws PropertyErrorException the properties specified are not valid for any of the requested types of
+     *                                  entity.
+     * @throws PagingErrorException the paging/sequencing parameters are set up incorrectly.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public List<EntityDetail> findEntities(String                    userId,
+                                           String                    entityTypeGUID,
+                                           List<String>              entitySubtypeGUIDs,
+                                           SearchProperties          matchProperties,
+                                           int                       fromEntityElement,
+                                           List<InstanceStatus>      limitResultsByStatus,
+                                           SearchClassifications     matchClassifications,
+                                           Date                      asOfTime,
+                                           String                    sequencingProperty,
+                                           SequencingOrder           sequencingOrder,
+                                           int                       pageSize) throws InvalidParameterException,
+                                                                                      RepositoryErrorException,
+                                                                                      TypeErrorException,
+                                                                                      PropertyErrorException,
+                                                                                      PagingErrorException,
+                                                                                      UserNotAuthorizedException
+    {
+        /*
+         * Validate parameters
+         */
+        super.findEntitiesParameterValidation(userId,
+                                              entityTypeGUID,
+                                              entitySubtypeGUIDs,
+                                              matchProperties,
+                                              fromEntityElement,
+                                              limitResultsByStatus,
+                                              matchClassifications,
+                                              asOfTime,
+                                              sequencingProperty,
+                                              sequencingOrder,
+                                              pageSize);
+
+        /*
+         * Perform operation
+         *
+         * This is a brute force implementation of locating in entity since it iterates through all of
+         * the stored entities.
+         */
+        List<EntityDetail>         foundEntities = new ArrayList<>();
+        Map<String, EntityDetail>  entityStore = repositoryStore.timeWarpEntityStore(asOfTime);
+
+        for (EntityDetail  entity : entityStore.values())
+        {
+            if (entity != null)
+            {
+                if ((entity.getStatus() != InstanceStatus.DELETED) &&
+                        (repositoryValidator.verifyInstanceType(repositoryName, entityTypeGUID, entitySubtypeGUIDs, entity)) &&
+                        (repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, entity)) &&
+                        (repositoryValidator.verifyMatchingClassifications(matchClassifications, entity)) &&
+                        (repositoryValidator.verifyMatchingInstancePropertyValues(matchProperties,
+                                entity,
+                                entity.getProperties()
+                        )))
+                {
+                    foundEntities.add(entity);
+                }
+            }
+        }
+
+        return repositoryHelper.formatEntityResults(foundEntities, fromEntityElement, sequencingProperty, sequencingOrder, pageSize);
+    }
+
+
+    /**
      * Return a list of entities that have the requested type of classifications attached.
      *
      * @param userId unique identifier for requesting user.
@@ -647,6 +746,8 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
             {
                 if ((entity.getStatus() != InstanceStatus.DELETED) &&
                     (repositoryValidator.verifyInstanceType(repositoryName, entityTypeGUID, entity)) &&
+                    (repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, entity)) &&
+                    (repositoryValidator.verifyEntityIsClassified(limitResultsByClassification, entity)) &&
                     (repositoryValidator.verifyInstancePropertiesMatchSearchCriteria(repositoryName,
                                                                                     entity.getProperties(),
                                                                                     searchCriteria,
@@ -767,6 +868,109 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         repositoryValidator.validateRelationshipIsNotDeleted(repositoryName, relationship, methodName);
 
         return relationship;
+    }
+
+
+    /**
+     * Return a list of relationships that match the requested conditions.  The results can be received as a series of
+     * pages.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param relationshipTypeGUID unique identifier (guid) for the relationship's type.  Null means all types
+     *                             (but may be slow so not recommended).
+     * @param relationshipSubtypeGUIDs optional list of the unique identifiers (guids) for subtypes of the
+     *                                 relationshipTypeGUID to include in the search results. Null means all subtypes.
+     * @param matchProperties Optional list of relationship property conditions to match.
+     * @param fromRelationshipElement the starting element number of the entities to return.
+     *                                This is used when retrieving elements
+     *                                beyond the first page of results. Zero means start from the first element.
+     * @param limitResultsByStatus By default, relationships in all statuses are returned.  However, it is possible
+     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
+     *                             status values.
+     * @param asOfTime Requests a historical query of the relationships for the entity.  Null means return the
+     *                 present values.
+     * @param sequencingProperty String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
+     * @param pageSize the maximum number of result relationships that can be returned on this request.  Zero means
+     *                 unrestricted return results size.
+     * @return a list of relationships.  Null means no matching relationships.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws TypeErrorException the type guid passed on the request is not known by the
+     *                              metadata collection.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws PropertyErrorException the properties specified are not valid for any of the requested types of
+     *                                  relationships.
+     * @throws PagingErrorException the paging/sequencing parameters are set up incorrectly.
+     * @throws FunctionNotSupportedException the repository does not support one of the provided parameters.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * @see OMRSRepositoryHelper#getExactMatchRegex(String)
+     */
+    @Override
+    public  List<Relationship> findRelationships(String                    userId,
+                                                 String                    relationshipTypeGUID,
+                                                 List<String>              relationshipSubtypeGUIDs,
+                                                 SearchProperties          matchProperties,
+                                                 int                       fromRelationshipElement,
+                                                 List<InstanceStatus>      limitResultsByStatus,
+                                                 Date                      asOfTime,
+                                                 String                    sequencingProperty,
+                                                 SequencingOrder           sequencingOrder,
+                                                 int                       pageSize) throws InvalidParameterException,
+                                                                                            TypeErrorException,
+                                                                                            RepositoryErrorException,
+                                                                                            PropertyErrorException,
+                                                                                            PagingErrorException,
+                                                                                            FunctionNotSupportedException,
+                                                                                            UserNotAuthorizedException
+    {
+        /*
+         * Validate parameters
+         */
+        super.findRelationshipsParameterValidation(userId,
+                                                   relationshipTypeGUID,
+                                                   relationshipSubtypeGUIDs,
+                                                   matchProperties,
+                                                   fromRelationshipElement,
+                                                   limitResultsByStatus,
+                                                   asOfTime,
+                                                   sequencingProperty,
+                                                   sequencingOrder,
+                                                   pageSize);
+
+
+        /*
+         * Perform operation
+         *
+         * This is a brute force implementation of locating a relationship since it iterates through all of
+         * the stored entities.
+         */
+        List<Relationship>         foundRelationships = new ArrayList<>();
+        Map<String, Relationship>  relationshipStore = repositoryStore.timeWarpRelationshipStore(asOfTime);
+
+        for (Relationship  relationship : relationshipStore.values())
+        {
+            if (relationship != null)
+            {
+                if ((relationship.getStatus() != InstanceStatus.DELETED) &&
+                        (repositoryValidator.verifyInstanceType(repositoryName, relationshipTypeGUID, relationshipSubtypeGUIDs, relationship)) &&
+                        (repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, relationship)) &&
+                        (repositoryValidator.verifyMatchingInstancePropertyValues(matchProperties,
+                                relationship,
+                                relationship.getProperties()
+                        )))
+                {
+                    foundRelationships.add(relationship);
+                }
+            }
+        }
+
+        return repositoryHelper.formatRelationshipResults(foundRelationships,
+                fromRelationshipElement,
+                sequencingProperty,
+                sequencingOrder,
+                pageSize);
     }
 
 
@@ -954,6 +1158,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
             {
                 if ((relationship.getStatus() != InstanceStatus.DELETED) &&
                     (repositoryValidator.verifyInstanceType(repositoryName, relationshipTypeGUID, relationship)) &&
+                    (repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, relationship)) &&
                     (repositoryValidator.verifyInstancePropertiesMatchSearchCriteria(repositoryName,
                                                                                      relationship.getProperties(),
                                                                                      searchCriteria,
@@ -1106,6 +1311,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
      *                                           not defined for this entity type.
      * @throws StatusNotSupportedException the metadata repository hosting the metadata collection does not support
      *                                       the requested status.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public EntityDetail addEntity(String                     userId,
@@ -1118,7 +1324,8 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                                                                                    PropertyErrorException,
                                                                                    ClassificationErrorException,
                                                                                    StatusNotSupportedException,
-                                                                                   UserNotAuthorizedException
+                                                                                   UserNotAuthorizedException,
+                                                                                   FunctionNotSupportedException
     {
         final String methodName = "addEntity";
 
@@ -1191,6 +1398,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
      *                                           not defined for this entity type.
      * @throws StatusNotSupportedException the metadata repository hosting the metadata collection does not support
      *                                       the requested status.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public EntityDetail addExternalEntity(String                userId,
@@ -1205,7 +1413,8 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                                                                                       PropertyErrorException,
                                                                                       ClassificationErrorException,
                                                                                       StatusNotSupportedException,
-                                                                                      UserNotAuthorizedException
+                                                                                      UserNotAuthorizedException,
+                                                                                      FunctionNotSupportedException
     {
         final String  methodName = "addExternalEntity";
 
@@ -1262,12 +1471,14 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
      * @throws InvalidParameterException the entity proxy is null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public void addEntityProxy(String       userId,
                                EntityProxy  entityProxy) throws InvalidParameterException,
                                                                 RepositoryErrorException,
-                                                                UserNotAuthorizedException
+                                                                UserNotAuthorizedException,
+                                                                FunctionNotSupportedException
     {
         /*
          * Validate parameters
@@ -1297,6 +1508,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
      *                                  the metadata collection is stored.
      * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection.
      * @throws StatusNotSupportedException invalid status for instance.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public EntityDetail updateEntityStatus(String           userId,
@@ -1305,7 +1517,8 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                                                                               RepositoryErrorException,
                                                                               EntityNotKnownException,
                                                                               StatusNotSupportedException,
-                                                                              UserNotAuthorizedException
+                                                                              UserNotAuthorizedException,
+                                                                              FunctionNotSupportedException
     {
         final String  methodName               = "updateEntityStatus";
         final String  statusParameterName      = "newStatus";
@@ -1366,6 +1579,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
      * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection
      * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
      *                                characteristics in the TypeDef for this entity's type
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public EntityDetail updateEntityProperties(String               userId,
@@ -1374,7 +1588,8 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                                                                                        RepositoryErrorException,
                                                                                        EntityNotKnownException,
                                                                                        PropertyErrorException,
-                                                                                       UserNotAuthorizedException
+                                                                                       UserNotAuthorizedException,
+                                                                                       FunctionNotSupportedException
     {
         final String  methodName = "updateEntityProperties";
         final String  propertiesParameterName  = "properties";
@@ -1437,12 +1652,14 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
      *                                  the metadata collection is stored.
      * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      */
     public EntityDetail undoEntityUpdate(String  userId,
                                          String  entityGUID) throws InvalidParameterException,
                                                                     RepositoryErrorException,
                                                                     EntityNotKnownException,
-                                                                    UserNotAuthorizedException
+                                                                    UserNotAuthorizedException,
+                                                                    FunctionNotSupportedException
     {
         final String  methodName = "undoEntityUpdate";
         final String  parameterName = "entityGUID";
@@ -1487,6 +1704,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public EntityDetail   deleteEntity(String    userId,
@@ -1495,7 +1713,8 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                                        String    obsoleteEntityGUID) throws InvalidParameterException,
                                                                             RepositoryErrorException,
                                                                             EntityNotKnownException,
-                                                                            UserNotAuthorizedException
+                                                                            UserNotAuthorizedException,
+                                                                            FunctionNotSupportedException
     {
         final String methodName    = "deleteEntity";
         final String parameterName = "obsoleteEntityGUID";
@@ -1595,6 +1814,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
      *                                  the metadata collection is stored.
      * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection
      * @throws EntityNotDeletedException the entity is not in DELETED status and so can not be purged
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public void purgeEntity(String    userId,
@@ -1604,7 +1824,8 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                                                                 RepositoryErrorException,
                                                                 EntityNotKnownException,
                                                                 EntityNotDeletedException,
-                                                                UserNotAuthorizedException
+                                                                UserNotAuthorizedException,
+                                                                FunctionNotSupportedException
     {
         final String methodName    = "purgeEntity";
         final String parameterName = "deletedEntityGUID";
@@ -1685,6 +1906,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
      * the metadata collection is stored.
      * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection
      * @throws EntityNotDeletedException the entity is currently not in DELETED status and so it can not be restored
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public EntityDetail restoreEntity(String    userId,
@@ -1692,7 +1914,8 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                                                                           RepositoryErrorException,
                                                                           EntityNotKnownException,
                                                                           EntityNotDeletedException,
-                                                                          UserNotAuthorizedException
+                                                                          UserNotAuthorizedException,
+                                                                          FunctionNotSupportedException
     {
         final String  methodName              = "restoreEntity";
         final String  parameterName           = "deletedEntityGUID";
@@ -1750,6 +1973,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
      *                                         for the entity.
      * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
      *                                characteristics in the TypeDef for this classification type
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public EntityDetail classifyEntity(String               userId,
@@ -1760,7 +1984,8 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                                                                                              EntityNotKnownException,
                                                                                              ClassificationErrorException,
                                                                                              PropertyErrorException,
-                                                                                             UserNotAuthorizedException
+                                                                                             UserNotAuthorizedException,
+                                                                                             FunctionNotSupportedException
     {
         final String  methodName                  = "classifyEntity";
         final String  entityGUIDParameterName     = "entityGUID";
@@ -1807,6 +2032,8 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
              * Validation complete - build the new classification
              */
             newClassification = repositoryHelper.getNewClassification(repositoryName,
+                                                                      null,
+                                                                      InstanceProvenanceType.LOCAL_COHORT,
                                                                       userId,
                                                                       classificationName,
                                                                       entityType.getTypeDefName(),
@@ -1818,16 +2045,159 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         {
             throw error;
         }
-        catch (Throwable   error)
+        catch (Exception   error)
         {
-            OMRSErrorCode errorCode = OMRSErrorCode.INVALID_CLASSIFICATION_FOR_ENTITY;
-
-            throw new ClassificationErrorException(errorCode.getHTTPErrorCode(),
+            throw new ClassificationErrorException(OMRSErrorCode.INVALID_CLASSIFICATION_FOR_ENTITY.getMessageDefinition(repositoryName,
+                                                                                                                        classificationName,
+                                                                                                                        entityType.getTypeDefName()),
                                                    this.getClass().getName(),
-                                                   methodName,
-                                                   error.getMessage(),
-                                                   errorCode.getSystemAction(),
-                                                   errorCode.getUserAction());
+                                                   methodName);
+        }
+
+        /*
+         * Validation complete - ok to update entity
+         */
+
+        EntityDetail updatedEntity = repositoryHelper.addClassificationToEntity(repositoryName,
+                                                                                entity,
+                                                                                newClassification,
+                                                                                methodName);
+
+        updatedEntity = repositoryHelper.incrementVersion(userId, entity, updatedEntity);
+
+        repositoryStore.updateEntityInStore(updatedEntity);
+
+        /*
+         * The repository store maintains an entity proxy for use with relationships.
+         */
+        EntityProxy entityProxy = repositoryHelper.getNewEntityProxy(repositoryName, updatedEntity);
+
+        repositoryStore.updateEntityProxyInStore(entityProxy);
+
+        return updatedEntity;
+    }
+
+
+    /**
+     * Add the requested classification to a specific entity.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityGUID String unique identifier (guid) for the entity.
+     * @param classificationName String name for the classification.
+     * @param externalSourceGUID unique identifier (guid) for the external source.
+     * @param externalSourceName unique name for the external source.
+     * @param classificationOrigin source of the classification
+     * @param classificationOriginGUID if the classification is propagated, this is the unique identifier of the entity where
+     * @param classificationProperties list of properties to set in the classification.
+     * @return EntitySummary showing the resulting entity header and classifications.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection
+     * @throws ClassificationErrorException the requested classification is either not known or not valid
+     *                                         for the entity.
+     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                characteristics in the TypeDef for this classification type
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
+     */
+    public   EntityDetail classifyEntity(String               userId,
+                                         String               entityGUID,
+                                         String               classificationName,
+                                         String               externalSourceGUID,
+                                         String               externalSourceName,
+                                         ClassificationOrigin classificationOrigin,
+                                         String               classificationOriginGUID,
+                                         InstanceProperties   classificationProperties) throws InvalidParameterException,
+                                                                                               RepositoryErrorException,
+                                                                                               EntityNotKnownException,
+                                                                                               ClassificationErrorException,
+                                                                                               PropertyErrorException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               FunctionNotSupportedException
+    {
+        final String  methodName = "classifyEntity (detailed)";
+        final String  entityGUIDParameterName     = "entityGUID";
+        final String  classificationParameterName = "classificationName";
+        final String  propertiesParameterName     = "classificationProperties";
+
+        /*
+         * Validate parameters
+         */
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        repositoryValidator.validateUserId(repositoryName, userId, methodName);
+        repositoryValidator.validateGUID(repositoryName, entityGUIDParameterName, entityGUID, methodName);
+
+        /*
+         * Locate entity
+         */
+        EntityDetail entity = repositoryStore.getEntity(entityGUID);
+
+        repositoryValidator.validateEntityFromStore(repositoryName, entityGUID, entity, methodName);
+        repositoryValidator.validateEntityIsNotDeleted(repositoryName, entity, methodName);
+
+        repositoryValidator.validateInstanceType(repositoryName, entity);
+
+        InstanceType entityType = entity.getType();
+
+        repositoryValidator.validateClassification(repositoryName,
+                                                   classificationParameterName,
+                                                   classificationName,
+                                                   entityType.getTypeDefName(),
+                                                   methodName);
+
+        Classification newClassification;
+        try
+        {
+            repositoryValidator.validateClassificationProperties(repositoryName,
+                                                                 classificationName,
+                                                                 propertiesParameterName,
+                                                                 classificationProperties,
+                                                                 methodName);
+
+            /*
+             * Validation complete - build the new classification
+             */
+            if (externalSourceGUID == null)
+            {
+                newClassification = repositoryHelper.getNewClassification(repositoryName,
+                                                                          null,
+                                                                          InstanceProvenanceType.LOCAL_COHORT,
+                                                                          userId,
+                                                                          classificationName,
+                                                                          entityType.getTypeDefName(),
+                                                                          classificationOrigin,
+                                                                          classificationOriginGUID,
+                                                                          classificationProperties);
+            }
+            else
+            {
+                newClassification = repositoryHelper.getNewClassification(repositoryName,
+                                                                          externalSourceGUID,
+                                                                          InstanceProvenanceType.EXTERNAL_SOURCE,
+                                                                          userId,
+                                                                          classificationName,
+                                                                          entityType.getTypeDefName(),
+                                                                          classificationOrigin,
+                                                                          classificationOriginGUID,
+                                                                          classificationProperties);
+                newClassification.setMetadataCollectionName(externalSourceName);
+                newClassification.setReplicatedBy(metadataCollectionId);
+            }
+        }
+        catch (PropertyErrorException  error)
+        {
+            throw error;
+        }
+        catch (Exception   error)
+        {
+            throw new ClassificationErrorException(OMRSErrorCode.INVALID_CLASSIFICATION_FOR_ENTITY.getMessageDefinition(repositoryName,
+                                                                                                                        classificationName,
+                                                                                                                        entityType.getTypeDefName()),
+                                                   this.getClass().getName(),
+                                                   methodName);
         }
 
         /*
@@ -1866,6 +2236,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
      *                                  the metadata collection is stored.
      * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection
      * @throws ClassificationErrorException the requested classification is not set on the entity.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public EntityDetail declassifyEntity(String  userId,
@@ -1874,7 +2245,8 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                                                                             RepositoryErrorException,
                                                                             EntityNotKnownException,
                                                                             ClassificationErrorException,
-                                                                            UserNotAuthorizedException
+                                                                            UserNotAuthorizedException,
+                                                                            FunctionNotSupportedException
     {
         final String  methodName                  = "declassifyEntity";
 
@@ -1926,6 +2298,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
      * @throws ClassificationErrorException the requested classification is not attached to the classification.
      * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
      *                                characteristics in the TypeDef for this classification type
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public EntityDetail updateEntityClassification(String               userId,
@@ -1936,7 +2309,8 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                                                                                            EntityNotKnownException,
                                                                                            ClassificationErrorException,
                                                                                            PropertyErrorException,
-                                                                                           UserNotAuthorizedException
+                                                                                           UserNotAuthorizedException,
+                                                                                           FunctionNotSupportedException
     {
         final String  methodName = "updateEntityClassification";
 
@@ -2006,6 +2380,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
      * @throws EntityNotKnownException one of the requested entities is not known in the metadata collection.
      * @throws StatusNotSupportedException the metadata repository hosting the metadata collection does not support
      *                                     the requested status.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public Relationship addRelationship(String               userId,
@@ -2019,7 +2394,8 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                                                                                    PropertyErrorException,
                                                                                    EntityNotKnownException,
                                                                                    StatusNotSupportedException,
-                                                                                   UserNotAuthorizedException
+                                                                                   UserNotAuthorizedException,
+                                                                                   FunctionNotSupportedException
     {
         final String  methodName = "addRelationship";
 
@@ -2123,6 +2499,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
      * @throws EntityNotKnownException one of the requested entities is not known in the metadata collection.
      * @throws StatusNotSupportedException the metadata repository hosting the metadata collection does not support
      *                                     the requested status.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public Relationship addExternalRelationship(String               userId,
@@ -2138,7 +2515,8 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                                                                                            PropertyErrorException,
                                                                                            EntityNotKnownException,
                                                                                            StatusNotSupportedException,
-                                                                                           UserNotAuthorizedException
+                                                                                           UserNotAuthorizedException,
+                                                                                           FunctionNotSupportedException
     {
         final String methodName = "addExternalRelationship";
 
@@ -2233,6 +2611,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
      *                                  the metadata collection is stored.
      * @throws RelationshipNotKnownException the requested relationship is not known in the metadata collection.
      * @throws StatusNotSupportedException invalid status for instance.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public Relationship updateRelationshipStatus(String           userId,
@@ -2241,7 +2620,8 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                                                                                     RepositoryErrorException,
                                                                                     RelationshipNotKnownException,
                                                                                     StatusNotSupportedException,
-                                                                                    UserNotAuthorizedException
+                                                                                    UserNotAuthorizedException,
+                                                                                    FunctionNotSupportedException
     {
         final String  methodName          = "updateRelationshipStatus";
         final String  statusParameterName = "newStatus";
@@ -2296,6 +2676,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
      * @throws RelationshipNotKnownException the requested relationship is not known in the metadata collection.
      * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
      *                                characteristics in the TypeDef for this relationship's type.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public Relationship updateRelationshipProperties(String               userId,
@@ -2304,7 +2685,8 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                                                                                              RepositoryErrorException,
                                                                                              RelationshipNotKnownException,
                                                                                              PropertyErrorException,
-                                                                                             UserNotAuthorizedException
+                                                                                             UserNotAuthorizedException,
+                                                                                             FunctionNotSupportedException
     {
         final String  methodName = "updateRelationshipProperties";
         final String  propertiesParameterName = "properties";
@@ -2361,13 +2743,15 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
      *                                  the metadata collection is stored.
      * @throws RelationshipNotKnownException the requested relationship is not known in the metadata collection.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public Relationship undoRelationshipUpdate(String  userId,
                                                String  relationshipGUID) throws InvalidParameterException,
                                                                                 RepositoryErrorException,
                                                                                 RelationshipNotKnownException,
-                                                                                UserNotAuthorizedException
+                                                                                UserNotAuthorizedException,
+                                                                                FunctionNotSupportedException
     {
         final String  methodName = "undoRelationshipUpdate";
         final String  parameterName = "relationshipGUID";
@@ -2404,6 +2788,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
      * the metadata collection is stored.
      * @throws RelationshipNotKnownException the requested relationship is not known in the metadata collection.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public Relationship deleteRelationship(String    userId,
@@ -2412,7 +2797,8 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                                            String    obsoleteRelationshipGUID) throws InvalidParameterException,
                                                                                       RepositoryErrorException,
                                                                                       RelationshipNotKnownException,
-                                                                                      UserNotAuthorizedException
+                                                                                      UserNotAuthorizedException,
+                                                                                      FunctionNotSupportedException
     {
         final String  methodName = "deleteRelationship";
         final String  parameterName = "obsoleteRelationshipGUID";
@@ -2461,6 +2847,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
      *                                    the metadata collection is stored.
      * @throws RelationshipNotKnownException the requested relationship is not known in the metadata collection.
      * @throws RelationshipNotDeletedException the requested relationship is not in DELETED status.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public void purgeRelationship(String    userId,
@@ -2470,7 +2857,8 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                                                                             RepositoryErrorException,
                                                                             RelationshipNotKnownException,
                                                                             RelationshipNotDeletedException,
-                                                                            UserNotAuthorizedException
+                                                                            UserNotAuthorizedException,
+                                                                            FunctionNotSupportedException
     {
         final String  methodName    = "purgeRelationship";
         final String  parameterName = "deletedRelationshipGUID";
@@ -2519,6 +2907,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
      * the metadata collection is stored.
      * @throws RelationshipNotKnownException the requested relationship is not known in the metadata collection.
      * @throws RelationshipNotDeletedException the requested relationship is not in DELETED status.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public Relationship restoreRelationship(String    userId,
@@ -2526,7 +2915,8 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                                                                                       RepositoryErrorException,
                                                                                       RelationshipNotKnownException,
                                                                                       RelationshipNotDeletedException,
-                                                                                      UserNotAuthorizedException
+                                                                                      UserNotAuthorizedException,
+                                                                                      FunctionNotSupportedException
     {
         final String  methodName    = "restoreRelationship";
         final String  parameterName = "deletedRelationshipGUID";
@@ -2585,6 +2975,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public EntityDetail reIdentifyEntity(String     userId,
@@ -2594,7 +2985,8 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                                          String     newEntityGUID) throws InvalidParameterException,
                                                                           RepositoryErrorException,
                                                                           EntityNotKnownException,
-                                                                          UserNotAuthorizedException
+                                                                          UserNotAuthorizedException,
+                                                                          FunctionNotSupportedException
     {
         final String  methodName = "reIdentifyEntity";
         final String  instanceParameterName = "entityGUID";
@@ -2663,6 +3055,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
      *                            hosting the metadata collection.
      * @throws ClassificationErrorException the entity's classifications are not valid for the new type.
      * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public EntityDetail reTypeEntity(String         userId,
@@ -2674,7 +3067,8 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                                                                               PropertyErrorException,
                                                                               ClassificationErrorException,
                                                                               EntityNotKnownException,
-                                                                              UserNotAuthorizedException
+                                                                              UserNotAuthorizedException,
+                                                                              FunctionNotSupportedException
     {
         final String  methodName = "reTypeEntity";
         final String  entityParameterName = "entityGUID";
@@ -2763,6 +3157,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
      * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public EntityDetail reHomeEntity(String         userId,
@@ -2774,7 +3169,8 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                                      String         newHomeMetadataCollectionName) throws InvalidParameterException,
                                                                                           RepositoryErrorException,
                                                                                           EntityNotKnownException,
-                                                                                          UserNotAuthorizedException
+                                                                                          UserNotAuthorizedException,
+                                                                                          FunctionNotSupportedException
     {
         final String methodName          = "reHomeEntity";
         final String entityParameterName = "entityGUID";
@@ -2841,6 +3237,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
      *                                    the metadata collection is stored.
      * @throws RelationshipNotKnownException the relationship identified by the guid is not found in the
      *                                         metadata collection.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public Relationship reIdentifyRelationship(String     userId,
@@ -2850,7 +3247,8 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                                                String     newRelationshipGUID) throws InvalidParameterException,
                                                                                       RepositoryErrorException,
                                                                                       RelationshipNotKnownException,
-                                                                                      UserNotAuthorizedException
+                                                                                      UserNotAuthorizedException,
+                                                                                      FunctionNotSupportedException
     {
         final String  methodName = "reIdentifyRelationship";
         final String  instanceParameterName = "relationshipGUID";
@@ -2910,6 +3308,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
      * @throws PropertyErrorException The properties in the instance are incompatible with the requested type.
      * @throws RelationshipNotKnownException the relationship identified by the guid is not found in the
      *                                         metadata collection.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public Relationship reTypeRelationship(String         userId,
@@ -2920,7 +3319,8 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                                                                                     TypeErrorException,
                                                                                     PropertyErrorException,
                                                                                     RelationshipNotKnownException,
-                                                                                    UserNotAuthorizedException
+                                                                                    UserNotAuthorizedException,
+                                                                                    FunctionNotSupportedException
     {
         final String methodName = "reTypeRelationship";
         final String relationshipParameterName = "relationshipGUID";
@@ -2993,6 +3393,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
      *                                    the metadata collection is stored.
      * @throws RelationshipNotKnownException the relationship identified by the guid is not found in the
      *                                         metadata collection.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public Relationship reHomeRelationship(String   userId,
@@ -3004,7 +3405,8 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                                            String   newHomeMetadataCollectionName) throws InvalidParameterException,
                                                                                           RepositoryErrorException,
                                                                                           RelationshipNotKnownException,
-                                                                                          UserNotAuthorizedException
+                                                                                          UserNotAuthorizedException,
+                                                                                          FunctionNotSupportedException
     {
         final String  methodName               = "reHomeRelationship";
         final String guidParameterName         = "typeDefGUID";
@@ -3109,6 +3511,71 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
 
 
     /**
+     * Retrieve any locally homed classifications assigned to the requested entity.  This method is implemented by repository connectors that are able
+     * to store classifications for entities that are homed in another repository.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityGUID unique identifier of the entity with classifications to retrieve
+     * @return list of all of the classifications for this entity that are homed in this repository
+     * @throws InvalidParameterException the entity is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws EntityNotKnownException the entity is not recognized by this repository
+     * @throws UserNotAuthorizedException to calling user is not authorized to retrieve this metadata
+     * @throws FunctionNotSupportedException this method is not supported
+     */
+    public List<Classification> getHomeClassifications(String userId,
+                                                       String entityGUID) throws InvalidParameterException,
+                                                                                 RepositoryErrorException,
+                                                                                 EntityNotKnownException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 FunctionNotSupportedException
+    {
+        final String  methodName = "getHomeClassifications";
+        final String  guidParameterName = "entityGUID";
+
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        repositoryValidator.validateUserId(repositoryName, userId, methodName);
+        repositoryValidator.validateGUID(repositoryName, guidParameterName, entityGUID, methodName);
+
+        EntityDetail retrievedEntity = repositoryStore.getEntity(entityGUID);
+
+        List<Classification> homeClassifications = new ArrayList<>();
+
+        if (retrievedEntity != null)
+        {
+            List<Classification> retrievedClassifications = retrievedEntity.getClassifications();
+
+            if (retrievedClassifications != null)
+            {
+                for (Classification retrievedClassification : retrievedClassifications)
+                {
+                    if (retrievedClassification != null)
+                    {
+                        if (metadataCollectionId.equals(retrievedClassification.getMetadataCollectionId()))
+                        {
+                            /*
+                             * Locally homed classification
+                             */
+                            homeClassifications.add(retrievedClassification);
+                        }
+                    }
+                }
+            }
+        }
+
+        if (homeClassifications.isEmpty())
+        {
+            return null;
+        }
+
+        return homeClassifications;
+    }
+
+
+    /**
      * Remove a reference copy of the the entity from the local repository.  This method can be used to
      * remove reference copies from the local cohort, repositories that have left the cohort,
      * or entities that have come from open metadata archives.
@@ -3163,6 +3630,173 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         else
         {
             super.reportEntityNotKnown(entityGUID, methodName);
+        }
+    }
+
+
+    /**
+     * Save the classification as a reference copy.  The id of the home metadata collection is already set up in the
+     * classification.  The entity may be either a locally homed entity or a reference copy.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entity entity that the classification is attached to.
+     * @param classification classification to save.
+     *
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                characteristics in the TypeDef for this classification type.
+     * @throws TypeErrorException the requested type is not known, or not supported in the metadata repository
+     *                            hosting the metadata collection.
+     */
+    public void saveClassificationReferenceCopy(String         userId,
+                                                EntityDetail   entity,
+                                                Classification classification) throws InvalidParameterException,
+                                                                                      RepositoryErrorException,
+                                                                                      TypeErrorException,
+                                                                                      PropertyErrorException
+    {
+        final String  methodName = "saveClassificationReferenceCopy";
+        final String  classificationParameterName = "classification";
+        final String  propertiesParameterName = "classification.getProperties()";
+
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        EntityDetail retrievedEntity = repositoryStore.getEntity(entity.getGUID());
+        if ((retrievedEntity == null) && (! metadataCollectionId.equals(entity.getMetadataCollectionId())))
+        {
+            /*
+             * If the entity is a reference copy then it can be stored in the repository.
+             */
+            retrievedEntity = entity;
+        }
+
+        if (retrievedEntity != null)
+        {
+            try
+            {
+                repositoryValidator.validateEntityFromStore(repositoryName, entity.getGUID(), retrievedEntity, methodName);
+                repositoryValidator.validateEntityIsNotDeleted(repositoryName, retrievedEntity, methodName);
+
+                repositoryValidator.validateInstanceType(repositoryName, entity);
+
+                InstanceType entityType = entity.getType();
+
+                repositoryValidator.validateClassification(repositoryName,
+                                                           classificationParameterName,
+                                                           classification.getName(),
+                                                           entityType.getTypeDefName(),
+                                                           methodName);
+
+                repositoryValidator.validateClassificationProperties(repositoryName,
+                                                                     classification.getName(),
+                                                                     propertiesParameterName,
+                                                                     classification.getProperties(),
+                                                                     methodName);
+
+                /*
+                 * Validation complete - ok to update entity
+                 */
+
+                EntityDetail updatedEntity = repositoryHelper.addClassificationToEntity(repositoryName,
+                                                                                        retrievedEntity,
+                                                                                        classification,
+                                                                                        methodName);
+
+                if (metadataCollectionId.equals(entity.getMetadataCollectionId()))
+                {
+                    updatedEntity = repositoryHelper.incrementVersion(userId, retrievedEntity, updatedEntity);
+                    repositoryStore.updateEntityInStore(updatedEntity);
+                }
+                else
+                {
+                    repositoryStore.saveReferenceEntityToStore(entity);
+                }
+
+                /*
+                 * The repository store maintains an entity proxy for use with relationships.
+                 */
+                EntityProxy entityProxy = repositoryHelper.getNewEntityProxy(repositoryName, updatedEntity);
+
+                repositoryStore.updateEntityProxyInStore(entityProxy);
+            }
+            catch (EntityNotKnownException  error)
+            {
+                // Ignore since the entity has been removed since the classification was added
+            }
+            catch (ClassificationErrorException error)
+            {
+                throw new TypeErrorException(error);
+            }
+        }
+    }
+
+
+    /**
+     * Remove the reference copy of the classification from the local repository. This method can be used to
+     * remove reference copies from the local cohort, repositories that have left the cohort,
+     * or relationships that have come from open metadata archives.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entity entity that the classification is attached to.
+     * @param classification classification to purge.
+     *
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws TypeErrorException the requested type is not known, or not supported in the metadata repository
+     *                            hosting the metadata collection.
+     */
+    public  void purgeClassificationReferenceCopy(String         userId,
+                                                  EntityDetail   entity,
+                                                  Classification classification) throws TypeErrorException,
+                                                                                        RepositoryErrorException
+    {
+        final String methodName                  = "purgeClassificationReferenceCopy";
+
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        EntityDetail retrievedEntity = repositoryStore.getEntity(entity.getGUID());
+        if ((retrievedEntity == null) && (!metadataCollectionId.equals(entity.getMetadataCollectionId())))
+        {
+            /*
+             * If the entity is a reference copy then it can be stored in the repository.
+             */
+            retrievedEntity = entity;
+        }
+
+        if (retrievedEntity != null)
+        {
+            try
+            {
+                EntityDetail updatedEntity = repositoryHelper.deleteClassificationFromEntity(repositoryName,
+                                                                                             entity,
+                                                                                             classification.getName(),
+                                                                                             methodName);
+
+                if (metadataCollectionId.equals(entity.getMetadataCollectionId()))
+                {
+                    updatedEntity = repositoryHelper.incrementVersion(userId, retrievedEntity, updatedEntity);
+                    repositoryStore.updateEntityInStore(updatedEntity);
+                }
+                else
+                {
+                    repositoryStore.saveReferenceEntityToStore(entity);
+                }
+
+                /*
+                 * The repository store maintains an entity proxy for use with relationships.
+                 */
+                EntityProxy entityProxy = repositoryHelper.getNewEntityProxy(repositoryName, updatedEntity);
+
+                repositoryStore.updateEntityProxyInStore(entityProxy);
+            }
+            catch (ClassificationErrorException error)
+            {
+                throw new TypeErrorException(error);
+            }
         }
     }
 

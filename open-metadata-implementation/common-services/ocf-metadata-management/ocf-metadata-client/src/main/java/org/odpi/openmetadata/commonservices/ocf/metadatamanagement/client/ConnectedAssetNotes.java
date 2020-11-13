@@ -20,6 +20,8 @@ import java.util.List;
  */
 public class ConnectedAssetNotes extends AssetNotes
 {
+    private static final long    serialVersionUID = 1L;
+
     private String                 serviceName;
     private String                 serverName;
     private String                 userId;
@@ -141,9 +143,9 @@ public class ConnectedAssetNotes extends AssetNotes
                                                                        cacheStartPointer,
                                                                        maximumSize);
 
-            restExceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-            restExceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-            restExceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+            restExceptionHandler.detectAndThrowInvalidParameterException(restResult);
+            restExceptionHandler.detectAndThrowUserNotAuthorizedException(restResult);
+            restExceptionHandler.detectAndThrowPropertyServerException(restResult);
 
             List<Note>  beans = restResult.getList();
             if ((beans == null) || (beans.isEmpty()))

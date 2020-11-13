@@ -124,10 +124,13 @@ public class OMRSRepositoryHelperTest
 
         // test 2 ensure that it is not recognized as an exact match (non-regex)
         assertFalse(createHelper().isExactMatchRegex(testRegex));
+        assertFalse(createHelper().isExactMatchRegex(testRegex, true));
 
         // test 3 ensure that getting the exact match literal IS recognized as an exact match (not a regex)
         String testExactMatch = createHelper().getExactMatchRegex(testRegex);
         assertTrue(createHelper().isExactMatchRegex(testExactMatch));
+        assertTrue(createHelper().isExactMatchRegex(testExactMatch, false));
+        assertFalse(createHelper().isExactMatchRegex(testExactMatch, true));
 
         // test 4 ensure that the exact match literal does NOT match the test match any more
         assertFalse(Pattern.matches(testExactMatch, testMatch));
@@ -137,30 +140,63 @@ public class OMRSRepositoryHelperTest
 
         // test 6 ensure that un-qualifying the exact match gives us our original string back
         String testBack = createHelper().getUnqualifiedLiteralString(testExactMatch);
-        assertTrue(testBack.equals(testRegex));
+        assertEquals(testRegex, testBack);
 
         String testString = "a-b-c-d-e-f-g";
 
         // test 7 test that "contains" works
         String contains = "c-d-e";
         String testContains = createHelper().getContainsRegex(contains);
+        assertTrue(createHelper().isContainsRegex(testContains));
+        assertTrue(createHelper().isContainsRegex(testContains, false));
+        assertFalse(createHelper().isContainsRegex(testContains, true));
         assertTrue(Pattern.matches(testContains, testString));
         assertFalse(Pattern.matches(testContains, "d"));
-        assertTrue(createHelper().getUnqualifiedLiteralString(testContains).equals(contains));
+        assertEquals(contains, createHelper().getUnqualifiedLiteralString(testContains));
+        contains = "C-d-E";
+        testContains = createHelper().getContainsRegex(contains, true);
+        assertTrue(createHelper().isContainsRegex(testContains));
+        assertTrue(createHelper().isContainsRegex(testContains, true));
+        assertFalse(createHelper().isContainsRegex(testContains, false));
+        assertTrue(Pattern.matches(testContains, testString));
+        assertFalse(Pattern.matches(testContains, "d"));
+        assertEquals(contains, createHelper().getUnqualifiedLiteralString(testContains));
 
         // test 8 test that "startswith" works
         String startsWith = "a-b-c";
         String testStartsWith = createHelper().getStartsWithRegex(startsWith);
+        assertTrue(createHelper().isStartsWithRegex(testStartsWith));
+        assertTrue(createHelper().isStartsWithRegex(testStartsWith, false));
+        assertFalse(createHelper().isStartsWithRegex(testStartsWith, true));
         assertTrue(Pattern.matches(testStartsWith, testString));
         assertFalse(Pattern.matches(testStartsWith, "x" + testString));
-        assertTrue(createHelper().getUnqualifiedLiteralString(testStartsWith).equals(startsWith));
+        assertEquals(startsWith, createHelper().getUnqualifiedLiteralString(testStartsWith));
+        startsWith = "A-B-c";
+        testStartsWith = createHelper().getStartsWithRegex(startsWith, true);
+        assertTrue(createHelper().isStartsWithRegex(testStartsWith));
+        assertTrue(createHelper().isStartsWithRegex(testStartsWith, true));
+        assertFalse(createHelper().isStartsWithRegex(testStartsWith, false));
+        assertTrue(Pattern.matches(testContains, testString));
+        assertFalse(Pattern.matches(testContains, "d"));
+        assertEquals(startsWith, createHelper().getUnqualifiedLiteralString(testStartsWith));
 
         // test 9 test that "endswith" works
         String endsWith = "e-f-g";
         String testEndsWith = createHelper().getEndsWithRegex(endsWith);
+        assertTrue(createHelper().isEndsWithRegex(testEndsWith));
+        assertTrue(createHelper().isEndsWithRegex(testEndsWith, false));
+        assertFalse(createHelper().isEndsWithRegex(testEndsWith, true));
         assertTrue(Pattern.matches(testEndsWith, testString));
         assertFalse(Pattern.matches(testEndsWith, testString + "x"));
-        assertTrue(createHelper().getUnqualifiedLiteralString(testEndsWith).equals(endsWith));
+        assertEquals(endsWith, createHelper().getUnqualifiedLiteralString(testEndsWith));
+        endsWith = "e-F-G";
+        testEndsWith = createHelper().getEndsWithRegex(endsWith, true);
+        assertTrue(createHelper().isEndsWithRegex(testEndsWith));
+        assertTrue(createHelper().isEndsWithRegex(testEndsWith, true));
+        assertFalse(createHelper().isEndsWithRegex(testEndsWith, false));
+        assertTrue(Pattern.matches(testEndsWith, testString));
+        assertFalse(Pattern.matches(testEndsWith, testString + "x"));
+        assertEquals(endsWith, createHelper().getUnqualifiedLiteralString(testEndsWith));
 
         // test 10 ensure that multi-literal regexes do not match
         String multiExact = "\\Qsome.exact\\Eand.not\\Qand.more\\E";

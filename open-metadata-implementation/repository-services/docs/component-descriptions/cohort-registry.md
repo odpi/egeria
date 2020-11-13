@@ -3,17 +3,22 @@
 
 # Cohort Registry
 
-The OMRS Cohort Registry resides in each **[open metadata repository](../open-metadata-repository.md)**.
-It is responsible for registering a server with a specific **[open metadata repository cohort](../open-metadata-repository-cohort.md)**. 
+The OMRS **Cohort Registry** resides in each
+**[cohort member](../cohort-member.md)**.
+It is responsible for registering a member
+with a specific **[open metadata repository cohort](../open-metadata-repository-cohort.md)**
+and maintaining a list of the other members of this cohort.
 
-An open metadata repository cohort is a group of metadata servers that need to share metadata.
-Each of these servers runs their own Cohort Registry.
-The Cohort Registries communicate with one another peer-to-peer,
-exchanging registration information and validating that the open metadata
-type definitions that the repositories in the cohort each support are not in
-conflict with one another.
+The registration process is managed by exchanging [Registry Events](../event-descriptions/registry-events.md)
+over the [Cohort Topic](../omrs-event-topic.md).
 
+The cohort registry maintains its record of the membership
+of the cohort in a
+[Cohort Registry Store](../component-descriptions/connectors/cohort-registry-store-connector.md).
 
+## Further information
+
+* [Configuring the cohort registry in an OMAG Server](../../../admin-services/docs/concepts/cohort-member.md)
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

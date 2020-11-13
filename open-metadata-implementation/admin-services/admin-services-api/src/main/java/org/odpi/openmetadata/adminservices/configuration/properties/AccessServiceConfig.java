@@ -6,9 +6,8 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceOperationalStatus;
+import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.VirtualConnection;
 
 import java.util.Map;
 import java.util.Objects;
@@ -33,7 +32,7 @@ public class AccessServiceConfig extends AdminServicesConfigHeader
     private String                         accessServiceURLMarker         = null;
     private String                         accessServiceDescription       = null;
     private String                         accessServiceWiki              = null;
-    private AccessServiceOperationalStatus accessServiceOperationalStatus = null;
+    private ServiceOperationalStatus       accessServiceOperationalStatus = null;
     private Connection                     accessServiceInTopic           = null;
     private Connection                     accessServiceOutTopic          = null;
     private Map<String, Object>            accessServiceOptions           = null;
@@ -64,6 +63,7 @@ public class AccessServiceConfig extends AdminServicesConfigHeader
             accessServiceName = template.getAccessServiceName();
             accessServiceFullName = template.getAccessServiceFullName();
             accessServiceDescription = template.getAccessServiceDescription();
+            accessServiceURLMarker = template.getAccessServiceURLMarker();
             accessServiceWiki = template.getAccessServiceWiki();
             accessServiceOperationalStatus = template.getAccessServiceOperationalStatus();
             accessServiceInTopic = template.getAccessServiceInTopic();
@@ -212,7 +212,7 @@ public class AccessServiceConfig extends AdminServicesConfigHeader
      *
      * @param accessServiceURLMarker url fragment
      */
-    public void setServiceURLMarker(String accessServiceURLMarker)
+    public void setAccessServiceURLMarker(String accessServiceURLMarker)
     {
         this.accessServiceURLMarker = accessServiceURLMarker;
     }
@@ -268,7 +268,7 @@ public class AccessServiceConfig extends AdminServicesConfigHeader
      *
      * @return AccessServiceOperationalStatus enum
      */
-    public AccessServiceOperationalStatus getAccessServiceOperationalStatus()
+    public ServiceOperationalStatus getAccessServiceOperationalStatus()
     {
         return accessServiceOperationalStatus;
     }
@@ -279,7 +279,7 @@ public class AccessServiceConfig extends AdminServicesConfigHeader
      *
      * @param accessServiceOperationalStatus AccessServiceOperationalStatus enum
      */
-    public void setAccessServiceOperationalStatus(AccessServiceOperationalStatus accessServiceOperationalStatus)
+    public void setAccessServiceOperationalStatus(ServiceOperationalStatus accessServiceOperationalStatus)
     {
         this.accessServiceOperationalStatus = accessServiceOperationalStatus;
     }
@@ -382,6 +382,7 @@ public class AccessServiceConfig extends AdminServicesConfigHeader
                 "accessServiceId=" + accessServiceId +
                 ", accessServiceAdminClass='" + accessServiceAdminClass + '\'' +
                 ", accessServiceName='" + accessServiceName + '\'' +
+                ", accessServiceFullName='" + accessServiceFullName + '\'' +
                 ", accessServiceURLMarker='" + accessServiceURLMarker + '\'' +
                 ", accessServiceDescription='" + accessServiceDescription + '\'' +
                 ", accessServiceWiki='" + accessServiceWiki + '\'' +

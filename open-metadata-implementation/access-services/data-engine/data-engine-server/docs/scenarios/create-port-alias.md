@@ -7,7 +7,7 @@ Create a PortAlias, with a PortDelegation relationship to a PortImplementation.
 The PortAlias type and the delegated PortImplementation type must be the same.
 
 ```
-POST {{omas-url}}/servers/{{server-id-omas}}/open-metadata/access-services/data-engine/users/{{user-id}}/port-aliases
+POST {serverURLRoot}/servers/{serverName}/open-metadata/access-services/data-engine/users/{userId}/port-aliases
 
 {	
 	"portAlias": 

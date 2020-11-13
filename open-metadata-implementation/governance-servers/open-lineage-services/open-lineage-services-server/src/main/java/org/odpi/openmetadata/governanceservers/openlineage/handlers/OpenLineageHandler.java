@@ -3,16 +3,16 @@
 package org.odpi.openmetadata.governanceservers.openlineage.handlers;
 
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageException;
-import org.odpi.openmetadata.governanceservers.openlineage.maingraph.MainGraph;
+import org.odpi.openmetadata.governanceservers.openlineage.graph.LineageGraph;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse;
 
 public class OpenLineageHandler {
 
-    private MainGraph mainGraph;
+    private LineageGraph lineageGraph;
 
-    public OpenLineageHandler(MainGraph mainGraph) {
-        this.mainGraph = mainGraph;
+    public OpenLineageHandler(LineageGraph lineageGraph) {
+        this.lineageGraph = lineageGraph;
     }
 
     /**
@@ -25,8 +25,7 @@ public class OpenLineageHandler {
      * @return A subgraph containing all relevant paths, in graphSON format.
      */
     public LineageResponse lineage(Scope scope, String guid, String displayNameMustContain, boolean includeProcesses) throws OpenLineageException {
-        return mainGraph.lineage(scope, guid, displayNameMustContain, includeProcesses);
+        return lineageGraph.lineage(scope, guid, displayNameMustContain, includeProcesses);
     }
-
 
 }

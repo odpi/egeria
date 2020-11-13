@@ -175,6 +175,7 @@ public enum ConformanceSuiteErrorCode
     private String userAction;
 
     private static final Logger log = LoggerFactory.getLogger(ConformanceSuiteErrorCode.class);
+    private static final long   serialVersionUID = 1L;
 
 
     /**

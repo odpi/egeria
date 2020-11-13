@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.connectors.properties;
 
+import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ import java.util.List;
  */
 public class MockDisconnectedAssetPropertyIterator extends AssetPropertyIteratorBase implements Iterator<MockAssetProperty>
 {
+    private static final long     serialVersionUID = 1L;
 
     /**
      * Typical Constructor creates an iterator with the supplied list of comments.
@@ -124,6 +126,8 @@ public class MockDisconnectedAssetPropertyIterator extends AssetPropertyIterator
     protected List<AssetPropertyBase> getCachedList(int  cacheStartPointer,
                                                     int  maximumSize) throws PropertyServerException
     {
-        throw new PropertyServerException(400, "Disconnected", "", "", "", "");
+        throw new PropertyServerException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition("IteratorName", "entityGUID", "entityType"),
+                                          this.getClass().getName(),
+                                          "getCachedList");
     }
 }

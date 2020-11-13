@@ -22,7 +22,7 @@ public class RESTClientConnectorProvider extends ConnectorProviderBase
      */
     public RESTClientConnectorProvider()
     {
-        Class    connectorClass = RESTClientConnector.class;
+        Class<?>    connectorClass = RESTClientConnector.class;
 
         super.setConnectorClassName(connectorClass.getName());
 

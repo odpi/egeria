@@ -88,7 +88,26 @@ to the OMAG server platform.
 
 Swagger API documentation is generated with the chassis and is documented in [Swagger Generation](SwaggerGeneration.md).
 
+## Spring Boot Actuator
 
+Spring Boot Actuator is used to expose operational information about the running application such as health, metrics, info, dump. 
+It uses HTTP endpoints or JMX beans to enable us to interact with it. 
+
+A “discovery page” is added with links to all the endpoints. The “discovery page” is available on /actuator by default.
+Once this dependency is on the class-path /info and /health endpoints are available out of the box. 
+
+In order to expose all endpoints over HTTP, use the following property:
+```
+management.endpoints.web.exposure.inlude=*
+```
+
+The `exclude` property lists the IDs of the endpoints that should not be exposed.
+For example, to expose everything over HTTP except the env and beans endpoints, use the following properties:
+```
+management.endpoints.web.exposure.include=*
+management.endpoints.web.exposure.exclude=env,beans
+```
+The exclude property takes precedence over the include property.
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

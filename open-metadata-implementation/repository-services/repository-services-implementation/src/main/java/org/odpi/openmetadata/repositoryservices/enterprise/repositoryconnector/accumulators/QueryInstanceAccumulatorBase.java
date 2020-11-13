@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.accumulators;
 
 
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceHeader;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryValidator;
 
@@ -26,9 +26,9 @@ public class QueryInstanceAccumulatorBase extends QueryAccumulatorBase
      * @param auditLog audit log provides destination for log messages
      * @param repositoryValidator validator provides common validation routines
      */
-    QueryInstanceAccumulatorBase(String                            localMetadataCollectionId,
-                                 OMRSAuditLog                      auditLog,
-                                 OMRSRepositoryValidator           repositoryValidator)
+    QueryInstanceAccumulatorBase(String                  localMetadataCollectionId,
+                                 AuditLog                auditLog,
+                                 OMRSRepositoryValidator repositoryValidator)
     {
         super(localMetadataCollectionId, auditLog, repositoryValidator);
     }

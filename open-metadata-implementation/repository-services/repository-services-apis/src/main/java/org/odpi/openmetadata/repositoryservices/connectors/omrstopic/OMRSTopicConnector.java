@@ -3,14 +3,14 @@
 package org.odpi.openmetadata.repositoryservices.connectors.omrstopic;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.VirtualConnectorExtension;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditCode;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.repositoryservices.ffdc.OMRSAuditCode;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
-import org.odpi.openmetadata.repositoryservices.connectors.auditable.AuditableConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicListener;
 import org.odpi.openmetadata.repositoryservices.events.OMRSEventProtocolVersion;
@@ -57,21 +57,21 @@ import java.util.List;
 public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
                                                                  VirtualConnectorExtension,
                                                                  OpenMetadataTopicListener,
-                                                                 AuditableConnector
+                                                                 AuditLoggingComponent
 {
     private static final Logger       log      = LoggerFactory.getLogger(OMRSTopicConnector.class);
-
-    private static final String connectorName    = "OMRSTopicListener";
 
     private List<Connector> embeddedConnectors = null;
 
     private List<OMRSTopicListener>          internalTopicListeners = new ArrayList<>();
     private List<OpenMetadataTopicConnector> eventBusConnectors     = new ArrayList<>();
 
-    private String                    connectionName       = connectorName;
+    private String                    connectionName       = OMRSAuditingComponent.OMRS_TOPIC_CONNECTOR.getComponentName();
+    private String                    topicName = "<Unknown>";
     private OMRSEventProtocolVersion  eventProtocolVersion = OMRSEventProtocolVersion.V1;
 
-    protected OMRSAuditLog     auditLog = null;
+    protected AuditLog auditLog = null;
+
 
     /**
      * Default constructor
@@ -100,7 +100,7 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
      *
      * @param auditLog audit log object
      */
-    public void setAuditLog(OMRSAuditLog   auditLog)
+    public void setAuditLog(AuditLog   auditLog)
     {
         this.auditLog = auditLog;
     }
@@ -137,16 +137,9 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
         {
             final String            methodName = "registerListener";
 
-            OMRSErrorCode errorCode = OMRSErrorCode.NULL_OPEN_METADATA_TOPIC_LISTENER;
-            String        errorMessage = errorCode.getErrorMessageId()
-                                       + errorCode.getFormattedErrorMessage(connectionName);
-
-            throw new OMRSLogicErrorException(errorCode.getHTTPErrorCode(),
+            throw new OMRSLogicErrorException(OMRSErrorCode.NULL_OPEN_METADATA_TOPIC_LISTENER.getMessageDefinition(connectionName),
                                               this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction());
+                                              methodName);
         }
     }
 
@@ -163,22 +156,17 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
     {
         if (topicListener != null)
         {
-            internalTopicListeners.add(new OMRSTopicListenerWrapper(topicListener, serviceName, auditLog));
+            internalTopicListeners.add(new OMRSTopicListenerWrapper(topicListener,
+                                                                    serviceName,
+                                                                    auditLog.createNewAuditLog(OMRSAuditingComponent.ENTERPRISE_TOPIC_LISTENER)));
         }
         else
         {
             final String            methodName = "registerListener";
 
-            OMRSErrorCode errorCode = OMRSErrorCode.NULL_OPEN_METADATA_TOPIC_LISTENER;
-            String        errorMessage = errorCode.getErrorMessageId()
-                                       + errorCode.getFormattedErrorMessage(connectionName);
-
-            throw new OMRSLogicErrorException(errorCode.getHTTPErrorCode(),
+            throw new OMRSLogicErrorException(OMRSErrorCode.NULL_OPEN_METADATA_TOPIC_LISTENER.getMessageDefinition(connectionName),
                                               this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction());
+                                              methodName);
         }
     }
 
@@ -193,13 +181,12 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
     {
         super.start();
 
+        final String methodName = "start";
+
         /*
          * Save the name of the connection for error messages.
          */
-        if (super.connectionProperties != null)
-        {
-            connectionName = super.connectionProperties.getConnectionName();
-        }
+        connectionName = OMRSAuditingComponent.OMRS_TOPIC_CONNECTOR.getComponentName();
 
         log.debug("Initializing OMRSTopicConnector: " + connectionName);
 
@@ -227,19 +214,15 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
                             realTopicConnector.setAuditLog(auditLog.createNewAuditLog(OMRSAuditingComponent.OPEN_METADATA_TOPIC_CONNECTOR));
                         }
 
-                        String   topicName = realTopicConnector.registerListener(this);
+                        topicName = realTopicConnector.registerListener(this);
+
                         this.eventBusConnectors.add(realTopicConnector);
 
                         if (auditLog != null)
                         {
-                            OMRSAuditCode auditCode = OMRSAuditCode.OMRS_TOPIC_LISTENER_REGISTERED;
-                            auditLog.logRecord(connectorName,
-                                               auditCode.getLogMessageId(),
-                                               auditCode.getSeverity(),
-                                               auditCode.getFormattedLogMessage(connectionName, topicName),
-                                               this.getConnection().toString(),
-                                               auditCode.getSystemAction(),
-                                               auditCode.getUserAction());
+                            auditLog.logMessage(methodName,
+                                                OMRSAuditCode.OMRS_TOPIC_LISTENER_REGISTERED.getMessageDefinition(topicName),
+                                                this.getConnection().toString());
                         }
                     }
                 }
@@ -251,30 +234,16 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
          */
         if (this.eventBusConnectors.isEmpty())
         {
-            final String            methodName = "start";
-
             if (auditLog != null)
             {
-                OMRSAuditCode auditCode = OMRSAuditCode.OMRS_TOPIC_LISTENER_DEAF;
-                auditLog.logRecord(connectorName,
-                                   auditCode.getLogMessageId(),
-                                   auditCode.getSeverity(),
-                                   auditCode.getFormattedLogMessage(connectionName),
-                                   this.getConnection().toString(),
-                                   auditCode.getSystemAction(),
-                                   auditCode.getUserAction());
+                auditLog.logMessage(methodName,
+                                    OMRSAuditCode.OMRS_TOPIC_LISTENER_DEAF.getMessageDefinition(),
+                                    this.getConnection().toString());
             }
 
-            OMRSErrorCode errorCode = OMRSErrorCode.NO_EVENT_BUS_CONNECTORS;
-            String        errorMessage = errorCode.getErrorMessageId()
-                                       + errorCode.getFormattedErrorMessage(connectionName);
-
-            throw new ConnectorCheckedException(errorCode.getHTTPErrorCode(),
+            throw new ConnectorCheckedException(OMRSErrorCode.NO_EVENT_BUS_CONNECTORS.getMessageDefinition(connectionName),
                                                 this.getClass().getName(),
-                                                methodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction());
+                                                methodName);
         }
         else
         {
@@ -285,14 +254,9 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
 
             if (auditLog != null)
             {
-                OMRSAuditCode auditCode = OMRSAuditCode.OMRS_TOPIC_LISTENER_STARTED;
-                auditLog.logRecord(connectorName,
-                                   auditCode.getLogMessageId(),
-                                   auditCode.getSeverity(),
-                                   auditCode.getFormattedLogMessage(connectionName),
-                                   this.getConnection().toString(),
-                                   auditCode.getSystemAction(),
-                                   auditCode.getUserAction());
+                auditLog.logMessage(methodName,
+                                    OMRSAuditCode.OMRS_TOPIC_LISTENER_STARTED.getMessageDefinition(topicName),
+                                    this.getConnection().toString());
             }
         }
     }
@@ -302,23 +266,17 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
      * Log that this connector does not support the requested event protocol.
      * This protocol level is requested in the configuration.
      *
+     * @param methodName calling method
      * @throws ConnectorCheckedException unsupported event protocol
      */
-    private void handleUnsupportedEventVersion() throws ConnectorCheckedException
+    private void handleUnsupportedEventVersion(String methodName) throws ConnectorCheckedException
     {
         log.debug("Unsupported Protocol: " + eventProtocolVersion);
 
-        OMRSErrorCode errorCode = OMRSErrorCode.OMRS_UNSUPPORTED_EVENT_PROTOCOL;
-        String errorMessage = errorCode.getErrorMessageId()
-                                      + errorCode.getFormattedErrorMessage(connectionName,
-                                                                           eventProtocolVersion.toString());
-
-        throw new ConnectorCheckedException(errorCode.getHTTPErrorCode(),
+        throw new ConnectorCheckedException(OMRSErrorCode.OMRS_UNSUPPORTED_EVENT_PROTOCOL.getMessageDefinition(connectionName,
+                                                                                                               eventProtocolVersion.toString()),
                                             this.getClass().getName(),
-                                            connectorName,
-                                            errorMessage,
-                                            errorCode.getSystemAction(),
-                                            errorCode.getUserAction());
+                                            methodName);
     }
 
 
@@ -330,13 +288,15 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
      */
     public void sendRegistryEvent(OMRSRegistryEvent registryEvent) throws ConnectorCheckedException
     {
+        final String methodName = "sendRegistryEvent";
+
         if (eventProtocolVersion == OMRSEventProtocolVersion.V1)
         {
             this.sendEvent(registryEvent.getOMRSEventV1());
         }
         else
         {
-            this.handleUnsupportedEventVersion();
+            this.handleUnsupportedEventVersion(methodName);
         }
     }
 
@@ -349,13 +309,15 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
      */
     public void sendTypeDefEvent(OMRSTypeDefEvent typeDefEvent) throws ConnectorCheckedException
     {
+        final String methodName = "sendTypeDefEvent";
+
         if (eventProtocolVersion == OMRSEventProtocolVersion.V1)
         {
             this.sendEvent(typeDefEvent.getOMRSEventV1());
         }
         else
         {
-            this.handleUnsupportedEventVersion();
+            this.handleUnsupportedEventVersion(methodName);
         }
     }
 
@@ -369,13 +331,15 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
      */
     public void sendInstanceEvent(OMRSInstanceEvent instanceEvent) throws ConnectorCheckedException
     {
+        final String methodName = "sendInstanceEvent";
+
         if (eventProtocolVersion == OMRSEventProtocolVersion.V1)
         {
             this.sendEvent(instanceEvent.getOMRSEventV1());
         }
         else
         {
-            this.handleUnsupportedEventVersion();
+            this.handleUnsupportedEventVersion(methodName);
         }
     }
 
@@ -388,6 +352,8 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
      */
     private void sendEvent(OMRSEventV1 event) throws ConnectorCheckedException
     {
+        final String methodName = "send";
+
         if (event != null)
         {
             try
@@ -412,18 +378,11 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
             {
                 log.debug("Unexpected error sending event: " + exc.getMessage());
 
-                OMRSErrorCode errorCode = OMRSErrorCode.OMRS_TOPIC_SEND_EVENT_FAILED;
-                String        errorMessage = errorCode.getErrorMessageId()
-                                           + errorCode.getFormattedErrorMessage(connectionName,
-                                                                                event.toString(),
-                                                                                exc.getMessage());
-
-                throw new ConnectorCheckedException(errorCode.getHTTPErrorCode(),
+                throw new ConnectorCheckedException(OMRSErrorCode.OMRS_TOPIC_SEND_EVENT_FAILED.getMessageDefinition(connectionName,
+                                                                                                                    event.toString(),
+                                                                                                                    exc.getMessage()),
                                                     this.getClass().getName(),
-                                                    connectorName,
-                                                    errorMessage,
-                                                    errorCode.getSystemAction(),
-                                                    errorCode.getUserAction(),
+                                                    methodName,
                                                     exc);
             }
         }
@@ -431,16 +390,9 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
         {
             log.debug("Unable to send null events");
 
-            OMRSErrorCode errorCode = OMRSErrorCode.OMRS_TOPIC_SEND_NULL_EVENT;
-            String        errorMessage = errorCode.getErrorMessageId()
-                                       + errorCode.getFormattedErrorMessage(connectionName);
-
-            throw new OMRSLogicErrorException(errorCode.getHTTPErrorCode(),
+            throw new OMRSLogicErrorException(OMRSErrorCode.OMRS_TOPIC_SEND_NULL_EVENT.getMessageDefinition(connectionName),
                                               this.getClass().getName(),
-                                              connectorName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction());
+                                              methodName);
         }
     }
 
@@ -453,6 +405,9 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
      */
     public void processEvent(String event)
     {
+        final String actionDescription = "Process an OMRS Event";
+        final String methodName = "processEvent";
+
         if (event != null)
         {
             OMRSEventBean   eventBean = null;
@@ -470,15 +425,8 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
             {
                 if (auditLog != null)
                 {
-                    OMRSAuditCode auditCode = OMRSAuditCode.EVENT_PARSING_ERROR;
-
-                    auditLog.logException(connectorName,
-                                          auditCode.getLogMessageId(),
-                                          auditCode.getSeverity(),
-                                          auditCode.getFormattedLogMessage(event, exception.toString()),
-                                          null,
-                                          auditCode.getSystemAction(),
-                                          auditCode.getUserAction(),
+                    auditLog.logException(actionDescription,
+                                          OMRSAuditCode.EVENT_PARSING_ERROR.getMessageDefinition(event, exception.toString()),
                                           exception);
                 }
             }
@@ -502,17 +450,11 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
 
                         if (auditLog != null)
                         {
-                            OMRSAuditCode auditCode = OMRSAuditCode.EVENT_PROCESSING_ERROR;
-
-                            auditLog.logException(connectorName,
-                                                  auditCode.getLogMessageId(),
-                                                  auditCode.getSeverity(),
-                                                  auditCode.getFormattedLogMessage(event,
-                                                                                   error.toString(),
-                                                                                   topicListener.toString()),
+                            auditLog.logException(methodName,
+                                                  OMRSAuditCode.EVENT_PROCESSING_ERROR.getMessageDefinition(event,
+                                                                                                            error.toString(),
+                                                                                                            topicListener.toString()),
                                                   event,
-                                                  auditCode.getSystemAction(),
-                                                  auditCode.getUserAction(),
                                                   error);
                         }
                     }
@@ -525,15 +467,7 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
 
             if (auditLog != null)
             {
-                OMRSAuditCode auditCode = OMRSAuditCode.NULL_EVENT_TO_PROCESS;
-
-                auditLog.logRecord(connectorName,
-                                   auditCode.getLogMessageId(),
-                                   auditCode.getSeverity(),
-                                   auditCode.getFormattedLogMessage(connectionName),
-                                   null,
-                                   auditCode.getSystemAction(),
-                                   auditCode.getUserAction());
+                auditLog.logMessage(actionDescription, OMRSAuditCode.NULL_EVENT_TO_PROCESS.getMessageDefinition(connectionName));
             }
         }
     }
@@ -582,15 +516,9 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
                      */
                     if (auditLog != null)
                     {
-                        OMRSAuditCode auditCode = OMRSAuditCode.PROCESS_UNKNOWN_EVENT;
-
-                        auditLog.logRecord(actionDescription,
-                                           auditCode.getLogMessageId(),
-                                           auditCode.getSeverity(),
-                                           auditCode.getFormattedLogMessage(),
-                                           "event {" + event.toString() + "}",
-                                           auditCode.getSystemAction(),
-                                           auditCode.getUserAction());
+                        auditLog.logMessage(actionDescription,
+                                            OMRSAuditCode.PROCESS_UNKNOWN_EVENT.getMessageDefinition(),
+                                           "event {" + event.toString() + "}");
                     }
 
                     log.debug("Unknown event received :|");
@@ -603,15 +531,7 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
              */
             if (auditLog != null)
             {
-                OMRSAuditCode auditCode = OMRSAuditCode.NULL_OMRS_EVENT_RECEIVED;
-
-                auditLog.logRecord(actionDescription,
-                                   auditCode.getLogMessageId(),
-                                   auditCode.getSeverity(),
-                                   auditCode.getFormattedLogMessage(),
-                                   null,
-                                   auditCode.getSystemAction(),
-                                   auditCode.getUserAction());
+                auditLog.logMessage(actionDescription, OMRSAuditCode.NULL_OMRS_EVENT_RECEIVED.getMessageDefinition(topicName));
             }
 
             log.debug("Null OMRS Event received :(");
@@ -627,6 +547,8 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
     {
         super.disconnect();
 
+        final String actionDescription = "Disconnect OMRS Topic Connector";
+
         for (OpenMetadataTopicConnector eventBusConnector : eventBusConnectors)
         {
             eventBusConnector.disconnect();
@@ -634,14 +556,9 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
 
         if (auditLog != null)
         {
-            OMRSAuditCode auditCode = OMRSAuditCode.OMRS_TOPIC_LISTENER_DISCONNECTED;
-            auditLog.logRecord(connectorName,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(connectionName),
-                               this.getConnection().toString(),
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logMessage(actionDescription,
+                                OMRSAuditCode.OMRS_TOPIC_LISTENER_DISCONNECTED.getMessageDefinition(topicName),
+                                this.getConnection().toString());
         }
     }
 }

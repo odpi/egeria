@@ -4,6 +4,7 @@ package org.odpi.openmetadata.adapters.repositoryservices.inmemory.repositorycon
 
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnectorProviderBase;
 
 /**
@@ -29,7 +30,7 @@ public class InMemoryOMRSRepositoryConnectorProvider extends OMRSRepositoryConne
      */
     public InMemoryOMRSRepositoryConnectorProvider()
     {
-        Class    connectorClass = InMemoryOMRSRepositoryConnector.class;
+        Class<?>    connectorClass = InMemoryOMRSRepositoryConnector.class;
 
         super.setConnectorClassName(connectorClass.getName());
 
@@ -42,5 +43,6 @@ public class InMemoryOMRSRepositoryConnectorProvider extends OMRSRepositoryConne
         connectorType.setConnectorProviderClassName(this.getClass().getName());
 
         super.connectorTypeBean = connectorType;
+        super.setConnectorComponentDescription(OMRSAuditingComponent.INMEM_REPOSITORY_CONNECTOR);
     }
 }

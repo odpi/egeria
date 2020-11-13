@@ -15,7 +15,7 @@ referenceable.   It is effectively the simplest type of [review](reviews-and-sta
 * The [Asset Consumer OMAS](../../../asset-consumer) enables the consumer of an asset to
 add a like to an asset.
 These likes are then visible to other asset consumers through the
-[Connected Asset OMAS](../../../connected-asset).
+[OCF Metadata Management APIs](../../../../common-services/ocf-metadata-management).
 The [asset owner](../user-roles/asset-owner.md) can also see the
 likes using the [Asset Owner OMAS](../../../asset-owner).
 

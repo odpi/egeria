@@ -6,7 +6,7 @@
 Security Tags can be attached to assets or schema elements to drive the
 rules inside a security engine.
 
-![UML](0423-Security-Tags.png)
+![UML](0423-Security-Tags.png#pagewidth)
 
 
 Return to [Area 4](Area-4-models.md).

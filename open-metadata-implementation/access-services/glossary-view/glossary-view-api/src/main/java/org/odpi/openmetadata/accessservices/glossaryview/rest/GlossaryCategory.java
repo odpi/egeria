@@ -28,5 +28,12 @@ public class GlossaryCategory extends GlossaryViewEntityDetail {
         return getProperties().get(DESCRIPTION);
     }
 
+    public void setDisplayName(String displayName) {
+        getProperties().put(DISPLAY_NAME, displayName);
+    }
+
+    public void setDescription(String description) {
+        getProperties().put(DESCRIPTION, description);
+    }
 
 }

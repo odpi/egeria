@@ -16,13 +16,15 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * FileSystem describes the root node of a file system.
+ * NewFileSystemProperties describes the root node of a file system.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class NewFileSystemRequestBody extends AssetOwnerOMASAPIRequestBody
 {
+    private static final long    serialVersionUID = 1L;
+
     private String              displayName          = null;
     private String              description          = null;
     private String              uniqueName           = null;

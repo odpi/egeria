@@ -11,6 +11,16 @@ img {
   padding-bottom: 2%;
 }
 
+img[src*="#thumbnail"] {
+   width:150px;
+   height:100px;
+}
+
+img[src*="#pagewidth"] {
+   width:100%;
+}
+
+
 * {
   margin: 0;
   padding: 0;

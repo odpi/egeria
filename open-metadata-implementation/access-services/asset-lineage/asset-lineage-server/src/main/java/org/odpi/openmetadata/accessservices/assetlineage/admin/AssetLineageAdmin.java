@@ -7,28 +7,33 @@ package org.odpi.openmetadata.accessservices.assetlineage.admin;
 import org.odpi.openmetadata.accessservices.assetlineage.auditlog.AssetLineageAuditCode;
 import org.odpi.openmetadata.accessservices.assetlineage.listeners.AssetLineageOMRSTopicListener;
 import org.odpi.openmetadata.accessservices.assetlineage.server.AssetLineageServicesInstance;
+import org.odpi.openmetadata.accessservices.assetlineage.util.AssetLineageConstants;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
+import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * AssetLineageAdmin is the class that is called by the OMAG Server to initialize and terminate
  * the Asset Lineage OMAS. The initialization call provides this OMAS with resources from the
  * Open Metadata Repository Services.
  */
-public class AssetLineageAdmin extends AccessServiceAdmin
-{
+public class AssetLineageAdmin extends AccessServiceAdmin {
 
-    private OMRSAuditLog auditLog;
+    private static final Logger log = LoggerFactory.getLogger(AssetLineageAdmin.class);
+    private AuditLog auditLog;
     private AssetLineageServicesInstance instance;
     private String serverName;
-    private String serverUserName;
-
 
     /**
      * Default constructor
@@ -39,106 +44,97 @@ public class AssetLineageAdmin extends AccessServiceAdmin
     /**
      * Initialize the access service.
      *
-     * @param accessServiceConfig specific configuration properties for this access service.
-     * @param omrsTopicConnector  connector for receiving OMRS Events from the cohorts
-     * @param repositoryConnector connector for querying the cohort repositories
-     * @param auditLog            audit log component for logging messages.
-     * @param serverUserName      user id to use on OMRS calls where there is no end user.
+     * @param accessServiceConfigurationProperties specific configuration properties for this access service.
+     * @param enterpriseOMRSTopicConnector         connector for receiving OMRS Events from the cohorts
+     * @param repositoryConnector                  connector for querying the cohort repositories
+     * @param auditLog                             audit log component for logging messages.
+     * @param serverUserName                       user id to use on OMRS calls where there is no end user.
      * @throws OMAGConfigurationErrorException invalid parameters in the configuration properties.
      */
     @Override
-    public void initialize(AccessServiceConfig accessServiceConfig,
-                           OMRSTopicConnector omrsTopicConnector,
+    public void initialize(AccessServiceConfig accessServiceConfigurationProperties,
+                           OMRSTopicConnector enterpriseOMRSTopicConnector,
                            OMRSRepositoryConnector repositoryConnector,
-                           OMRSAuditLog auditLog,
+                           AuditLog auditLog,
                            String serverUserName) throws OMAGConfigurationErrorException {
         final String actionDescription = "initialize";
-        AssetLineageAuditCode auditCode;
-        this.serverUserName = serverUserName;
-
-        auditCode = AssetLineageAuditCode.SERVICE_INITIALIZING;
-        auditLog.logRecord(actionDescription,
-                auditCode.getLogMessageId(),
-                auditCode.getSeverity(),
-                auditCode.getFormattedLogMessage(),
-                null,
-                auditCode.getSystemAction(),
-                auditCode.getUserAction());
+        auditLog.logMessage(actionDescription, AssetLineageAuditCode.SERVICE_INITIALIZING.getMessageDefinition());
 
         try {
             this.auditLog = auditLog;
 
-            List<String> supportedZones = this.extractSupportedZones(accessServiceConfig.getAccessServiceOptions(),
-                    accessServiceConfig.getAccessServiceName(),
+            List<String> supportedZones = this.extractSupportedZones(accessServiceConfigurationProperties.getAccessServiceOptions(),
+                    accessServiceConfigurationProperties.getAccessServiceName(),
                     auditLog);
 
+            Set<String> lineageClassificationTypes = getLineageClassificationTypes(accessServiceConfigurationProperties);
             this.instance = new AssetLineageServicesInstance(repositoryConnector,
-                    supportedZones,
-                    auditLog,
-                    serverUserName);
+                    supportedZones, lineageClassificationTypes, serverUserName, auditLog);
             this.serverName = instance.getServerName();
 
+            Connection outTopicConnection = accessServiceConfigurationProperties.getAccessServiceOutTopic();
+            if (outTopicConnection != null) {
+                OpenMetadataTopicConnector outTopicConnector = super.getOutTopicEventBusConnector(outTopicConnection,
+                        accessServiceConfigurationProperties.getAccessServiceName(), auditLog);
 
-            /*
-             * Only set up the listening and event publishing if requested in the config.
-             */
-            if (accessServiceConfig.getAccessServiceOutTopic() != null) {
-                AssetLineageOMRSTopicListener omrsTopicListener;
-
-                omrsTopicListener = new AssetLineageOMRSTopicListener(
-                        accessServiceConfig.getAccessServiceOutTopic(),
-                        repositoryConnector.getRepositoryHelper(),
-                        auditLog,
+                AssetLineageOMRSTopicListener omrsTopicListener = new AssetLineageOMRSTopicListener(
+                        repositoryConnector.getRepositoryHelper(), outTopicConnector, serverName,
                         serverUserName,
-                        serverName);
-                super.registerWithEnterpriseTopic(accessServiceConfig.getAccessServiceName(),
+                        lineageClassificationTypes,
+                        auditLog);
+
+                super.registerWithEnterpriseTopic(accessServiceConfigurationProperties.getAccessServiceName(),
                         serverName,
-                        omrsTopicConnector,
+                        enterpriseOMRSTopicConnector,
                         omrsTopicListener,
                         auditLog);
+                this.instance.setAssetLineagePublisher(omrsTopicListener.getPublisher());
             }
 
-            auditCode = AssetLineageAuditCode.SERVICE_INITIALIZED;
-            auditLog.logRecord(actionDescription,
-                    auditCode.getLogMessageId(),
-                    auditCode.getSeverity(),
-                    auditCode.getFormattedLogMessage(serverName),
-                    accessServiceConfig.toString(),
-                    auditCode.getSystemAction(),
-                    auditCode.getUserAction());
+            auditLog.logMessage(actionDescription, AssetLineageAuditCode.SERVICE_INITIALIZED.getMessageDefinition(serverName));
         } catch (OMAGConfigurationErrorException error) {
+            log.error("The Asset Lineage OMAS could not be started", error);
             throw error;
         } catch (Throwable error) {
-            auditCode = AssetLineageAuditCode.SERVICE_INSTANCE_FAILURE;
-            auditLog.logException(actionDescription,
-                    auditCode.getLogMessageId(),
-                    auditCode.getSeverity(),
-                    auditCode.getFormattedLogMessage(error.getMessage()),
-                    accessServiceConfig.toString(),
-                    auditCode.getSystemAction(),
-                    auditCode.getUserAction(),
-                    error);
+            log.error("The Asset Lineage OMAS could not be started", error);
+            auditLog.logException(actionDescription, AssetLineageAuditCode.SERVICE_INSTANCE_FAILURE.getMessageDefinition(error.getMessage(), serverName), error);
+
+            super.throwUnexpectedInitializationException(actionDescription, AccessServiceDescription.ASSET_LINEAGE_OMAS.getAccessServiceFullName(), error);
         }
+    }
+
+    /**
+     * Returns the list of lineage classifications
+     *
+     * @param accessServiceConfig Asset Lineage Configuration
+     * @return the list of the lineage classifications
+     */
+    private Set<String> getLineageClassificationTypes(AccessServiceConfig accessServiceConfig) {
+
+        if (accessServiceConfig.getAccessServiceOptions() != null) {
+            Object lineageClassificationTypesProperty = accessServiceConfig
+                    .getAccessServiceOptions()
+                    .get(AssetLineageConstants.LINEAGE_CLASSIFICATION_TYPES_KEY);
+            if (lineageClassificationTypesProperty != null) {
+                return (Set<String>) lineageClassificationTypesProperty;
+            }
+        }
+
+        return AssetLineageConstants.immutableDefaultLineageClassifications;
     }
 
     /**
      * Shutdown the access service.
      */
     public void shutdown() {
-        final String actionDescription = "shutdown";
-        AssetLineageAuditCode auditCode;
-
         if (instance != null) {
-            this.instance.shutdown();
+            instance.shutdown();
         }
 
-        auditCode = AssetLineageAuditCode.SERVICE_SHUTDOWN;
-        auditLog.logRecord(actionDescription,
-                auditCode.getLogMessageId(),
-                auditCode.getSeverity(),
-                auditCode.getFormattedLogMessage(serverName),
-                null,
-                auditCode.getSystemAction(),
-                auditCode.getUserAction());
+        if (auditLog != null) {
+            final String actionDescription = "shutdown";
+
+            auditLog.logMessage(actionDescription, AssetLineageAuditCode.SERVICE_SHUTDOWN.getMessageDefinition(serverName));
+        }
     }
 }

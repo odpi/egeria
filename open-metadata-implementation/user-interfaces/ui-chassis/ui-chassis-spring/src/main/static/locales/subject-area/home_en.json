@@ -1,8 +1,0 @@
-{
- "subject-area_home_prototypeLabel":"Work in progress. Prototype showing glossary and project dropdown population. Once you have selected a glossary and project, you can change the view to see early implementations of a glossary grid and project grid.",
- "subject-area_home_title":"Subject Area Home",
- "subject-area_home_usage":"For use by subject area experts to author glossaries and their content. Authored content is created in a project.",
- "subject-area_home_project_select":"Select a project to work with:",
- "subject-area_home_glossary_select":"Terms and categories reside in a glossary. Select a glossary to work with:"
-}
-

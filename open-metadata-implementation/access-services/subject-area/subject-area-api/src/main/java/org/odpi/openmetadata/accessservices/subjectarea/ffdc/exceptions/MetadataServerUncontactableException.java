@@ -1,40 +1,42 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-
 package org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions;
 
+
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
+
 /**
- * The MetadataServerUncontactableException is thrown by the Subject Area OMAS when it is not able to communicate with the
- * metadata server.
+ * The MetadataServerUncontactableException is thrown by the Subject Area OMAS when the OMAG server cannot be contacted
+ * value.
  */
-public class MetadataServerUncontactableException extends SubjectAreaCheckedExceptionBase {
+public class MetadataServerUncontactableException extends SubjectAreaCheckedException {
     /**
-     * This is the typical constructor used for creating a MetadataServerUncontactableException.
+     * This is the typical constructor used for creating a MetadataServerUncontactableException
      *
-     * @param httpCode          http response code to use if this exception flows over a rest call
+     * @param messageDefinition content of the message
      * @param className         name of class reporting error
      * @param actionDescription description of function it was performing when error detected
-     * @param errorMessage      description of error
-     * @param systemAction      actions of the system as a result of the error
-     * @param userAction        instructions for correcting the error
      */
-    public MetadataServerUncontactableException(int httpCode, String className, String actionDescription, String errorMessage, String systemAction, String userAction) {
-        super(httpCode, className, actionDescription, errorMessage, systemAction, userAction);
+    public MetadataServerUncontactableException(ExceptionMessageDefinition messageDefinition,
+                                                String className,
+                                                String actionDescription) {
+        super(messageDefinition, className, actionDescription);
     }
 
 
     /**
-     * This is the constructor used for creating a MetadataServerUncontactableException that resulted from a previous error.
+     * This is the constructor used for creating an MetadataServerUncontactableException when an unexpected error has been caught.
+     * The properties allow additional information to be associated with the exception.
      *
-     * @param httpCode          http response code to use if this exception flows over a rest call
+     * @param messageDefinition content of the message
      * @param className         name of class reporting error
      * @param actionDescription description of function it was performing when error detected
-     * @param errorMessage      description of error
-     * @param systemAction      actions of the system as a result of the error
-     * @param userAction        instructions for correcting the error
-     * @param caughtError       the error that resulted in this exception.
+     * @param caughtError       previous error causing this exception
      */
-    public MetadataServerUncontactableException(int httpCode, String className, String actionDescription, String errorMessage, String systemAction, String userAction, Throwable caughtError) {
-        super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError);
+    public MetadataServerUncontactableException(ExceptionMessageDefinition messageDefinition,
+                                                String className,
+                                                String actionDescription,
+                                                Throwable caughtError) {
+        super(messageDefinition, className, actionDescription, caughtError);
     }
 }

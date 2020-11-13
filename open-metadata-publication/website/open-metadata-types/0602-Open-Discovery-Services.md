@@ -16,7 +16,7 @@ A description of an open discovery service is linked with a SupportedDiscoverySe
 description of an [OpenDiscoveryEngine](0601-Open-Discovery-Engine.md) to indicate that
 the discovery engine supports the open discovery service.
 
-![UML](0602-Open-Discovery-Services.png)
+![UML](0602-Open-Discovery-Services.png#pagewidth)
 
 
 Return to [Area 6](Area-6-models.md).

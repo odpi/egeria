@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.frameworks.governanceaction.ffdc;
 
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,20 +29,13 @@ import java.util.Arrays;
  */
 public enum GAFErrorCode 
 {
-    NULL_AUDITLOG_PROPERTYNAME(404,
-            "GAF-AUDITLOG-500-001",
-            "Null property name passed to AuditLogBase {0}",
-            "The addProperty() method was passed a null property name.",
-            "Correct the code in the Java class that receives the exception.");
+    NULL_AUDITLOG_PROPERTY_NAME(404,
+                                "GAF-AUDITLOG-500-001",
+                                "Null property name passed to AuditLogBase {0}",
+                                "The addProperty() method was passed a null property name.",
+                                "Correct the code in the Java class that receives the exception.");
 
-    private int    httpErrorCode;
-    private String errorMessageId;
-    private String errorMessage;
-    private String systemAction;
-    private String userAction;
-
-    private static final Logger log = LoggerFactory.getLogger(GAFErrorCode.class);
-
+    private ExceptionMessageDefinition messageDefinition;
 
     /**
      * The constructor for GAFErrorCode expects to be passed one of the enumeration rows defined in
@@ -51,94 +45,43 @@ public enum GAFErrorCode
      *
      * This will expand out to the 5 parameters shown below.
      *
-     * @param newHTTPErrorCode - error code to use over REST calls
-     * @param newErrorMessageId - unique Id for the message
-     * @param newErrorMessage - text for the message
-     * @param newSystemAction - description of the action taken by the system when the error condition happened
-     * @param newUserAction - instructions for resolving the error
+     * @param httpErrorCode   error code to use over REST calls
+     * @param errorMessageId   unique Id for the message
+     * @param errorMessage   text for the message
+     * @param systemAction   description of the action taken by the system when the error condition happened
+     * @param userAction   instructions for resolving the error
      */
-    GAFErrorCode(int  newHTTPErrorCode, String newErrorMessageId, String newErrorMessage, String newSystemAction, String newUserAction)
+    GAFErrorCode(int  httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
     {
-        this.httpErrorCode = newHTTPErrorCode;
-        this.errorMessageId = newErrorMessageId;
-        this.errorMessage = newErrorMessage;
-        this.systemAction = newSystemAction;
-        this.userAction = newUserAction;
-    }
-
-
-    public int getHTTPErrorCode()
-    {
-        return httpErrorCode;
+        this.messageDefinition = new ExceptionMessageDefinition(httpErrorCode,
+                                                                errorMessageId,
+                                                                errorMessage,
+                                                                systemAction,
+                                                                userAction);
     }
 
 
     /**
-     * Returns the unique identifier for the error message.
+     * Retrieve a message definition object for an exception.  This method is used when there are no message inserts.
      *
-     * @return errorMessageId
+     * @return message definition object.
      */
-    public String getErrorMessageId()
+    public ExceptionMessageDefinition getMessageDefinition()
     {
-        return errorMessageId;
+        return messageDefinition;
     }
 
 
     /**
-     * Returns the error message with placeholders for specific details.
+     * Retrieve a message definition object for an exception.  This method is used when there are values to be inserted into the message.
      *
-     * @return errorMessage (unformatted)
+     * @param params array of parameters (all strings).  They are inserted into the message according to the numbering in the message text.
+     * @return message definition object.
      */
-    public String getUnformattedErrorMessage()
+    public ExceptionMessageDefinition getMessageDefinition(String... params)
     {
-        return errorMessage;
-    }
+        messageDefinition.setMessageParameters(params);
 
-
-    /**
-     * Returns the error message with the placeholders filled out with the supplied parameters.
-     *
-     * @param params - strings that plug into the placeholders in the errorMessage
-     * @return errorMessage (formatted with supplied parameters)
-     */
-    public String getFormattedErrorMessage(String... params)
-    {
-        if (log.isDebugEnabled())
-        {
-            log.debug(String.format("<== ConnectionErrorCode.getMessage(%s)", Arrays.toString(params)));
-        }
-
-        MessageFormat mf = new MessageFormat(errorMessage);
-        String result = mf.format(params);
-
-        if (log.isDebugEnabled())
-        {
-            log.debug(String.format("==> ConnectionErrorCode.getMessage(%s): %s", Arrays.toString(params), result));
-        }
-
-        return result;
-    }
-
-
-    /**
-     * Returns a description of the action taken by the system when the condition that caused this exception was
-     * detected.
-     *
-     * @return systemAction
-     */
-    public String getSystemAction()
-    {
-        return systemAction;
-    }
-
-
-    /**
-     * Returns instructions of how to resolve the issue reported in this exception.
-     *
-     * @return userAction
-     */
-    public String getUserAction()
-    {
-        return userAction;
+        return messageDefinition;
     }
 }

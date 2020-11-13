@@ -11,7 +11,7 @@ Model 0536 shows the structure of an API schema.
 The top level schema for the API lists the operations.
 Under that, each operation defines its requests and responses.
 
-![UML](0536-API-Schemas.png)
+![UML](0536-API-Schemas.png#pagewidth)
 
 
 Return to [Area 5](Area-5-models.md).

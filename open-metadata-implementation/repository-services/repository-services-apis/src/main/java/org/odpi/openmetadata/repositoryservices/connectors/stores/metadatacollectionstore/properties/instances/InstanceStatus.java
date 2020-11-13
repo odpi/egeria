@@ -12,7 +12,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * The InstanceStatus defines the status of a relationship or an entity in the metadata collection.  It effectively
+ * The InstanceStatus defines the status of an instance (classification, relationship or an entity) in the metadata collection.  It effectively
  * defines its visibility to different types of queries.  Most queries by default will only return instances in the
  * active status.
  * <ul>

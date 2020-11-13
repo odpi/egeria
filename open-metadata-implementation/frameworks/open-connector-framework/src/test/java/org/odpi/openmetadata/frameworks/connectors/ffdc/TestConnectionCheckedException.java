@@ -17,12 +17,9 @@ public class TestConnectionCheckedException
     /*
      * These default values are only seen if this exception is initialized using one of its superclass constructors.
      */
-    private int       reportedHTTPCode = 404;
+    private int       reportedHTTPCode = 400;
     private String    reportingClassName = "TestClassName";
     private String    reportingActionDescription = "TestActionDescription";
-    private String    reportedErrorMessage = "TestErrorMessage";
-    private String    reportedSystemAction = "TestSystemAction";
-    private String    reportedUserAction = "TestUserAction";
     private Throwable reportedCaughtException = new Exception("TestReportedCaughtException");
 
     /**
@@ -38,19 +35,13 @@ public class TestConnectionCheckedException
      */
     @Test public void testNewException()
     {
-        ConnectionCheckedException exception = new ConnectionCheckedException(reportedHTTPCode,
+        ConnectionCheckedException exception = new ConnectionCheckedException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition("IteratorName", "entityGUID", "entityType"),
                                                                               reportingClassName,
-                                                                              reportingActionDescription,
-                                                                              reportedErrorMessage,
-                                                                              reportedSystemAction,
-                                                                              reportedUserAction);
+                                                                              reportingActionDescription);
 
         assertTrue(exception.getReportedHTTPCode() == reportedHTTPCode);
         assertTrue(exception.getReportingClassName().equals(reportingClassName));
         assertTrue(exception.getReportingActionDescription().equals(reportingActionDescription));
-        assertTrue(exception.getErrorMessage().equals(reportedErrorMessage));
-        assertTrue(exception.getReportedSystemAction().equals(reportedSystemAction));
-        assertTrue(exception.getReportedUserAction().equals(reportedUserAction));
         assertTrue(exception.getReportedCaughtException() == null);
     }
 
@@ -60,20 +51,14 @@ public class TestConnectionCheckedException
      */
     @Test public void testWrappingException()
     {
-        ConnectionCheckedException exception = new ConnectionCheckedException(reportedHTTPCode,
+        ConnectionCheckedException exception = new ConnectionCheckedException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition("IteratorName", "entityGUID", "entityType"),
                                                                               reportingClassName,
                                                                               reportingActionDescription,
-                                                                              reportedErrorMessage,
-                                                                              reportedSystemAction,
-                                                                              reportedUserAction,
                                                                               reportedCaughtException);
 
         assertTrue(exception.getReportedHTTPCode() == reportedHTTPCode);
         assertTrue(exception.getReportingClassName().equals(reportingClassName));
         assertTrue(exception.getReportingActionDescription().equals(reportingActionDescription));
-        assertTrue(exception.getErrorMessage().equals(reportedErrorMessage));
-        assertTrue(exception.getReportedSystemAction().equals(reportedSystemAction));
-        assertTrue(exception.getReportedUserAction().equals(reportedUserAction));
         assertFalse(exception.getReportedCaughtException().equals(null));
         assertTrue(exception.getReportedCaughtException().getMessage().equals("TestReportedCaughtException"));
     }
@@ -84,20 +69,14 @@ public class TestConnectionCheckedException
      */
     @Test public void testHashCode()
     {
-        ConnectionCheckedException exception = new ConnectionCheckedException(reportedHTTPCode,
+        ConnectionCheckedException exception = new ConnectionCheckedException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition("IteratorName", "entityGUID", "entityType"),
                                                                               reportingClassName,
                                                                               reportingActionDescription,
-                                                                              reportedErrorMessage,
-                                                                              reportedSystemAction,
-                                                                              reportedUserAction,
                                                                               reportedCaughtException);
 
-        ConnectionCheckedException exception2 = new ConnectionCheckedException(reportedHTTPCode,
+        ConnectionCheckedException exception2 = new ConnectionCheckedException(OCFErrorCode.NO_MORE_ELEMENTS.getMessageDefinition("IteratorName", "entityGUID", "entityType"),
                                                                                reportingClassName,
                                                                                reportingActionDescription,
-                                                                               reportedErrorMessage,
-                                                                               reportedSystemAction,
-                                                                               reportedUserAction,
                                                                                reportedCaughtException);
 
 

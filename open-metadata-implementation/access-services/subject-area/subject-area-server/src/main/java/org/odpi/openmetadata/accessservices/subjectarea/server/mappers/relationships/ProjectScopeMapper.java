@@ -2,111 +2,61 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.server.mappers.relationships;
 
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.Antonym;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.ProjectScopeRelationship;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.ProjectScope;
+import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.SubjectAreaMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EnumPropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
  * Mapping methods to map between the ProjectScope and the equivalent omrs Relationship.
  */
-public class ProjectScopeMapper extends LineMapper
-{
-    private static final Logger log = LoggerFactory.getLogger( ProjectScopeMapper.class);
-    private static final String className = ProjectScopeMapper.class.getName();
+@SubjectAreaMapper
+public class ProjectScopeMapper extends LineMapper<ProjectScope> {
     public static final String PROJECT_SCOPE = "ProjectScope";
 
     public ProjectScopeMapper(OMRSAPIHelper omrsapiHelper) {
         super(omrsapiHelper);
     }
 
-    /**
-     * Get proxy1 guid.
-     * The proxy has omrs type Project
-     * @param line line
-     * @return guid for entity proxy 1
-     */
     @Override
-    protected String getProxy1Guid(Line line)
-    {
-        ProjectScopeRelationship projectScope = (ProjectScopeRelationship) line;
-        return projectScope.getProjectGuid();
+    public String getTypeName() {
+        return PROJECT_SCOPE;
     }
 
-    /**
-     * Get proxy2 guid
-     * The proxy has an omrs type that is a subtype of Referenceable  
-     * @param line for this Line
-     * @return guid for entity proxy 2
-     */
     @Override
-    protected String getProxy2Guid(Line line)
-    {
-        ProjectScopeRelationship projectScope = (ProjectScopeRelationship) line;
-        return projectScope.getNodeGuid();
+    public ProjectScope getLineInstance() {
+        return new ProjectScope();
     }
 
-    /**
-     * Get the relationship type def guid.
-     * @param relationship the relationship associated with the typedef whose guid is returned.
-     * @return guid of the typedef
-     */
-    @Override
-    protected String getRelationshipTypeDefGuid(Relationship relationship)
-    {
-        return repositoryHelper.getTypeDefByName(omrsapiHelper.getServiceName(), PROJECT_SCOPE).getGUID();
-    }
-    @Override
-    protected String getTypeName() {
-        return  PROJECT_SCOPE;
-    }
-    @Override
-    protected Line getLineInstance() {
-        return new ProjectScopeRelationship();
-    }
-    @Override
-    protected void setEnd1GuidInLine(Line line, String guid){
-        ProjectScopeRelationship ProjectScopeRelationship = (ProjectScopeRelationship)line;
-        ProjectScopeRelationship.setProjectGuid(guid);
-    }
-    @Override
-    protected void setEnd2GuidInLine(Line line, String guid) {
-        ProjectScopeRelationship ProjectScopeRelationship = (ProjectScopeRelationship)line;
-        ProjectScopeRelationship.setNodeGuid(guid);
-    }
     /**
      * Map the supplied Line to omrs InstanceProperties.
-     * @param line supplied line
+     *
+     * @param projectScope               supplied line
      * @param instanceProperties equivalent instance properties to the Line
      */
     @Override
-    protected void mapLineToInstanceProperties(Line line, InstanceProperties instanceProperties) {
-        ProjectScopeRelationship projectScope  = (ProjectScopeRelationship)line;
-        if (projectScope.getScopeDescription()!=null) {
-            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, projectScope.getScopeDescription(), "scopeDescription");
+    public void mapLineToInstanceProperties(ProjectScope projectScope, InstanceProperties instanceProperties) {
+        if (projectScope.getDescription() != null) {
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, projectScope.getDescription(), "description");
         }
     }
+
     /**
      * Map a primitive omrs property to the antonym object.
-     * @param line the ProjectScope to be updated
+     *
+     * @param projectScope         the ProjectScope to be updated
      * @param propertyName the omrs property name
-     * @param value the omrs primitive property value
+     * @param value        the omrs primitive property value
      * @return true if the propertyName was recognised and mapped to the Line, otherwise false
      */
     @Override
-    protected boolean mapPrimitiveToLine(Line line, String propertyName, Object value) {
+    protected boolean mapPrimitiveToLine(ProjectScope projectScope, String propertyName, Object value) {
         String stringValue = (String) value;
-        ProjectScopeRelationship projectScope = (ProjectScopeRelationship)line;
         boolean foundProperty = false;
-        if (propertyName.equals("scopeDescription")) {
-            projectScope.setScopeDescription(stringValue);
+        if (propertyName.equals("description")) {
+            projectScope.setDescription(stringValue);
             foundProperty = true;
         }
 

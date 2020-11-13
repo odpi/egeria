@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.repositoryservices.rest.services;
 
 import org.odpi.openmetadata.commonservices.multitenant.OMAGServerServiceInstanceHandler;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
@@ -52,32 +52,15 @@ public class OMRSRepositoryServicesInstanceHandler extends OMAGServerServiceInst
         }
         catch (org.odpi.openmetadata.commonservices.ffdc.exceptions.UserNotAuthorizedException  error)
         {
-            throw new org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException(error.getReportedHTTPCode(),
-                                                                                                         error.getReportingClassName(),
-                                                                                                         error.getReportingActionDescription(),
-                                                                                                         error.getErrorMessage(),
-                                                                                                         error.getReportedSystemAction(),
-                                                                                                         error.getReportedUserAction(),
-                                                                                                         userId);
+            throw new org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException(error);
         }
         catch (org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException  error)
         {
-            throw new org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException(error.getReportedHTTPCode(),
-                                                                                                        error.getReportingClassName(),
-                                                                                                        error.getReportingActionDescription(),
-                                                                                                        error.getErrorMessage(),
-                                                                                                        error.getReportedSystemAction(),
-                                                                                                        error.getReportedUserAction(),
-                                                                                                        error.getParameterName());
+            throw new org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException(error, error.getParameterName());
         }
         catch (org.odpi.openmetadata.commonservices.ffdc.exceptions.PropertyServerException error)
         {
-            throw new org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException(error.getReportedHTTPCode(),
-                                                                                                       error.getReportingClassName(),
-                                                                                                       error.getReportingActionDescription(),
-                                                                                                       error.getErrorMessage(),
-                                                                                                       error.getReportedSystemAction(),
-                                                                                                       error.getReportedUserAction());
+            throw new org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException(error);
         }
     }
 
@@ -89,22 +72,21 @@ public class OMRSRepositoryServicesInstanceHandler extends OMAGServerServiceInst
      * @param serverName requested server
      * @param serviceOperationName name of the REST API call (typically the top-level methodName)
      * @return audit log or null
+     * @throws InvalidParameterException the server name is not known
+     * @throws UserNotAuthorizedException the user is not authorized to issue the request.
+     * @throws RepositoryErrorException the service name is not know - indicating a logic error
      */
-    public OMRSAuditLog  getAuditLog(String userId,
-                                     String serverName,
-                                     String serviceOperationName)
+    public AuditLog getAuditLog(String userId,
+                                String serverName,
+                                String serviceOperationName) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
+                                                                    RepositoryErrorException
     {
-        try
-        {
-            OMRSRepositoryServicesInstance instance = (OMRSRepositoryServicesInstance) super.getServerServiceInstance(userId, serverName, serviceOperationName);
+        OMRSRepositoryServicesInstance instance = this.getInstance(userId, serverName, serviceOperationName);
 
-            if (instance != null)
-            {
-                return instance.getAuditLog();
-            }
-        }
-        catch (Throwable  error)
+        if (instance != null)
         {
+            return instance.getAuditLog();
         }
 
         return null;

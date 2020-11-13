@@ -66,7 +66,7 @@ public abstract class FederationControlBase implements FederationControl
      * @throws RepositoryErrorException null metadata collection or null metadata collection id
      */
     String validateMetadataCollection(OMRSMetadataCollection cohortMetadataCollection,
-                                      String                  methodName) throws RepositoryErrorException
+                                      String                 methodName) throws RepositoryErrorException
     {
         /*
          * The cohort metadata collection should not be null.  It is in a real mess if this fails.
@@ -78,15 +78,9 @@ public abstract class FederationControlBase implements FederationControl
              * with no metadata collection are tested for in the OMRSEnterpriseConnectorManager so something
              * else has gone wrong.
              */
-            OMRSErrorCode errorCode    = OMRSErrorCode.NULL_ENTERPRISE_METADATA_COLLECTION;
-            String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage();
-
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+            throw new RepositoryErrorException(OMRSErrorCode.NULL_ENTERPRISE_METADATA_COLLECTION.getMessageDefinition(),
                                                this.getClass().getName(),
-                                               methodName,
-                                               errorMessage,
-                                               errorCode.getSystemAction(),
-                                               errorCode.getUserAction());
+                                               methodName);
         }
 
         try

@@ -2,11 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.communityprofile.ffdc;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.text.MessageFormat;
-import java.util.Arrays;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet;
 
 /**
  * The CommunityProfileErrorCode is used to define first failure data capture (FFDC) for errors that occur when working with
@@ -27,161 +24,92 @@ import java.util.Arrays;
  *     <li>UserAction - describes how a consumer should correct the error</li>
  * </ul>
  */
-public enum CommunityProfileErrorCode
+public enum CommunityProfileErrorCode implements ExceptionMessageSet
 {
-    NO_OTHER_IDENTITY(400, "OMAS-COMMUNITY-PROFILE-400-001 ",
+    NO_OTHER_IDENTITY(400, "OMAS-COMMUNITY-PROFILE-400-001",
             "The user identity {0} is the only identity assigned to profile {1} and therefore it can not be deleted",
-            "No action was taken.",
+            "The delete request fails.",
             "If this user identity needs to be deleted, either make sure another identity has been added to the profile, or delete the profile first."),
-    QUALIFIED_NAME_NOT_UNIQUE(400, "OMAS-COMMUNITY-PROFILE-400-002 ",
+    QUALIFIED_NAME_NOT_UNIQUE(400, "OMAS-COMMUNITY-PROFILE-400-002",
             "The qualified name passed in the parameter {1} of the {2} operation is not unique.",
             "The system is unable to create the requested object because the qualified name is not unique.",
             "Correct the qualified name passed on the call so it is a unique value."),
-    UNKNOWN_IDENTITY(404, "OMAS-COMMUNITY-PROFILE-404-001 ",
+    UNKNOWN_IDENTITY(404, "OMAS-COMMUNITY-PROFILE-404-001",
             "The user identity {0} is not known",
-            "No action was taken.",
+            "No action was taken on behalf of the user.",
             "Check that the user identity value is correct.  If it is correct then add it to the repository. Try the request again with a valid value."),
-    OMRS_NOT_INITIALIZED(500, "OMAS-COMMUNITY-PROFILE-500-001 ",
+    OMRS_NOT_INITIALIZED(500, "OMAS-COMMUNITY-PROFILE-500-001",
             "The open metadata repository services are not initialized for the {0} operation",
             "The system is unable to connect to the open metadata property server.",
             "Check that the server where the Community Profile OMAS is running has initialized correctly.  " +
                 "Correct any errors discovered and retry the request when the open metadata services are available."),
-    UNABLE_TO_CREATE_USER_IDENTITY(500, "OMAS-COMMUNITY-PROFILE-500-002 ",
+    UNABLE_TO_CREATE_USER_IDENTITY(500, "OMAS-COMMUNITY-PROFILE-500-002",
             "Unable to create new user identity object for user id {0}",
-            "The system returned a null from the addEntity request.",
-            "Verify that the OMAS server running and their are no errors on the server side."),
-    UNABLE_TO_CREATE_CONTRIBUTION_RECORD(500, "OMAS-COMMUNITY-PROFILE-500-003 ",
+            "The system returned a null from the request to add the user identity object.",
+            "Verify that the OMAS server running and there are no errors associated with the new user identity request on the server side."),
+    UNABLE_TO_CREATE_CONTRIBUTION_RECORD(500, "OMAS-COMMUNITY-PROFILE-500-003",
             "Method {0} for server {1} is unable to create new contribution record for profile with identifier of {2} supporting person with qualified name of {3}",
-            "The system returned a null from the addEntity request.",
-            "Verify that the OMAS server running and their are no errors on the server side."),
-    NO_IDENTITY_FOR_PROFILE(500, "OMAS-COMMUNITY-PROFILE-500-004 ",
+            "The system returned a null from the request to create the contribution record.",
+            "Verify that the OMAG server running and there are no errors associated with the new contribution record request on the server side."),
+    NO_IDENTITY_FOR_PROFILE(500, "OMAS-COMMUNITY-PROFILE-500-004",
             "Profile {0} does not have an associated user identity",
             "The system returned a PropertyServerException rather than executing the request.  The profile is not usable without a user identity.",
             "Use the Community Profile OMAS API to either delete this profile or add a user identity to it."),
-    PARSE_EVENT_ERROR(500, "OMAS-COMMUNITY-PROFILE-500-005 ",
+    PARSE_EVENT_ERROR(500, "OMAS-COMMUNITY-PROFILE-500-005",
             "Unable to publish the {0} event due to exception {1}.  The error message from the exception was {2}, the event contents was {3}",
             "The system detected an exception whilst parsing an event into a JSON String prior to publishing it.",
             "Investigate and correct the source of the error.  Once fixed, events will be published."),
     ;
 
 
-    private int    httpErrorCode;
-    private String errorMessageId;
-    private String errorMessage;
-    private String systemAction;
-    private String userAction;
-
-    private static final Logger log = LoggerFactory.getLogger(CommunityProfileErrorCode.class);
+    private ExceptionMessageDefinition messageDefinition;
 
 
     /**
      * The constructor for CommunityProfileErrorCode expects to be passed one of the enumeration rows defined in
      * CommunityProfileErrorCode above.   For example:
      *
-     *     CommunityProfileErrorCode   errorCode = CommunityProfileErrorCode.PROFILE_NOT_FOUND;
+     *     CommunityProfileErrorCode   errorCode = CommunityProfileErrorCode.SERVER_NOT_AVAILABLE;
      *
      * This will expand out to the 5 parameters shown below.
      *
-     * @param newHTTPErrorCode - error code to use over REST calls
-     * @param newErrorMessageId - unique Id for the message
-     * @param newErrorMessage - text for the message
-     * @param newSystemAction - description of the action taken by the system when the error condition happened
-     * @param newUserAction - instructions for resolving the error
+     * @param httpErrorCode   error code to use over REST calls
+     * @param errorMessageId   unique Id for the message
+     * @param errorMessage   text for the message
+     * @param systemAction   description of the action taken by the system when the error condition happened
+     * @param userAction   instructions for resolving the error
      */
-    CommunityProfileErrorCode(int  newHTTPErrorCode, String newErrorMessageId, String newErrorMessage, String newSystemAction, String newUserAction)
+    CommunityProfileErrorCode(int  httpErrorCode, String errorMessageId, String errorMessage, String systemAction, String userAction)
     {
-        this.httpErrorCode = newHTTPErrorCode;
-        this.errorMessageId = newErrorMessageId;
-        this.errorMessage = newErrorMessage;
-        this.systemAction = newSystemAction;
-        this.userAction = newUserAction;
-    }
-
-
-    public int getHTTPErrorCode()
-    {
-        return httpErrorCode;
+        this.messageDefinition = new ExceptionMessageDefinition(httpErrorCode,
+                                                                errorMessageId,
+                                                                errorMessage,
+                                                                systemAction,
+                                                                userAction);
     }
 
 
     /**
-     * Returns the unique identifier for the error message.
+     * Retrieve a message definition object for an exception.  This method is used when there are no message inserts.
      *
-     * @return errorMessageId
+     * @return message definition object.
      */
-    public String getErrorMessageId()
+    public ExceptionMessageDefinition getMessageDefinition()
     {
-        return errorMessageId;
+        return messageDefinition;
     }
 
 
     /**
-     * Returns the error message with placeholders for specific details.
+     * Retrieve a message definition object for an exception.  This method is used when there are values to be inserted into the message.
      *
-     * @return errorMessage (unformatted)
+     * @param params array of parameters (all strings).  They are inserted into the message according to the numbering in the message text.
+     * @return message definition object.
      */
-    public String getUnformattedErrorMessage()
+    public ExceptionMessageDefinition getMessageDefinition(String... params)
     {
-        return errorMessage;
-    }
+        messageDefinition.setMessageParameters(params);
 
-
-    /**
-     * Returns the error message with the placeholders filled out with the supplied parameters.
-     *
-     * @param params - strings that plug into the placeholders in the errorMessage
-     * @return errorMessage (formatted with supplied parameters)
-     */
-    public String getFormattedErrorMessage(String... params)
-    {
-        log.debug(String.format("<== CommunityProfileErrorCode.getMessage(%s)", Arrays.toString(params)));
-
-        MessageFormat mf = new MessageFormat(errorMessage);
-        String result = mf.format(params);
-
-        log.debug(String.format("==> CommunityProfileErrorCode.getMessage(%s): %s", Arrays.toString(params), result));
-
-        return result;
-    }
-
-
-    /**
-     * Returns a description of the action taken by the system when the condition that caused this exception was
-     * detected.
-     *
-     * @return systemAction
-     */
-    public String getSystemAction()
-    {
-        return systemAction;
-    }
-
-
-    /**
-     * Returns instructions of how to resolve the issue reported in this exception.
-     *
-     * @return userAction
-     */
-    public String getUserAction()
-    {
-        return userAction;
-    }
-
-
-    /**
-     * JSON-style toString
-     *
-     * @return string of property names and values for this enum
-     */
-    @Override
-    public String toString()
-    {
-        return "CommunityProfileErrorCode{" +
-                "httpErrorCode=" + httpErrorCode +
-                ", errorMessageId='" + errorMessageId + '\'' +
-                ", errorMessage='" + errorMessage + '\'' +
-                ", systemAction='" + systemAction + '\'' +
-                ", userAction='" + userAction + '\'' +
-                '}';
+        return messageDefinition;
     }
 }

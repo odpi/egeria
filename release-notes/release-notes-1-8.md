@@ -1,39 +1,22 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Release 1.8 (Planned May 2020)
+# Release 1.8 (May 2020)
 
-Release 1.8 focuses on providing the secured self-service data access point
-for a data lake.  There are two main features:
+Below are the highlights of Release 1.8:
 
-  * **Metadata Controlled Security** where security tags based on the metadata attachments to the assets
-    drive the enforcement engine managing access control
-  * **Data Virtualization Configuration** where the data virtualization engine that is providing
-    the endpoint for the self-service access point.
+* New tutorial information has been added in the form of the [Egeria Dojo](../open-metadata-resources/open-metadata-tutorials/egeria-dojo/README.md)
+* Usability & Capability improvements to [Repository Explorer](../open-metadata-implementation/user-interfaces/ui-chassis/ui-chassis-spring/docs/RepositoryExplorer/RepositoryExplorerGuide.md)
+* Samples & utilities are now also packaged into jars with dependencies to make them easier to use (java -jar)
+* Connections to kafka will now retry to improve availability. See 'Bring up Issues' in the [connector documentation](../open-metadata-implementation/adapters/open-connectors/event-bus-connectors/open-metadata-topic-connectors/kafka-open-metadata-topic-connector/README.md)\
 
-Below are the highlights:
-
-* There are new access services:
-   * The [Governance Engine OMAS](../open-metadata-implementation/access-services/governance-engine) supports the security sync server (below).
-   * The [Security Officer OMAS](../open-metadata-implementation/access-services/security-officer) supports the assigning of security tags to assets and their schemas.
-   * The [Information View OMAS](../open-metadata-implementation/access-services/information-view) supports the virtualizer server (below).
-   
-* There are new governance servers:
-   * The [Security Sync Server](../open-metadata-implementation/governance-servers/security-sync-services) exchanges security configuration with enforcement engines such as Apache Ranger.
-     It calls the Governance Engine OMAS.
-   * The [Security Officer Server](../open-metadata-implementation/governance-servers/security-officer-services) determines the security tags for assets.
-     It calls the Security Officer OMAS.
-   * The [Virtualizer Server](../open-metadata-implementation/governance-servers/virtualization-services) supports the automatic configuration of a data virtualization platform based on the
-     Assets that are being cataloged in open metadata.  It consumes notifications
-     from the Information View OMAS and stores details of the views it is creating
-     through the Data Platform OMAS.   
-
-* New [tutorials](../open-metadata-resources/open-metadata-tutorials),
-  [hands-on labs](../open-metadata-resources/open-metadata-labs),
-  [samples](../open-metadata-resources/open-metadata-samples) and 
-  [open metadata archives](../open-metadata-resources/open-metadata-archives) will demonstrate the new
-  capability.
-   
+* New dependencies has been included:
+    * [Spring Boot Actuator](../open-metadata-implementation/server-chassis/server-chassis-spring/README.md) - Provides features to help you monitor and manage your application when you push it to production
+    * micrometer-registry-prometheus - Exposes metrics in a format that can be scraped by a Prometheus server
+    
+* Many dependencies have been updated. The most relevant include:
+    * Spring has been updated to 5.2.6
+    * Spring Boot, Spring Security, Spring Security, Spring Data have been updated to 2.3.0
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 Copyright Contributors to the ODPi Egeria project.

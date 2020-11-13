@@ -8,7 +8,7 @@ are managed or consumed by
 [Software Server Capabilities](../../../open-metadata-implementation/access-services/docs/concepts/server-capabilities).
 The model below shows how this relationship is captured.
 
-![UML](0045-Servers-and-Assets.png)
+![UML](0045-Servers-and-Assets.png#pagewidth)
 
 Return to [Area 0](Area-0-models.md).
 

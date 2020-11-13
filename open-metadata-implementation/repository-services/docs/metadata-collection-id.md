@@ -76,7 +76,7 @@ sends the local metadata collection id and
         "qualifiedName": "DefaultRepositoryRESTAPI.Endpoint.cocoMDS1",
         "name": "DefaultRepositoryRESTAPI.Endpoint.cocoMDS1",
         "description": "OMRS default repository REST API endpoint.",
-        "address": "http://localhost:8080/openmetadata/repositoryservices/"
+        "address": "https://localhost:9443/openmetadata/repositoryservices/"
       }
     }
   }

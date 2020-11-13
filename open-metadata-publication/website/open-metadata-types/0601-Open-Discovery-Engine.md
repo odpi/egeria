@@ -11,7 +11,7 @@ The OpenDiscoveryEngine entity creates a description of an instance of these typ
 It is represented as a server capability when it is documented in metadata.
 
 
-![UML](0601-Open-Discovery-Engine.png)
+![UML](0601-Open-Discovery-Engine.png#pagewidth)
 
 
 Return to [Area 6](Area-6-models.md).

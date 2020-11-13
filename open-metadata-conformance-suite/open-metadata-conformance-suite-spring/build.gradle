@@ -1,0 +1,19 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright Contributors to the ODPi Egeria project.
+ */
+
+
+dependencies {
+    implementation project(':open-metadata-conformance-suite:open-metadata-conformance-suite-server')
+    implementation project(':open-metadata-conformance-suite:open-metadata-conformance-suite-api')
+    implementation 'org.springframework:spring-web'
+    implementation 'io.swagger.core.v3:swagger-annotations'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations'
+}
+
+description = 'Open Metadata Conformance Suite with Spring'
+
+java {
+    withJavadocJar()
+}

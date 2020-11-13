@@ -7,7 +7,7 @@ package org.odpi.openmetadata.accessservices.securityofficer.server.admin.servic
 import org.odpi.openmetadata.accessservices.securityofficer.server.admin.admin.SecurityOfficerAdmin;
 import org.odpi.openmetadata.adminservices.configuration.OMAGAccessServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceOperationalStatus;
+import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
 
 /**
@@ -24,8 +24,8 @@ public class SecurityOfficerRegistration {
         AccessServiceDescription myDescription = AccessServiceDescription.SECURITY_OFFICER_OMAS;
 
         AccessServiceRegistration myRegistration = new AccessServiceRegistration(myDescription,
-                AccessServiceOperationalStatus.ENABLED,
-                SecurityOfficerAdmin.class.getName());
+                                                                                 ServiceOperationalStatus.ENABLED,
+                                                                                 SecurityOfficerAdmin.class.getName());
         OMAGAccessServiceRegistration.registerAccessService(myRegistration);
     }
 }

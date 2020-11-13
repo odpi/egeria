@@ -7,7 +7,9 @@ package org.odpi.openmetadata.conformance.ffdc.exception;
  */
 public class CaughtException extends ConformanceException
 {
-    Throwable    caughtException;
+    private static final long    serialVersionUID = 1L;
+
+    private final Throwable    caughtException;
 
     /**
      * The constructor captures the context of the exception.

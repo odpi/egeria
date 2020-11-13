@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.metadatahighway;
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.cohortregistrystore.properties.MemberRegistration;
 import org.odpi.openmetadata.repositoryservices.properties.CohortConnectionStatus;
@@ -9,8 +10,7 @@ import org.odpi.openmetadata.repositoryservices.properties.CohortDescription;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditCode;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.repositoryservices.ffdc.OMRSAuditCode;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSConnectorErrorException;
@@ -42,7 +42,7 @@ public class OMRSCohortManager
 
     private OMRSRepositoryEventManager localRepositoryEventManager  = null;
 
-    private OMRSAuditLog               auditLog;
+    private AuditLog                   auditLog;
 
     private static final Logger log = LoggerFactory.getLogger(OMRSCohortManager.class);
 
@@ -52,7 +52,7 @@ public class OMRSCohortManager
      *
      * @param auditLog audit log for this component.
      */
-    public OMRSCohortManager(OMRSAuditLog     auditLog)
+    OMRSCohortManager(AuditLog     auditLog)
     {
         this.auditLog = auditLog;
     }
@@ -104,14 +104,8 @@ public class OMRSCohortManager
         {
             this.cohortName = cohortName;
 
-            OMRSAuditCode auditCode = OMRSAuditCode.COHORT_INITIALIZING;
-            auditLog.logRecord(actionDescription,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(cohortName),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+            auditLog.logMessage(actionDescription,
+                                OMRSAuditCode.COHORT_INITIALIZING.getMessageDefinition(cohortName));
 
             /*
              * Set up the config status.  It is updated multiple times during this method to help detect whether
@@ -264,16 +258,10 @@ public class OMRSCohortManager
             log.error("Unable to initialize cohort manager", error);
             this.cohortConnectionStatus = CohortConnectionStatus.CONFIGURATION_ERROR;
 
-            OMRSAuditCode auditCode = OMRSAuditCode.COHORT_CONFIG_ERROR;
             auditLog.logException(actionDescription,
-                                  auditCode.getLogMessageId(),
-                                  auditCode.getSeverity(),
-                                  auditCode.getFormattedLogMessage(cohortName,
-                                                                   error.getClass().getName(),
-                                                                   error.getMessage()),
-                                  null,
-                                  auditCode.getSystemAction(),
-                                  auditCode.getUserAction(),
+                                  OMRSAuditCode.COHORT_CONFIG_ERROR.getMessageDefinition(cohortName,
+                                                                                         error.getClass().getName(),
+                                                                                         error.getMessage()),
                                   error);
         }
 
@@ -346,7 +334,7 @@ public class OMRSCohortManager
      *
      * @return CohortConnectionStatus
      */
-    public CohortConnectionStatus getCohortConnectionStatus()
+    CohortConnectionStatus getCohortConnectionStatus()
     {
         return cohortConnectionStatus;
     }
@@ -387,16 +375,9 @@ public class OMRSCohortManager
             /*
              * Throw runtime exception to indicate that the cohort registry is not available.
              */
-            OMRSErrorCode errorCode = OMRSErrorCode.COHORT_DISCONNECT_FAILED;
-            String errorMessage = errorCode.getErrorMessageId()
-                                + errorCode.getFormattedErrorMessage(cohortName);
-
-            throw new OMRSConnectorErrorException(errorCode.getHTTPErrorCode(),
+            throw new OMRSConnectorErrorException(OMRSErrorCode.COHORT_DISCONNECT_FAILED.getMessageDefinition(cohortName),
                                                   this.getClass().getName(),
                                                   actionDescription,
-                                                  errorMessage,
-                                                  errorCode.getSystemAction(),
-                                                  errorCode.getUserAction(),
                                                   error);
 
         }

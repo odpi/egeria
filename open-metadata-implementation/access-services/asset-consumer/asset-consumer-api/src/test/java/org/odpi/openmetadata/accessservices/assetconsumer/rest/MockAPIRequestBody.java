@@ -5,12 +5,14 @@ package org.odpi.openmetadata.accessservices.assetconsumer.rest;
 /**
  * MockAPIRequestBody enables the overridden methods of AssetConsumerOMASAPIRequestBody to be tested.
  */
-public class MockAPIRequestBody extends AssetConsumerOMASAPIRequestBody
+class MockAPIRequestBody extends AssetConsumerOMASAPIRequestBody
 {
+    private static final long    serialVersionUID = 1L;
+
     /**
      * Default constructor
      */
-    public MockAPIRequestBody()
+    MockAPIRequestBody()
     {
     }
 
@@ -20,7 +22,7 @@ public class MockAPIRequestBody extends AssetConsumerOMASAPIRequestBody
      *
      * @param template object to clone
      */
-    public MockAPIRequestBody(MockAPIRequestBody template)
+    MockAPIRequestBody(MockAPIRequestBody template)
     {
         super(template);
     }

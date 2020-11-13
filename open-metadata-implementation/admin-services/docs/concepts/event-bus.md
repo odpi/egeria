@@ -26,7 +26,7 @@ that use the event bus are configured.
 
 Figure 1 shows the event bus in action.
 
-![Figure 1](event-bus-role.png)
+![Figure 1](event-bus-role.png#pagewidth)
 > **Figure 1:** The event bus in use by OMAG servers and other technologies
 
 It is hosting a number of topics.  Each topic manages the event exchange
@@ -46,7 +46,7 @@ event bus in use.  This is illustrated in Figure 2.
 The configuration for these nested connectors is illustrated in
 Figure 3.
 
-![Figure 3](embedded-event-bus-config.png)
+![Figure 3](embedded-event-bus-config.png#pagewidth)
 > **Figure 3:** Embedded event bus configuration
 
 1. The connector for the event bus topic is identified and

@@ -1,0 +1,234 @@
+{
+   "@context": {
+      "@base": "http://egeria.odpi.org:egeriasample#",
+      "egeriasample": "http://egeria.odpi.org:egeriasample#",
+      "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+      "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+      "xsd": "http://www.w3.org/2001/XMLSchema#",
+      "owl": "http://www.w3.org/2002/07/owl#",
+      "schema": "http://schema.org/",
+      "skos": "http://www.w3.org/2004/02/skos/core#"
+   },
+   "@graph": [
+      {
+         "@id": "egeriasample:",
+         "@type": "owl:Ontology",
+         "owl:versionInfo": "1.0",
+         "schema:license": "https://www.apache.org/licenses/LICENSE-2.0",
+         "rdfs:label": {
+            "@language": "en",
+            "@value": "Egeria sample ontology 1"
+         },
+         "rdfs:comment": {
+            "@language": "en",
+            "@value": "This a a sample ontology containing elements that Egeria will recognise."
+         }
+      },
+      {
+         "@id": "egeriasample:CategoryParent",
+         "@type": [
+            "rdfs:Container"
+         ],
+         "rdfs:label": {
+            "@language": "en",
+            "@value": "Category parent display name"
+         },
+         "rdfs:comment": {
+            "@language": "en",
+            "@value": "Category parent has a child category called CategoryChild1."
+         },
+         "rdfs:isDefinedBy": {
+            "@id": "egeriasample:"
+         }
+      },
+      {
+         "@id": "egeriasample:Categorychild1",
+         "@type": [
+            "rdfs:Container"
+         ],
+         "rdfs:label": {
+            "@language": "en",
+            "@value": "Category child 1 display name"
+         },
+         "rdfs:comment": {
+            "@language": "en",
+            "@value": "Category child 1 has a parent category called CategoryParent."
+         },
+         "rdfs:member": [
+            {
+               "@id": "egeriasample:CategoryParent"
+            }
+         ],
+         "rdfs:isDefinedBy": {
+            "@id": "egeriasample:"
+         }
+      },
+      {
+         "@id": "egeriasample:Categorychild2",
+         "@type": [
+            "rdfs:Container"
+         ],
+         "rdfs:label": {
+            "@language": "en",
+            "@value": "Category child 2 display name"
+         },
+         "rdfs:comment": {
+            "@language": "en",
+            "@value": "Category child 2 description."
+         },
+         "rdfs:member": [
+            {
+               "@id": "egeriasample:CategoryParent"
+            }
+         ],
+         "rdfs:isDefinedBy": {
+            "@id": "egeriasample:"
+         }
+      },
+      {
+         "@id": "egeriasample:conceptterm1",
+         "@type": [
+            "rdfs:Class",
+            "owl:Class"
+         ],
+         "rdfs:label": {
+            "@language": "en",
+            "@value": "Concept term 1"
+         },
+         "rdfs:comment": {
+            "@language": "en",
+            "@value": "This is concept term 1 that has a property term called propertyterm1. It is categorized by Categorychild2"
+         },
+         "rdfs:member": [
+            {
+               "@id": "egeriasample:Categorychild2"
+            }
+        ],
+         "rdfs:isDefinedBy": {
+            "@id": "egeriasample:"
+         }
+      },
+      {
+         "@id": "egeriasample:conceptterm2",
+         "@type": [
+            "rdfs:Class",
+            "owl:Class"
+         ],
+         "rdfs:label": {
+            "@language": "en",
+            "@value": "Concept term 2"
+         },
+         "rdfs:comment": {
+            "@language": "en",
+            "@value": "This is a 2nd concept term. It is categorized by Categorychild2"
+         },
+         "rdfs:member": [
+            {
+               "@id": "egeriasample:Categorychild2"
+
+            }
+         ],
+         "rdfs:isDefinedBy": {
+            "@id": "egeriasample:"
+         }
+      },
+      {
+         "@id": "egeriasample:conceptterm3",
+         "@type": [
+            "rdfs:Class",
+            "owl:Class"
+         ],
+         "rdfs:label": {
+            "@language": "en",
+            "@value": "Concept term 3"
+         },
+         "rdfs:comment": {
+            "@language": "en",
+            "@value": "This is a 3nd concept term. It is a subclass of egeriasample:conceptterm2. It is categorized by Categorychild2"
+         },
+         "rdfs:member": [
+            {
+               "@id": "egeriasample:Categorychild2"
+
+            }
+         ],
+         "rdfs:subClassOf": [
+            {
+               "@id": "egeriasample:conceptterm2"
+            }
+         ],
+
+         "rdfs:isDefinedBy": {
+            "@id": "egeriasample:"
+         }
+      },
+      {
+         "@id": "egeriasample:propertyterm1",
+         "@type": [
+            "rdf:property",
+            "owl:ObjectProperty"
+         ],
+         "rdfs:label": {
+            "@language": "en",
+            "@value": "Property term 1"
+         },
+         "rdfs:comment": {
+            "@language": "en",
+            "@value": "This is a property that is of concept term 1 (concept term 1 has-a propertyterm1 ) and is related to concept term 2 ."
+         },
+         "rdfs:member": [
+            {
+               "@id": "egeriasample:Categorychild2"
+            }
+         ],
+         "rdfs:domain": {
+            "@id": "egeriasample:conceptterm1"
+         },
+         "rdfs:range": {
+            "@id": "egeriasample:conceptterm2"
+         },
+         "rdfs:isDefinedBy": {
+            "@id": "egeriasample:"
+         }
+      },
+      {
+           "@id": "egeriasample:propertyterm2",
+           "@type": [
+              "rdf:property",
+              "owl:DatatypeProperty"
+           ],
+           "rdfs:label": {
+              "@language": "en",
+              "@value": "Property term 2"
+           },
+           "rdfs:comment": {
+              "@language": "en",
+              "@value": "This is a 2nd property that is of concept term 1 (concept term 1 has-a propertyterm1 ). It is of a simple 'string' data type. It is categorized by Categorychild1. Has two examples."
+           },
+           "rdfs:member": [
+              {
+                 "@id": "egeriasample:Categorychild1"
+              }
+           ],
+           "rdfs:domain": {
+              "@id": "egeriasample:conceptterm1"
+           },
+           "rdfs:range": {
+              "@id": "xsd:string"
+           },
+           "rdfs:isDefinedBy": {
+              "@id": "egeriasample:"
+           },
+           "skos:example": [
+              {
+                 "@language": "en",
+                 "@value": "property2 example A"
+              },
+              {
+                 "@language": "en",
+                 "@value": "property2 example B"
+              }
+           ]
+      }
+    ]
+  }

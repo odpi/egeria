@@ -11,7 +11,7 @@ The OpenDiscoveryPipeline describes an open discovery pipeline.
 It is typically linked to a [VirtualConnection](0205-Connection-Linkage.md) with the
 connections of the open discovery services embedded within it.
 
-![UML](0603-Open-Discovery-Pipelines.png)
+![UML](0603-Open-Discovery-Pipelines.png#pagewidth)
 
 Return to [Area 6](Area-6-models.md).
 

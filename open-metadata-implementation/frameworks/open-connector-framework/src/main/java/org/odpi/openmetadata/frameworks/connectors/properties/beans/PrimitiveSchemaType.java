@@ -19,12 +19,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class PrimitiveSchemaType extends SchemaType
+public class PrimitiveSchemaType extends SimpleSchemaType
 {
     private static final long     serialVersionUID = 1L;
-
-    protected  String     dataType = null;
-    protected  String     defaultValue = null;
 
 
     /**
@@ -37,66 +34,20 @@ public class PrimitiveSchemaType extends SchemaType
 
 
     /**
-     * Copy/clone Constructor the parentAsset is passed separately to the template because it is also
-     * likely to be being cloned in the same operation and we want the definitions clone to point to the
-     * asset clone and not the original asset.
+     * Copy/clone Constructor.
      *
-     * @param templateSchemaElement template object to copy.
+     * @param template template object to copy.
      */
-    public PrimitiveSchemaType(PrimitiveSchemaType templateSchemaElement)
+    public PrimitiveSchemaType(PrimitiveSchemaType template)
     {
-        super(templateSchemaElement);
-
-        if (templateSchemaElement != null)
-        {
-            dataType = templateSchemaElement.getDataType();
-            defaultValue = templateSchemaElement.getDefaultValue();
-        }
-    }
-
-
-    /**
-     * Return the data type for this element.  Null means unknown data type.
-     *
-     * @return String data type name
-     */
-    public String getDataType() { return dataType; }
-
-
-    /**
-     * Set up the data type for this element.  Null means unknown data type.
-     *
-     * @param dataType data type name
-     */
-    public void setDataType(String dataType)
-    {
-        this.dataType = dataType;
-    }
-
-
-    /**
-     * Return the default value for the element.  Null means no default value set up.
-     *
-     * @return String containing default value
-     */
-    public String getDefaultValue() { return defaultValue; }
-
-
-    /**
-     * Set up the default value for the element.  Null means no default value set up.
-     *
-     * @param defaultValue String containing default value
-     */
-    public void setDefaultValue(String defaultValue)
-    {
-        this.defaultValue = defaultValue;
+        super(template);
     }
 
 
     /**
      * Returns a clone of this object as the abstract SchemaElement class.
      *
-     * @return PrimitiveSchemaType object
+     * @return SchemaElement
      */
     @Override
     public SchemaElement cloneSchemaElement()
@@ -126,41 +77,23 @@ public class PrimitiveSchemaType extends SchemaType
     public String toString()
     {
         return "PrimitiveSchemaType{" +
-                "command='" + dataType + '\'' +
+                "dataType='" + dataType + '\'' +
                 ", defaultValue='" + defaultValue + '\'' +
+                ", versionNumber='" + versionNumber + '\'' +
+                ", author='" + author + '\'' +
+                ", usage='" + usage + '\'' +
+                ", encodingStandard='" + encodingStandard + '\'' +
+                ", namespace='" + namespace + '\'' +
+                ", displayName='" + displayName + '\'' +
+                ", description='" + description + '\'' +
                 ", qualifiedName='" + qualifiedName + '\'' +
                 ", additionalProperties=" + additionalProperties +
+                ", meanings=" + meanings +
                 ", type=" + type +
                 ", guid='" + guid + '\'' +
                 ", url='" + url + '\'' +
                 ", classifications=" + classifications +
+                ", extendedProperties=" + extendedProperties +
                 '}';
-    }
-
-
-    /**
-     * Compare the values of the supplied object with those stored in the current object.
-     *
-     * @param objectToCompare supplied object
-     * @return boolean result of comparison
-     */
-    @Override
-    public boolean equals(Object objectToCompare)
-    {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (!(objectToCompare instanceof PrimitiveSchemaType))
-        {
-            return false;
-        }
-        if (!super.equals(objectToCompare))
-        {
-            return false;
-        }
-        PrimitiveSchemaType that = (PrimitiveSchemaType) objectToCompare;
-        return Objects.equals(getDataType(), that.getDataType()) &&
-                Objects.equals(getDefaultValue(), that.getDefaultValue());
     }
 }

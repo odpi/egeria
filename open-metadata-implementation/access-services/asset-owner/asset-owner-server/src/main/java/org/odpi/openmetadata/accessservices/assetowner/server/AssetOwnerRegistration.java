@@ -6,7 +6,7 @@ package org.odpi.openmetadata.accessservices.assetowner.server;
 import org.odpi.openmetadata.accessservices.assetowner.admin.AssetOwnerAdmin;
 import org.odpi.openmetadata.adminservices.configuration.OMAGAccessServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceOperationalStatus;
+import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
 
 /**
@@ -25,7 +25,7 @@ class AssetOwnerRegistration
         AccessServiceDescription myDescription = AccessServiceDescription.ASSET_OWNER_OMAS;
 
         AccessServiceRegistration myRegistration = new AccessServiceRegistration(myDescription,
-                                                                                 AccessServiceOperationalStatus.ENABLED,
+                                                                                 ServiceOperationalStatus.ENABLED,
                                                                                  AssetOwnerAdmin.class.getName());
         OMAGAccessServiceRegistration.registerAccessService(myRegistration);
     }

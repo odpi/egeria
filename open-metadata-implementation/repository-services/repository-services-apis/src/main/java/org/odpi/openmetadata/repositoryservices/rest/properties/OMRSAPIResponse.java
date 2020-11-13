@@ -5,6 +5,7 @@ package org.odpi.openmetadata.repositoryservices.rest.properties;
 import com.fasterxml.jackson.annotation.*;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -13,7 +14,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * OMRSRESTAPIResponse provides a common header for OMRS managed rest to the OMRS REST API.   It manages
+ * OMRSAPIResponse provides a common header for OMRS managed rest to the OMRS REST API.   It manages
  * information about OMRS exceptions.  If no exception has been raised exceptionClassName is null.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
@@ -27,6 +28,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = OMRSAPIPagedResponse.class, name = "OMRSRESTAPIPagedResponse"),
                 @JsonSubTypes.Type(value = AttributeTypeDefListResponse.class, name = "AttributeTypeDefListResponse"),
                 @JsonSubTypes.Type(value = AttributeTypeDefResponse.class, name = "AttributeTypeDefResponse"),
+                @JsonSubTypes.Type(value = AuditLogReportResponse.class, name = "AuditLogReportResponse"),
+                @JsonSubTypes.Type(value = AuditLogSeveritiesResponse.class, name = "AuditLogSeveritiesResponse"),
                 @JsonSubTypes.Type(value = BooleanResponse.class, name = "BooleanResponse"),
                 @JsonSubTypes.Type(value = CohortMembershipResponse.class, name = "CohortMembershipResponse"),
                 @JsonSubTypes.Type(value = EntityDetailResponse.class, name = "EntityDetailResponse"),
@@ -41,12 +44,16 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public abstract class OMRSAPIResponse implements Serializable
 {
-    protected int                   relatedHTTPCode = 200;
-    protected String                exceptionClassName = null;
-    protected String                exceptionErrorMessage = null;
-    protected String                exceptionSystemAction = null;
-    protected String                exceptionUserAction = null;
-    protected Map<String, Object>   exceptionProperties = null;
+    protected int                 relatedHTTPCode                 = 200;
+    protected String              actionDescription               = null;
+    protected String              exceptionClassName              = null;
+    protected String              exceptionCausedBy               = null;
+    protected String              exceptionErrorMessage           = null;
+    protected String              exceptionErrorMessageId         = null;
+    protected String[]            exceptionErrorMessageParameters = null;
+    protected String              exceptionSystemAction           = null;
+    protected String              exceptionUserAction             = null;
+    protected Map<String, Object> exceptionProperties             = null;
 
     private static final long       serialVersionUID = 1L;
 
@@ -67,35 +74,17 @@ public abstract class OMRSAPIResponse implements Serializable
     {
         if (template != null)
         {
-            relatedHTTPCode = template.getRelatedHTTPCode();
-            exceptionClassName = template.getExceptionClassName();
-            exceptionErrorMessage = template.getExceptionErrorMessage();
-            exceptionSystemAction = template.getExceptionSystemAction();
-            exceptionUserAction = template.getExceptionUserAction();
-            exceptionProperties = template.getExceptionProperties();
+            this.relatedHTTPCode = template.getRelatedHTTPCode();
+            this.exceptionClassName = template.getExceptionClassName();
+            this.exceptionCausedBy = template.getExceptionCausedBy();
+            this.actionDescription = template.getActionDescription();
+            this.exceptionErrorMessage = template.getExceptionErrorMessage();
+            this.exceptionErrorMessageId = template.getExceptionErrorMessageId();
+            this.exceptionErrorMessageParameters = template.getExceptionErrorMessageParameters();
+            this.exceptionSystemAction = template.getExceptionSystemAction();
+            this.exceptionUserAction = template.getExceptionUserAction();
+            this.exceptionProperties = template.getExceptionProperties();
         }
-    }
-
-
-    /**
-     * Return the HTTP Code to use if forwarding response to HTTP client.
-     *
-     * @return integer HTTP status code
-     */
-    public int getRelatedHTTPCode()
-    {
-        return relatedHTTPCode;
-    }
-
-
-    /**
-     * Set up the HTTP Code to use if forwarding response to HTTP client.
-     *
-     * @param relatedHTTPCode integer HTTP status code
-     */
-    public void setRelatedHTTPCode(int relatedHTTPCode)
-    {
-        this.relatedHTTPCode = relatedHTTPCode;
     }
 
 
@@ -113,11 +102,76 @@ public abstract class OMRSAPIResponse implements Serializable
     /**
      * Set up the name of the Java class name to use to recreate the exception.
      *
-     * @param exceptionClassName String name of the fully-qualified java class name
+     * @param exceptionClassName - String name of the fully-qualified java class name
      */
     public void setExceptionClassName(String exceptionClassName)
     {
         this.exceptionClassName = exceptionClassName;
+    }
+
+
+    /**
+     * Return the name of any nested exception that may indicate the root cause of the exception.
+     *
+     * @return exception class name
+     */
+    public String getExceptionCausedBy()
+    {
+        return exceptionCausedBy;
+    }
+
+
+    /**
+     * Set up the name of any nested exception that may indicate the root cause of the exception.
+     *
+     * @param exceptionCausedBy exception class name
+     */
+    public void setExceptionCausedBy(String exceptionCausedBy)
+    {
+        this.exceptionCausedBy = exceptionCausedBy;
+    }
+
+    /**
+     * Return the description of the activity in progress when the exception occurred.
+     *
+     * @return string description
+     */
+    public String getActionDescription()
+    {
+        return actionDescription;
+    }
+
+
+    /**
+     * Set up the description of the activity in progress when the exception occurred.
+     *
+     * @param actionDescription string description
+     */
+    public void setActionDescription(String actionDescription)
+    {
+        this.actionDescription = actionDescription;
+    }
+
+
+    /**
+     * Return the HTTP Code to use if forwarding response to HTTP client.
+     *
+     * @return integer HTTP status code
+     */
+    public int getRelatedHTTPCode()
+    {
+        return relatedHTTPCode;
+    }
+
+
+    /**
+     * Set up the HTTP Code to use if forwarding response to HTTP client.
+     *
+     * @param relatedHTTPCode - integer HTTP status code
+     */
+    public void setRelatedHTTPCode(int relatedHTTPCode)
+    {
+        this.relatedHTTPCode = relatedHTTPCode;
     }
 
 
@@ -135,7 +189,7 @@ public abstract class OMRSAPIResponse implements Serializable
     /**
      * Set up the error message associated with the exception.
      *
-     * @param exceptionErrorMessage string error message
+     * @param exceptionErrorMessage - string error message
      */
     public void setExceptionErrorMessage(String exceptionErrorMessage)
     {
@@ -144,9 +198,60 @@ public abstract class OMRSAPIResponse implements Serializable
 
 
     /**
+     * Return the formal message identifier for the error message.  This is incorporated in the error message.
+     * This is provided both for automated processing and to enable the error message to be reformatted
+     * in a different language.
+     *
+     * @return string identifier
+     */
+    public String getExceptionErrorMessageId()
+    {
+        return exceptionErrorMessageId;
+    }
+
+    /**
+     * Set up the formal message identifier for the error message.  This is incorporated in the error message.
+     * This is provided both for automated processing and to enable the error message to be reformatted
+     * in a different language.
+     *
+     * @param exceptionErrorMessageId string identifier
+     */
+    public void setExceptionErrorMessageId(String exceptionErrorMessageId)
+    {
+        this.exceptionErrorMessageId = exceptionErrorMessageId;
+    }
+
+
+    /**
+     * Return the parameters that were inserted in the error message.
+     * These are provided both for automated processing and to enable the error message to be reformatted
+     * in a different language.
+     *
+     * @return list of strings
+     */
+    public String[] getExceptionErrorMessageParameters()
+    {
+        return exceptionErrorMessageParameters;
+    }
+
+
+    /**
+     * Set up the list of parameters inserted in to the error message.
+     * These are provided both for automated processing and to enable the error message to be reformatted
+     * in a different language.
+     *
+     * @param exceptionErrorMessageParameters list of strings
+     */
+    public void setExceptionErrorMessageParameters(String[] exceptionErrorMessageParameters)
+    {
+        this.exceptionErrorMessageParameters = exceptionErrorMessageParameters;
+    }
+
+
+    /**
      * Return the description of the action taken by the system as a result of the exception.
      *
-     * @return string description of the action taken
+     * @return - string description of the action taken
      */
     public String getExceptionSystemAction()
     {
@@ -157,7 +262,7 @@ public abstract class OMRSAPIResponse implements Serializable
     /**
      * Set up the description of the action taken by the system as a result of the exception.
      *
-     * @param exceptionSystemAction string description of the action taken
+     * @param exceptionSystemAction - string description of the action taken
      */
     public void setExceptionSystemAction(String exceptionSystemAction)
     {
@@ -179,7 +284,7 @@ public abstract class OMRSAPIResponse implements Serializable
     /**
      * Set up the action that a user should take to resolve the problem.
      *
-     * @param exceptionUserAction string instructions
+     * @param exceptionUserAction - string instructions
      */
     public void setExceptionUserAction(String exceptionUserAction)
     {
@@ -188,10 +293,11 @@ public abstract class OMRSAPIResponse implements Serializable
 
 
     /**
-     * Return any additional properties associated with the exception.
+     * Return the additional properties stored by the exceptions.
      *
-     * @return map of properties
+     * @return property map
      */
+
     public Map<String, Object> getExceptionProperties()
     {
         if (exceptionProperties == null)
@@ -210,9 +316,9 @@ public abstract class OMRSAPIResponse implements Serializable
 
 
     /**
-     * Set up any additional properties associated with the exception.
+     * Set up the additional properties stored by the exceptions.
      *
-     * @param exceptionProperties map of name value pairs
+     * @param exceptionProperties property map
      */
     public void setExceptionProperties(Map<String, Object> exceptionProperties)
     {
@@ -228,13 +334,17 @@ public abstract class OMRSAPIResponse implements Serializable
     @Override
     public String toString()
     {
-        return "OMRSRESTAPIResponse{" +
+        return "OMRSAPIResponse{" +
                 "relatedHTTPCode=" + relatedHTTPCode +
+                ", actionDescription='" + actionDescription + '\'' +
                 ", exceptionClassName='" + exceptionClassName + '\'' +
+                ", exceptionCausedBy='" + exceptionCausedBy + '\'' +
                 ", exceptionErrorMessage='" + exceptionErrorMessage + '\'' +
+                ", exceptionErrorMessageId='" + exceptionErrorMessageId + '\'' +
+                ", exceptionErrorMessageParameters=" + Arrays.toString(exceptionErrorMessageParameters) +
                 ", exceptionSystemAction='" + exceptionSystemAction + '\'' +
                 ", exceptionUserAction='" + exceptionUserAction + '\'' +
-                ", exceptionProperties=" + exceptionProperties +
+                ", exceptionProperties=" + exceptionProperties + '\'' +
                 '}';
     }
 

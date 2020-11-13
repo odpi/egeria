@@ -6,8 +6,10 @@ package org.odpi.openmetadata.accessservices.assetowner.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.assetowner.properties.FileSystem;
+import org.odpi.openmetadata.accessservices.assetowner.metadataelements.FileSystemElement;
+import org.odpi.openmetadata.accessservices.assetowner.properties.FileSystemProperties;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -23,7 +25,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class FileSystemResponse extends AssetOwnerOMASAPIResponse
 {
-    private FileSystem fileSystem = null;
+    private static final long    serialVersionUID = 1L;
+
+    private FileSystemElement fileSystem = null;
 
 
     /**
@@ -56,7 +60,7 @@ public class FileSystemResponse extends AssetOwnerOMASAPIResponse
      *
      * @return bean
      */
-    public FileSystem getFileSystem()
+    public FileSystemElement getFileSystem()
     {
         return fileSystem;
     }
@@ -67,7 +71,7 @@ public class FileSystemResponse extends AssetOwnerOMASAPIResponse
      *
      * @param fileSystem - bean
      */
-    public void setFileSystem(FileSystem fileSystem)
+    public void setFileSystem(FileSystemElement fileSystem)
     {
         this.fileSystem = fileSystem;
     }
@@ -82,10 +86,14 @@ public class FileSystemResponse extends AssetOwnerOMASAPIResponse
     public String toString()
     {
         return "FileSystemResponse{" +
-                "fileSystem='" + getFileSystem() + '\'' +
-                ", relatedHTTPCode=" + getRelatedHTTPCode() +
+                "fileSystem=" + fileSystem +
                 ", exceptionClassName='" + getExceptionClassName() + '\'' +
+                ", exceptionCausedBy='" + getExceptionCausedBy() + '\'' +
+                ", actionDescription='" + getActionDescription() + '\'' +
+                ", relatedHTTPCode=" + getRelatedHTTPCode() +
                 ", exceptionErrorMessage='" + getExceptionErrorMessage() + '\'' +
+                ", exceptionErrorMessageId='" + getExceptionErrorMessageId() + '\'' +
+                ", exceptionErrorMessageParameters=" + Arrays.toString(getExceptionErrorMessageParameters()) +
                 ", exceptionSystemAction='" + getExceptionSystemAction() + '\'' +
                 ", exceptionUserAction='" + getExceptionUserAction() + '\'' +
                 ", exceptionProperties=" + getExceptionProperties() +

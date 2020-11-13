@@ -57,7 +57,13 @@ public enum GovernanceServicesDescription implements Serializable
                                       "Data Platform Services",
                                       null,
                                       "Publish metadata on data platforms that are not self-capable of integrating directly with the Data Platform OMAS",
-                                      "https://egeria.odpi.org/open-metadata-implementation/governance-servers/data-platform-services/");
+                                      "https://egeria.odpi.org/open-metadata-implementation/governance-servers/data-platform-services/"),
+    INTEGRATION_DAEMON_SERVICES      (2009,
+                                      "Integration Daemon Services",
+                                      null,
+                                      "Host one or more integration services that are exchanging metadata with third party technology",
+                                      "https://egeria.odpi.org/open-metadata-implementation/governance-servers/integration-daemon-services/"),
+    ;
 
 
     private static final long     serialVersionUID    = 1L;

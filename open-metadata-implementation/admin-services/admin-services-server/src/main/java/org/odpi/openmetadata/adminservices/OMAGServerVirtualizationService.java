@@ -44,7 +44,6 @@ public class OMAGServerVirtualizationService {
 
             virtualizationConfig.setVirtualizerInboundTopic(
                     connectorConfigurationFactory.getDefaultEventBusConnection(
-                            defaultOutTopicName,
                             eventBusConfig.getConnectorProvider(),
                             eventBusConfig.getTopicURLRoot() + ".server." + serverName,
                             virtualizationConfig.getVirtualizerInboundTopicName(),
@@ -55,7 +54,6 @@ public class OMAGServerVirtualizationService {
 
             virtualizationConfig.setVirtualizerOutboundTopic(
                     connectorConfigurationFactory.getDefaultEventBusConnection(
-                            defaultInTopicName,
                             eventBusConfig.getConnectorProvider(),
                             eventBusConfig.getTopicURLRoot() + ".server." + serverName,
                             virtualizationConfig.getVirtualizerOutboundTopicName(),
@@ -66,7 +64,6 @@ public class OMAGServerVirtualizationService {
 
             virtualizationConfig.setVirtualizationSolutionConnection(
                     connectorConfigurationFactory.getVirtualizationSolutionConnection(
-                            serverName,
                             virtualizationConfig.getVirtualizationProvider(),
                             virtualizationConfig.getVirtualizationSolutionConfig()
                     )

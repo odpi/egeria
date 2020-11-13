@@ -2,10 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.ffdc.rest;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.*;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -16,16 +15,36 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class FFDCResponseBase implements java.io.Serializable
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "class")
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = BooleanResponse.class, name = "BooleanResponse"),
+        @JsonSubTypes.Type(value = CountResponse.class, name = "CountResponse"),
+        @JsonSubTypes.Type(value = GUIDListResponse.class, name = "GUIDListResponse"),
+        @JsonSubTypes.Type(value = GUIDResponse.class, name = "GUIDResponse"),
+        @JsonSubTypes.Type(value = NameListResponse.class, name = "NameListResponse"),
+        @JsonSubTypes.Type(value = RegisteredOMAGServicesResponse.class, name = "RegisteredOMAGServicesResponse"),
+        @JsonSubTypes.Type(value = StringResponse.class, name = "StringResponse"),
+        @JsonSubTypes.Type(value = StringMapResponse.class, name = "StringMapResponse"),
+        @JsonSubTypes.Type(value = VoidResponse.class, name = "VoidResponse")
+
+})
+public class FFDCResponseBase implements java.io.Serializable, FFDCResponse
 {
     private static final long    serialVersionUID = 1L;
 
-    private int                 relatedHTTPCode       = 200;
-    private String              exceptionClassName    = null;
-    private String              exceptionErrorMessage = null;
-    private String              exceptionSystemAction = null;
-    private String              exceptionUserAction   = null;
-    private Map<String, Object> exceptionProperties   = null;
+    private int                 relatedHTTPCode                 = 200;
+    private String              exceptionClassName              = null;
+    private String              exceptionCausedBy               = null;
+    private String              actionDescription               = null;
+    private String              exceptionErrorMessage           = null;
+    private String              exceptionErrorMessageId         = null;
+    private String[]            exceptionErrorMessageParameters = null;
+    private String              exceptionSystemAction           = null;
+    private String              exceptionUserAction             = null;
+    private Map<String, Object> exceptionProperties             = null;
 
     /**
      * Default constructor
@@ -46,129 +65,126 @@ public class FFDCResponseBase implements java.io.Serializable
         {
             this.relatedHTTPCode = template.getRelatedHTTPCode();
             this.exceptionClassName = template.getExceptionClassName();
+            this.exceptionCausedBy = template.getExceptionCausedBy();
+            this.actionDescription = template.getActionDescription();
             this.exceptionErrorMessage = template.getExceptionErrorMessage();
+            this.exceptionErrorMessageId = template.getExceptionErrorMessageId();
+            this.exceptionErrorMessageParameters = template.getExceptionErrorMessageParameters();
             this.exceptionSystemAction = template.getExceptionSystemAction();
             this.exceptionUserAction = template.getExceptionUserAction();
             this.exceptionProperties = template.getExceptionProperties();
         }
     }
 
-
-    /**
-     * Return the HTTP Code to use if forwarding response to HTTP client.
-     *
-     * @return integer HTTP status code
-     */
-    public int getRelatedHTTPCode()
-    {
-        return relatedHTTPCode;
-    }
-
-
-    /**
-     * Set up the HTTP Code to use if forwarding response to HTTP client.
-     *
-     * @param relatedHTTPCode - integer HTTP status code
-     */
-    public void setRelatedHTTPCode(int relatedHTTPCode)
-    {
-        this.relatedHTTPCode = relatedHTTPCode;
-    }
-
-
-    /**
-     * Return the name of the Java class name to use to recreate the exception.
-     *
-     * @return String name of the fully-qualified java class name
-     */
+    @Override
     public String getExceptionClassName()
     {
         return exceptionClassName;
     }
 
-
-    /**
-     * Set up the name of the Java class name to use to recreate the exception.
-     *
-     * @param exceptionClassName - String name of the fully-qualified java class name
-     */
+    @Override
     public void setExceptionClassName(String exceptionClassName)
     {
         this.exceptionClassName = exceptionClassName;
     }
 
+    @Override
+    public String getExceptionCausedBy()
+    {
+        return exceptionCausedBy;
+    }
 
-    /**
-     * Return the error message associated with the exception.
-     *
-     * @return string error message
-     */
+    @Override
+    public void setExceptionCausedBy(String exceptionCausedBy)
+    {
+        this.exceptionCausedBy = exceptionCausedBy;
+    }
+
+    @Override
+    public String getActionDescription()
+    {
+        return actionDescription;
+    }
+
+    @Override
+    public void setActionDescription(String actionDescription)
+    {
+        this.actionDescription = actionDescription;
+    }
+
+    @Override
+    public int getRelatedHTTPCode()
+    {
+        return relatedHTTPCode;
+    }
+
+    @Override
+    public void setRelatedHTTPCode(int relatedHTTPCode)
+    {
+        this.relatedHTTPCode = relatedHTTPCode;
+    }
+
+    @Override
     public String getExceptionErrorMessage()
     {
         return exceptionErrorMessage;
     }
 
-
-    /**
-     * Set up the error message associated with the exception.
-     *
-     * @param exceptionErrorMessage - string error message
-     */
+    @Override
     public void setExceptionErrorMessage(String exceptionErrorMessage)
     {
         this.exceptionErrorMessage = exceptionErrorMessage;
     }
 
+    @Override
+    public String getExceptionErrorMessageId()
+    {
+        return exceptionErrorMessageId;
+    }
 
-    /**
-     * Return the description of the action taken by the system as a result of the exception.
-     *
-     * @return - string description of the action taken
-     */
+    @Override
+    public void setExceptionErrorMessageId(String exceptionErrorMessageId)
+    {
+        this.exceptionErrorMessageId = exceptionErrorMessageId;
+    }
+
+    @Override
+    public String[] getExceptionErrorMessageParameters()
+    {
+        return exceptionErrorMessageParameters;
+    }
+
+    @Override
+    public void setExceptionErrorMessageParameters(String[] exceptionErrorMessageParameters)
+    {
+        this.exceptionErrorMessageParameters = exceptionErrorMessageParameters;
+    }
+
+    @Override
     public String getExceptionSystemAction()
     {
         return exceptionSystemAction;
     }
 
-
-    /**
-     * Set up the description of the action taken by the system as a result of the exception.
-     *
-     * @param exceptionSystemAction - string description of the action taken
-     */
+    @Override
     public void setExceptionSystemAction(String exceptionSystemAction)
     {
         this.exceptionSystemAction = exceptionSystemAction;
     }
 
-
-    /**
-     * Return the action that a user should take to resolve the problem.
-     *
-     * @return string instructions
-     */
+    @Override
     public String getExceptionUserAction()
     {
         return exceptionUserAction;
     }
 
-
-    /**
-     * Set up the action that a user should take to resolve the problem.
-     *
-     * @param exceptionUserAction - string instructions
-     */
+    @Override
     public void setExceptionUserAction(String exceptionUserAction)
     {
         this.exceptionUserAction = exceptionUserAction;
     }
 
-
-    /**
-     * Return the additional properties stored by the exceptions.
-     *
-     * @return property map
-     */
+    @Override
     public Map<String, Object> getExceptionProperties()
     {
         if (exceptionProperties == null)
@@ -185,12 +201,7 @@ public class FFDCResponseBase implements java.io.Serializable
         }
     }
 
-
-    /**
-     * Set up the additional properties stored by the exceptions.
-     *
-     * @param exceptionProperties property map
-     */
+    @Override
     public void setExceptionProperties(Map<String, Object> exceptionProperties)
     {
         this.exceptionProperties = exceptionProperties;
@@ -208,7 +219,10 @@ public class FFDCResponseBase implements java.io.Serializable
         return "FFDCResponseBase{" +
                 "relatedHTTPCode=" + relatedHTTPCode +
                 ", exceptionClassName='" + exceptionClassName + '\'' +
+                ", actionDescription='" + actionDescription + '\'' +
                 ", exceptionErrorMessage='" + exceptionErrorMessage + '\'' +
+                ", exceptionErrorMessageId='" + exceptionErrorMessageId + '\'' +
+                ", exceptionErrorMessageParameters=" + Arrays.toString(exceptionErrorMessageParameters) +
                 ", exceptionSystemAction='" + exceptionSystemAction + '\'' +
                 ", exceptionUserAction='" + exceptionUserAction + '\'' +
                 ", exceptionProperties=" + exceptionProperties +
@@ -229,19 +243,21 @@ public class FFDCResponseBase implements java.io.Serializable
         {
             return true;
         }
-        if (!(objectToCompare instanceof FFDCResponseBase))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
         FFDCResponseBase that = (FFDCResponseBase) objectToCompare;
-        return getRelatedHTTPCode() == that.getRelatedHTTPCode() &&
-                Objects.equals(getExceptionClassName(), that.getExceptionClassName()) &&
-                Objects.equals(getExceptionErrorMessage(), that.getExceptionErrorMessage()) &&
-                Objects.equals(getExceptionSystemAction(), that.getExceptionSystemAction()) &&
-                Objects.equals(getExceptionUserAction(), that.getExceptionUserAction()) &&
-                Objects.equals(getExceptionProperties(), that.getExceptionProperties());
+        return relatedHTTPCode == that.relatedHTTPCode &&
+                Objects.equals(exceptionClassName, that.exceptionClassName) &&
+                Objects.equals(actionDescription, that.actionDescription) &&
+                Objects.equals(exceptionErrorMessage, that.exceptionErrorMessage) &&
+                Objects.equals(exceptionErrorMessageId, that.exceptionErrorMessageId) &&
+                Arrays.equals(exceptionErrorMessageParameters, that.exceptionErrorMessageParameters) &&
+                Objects.equals(exceptionSystemAction, that.exceptionSystemAction) &&
+                Objects.equals(exceptionUserAction, that.exceptionUserAction) &&
+                Objects.equals(exceptionProperties, that.exceptionProperties);
     }
-
 
     /**
      * Return hash code for this object
@@ -251,11 +267,9 @@ public class FFDCResponseBase implements java.io.Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(getRelatedHTTPCode(),
-                            getExceptionClassName(),
-                            getExceptionErrorMessage(),
-                            getExceptionSystemAction(),
-                            getExceptionUserAction(),
-                            getExceptionProperties());
+        int result = Objects.hash(relatedHTTPCode, exceptionClassName, actionDescription, exceptionErrorMessage, exceptionErrorMessageId,
+                                  exceptionSystemAction, exceptionUserAction, exceptionProperties);
+        result = 31 * result + Arrays.hashCode(exceptionErrorMessageParameters);
+        return result;
     }
 }

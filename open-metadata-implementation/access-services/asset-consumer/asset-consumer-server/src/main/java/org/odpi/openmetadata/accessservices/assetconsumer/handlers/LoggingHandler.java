@@ -3,8 +3,8 @@
 package org.odpi.openmetadata.accessservices.assetconsumer.handlers;
 
 import org.odpi.openmetadata.accessservices.assetconsumer.api.AssetConsumerLoggingInterface;
-import org.odpi.openmetadata.accessservices.assetconsumer.auditlog.AssetConsumerAuditCode;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.AssetConsumerAuditCode;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 
 
 /**
@@ -13,7 +13,7 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 public class LoggingHandler implements AssetConsumerLoggingInterface
 {
 
-    private OMRSAuditLog auditLog;
+    private AuditLog auditLog;
 
 
 
@@ -23,7 +23,7 @@ public class LoggingHandler implements AssetConsumerLoggingInterface
      *
      * @param auditLog  connector to the property server.
      */
-    public LoggingHandler(OMRSAuditLog auditLog)
+    public LoggingHandler(AuditLog auditLog)
     {
         this.auditLog = auditLog;
     }
@@ -56,15 +56,8 @@ public class LoggingHandler implements AssetConsumerLoggingInterface
                                                     "Connection Name: " + connectionName +
                                                     "Connector Type: " + connectorType;
 
-        AssetConsumerAuditCode auditCode;
-
-        auditCode = AssetConsumerAuditCode.ASSET_AUDIT_LOG;
-        auditLog.logRecord(methodName,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(assetGUID, message),
-                           additionalInformation,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        auditLog.logMessage(methodName,
+                            AssetConsumerAuditCode.ASSET_AUDIT_LOG.getMessageDefinition(assetGUID, message),
+                            additionalInformation);
     }
 }

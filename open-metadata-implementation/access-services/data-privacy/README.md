@@ -1,6 +1,8 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
+![InDev](../../../open-metadata-publication/website/images/egeria-content-status-in-development.png#pagewidth)
+
 # Data Privacy Open Metadata Access Service (OMAS)
 
 The Data Privacy OMAS provides APIs and events for tools that support a data
@@ -22,3 +24,12 @@ The module structure for the Data Privacy OMAS is as follows:
 * [data-privacy-api](data-privacy-api) supports the common Java classes that are used both by the client and the server.
 * [data-privacy-server](data-privacy-server) supports in implementation of the access service and its related event management.
 * [data-privacy-spring](data-privacy-spring) supports the REST API using the [Spring](../../../developer-resources/Spring.md) libraries.
+
+
+----
+Return to the [access-services](..) module.
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.
+

@@ -20,6 +20,8 @@ import java.util.Objects;
  */
 public class AssetLicense extends AssetReferenceable
 {
+    private static final long     serialVersionUID = 1L;
+
     protected License   licenseBean;
 
 

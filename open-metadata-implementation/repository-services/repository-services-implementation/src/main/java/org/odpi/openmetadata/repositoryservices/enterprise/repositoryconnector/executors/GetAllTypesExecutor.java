@@ -2,11 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.executors;
 
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefGallery;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryValidator;
-import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.EnterpriseOMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.accumulators.TypesAccumulator;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
@@ -29,11 +28,11 @@ public class GetAllTypesExecutor extends CloneableRepositoryExecutorBase
      * @param auditLog logging destination
      * @param repositoryValidator validation methods
      */
-    public GetAllTypesExecutor(String                            userId,
-                               String                            methodName,
-                               String                            localMetadataCollectionId,
-                               OMRSAuditLog                      auditLog,
-                               OMRSRepositoryValidator           repositoryValidator)
+    public GetAllTypesExecutor(String                   userId,
+                               String                   methodName,
+                               String                   localMetadataCollectionId,
+                               AuditLog                 auditLog,
+                               OMRSRepositoryValidator  repositoryValidator)
     {
         this(userId,
              methodName,

@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.dataengine.server.admin;
 
 import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
+import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineCommonHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineRegistrationHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineSchemaTypeHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.PortHandler;
@@ -10,7 +11,8 @@ import org.odpi.openmetadata.accessservices.dataengine.server.handlers.ProcessHa
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OCFOMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
 import java.util.List;
@@ -26,6 +28,7 @@ public class DataEngineServicesInstance extends OCFOMASServiceInstance {
     private DataEngineRegistrationHandler dataEngineRegistrationHandler;
     private DataEngineSchemaTypeHandler dataEngineSchemaTypeHandler;
     private PortHandler portHandler;
+    private Connection inTopicConnection;
 
     /**
      * Set up the local repository connector that will service the REST Calls
@@ -40,21 +43,26 @@ public class DataEngineServicesInstance extends OCFOMASServiceInstance {
      * @throws NewInstanceException a problem occurred during initialization
      */
     DataEngineServicesInstance(OMRSRepositoryConnector repositoryConnector, List<String> supportedZones, List<String> defaultZones,
-                               OMRSAuditLog auditLog, String localServerUserId, int maxPageSize) throws NewInstanceException {
+                               AuditLog auditLog, String localServerUserId, int maxPageSize, Connection inTopicConnection) throws NewInstanceException {
 
 
         super(description.getAccessServiceFullName(), repositoryConnector, supportedZones, defaultZones, auditLog,
                 localServerUserId, maxPageSize);
 
+        this.inTopicConnection = inTopicConnection;
+
         if (repositoryHandler != null) {
             dataEngineRegistrationHandler = new DataEngineRegistrationHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler,
                     repositoryHelper);
-            processHandler = new ProcessHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper,
-                    dataEngineRegistrationHandler, assetHandler, defaultZones, supportedZones);
-            dataEngineSchemaTypeHandler = new DataEngineSchemaTypeHandler(serviceName, invalidParameterHandler, repositoryHandler, repositoryHelper,
-                    schemaTypeHandler, dataEngineRegistrationHandler);
+            DataEngineCommonHandler dataEngineCommonHandler = new DataEngineCommonHandler(serviceName, serverName, invalidParameterHandler,
+                    repositoryHandler,
+                    repositoryHelper, dataEngineRegistrationHandler);
+            processHandler = new ProcessHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, assetHandler,
+                    dataEngineCommonHandler, defaultZones, supportedZones);
+            dataEngineSchemaTypeHandler = new DataEngineSchemaTypeHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler,
+                    repositoryHelper, schemaTypeHandler, dataEngineRegistrationHandler, dataEngineCommonHandler);
             portHandler = new PortHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper,
-                    dataEngineRegistrationHandler);
+                    dataEngineCommonHandler);
 
             if (securityVerifier != null) {
                 processHandler.setSecurityVerifier(securityVerifier);
@@ -63,11 +71,8 @@ public class DataEngineServicesInstance extends OCFOMASServiceInstance {
         } else {
             final String methodName = "new ServiceInstance";
 
-            DataEngineErrorCode errorCode = DataEngineErrorCode.OMRS_NOT_INITIALIZED;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
-
-            throw new NewInstanceException(errorCode.getHttpErrorCode(), this.getClass().getName(), methodName, errorMessage,
-                    errorCode.getSystemAction(), errorCode.getUserAction());
+            throw new NewInstanceException(DataEngineErrorCode.OMRS_NOT_INITIALIZED.getMessageDefinition(methodName), this.getClass().getName(),
+                    methodName);
         }
     }
 
@@ -106,4 +111,11 @@ public class DataEngineServicesInstance extends OCFOMASServiceInstance {
     PortHandler getPortHandler() {
         return portHandler;
     }
+
+    /**
+     * Return the connection used in the client to create a connector that produces events on the input topic
+     *
+     * @return connection object for client
+     */
+    Connection getInTopicConnection() { return inTopicConnection; }
 }

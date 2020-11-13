@@ -76,7 +76,14 @@ public enum InformationViewAuditCode {
             "The Information View Open Metadata Access Service (OMAS) is supporting all governance zones",
             "The access service has not been passed a list of governance zones in the SupportedZones property of the access services options.  " +
                     "This means it is providing access to all Assets irrespective of the zone(s) they are located in and the created Assets can be accessed from any zone",
-            "No action is required.  This is part of the normal operation of the service.")
+            "No action is required.  This is part of the normal operation of the service."),
+    NULL_OMRS_EVENT_RECEIVED("OMAS-INFORMATION-VIEW-9002",
+                             OMRSAuditLogRecordSeverity.EXCEPTION,
+                             "Unable to process a received event from topic {0} because its content is null",
+                             "The system is unable to process an incoming event.",
+                             "This may be caused by an internal logic error or the receipt of an incompatible OMRSEvent, " +
+                                     "possibly from a later version of the OMRS protocol"),
+
     ;
 
     private static final Logger log = LoggerFactory.getLogger(InformationViewAuditCode.class);

@@ -2,127 +2,126 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetowner.converters;
 
-import org.odpi.openmetadata.accessservices.assetowner.mappers.FileSystemMapper;
-import org.odpi.openmetadata.accessservices.assetowner.properties.FileSystem;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.converters.ReferenceableConverter;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.ReferenceableMapper;
+import org.odpi.openmetadata.accessservices.assetowner.metadataelements.FileSystemElement;
+import org.odpi.openmetadata.accessservices.assetowner.properties.FileSystemProperties;
+import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIMapper;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-
 
 /**
  * FileSystemConverter transfers the relevant properties from an Open Metadata Repository Services (OMRS)
- * EntityDetail object into a FileSystem bean.
+ * EntityDetail object into a FileSystemElement bean.
  */
-public class FileSystemConverter extends ReferenceableConverter
+public class FileSystemConverter<B> extends AssetOwnerOMASConverter<B>
 {
     /**
-     * Constructor captures the initial content with connectionToAssetRelationship
+     * Constructor
      *
-     * @param zoneEntity properties to convert
-     * @param repositoryHelper helper object to parse entity/relationship objects
+     * @param repositoryHelper helper object to parse entity
      * @param serviceName name of this component
+     * @param serverName local server name
      */
-    public FileSystemConverter(EntityDetail         zoneEntity,
-                               OMRSRepositoryHelper repositoryHelper,
-                               String               serviceName)
+    public FileSystemConverter(OMRSRepositoryHelper repositoryHelper,
+                               String               serviceName,
+                               String               serverName)
     {
-        super(zoneEntity, repositoryHelper, serviceName);
+        super(repositoryHelper, serviceName, serverName);
     }
 
 
     /**
-     * Request the bean is extracted from the repository objects
+     * Using the supplied instances, return a new instance of the bean. This is used for beans that have
+     * contain a combination of the properties from an entity and a that os a connected relationship.
      *
-     * @return output bean
+     * @param beanClass name of the class to create
+     * @param entity entity containing the properties
+     * @param methodName calling method
+     * @return bean populated with properties from the instances supplied
+     * @throws PropertyServerException there is a problem instantiating the bean
      */
-    public FileSystem getFileSystemBean()
+    public B getNewBean(Class<B>     beanClass,
+                        EntityDetail entity,
+                        String       methodName) throws PropertyServerException
     {
-        FileSystem  bean = null;
-
-        if (entity != null)
+        try
         {
-            bean = new FileSystem();
-
-            updateBean(bean);
-        }
-
-        return bean;
-    }
-
-
-    /**
-     * Request the bean is extracted from the repository objects
-     *
-     * @param bean output bean
-     */
-    private void updateBean(FileSystem bean)
-    {
-        final String  methodName = "updateBean";
-
-        if (entity != null)
-        {
-            super.updateBean(bean);
-
             /*
-             * The properties are removed from the instance properties and stowed in the bean.
-             * Any remaining properties are stored in extendedProperties.
+             * This is initial confirmation that the generic converter has been initialized with an appropriate bean class.
              */
-            InstanceProperties instanceProperties = entity.getProperties();
+            B returnBean = beanClass.newInstance();
 
-            if (instanceProperties != null)
+            if (returnBean instanceof FileSystemElement)
             {
-                bean.setQualifiedName(repositoryHelper.removeStringProperty(serviceName,
-                                                                            FileSystemMapper.QUALIFIED_NAME_PROPERTY_NAME,
-                                                                            instanceProperties,
-                                                                            methodName));
-                bean.setDisplayName(repositoryHelper.removeStringProperty(serviceName,
-                                                                          FileSystemMapper.DISPLAY_NAME_PROPERTY_NAME,
-                                                                          instanceProperties,
-                                                                          methodName));
-                bean.setDescription(repositoryHelper.removeStringProperty(serviceName,
-                                                                          FileSystemMapper.DESCRIPTION_PROPERTY_NAME,
-                                                                          instanceProperties,
-                                                                          methodName));
-                bean.setFileSystemType(repositoryHelper.removeStringProperty(serviceName,
-                                                                       FileSystemMapper.TYPE_PROPERTY_NAME,
-                                                                       instanceProperties,
-                                                                       methodName));
-                bean.setVersion(repositoryHelper.removeStringProperty(serviceName,
-                                                                      FileSystemMapper.VERSION_PROPERTY_NAME,
-                                                                      instanceProperties,
-                                                                      methodName));
-                bean.setPatchLevel(repositoryHelper.removeStringProperty(serviceName,
-                                                                      FileSystemMapper.PATCH_LEVEL_PROPERTY_NAME,
-                                                                      instanceProperties,
-                                                                      methodName));
-                bean.setSource(repositoryHelper.removeStringProperty(serviceName,
-                                                                     FileSystemMapper.SOURCE_PROPERTY_NAME,
-                                                                     instanceProperties,
-                                                                     methodName));
-                bean.setAdditionalProperties(repositoryHelper.removeStringMapFromProperty(serviceName,
-                                                                                          ReferenceableMapper.ADDITIONAL_PROPERTIES_PROPERTY_NAME,
-                                                                                          instanceProperties,
-                                                                                          methodName));
+                FileSystemElement bean = (FileSystemElement) returnBean;
+                FileSystemProperties fileSystemProperties = new FileSystemProperties();
 
-                bean.setExtendedProperties(repositoryHelper.getInstancePropertiesAsMap(instanceProperties));
+                if (entity != null)
+                {
+                    /*
+                     * The initial set of values come from the entity.
+                     */
+                    InstanceProperties instanceProperties = new InstanceProperties(entity.getProperties());
+
+                    fileSystemProperties.setQualifiedName(this.removeQualifiedName(instanceProperties));
+                    fileSystemProperties.setAdditionalProperties(this.removeAdditionalProperties(instanceProperties));
+                    fileSystemProperties.setDisplayName(this.removeName(instanceProperties));
+                    fileSystemProperties.setDescription(this.removeDescription(instanceProperties));
+                    fileSystemProperties.setTypeDescription(this.removeCapabilityType(instanceProperties));
+                    fileSystemProperties.setVersion(this.removeVersion(instanceProperties));
+                    fileSystemProperties.setPatchLevel(this.removePatchLevel(instanceProperties));
+                    fileSystemProperties.setSource(this.removeSource(instanceProperties));
+
+                    /*
+                     * Any remaining properties are returned in the extended properties.  They are
+                     * assumed to be defined in a subtype.
+                     */
+                    fileSystemProperties.setTypeName(bean.getElementHeader().getType().getTypeName());
+                    fileSystemProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
+
+                    instanceProperties = super.getClassificationProperties(OpenMetadataAPIMapper.FILE_SYSTEM_CLASSIFICATION_TYPE_NAME, entity);
+
+                    fileSystemProperties.setFormat(this.getFormat(instanceProperties));
+                    fileSystemProperties.setEncryption(this.getEncryption(instanceProperties));
+
+                    bean.setFileSystemProperties(fileSystemProperties);
+                }
+                else
+                {
+                    handleMissingMetadataInstance(beanClass.getName(), TypeDefCategory.ENTITY_DEF, methodName);
+                }
             }
 
-            instanceProperties = super.getClassificationProperties(FileSystemMapper.FILE_SYSTEM_CLASSIFICATION_TYPE_NAME);
-
-            if (instanceProperties != null)
-            {
-                bean.setFormat(repositoryHelper.getStringProperty(serviceName,
-                                                                  FileSystemMapper.FORMAT_PROPERTY_NAME,
-                                                                  instanceProperties,
-                                                                  methodName));
-                bean.setDisplayName(repositoryHelper.getStringProperty(serviceName,
-                                                                       FileSystemMapper.ENCRYPTION_PROPERTY_NAME,
-                                                                       instanceProperties,
-                                                                       methodName));
-
-            }
+            return returnBean;
         }
+        catch (IllegalAccessException | InstantiationException | ClassCastException error)
+        {
+            super.handleInvalidBeanClass(beanClass.getName(), error, methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Using the supplied instances, return a new instance of the bean. This is used for beans that have
+     * contain a combination of the properties from an entity and a that os a connected relationship.
+     *
+     * @param beanClass name of the class to create
+     * @param entity entity containing the properties
+     * @param relationship relationship containing the properties
+     * @param methodName calling method
+     * @return bean populated with properties from the instances supplied
+     * @throws PropertyServerException there is a problem instantiating the bean
+     */
+    public B getNewBean(Class<B>     beanClass,
+                        EntityDetail entity,
+                        Relationship relationship,
+                        String       methodName) throws PropertyServerException
+    {
+        return getNewBean(beanClass, entity, methodName);
     }
 }

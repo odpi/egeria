@@ -6,11 +6,14 @@ import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerCl
 import org.odpi.openmetadata.adminservices.configuration.properties.StewardshipEngineServicesConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
+import org.odpi.openmetadata.adminservices.configuration.registration.CommonServicesDescription;
 import org.odpi.openmetadata.adminservices.configuration.registration.GovernanceServicesDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
+import org.odpi.openmetadata.adminservices.rest.StewardshipEngineServicesConfigResponse;
+import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
+import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
@@ -25,11 +28,13 @@ public class OMAGServerConfigStewardshipEngineServices
     private static final String serviceName    = GovernanceServicesDescription.STEWARDSHIP_SERVICES.getServiceName();
     private static final String accessService  = AccessServiceDescription.STEWARDSHIP_ACTION_OMAS.getAccessServiceName();
 
-    private static final Logger log = LoggerFactory.getLogger(OMAGServerConfigStewardshipEngineServices.class);
+    private static       RESTCallLogger restCallLogger = new RESTCallLogger(LoggerFactory.getLogger(OMAGServerConfigStewardshipEngineServices.class),
+                                                                            CommonServicesDescription.ADMIN_OPERATIONAL_SERVICES.getServiceName());
 
     private OMAGServerAdminStoreServices   configStore = new OMAGServerAdminStoreServices();
     private OMAGServerErrorHandler         errorHandler = new OMAGServerErrorHandler();
     private OMAGServerExceptionHandler     exceptionHandler = new OMAGServerExceptionHandler();
+
 
     /**
      * Set up the name and platform URL root for the metadata server supporting this stewardship server.
@@ -39,15 +44,16 @@ public class OMAGServerConfigStewardshipEngineServices
      * @param clientConfig  URL root and server name for the metadata server.
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName or serverType parameter.
+     * OMAGConfigurationErrorException unexpected exception or
+     * OMAGInvalidParameterException invalid serverName parameter.
      */
-    public VoidResponse setAccessServiceLocation(String                    userId,
-                                                 String                    serverName,
-                                                 OMAGServerClientConfig clientConfig)
+    public VoidResponse setClientConfig(String                    userId,
+                                        String                    serverName,
+                                        OMAGServerClientConfig clientConfig)
     {
-        final String methodName = "setAccessServiceLocation";
+        final String methodName = "setClientConfig";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -115,7 +121,7 @@ public class OMAGServerConfigStewardshipEngineServices
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -129,15 +135,16 @@ public class OMAGServerConfigStewardshipEngineServices
      * @param stewardshipEngineNames  list of stewardship engine qualified names describing which stewardship engines run in this server.
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName or serverType parameter.
+     * OMAGConfigurationErrorException unexpected exception or
+     * OMAGInvalidParameterException invalid serverName parameter.
      */
     public VoidResponse setStewardshipEngines(String       userId,
-                                            String       serverName,
-                                            List<String> stewardshipEngineNames)
+                                              String       serverName,
+                                              List<String> stewardshipEngineNames)
     {
         final String methodName = "setStewardshipEngines";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -157,13 +164,11 @@ public class OMAGServerConfigStewardshipEngineServices
 
             if (stewardshipEngineNames == null)
             {
-                configAuditTrail.add(new Date().toString() + " " + userId + " removed configuration for " + serviceName + " inbound request " +
-                                             "stewardshipEngineNames.");
+                configAuditTrail.add(new Date().toString() + " " + userId + " removed configuration for " + serviceName + " inbound request stewardshipEngineNames.");
             }
             else
             {
-                configAuditTrail.add(new Date().toString() + " " + userId + " updated configuration for " + serviceName + " inbound request " +
-                                             "stewardshipEngineNames.");
+                configAuditTrail.add(new Date().toString() + " " + userId + " updated configuration for " + serviceName + " inbound request stewardshipEngineNames.");
             }
 
             serverConfig.setAuditTrail(configAuditTrail);
@@ -194,7 +199,7 @@ public class OMAGServerConfigStewardshipEngineServices
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -207,18 +212,21 @@ public class OMAGServerConfigStewardshipEngineServices
      * @param serverName  local server name.
      * @param servicesConfig full configuration for the service.
      * @return void response
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGConfigurationErrorException unexpected exception or
+     * OMAGInvalidParameterException invalid serverName parameter.
      */
-    public VoidResponse addService(String userId, String serverName, StewardshipEngineServicesConfig servicesConfig)
+    public VoidResponse setStewardshipEngineServicesConfig(String userId, String serverName, StewardshipEngineServicesConfig servicesConfig)
     {
         final String methodName = "addService";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
         try
         {
-            this.setAccessServiceLocation(userId, serverName, servicesConfig);
+            this.setClientConfig(userId, serverName, servicesConfig);
             this.setStewardshipEngines(userId, serverName, servicesConfig.getStewardshipEngineNames());
         }
         catch (Throwable  error)
@@ -226,7 +234,48 @@ public class OMAGServerConfigStewardshipEngineServices
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Add this service to the server configuration.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @return  full configuration for the service.
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGConfigurationErrorException unexpected exception or
+     * OMAGInvalidParameterException invalid serverName parameter.
+     */
+    public StewardshipEngineServicesConfigResponse getStewardshipEngineServicesConfig(String userId, String serverName)
+    {
+        final String methodName = "addService";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        StewardshipEngineServicesConfigResponse response = new StewardshipEngineServicesConfigResponse();
+
+        try
+        {
+            errorHandler.validateServerName(serverName, methodName);
+            errorHandler.validateUserId(userId, serverName, methodName);
+
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+
+            if (serverConfig != null)
+            {
+                response.setConfig(serverConfig.getStewardshipEngineServicesConfig());
+            }
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }
@@ -239,11 +288,11 @@ public class OMAGServerConfigStewardshipEngineServices
      * @param serverName  local server name.
      * @return void response
      */
-    public VoidResponse deleteService(String userId, String serverName)
+    public VoidResponse clearStewardshipEngineServicesConfig(String userId, String serverName)
     {
         final String methodName = "deleteService";
 
-        log.debug("Calling method: " + methodName);
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -281,7 +330,7 @@ public class OMAGServerConfigStewardshipEngineServices
             exceptionHandler.capturePlatformRuntimeException(serverName, methodName, response, error);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        restCallLogger.logRESTCallReturn(token, response.toString());
 
         return response;
     }

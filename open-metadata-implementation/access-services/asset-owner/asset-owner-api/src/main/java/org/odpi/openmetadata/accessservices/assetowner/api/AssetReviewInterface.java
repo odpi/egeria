@@ -3,17 +3,18 @@
 
 package org.odpi.openmetadata.accessservices.assetowner.api;
 
+import org.odpi.openmetadata.accessservices.assetowner.metadataelements.AssetElement;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
 import org.odpi.openmetadata.frameworks.discovery.properties.Annotation;
 import org.odpi.openmetadata.frameworks.discovery.properties.AnnotationStatus;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryAnalysisReport;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * The AssetReviewInterface is used by the asset owner to review the state of the asset including any quality and usage
@@ -35,10 +36,10 @@ public interface AssetReviewInterface
      * @throws PropertyServerException there is a problem access in the property server
      * @throws UserNotAuthorizedException the user does not have access to the properties
      */
-    List<Asset>  getAssetsByName(String   userId,
-                                 String   name,
-                                 int      startFrom,
-                                 int      pageSize) throws InvalidParameterException,
+    List<AssetElement>  getAssetsByName(String   userId,
+                                        String   name,
+                                        int      startFrom,
+                                        int      pageSize) throws InvalidParameterException,
                                                            PropertyServerException,
                                                            UserNotAuthorizedException;
 
@@ -58,12 +59,12 @@ public interface AssetReviewInterface
      * @throws PropertyServerException there is a problem access in the property server
      * @throws UserNotAuthorizedException the user does not have access to the properties
      */
-    List<Asset>  findAssets(String   userId,
-                            String   searchString,
-                            int      startFrom,
-                            int      pageSize) throws InvalidParameterException,
-                                                      PropertyServerException,
-                                                      UserNotAuthorizedException;
+    List<AssetElement>  findAssets(String   userId,
+                                   String   searchString,
+                                   int      startFrom,
+                                   int      pageSize) throws InvalidParameterException,
+                                                             PropertyServerException,
+                                                             UserNotAuthorizedException;
 
 
     /**
@@ -76,10 +77,10 @@ public interface AssetReviewInterface
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException there was a problem that occurred within the property server.
      */
-    Asset   getAssetSummary(String  userId,
-                            String  assetGUID) throws InvalidParameterException,
-                                                      UserNotAuthorizedException,
-                                                      PropertyServerException;
+    AssetElement   getAssetSummary(String  userId,
+                                   String  assetGUID) throws InvalidParameterException,
+                                                             UserNotAuthorizedException,
+                                                             PropertyServerException;
 
 
     /**
@@ -132,6 +133,34 @@ public interface AssetReviewInterface
                                                                 int     maximumResults) throws InvalidParameterException,
                                                                                                UserNotAuthorizedException,
                                                                                                PropertyServerException;
+
+
+    /**
+     * Return the annotation subtype names.
+     *
+     * @param userId calling user
+     * @return list of type names that are subtypes of annotation
+     * @throws InvalidParameterException full path or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    List<String>  getTypesOfAnnotation(String userId) throws InvalidParameterException,
+                                                             UserNotAuthorizedException,
+                                                             PropertyServerException;
+
+
+    /**
+     * Return the annotation subtype names mapped to their descriptions.
+     *
+     * @param userId calling user
+     * @return map of type names that are subtypes of annotation to their descriptions
+     * @throws InvalidParameterException full path or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    Map<String, String> getTypesOfAnnotationWithDescriptions(String userId) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException;
 
 
     /**

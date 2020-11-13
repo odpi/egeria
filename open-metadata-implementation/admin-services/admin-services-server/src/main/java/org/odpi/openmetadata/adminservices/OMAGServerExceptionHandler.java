@@ -42,18 +42,12 @@ public class OMAGServerExceptionHandler extends RESTExceptionHandler
     {
         log.error("Unexpected exception", runtimeException);
 
-        OMAGAdminErrorCode errorCode = OMAGAdminErrorCode.UNEXPECTED_EXCEPTION;
-        String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName,
-                                                                                                        methodName,
-                                                                                                        runtimeException.getClass().getName(),
-                                                                                                        runtimeException.getMessage());
-
-        OMAGConfigurationErrorException error =  new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
+        OMAGConfigurationErrorException error =  new OMAGConfigurationErrorException(OMAGAdminErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(serverName,
+                                                                                                                                                  methodName,
+                                                                                                                                                  runtimeException.getClass().getName(),
+                                                                                                                                                  runtimeException.getMessage()),
                                                                                      this.getClass().getName(),
                                                                                      methodName,
-                                                                                     errorMessage,
-                                                                                     errorCode.getSystemAction(),
-                                                                                     errorCode.getUserAction(),
                                                                                      runtimeException);
 
         log.error("Returning sanitized exception", error);
@@ -75,17 +69,11 @@ public class OMAGServerExceptionHandler extends RESTExceptionHandler
     {
         log.error("Unexpected platform exception", runtimeException);
 
-        OMAGAdminErrorCode errorCode = OMAGAdminErrorCode.UNEXPECTED_PLATFORM_EXCEPTION;
-        String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                                                                                                        runtimeException.getClass().getName(),
-                                                                                                        runtimeException.getMessage());
-
-        OMAGConfigurationErrorException error =  new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
+        OMAGConfigurationErrorException error =  new OMAGConfigurationErrorException(OMAGAdminErrorCode.UNEXPECTED_PLATFORM_EXCEPTION.getMessageDefinition(methodName,
+                                                                                                                                                           runtimeException.getClass().getName(),
+                                                                                                                                                           runtimeException.getMessage()),
                                                                                      this.getClass().getName(),
                                                                                      methodName,
-                                                                                     errorMessage,
-                                                                                     errorCode.getSystemAction(),
-                                                                                     errorCode.getUserAction(),
                                                                                      runtimeException);
 
         log.error("Returning sanitized platform exception", error);
@@ -100,7 +88,7 @@ public class OMAGServerExceptionHandler extends RESTExceptionHandler
      * @param response  REST Response
      * @param error returned response.
      */
-    public void captureConfigurationErrorException(FFDCResponseBase response, OMAGConfigurationErrorException error)
+    void captureConfigurationErrorException(FFDCResponseBase response, OMAGConfigurationErrorException error)
     {
         log.error("Configuration error returned", error);
 
